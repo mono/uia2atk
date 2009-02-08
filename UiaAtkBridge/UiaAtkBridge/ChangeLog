@@ -1,5 +1,21 @@
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: This refactoring achieves 3 important
+	things: Atk.Selection to MenuBar, Atk.Selection to
+	ContextMenu, and removes Atk.Selection from MenuItem (not from
+	ParentMenu).
+
+	* Menu.cs:
+	* MenuBar.cs:
+	* MenuItem.cs:
+	* Makefile.am:
+	* ParentMenu.cs:
+	* UiaAtkBridge.mdp: This commit adds 3 things: Atk.Selection
+	to MenuBar, Atk.Selection to ContextMenu, and removes
+	Atk.Selection from MenuItem (not from ParentMenu).
+
+2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ParentAdapter.cs:
 	* AutomationBridge.cs: Wrap requesting the children of a
 	provider in a function, and move it to a more appropiate

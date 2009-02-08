@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
@@ -25,31 +25,27 @@
 
 using System;
 
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-
-	public class MenuBar : Menu, Atk.SelectionImplementor
+	/// <summary>
+	/// This empty class serves as just the needed bit for the parent menu
+	/// (menu with children) to implement *officially* Atk.Selection. Its
+	/// implementation is however inherited from Menu (but can't be exposed
+	/// there because MenuItem should not expose it)
+	/// </summary>
+	
+	public class ParentMenu : MenuItem, Atk.SelectionImplementor
 	{
-		public MenuBar (IRawElementProviderSimple provider) : base (provider)
+		public ParentMenu (IRawElementProviderSimple provider) : base (provider)
 		{
-			Role = Atk.Role.MenuBar;
+			Role = Atk.Role.Menu;
 		}
 
-		protected override Atk.StateSet OnRefStateSet ()
+		internal override void AddOneChild (Atk.Object child)
 		{
-			Atk.StateSet states = base.OnRefStateSet ();
-			//FIXME: figure out why MenuItem elements in Gail don't like this state
-			states.RemoveState (Atk.StateType.Focusable);
-			return states;
-		}
-		
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			//TODO
-			return;
+			base.AddChildToParent (child);
 		}
 	}
 }

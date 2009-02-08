@@ -1041,8 +1041,10 @@ namespace UiaAtkBridge
 				if (isKeyboardFocusable)
 					newAdapter = new Button (provider);
 			}
-			if (newAdapter == null)
-				newAdapter = new MenuItem (provider);
+			if (newAdapter == null) {
+				var child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
+				newAdapter = (child == null) ? new MenuItem (provider) : new ParentMenu (provider);
+			}
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 
@@ -1198,6 +1200,20 @@ namespace UiaAtkBridge
 					// order, so request all children
 					parentAdapter.RequestChildren ();
 			}
+		}
+
+		internal static T PerformTransformation <T> (Adapter adapter, T newAdapter) where T : Adapter
+		{
+			if (adapter.Provider != newAdapter.Provider)
+				throw new InvalidOperationException ("The provider of both adapters must be the same");
+			if (adapter.NAccessibleChildren > 0)
+				throw new NotImplementedException ("Transformation of adapters with children has not been implemented yet");
+			
+			ParentAdapter parent = (ParentAdapter)adapter.Parent;
+			parent.RemoveChild (adapter);
+			providerAdapterMapping [newAdapter.Provider] = newAdapter;
+			parent.AddOneChild (newAdapter);
+			return newAdapter;
 		}
 #endregion
 	}

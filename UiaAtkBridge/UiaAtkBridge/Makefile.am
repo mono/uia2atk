@@ -71,12 +71,14 @@ FILES =  \
 	List.cs \
 	ListGroup.cs \
 	ListItem.cs \
+	Menu.cs \
 	MenuBar.cs \
 	MenuItem.cs \
 	Monitor.cs \
 	NamePropertyTextImplementor.cs \
 	Pane.cs \
 	ParentAdapter.cs \
+	ParentMenu.cs \
 	ProgressBar.cs \
 	RadioButton.cs \
 	RangeValueProviderTextImplementor.cs \

@@ -32,9 +32,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class MenuItem : ComponentParentAdapter, 
-	                        Atk.SelectionImplementor, Atk.TextImplementor,
-	                        Atk.ActionImplementor, ICanHaveSelection
+	public class MenuItem : Menu, Atk.ActionImplementor, Atk.TextImplementor
 	{
 		ITextImplementor textExpert = null;
 		IInvokeProvider invokeProvider = null;
@@ -55,7 +53,7 @@ namespace UiaAtkBridge
 
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
-			OnChildrenChanged ();
+			Role = Atk.Role.MenuItem;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -92,19 +90,10 @@ namespace UiaAtkBridge
 			return states;
 		}
 
-		private void OnChildrenChanged () 
-		{
-			IRawElementProviderFragment child = ((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
-			
-			if (child != null)
-				Role = Atk.Role.Menu;
-			else
-				Role = Atk.Role.MenuItem;
-		}
-		
+//TODO: here we should drop and create new Atk.Objects, because we cannot change their
+//	implementation on the fly (menuitem elts don't have Atk.Selection, menu elts do)
 		protected override void OnChildrenChanged (uint change_index, IntPtr changed_child) 
 		{
-			OnChildrenChanged ();
 		}
 
 		public override Atk.Layer Layer {
@@ -124,88 +113,7 @@ namespace UiaAtkBridge
 				}
 			}
 		}
-
-		internal void Deselect ()
-		{
-			if (!selected)
-				return;
-
-			selected = false;
-			NotifyStateChange (Atk.StateType.Selected, false);
-		}
-
-		#region ICanHaveSelection implementation
-
-		void ICanHaveSelection.RecursivelyDeselectAll (Adapter keepSelected)
-		{
-			if (Parent is ICanHaveSelection) {
-				((ICanHaveSelection) Parent).RecursivelyDeselectAll (
-					keepSelected);
-				return;
-			}
-
-			((ICanHaveSelection) this).RecursivelyDeselect (keepSelected);
-		}
-
-		void ICanHaveSelection.RecursivelyDeselect (Adapter keepSelected)
-		{
-			if (this != keepSelected)
-				Deselect ();
-
-			lock (syncRoot) {
-				bool changed_selected_child = false;
-				bool any_child_was_selected = (selectedChild >= 0);
-				for (int i = 0; i < NAccessibleChildren; i++) {
-					Atk.Object child = RefAccessibleChild (i);
-					if (child == null)
-						continue;
-
-					if (((Adapter) child) == keepSelected) {
-						if (selectedChild != i) {
-							selectedChild = i;
-							changed_selected_child = true;
-						}
-						continue;
-					}
-					
-					if (child is ICanHaveSelection) {
-						((ICanHaveSelection) child)
-							.RecursivelyDeselect (keepSelected);
-					}
-				}
-				if (changed_selected_child) {
-					var sel_adapter = new Atk.SelectionAdapter (this);
-					if (any_child_was_selected)
-						//2 times: because we deselect a child and select another one
-						sel_adapter.EmitSelectionChanged ();
-					sel_adapter.EmitSelectionChanged ();
-				}
-			}
-		}
 		
-		#endregion
-		
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
-		{
-			if (eventId == InvokePatternIdentifiers.InvokedEvent ||
-			    eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
-				if (!selected) {
-					selected = true;
-					NotifyStateChange (Atk.StateType.Selected, selected);
-				}
-				((ICanHaveSelection) this).RecursivelyDeselectAll (this);
-			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-				selected = !selected;
-				NotifyStateChange (Atk.StateType.Selected, selected);
-				if (selected)
-					//this causes the following in accerciser: focus:(0, 0, None)
-					Atk.Focus.TrackerNotify (this);
-				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
-			} else {
-				Log.Warn ("MenuItem: RaiseAutomationEvent({0},...) not implemented", eventId.ProgrammaticName);
-				base.RaiseAutomationEvent (eventId, e);
-			}
-		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
@@ -275,60 +183,7 @@ namespace UiaAtkBridge
 		}
 		
 		#endregion 
-
-		#region SelectionImplementor implementation
-		//cannot use SelectionProviderHelper because it doesn't implement ISelectionProvider
-		//(consider inheriting from MenuBar in the future)
-
-		private bool selected = false;
-		private int selectedChild = -1;
 		
-		public bool AddSelection (int i)
-		{
-			if ((i < 0) || (i >= NAccessibleChildren))
-				return false;
-			return ((MenuItem)RefAccessibleChild (i)).DoAction (0);
-		}
-
-		public bool SelectAllSelection ()
-		{
-			return false;
-		}
-
-		public bool IsChildSelected (int i)
-		{
-			return selectedChild == i;
-		}
-		
-		bool Atk.SelectionImplementor.RemoveSelection (int i)
-		{
-			if (i == 0) {
-				selectedChild = -1;
-				((ICanHaveSelection) this).RecursivelyDeselect (null);
-				return true;
-			}
-			return false;
-		}
-
-		public bool ClearSelection ()
-		{
-			selectedChild = -1;
-			((ICanHaveSelection) this).RecursivelyDeselect (null);
-			return true;
-		}
-
-		public int SelectionCount {
-			get { return (selectedChild < 0 ? 0 : 1); }
-		}
-
-		public Atk.Object RefSelection (int i)
-		{
-			if (selectedChild < 0 || i != 0)
-				return null;
-			return RefAccessibleChild (selectedChild);
-		}
-
-		#endregion
 
 		#region TextImplementor implementation 
 		
@@ -425,10 +280,17 @@ namespace UiaAtkBridge
 		
 		#endregion
 
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		//HACK: when I finished this refactoring I realized that MenuItem should not inherit from ComponentParentAdapter, so
+		//FIXME: to overcome the need of multiple inheritance, use an ImplementorHelper for selection related features and
+		//       remove this transformation (although it may be useful for the case in which menus are added/removed)
+		internal override void AddOneChild (Atk.Object child)
 		{
-			//TODO
+			AutomationBridge.PerformTransformation <ParentMenu> (this, new ParentMenu (Provider)).AddOneChild (child);
 		}
-
+		
+		protected virtual void AddChildToParent (Atk.Object child)
+		{
+			base.AddOneChild (child);
+		}
 	}
 }
