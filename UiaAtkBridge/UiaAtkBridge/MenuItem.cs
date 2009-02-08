@@ -67,9 +67,12 @@ namespace UiaAtkBridge
 			else
 				states.RemoveState (Atk.StateType.Showing);
 
-			if (Parent != null && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) {
-				states.AddState (Atk.StateType.Visible);
-				states.AddState (Atk.StateType.Showing);
+			if (Parent != null){
+				if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
+					states.AddState (Atk.StateType.Visible);
+				if ((Parent is MenuBar && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
+				    || Parent.RefStateSet ().ContainsState (Atk.StateType.Selected))
+					states.AddState (Atk.StateType.Showing);
 			}
 
 			bool canFocus = (bool) Provider.GetPropertyValue (

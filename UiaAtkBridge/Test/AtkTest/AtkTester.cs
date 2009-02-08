@@ -79,8 +79,13 @@ namespace UiaAtkBridgeTest
 		public abstract bool IsBGO567991Addressed ();
 
 		public abstract bool HasComboBoxSimpleLayout { get; }
-		
+
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
+		{
+			InterfaceComponent (type, implementor, true);
+		}
+		
+		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor, bool showing)
 		{
 			Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 
@@ -108,8 +113,14 @@ namespace UiaAtkBridgeTest
 			RunInGuiThread (delegate () {
 				int x, y, w, h, x2, y2, w2, h2;
 				implementor.GetExtents (out x, out y, out w, out h, Atk.CoordType.Screen);
-				Assert.IsTrue (x > 0, "x > 0");
-				Assert.IsTrue (y > 0, "y > 0");
+				
+				if (showing) {
+					Assert.IsTrue (x > 0, "x > 0");
+					Assert.IsTrue (y > 0, "y > 0");
+				} else {
+					Assert.AreEqual (x, int.MinValue, "x==minValue b/c !showing");
+					Assert.AreEqual (y, int.MinValue, "y==minValue b/c !showing");
+				}
 				Assert.IsTrue (w > 0, "w > 0");
 				Assert.IsTrue (h > 0, "h > 0");
 
@@ -119,8 +130,13 @@ namespace UiaAtkBridgeTest
 					Assert.IsTrue (x2 <= 0, "x2 <= 0");
 					Assert.IsTrue (y2 <= 0, "y2 <= 0");
 				} else {
-					Assert.IsTrue (x2 >= 0, "x2 > 0");
-					Assert.IsTrue (y2 >= 0, "y2 > 0");
+					if (showing) {
+						Assert.IsTrue (x2 >= 0, "x2 > 0");
+						Assert.IsTrue (y2 >= 0, "y2 > 0");
+					} else {
+						Assert.AreEqual (x2, int.MinValue, "x==minValue b/c !showing");
+						Assert.AreEqual (y2, int.MinValue, "y==minValue b/c !showing");
+					}
 				}
 				Assert.IsTrue (w2 >= 0, "w2 > 0");
 				Assert.IsTrue (h2 >= 0, "h2 > 0");

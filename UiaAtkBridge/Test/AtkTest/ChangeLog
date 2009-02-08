@@ -1,5 +1,13 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Make InterfaceComponent() method aware of
+	non-showing widgets.
+
+	* AtkTests.cs: Fix crashes on ContextMenu (gail side). Enable
+	ChildMenu+AtkComponent tests.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: ChildMenu+AtkAction.
 

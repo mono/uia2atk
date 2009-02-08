@@ -1,5 +1,13 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComponentImplementorHelper.cs: Return minValues for
+	non-showing widgets, to make tests happy.
+
+	* MenuItem.cs: Improve algorithm for Showing state to make
+	tests pass.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComponentImplementorHelper.cs: Vars aligned (style).
 
 2009-02-08  Mike Gorse  <mgorse@novell.com>

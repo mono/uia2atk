@@ -634,7 +634,9 @@ namespace UiaAtkBridgeTest
 			foreach (MenuLayout submenu in menu)
 				names.Add (submenu.Label);
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+			RunInGuiThread (delegate (){
+				InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+			});
 		}
 		
 		[Test]
@@ -663,19 +665,19 @@ namespace UiaAtkBridgeTest
 			            typeof (Atk.Text),
 			            typeof (Atk.Action));
 
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, 
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent, accessible.RefStateSet ().ContainsState (Atk.StateType.Showing));
+			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
-			
-//			States (accessible,
-//			  Atk.StateType.Enabled,
-//			  Atk.StateType.Selectable, 
-//			  Atk.StateType.Sensitive,
-//			  Atk.StateType.Visible);
 
 			InterfaceText (type, true, accessible);
-			
-//			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-//			InterfaceComponent (type, atkComponent);
 		}
 
 		

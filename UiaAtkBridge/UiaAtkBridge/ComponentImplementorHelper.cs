@@ -72,7 +72,10 @@ namespace UiaAtkBridge
 
 		public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
 		{
-			GetPosition (out x, out y, coordType);
+			x = int.MinValue;
+			y = int.MinValue;
+			if (resource.RefStateSet ().ContainsState (Atk.StateType.Showing))
+				GetPosition (out x, out y, coordType);
 			width = (int)resource.BoundingRectangle.Width;
 			height = (int)resource.BoundingRectangle.Height;
 		}
@@ -146,10 +149,6 @@ namespace UiaAtkBridge
 			}
 			return false;
 		}
-		
-		public IntPtr Handle {
-			get { return resource.Handle; }
-		}
 
 		public int MdiZorder {
 			get { return 0; }
@@ -172,6 +171,10 @@ namespace UiaAtkBridge
 					return transformProvider.CanResize;
 				return false;
 			}
+		}
+
+		public IntPtr Handle {
+			get { return resource.Handle; }
 		}
 	}
 }
