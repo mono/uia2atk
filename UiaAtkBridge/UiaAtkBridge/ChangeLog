@@ -1,3 +1,9 @@
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ParentAdapter.cs:
+	* AutomationBridge.cs: Merge RequestChildren(Provider) with
+	AddChildrenToParent(), they were the same method!
+
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs:

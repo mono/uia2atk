@@ -151,7 +151,7 @@ namespace UiaAtkBridge
 
 			requestedChildren = true;
 			
-			AutomationBridge.RequestChildren (Provider);
+			AutomationBridge.AddChildrenToParent (Provider);
 		}
 		
 		internal void UpdateChildren ()
