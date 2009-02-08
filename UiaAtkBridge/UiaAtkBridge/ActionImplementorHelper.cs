@@ -31,39 +31,21 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-
-	internal delegate bool ActionDelegate ();
-
-	internal class ActionDescription
-	{
-		internal String name;
-		internal String localizedName;
-		internal String description;
-		internal ActionDelegate DoAction;
-		internal ActionDescription (string name, String localizedName, String description, ActionDelegate doAction)
-		{
-			this.name = name;
-			this.localizedName = localizedName;
-			this.description = description;
-			this.DoAction = doAction;
-		}
-	}
-
 	internal class ActionImplementorHelper
 	{
-		private List<ActionDescription> actions;
+		private List <ActionDescription> actions;
 
 		public ActionImplementorHelper ()
 		{
-			actions = new System.Collections.Generic.List<ActionDescription> ();
+			actions = new List <ActionDescription> ();
 		}
 
-		public void Add (String name, String localizedName, String description, ActionDelegate doAction)
+		public void Add (String name, String localizedName, string description, ActionDelegate doAction)
 		{
 			actions.Add (new ActionDescription (name, localizedName, description, doAction));
 		}
 
-		public bool Remove (String name)
+		public bool Remove (string name)
 		{
 			//FIXME: does this work? modifying the collection
 			//       inside the foreach that walks it
@@ -84,28 +66,28 @@ namespace UiaAtkBridge
 		{
 			if (action < 0 || action >= NActions)
 				return null;
-			return actions[action].name;
+			return actions [action].name;
 		}
 
 		public String GetLocalizedName (int action)
 		{
 			if (action < 0 || action >= NActions)
 				return null;
-			return actions[action].localizedName;
+			return actions [action].localizedName;
 		}
 
 		public String GetDescription (int action)
 		{
 			if (action < 0 || action >= NActions)
 				return null;
-			return actions[action].description;
+			return actions [action].description;
 		}
 
-		public bool SetDescription (int action, String description)
+		public bool SetDescription (int action, string description)
 		{
 			if (action < 0 || action >= NActions)
 				return false;
-			actions[action].description = description;
+			actions [action].description = description;
 			return true;
 		}
 
@@ -113,7 +95,24 @@ namespace UiaAtkBridge
 		{
 			if (action < 0 || action >= NActions)
 				return false;
-			return actions[action].DoAction ();
+			return actions [action].DoAction ();
+		}
+
+		internal delegate bool ActionDelegate ();
+	
+		internal class ActionDescription
+		{
+			internal String name;
+			internal String localizedName;
+			internal String description;
+			internal ActionDelegate DoAction;
+			internal ActionDescription (string name, String localizedName, String description, ActionDelegate doAction)
+			{
+				this.name = name;
+				this.localizedName = localizedName;
+				this.description = description;
+				this.DoAction = doAction;
+			}
 		}
 	}
 }

@@ -1,5 +1,9 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ActionImplementorHelper.cs: Style. Make aux classes nested.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComponentImplementorHelper.cs: Return minValues for
 	non-showing widgets, to make tests happy.
 
