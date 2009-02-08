@@ -646,12 +646,12 @@ namespace UiaAtkBridgeTest
 			string menuName = simpleTestText;
 
 			List <MenuLayout> menu = new List <MenuLayout> ();
-			menu.Add (new MenuLayout ("File", new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!")));
-			menu.Add (new MenuLayout ("Help", new MenuLayout (menuName)));
+			menu.Add (new MenuLayout ("File", new MenuLayout ("New...", new MenuLayout (menuName), new MenuLayout ("Text")), new MenuLayout ("Quit!")));
+			menu.Add (new MenuLayout ("Help", new MenuLayout ("About?")));
 
 			accessible = GetAccessible (type, menu);
 			
-			//Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
+			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
 
 			PropertyRole (type, accessible);
 
@@ -669,7 +669,7 @@ namespace UiaAtkBridgeTest
 //			  Atk.StateType.Sensitive,
 //			  Atk.StateType.Visible);
 
-//			InterfaceText (type, true, accessible);
+			InterfaceText (type, true, accessible);
 			
 //			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 //			InterfaceComponent (type, atkComponent);

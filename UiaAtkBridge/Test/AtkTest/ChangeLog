@@ -1,5 +1,9 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Enable some tests we pass now.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: Add ChildMenu test (almost complete) that we
 	now pass thanks to r126240.

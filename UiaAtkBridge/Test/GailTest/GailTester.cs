@@ -240,9 +240,8 @@ namespace UiaAtkBridgeTest
 						if ((widget == null) && (level == 0))
 							widget = menuitem;
 					} else {
-						if (type == BasicWidgetType.ChildMenu) {
+						if (widget == null && type == BasicWidgetType.ChildMenu)
 							widget = menuitem;
-						}
 					}
 				}
 				
