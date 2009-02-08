@@ -220,30 +220,30 @@ namespace UiaAtkBridgeTest
 		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible, string [] names)
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
-			if ((type == BasicWidgetType.TextBoxEntry) ||
-			    (type == BasicWidgetType.ComboBoxDropDownList) ||
-			    (type == BasicWidgetType.ComboBoxDropDownEntry) ||
-			    (type == BasicWidgetType.ComboBoxItem) || 
-			    (type == BasicWidgetType.ListItem) || 
-			    (type == BasicWidgetType.ParentMenu) ||
-			    (type == BasicWidgetType.Spinner))
+			if (type == BasicWidgetType.TextBoxEntry ||
+			    type == BasicWidgetType.ComboBoxDropDownList ||
+			    type == BasicWidgetType.ComboBoxDropDownEntry ||
+			    type == BasicWidgetType.ComboBoxItem || 
+			    type == BasicWidgetType.ListItem || 
+			    type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.Spinner)
 				validNumberOfActions = 1;
 			else if (type == BasicWidgetType.CheckedListItem)
 				validNumberOfActions = 2;
 			
 			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
 			
-			if ((type == BasicWidgetType.ComboBoxDropDownList) || 
-			    (type == BasicWidgetType.ComboBoxDropDownEntry)) {
+			if (type == BasicWidgetType.ComboBoxDropDownList || 
+			    type == BasicWidgetType.ComboBoxDropDownEntry) {
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
-			} else if ((type == BasicWidgetType.TextBoxEntry) ||
-			    (type == BasicWidgetType.Spinner)) {
+			} else if (type == BasicWidgetType.TextBoxEntry ||
+			           type == BasicWidgetType.Spinner) {
 				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
 			} else {
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
-				if ((ValidNumberOfActionsForAButton > 1) &&
-				    (type != BasicWidgetType.ParentMenu) &&
-				    (type != BasicWidgetType.ComboBoxItem)) {
+				if (ValidNumberOfActionsForAButton > 1 &&
+				    type != BasicWidgetType.ParentMenu &&
+				    type != BasicWidgetType.ComboBoxItem) {
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
 				}

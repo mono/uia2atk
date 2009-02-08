@@ -1,5 +1,9 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Remove excessive parenthesis.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Enable some tests we pass now.
 
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
