@@ -1,3 +1,7 @@
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Fix tabcontrol crashes in GailTest.
+
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Improve verbosity.
