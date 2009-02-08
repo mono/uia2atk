@@ -1,5 +1,9 @@
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* UIAutomationProviderTests.mdp: Change nunit version.
+
+2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
 	Add meat for bug#469347.
 

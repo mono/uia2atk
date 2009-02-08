@@ -1,4 +1,4 @@
-<Project name="UIAutomationProviderTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.System.Windows.Automation.Provider" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationProviderTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.System.Windows.Automation.Provider" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="." assemblyKeyFile="." assembly="UIAutomationProvider_test_net_3_0" />
@@ -20,7 +20,7 @@
     <File name="Test/System.Windows.Automation.Provider/AutomationInteropProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
-    <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <ProjectReference type="Gac" localcopy="True" refto="nunit.framework, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <ProjectReference type="Gac" localcopy="True" refto="nunit.util, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationProvider" />
