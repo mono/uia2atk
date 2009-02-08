@@ -91,6 +91,7 @@ FILES =  \
 	SplitContainer.cs \
 	Splitter.cs \
 	Tab.cs \
+	Table.cs \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \

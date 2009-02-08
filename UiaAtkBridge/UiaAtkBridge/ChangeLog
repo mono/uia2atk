@@ -1,3 +1,9 @@
+2009-02-08  Mike Gorse  <mgorse@novell.com>
+
+	* DataGrid.cs, Table.cs, AutomationBridge.cs, Makefile.am,
+	  UiaAtkBridge.mdp: Separate Table from DataGrid since Table
+	  control type need not implement ISelectionProvider.
+
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Be careful not to add already added

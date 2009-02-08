@@ -30,55 +30,19 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class DataGrid : ComponentParentAdapter , Atk.TableImplementor, Atk.SelectionImplementor
+	public class DataGrid : Table, Atk.SelectionImplementor
 	{
-		private TableImplementorHelper tableExpert = null;
 		private ISelectionProvider					selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
 		
 		public DataGrid (IRawElementProviderFragment provider): base (provider)
 		{
-			tableExpert = new TableImplementorHelper (this);
-			Role = Atk.Role.TreeTable;
-
 			selectionProvider = (ISelectionProvider)provider.GetPatternProvider(SelectionPatternIdentifiers.Pattern.Id);
 			if (selectionProvider == null)
 				throw new ArgumentException ("DataGrid should always implement ISelectionProvider");
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 		}
 		
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
-		{
-			if (eventId == GridPatternIdentifiers.ColumnReorderedEvent)
-				GLib.Signal.Emit (this, "column_reordered");
-			else
-				base.RaiseAutomationEvent (eventId, e);
-			// TODO
-		}
-
-		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
-		{
-			// TODO
-		}
-
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			if (e.Property == AutomationElementIdentifiers.ControlTypeProperty) {
-				//We remove the current Adapter and add it again to reflect the ControlType change
-				StructureChangedEventArgs args 
-					= new StructureChangedEventArgs (StructureChangeType.ChildRemoved, 
-					                                 new int[] { 0 }); //TODO: Fix ?
-				AutomationInteropProvider.RaiseStructureChangedEvent (Provider,
-				                                                      args);
-
-				args = new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-				                                      new int[] { 0 }); //TODO: Fix ?
-				AutomationInteropProvider.RaiseStructureChangedEvent (Provider,
-				                                                      args);
-			} else
-				base.RaiseAutomationPropertyChangedEvent (e);
-		}
-
 		public int SelectionCount
 		{
 			get { return selectionHelper.SelectionCount; }
@@ -106,160 +70,6 @@ namespace UiaAtkBridge
 		public bool SelectAllSelection ()
 		{
 			return selectionHelper.SelectAllSelection ();
-		}
-
-		public Atk.Object RefAt (int row, int column)
-		{
-			return tableExpert.RefAt (row, column);
-		}
-
-		public int GetIndexAt (int row, int column)
-		{
-			return tableExpert.GetIndexAt (row, column);
-		}
-
-		public int GetColumnAtIndex (int index)
-		{
-			return tableExpert.GetColumnAtIndex (index);
-		}
-
-		public int GetRowAtIndex (int index)
-		{
-			return tableExpert.GetRowAtIndex (index);
-		}
-
-		public int NColumns { get { return tableExpert.NColumns; } }
-		public int NRows { get { return tableExpert.NRows; } }
-			
-		public int GetColumnExtentAt (int row, int column)
-		{
-			return tableExpert.GetColumnExtentAt (row, column);
-		}
-
-		public int GetRowExtentAt (int row, int column)
-		{
-			return tableExpert.GetRowExtentAt (row, column);
-		}
-
-		public Atk.Object Caption
-		{
-			get { return tableExpert.Caption; } set { tableExpert.Caption = value; }
-		}
-
-		public string GetColumnDescription (int column)
-		{
-			return tableExpert.GetColumnDescription (column);
-		}
-
-		public Atk.Object GetColumnHeader (int column)
-		{
-			return tableExpert.GetColumnHeader (column);
-		}
-
-		public string GetRowDescription (int row)
-		{
-			return tableExpert.GetRowDescription (row);
-		}
-
-		public Atk.Object GetRowHeader (int row)
-		{
-			return tableExpert.GetRowHeader (row);
-		}
-
-		public Atk.Object Summary
-		{
-			get { return tableExpert.Summary; } set { tableExpert.Summary = value; }
-		}
-
-
-		public void SetColumnDescription (int column, string description)
-		{
-			tableExpert.SetColumnDescription (column, description);
-		}
-
-		public void SetColumnHeader (int column, Atk.Object header)
-		{
-			tableExpert.SetColumnHeader (column, header);
-		}
-
-		public void SetRowDescription (int row, string description)
-		{
-			tableExpert.SetRowDescription (row, description);
-		}
-
-		public void SetRowHeader (int row, Atk.Object header)
-		{
-			tableExpert.SetRowHeader (row, header);
-		}
-
-		// TODO: Remove next two methods when atk-sharp is fixed
-		public int GetSelectedColumns (out int selected)
-		{
-			return tableExpert.GetSelectedColumns (out selected);
-		}
-
-		public int GetSelectedColumns (out int [] selected)
-		{
-			return tableExpert.GetSelectedColumns (out selected);
-		}
-
-		public int GetSelectedRows (out int selected)
-		{
-			return tableExpert.GetSelectedRows (out selected);
-		}
-
-		public int GetSelectedRows (out int [] selected)
-		{
-			return tableExpert.GetSelectedRows (out selected);
-		}
-
-		public bool IsColumnSelected (int column)
-		{
-			return tableExpert.IsColumnSelected (column);
-		}
-
-		public bool IsRowSelected (int row)
-		{
-			return tableExpert.IsRowSelected (row);
-		}
-
-		public bool IsSelected (int row, int column)
-		{
-			return tableExpert.IsSelected (row, column);
-		}
-
-		public bool AddRowSelection (int row)
-		{
-			return tableExpert.AddRowSelection (row);
-		}
-
-		public bool RemoveRowSelection (int row)
-		{
-			return tableExpert.RemoveRowSelection (row);
-		}
-
-		public bool AddColumnSelection (int column)
-		{
-			return tableExpert.AddColumnSelection (column);
-		}
-
-		public bool RemoveColumnSelection (int column)
-		{
-			return tableExpert.RemoveColumnSelection (column);
-		}
-
-		internal void EmitRowReorderingSignal ()
-		{
-			GLib.Signal.Emit (this, "row-reordered");
-			GLib.Signal.Emit (this, "visible-data-changed");
-		}
-
-		protected override Atk.StateSet OnRefStateSet ()
-		{
-			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (Atk.StateType.ManagesDescendants);
-			states.AddState (Atk.StateType.Focusable);
-			return states;
 		}
 	}
 }

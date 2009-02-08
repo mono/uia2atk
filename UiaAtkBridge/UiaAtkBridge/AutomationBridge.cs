@@ -555,7 +555,7 @@ namespace UiaAtkBridge
 			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
 				HandleNewDataGridControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Table.Id)
-				HandleNewDataGridControlType (simpleProvider, parentAdapter);
+				HandleNewTableControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataItem.Id)
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.Pane.Id)
@@ -1110,6 +1110,16 @@ namespace UiaAtkBridge
 			if (fragment == null)
 				return;
 			Adapter newAdapter = new DataGrid (fragment);
+
+			IncludeNewAdapter (newAdapter, parentObject);
+		}
+
+		private void HandleNewTableControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+			Adapter newAdapter = new Table (fragment);
 
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
