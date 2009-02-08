@@ -662,6 +662,9 @@ namespace UiaAtkBridgeTest
 			            typeof (Atk.Component),
 			            typeof (Atk.Text),
 			            typeof (Atk.Action));
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
 			
 //			States (accessible,
 //			  Atk.StateType.Enabled,
@@ -673,9 +676,6 @@ namespace UiaAtkBridgeTest
 			
 //			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 //			InterfaceComponent (type, atkComponent);
-//
-//			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-//			InterfaceAction (type, atkAction, accessible);
 		}
 
 		

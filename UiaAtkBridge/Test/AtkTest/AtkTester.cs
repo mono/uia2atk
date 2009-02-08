@@ -226,6 +226,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ComboBoxItem || 
 			    type == BasicWidgetType.ListItem || 
 			    type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.ChildMenu ||
 			    type == BasicWidgetType.Spinner)
 				validNumberOfActions = 1;
 			else if (type == BasicWidgetType.CheckedListItem)
@@ -243,6 +244,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
 				if (ValidNumberOfActionsForAButton > 1 &&
 				    type != BasicWidgetType.ParentMenu &&
+				    type != BasicWidgetType.ChildMenu &&
 				    type != BasicWidgetType.ComboBoxItem) {
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
