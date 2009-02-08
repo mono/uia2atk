@@ -1,3 +1,7 @@
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComponentImplementorHelper.cs: Vars aligned (style).
+
 2009-02-08  Mike Gorse  <mgorse@novell.com>
 
 	* DataGrid.cs, Table.cs, AutomationBridge.cs, Makefile.am,
@@ -6,15 +10,10 @@
 
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* AutomationBridge.cs: Be careful not to add already added
-	providers in AddChildrenToParent().
-
-2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
-
 	* ParentAdapter.cs:
 	* AutomationBridge.cs: Merge RequestChildren(Provider) with
 	AddChildrenToParent(), they were the same method! (thus, this
-	commit improves r126216.
+	commit improves r126216).
 
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

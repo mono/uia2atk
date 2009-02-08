@@ -42,10 +42,10 @@ namespace UiaAtkBridge
 			focusHandlers = new Dictionary<uint, Atk.FocusHandler> ();
 		}
 
-		private Adapter								resource;
+		private Adapter					resource;
 		private Dictionary<uint, Atk.FocusHandler>	focusHandlers;
-		private uint								lastFocusHandlerId;
-		private ITransformProvider					transformProvider = null;
+		private uint					lastFocusHandlerId;
+		private ITransformProvider			transformProvider = null;
 		
 		public virtual uint AddFocusHandler (Atk.FocusHandler handler)
 		{
