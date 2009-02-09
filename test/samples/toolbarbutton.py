@@ -52,6 +52,7 @@ class ToolBarSample(Form):
 
         # Create and initialize the ToolBar and ToolBarButton controls.
         self.toolbar = ToolBar()
+        self.toolbar.Appearance = ToolBarAppearance.Flat
         self.toolbar.ButtonClick += self.on_click
 
         # image list
@@ -101,28 +102,8 @@ class ToolBarSample(Form):
         self.toolbar_btn4.Enabled = False
 
         self.toolbar_btn5 = ToolBarButton()
+        self.toolbar_btn5.Text = "separator"
         self.toolbar_btn5.Style = ToolBarButtonStyle.Separator
-
-        #create label1
-        self.label1 = Label()
-        self.label1.Text = "page:"
-        self.label1.Size = Size(50,18)
-        #self.label1.TextAlign = ContentAlignment.MiddleLeft;
-        self.label1.Dock = DockStyle.Right
-
-        #setup combobox
-        self.combobox = ComboBox()
-        self.combobox.Size = Size(50,18)
-        self.combobox.Dock = DockStyle.Right
-        self.combobox.DropDownStyle = ComboBoxStyle.DropDownList 
-        # add items in ComboBox
-        for i in range(10):
-            self.combobox.Items.Add(str(i))
-        self.combobox.SelectedIndexChanged += self.select
-        
-        # create dialogs
-        self.openfiledialog = OpenFileDialog()
-        self.printdialog = PrintDialog()
 
         # add controls
         self.toolbar.Buttons.Add(self.toolbar_btn1)
@@ -130,8 +111,6 @@ class ToolBarSample(Form):
         self.toolbar.Buttons.Add(self.toolbar_btn3)
         self.toolbar.Buttons.Add(self.toolbar_btn4)
         self.toolbar.Buttons.Add(self.toolbar_btn5)
-        self.toolbar.Controls.Add(self.label1)
-        self.toolbar.Controls.Add(self.combobox)
         self.Controls.Add(self.toolbar)
         self.Controls.Add(self.label)
 

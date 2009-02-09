@@ -1,5 +1,10 @@
 2009-02-09  Calen Chen <cachen@novell.com>
 
+	* samples/toolbarbutton.py: set toolbar Appearance as Flat to show 
+	separator more clearly. delete combobox and lable from toolbar
+
+2009-02-09  Calen Chen <cachen@novell.com>
+
 	* testers/printpreviewdialog_basic_ops.py: add BUG465945 and BUG473757 
 	as referance for regression test
 	* testers/printpreviewcontrol_basic_ops.py: add BUG465945 and BUG473757 
