@@ -908,8 +908,8 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.MainMenuBar)
 				widget = menuStrip1;
 			else if (type == BasicWidgetType.ContextMenu) {
-				//TODO: use contextMenu.Show (form, 0, 0); as well
-				contextMenu.Show ();
+				//TODO: use contextMenu.Show (form, 0, 0) as well (when we don't attach it to any control)
+				contextMenu.Show (lab1, 0, 0);
 				widget = contextMenu;
 			}
 			return GetAdapterForWidget (widget);
