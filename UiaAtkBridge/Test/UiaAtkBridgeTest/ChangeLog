@@ -1,3 +1,7 @@
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DialogTester.cs: Make it compile under csc (BNC#473559).
+
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: ToolStripDropDownButton: Clear before Add.

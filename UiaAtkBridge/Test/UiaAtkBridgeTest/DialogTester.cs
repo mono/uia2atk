@@ -62,14 +62,14 @@ namespace UiaAtkBridgeTest
 		
 		static void TestDialog (SWF.CommonDialog dialog)
 		{
-			new DialogTester (dialog).Test ();
+			new DialogTesterInner (dialog).Test ();
 		}
 
-		public class DialogTester {
+		private class DialogTesterInner {
 			SWF.CommonDialog dialog;
 			Thread th;
 	
-			internal DialogTester (SWF.CommonDialog dialog)
+			internal DialogTesterInner (SWF.CommonDialog dialog)
 			{
 				this.dialog = dialog;
 			}
