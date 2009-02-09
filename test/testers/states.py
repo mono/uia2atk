@@ -329,3 +329,6 @@ class ToolStripSeparator(object):
 
 class TrackBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)
+
+class ContainerControl(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)

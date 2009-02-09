@@ -40,7 +40,6 @@ if app is None:
 # just an alias to make things shorter
 tssbFrame = app.toolStripSplitButtonFrame
 tssbFrame.click(tssbFrame.push_button)
-tssbFrame.click(tssbFrame.toggle_button)
 
 ##############################
 # check toolstripsplitbutton children's AtkAction
@@ -56,10 +55,16 @@ actionsCheck(tssbFrame.menuitem_14, "MenuItem")
 ##############################
 statesCheck(tssbFrame.push_button, "Button", invalid_states=["focusable"])
 statesCheck(tssbFrame.toggle_button, "ToggleButton", invalid_states=["focusable"])
-statesCheck(tssbFrame.menuitem_10, "MenuItem")
-statesCheck(tssbFrame.menuitem_12, "MenuItem")
-statesCheck(tssbFrame.menuitem_14, "MenuItem")
-sleep(config.SHORT_DELAY)
+statesCheck(tssbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
+statesCheck(tssbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
+statesCheck(tssbFrame.menuitem_14, "MenuItem", invalid_states=["showing"])
+
+# BUG473810
+#tssbFrame.click(tssbFrame.toggle_button)
+#statesCheck(tssbFrame.menuitem_10, "MenuItem")
+#statesCheck(tssbFrame.menuitem_12, "MenuItem")
+#statesCheck(tssbFrame.menuitem_14, "MenuItem")
+#sleep(config.SHORT_DELAY)
 
 # select item from splitbutton
 tssbFrame.click(tssbFrame.menuitem_12)
@@ -89,6 +94,17 @@ tssbFrame.assertText(tssbFrame.label, "The current font size is 14")
 # check toolstripsplitbutton's AtkImage
 ##############################
 tssbFrame.assertImage(tssbFrame.push_button, 16, 16)
+
+##############################
+# check toolstripsplitbutton's AtkComponent
+##############################
+# BUG473795
+#tssbFrame.push_button.mouseClick()
+#sleep(config.SHORT_DELAY)
+
+#tssbFrame.toggle_button.mouseClick()
+#sleep(config.SHORT_DELAY)
+#tssbFrame.assertComponent()
 
 ##############################
 # End

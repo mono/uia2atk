@@ -24,9 +24,9 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         self.label = self.findLabel(self.LABEL)
         self.push_button = self.findPushButton(self.PUSH_BUTTON)
         self.toggle_button = self.findToggleButton(None)
-        self.menuitem_10 = self.findMenuItem(self.MENUITEM_10)
-        self.menuitem_12 = self.findMenuItem(self.MENUITEM_12)
-        self.menuitem_14 = self.findMenuItem(self.MENUITEM_14)
+        self.menuitem_10 = self.findMenuItem(self.MENUITEM_10, checkShowing=False)
+        self.menuitem_12 = self.findMenuItem(self.MENUITEM_12, checkShowing=False)
+        self.menuitem_14 = self.findMenuItem(self.MENUITEM_14, checkShowing=False)
 
     def click(self, button):
         procedurelogger.action("click %s" % button)
@@ -63,6 +63,9 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         procedurelogger.action('select childIndex %s in "%s"' % \
                                         (childIndex, accessible))
         accessible.selectChild(childIndex)
+
+    def assertComponent(self):
+        self.menuitems = self.findAllMenuItems(None)
 
     def quit(self):
         self.altF4()
