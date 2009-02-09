@@ -31,6 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
+	//TODO: make it inherit from Atk.ActionImplementor?
 	internal class ActionImplementorHelper
 	{
 		private List <ActionDescription> actions;

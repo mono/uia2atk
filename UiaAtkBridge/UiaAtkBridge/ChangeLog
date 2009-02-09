@@ -1,5 +1,10 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs:
+	* ActionImplementorHelper.cs: Add a couple of comments.
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ActionImplementorHelper.cs: Style. Make aux classes nested.
 
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>

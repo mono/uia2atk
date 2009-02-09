@@ -472,8 +472,10 @@ namespace UiaAtkBridge
 			if (!providerAdapterMapping.TryGetValue (parentProvider, out parent))
 				return null;
 			ParentAdapter ret = parent as ParentAdapter;
-			if (ret == null)
+			if (ret == null) {
+				//FIXME: we should throw an exception here if in DEBUG mode
 				Log.Warn ("AutomationBridge: Could not cast {0} to ParentAdapter", parent);
+			}
 			return ret;
 		}
 
@@ -547,9 +549,9 @@ namespace UiaAtkBridge
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				HandleNewHeaderItemControlType (simpleProvider, parentAdapter);
-			else if (controlTypeId == ControlType.MenuBar.Id) //for MenuStrip widget
-				// || (controlTypeId == ControlType.Menu.Id)) //for 1.x Menu widget it seems <- TODO
-				HandleNewMenuBarControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.MenuBar.Id //for MenuStrip widget
+				 || controlTypeId == ControlType.Menu.Id) //for ContextMenuStrip widget
+				HandleNewMenuBarOrMenuControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.MenuItem.Id) //for ToolStripMenuItem widget
 				HandleNewMenuItemControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
@@ -1003,7 +1005,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
-		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private void HandleNewMenuBarOrMenuControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			MenuBar newMenuBar = new MenuBar (provider);
 			IncludeNewAdapter (newMenuBar, parentObject);
