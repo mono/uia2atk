@@ -1,3 +1,8 @@
+2009-02-09  Neville Gao  <nevillegao@gmail.com>
+
+	* SplitterProviderTest.cs: Fixed Move() test, split to horizontal and
+	vertical splitter.
+
 2009-02-06  Brad Taylor  <brad@getcoded.net>
 
 	* FormProviderTest.cs: 

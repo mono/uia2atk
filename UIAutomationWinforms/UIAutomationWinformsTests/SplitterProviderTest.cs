@@ -128,8 +128,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		[Ignore ("Failing test MUST FIX")]
-		public void ITransformProviderMoveTest ()
+		public void ITransformProviderHorizontalMoveTest ()
 		{
 			Splitter splitter = new Splitter ();
 			IRawElementProviderSimple provider = 
@@ -139,23 +138,55 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
-			
+
+			Assert.AreEqual (-1, splitter.SplitPosition,
+			                 "Splitter doesn't dock to any control");
+
 			double x = 50, y = 50;
-			splitter.Dock = DockStyle.Left;
-			transformProvider.Move (x, y);
-			Assert.AreEqual (x, splitter.SplitPosition, "X");
-			
-			splitter.Dock = DockStyle.Right;
-			transformProvider.Move (x, y);
-			Assert.AreEqual (x, splitter.SplitPosition, "X");
-			
+
+			Panel panel = new Panel ();
+			panel.Dock = DockStyle.Bottom;
 			splitter.Dock = DockStyle.Bottom;
+			Form.Controls.Add (splitter);
+			Form.Controls.Add (panel);
 			transformProvider.Move (x, y);
-			Assert.AreEqual (y, splitter.SplitPosition, "Y");
+			Assert.AreEqual ((int) y, splitter.SplitPosition, "Bottom position");
 			
+			panel.Dock = DockStyle.Top;
 			splitter.Dock = DockStyle.Top;
 			transformProvider.Move (x, y);
-			Assert.AreEqual (y, splitter.SplitPosition, "Y");
+			Assert.AreEqual ((int) y, splitter.SplitPosition, "Top position");
+		}
+
+		[Test]
+		public void ITransformProviderVerticalMoveTest ()
+		{
+			Splitter splitter = new Splitter ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (splitter);
+			
+			ITransformProvider transformProvider = (ITransformProvider)
+				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (transformProvider,
+			                  "Not returning TransformPatternIdentifiers.");
+
+			Assert.AreEqual (-1, splitter.SplitPosition,
+			                 "Splitter doesn't dock to any control");
+
+			double x = 50, y = 50;
+			
+			Panel panel = new Panel ();
+			panel.Dock = DockStyle.Left;
+			splitter.Dock = DockStyle.Left;
+			Form.Controls.Add (splitter);
+			Form.Controls.Add (panel);
+			transformProvider.Move (x, y);
+			Assert.AreEqual ((int) x, splitter.SplitPosition, "Left position");
+			
+			panel.Dock = DockStyle.Right;
+			splitter.Dock = DockStyle.Right;
+			transformProvider.Move (x, y);
+			Assert.AreEqual ((int) x, splitter.SplitPosition, "Right position");
 		}
 		
 		[Test]
