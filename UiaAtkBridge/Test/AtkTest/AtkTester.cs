@@ -154,6 +154,7 @@ namespace UiaAtkBridgeTest
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
+		protected abstract bool AllowsSelectingChildMenus { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
 		
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
@@ -422,11 +423,18 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected, bool childrenCorrection)
+		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected, bool childrenCorrection,
+		                                                BasicWidgetType type)
 		{
 			int initial = childrenCorrection ? 1 : 0;
 			for (int i = initial; i < accessible.NAccessibleChildren; i++) {
 				bool shouldBeSelected = (theSelected == i);
+				
+				if ((type == BasicWidgetType.ParentMenu ||
+				     type == BasicWidgetType.ContextMenu) && 
+				    (accessible.RefAccessibleChild (i).NAccessibleChildren == 0))
+					shouldBeSelected = AllowsSelectingChildMenus;
+				
 				Assert.AreEqual (shouldBeSelected, sel.IsChildSelected (i), 
 				                 "IsChildSelected(" + i + ")!=" + shouldBeSelected.ToString());
 				Assert.AreEqual (shouldBeSelected, 
@@ -491,6 +499,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
 			}
 
+			bool shouldSuccess = true;
 			bool [] indexUsed = new bool [accessible.NAccessibleChildren];
 			for (int i = 0; i < names.Length; i++) {
 				int val;
@@ -503,22 +512,33 @@ namespace UiaAtkBridgeTest
 					indexUsed [val] = true;
 				} else 
 					val = i;
+				bool? selected = null;
 				RunInGuiThread (delegate () {
-					Assert.IsTrue (implementor.AddSelection (val), "AddSelection(" + i + ")");
+					selected = implementor.AddSelection (val);
 				});
-				CheckNonMultipleChildrenSelection (implementor, accessible, val, false);
+
+				if ((type == BasicWidgetType.ParentMenu ||
+				     type == BasicWidgetType.ContextMenu) && 
+				    (accessible.RefAccessibleChild (i).NAccessibleChildren == 0))
+					shouldSuccess = AllowsSelectingChildMenus;
+				Assert.AreEqual (selected.Value, shouldSuccess, "AddSelection(" + i + "), we got:" + selected.Value);
+				
+				CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (val), "accessible.RefAccessibleChild (" + i + ") != null");
-				Assert.IsNotNull (implementor.RefSelection (0), "implementor.RefSelection (0) != null");
+				if (shouldSuccess)
+					Assert.IsNotNull (implementor.RefSelection (0), "implementor.RefSelection (0) != null");
 				Assert.IsNull (implementor.RefSelection (-1), "implementor.RefSelection (-1) == null");
 				Assert.IsNull (implementor.RefSelection (1), "implementor.RefSelection (1) == null");
 
-				if (!Misc.IsComboBox (type))
-					Assert.IsTrue (accessible.RefAccessibleChild (val) == implementor.RefSelection (0),
-					               "accessible.RefAccessibleChild (" + val + ") == implementor.RefSelection (0)");
-				else
-					Assert.IsTrue (accessible.RefAccessibleChild (0).RefAccessibleChild (val) == implementor.RefSelection (0),
-					               "accessible.RefAccessibleChild (" + i + ") == implementor.RefSelection (0)");
+				if (shouldSuccess) {
+					if (!Misc.IsComboBox (type))
+						Assert.IsTrue (accessible.RefAccessibleChild (val) == implementor.RefSelection (0),
+						               "accessible.RefAccessibleChild (" + val + ") == implementor.RefSelection (0)");
+					else
+						Assert.IsTrue (accessible.RefAccessibleChild (0).RefAccessibleChild (val) == implementor.RefSelection (0),
+						               "accessible.RefAccessibleChild (" + i + ") == implementor.RefSelection (0)");
+				}
 				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
@@ -538,7 +558,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
-				if (type != BasicWidgetType.ParentMenu) {
+				if (type != BasicWidgetType.ParentMenu && type != BasicWidgetType.ContextMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
 					if (type == BasicWidgetType.ComboBoxMenu ||
 					    type == BasicWidgetType.MainMenuBar ||
@@ -572,10 +592,12 @@ namespace UiaAtkBridgeTest
 							    Atk.StateType.Selected), "Unselected child(" + j + ") shouldn't have State.Selected");
 					}
 				} else {
-					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel0,#" + i);
-					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
-					Assert.IsTrue (implementor.IsChildSelected (val), "childSelected(" + val + ")");
+					if (shouldSuccess) {
+						Assert.IsNotNull (refSelObj, "refSel should not be null");
+						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel0,#" + i);
+						Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
+						Assert.IsTrue (implementor.IsChildSelected (val), "childSelected(" + val + ")");
+					}
 				}
 				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
@@ -603,7 +625,8 @@ namespace UiaAtkBridgeTest
 				}
 			}
 
-			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
+			if (shouldSuccess)
+				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
 
 			string lastName = accessible.Name;
 

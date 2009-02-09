@@ -1,3 +1,7 @@
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Update tests.
+
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Make InterfaceComponent() method aware of

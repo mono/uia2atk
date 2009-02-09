@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 using SWF = System.Windows.Forms;
+using System.ComponentModel;
 using System.Drawing;
 
 using Mono.UIAutomation.Winforms;
@@ -259,6 +260,10 @@ namespace UiaAtkBridgeTest
 		}
 
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
+			get { return false; }
+		}
+
+		protected override bool AllowsSelectingChildMenus { 
 			get { return false; }
 		}
 
@@ -915,9 +920,9 @@ namespace UiaAtkBridgeTest
 			return GetAdapterForWidget (widget);
 		}
 
-		private System.ComponentModel.Component AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus, BasicWidgetType type)
+		private Component AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus, BasicWidgetType type)
 		{
-			System.ComponentModel.Component ret = null, ret_aux;
+			Component ret = null, ret_aux;
 			if (menus.Count <= 0)
 				return ret;
 			

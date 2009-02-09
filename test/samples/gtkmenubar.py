@@ -13,7 +13,7 @@ class MenuBar:
         return False
 
     def after_timeout(self):
-        self.file_item.get_accessible().add_selection (2)
+        self.file_item.get_accessible().add_selection (3)
 
     def open_activate(self, widget):
         self.label.set_text("You selected Open")

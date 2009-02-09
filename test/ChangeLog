@@ -1,3 +1,7 @@
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: better test
+
 2009-02-09  Calen Chen <cachen@novell.com>
 
 	* samples/toolbarbutton.py: too bad, I also need reduce image's size 

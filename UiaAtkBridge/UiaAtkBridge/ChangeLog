@@ -1,5 +1,10 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Menu.cs: MenuChild cannot be selected without being invoked
+	in UIA, so we stop supporting that.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ContextMenu.cs: Some details to make tests pass.
 
 	* AutomationBridge.cs: Enable ContextMenuStrip widgets, the

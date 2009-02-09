@@ -1,5 +1,9 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Update tests.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix x>0 test (contextMenu).
 
 2009-02-09  Mario Carrion  <mcarrion@novell.com>

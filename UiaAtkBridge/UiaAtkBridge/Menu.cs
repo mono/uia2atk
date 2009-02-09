@@ -56,7 +56,10 @@ namespace UiaAtkBridge
 		{
 			if ((i < 0) || (i >= NAccessibleChildren))
 				return false;
-			return ((MenuItem)RefAccessibleChild (i)).DoAction (0);
+			var menuItem = (MenuItem)RefAccessibleChild (i);
+			if (menuItem.NAccessibleChildren > 0)
+				return menuItem.DoAction (0);
+			return false;
 		}
 
 		public bool SelectAllSelection ()
