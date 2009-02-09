@@ -59,17 +59,31 @@ namespace UiaAtkBridgeTest
 			TestDialog (new SWF.FontDialog ());
 		}
 
+		[Test]
+		public void ThreadExceptionDialog ()
+		{
+			System.Exception exception = new System.Exception ();
+			try {
+			int zero = 0;
+				int x = 1 / zero;
+				zero = x;
+			} catch (System.Exception e) {
+				exception = e;
+			}
+			TestDialog (new SWF.ThreadExceptionDialog (exception));
+		}
+
 		
-		static void TestDialog (SWF.CommonDialog dialog)
+		static void TestDialog (System.ComponentModel.Component dialog)
 		{
 			new DialogTesterInner (dialog).Test ();
 		}
 
 		private class DialogTesterInner {
-			SWF.CommonDialog dialog;
+			System.ComponentModel.Component dialog;
 			Thread th;
 	
-			internal DialogTesterInner (SWF.CommonDialog dialog)
+			internal DialogTesterInner (System.ComponentModel.Component dialog)
 			{
 				this.dialog = dialog;
 			}
@@ -94,7 +108,12 @@ namespace UiaAtkBridgeTest
 	
 			private void Show ()
 			{
-				dialog.ShowDialog ();
+				if (dialog is SWF.CommonDialog)
+					((SWF.CommonDialog)dialog).ShowDialog ();
+				else if (dialog is SWF.ThreadExceptionDialog)
+					((SWF.ThreadExceptionDialog)dialog).ShowDialog ();
+				else
+					throw new NotSupportedException ("Unsupported dialog type: " + dialog);
 			}
 		}
 	}

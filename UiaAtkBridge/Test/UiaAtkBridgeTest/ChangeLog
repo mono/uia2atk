@@ -1,3 +1,7 @@
+2009-02-08  Mike Gorse  <mgorse@novell.com>
+
+	* DialogTester.cs: Add ThreadExceptionDialog test.
+
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* DialogTester.cs: Make it compile under csc (BNC#473559).
