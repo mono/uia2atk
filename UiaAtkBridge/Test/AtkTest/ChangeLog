@@ -1,5 +1,10 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Fix typo in previous commit that broke
+	GailTest.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Update tests.
 
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>

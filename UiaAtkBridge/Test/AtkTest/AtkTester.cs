@@ -430,7 +430,8 @@ namespace UiaAtkBridgeTest
 			for (int i = initial; i < accessible.NAccessibleChildren; i++) {
 				bool shouldBeSelected = (theSelected == i);
 				
-				if ((type == BasicWidgetType.ParentMenu ||
+				if (shouldBeSelected && 
+				    (type == BasicWidgetType.ParentMenu ||
 				     type == BasicWidgetType.ContextMenu) && 
 				    (accessible.RefAccessibleChild (i).NAccessibleChildren == 0))
 					shouldBeSelected = AllowsSelectingChildMenus;
