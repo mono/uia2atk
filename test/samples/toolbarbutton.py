@@ -38,7 +38,7 @@ class ToolBarSample(Form):
         """ToolBarSample class init function."""
 
         # setup form
-        self.Text = "ToolBar control"
+        self.Text = "ToolBarButton control"
         self.Height = 200 
         self.Width = 400
 

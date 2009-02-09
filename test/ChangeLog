@@ -1,5 +1,9 @@
 2009-02-09  Calen Chen <cachen@novell.com>
 
+	* samples/toolbarbutton.py: sorry i forgot rewrite form's name
+
+2009-02-09  Calen Chen <cachen@novell.com>
+
 	* samples/toolbarbutton.py: set toolbar Appearance as Flat to show 
 	separator more clearly. delete combobox and lable from toolbar
 
