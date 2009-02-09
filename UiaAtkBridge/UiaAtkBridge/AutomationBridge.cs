@@ -444,7 +444,7 @@ namespace UiaAtkBridge
 
 		public void Terminate ()
 		{
-			//TODO: Something to terminate ?
+			//TODO: Merge with Dispose?
 		}
 		
 #endregion
@@ -499,7 +499,8 @@ namespace UiaAtkBridge
 			} else if (controlTypeId == ControlType.ToolTip.Id) {
  				HandleNewToolTipControlType (simpleProvider);
 				return;
-			}
+			} else if (controlTypeId == ControlType.Menu.Id) //for ContextMenuStrip widget
+				HandleNewMenuControlType (simpleProvider);
 
 			ParentAdapter parentAdapter = GetParentAdapter (simpleProvider);
 			if (parentAdapter == null) {
@@ -549,9 +550,8 @@ namespace UiaAtkBridge
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				HandleNewHeaderItemControlType (simpleProvider, parentAdapter);
-			else if (controlTypeId == ControlType.MenuBar.Id //for MenuStrip widget
-				 || controlTypeId == ControlType.Menu.Id) //for ContextMenuStrip widget
-				HandleNewMenuBarOrMenuControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.MenuBar.Id) //for MenuStrip widget
+				HandleNewMenuBarControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.MenuItem.Id) //for ToolStripMenuItem widget
 				HandleNewMenuItemControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
@@ -1005,10 +1005,17 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
-		private void HandleNewMenuBarOrMenuControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			MenuBar newMenuBar = new MenuBar (provider);
 			IncludeNewAdapter (newMenuBar, parentObject);
+		}
+
+		private void HandleNewMenuControlType (IRawElementProviderSimple provider)
+		{
+			var fakeWindow = new Window ();
+			TopLevelRootItem.Instance.AddOneChild (fakeWindow);
+			IncludeNewAdapter (new ContextMenu (provider), fakeWindow);
 		}
 
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)

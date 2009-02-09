@@ -1,3 +1,11 @@
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Ignore ContextMenu test, it causes a
+	deadlock for now.
+
+	* BridgeTester.cs: Adjust to current provider implementation
+	in regards to ContextMenuStrip.
+
 2009-02-08  Mike Gorse  <mgorse@novell.com>
 
 	* DialogTester.cs: Add ThreadExceptionDialog test.

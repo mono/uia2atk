@@ -35,5 +35,18 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.Menu;
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.Showing);
+			states.AddState (Atk.StateType.Focused);
+			states.AddState (Atk.StateType.Visible);
+			return states;
+		}
+
+		public override Atk.Layer Layer {
+			get { return Atk.Layer.Popup; }
+		}
 	}
 }

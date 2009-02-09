@@ -716,6 +716,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("It causes a deadlock on app termination...")]
 		public override void ContextMenu ()
 		{
 			base.ContextMenu ();

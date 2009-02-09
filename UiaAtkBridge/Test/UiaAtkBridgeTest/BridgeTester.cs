@@ -168,6 +168,10 @@ namespace UiaAtkBridgeTest
 			linklab1.Links.Add (35, 16, "gmail.novell.com");
 			linklab1.LinkClicked += LinkLabelClicked;
 			linklab1.Links [0].Enabled = false;
+
+			//TODO: test also contextmenus not attached to widgets
+			lab1.ContextMenuStrip = contextMenu;
+			
 			gb1.Controls.Add (rad1);
 			gb1.Controls.Add (rad2);
 			gb2.Controls.Add (rad3);
@@ -903,7 +907,8 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.MainMenuBar)
 				widget = menuStrip1;
 			else if (type == BasicWidgetType.ContextMenu) {
-				contextMenu.Show (form, 0, 0);
+				//TODO: use contextMenu.Show (form, 0, 0); as well
+				contextMenu.Show ();
 				widget = contextMenu;
 			}
 			return GetAdapterForWidget (widget);

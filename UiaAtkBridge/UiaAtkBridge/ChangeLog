@@ -1,7 +1,15 @@
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ContextMenu.cs: Some details to make tests pass.
+
+	* AutomationBridge.cs: Enable ContextMenuStrip widgets, the
+	proper way.
+
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* AutomationBridge.cs:
-	* ActionImplementorHelper.cs: Add a couple of comments.
+	* AutomationBridge.cs: Add a comment.
+	* ActionImplementorHelper.cs: Handle Menu control type as a MenuBar.
+	Add a comment.
 
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
