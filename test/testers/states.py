@@ -327,3 +327,5 @@ class Dialog(object):
 class ToolStripSeparator(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class TrackBar(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)

@@ -15,7 +15,7 @@ Test accessibility of "TrackBar" control
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, Form, Label, TrackBar, DockStyle
+from System.Windows.Forms import *
 
 class TrackBarSample(Form):
     """TrackBar control class"""
@@ -27,28 +27,55 @@ class TrackBarSample(Form):
         self.Text = "TrackBar control"
 
         # setup label
-        self.label = Label()
-        self.label.Dock = DockStyle.Top
-        self.label.Text = "The value of TrackBar is: "
-        self.label.Width = 300
+        self.label_hor = Label()
+        self.label_hor.Dock = DockStyle.Top
+        self.label_hor.Text = "The value of TrackBar(Horizontal) is: "
+        self.label_hor.Width = 300
 
-        # setup trackbar
-        self.trackbar = TrackBar()
-        self.trackbar.Maximum = 100
-        self.trackbar.Minimum = 1
-        self.trackbar.LargeChange = 10
-        self.trackbar.SmallChange = 1 
-        self.trackbar.Dock = DockStyle.Top
+        self.label_ver = Label()
+        self.label_ver.Dock = DockStyle.Top
+        self.label_ver.Text = "The value of TrackBar(Vertical) is: "
+        self.label_ver.Width = 300
+
+        # setup trackbar(Horizontal)
+        self.trackbar_hor = TrackBar()
+        self.trackbar_hor.Maximum = 100
+        self.trackbar_hor.Minimum = 1
+        self.trackbar_hor.LargeChange = 10
+        self.trackbar_hor.SmallChange = 1 
+        self.trackbar_hor.Dock = DockStyle.Top
         # set how many positions are between each tick-mark.
-        self.trackbar.TickFrequency = 5
-        self.trackbar.Scroll += self.scroll
+        self.trackbar_hor.TickFrequency = 5
+        self.trackbar_hor.Orientation = Orientation.Horizontal
+        self.trackbar_hor.ValueChanged += self.scroll
+
+        # setup trackbar(Vertical)
+        self.trackbar_ver = TrackBar()
+        self.trackbar_ver.Maximum = 100
+        self.trackbar_ver.Minimum = 1
+        self.trackbar_ver.LargeChange = 10
+        self.trackbar_ver.SmallChange = 1 
+        self.trackbar_ver.Dock = DockStyle.Top
+        # set how many positions are between each tick-mark.
+        self.trackbar_ver.TickFrequency = 5
+        self.trackbar_ver.Orientation = Orientation.Vertical
+        self.trackbar_ver.Height = 150
+        self.trackbar_ver.ValueChanged += self.scroll
 
         # add controls
-        self.Controls.Add(self.trackbar)
-        self.Controls.Add(self.label)
+        self.Controls.Add(self.trackbar_ver)
+        self.Controls.Add(self.label_ver)
+        self.Controls.Add(self.trackbar_hor)
+        self.Controls.Add(self.label_hor)
 
     def scroll(self, sender, event):
-        self.label.Text = "The value of TrackBar is: %d"  % self.trackbar.Value
+        if sender.Orientation == Orientation.Horizontal:
+            self.label_hor.Text = "The value of TrackBar(Horizontal) is: %d" % \
+                        self.trackbar_hor.Value
+        elif sender.Orientation == Orientation.Vertical:
+            self.label_ver.Text = "The value of TrackBar(Vertical) is: %d" % \
+                        self.trackbar_ver.Value
+
 
 
 # run application

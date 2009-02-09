@@ -1,3 +1,11 @@
+2009-02-09  Ray Wang <rawang@novell.com>
+
+	* samples/trackbar.py: change the Scroll event to ValueChanged event
+	* testers/trackbar,
+	* testers/trackbar/__init__.py,
+	* testers/trackbar/trackbarframe.py
+	* testers/trackbar_basic_ops.py: add trackbar strongwind test
+
 2009-02-06 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/splitter_vertical.py: Vertical splitter should have the
