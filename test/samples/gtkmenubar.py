@@ -5,14 +5,25 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import gobject
 
 class MenuBar:
     def delete_event(self, widget, event, data=None):
         gtk.main_quit()
         return False
-    
+
+    def after_timeout(self):
+        self.file_item.get_accessible().add_selection (2)
+
     def open_activate(self, widget):
         self.label.set_text("You selected Open")
+
+    def quit_activate(self, widget):
+        self.label.set_text("You selected Quit")
+
+    def file_activate(self, widget):
+        self.label.set_text("You selected File")
+        gobject.timeout_add (3000, self.after_timeout)
 
     def set_menu(self):
 
@@ -32,9 +43,12 @@ class MenuBar:
         file_menu.append(save_item)
         file_menu.append(quit_item)
         open_item.connect("activate", self.open_activate)
+        quit_item.connect("activate", self.quit_activate)
+
         # "File" entry on menubar
-        file_item = gtk.MenuItem("_File")
-        file_item.set_submenu(file_menu)
+        self.file_item = gtk.MenuItem("_File")
+        self.file_item.set_submenu(file_menu)
+        self.file_item.connect("activate", self.file_activate)
 
         # items in Help
         help_menu = gtk.Menu()
@@ -46,7 +60,7 @@ class MenuBar:
 
         # menubar
         self.menubar = gtk.MenuBar()
-        self.menubar.append(file_item)
+        self.menubar.append(self.file_item)
         self.menubar.append(help_item)
         self.menubar.show_all()
 
