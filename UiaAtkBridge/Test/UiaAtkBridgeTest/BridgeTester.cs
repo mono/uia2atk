@@ -806,6 +806,7 @@ namespace UiaAtkBridgeTest
 				xml.LoadXml (name);
 				lv1.Groups.Clear ();
 				lv1.Items.Clear ();
+				lv1.Columns.Clear ();
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
