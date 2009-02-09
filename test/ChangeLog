@@ -1,5 +1,11 @@
 2009-02-09  Calen Chen <cachen@novell.com>
 
+	* samples/toolbarbutton.py: too bad, I also need reduce image's size 
+	and set height for toolbar to show image and text for toolbarbutton 
+	after set Flat
+
+2009-02-09  Calen Chen <cachen@novell.com>
+
 	* samples/toolbarbutton.py: sorry i forgot rewrite form's name
 
 2009-02-09  Calen Chen <cachen@novell.com>

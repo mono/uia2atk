@@ -48,17 +48,18 @@ class ToolBarSample(Form):
         self.label.AutoSize = True
         self.label.Height = 200 
         self.label.Width = self.Width - 10
-        self.label.Location = Point (10, 80)
+        self.label.Location = Point (10, 100)
 
         # Create and initialize the ToolBar and ToolBarButton controls.
         self.toolbar = ToolBar()
+        self.toolbar.Height = 50
         self.toolbar.Appearance = ToolBarAppearance.Flat
         self.toolbar.ButtonClick += self.on_click
 
         # image list
         self.imagelist = ImageList()
         self.imagelist.ColorDepth = ColorDepth.Depth32Bit;
-        self.imagelist.ImageSize = Size(32, 32)
+        self.imagelist.ImageSize = Size(24, 24)
 
         # small images
         names = [
