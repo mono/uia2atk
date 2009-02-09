@@ -1,3 +1,10 @@
+2009-02-09  Calen Chen <cachen@novell.com>
+
+	* testers/printpreviewdialog_basic_ops.py: add BUG465945 and BUG473757 
+	as referance for regression test
+	* testers/printpreviewcontrol_basic_ops.py: add BUG465945 and BUG473757 
+	as referance for regression test, add add sleep time after click button
+
 2009-02-09  Ray Wang <rawang@novell.com>
 
 	* samples/trackbar.py: change the Scroll event to ValueChanged event

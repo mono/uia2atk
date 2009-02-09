@@ -57,9 +57,11 @@ statesCheck(ppdFrame.toolbar, "ToolBar")
 ##missing focusable BUG465945
 statesCheck(ppdFrame.dialog_panel, "Panel", add_states=["focusable"])
 
+#mouse click panel to rise focused state
+##still missing focused after mouse click panel by pyatspi BUG473757
 ppdFrame.dialog_panel.mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(ppdFrame.dialog_panel, "Panel", add_states=["focused"])
+statesCheck(ppdFrame.dialog_panel, "Panel", add_states=["focusable", "focused"])
 
 #check how many items on toolbar
 ##with wrong items due to toolbar control's BUG428598
