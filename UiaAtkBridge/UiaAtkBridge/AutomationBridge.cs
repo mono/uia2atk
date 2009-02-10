@@ -526,8 +526,10 @@ namespace UiaAtkBridge
 			} else if (controlTypeId == ControlType.ToolTip.Id) {
  				HandleNewToolTipControlType (simpleProvider);
 				return;
-			} else if (controlTypeId == ControlType.Menu.Id) //for ContextMenuStrip widget
+			} else if (controlTypeId == ControlType.Menu.Id) { //for ContextMenuStrip widget
 				HandleNewMenuControlType (simpleProvider);
+				return;
+			}
 
 			ParentAdapter parentAdapter = GetParentAdapter (simpleProvider);
 			if (parentAdapter == null) {

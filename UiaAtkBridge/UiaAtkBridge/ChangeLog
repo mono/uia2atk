@@ -1,5 +1,9 @@
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Avoid generating a warning.
+
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AutomationBridge.cs: Style.
 
 2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
