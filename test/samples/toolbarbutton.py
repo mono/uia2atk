@@ -126,6 +126,8 @@ class ToolBarSample(Form):
                 self.label.Enabled = False
             else:
                 self.label.Enabled = True
+        elif btn == 3:
+            self.label.Text = "You clicked nop button"
 
     # DropDownButton style click event
     def cc(self, sender, event):

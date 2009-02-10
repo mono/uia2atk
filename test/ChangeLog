@@ -1,3 +1,14 @@
+
+2009-02-10  Calen Chen <cachen@novell.com>
+
+	* samples/toolbarbutton.py: add click event for disable button
+	* testers/toolbarbutton_basic_ops.py,
+	* testers/toolbarbutton/toolbarbuttonframe.py,
+	* testers/toolbarbutton/__init__.py,
+	* testers/toolbarbutton: add new test: test AtkText AtkAction 
+	AtkComponent AtkImage for toolbarbuttons which are in difference styles 
+	and properties
+
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/gtkcontextmenu.py: More experiments.
