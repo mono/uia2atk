@@ -2,19 +2,10 @@
 
 	* ComboBox.cs: Don't use string.Empty when value is null.
 
-2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+2009-02-10  Mario Carrion  <mcarrion@novell.com>
 
-	* ComboBox.cs: Reapply r126510, it wasn't the one to blame.
-
-2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
-
-	* Window.cs:
-	* ChangeLog:
-	* Adapter.cs:
-	* ComponentAdapter.cs:
-	* TableImplementorHelper.cs:
-	* ComponentParentAdapter.cs: Reverted r126490, it's the one
-	that breaks the tests.
+	* ComboBox.cs: Fix NRE when propagating Name after AddingSelection.
+	[Fixes Bug #456319]
 
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
