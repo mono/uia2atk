@@ -1,5 +1,9 @@
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBox.cs: Reapply r126510, it wasn't the one to blame.
+
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Window.cs:
 	* ChangeLog:
 	* Adapter.cs:
