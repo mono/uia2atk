@@ -586,10 +586,9 @@ namespace UiaAtkBridge
 
 		private bool HandleElementRemoval (Atk.Object atkObj)
 		{
-			IRawElementProviderSimple provider;
-			if (atkObj is Adapter &&
-			    providerAdapterMapping.TryGetKey ((Adapter)atkObj, out provider))
-				return HandleElementRemoval (provider);
+			Adapter adapter = atkObj as Adapter;
+			if (adapter != null)
+				return HandleElementRemoval (adapter.Provider);
 			return false;
 		}
 
