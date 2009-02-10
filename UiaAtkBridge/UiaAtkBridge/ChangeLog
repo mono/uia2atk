@@ -1,3 +1,13 @@
+2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* MenuItem.cs: Add support for Checked state, and Selected
+	when SWF.MenuItem.RadioCheck is true. Have click work when
+	ExpandCollapse is available in place of Invoke. Use
+	ActionImplementorHelper. Override RequestChildren to support
+	generating adapters for MenuItem children of "hidden" Menu
+	children. This is not yet fully functional (AutomationBridge
+	changes on the way).
+
 2009-02-09  Mike Gorse  <mgorse@novell.com>
 
 	* Window.cs: Remove debug spew.

@@ -28,6 +28,7 @@ using System;
 using System.Windows.Automation;
 using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
@@ -36,6 +37,10 @@ namespace UiaAtkBridge
 	{
 		ITextImplementor textExpert = null;
 		IInvokeProvider invokeProvider = null;
+		IToggleProvider toggleProvider = null;
+		IExpandCollapseProvider expandCollapseProvider = null;
+		ISelectionItemProvider selectionItemProvider = null;
+		ActionImplementorHelper actionExpert = new ActionImplementorHelper ();
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -51,7 +56,16 @@ namespace UiaAtkBridge
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 
-			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			toggleProvider = (IToggleProvider)
+				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			selectionItemProvider = (ISelectionItemProvider)
+				provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			expandCollapseProvider = (IExpandCollapseProvider)
+				provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+			actionExpert.Add ("click", "click", null, DoClick);
 			
 			Role = Atk.Role.MenuItem;
 		}
@@ -80,15 +94,20 @@ namespace UiaAtkBridge
 			if (canFocus)
 				states.AddState (Atk.StateType.Focusable);
 
-			if (selected) {
+			if (selected || SelectionItemSelected) {
 				states.AddState (Atk.StateType.Selected);
 
-				if (canFocus) {
+				if (selected && canFocus) {
 					states.AddState (Atk.StateType.Focused);
 				}
 			} else {
 				states.RemoveState (Atk.StateType.Selected);
 			}
+
+			if (Checked)
+				states.AddState (Atk.StateType.Checked);
+			else
+				states.RemoveState (Atk.StateType.Checked);
 
 			return states;
 		}
@@ -97,6 +116,20 @@ namespace UiaAtkBridge
 //	implementation on the fly (menuitem elts don't have Atk.Selection, menu elts do)
 		protected override void OnChildrenChanged (uint change_index, IntPtr changed_child) 
 		{
+		}
+
+		internal override void RequestChildren ()
+		{
+			base.RequestChildren ();
+
+			IRawElementProviderFragment fragmentProvider =
+				Provider as IRawElementProviderFragment;
+			var child = fragmentProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if (ControlType.Menu.Id.Equals (child.GetPropertyValue (AEIds.ControlTypeProperty.Id)))
+					AutomationBridge.AddChildrenToParent (child);
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
 		}
 
 		public override Atk.Layer Layer {
@@ -116,7 +149,6 @@ namespace UiaAtkBridge
 				}
 			}
 		}
-		
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
@@ -125,33 +157,75 @@ namespace UiaAtkBridge
 				NotifyStateChange (Atk.StateType.Selected, selected);
 			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 				NotifyStateChange (Atk.StateType.Showing);
+			} else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
+				toggleProvider = (IToggleProvider)
+					Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+				NotifyStateChange (Atk.StateType.Checked, Checked);
+			} else if (e.Property == AutomationElementIdentifiers.IsInvokePatternAvailableProperty) {
+				invokeProvider = (IInvokeProvider)
+					Provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			} else if (e.Property == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty) {
+				expandCollapseProvider = (IExpandCollapseProvider)
+					Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			} else if (e.Property == AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty) {
+				selectionItemProvider = (ISelectionItemProvider)
+					Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+				NotifyStateChange (Atk.StateType.Checked, SelectionItemSelected);
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
 			}
 		}
 
-		#region Action implementation 
+		private bool Checked {
+			get {
+				return toggleProvider != null &&
+					toggleProvider.ToggleState == ToggleState.On;
+			}
+		}
 
-		private string actionDescription = null;
+		private bool SelectionItemSelected {
+			get {
+				return selectionItemProvider != null &&
+					selectionItemProvider.IsSelected;
+			}
+		}
+
+		#region Action implementation
+
+		private bool DoClick ()
+		{
+			if (invokeProvider != null) {
+				try {
+					invokeProvider.Invoke ();
+					return true;
+				} catch (ElementNotEnabledException) {}
+			} else if (expandCollapseProvider != null) {
+				try {
+					switch (expandCollapseProvider.ExpandCollapseState) {
+					case ExpandCollapseState.Collapsed:
+						expandCollapseProvider.Expand ();
+						return true;
+					case ExpandCollapseState.Expanded:
+						expandCollapseProvider.Collapse ();
+						return true;
+					default:
+						// Should never happen
+						break;
+					}
+				} catch (ElementNotEnabledException) { }
+			}
+
+			return false;
+		}
 		
 		public bool DoAction (int i)
 		{
-			if (i == 0) {
-				if (invokeProvider != null) {
-					try {
-						invokeProvider.Invoke ();
-						return true;
-					} catch (ElementNotEnabledException) { }
-				}
-			}
-			return false;
+			return actionExpert.DoAction (i);
 		}
 		
 		public string GetName (int i)
 		{
-			if (i == 0 && invokeProvider != null)
-				return "click";
-			return null;
+			return actionExpert.GetName (i);
 		}
 		
 		public string GetKeybinding (int i)
@@ -161,28 +235,22 @@ namespace UiaAtkBridge
 		
 		public string GetLocalizedName (int i)
 		{
-			return null;
+			return actionExpert.GetLocalizedName (i);
 		}
 		
 		public bool SetDescription (int i, string desc)
 		{
-			if (i == 0) {
-				actionDescription = desc;
-				return true;
-			}
-			return false;
+			return actionExpert.SetDescription (i, desc);
 		}
 		
 		public string GetDescription (int i)
 		{
-			if (i == 0)
-				return actionDescription;
-			return null;
+			return actionExpert.GetDescription (i);
 		}
 
 		
 		public int NActions {
-			get { return 1; }
+			get { return actionExpert.NActions; }
 		}
 		
 		#endregion 
