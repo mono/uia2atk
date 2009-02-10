@@ -1,3 +1,12 @@
+2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs:
+	Add, but do not use yet.
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Update for new files, do
+	some alphabetizing.
+
 2009-02-09  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

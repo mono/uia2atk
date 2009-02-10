@@ -142,10 +142,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/SelectionProviderBehavior.cs \
@@ -359,6 +359,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs \
