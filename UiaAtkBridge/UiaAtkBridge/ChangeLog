@@ -1,3 +1,7 @@
+2009-02-10  Mario Carrion  <mcarrion@novell.com>
+
+	* ComboBox.cs: Don't use string.Empty when value is null.
+
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs: Reapply r126510, it wasn't the one to blame.

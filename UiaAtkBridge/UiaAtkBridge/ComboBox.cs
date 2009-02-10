@@ -111,7 +111,7 @@ namespace UiaAtkBridge
 					if (selected != null)
 						propagateName = selected.Name;
 				}
-				RaiseSelectionChanged (propagateName ?? string.Empty);
+				RaiseSelectionChanged (propagateName);
 			}
 
 			// TODO: Report gail bug, and return 'success' instead
