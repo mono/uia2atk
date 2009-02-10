@@ -1,3 +1,8 @@
+2009-02-10  Mario Carrion <mcarrion@novell.com>
+
+	* ComboBox.cs: Fix NRE when propagating Name after AddingSelection.
+	[Fixes Bug #456319]
+
 2009-02-10  Mike Gorse  <mgorse@novell.com>
 
 	* ComponentAdapter.cs, ComponentParentAdapter.cs: Check that
