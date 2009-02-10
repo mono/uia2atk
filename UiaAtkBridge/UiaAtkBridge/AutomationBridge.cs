@@ -454,7 +454,7 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
-		private static ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
+		internal static ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderFragment fragment = (IRawElementProviderFragment)provider;
 			IRawElementProviderFragment parentProvider;

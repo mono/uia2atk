@@ -634,7 +634,7 @@ namespace UiaAtkBridgeTest
 				}
 				
 				Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-				//InterfaceComponent (type, atkComponent);
+				InterfaceComponent (type, atkComponent);
 	
 				List <string> names = new List <string> ();
 				foreach (MenuLayout submenu in menu)

@@ -225,6 +225,8 @@ namespace UiaAtkBridge
 			int mult = (toScreen? 1: -1);
 			for (;;) {
 				Adapter parent = adapter.Parent as Adapter;
+				if (this is ContextMenu)
+					parent = ((ContextMenu)this).VirtualParent;
 				if (parent == null || parent is TopLevelRootItem) {
 					if (adapter is Window) {
 						System.Windows.Rect rect = adapter.BoundingRectangle;

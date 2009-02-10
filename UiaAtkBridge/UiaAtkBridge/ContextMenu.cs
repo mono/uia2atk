@@ -59,5 +59,9 @@ namespace UiaAtkBridge
 			((ParentAdapter)Parent).RemoveChild (this);
 			AutomationBridge.HandleTotalElementRemoval (this.Provider);
 		}
+
+		internal Adapter VirtualParent {
+			get { return AutomationBridge.GetParentAdapter (Provider); }
+		}
 	}
 }
