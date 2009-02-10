@@ -621,24 +621,12 @@ namespace UiaAtkBridge
 			ParentAdapter parentAdapter = adapter.Parent as ParentAdapter;
 			parentAdapter.PreRemoveChild (adapter);
 
-			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)){
+			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)) {
 				if (HandleElementRemoval (atkObj))
 					lastWindowProvider = true;
 			}
 
 			return lastWindowProvider;
-		}
-
-		private List<Atk.Object> GetAdaptersDescendantsFamily (Atk.Object adapter) {
-			List <Atk.Object> list = new List <Atk.Object> ();
-			int nchild = adapter.NAccessibleChildren;
-			if (nchild > 0) {
-				for (int i = 0; i < nchild; i++) {
-					list.AddRange (GetAdaptersDescendantsFamily (adapter.RefAccessibleChild (i)));
-				}
-			}
-			list.Add (adapter);
-			return list;
 		}
 		
 		private bool HandleElementRemoval (IRawElementProviderSimple provider)
@@ -685,7 +673,18 @@ namespace UiaAtkBridge
 
 			return lastWindowProvider;
 		}
-		
+
+		private List<Atk.Object> GetAdaptersDescendantsFamily (Atk.Object adapter) {
+			List <Atk.Object> list = new List <Atk.Object> ();
+			int nchild = adapter.NAccessibleChildren;
+			if (nchild > 0) {
+				for (int i = 0; i < nchild; i++) {
+					list.AddRange (GetAdaptersDescendantsFamily (adapter.RefAccessibleChild (i)));
+				}
+			}
+			list.Add (adapter);
+			return list;
+		}
 		
 		private void HandleBulkAdded (IRawElementProviderSimple provider)
 		{
