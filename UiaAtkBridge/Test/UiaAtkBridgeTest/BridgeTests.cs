@@ -357,6 +357,88 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void DataGridView ()
+		{
+			BasicWidgetType accesibleType = BasicWidgetType.DataGridView;
+			Atk.Object accessible;
+
+			string name 
+				= "<table><th><td>checkbox|Available</td><td>image|Cover</td><td>textbox|Title</td>"
+				+"<td>link|Website</td><td>combobox|Year|1998,1999,2000,2001,2002</td><td>button|Request Header|Request</td></th>"
+				+"<tr><td>true</td><td>null</td><td>Programming Windows</td><td>http://www.microsoft.com/</td><td>1998</td><td>Request</td></tr>"
+				+"<tr><td>false</td><td>Code: The Hidden Language of Computer Hardware and Software</td><td>null</td><td>http://www.computer.com/</td><td>2000</td><td>Request</td></tr>"
+				+"<tr><td>true</td><td>Coding Techniques for Microsoft Visual Basic .NET</td><td>null</td><td>http://www.microsoft.com/</td><td>2001</td><td>Request</td></tr>"
+				+"<tr><td>true</td><td>Programming Windows with C#</td><td>null</td><td>http://www.microsoft.com/</td><td>2001</td><td>Request</td></tr>"
+				+"<tr><td>true</td><td>C# for Java Developers</td><td>null</td><td>http://www.microsoft.com/</td><td>2002</td><td>Request</td></tr></table>";
+
+			accessible = GetAccessible (accesibleType, name);
+			Assert.IsNotNull (accessible, "DataGridView Adapter should not be null");
+
+			// 5 rows (6 columns per row) and 1 header (6 header items)
+			Assert.AreEqual (36, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (accesibleType, atkComponent);
+			PropertyRole (accesibleType, accessible);
+
+			// CheckBox Tests
+			Atk.Object checkBox = FindObjectByName (accessible, "false");
+			PropertyRole (BasicWidgetType.CheckBox, checkBox);
+			Atk.Component checkBoxComponent = CastToAtkInterface <Atk.Component> (checkBox);
+			InterfaceComponent (BasicWidgetType.CheckBox, checkBoxComponent);
+			
+			// Image tests
+			Atk.Object pictureBox = FindObjectByName (accessible, "null");
+			PropertyRole (BasicWidgetType.PictureBox, pictureBox);
+			Atk.Component pictureBoxComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (BasicWidgetType.PictureBox, pictureBoxComponent);
+
+			// Button tests
+			Atk.Object button = FindObjectByName (accessible, "Request");
+			PropertyRole (BasicWidgetType.NormalButton, button);
+			Assert.AreEqual (0, button.NAccessibleChildren, "Button numChildren");
+			Interfaces (button,
+			            typeof (Atk.Image),
+			            typeof (Atk.Component),
+			            typeof (Atk.Action),
+			            typeof (Atk.Text));
+			InterfaceText (button, "Request");
+
+			// Link tests
+			Atk.Object link = FindObjectByName (accessible, "http://www.microsoft.com/");
+			States (link,
+				Atk.StateType.Enabled,
+				Atk.StateType.MultiLine,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible,
+			    Atk.StateType.Selectable);
+
+			// Table tests			
+			Atk.Object header = FindObjectByRole (accessible, Atk.Role.TableColumnHeader);
+			Assert.IsNotNull (header, "Header not null");
+			States (header,
+			    Atk.StateType.Selectable,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
+			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (accessible);
+
+//			InterfaceTable (atkTable, 5, 6, 0, 0, false);
+			
+			Assert.AreEqual (5, atkTable.NRows, "Table NRows");
+			Assert.AreEqual (6, atkTable.NColumns, "Table NColumns");
+
+			Assert.AreEqual ("Available", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
+			Assert.AreEqual ("Cover", atkTable.RefAt (0, 1).Name, "Cell (0, 1)");
+			Assert.AreEqual ("Title", atkTable.RefAt (0, 2).Name, "Cell (0, 2)");
+			Assert.AreEqual ("Website", atkTable.RefAt (0, 3).Name, "Cell (0, 3)");
+			Assert.AreEqual ("Year", atkTable.RefAt (0, 4).Name, "Cell (0, 4)");
+			Assert.AreEqual ("Request Header", atkTable.RefAt (0, 5).Name, "Cell (0, 5)");
+		}
+
+		[Test]
 		public void DomainUpDown ()
 		{
 			BasicWidgetType type = BasicWidgetType.DomainUpDown;

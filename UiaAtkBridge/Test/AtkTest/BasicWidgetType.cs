@@ -73,6 +73,7 @@ namespace UiaAtkBridgeTest
 		TabControl,
 		TabPage,
 		ListView,
+		DataGridView,
 		GroupBox,
 		PictureBox,
 		ToolStripLabel,

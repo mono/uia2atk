@@ -101,6 +101,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
 		protected SWF.MonthCalendar monthCalendar = new SWF.MonthCalendar ();
 		protected SWF.ContainerControl containerControl = new SWF.ContainerControl ();
+		protected SWF.DataGridView datagridView = new SWF.DataGridView ();
 
 		protected int lastClickedLink = -1;
 
@@ -216,6 +217,8 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (lv1);
 			form.Controls.Add (treeView);
 			form.Controls.Add (radWithImage);
+			datagridView.AllowUserToAddRows = false;
+			form.Controls.Add (datagridView);
 			rad1.Text = "rad1";
 			rad2.Text = "rad2";
 			rad3.Text = "rad3";
@@ -846,6 +849,29 @@ namespace UiaAtkBridgeTest
 				lv1.MultiSelect = false;
 				accessible = GetAdapterForWidget (lv1);
 				break;
+
+			case BasicWidgetType.DataGridView:
+				xml = new XmlDocument ();
+				xml.LoadXml (name);
+				datagridView.Rows.Clear ();
+				datagridView.Columns.Clear ();
+				// Columns
+				foreach (XmlElement th in xml.GetElementsByTagName ("th")) {
+					foreach (XmlElement td in th.GetElementsByTagName ("td"))
+						datagridView.Columns.Add (GetDataGridViewColumnFromInnerText (td.InnerText));
+				}
+				// Rows
+				foreach (XmlElement th in xml.GetElementsByTagName ("tr")) {
+					int column = 0;					
+					SWF.DataGridViewRow row = new SWF.DataGridViewRow ();
+					foreach (XmlElement td in th.GetElementsByTagName ("td")) {
+						row.Cells.Add (GetDataGridViewCellFromInnerText (td.InnerText, column));
+						column++;
+					}
+					datagridView.Rows.Add (row);
+				}
+				accessible = GetAdapterForWidget (datagridView);
+				break;
 				
 			case BasicWidgetType.TreeView:
 				treeView.Scrollable = false;
@@ -1060,6 +1086,60 @@ namespace UiaAtkBridgeTest
 		public void LinkLabelClicked (object source, SWF.LinkLabelLinkClickedEventArgs e)
 		{
 			lastClickedLink = linklab1.Links.IndexOf (e.Link);
+		}
+
+		private SWF.DataGridViewColumn GetDataGridViewColumnFromInnerText (string innerText)
+		{
+			// We should get the following format:
+			// columntype|columnheader|columnvalue0,columnvalue1,..
+			SWF.DataGridViewColumn column = null;
+
+			string []tokens = innerText.Split ('|');
+			if (tokens [0] == "checkbox")
+				column = new SWF.DataGridViewCheckBoxColumn ();
+			else if (tokens [0] == "link")
+				column = new SWF.DataGridViewLinkColumn ();
+			else if (tokens [0] == "image")
+				column = new SWF.DataGridViewImageColumn ();
+			else if (tokens [0] == "button") {
+				SWF.DataGridViewButtonColumn buttoncolumn = new SWF.DataGridViewButtonColumn ();
+				buttoncolumn.Text = tokens [2];
+				column = buttoncolumn;
+			} else if (tokens [0] == "combobox") {
+				SWF.DataGridViewComboBoxColumn comboboxColumn = new SWF.DataGridViewComboBoxColumn ();
+				string []values = tokens [2].Split (',');
+				foreach (string val in values)
+					comboboxColumn.Items.Add (val);
+				column = comboboxColumn;
+			} else // "textbox"
+				column = new SWF.DataGridViewTextBoxColumn ();
+
+			column.Width = 50;
+			column.HeaderText = tokens [1];
+
+			return column;
+		}
+
+		private SWF.DataGridViewCell GetDataGridViewCellFromInnerText (string innerText, int column)
+		{
+			SWF.DataGridViewCell cell = null;
+
+			if (datagridView.Columns [column].GetType () == typeof (SWF.DataGridViewCheckBoxColumn))
+				cell = new SWF.DataGridViewCheckBoxCell ();
+			else if (datagridView.Columns [column].GetType () == typeof (SWF.DataGridViewLinkColumn))
+				cell = new SWF.DataGridViewLinkCell ();
+			else if (datagridView.Columns [column].GetType () == typeof (SWF.DataGridViewImageColumn))
+				cell = new SWF.DataGridViewImageCell ();
+			else if (datagridView.Columns [column].GetType () == typeof (SWF.DataGridViewComboBoxColumn))
+				cell = new SWF.DataGridViewComboBoxCell ();
+			else if (datagridView.Columns [column].GetType () == typeof (SWF.DataGridViewButtonColumn))
+				cell = new SWF.DataGridViewButtonCell ();
+			else // SWF.DataGridViewTextBoxColumn
+				cell = new SWF.DataGridViewTextBoxCell ();			
+
+			cell.Value = innerText;
+
+			return cell;
 		}
 
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }

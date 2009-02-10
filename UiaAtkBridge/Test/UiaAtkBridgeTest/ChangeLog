@@ -1,3 +1,9 @@
+2009-02-10  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: DataGridView test added.
+
+	* BridgeTester.cs: DataGridView initialization added.
+
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:

@@ -983,7 +983,8 @@ namespace UiaAtkBridgeTest
 				return Atk.Role.Filler;
 			case BasicWidgetType.ToolStripDropDownButton:
 				return Atk.Role.Menu;
-			
+			case BasicWidgetType.DataGridView:
+				return Atk.Role.TreeTable;					
 			case BasicWidgetType.ToolBar:
 				return Atk.Role.ToolBar;
 			case BasicWidgetType.StatusBarPanel:
