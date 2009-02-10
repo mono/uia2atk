@@ -140,7 +140,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 				if (VerticallyScrollable == false)
 					return 100;
 				else {
-					SD.Rectangle thumbArea = hscrollbar.UIAThumbPosition;
+					SD.Rectangle thumbArea = vscrollbar.UIAThumbPosition;
 					return ((thumbArea.Height+ (thumbArea.Width * 2)) * 100)
 						/ Provider.Control.Height;
 				}

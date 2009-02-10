@@ -20,41 +20,53 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Windows.Forms;
 using System.Windows.Automation;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation.Provider;
-using Mono.Unix;
-using Mono.UIAutomation.Winforms.Behaviors;
-using PGTextBox = System.Windows.Forms.PropertyGridInternal.PropertyGridTextBox;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.PropertyGrid
 {
-	[MapsComponent (typeof (PGTextBox))]
-	internal class PropertyGridTextBoxProvider : TextBoxProvider
+	internal class ListItemChildValuePatternValueValueEvent 
+		: BaseAutomationPropertyEvent
 	{
-		#region Constructor
-
-		public PropertyGridTextBoxProvider (PGTextBox propertyGridTextBox)
-			: base (GetPrivateTextBox (propertyGridTextBox))
+#region Constructor
+		public ListItemChildValuePatternValueValueEvent (PropertyGridListItemValueProvider provider)
+			: base (provider,
+			        ValuePatternIdentifiers.ValueProperty)
 		{
+			this.provider = provider;
 		}
-
-		#endregion
-
-		#region Private Methods
+#endregion
 		
-		private static TextBoxBase GetPrivateTextBox (PGTextBox pgTextBox)
+#region IConnectable Overrides
+		public override void Connect ()
 		{
-			// TODO: Replace this with an internal property in SWF
-			return Helper.GetPrivateField<TextBox> (
-				typeof (PGTextBox), pgTextBox, "textbox"
-			);
+			provider.ListItemProvider.PropertyGridViewProvider.PropertyGrid.PropertyValueChanged
+				+= OnPropertyValueChanged;
 		}
 
-		#endregion
+		public override void Disconnect ()
+		{
+			provider.ListItemProvider.PropertyGridViewProvider.PropertyGrid.PropertyValueChanged
+				-= OnPropertyValueChanged;
+		}
+#endregion
+		
+#region Private Methods
+		private void OnPropertyValueChanged (object o,
+		                                     SWF.PropertyValueChangedEventArgs args)
+		{
+			if (args.ChangedItem == provider.ListItemProvider.ObjectItem)
+				RaiseAutomationPropertyChangedEvent ();
+		}
+#endregion
+
+#region Private Fields
+		private PropertyGridListItemValueProvider provider;
+#endregion
 	}
 }

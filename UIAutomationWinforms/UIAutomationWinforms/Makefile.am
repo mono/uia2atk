@@ -141,6 +141,15 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehaviorEventArgs.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
@@ -368,6 +377,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemChildValueAutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemChildValuePatternValueValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PropertyGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternElementSelectedEvent.cs \

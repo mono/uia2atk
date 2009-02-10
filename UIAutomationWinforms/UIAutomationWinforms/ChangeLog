@@ -1,3 +1,30 @@
+2009-02-09  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid: 
+	* Mono.UIAutomation.Winforms/PropertyGridProvider.cs: 
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/PropertyGridTextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/TableProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ScrollProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/SelectionProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/SelectionPatternSelectionEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/SelectionPatternInvalidatedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs: 
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemChildValuePatternValueValueEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemSelectionItemPatternIsSelectedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemChildValueAutomationNamePropertyEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/PropertyGrid/ListItemSelectionItemPatternElementSelectedEvent.cs: 
+	Mostly implement PropertyGrid.
+
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/Helper.cs: Reused a small part of

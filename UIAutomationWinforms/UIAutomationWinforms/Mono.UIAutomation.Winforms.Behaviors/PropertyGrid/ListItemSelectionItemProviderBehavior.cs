@@ -20,41 +20,39 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
-using System;
-using System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.Unix;
-using Mono.UIAutomation.Winforms.Behaviors;
-using PGTextBox = System.Windows.Forms.PropertyGridInternal.PropertyGridTextBox;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Events.PropertyGrid;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Behaviors.PropertyGrid
 {
-	[MapsComponent (typeof (PGTextBox))]
-	internal class PropertyGridTextBoxProvider : TextBoxProvider
+	internal class ListItemSelectionItemProviderBehavior 
+		: SelectionItemProviderBehavior
 	{
-		#region Constructor
-
-		public PropertyGridTextBoxProvider (PGTextBox propertyGridTextBox)
-			: base (GetPrivateTextBox (propertyGridTextBox))
+#region Constructors
+		public ListItemSelectionItemProviderBehavior (ListItemProvider provider)
+			: base (provider)
 		{
 		}
-
-		#endregion
-
-		#region Private Methods
+#endregion
 		
-		private static TextBoxBase GetPrivateTextBox (PGTextBox pgTextBox)
+#region IProviderBehavior Interface
+		public override void Connect ()
 		{
-			// TODO: Replace this with an internal property in SWF
-			return Helper.GetPrivateField<TextBox> (
-				typeof (PGTextBox), pgTextBox, "textbox"
-			);
-		}
+			PropertyGridListItemProvider itemProvider
+				= (PropertyGridListItemProvider) Provider;
 
-		#endregion
+			//NOTE: SelectionItem.SelectionContainer never changes.
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
+			                   new ListItemSelectionItemPatternElementSelectedEvent (itemProvider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
+			                   new ListItemSelectionItemPatternIsSelectedEvent (itemProvider));
+		}	
+#endregion
 	}
 }

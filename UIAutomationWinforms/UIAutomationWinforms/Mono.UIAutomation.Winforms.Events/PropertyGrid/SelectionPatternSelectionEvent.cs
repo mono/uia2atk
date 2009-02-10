@@ -20,41 +20,54 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Windows.Forms;
+using System.ComponentModel;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.Unix;
-using Mono.UIAutomation.Winforms.Behaviors;
-using PGTextBox = System.Windows.Forms.PropertyGridInternal.PropertyGridTextBox;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms
-{
-	[MapsComponent (typeof (PGTextBox))]
-	internal class PropertyGridTextBoxProvider : TextBoxProvider
+namespace Mono.UIAutomation.Winforms.Events.PropertyGrid
+{	
+	internal class SelectionPatternSelectionEvent
+		: BaseAutomationPropertyEvent
 	{
-		#region Constructor
-
-		public PropertyGridTextBoxProvider (PGTextBox propertyGridTextBox)
-			: base (GetPrivateTextBox (propertyGridTextBox))
+#region Constructor
+		public SelectionPatternSelectionEvent (PropertyGridViewProvider provider) 
+			: base (provider,
+			        SelectionPatternIdentifiers.SelectionProperty)
 		{
+			this.provider = provider;
 		}
-
-		#endregion
-
-		#region Private Methods
+#endregion
 		
-		private static TextBoxBase GetPrivateTextBox (PGTextBox pgTextBox)
+#region ProviderEvent Methods
+		public override void Connect ()
 		{
-			// TODO: Replace this with an internal property in SWF
-			return Helper.GetPrivateField<TextBox> (
-				typeof (PGTextBox), pgTextBox, "textbox"
-			);
+			provider.PropertyGrid.SelectedGridItemChanged
+				+= OnSelectedGridItemChanged;
 		}
 
-		#endregion
+		public override void Disconnect ()
+		{
+			provider.PropertyGrid.SelectedGridItemChanged
+				-= OnSelectedGridItemChanged;
+		}
+#endregion 
+		
+#region Private Methods
+		private void OnSelectedGridItemChanged (object o,
+		                                        SWF.SelectedGridItemChangedEventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+#endregion
+
+#region Private Fields
+		private PropertyGridViewProvider provider;
+#endregion
 	}
 }

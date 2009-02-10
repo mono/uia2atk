@@ -20,68 +20,56 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
-using System;
+
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.Generic
+namespace Mono.UIAutomation.Winforms.Events.PropertyGrid
 {
-	
-	internal class ScrollPatternHorizontalScrollPercentEvent<T>
+	internal class ListItemSelectionItemPatternIsSelectedEvent
 		: BaseAutomationPropertyEvent
-			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
-		
-		#region Constructors
-
-		public ScrollPatternHorizontalScrollPercentEvent (T provider)
+#region Constructors
+		public ListItemSelectionItemPatternIsSelectedEvent (PropertyGridListItemProvider provider)
 			: base (provider, 
-			        ScrollPatternIdentifiers.HorizontalScrollPercentProperty)
+			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
 			this.provider = provider;
+			this.isSelected = provider.PropertyGridViewProvider.IsItemSelected (provider);
 		}
+#endregion
 		
-		#endregion
-		
-		#region ProviderEvent Methods
-
+#region Overridden Methods
 		public override void Connect ()
-		{	
-			if (ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar != null)
-				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged += OnScrollPercentChanged;
+		{
+			provider.PropertyGridViewProvider.PropertyGrid.SelectedGridItemChanged
+				+= OnSelectedGridItemChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null)
-				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged -= OnScrollPercentChanged;
+			provider.PropertyGridViewProvider.PropertyGrid.SelectedGridItemChanged
+				-= OnSelectedGridItemChanged;
 		}
+#endregion 
 		
-		#endregion
-
-		#region Protected Properties
-
-		protected T ScrollBehaviorSubject {
-			get { return provider; }
-		}
-
-		#endregion
-		
-		#region Protected methods
-		
-		private void OnScrollPercentChanged (object sender, EventArgs e)
+#region Private Methods
+		private void OnSelectedGridItemChanged (object o,
+		                                        SWF.SelectedGridItemChangedEventArgs args)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			bool selected = provider.PropertyGridViewProvider.IsItemSelected (provider);
+			if (selected != isSelected) 
+				RaiseAutomationPropertyChangedEvent ();
 		}
+#endregion
 
-		#endregion
-
-		#region Private Fields
-
-		private T provider;
-
-		#endregion
+#region Private Fields
+		private PropertyGridListItemProvider provider;
+		private bool isSelected = false;
+#endregion
 	}
 }

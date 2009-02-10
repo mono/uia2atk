@@ -17,44 +17,56 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.Unix;
-using Mono.UIAutomation.Winforms.Behaviors;
-using PGTextBox = System.Windows.Forms.PropertyGridInternal.PropertyGridTextBox;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.PropertyGrid
 {
-	[MapsComponent (typeof (PGTextBox))]
-	internal class PropertyGridTextBoxProvider : TextBoxProvider
+	internal class ListItemChildValueAutomationNamePropertyEvent
+		: BaseAutomationPropertyEvent
 	{
-		#region Constructor
-
-		public PropertyGridTextBoxProvider (PGTextBox propertyGridTextBox)
-			: base (GetPrivateTextBox (propertyGridTextBox))
+#region Constructors
+		public ListItemChildValueAutomationNamePropertyEvent (PropertyGridListItemValueProvider provider) 
+			: base (provider,
+			        AutomationElementIdentifiers.NameProperty)
 		{
+			this.provider = provider;
+		}
+#endregion
+
+#region IConnectable Overrides
+		public override void Connect ()
+		{
+			provider.ListItemProvider.PropertyGridViewProvider.PropertyGrid.PropertyValueChanged
+				+= OnPropertyValueChanged;
 		}
 
-		#endregion
-
-		#region Private Methods
+		public override void Disconnect ()
+		{
+			provider.ListItemProvider.PropertyGridViewProvider.PropertyGrid.PropertyValueChanged
+				-= OnPropertyValueChanged;
+		}
+#endregion
 		
-		private static TextBoxBase GetPrivateTextBox (PGTextBox pgTextBox)
+#region Private Methods
+		private void OnPropertyValueChanged (object o,
+		                                     PropertyValueChangedEventArgs args)
 		{
-			// TODO: Replace this with an internal property in SWF
-			return Helper.GetPrivateField<TextBox> (
-				typeof (PGTextBox), pgTextBox, "textbox"
-			);
+			if (args.ChangedItem == provider.ListItemProvider.ObjectItem)
+				RaiseAutomationPropertyChangedEvent ();
 		}
+#endregion
 
-		#endregion
+#region Private Fields
+		private PropertyGridListItemValueProvider provider;
+#endregion
 	}
 }

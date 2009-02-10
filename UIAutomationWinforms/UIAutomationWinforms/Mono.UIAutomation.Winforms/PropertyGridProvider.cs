@@ -51,30 +51,26 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+	}
 
-		#region Internal Class: BorderHelperControl Provider
+	[MapsComponent (typeof (PropertyGrid.BorderHelperControl))]
+	internal class BorderHelperControlProvider : PaneProvider
+	{
+		#region Constructor
 
-		[MapsComponent (typeof (PropertyGrid.BorderHelperControl))]
-		internal class BorderHelperControlProvider : PaneProvider
+		public BorderHelperControlProvider (PropertyGrid.BorderHelperControl borderHelperControl)
+			: base (borderHelperControl)
 		{
-			#region Constructor
-	
-			public BorderHelperControlProvider (PropertyGrid.BorderHelperControl borderHelperControl)
-				: base (borderHelperControl)
-			{
-			}
-	
-			#endregion
-	
-			#region SimpleControlProvider: Specializations
-				 
-			public override Component Container {
-				get { return Control.Parent; }
-			}
-			
-			#endregion
 		}
 
+		#endregion
+
+		#region SimpleControlProvider: Specializations
+			 
+		public override Component Container {
+			get { return Control.Parent; }
+		}
+		
 		#endregion
 	}
 }

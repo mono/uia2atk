@@ -20,41 +20,51 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
-using System;
-using System.Windows.Forms;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.Unix;
-using Mono.UIAutomation.Winforms.Behaviors;
-using PGTextBox = System.Windows.Forms.PropertyGridInternal.PropertyGridTextBox;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.PropertyGrid
 {
-	[MapsComponent (typeof (PGTextBox))]
-	internal class PropertyGridTextBoxProvider : TextBoxProvider
+	internal class ListItemSelectionItemPatternElementSelectedEvent
+		: BaseAutomationEvent
 	{
-		#region Constructor
-
-		public PropertyGridTextBoxProvider (PGTextBox propertyGridTextBox)
-			: base (GetPrivateTextBox (propertyGridTextBox))
+#region Constructors
+		public ListItemSelectionItemPatternElementSelectedEvent (PropertyGridListItemProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{
+			this.provider = provider;
 		}
-
-		#endregion
-
-		#region Private Methods
+#endregion
 		
-		private static TextBoxBase GetPrivateTextBox (PGTextBox pgTextBox)
+#region Overridden Methods
+		public override void Connect ()
 		{
-			// TODO: Replace this with an internal property in SWF
-			return Helper.GetPrivateField<TextBox> (
-				typeof (PGTextBox), pgTextBox, "textbox"
-			);
+			provider.PropertyGridViewProvider.PropertyGrid.SelectedGridItemChanged
+				+= OnSelectedGridItemChanged;
 		}
 
-		#endregion
+		public override void Disconnect ()
+		{
+			provider.PropertyGridViewProvider.PropertyGrid.SelectedGridItemChanged
+				-= OnSelectedGridItemChanged;
+		}
+#endregion 
+		
+#region Private members
+		private void OnSelectedGridItemChanged (object o,
+		                                        SWF.SelectedGridItemChangedEventArgs args)
+		{
+			if (provider.PropertyGridViewProvider.IsItemSelected (provider))
+				RaiseAutomationEvent ();
+		}
+
+		private PropertyGridListItemProvider provider;
+#endregion
 	}
 }

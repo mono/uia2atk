@@ -21,41 +21,463 @@
 // 
 // Authors: 
 // 	Neville Gao <nevillegao@gmail.com>
+// 	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using SWF = System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using Mono.Unix;
+using System.Windows.Forms;
+using System.Windows.Automation;
+using Mono.UIAutomation.Services;
+using System.Collections.Generic;
+using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
+using System.Windows.Forms.PropertyGridInternal;
+using Mono.UIAutomation.Winforms.Events.PropertyGrid;
+using Mono.UIAutomation.Winforms.Behaviors.PropertyGrid;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	[MapsComponent (typeof (SWF.PropertyGridInternal.PropertyGridView))]
-	internal class PropertyGridViewProvider : FragmentRootControlProvider
+	[MapsComponent (typeof (PropertyGridView))]
+	internal class PropertyGridViewProvider : ListProvider
 	{
-		#region Constructor
-
-		public PropertyGridViewProvider (SWF.PropertyGridInternal.PropertyGridView propertyGridView)
-			: base (propertyGridView)
-		{
+#region Public Properties
+		public override int SelectedItemsCount {
+			get { return propertyGrid.SelectedGridItem == null ? 0 : 1; }
 		}
 
-		#endregion
-	
-		#region SimpleControlProvider: Specializations
+		public override int ItemsCount {
+			get { return children.Count; }
+		}
+
+		public PropertyGrid PropertyGrid {
+			get { return propertyGrid; }
+		}
+#endregion
+
+#region Public Methods
+		public PropertyGridViewProvider (PropertyGridView propertyGridView)
+			: base (propertyGridView)
+		{
+			view = propertyGridView;
+			propertyGrid = Helper.GetPrivateField<PropertyGrid> (
+				typeof (PropertyGridView), view,
+				"property_grid");
+		}
+
+		public override void UnselectItem (ListItemProvider item)
+		{
+			// We don't actually support this
+		}
+
+		public override void SelectItem (ListItemProvider item)
+		{
+			GridItem gridItem = item.ObjectItem as GridItem;
+			if (gridItem == null)
+				return;
+			
+			propertyGrid.SelectedGridItem = gridItem;
+		}
+
+		public override void ScrollItemIntoView (ListItemProvider item)
+		{
+			// No way in SWF to do this
+		}
+
+		public override ListItemProvider[] GetSelectedItems ()
+		{
+			foreach (PropertyGridListItemProvider item in children)
+				if (IsItemSelected (item))
+					return new ListItemProvider[] { item };
+
+			return new ListItemProvider[0];
+		}
+
+		public override bool IsItemSelected (ListItemProvider item)
+		{
+			return (item.ObjectItem == propertyGrid.SelectedGridItem);
+		}
+
+		public override int IndexOfObjectItem (object objectItem)
+		{
+			for (int i = 0; i < children.Count; i++)
+				if (children [i].ObjectItem == objectItem)
+					return i;
+
+			return -1;
+		}
+		
+		public IRawElementProviderSimple GetItem (int row, int col)
+		{
+			if (col < 0 || col > 2) {
+				return null;
+			}
+
+			if (row < 0 || row >= children.Count) {
+				return null;
+			}
+
+			return children [row];
+		}
+
+		public override void FocusItem (object objectItem)
+		{
+			foreach (PropertyGridListItemProvider item in children)
+				if (objectItem == item.ObjectItem)
+					SelectItem (item);
+		}
+
+		public override object GetItemPropertyValue (ListItemProvider item, int propertyId)
+		{
+			PropertyGridListItemProvider pgListItem 
+				= item as PropertyGridListItemProvider;
+			if (pgListItem == null) {
+				return null;
+			}
+
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return pgListItem.Name;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return false;
+/* TODO:
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				SD.Rectangle rectangle = datagridview.GetRowDisplayRectangle (provider.Row.Index, false);
+				if (datagridview.RowHeadersVisible)
+					rectangle.X += datagridview.RowHeadersWidth;
+
+				return Helper.GetControlScreenBounds (rectangle,
+				                                      datagridview,
+				                                      true);
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return Helper.IsListItemOffScreen (item.BoundingRectangle,
+				                                   datagridview,
+				                                   datagridview.ColumnHeadersVisible,
+				                                   header.Size,
+				                                   ScrollBehaviorObserver);
+*/
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else
+				return null;
+		}
+
+		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+		{
+			if (behavior == SelectionPatternIdentifiers.Pattern)
+				return new SelectionProviderBehavior (this);
+			else if (behavior == GridPatternIdentifiers.Pattern)
+				return new GridProviderBehavior (this);
+			else if (behavior == TablePatternIdentifiers.Pattern)
+				return new TableProviderBehavior (this);
+			else if (behavior == ScrollPatternIdentifiers.Pattern)
+				return new ScrollProviderBehavior (this);
+			else
+				return null;
+		}
+
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+				ListItemProvider listItem)
+		{
+			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+				return new ListItemSelectionItemProviderBehavior (listItem);
+			else if (behavior == GridItemPatternIdentifiers.Pattern)
+				return new ListItemGridItemProviderBehavior (listItem);
+			else if (behavior == TableItemPatternIdentifiers.Pattern)
+				return new ListItemTableItemProviderBehavior (listItem);
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
+		}
+#endregion
+
+#region SimpleControlProvider Overrides
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             new GridProviderBehavior (this));
+			SetBehavior (TablePatternIdentifiers.Pattern,
+			             new TableProviderBehavior (this));
+		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Table.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("table");
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.DataGrid.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return Catalog.GetString ("data grid");
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+#endregion
+
+#region FragmentControlProvider Overrides
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+
+			propertyGrid.SelectedGridItemChanged
+				+= OnSelectedGridItemChanged;
+
+			AddChildren ();
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			base.FinalizeChildControlStructure ();
+
+			propertyGrid.SelectedGridItemChanged
+				-= OnSelectedGridItemChanged;
+
+			RemoveChildren ();
+		}
+#endregion
+
+#region Protected Properties
+		protected override ScrollBar HorizontalScrollBar {
+			get { return null; }
+		}
+
+		protected override ScrollBar VerticalScrollBar {
+			get {
+				return Helper.GetPrivateField<ScrollBar> (
+					typeof (PropertyGridView), view, "vbar"
+				);
+			}
+		}
+#endregion
+
+#region Protected Methods
+		protected override ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
+		                                                        ListProvider provider,
+		                                                        Control control,
+		                                                        object objectItem)
+		{
+			return new PropertyGridListItemProvider (
+				this, view, (GridEntry) objectItem
+			);
+		}
+#endregion
+
+#region Private Members
+		private void AddChildren ()
+		{
+			GridItem root = propertyGrid.RootGridItem;
+			foreach (GridItem cat in root.GridItems) {
+				foreach (GridItem item in cat.GridItems) {
+					PropertyGridListItemProvider itemProvider
+						= (PropertyGridListItemProvider) GetNewItemProvider (
+							this, this, view, item);
+
+					itemProvider.Initialize ();
+					children.Add (itemProvider);
+					AddChildProvider (true, itemProvider);
+				}
+			}
+		}
+
+		private void RemoveChildren ()
+		{
+			foreach (PropertyGridListItemProvider prov
+			         in children) {
+				RemoveChildProvider (true, prov);
+				prov.Terminate ();
+			}
+
+			children.Clear ();
+		}
+
+		private void OnSelectedGridItemChanged (object o, SelectedGridItemChangedEventArgs args)
+		{
+			RemoveChildren ();
+			AddChildren ();
+		}
+#endregion
+
+#region Private Fields
+		private PropertyGridView view;
+		private PropertyGrid propertyGrid;
+		private List<PropertyGridListItemProvider> children
+			= new List<PropertyGridListItemProvider> ();
+#endregion
+	}
+
+	internal class PropertyGridListItemProvider : ListItemProvider
+	{
+#region Public Properties
+		public string Name {
+			get { return entry.Label; }
+		}
+
+		public string Value {
+			get { return entry.ValueText; }
+			set {
+				string error;
+				if (!entry.SetValue (value, out error)) {
+					Log.Warn ("PropertyGridListItemProvider: Unable to set value: {0}",
+					          error);
+				}
+			}
+		}
+
+		public bool IsReadOnly {
+			get { return entry.IsReadOnly && entry.IsEditable; }
+		}
+
+		public PropertyGridView PropertyGridView {
+			get { return view; }
+		}
+		
+		public PropertyGridViewProvider PropertyGridViewProvider {
+			get { return viewProvider; }
+		}
+#endregion
+
+#region Public Methods
+		public PropertyGridListItemProvider (PropertyGridViewProvider viewProvider,
+		                                     PropertyGridView view,
+		                                     GridEntry entry) 
+			: base (viewProvider, viewProvider, view, entry)
+		{
+			this.viewProvider = viewProvider;
+			this.view = view;
+			this.entry = entry;
+
+			this.viewProvider.ToString ();
+		}
+
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+			
+			nameProvider = new PropertyGridListItemNameProvider (this, view);
+			nameProvider.Initialize ();
+			AddChildProvider (true, nameProvider);
+		
+			valueProvider = new PropertyGridListItemValueProvider (this, view);
+			valueProvider.Initialize ();
+			AddChildProvider (true, valueProvider);
+		}
+
+		public override void FinalizeChildControlStructure ()
+		{
+			base.FinalizeChildControlStructure ();
+			
+			nameProvider.Terminate ();
+			RemoveChildProvider (true, nameProvider);
+			
+			valueProvider.Terminate ();
+			RemoveChildProvider (true, valueProvider);
+		}
+#endregion
+
+#region Protected Methods
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.DataItem.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return Catalog.GetString ("data item");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
+#endregion
 
-		#endregion
+#region Private Fields
+		private PropertyGridListItemChildProvider nameProvider;
+		private PropertyGridListItemValueProvider valueProvider;
+
+		private PropertyGridViewProvider viewProvider;
+		private PropertyGridView view;
+		private GridEntry entry;
+#endregion
+	}
+
+	internal class PropertyGridListItemChildProvider
+		: FragmentRootControlProvider
+	{
+		public PropertyGridListItemChildProvider (PropertyGridListItemProvider itemProvider,
+		                                          PropertyGridView view)
+			: base (view)
+		{
+			this.itemProvider = itemProvider;
+		}
+
+		public override IRawElementProviderFragmentRoot FragmentRoot {
+			get { return itemProvider; }
+		}
+
+		public PropertyGridListItemProvider ListItemProvider {
+			get { return itemProvider; }
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.Edit.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return Catalog.GetString ("edit");
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		public PropertyGridListItemProvider itemProvider;
+	}
+
+	internal class PropertyGridListItemNameProvider
+		: PropertyGridListItemChildProvider
+	{
+		public PropertyGridListItemNameProvider (PropertyGridListItemProvider itemProvider,
+		                                         PropertyGridView view)
+			: base (itemProvider, view)
+		{
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ListItemNameValueProviderBehavior (this));
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return itemProvider.Name;
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+	}
+	
+	internal class PropertyGridListItemValueProvider
+		: PropertyGridListItemChildProvider
+	{
+		public PropertyGridListItemValueProvider (PropertyGridListItemProvider itemProvider,
+		                                          PropertyGridView view)
+			: base (itemProvider, view)
+		{
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ListItemChildValueProviderBehavior (this));
+
+			SetEvent (ProviderEventType.AutomationElementNameProperty,
+			          new ListItemChildValueAutomationNamePropertyEvent (this));
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return itemProvider.Value;
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
 	}
 }
