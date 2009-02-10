@@ -38,6 +38,9 @@ namespace UiaAtkBridge
 		{		
 			// Perhaps we should use Atk.Role.Image instead,
 			// but gail uses Atk.Role.Icon
+			// If we decide to use Image instead, we may need to
+			// separate BalloonWindow handling, since it should
+			// have Atk.Role.Icon.
 			Role = Atk.Role.Icon;
 			
 			imageImplementor = new ImageImplementorHelper (this);

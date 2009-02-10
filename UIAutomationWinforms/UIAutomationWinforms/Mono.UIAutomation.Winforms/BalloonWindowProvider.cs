@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.Form;
-using Mono.UIAutomation.Winforms.Behaviors.Form;
+using Mono.UIAutomation.Winforms.Behaviors.BalloonWindow;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -57,7 +57,9 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize ()
 		{
 			base.Initialize ();
-			// Events
+
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
+			             new EmbeddedImageProviderBehavior (this));
 		}
 
 		public override void Terminate ()

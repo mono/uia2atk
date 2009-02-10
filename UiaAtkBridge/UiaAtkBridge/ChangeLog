@@ -1,3 +1,8 @@
+2009-02-09  Mike Gorse  <mgorse@novell.com>
+
+	* Window.cs: Add icon for NotifyIcon balloon window.
+	* Image.cs: Add comment.
+
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ContextMenu.cs:

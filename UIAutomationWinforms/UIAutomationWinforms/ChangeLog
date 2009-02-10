@@ -1,3 +1,9 @@
+2009-02-09 Mike Gorse  <mgorse@novell.com>
+
+	* Makefile.am, Mono.UIAutomation.Winforms/BalloonWindowProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/BalloonWindow/EmbeddedImageProviderBehavior.cs:
+	  Add EmbeddedImage provider for BalloonWindow.
+
 2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs:

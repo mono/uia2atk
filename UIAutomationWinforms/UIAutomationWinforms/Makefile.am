@@ -44,6 +44,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	Globals.cs \
+	Mono.UIAutomation.Winforms.Behaviors/BalloonWindow/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \

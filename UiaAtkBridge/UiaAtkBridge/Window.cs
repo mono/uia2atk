@@ -39,6 +39,7 @@ namespace UiaAtkBridge
 		private Splitter splitter = null;
 		private bool balloonWindow = false;
 		private TextLabel fakeLabel = null;
+		private Image fakeImage = null;
 		
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -67,6 +68,9 @@ namespace UiaAtkBridge
 			if (balloonWindow) {
 				fakeLabel = new TextLabel (Provider);
 				AddOneChild (fakeLabel);
+				fakeImage = new Image (Provider);
+				AddOneChild (fakeImage);
+Console.WriteLine ("dbg: children: " + NAccessibleChildren);
 			} else {
 				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
 					Role = Atk.Role.Dialog;
@@ -133,7 +137,10 @@ namespace UiaAtkBridge
 		{
 			if (fakeLabel != null)
 				RemoveChild (fakeLabel);
+			if (fakeImage != null)
+				RemoveChild (fakeImage);
 			fakeLabel = null;
+			fakeImage = null;
 		}
 
 		public override Atk.Layer Layer {
@@ -169,6 +176,7 @@ namespace UiaAtkBridge
 		
 		internal override void AddOneChild (Atk.Object child)
 		{
+if (splitter != null) Console.WriteLine ("dbg: going to add " + child + " to the splitter instead");
 			if (splitter != null) {
 				splitter.AddOneChild (child);
 				return;
@@ -188,6 +196,7 @@ namespace UiaAtkBridge
 					}
 					RemoveChild (obj);
 					obj.Parent = child;
+Console.WriteLine ("dbg: adding to splitter: " + obj);
 					splitter.AddOneChild (obj);
 					count--;
 				}
