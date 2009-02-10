@@ -75,7 +75,7 @@ namespace UiaAtkBridge
 			// Some controls will have column headers that need to
 			// be mapped to row 0
 			if (row == 0 && headers != null) {
-				if (column >= headers.Length)
+				if (column > headers.Length)
 					return null;
 
 				return AutomationBridge.GetAdapterForProviderLazy (

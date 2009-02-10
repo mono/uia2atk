@@ -1,22 +1,12 @@
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* ComboBox.cs: (Revert revision 126510): Reverting mario's
-	fix, sorry, it breaks the tests.
-
-2009-02-10  Mario Carrion <mcarrion@novell.com>
-
-	* ComboBox.cs: Fix NRE when propagating Name after AddingSelection.
-	[Fixes Bug #456319]
-
-2009-02-10  Mike Gorse  <mgorse@novell.com>
-
-	* ComponentAdapter.cs, ComponentParentAdapter.cs: Check that
-	  componentExpert has been initialized before using.
-
-	* Adapter.cs, Window.cs: Initialize Name and Description in PostInit
-	  rather than Adapter constructor [bug 474218]
-
-	* TableImplementorHelper.cs: Fix range checking for headers.
+	* Window.cs:
+	* ChangeLog:
+	* Adapter.cs:
+	* ComponentAdapter.cs:
+	* TableImplementorHelper.cs:
+	* ComponentParentAdapter.cs: Reverted r126490, it's the one
+	that breaks the tests.
 
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

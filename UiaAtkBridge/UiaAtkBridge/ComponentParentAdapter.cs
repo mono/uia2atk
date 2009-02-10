@@ -143,7 +143,7 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			if (componentExpert != null && componentExpert.CanResize)
+			if (componentExpert.CanResize)
 				states.AddState (Atk.StateType.Resizable);
 			else
 				states.RemoveState (Atk.StateType.Resizable);

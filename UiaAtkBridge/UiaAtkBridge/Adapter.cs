@@ -41,6 +41,18 @@ namespace UiaAtkBridge
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
+			if (Provider == null) {
+				return;
+			}
+
+			string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+			if (!String.IsNullOrEmpty (desc))
+				Description = desc;
+
+			UpdateNameProperty (Provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id)
+					as string,
+				true);
 		}
 		
 #endregion
@@ -135,18 +147,6 @@ namespace UiaAtkBridge
 		
 		internal virtual void PostInit ()
 		{
-			if (Provider == null) {
-				return;
-			}
-
-			string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-			if (!String.IsNullOrEmpty (desc))
-				Description = desc;
-
-			UpdateNameProperty (Provider.GetPropertyValue (
-				AutomationElementIdentifiers.NameProperty.Id)
-					as string,
-				true);
 		}
 
 		protected virtual void UpdateNameProperty (string newName, bool fromCtor)

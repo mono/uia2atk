@@ -65,7 +65,6 @@ namespace UiaAtkBridge
 		
 		internal override void PostInit ()
 		{
-			base.PostInit ();
 			if (balloonWindow) {
 				fakeLabel = new TextLabel (Provider);
 				AddOneChild (fakeLabel);
