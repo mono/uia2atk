@@ -1,3 +1,14 @@
+2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs:
+	Reset provider bounds on change event.
+
+	* Mono.UIAutomation.Winforms/MenuItemProvider.cs: Use
+	AutomationBoundingRectangePropertyEvent handler. Cache bounds,
+	with the intent that they are only calculated when
+	calculatable (but some MWF issues prevent that from being
+	reliable right now).
+
 2009-02-09 Mike Gorse  <mgorse@novell.com>
 
 	* Makefile.am, Mono.UIAutomation.Winforms/BalloonWindowProvider.cs,

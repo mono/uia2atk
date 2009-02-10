@@ -86,6 +86,7 @@ namespace Mono.UIAutomation.Winforms.Events.MenuItem
 
 		private void OnResize (object sender, EventArgs e)
 		{
+			itemProvider.SetBounds (MenuItemHelper.GetBounds (itemProvider.Component as SWF.MenuItem));
 			RaiseAutomationPropertyChangedEvent ();
 		}
 

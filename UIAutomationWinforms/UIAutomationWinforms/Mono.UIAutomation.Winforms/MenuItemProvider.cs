@@ -44,6 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		private SWF.MenuItem menuItem;
 		private SWF.Menu parentMenu;
 		private MenuItemMenuProvider menuProvider;
+		private System.Windows.Rect bounds;
 		
 		public MenuItemProvider (SWF.MenuItem menuItem) :
 			base (menuItem)
@@ -67,7 +68,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.IsEnabledProperty.Id)
 				return menuItem.Enabled;
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return MenuItemHelper.GetBounds (menuItem);
+				return bounds;
 			return base.GetProviderPropertyValue (propertyId);
 		}
 		
@@ -81,10 +82,14 @@ namespace Mono.UIAutomation.Winforms
 			          new EMI.AutomationIsEnabledPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementNameProperty,
 			          new EMI.AutomationNamePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
+			          new EMI.AutomationBoundingRectanglePropertyEvent (this));
 
 			menuItem.UIACheckedChanged += OnBehaviorChanged;
 			menuItem.UIARadioCheckChanged += OnBehaviorChanged;
 			menuItem.MenuChanged += OnMenuChanged;
+			
+			bounds = MenuItemHelper.GetBounds (menuItem);
 
 			UpdateBehaviors ();
 		}
@@ -131,6 +136,11 @@ namespace Mono.UIAutomation.Winforms
 		public SWF.Menu ParentMenu
 		{
 			get { return parentMenu; }
+		}
+
+		public void SetBounds (System.Windows.Rect bounds)
+		{
+			this.bounds = bounds;
 		}
 
 		#endregion
@@ -302,16 +312,22 @@ namespace Mono.UIAutomation.Winforms
 
 		private static SWF.Control GetWnd (SWF.MenuItem item, out SWF.Menu parentMenu)
 		{
-			parentMenu = item.GetMainMenu ();
+			parentMenu = GetRootMenu (item);
+			
+			if (item.Parent != null && item.Parent.Wnd != null) {
+				return item.Parent.Wnd;
+			} else if (parentMenu != null && parentMenu.Wnd != null) {
+				return parentMenu.Wnd;
+			} else
+				return null;
+		}
+
+		private static SWF.Menu GetRootMenu (SWF.MenuItem item)
+		{
+			SWF.Menu parentMenu = item.GetMainMenu ();
 			if (parentMenu == null)
 				parentMenu = item.GetContextMenu ();
-			
-			if (item.Parent != null && item.Parent.Wnd != null)
-				return item.Parent.Wnd;
-			else if (parentMenu != null && parentMenu.Wnd != null)
-				return parentMenu.Wnd;
-			else
-				return null;
+			return parentMenu;
 		}
 	}
 }
