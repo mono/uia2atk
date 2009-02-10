@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Windows.Automation;
 using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 
 namespace UiaAtkBridge
@@ -454,16 +455,38 @@ namespace UiaAtkBridge
 		private ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderFragment fragment = (IRawElementProviderFragment)provider;
-			IRawElementProviderSimple parentProvider;
+			IRawElementProviderFragment parentProvider;
 
 			parentProvider = fragment.Navigate (NavigateDirection.Parent);
 
 			if (parentProvider == null)
 				return null;
-			
-			int controlTypeId = (int) parentProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id || controlTypeId == ControlType.TreeItem.Id)
+			int parentControlTypeId = (int)
+				parentProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id);
+			if (parentControlTypeId == ControlType.Header.Id ||
+			    parentControlTypeId == ControlType.DataItem.Id ||
+			    parentControlTypeId == ControlType.TreeItem.Id)
 				return GetParentAdapter (parentProvider);
+
+			// For a MenuItem provider, a Menu parent could indicate
+			// the hidden menu generated when a parent MenuItem is
+			// expanded. So if grandparent is MenuItem, treat its
+			// Adapter as the ParentAdapter.
+			int providerControlTypeId = (int)
+				provider.GetPropertyValue (AEIds.ControlTypeProperty.Id);
+
+			if (providerControlTypeId == ControlType.MenuItem.Id &&
+			    parentControlTypeId == ControlType.Menu.Id) {
+				IRawElementProviderFragment grandParentProvider =
+					parentProvider.Navigate (NavigateDirection.Parent);
+				if (grandParentProvider != null &&
+				    ControlType.MenuItem.Id == (int) grandParentProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
+					Atk.Object grandParentAdapter = null;
+					if (!providerAdapterMapping.TryGetValue (grandParentProvider, out grandParentAdapter))
+						return null;
+					return grandParentAdapter as ParentAdapter;
+				}
+			}
 
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
 				HandleElementAddition (parentProvider);
@@ -475,6 +498,7 @@ namespace UiaAtkBridge
 			if (ret == null) {
 				//FIXME: we should throw an exception here if in DEBUG mode
 				Log.Warn ("AutomationBridge: Could not cast {0} to ParentAdapter", parent);
+				
 			}
 			return ret;
 		}
@@ -1014,6 +1038,25 @@ namespace UiaAtkBridge
 
 		private void HandleNewMenuControlType (IRawElementProviderSimple provider)
 		{
+			// Test for hidden menu that is the child of an expanded
+			// MenuItem, in which case children should be processed.
+			IRawElementProviderFragment providerFrag =
+				provider as IRawElementProviderFragment;
+			if (providerFrag != null) {
+				var parentFrag =
+					providerFrag.Navigate (NavigateDirection.Parent);
+				if (parentFrag != null &&
+				    ControlType.MenuItem.Id.Equals (parentFrag.GetPropertyValue (AEIds.ControlTypeProperty.Id))) {
+					Atk.Object parentObject = null;
+					if (!providerAdapterMapping.TryGetValue (parentFrag, out parentObject))
+						return;
+					ParentAdapter parentAdapter = parentObject as ParentAdapter;
+					parentAdapter.RequestChildren ();
+					return;
+				}
+			}
+
+			// Handle context menu
 			var fakeWindow = new Window ();
 			TopLevelRootItem.Instance.AddOneChild (fakeWindow);
 			IncludeNewAdapter (new ContextMenu (provider), fakeWindow);

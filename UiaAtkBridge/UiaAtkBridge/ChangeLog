@@ -1,5 +1,15 @@
 2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* AutomationBridge.cs: Support SWF.MenuItem's unique
+	hierarchy. In GetParentAdapter, return grandparent adapter if
+	current items is MenuItem, its UIA parent is Menu, and its UIA
+	grandparent is MenuItem. In HandleNewMenuControlType, check if
+	it is a MenuItem's "hidden" Menu, and if so, tell the MenuItem
+	to update its children. This approach is rough, and bucks some
+	Bridge conventions, but for now it at least works.
+
+2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* MenuItem.cs: Add support for Checked state, and Selected
 	when SWF.MenuItem.RadioCheck is true. Have click work when
 	ExpandCollapse is available in place of Invoke. Use
