@@ -1,3 +1,7 @@
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AutomationBridge.cs: Converted some methods to static.
+
 2009-02-10  Mario Carrion  <mcarrion@novell.com>
 
 	* ComboBox.cs: Don't use string.Empty when value is null.

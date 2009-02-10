@@ -454,7 +454,7 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
-		private ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
+		private static ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderFragment fragment = (IRawElementProviderFragment)provider;
 			IRawElementProviderFragment parentProvider;
@@ -506,7 +506,7 @@ namespace UiaAtkBridge
 			return ret;
 		}
 
-		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
+		private static void HandleElementAddition (IRawElementProviderSimple simpleProvider)
 		{
 			bool? hasNativeAtkObj = (bool?) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty.Id);
 			if (hasNativeAtkObj == true &&
@@ -799,7 +799,7 @@ namespace UiaAtkBridge
 			return keep;
 		}
 
-		private void HandleNewWindowControlType (IRawElementProviderSimple provider)
+		private static void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
 			Window newWindow = new Window (provider);
 
@@ -814,14 +814,14 @@ namespace UiaAtkBridge
 			windowProviders++;
 		}
 		
-		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
+		private static void HandleNewToolTipControlType (IRawElementProviderSimple provider)
 		{
 			ToolTip atkToolTip = new ToolTip (provider);
 
 			IncludeNewAdapter (atkToolTip, TopLevelRootItem.Instance);
 		}
 
-		private bool HandleNewControlWithNativeObject (IRawElementProviderSimple provider)
+		private static bool HandleNewControlWithNativeObject (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 
@@ -839,7 +839,7 @@ namespace UiaAtkBridge
 			return true;
 		}
 
-		private void HandleNewButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			if (parentObject is UiaAtkBridge.ComboBox)
 				return; //ComboBox will handle its children additions on its own
@@ -855,7 +855,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkButton, parentObject);
 		}
 
-		private void HandleNewLabelControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewLabelControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			TextLabel atkLabel;
 
@@ -868,14 +868,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkLabel, parentObject);
 		}
 
-		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewCheckBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			CheckBoxButton atkCheck = new CheckBoxButton (provider);
 
 			IncludeNewAdapter (atkCheck, parentObject);
 		}
 		
-		private void HandleNewListControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewListControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBoxDropDown)
@@ -890,7 +890,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkList, parentObject);
 		}
 
-		private void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkItem;
 			if (parentObject is ComboBoxOptions)
@@ -901,7 +901,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
-		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewComboBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			ComboBox atkCombo;
 			if (UiaAtkBridge.ComboBox.IsSimple (provider))
@@ -912,7 +912,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkCombo, parentObject);
 		}
 		
-		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewStatusBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			TextContainer atkStatus;
 			//FIXME: probably we shouldn't split this in 2 classes
@@ -925,21 +925,21 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkStatus, parentObject);
 		}
 
-		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewProgressBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			ProgressBar atkProgress = new ProgressBar (provider);
 			
 			IncludeNewAdapter (atkProgress, parentObject);
 		}
 		
-		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewScrollBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			ScrollBar atkScroll = new ScrollBar (provider);
 
 			IncludeNewAdapter (atkScroll, parentObject);
 		}
 		
-		private void HandleNewGroupControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewGroupControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter newAdapter = null;
 			if (parentObject is DataGrid)
@@ -952,14 +952,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 		
-		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewRadioButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			RadioButton atkRadio = new RadioButton (provider);
 
 			IncludeNewAdapter (atkRadio, parentObject);
 		}
 		
-		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewSpinnerControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkSpinner;
 			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
@@ -975,14 +975,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkSpinner, parentObject);
 		}
 		
-		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
 			
 			IncludeNewAdapter (atkEditOrDoc, parentObject);
 		}
 
-		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewHyperlinkControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
@@ -996,14 +996,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkHyperlink, parentObject);
 		}
 
-		private void HandleNewImageControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewImageControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkImage = new Image (provider);
 
 			IncludeNewAdapter (atkImage, parentObject);
 		}
 
-		private void HandleNewContainer (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewContainer (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkContainer = new Container (provider);
 			providerAdapterMapping [provider] = atkContainer;
@@ -1011,7 +1011,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkContainer, parentObject);
 		}
 
-		private void HandleNewPane (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewPane (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkItem = null;
 			// Try to figure out whether this is a Splitter, a
@@ -1035,13 +1035,13 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
-		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			MenuBar newMenuBar = new MenuBar (provider);
 			IncludeNewAdapter (newMenuBar, parentObject);
 		}
 
-		private void HandleNewMenuControlType (IRawElementProviderSimple provider)
+		private static void HandleNewMenuControlType (IRawElementProviderSimple provider)
 		{
 			// Test for hidden menu that is the child of an expanded
 			// MenuItem, in which case children should be processed.
@@ -1067,7 +1067,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (new ContextMenu (provider), fakeWindow);
 		}
 
-		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter newAdapter = null;
 			ParentAdapter wrapperPanel = null;
@@ -1089,14 +1089,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 
-		private void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			SplitButton splitButton = new SplitButton (provider);
 			
 			IncludeNewAdapter (splitButton, parentObject);
 		}
 
-		private void HandleNewTab (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewTab (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null) {
@@ -1109,14 +1109,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (tab, parentObject);
 		}
 
-		private void HandleNewTabItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewTabItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			TextContainer tabItem = new TextContainer (provider);
 			
 			IncludeNewAdapter (tabItem, parentObject);
 		}
 
-		private void HandleNewTree (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewTree (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null) {
@@ -1128,7 +1128,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (tree, parentObject);
 		}
 
-		private void HandleNewTreeItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewTreeItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			TreeItem treeItem = new TreeItem (provider);
 			
@@ -1162,7 +1162,7 @@ namespace UiaAtkBridge
 			parentAdapter.AddOneChild (newAdapter);
 		}
 		
-		private void HandleNewDataGridControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewDataGridControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
@@ -1172,7 +1172,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 
-		private void HandleNewTableControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewTableControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
@@ -1182,7 +1182,7 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 
-		private void HandleNewSeparator (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewSeparator (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			IncludeNewAdapter (new Separator (provider), parentObject);
 		}
@@ -1203,21 +1203,21 @@ namespace UiaAtkBridge
 			}
 		}
 
-		private void HandleNewHeaderItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewHeaderItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			HeaderItem headerItem = new HeaderItem (provider);
 
 			IncludeNewAdapter (headerItem, parentObject);
 		}
 		
-		private void HandleNewSliderControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		private static void HandleNewSliderControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkSlider = new Slider (provider);
 
 			IncludeNewAdapter (atkSlider, parentObject);
 		}
 
-		private void HandleNewCalendarControlType (IRawElementProviderSimple provider,
+		private static void HandleNewCalendarControlType (IRawElementProviderSimple provider,
 		                                           ParentAdapter parentObject)
 		{
 			IncludeNewAdapter (new Container (provider), parentObject);
