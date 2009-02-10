@@ -70,7 +70,6 @@ namespace UiaAtkBridge
 				AddOneChild (fakeLabel);
 				fakeImage = new Image (Provider);
 				AddOneChild (fakeImage);
-Console.WriteLine ("dbg: children: " + NAccessibleChildren);
 			} else {
 				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
 					Role = Atk.Role.Dialog;
@@ -176,7 +175,6 @@ Console.WriteLine ("dbg: children: " + NAccessibleChildren);
 		
 		internal override void AddOneChild (Atk.Object child)
 		{
-if (splitter != null) Console.WriteLine ("dbg: going to add " + child + " to the splitter instead");
 			if (splitter != null) {
 				splitter.AddOneChild (child);
 				return;
@@ -196,7 +194,6 @@ if (splitter != null) Console.WriteLine ("dbg: going to add " + child + " to the
 					}
 					RemoveChild (obj);
 					obj.Parent = child;
-Console.WriteLine ("dbg: adding to splitter: " + obj);
 					splitter.AddOneChild (obj);
 					count--;
 				}

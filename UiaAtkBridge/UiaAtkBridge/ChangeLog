@@ -1,5 +1,9 @@
 2009-02-09  Mike Gorse  <mgorse@novell.com>
 
+	* Window.cs: Remove debug spew.
+
+2009-02-09  Mike Gorse  <mgorse@novell.com>
+
 	* Window.cs: Add icon for NotifyIcon balloon window.
 	* Image.cs: Add comment.
 
