@@ -140,9 +140,11 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == AutomationElementIdentifiers.NameProperty)
-				return;
 			base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
 		}
 	}
 }
