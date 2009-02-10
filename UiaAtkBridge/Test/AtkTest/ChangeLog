@@ -1,5 +1,11 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: New tests prepared for the event of the menu
+	being closed.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Fix typo in previous commit that broke
 	GailTest.
 

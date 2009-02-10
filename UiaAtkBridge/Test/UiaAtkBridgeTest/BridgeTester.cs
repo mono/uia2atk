@@ -259,6 +259,10 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
+		public override void CloseContextMenu (Atk.Object accessible) {
+			((SWF.ContextMenuStrip)mappings [accessible]).Close ();
+		}
+
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return false; }
 		}

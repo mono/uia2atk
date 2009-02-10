@@ -1,5 +1,12 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: New tests prepared for the event of the
+	menu being closed.
+
+	* BridgeTests.cs: Enable ContextMenu test.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Update tests.
 
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>

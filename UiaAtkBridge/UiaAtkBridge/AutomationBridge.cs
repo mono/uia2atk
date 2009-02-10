@@ -42,10 +42,10 @@ namespace UiaAtkBridge
 		private bool applicationStarted = false;
 		private Monitor appMonitor = null;
 		private long initTime = DateTime.Now.Ticks;
-		private AmbiDictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping;
+		static private AmbiDictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping;
 		static private AmbiDictionary<IRawElementProviderSimple, Atk.Object> providerAdapterMapping;
 		
-		private int windowProviders;
+		private static int windowProviders;
 		
 #endregion
 
@@ -584,15 +584,15 @@ namespace UiaAtkBridge
 				          ControlType.LookupById (controlTypeId).ProgrammaticName);
 		}
 
-		private bool HandleElementRemoval (Atk.Object atkObj)
+		private static bool HandleElementRemoval (Atk.Object atkObj)
 		{
 			Adapter adapter = atkObj as Adapter;
-			if (adapter != null)
+			if (adapter != null && adapter.Provider != null)
 				return HandleElementRemoval (adapter.Provider);
 			return false;
 		}
 
-		private bool HandleTotalElementRemoval (IRawElementProviderSimple provider)
+		internal static bool HandleTotalElementRemoval (IRawElementProviderSimple provider)
 		{
 			bool lastWindowProvider = false;
 			
@@ -618,7 +618,8 @@ namespace UiaAtkBridge
 				return false;
 
 			ParentAdapter parentAdapter = adapter.Parent as ParentAdapter;
-			parentAdapter.PreRemoveChild (adapter);
+			if (parentAdapter != null)
+				parentAdapter.PreRemoveChild (adapter);
 
 			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)) {
 				if (HandleElementRemoval (atkObj))
@@ -628,7 +629,7 @@ namespace UiaAtkBridge
 			return lastWindowProvider;
 		}
 		
-		private bool HandleElementRemoval (IRawElementProviderSimple provider)
+		private static bool HandleElementRemoval (IRawElementProviderSimple provider)
 		{
 			bool? hasNativeAtkObj = (bool?) provider.GetPropertyValue (AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty.Id);
 			if (hasNativeAtkObj == true) {
@@ -673,7 +674,7 @@ namespace UiaAtkBridge
 			return lastWindowProvider;
 		}
 
-		private List<Atk.Object> GetAdaptersDescendantsFamily (Atk.Object adapter) {
+		private static List<Atk.Object> GetAdaptersDescendantsFamily (Atk.Object adapter) {
 			List <Atk.Object> list = new List <Atk.Object> ();
 			int nchild = adapter.NAccessibleChildren;
 			if (nchild > 0) {

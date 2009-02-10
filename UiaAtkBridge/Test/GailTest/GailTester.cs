@@ -142,6 +142,12 @@ namespace UiaAtkBridgeTest
 			return false;
 		}
 
+		public override void CloseContextMenu (Atk.Object accessible) {
+			RunInGuiThread (delegate () {
+				((Gtk.Menu)mappings [accessible]).Popdown ();
+			});
+		}
+
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return true; }
 		}

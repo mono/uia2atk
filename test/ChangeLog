@@ -1,5 +1,9 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* samples/gtkcontextmenu.py: More experiments.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* samples/gtkmenubar.py: better test
 
 2009-02-09  Calen Chen <cachen@novell.com>

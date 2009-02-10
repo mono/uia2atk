@@ -25,6 +25,7 @@
 
 using System;
 
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -47,6 +48,16 @@ namespace UiaAtkBridge
 
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Popup; }
+		}
+
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			if (eventId != AutomationElementIdentifiers.MenuClosedEvent)
+				base.RaiseAutomationEvent (eventId, e);
+
+			TopLevelRootItem.Instance.RemoveChild (Parent);
+			((ParentAdapter)Parent).RemoveChild (this);
+			AutomationBridge.HandleTotalElementRemoval (this.Provider);
 		}
 	}
 }

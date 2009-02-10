@@ -12,9 +12,11 @@ class ContextMenu:
         gtk.main_quit()
         return False
 
+    def close(self):
+        self.menu.popdown()
+
     def after_timeout(self):
         self.menu.get_accessible().add_selection (1)
-        return False
 
     def open_apple(self, widget):
         self.button.set_label("You selected apple")
@@ -43,6 +45,7 @@ class ContextMenu:
 	self.menu.show_all()
 
 	gobject.timeout_add (2000, self.after_timeout)
+        gobject.timeout_add (10000, self.close)
 
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)

@@ -656,7 +656,7 @@ namespace UiaAtkBridgeTest
 			// Don't use the full InterfaceSelection as the control
 			// can't implement everything fully without
 			// ISelectionProvider support
-			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (toggle);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (toggle);
 			Assert.IsNotNull (atkSelection,
 			                  "ExpandCollapseButton doesn't implement Atk.Selection");
 
@@ -716,7 +716,6 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		[Ignore ("It causes a deadlock on app termination...")]
 		public override void ContextMenu ()
 		{
 			base.ContextMenu ();

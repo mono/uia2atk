@@ -1,5 +1,10 @@
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ContextMenu.cs:
+	* AutomationBridge.cs: Handle MenuClosedEvent in ContextMenu.
+
+2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AutomationBridge.cs: Cleaner function.
 
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>

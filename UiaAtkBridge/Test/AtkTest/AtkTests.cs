@@ -585,58 +585,73 @@ namespace UiaAtkBridgeTest
 			menu.Add (new MenuLayout ("Close"));
 
 			int expectedNumOfWindows = GetTopLevelRootItem ().NAccessibleChildren + 1;
+			
 			accessible = GetAccessible (type, menu);
-			Interfaces (accessible,
-			            typeof (Atk.Component),
-			            typeof (Atk.Selection));
-			Assert.AreEqual (expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
-			                 "Windows in my app should be " + expectedNumOfWindows + 
-			                 "but I got:" + DescribeChildren (GetTopLevelRootItem ()));
 
-			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
-
-			PropertyRole (type, accessible);
-
-			Assert.AreEqual (accessible.Parent.Role, Atk.Role.Window);
-
-			Assert.AreEqual (accessible.Parent.Parent, GetTopLevelRootItem ());
-			
-			States (accessible,
-			  Atk.StateType.Focused,
-			  Atk.StateType.Enabled,
-			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible,
-			  Atk.StateType.Showing);
-
-			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, 
-			                 "number of children; children roles:" + DescribeChildren (accessible));
-
-			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
-				Atk.Object menuChild = accessible.RefAccessibleChild (i);
-				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
-				Assert.IsTrue (
-				  ((menuChild.Role == Atk.Role.Menu) ||
-				   (menuChild.Role == Atk.Role.MenuItem) ||
-				   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
-				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
+			int currentTopLevelItems = 0;
+			try {
+				Interfaces (accessible,
+				            typeof (Atk.Component),
+				            typeof (Atk.Selection));
+				Assert.AreEqual (expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
+				                 "Windows in my app should be " + expectedNumOfWindows + 
+				                 "but I got:" + DescribeChildren (GetTopLevelRootItem ()));
+	
+				Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
+	
+				PropertyRole (type, accessible);
+	
+				Assert.AreEqual (accessible.Parent.Role, Atk.Role.Window);
+	
+				Assert.AreEqual (accessible.Parent.Parent, GetTopLevelRootItem ());
 				
-				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
-				   "only grandchildren allowed if parent is menu; here we got " + menuChild.NAccessibleChildren +
-				   " children, with role " + menuChild.Role + "on the item number" + i);
-
-				Assert.AreEqual (menuChild.Name, menu [i].Label, "name of the menu is the same as its label");
+				States (accessible,
+				  Atk.StateType.Focused,
+				  Atk.StateType.Enabled,
+				  Atk.StateType.Sensitive,
+				  Atk.StateType.Visible,
+				  Atk.StateType.Showing);
+	
+				Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, 
+				                 "number of children; children roles:" + DescribeChildren (accessible));
+	
+				for (int i = 0; i < accessible.NAccessibleChildren; i++) {
+					Atk.Object menuChild = accessible.RefAccessibleChild (i);
+					Assert.IsNotNull (menuChild, "menu child#0 should not be null");
+					Assert.IsTrue (
+					  ((menuChild.Role == Atk.Role.Menu) ||
+					   (menuChild.Role == Atk.Role.MenuItem) ||
+					   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
+					   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
+					
+					Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
+					   "only grandchildren allowed if parent is menu; here we got " + menuChild.NAccessibleChildren +
+					   " children, with role " + menuChild.Role + "on the item number" + i);
+	
+					Assert.AreEqual (menuChild.Name, menu [i].Label, "name of the menu is the same as its label");
+				}
+				
+				Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+				//InterfaceComponent (type, atkComponent);
+	
+				List <string> names = new List <string> ();
+				foreach (MenuLayout submenu in menu)
+					names.Add (submenu.Label);
+				Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+				RunInGuiThread (delegate (){
+					InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+				});
+			} catch {
+				currentTopLevelItems = -1;
+				throw;
+			} finally {
+				if (currentTopLevelItems != -1)
+					currentTopLevelItems = GetTopLevelRootItem ().NAccessibleChildren;
+				CloseContextMenu (accessible);
+				if (currentTopLevelItems != -1)
+					Assert.AreEqual (GetTopLevelRootItem ().NAccessibleChildren, currentTopLevelItems - 1,
+					                 "ContextMenu has not disappeared from the hierarchy!");
 			}
-			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
-
-			List <string> names = new List <string> ();
-			foreach (MenuLayout submenu in menu)
-				names.Add (submenu.Label);
-			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			RunInGuiThread (delegate (){
-				InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
-			});
 		}
 		
 		[Test]
