@@ -1,3 +1,8 @@
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs: (Revert revision 126510): Reverting mario's
+	fix, sorry, it breaks the tests.
+
 2009-02-10  Mario Carrion <mcarrion@novell.com>
 
 	* ComboBox.cs: Fix NRE when propagating Name after AddingSelection.

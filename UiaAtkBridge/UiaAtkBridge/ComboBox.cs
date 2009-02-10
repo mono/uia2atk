@@ -106,12 +106,9 @@ namespace UiaAtkBridge
 			bool success = selectionHelper.AddSelection (i);
 			if (success) {
 				string propagateName = null;
-				if (!selProvider.CanSelectMultiple) {
-					Atk.Object selected = RefSelection (0);
-					if (selected != null)
-						propagateName = selected.Name;
-				}
-				RaiseSelectionChanged (propagateName ?? string.Empty);
+				if (!selProvider.CanSelectMultiple)
+					propagateName = RefSelection (0).Name;
+				RaiseSelectionChanged (propagateName);
 			}
 
 			// TODO: Report gail bug, and return 'success' instead
