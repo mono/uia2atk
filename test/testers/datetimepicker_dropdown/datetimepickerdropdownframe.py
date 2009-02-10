@@ -31,8 +31,8 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
         self.commas = self.findAllLabels(self.LABEL_COMMA)
 
         self.checkbox = self.findCheckBox(None)
-        self.weekday = self.lists[1]
-        self.month = self.lists[0]
+        self.weekday = self.lists[0]
+        self.month = self.lists[1]
         self.day = self.spinbuttons[0]
         self.year = self.spinbuttons[1]
         self.dropdownbutton = self.findPushButton(None)

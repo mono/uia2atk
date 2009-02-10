@@ -23,20 +23,20 @@ import datetime
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the datetimepicker_dropdown sample application
 try:
-  app = launchDateTimePicker(app_path)
+    app = launchDateTimePicker(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 
 # just an alias to make things shorter
@@ -45,18 +45,19 @@ dtpddFrame = app.dateTimePickerDropDownFrame
 ##############################
 # check datetimepicker_dropdown  AtkAction
 ##############################
-#actionsCheck(dtpddFrame.checkbox, "CheckBox")
-#actionsCheck(dtpddFrame.weekdays[0], "ListItem")
-#actionsCheck(dtpddFrame.weekdays[6], "ListItem")
-#actionsCheck(dtpddFrame.months[0], "ListItem")
-#actionsCheck(dtpddFrame.months[11], "ListItem")
-#actionsCheck(dtpddFrame.dropdownbutton, "Button")
+actionsCheck(dtpddFrame.checkbox, "CheckBox")
+actionsCheck(dtpddFrame.weekdays[0], "ListItem")
+actionsCheck(dtpddFrame.weekdays[6], "ListItem")
+actionsCheck(dtpddFrame.months[0], "ListItem")
+actionsCheck(dtpddFrame.months[11], "ListItem")
+actionsCheck(dtpddFrame.dropdownbutton, "Button")
 
 ##############################
 # check datetimepicker_dropdown AtkAccessible
 ##############################
-#statesCheck(dtpddFrame.panel, "Panel", add_states=["focused"])
-#statesCheck(dtpddFrame.weekday, "List")
+statesCheck(dtpddFrame.panel, "Panel", add_states=["focused"])
+statesCheck(dtpddFrame.weekday, "List")
+
 NUM_MONTHS = 12
 NUM_DAYS = 7
 # subtract 1 because so January is 0 and December is 11 so we can iterate 
@@ -80,11 +81,11 @@ for i in range(NUM_DAYS):
         #add_states=[]
         add_states=["editable"]
         invalid_states=["showing", "visible"]
-#    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
 
-#statesCheck(dtpddFrame.commas[0], "Label")
-#statesCheck(dtpddFrame.spaces[0], "Label")
-#statesCheck(dtpddFrame.month, "List")
+statesCheck(dtpddFrame.commas[0], "Label")
+statesCheck(dtpddFrame.spaces[0], "Label")
+statesCheck(dtpddFrame.month, "List")
 
 # check the status of all months
 for i in range(NUM_MONTHS):
@@ -100,35 +101,35 @@ for i in range(NUM_MONTHS):
         #add_states=[]
         add_states=["editable"]
         invalid_states=["showing", "visible"]
-#    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
 
-#statesCheck(dtpddFrame.spaces[1], "Label")
-#statesCheck(dtpddFrame.day, "DateTimePicker_Spin")
-#statesCheck(dtpddFrame.commas[1], "Label")
-#statesCheck(dtpddFrame.spaces[2], "Label")
-#statesCheck(dtpddFrame.year, "DateTimePicker_Spin")
+statesCheck(dtpddFrame.spaces[1], "Label")
+statesCheck(dtpddFrame.day, "DateTimePicker_Spin")
+statesCheck(dtpddFrame.commas[1], "Label")
+statesCheck(dtpddFrame.spaces[2], "Label")
+statesCheck(dtpddFrame.year, "DateTimePicker_Spin")
 ## XXX: the "focusable" problem is under discussion
-#statesCheck(dtpddFrame.checkbox, "CheckBox", add_states=["checked"], invalid_states=["focusable"])
-#statesCheck(dtpddFrame.dropdownbutton, "Button", invalid_states=["focusable"])
-#sleep(config.SHORT_DELAY)
-#
-#dtpddFrame.inputText(dtpddFrame.spaces[0], "test")
-#dtpddFrame.assertText(dtpddFrame.spaces[0], " ")
-#dtpddFrame.inputText(dtpddFrame.commas[0], "test")
-#dtpddFrame.assertText(dtpddFrame.commas[0], ",")
-#dtpddFrame.inputText(dtpddFrame.checkbox, "test")
-#dtpddFrame.assertText(dtpddFrame.checkbox, "")
-#dtpddFrame.inputText(dtpddFrame.dropdownbutton, "test")
-#dtpddFrame.assertText(dtpddFrame.dropdownbutton, "Drop Down")
-#
-#dtpddFrame.inputText(dtpddFrame.months[0], "test")
-#dtpddFrame.assertText(dtpddFrame.months[0], "January")
-#dtpddFrame.inputText(dtpddFrame.weekdays[0], "test")
-#dtpddFrame.assertText(dtpddFrame.weekdays[0], "Monday")
-#dtpddFrame.inputText(dtpddFrame.day, "test")
-#dtpddFrame.assertText(dtpddFrame.day, str(CURRENT_DAY))
-#dtpddFrame.inputText(dtpddFrame.year, "test")
-#dtpddFrame.assertText(dtpddFrame.year, str(CURRENT_YEAR))
+statesCheck(dtpddFrame.checkbox, "CheckBox", add_states=["checked"], invalid_states=["focusable"])
+statesCheck(dtpddFrame.dropdownbutton, "Button", invalid_states=["focusable"])
+sleep(config.SHORT_DELAY)
+
+dtpddFrame.inputText(dtpddFrame.spaces[0], "test")
+dtpddFrame.assertText(dtpddFrame.spaces[0], " ")
+dtpddFrame.inputText(dtpddFrame.commas[0], "test")
+dtpddFrame.assertText(dtpddFrame.commas[0], ",")
+dtpddFrame.inputText(dtpddFrame.checkbox, "test")
+dtpddFrame.assertText(dtpddFrame.checkbox, "")
+dtpddFrame.inputText(dtpddFrame.dropdownbutton, "test")
+dtpddFrame.assertText(dtpddFrame.dropdownbutton, "Drop Down")
+
+dtpddFrame.inputText(dtpddFrame.months[0], "test")
+dtpddFrame.assertText(dtpddFrame.months[0], "January")
+dtpddFrame.inputText(dtpddFrame.weekdays[0], "test")
+dtpddFrame.assertText(dtpddFrame.weekdays[0], "Monday")
+dtpddFrame.inputText(dtpddFrame.day, "test")
+dtpddFrame.assertText(dtpddFrame.day, str(CURRENT_DAY))
+dtpddFrame.inputText(dtpddFrame.year, "test")
+dtpddFrame.assertText(dtpddFrame.year, str(CURRENT_YEAR))
 
 ##############################
 # Value
@@ -148,27 +149,25 @@ dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
 ##############################
 # Selection
 ##############################
+# we make the value of DateTimePicker to 2009-1-1
+dtpddFrame.assertSelectChild(dtpddFrame.month, 0)
+sleep(config.SHORT_DELAY)
+
+dtpddFrame.inputValue(dtpddFrame.day, 1)
+sleep(config.SHORT_DELAY)
+
+dtpddFrame.inputValue(dtpddFrame.year, 2009)
+sleep(config.SHORT_DELAY)
+
+# then we set weekday to Tuesday for instance, 
+# the date will be Tuesday, December 30, 2008
 dtpddFrame.assertSelectChild(dtpddFrame.weekday, 1)
-# TODO:
-# When you do SelectChild action here to select "Tuesday" from the list, 
-# it's hard to determine the actual DATE should be, since as time goes on,
-# the year, month and day will be changed accordingly and simultaneously.
+sleep(config.SHORT_DELAY)
 
-#mkdate = datetime.date(YEAR, CURRENT_MONTH + 1, DAY)
-#DATE = mkdate.strftime("%A, %B %d, %Y")
-#sleep(config.SHORT_DELAY)
-#dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
-
-dtpddFrame.assertSelectChild(dtpddFrame.month, 1)
-# TODO:
-# When you do SelectChild action here to select "February" from the list, 
-# it's hard to determine the actual DATE should be, since as time goes on,
-# the year, month and day will be changed accordingly and simultaneously.
-
-#mkdate = datetime.date(2008, CURRENT_MONTH + 1, 20)
-#DATE = mkdate.strftime("%A, %B %d, %Y")
-#sleep(config.SHORT_DELAY)
-#dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
+mkdate = datetime.date(2008, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+sleep(config.SHORT_DELAY)
+dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
 
 ##############################
 # checkbox is disabled
@@ -190,8 +189,17 @@ dtpddFrame.assertSelectChild(dtpddFrame.month, 1)
 ##############################
 # Test Drop Down Button's AtkAction
 ##############################
-# XXX: we should do some testing before clicking here (bgmerrell)
+# press right twice to navigate to 2009-1-1
 dtpddFrame.click(dtpddFrame.dropdownbutton)
+sleep(config.SHORT_DELAY)
+dtpddFrame.keyCombo("Right", grabFocus=False)
+dtpddFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+
+mkdate = datetime.date(2009, 1, 1)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+sleep(config.SHORT_DELAY)
+dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
 
 ##############################
 # End

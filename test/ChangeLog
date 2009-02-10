@@ -1,3 +1,11 @@
+2009-02-10  Ray Wang <rawang@novell.com>
+
+	* testers/datetimepicker_dropdown_ops.py: uncomment those working
+	statements which were commented for debugging, and add test DropDown 
+	button statements
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py: fix
+	lists assignment error
+
 2009-02-10  Calen Chen <cachen@novell.com>
 
 	* samples/openfiledialog.py: add new example against filedialog and 
