@@ -26,6 +26,8 @@
 
 using System;
 using Mono.Unix;
+using System.Reflection;
+using SD = System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using Mono.UIAutomation.Services;
@@ -133,31 +135,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 			PropertyGridListItemProvider pgListItem 
 				= item as PropertyGridListItemProvider;
-			if (pgListItem == null) {
+			if (pgListItem == null)
 				return null;
-			}
 
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+			if (propertyId == AEIds.NameProperty.Id)
 				return pgListItem.Name;
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
 				return false;
-/* TODO:
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				SD.Rectangle rectangle = datagridview.GetRowDisplayRectangle (provider.Row.Index, false);
-				if (datagridview.RowHeadersVisible)
-					rectangle.X += datagridview.RowHeadersWidth;
-
-				return Helper.GetControlScreenBounds (rectangle,
-				                                      datagridview,
-				                                      true);
-			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return Helper.IsListItemOffScreen (item.BoundingRectangle,
-				                                   datagridview,
-				                                   datagridview.ColumnHeadersVisible,
-				                                   header.Size,
-				                                   ScrollBehaviorObserver);
-*/
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
 				return null;
@@ -333,6 +318,10 @@ namespace Mono.UIAutomation.Winforms
 		public PropertyGridViewProvider PropertyGridViewProvider {
 			get { return viewProvider; }
 		}
+
+		public GridEntry Entry {
+			get { return entry; }
+		}
 #endregion
 
 #region Public Methods
@@ -395,14 +384,20 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 	}
 
-	internal class PropertyGridListItemChildProvider
+	internal abstract class PropertyGridListItemChildProvider
 		: FragmentRootControlProvider
 	{
+		public abstract int Column {
+			get;
+		}
+
 		public PropertyGridListItemChildProvider (PropertyGridListItemProvider itemProvider,
 		                                          PropertyGridView view)
 			: base (view)
 		{
 			this.itemProvider = itemProvider;
+			this.propertyGrid = itemProvider.PropertyGridViewProvider.PropertyGrid;
+			this.view = view;
 		}
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -419,16 +414,96 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Edit.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("edit");
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+				SD.Rectangle bounds = GetBounds ();
+				return Helper.GetControlScreenBounds (bounds, view, true);
+			} else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				SD.Rectangle controlRect = view.Bounds;
+				controlRect.X = controlRect.Y = 0;
+				return !controlRect.IntersectsWith (GetBounds ());
+			}
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		// TODO: Replace this with an internal property
+		private int RowHeight {
+			get {
+				return Helper.GetPrivateField<int> (
+					typeof (PropertyGridView), view,
+					"row_height"
+				);
+			}
+		}
+
+		// TODO: Replace this with an internal property
+		private ScrollBar VerticalScrollBar {
+			get {
+				return Helper.GetPrivateField<ScrollBar> (
+					typeof (PropertyGridView), view, "vbar"
+				);
+			}
+		}
+
+		// TODO: Replace this with an internal property
+		private int SplitterLocation {
+			get {
+				return Helper.GetPrivateProperty<PropertyGridView, int> (
+					view, "SplitterLocation"
+				);
+			}
+		}
+
+		private SD.Rectangle GetBounds ()
+		{
+			GridEntry entry = itemProvider.Entry;
+
+			int x = SplitterLocation + ENTRY_SPACING + (entry.PaintValueSupported ? VALUE_PAINT_INDENT : 0);
+			int y = (-1 * VerticalScrollBar.Value) * RowHeight;
+
+			MethodInfo mi = typeof (PropertyGridView).GetMethod ("CalculateItemY",
+									     BindingFlags.NonPublic
+									     | BindingFlags.Instance);
+			if (mi == null) {
+				Log.Warn ("Unable to find CalculateItemY method");
+				return new SD.Rectangle ();
+			}
+
+			object[] args = new object[] {
+				entry, propertyGrid.RootGridItem.GridItems, y
+			};
+
+			// CalculateItemY (entry, items, ref y)
+			mi.Invoke (view, args);
+			
+			// y is a ref param
+			y = (int) args[2];
+
+			SD.Rectangle controlRect = view.Bounds;
+			int width = (Column == 0) ? SplitterLocation
+						  : controlRect.Width - VerticalScrollBar.Bounds.Width - x;
+
+			return new SD.Rectangle (
+				Column * x, y, width, RowHeight
+			);
+		}
+
 		public PropertyGridListItemProvider itemProvider;
+		public PropertyGrid propertyGrid;
+		public PropertyGridView view;
+
+		// TODO: Replace these with an internal property
+		private const int ENTRY_SPACING = 2;
+		private const int VALUE_PAINT_INDENT = 27;
 	}
 
 	internal class PropertyGridListItemNameProvider
 		: PropertyGridListItemChildProvider
 	{
+		public override int Column {
+			get { return 0; }
+		}
+		
 		public PropertyGridListItemNameProvider (PropertyGridListItemProvider itemProvider,
 		                                         PropertyGridView view)
 			: base (itemProvider, view)
@@ -455,6 +530,10 @@ namespace Mono.UIAutomation.Winforms
 	internal class PropertyGridListItemValueProvider
 		: PropertyGridListItemChildProvider
 	{
+		public override int Column {
+			get { return 1; }
+		}
+
 		public PropertyGridListItemValueProvider (PropertyGridListItemProvider itemProvider,
 		                                          PropertyGridView view)
 			: base (itemProvider, view)

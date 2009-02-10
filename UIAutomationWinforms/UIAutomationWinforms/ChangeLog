@@ -1,3 +1,8 @@
+2009-02-10  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Complete
+	BoundingRectangleProperty and IsOffscreenEvent.
+
 2009-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs:
