@@ -1,3 +1,9 @@
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* BasicWidgetType.cs: Add new ContextMenu (not
+	ContextMenuStrip) test.
+
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

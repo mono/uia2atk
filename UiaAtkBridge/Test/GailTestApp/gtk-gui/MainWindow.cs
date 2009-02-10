@@ -201,7 +201,6 @@ public partial class MainWindow {
         this.treeview2 = new Gtk.TreeView();
         this.treeview2.CanFocus = true;
         this.treeview2.Name = "treeview2";
-        this.treeview2.HeadersClickable = true;
         this.GtkScrolledWindow.Add(this.treeview2);
         this.hbox1.Add(this.GtkScrolledWindow);
         Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.hbox1[this.GtkScrolledWindow]));
@@ -315,6 +314,7 @@ public partial class MainWindow {
         this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton1"));
         this.radiobutton1.CanFocus = true;
         this.radiobutton1.Name = "radiobutton1";
+        this.radiobutton1.Active = true;
         this.radiobutton1.DrawIndicator = true;
         this.radiobutton1.UseUnderline = true;
         this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);
@@ -345,6 +345,7 @@ public partial class MainWindow {
         this.radTest1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 0"));
         this.radTest1.CanFocus = true;
         this.radTest1.Name = "radTest1";
+        this.radTest1.Active = true;
         this.radTest1.DrawIndicator = true;
         this.radTest1.UseUnderline = true;
         this.radTest1.Group = new GLib.SList(System.IntPtr.Zero);
@@ -507,7 +508,6 @@ public partial class MainWindow {
         this.nodeview1 = new Gtk.NodeView();
         this.nodeview1.CanFocus = true;
         this.nodeview1.Name = "nodeview1";
-        this.nodeview1.HeadersClickable = true;
         this.GtkScrolledWindow2.Add(this.nodeview1);
         this.hpaned1.Add(this.GtkScrolledWindow2);
         this.hbox2.Add(this.hpaned1);

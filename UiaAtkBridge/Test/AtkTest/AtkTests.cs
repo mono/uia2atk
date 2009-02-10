@@ -574,11 +574,13 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public virtual void ContextMenu () 
+		public virtual void ContextMenu ()
 		{
-			BasicWidgetType type = BasicWidgetType.ContextMenu;
-			Atk.Object accessible = null;
-			
+			ContextMenu (BasicWidgetType.ContextMenu);
+		}
+		
+		public virtual void ContextMenu (BasicWidgetType type) 
+		{
 			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("Schema", new MenuLayout ("XSD"), new MenuLayout ("DTD")), new MenuLayout ("Source") };
 			List <MenuLayout> menu = new List <MenuLayout> ();
 			menu.Add (new MenuLayout ("Edit", firstSubmenus));
@@ -586,7 +588,7 @@ namespace UiaAtkBridgeTest
 
 			int expectedNumOfWindows = GetTopLevelRootItem ().NAccessibleChildren + 1;
 			
-			accessible = GetAccessible (type, menu);
+			Atk.Object accessible = GetAccessible (type, menu);
 
 			int currentTopLevelItems = 0;
 			try {

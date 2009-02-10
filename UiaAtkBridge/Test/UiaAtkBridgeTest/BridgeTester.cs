@@ -71,6 +71,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.Form form = new SWF.Form ();
 		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
 		protected SWF.ContextMenuStrip contextMenu = new SWF.ContextMenuStrip ();
+		protected SWF.ContextMenu contextMenuDep = new SWF.ContextMenu ();
 		protected SWF.Panel panel1 = new SWF.Panel ();
 		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
 		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
@@ -172,6 +173,8 @@ namespace UiaAtkBridgeTest
 
 			//TODO: test also contextmenus not attached to widgets
 			lab1.ContextMenuStrip = contextMenu;
+
+			butWithoutImage.ContextMenu = contextMenuDep;
 			
 			gb1.Controls.Add (rad1);
 			gb1.Controls.Add (rad2);
@@ -259,8 +262,13 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
-		public override void CloseContextMenu (Atk.Object accessible) {
-			((SWF.ContextMenuStrip)mappings [accessible]).Close ();
+		public override void CloseContextMenu (Atk.Object accessible)
+		{
+			var comp = mappings [accessible];
+			if (comp is SWF.ContextMenuStrip)
+				((SWF.ContextMenuStrip)mappings [accessible]).Close ();
+			else if (comp is SWF.ContextMenu)
+				((SWF.ContextMenu)mappings [accessible]).Dispose ();
 		}
 
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
@@ -901,18 +909,30 @@ namespace UiaAtkBridgeTest
 			System.ComponentModel.Component widget;
 
 			SWF.ToolStripItemCollection menuItems = null;
+			SWF.MenuItem.MenuItemCollection menuItemsD = null;
 			
 			if (type == BasicWidgetType.ContextMenu)
 				menuItems = contextMenu.Items;
+			else if (type == BasicWidgetType.ContextMenuDeprecated)
+				menuItemsD = contextMenuDep.MenuItems;
 			else
 				menuItems = menuStrip1.Items;
 
 			//cleanup
 			//FIXME: use 'menuItems.Clear ()' when BNC#446783 is fixed
-			while (menuItems.Count > 0)
-				menuItems.Remove (menuItems [0]);
-			
-			widget = AddRecursively (menuItems, menu, type);
+			if (menuItems != null) {
+				while (menuItems.Count > 0)
+					menuItems.Remove (menuItems [0]);
+
+				widget = AddRecursively (menuItems, menu, type);
+			} else {
+				menuItemsD.Clear ();
+
+				AddRecursively (menuItemsD, menu);
+
+				widget = contextMenuDep;
+				contextMenuDep.Show (butWithoutImage, new Point (0, 0));
+			}
 			
 			if (type == BasicWidgetType.MainMenuBar)
 				widget = menuStrip1;
@@ -924,6 +944,23 @@ namespace UiaAtkBridgeTest
 			return GetAdapterForWidget (widget);
 		}
 
+		private void AddRecursively (SWF.MenuItem.MenuItemCollection subcol, List <MenuLayout> menus)
+		{
+			if (menus.Count <= 0)
+				return;
+			
+			List <SWF.MenuItem> list = new List <SWF.MenuItem> ();
+			foreach (MenuLayout menu in menus) {
+				SWF.MenuItem mi = new SWF.MenuItem (menu.Label);
+				
+				AddRecursively (mi.MenuItems, menu.SubMenus);
+				
+				list.Add (mi);
+			}
+
+			subcol.AddRange (list.ToArray ());
+		}
+		
 		private Component AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus, BasicWidgetType type)
 		{
 			Component ret = null, ret_aux;

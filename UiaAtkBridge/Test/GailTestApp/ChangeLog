@@ -1,3 +1,8 @@
+2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* gtk-gui/MainWindow.cs: Add new ContextMenu (not
+	ContextMenuStrip) test.
+
 2009-01-28  Mike Gorse  <mgorse@novell.com>
 
 	* Main.cs: Reduce Sleep time on initialization.
