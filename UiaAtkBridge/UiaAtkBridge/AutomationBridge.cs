@@ -413,8 +413,10 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			//Console.WriteLine ("RaiseStructureChangedEvent:" + e.StructureChangeType.ToString ());
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
+			//Console.WriteLine (String.Format("RaiseStructureChangedEvent:{0}-{1}",
+			//                                 e.StructureChangeType.ToString (),
+			//                                 provider.GetType ().Name));
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
 				HandleBulkAdded (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildAdded) {
@@ -461,6 +463,7 @@ namespace UiaAtkBridge
 
 			if (parentProvider == null)
 				return null;
+
 			int parentControlTypeId = (int)
 				parentProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id);
 			if (parentControlTypeId == ControlType.Header.Id ||
@@ -829,7 +832,7 @@ namespace UiaAtkBridge
 				Log.Error ("UiaAtkBridge: Couldn't get an atk object for a WebBrowser");
 				return false;
 			}
-				providerAdapterMapping [provider] = nativeObj;
+			providerAdapterMapping [provider] = nativeObj;
 			parentObject.AddOneChild (nativeObj);
 			return true;
 		}
