@@ -1,3 +1,7 @@
+2009-02-10  Calen Chen <cachen@novell.com>
+
+	* samples/openfiledialog.py: add new example against filedialog and 
+	openfiledialog controls
 
 2009-02-10  Calen Chen <cachen@novell.com>
 
