@@ -8,7 +8,7 @@
 	* testers/toolbarbutton: add new test: test AtkText AtkAction 
 	AtkComponent AtkImage for toolbarbuttons which are in difference styles 
 	and properties
-
+ 
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/gtkcontextmenu.py: More experiments.
