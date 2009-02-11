@@ -210,6 +210,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (childProvider, "We must have a child");
 
 			Assert.AreEqual (childProvider, provider);
+
+			// Terminate Provider
+			((FragmentControlProvider) parentProvider).Terminate ();
 		}
 
 		#endregion

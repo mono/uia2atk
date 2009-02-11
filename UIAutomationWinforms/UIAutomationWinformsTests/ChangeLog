@@ -1,3 +1,8 @@
+2009-02-11  Mario Carrion  <mcarrion@novell.com>
+
+	* ToolBarButtonProviderTest.cs: Test added to terminate ToolBar
+	children.
+
 2009-02-09  Neville Gao  <nevillegao@gmail.com>
 
 	* SplitterProviderTest.cs: Fixed Move() test, split to horizontal and
