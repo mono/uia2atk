@@ -1,3 +1,7 @@
+2009-02-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* RadioButton.cs: Really fix #447885 properly (see r126638).
+
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Adapter.cs:
@@ -5,7 +9,7 @@
 	* AutomationBridge.cs: Ooops, forgot to fix this Coord.Window
 	position test.
 
-	2009-02-10  Mike Gorse  <mgorse@novell.com>
+2009-02-10  Mike Gorse  <mgorse@novell.com>
 
 	* ComponentAdapter.cs, ComponentParentAdapter.cs: Check that
 	  componentExpert has been initialized before using.
@@ -15,7 +19,7 @@
 
 	* TableImplementorHelper.cs: Fix range checking for headers.
 
-		* ComboBoxOptions.cs: Override UpdateNameProperty.
+	* ComboBoxOptions.cs: Override UpdateNameProperty.
 
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

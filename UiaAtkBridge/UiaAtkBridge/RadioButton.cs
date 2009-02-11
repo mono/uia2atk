@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -51,6 +52,18 @@ namespace UiaAtkBridge
 		protected override Atk.RelationSet OnRefRelationSet ()
 		{
 			Atk.RelationSet relSet = base.OnRefRelationSet ();
+			if (relSet == null)
+				relSet = new Atk.RelationSet ();
+			
+			List<Atk.Relation> relsToRemove = new List<Atk.Relation> ();
+			for (int i = 0; i < relSet.NRelations; i++) {
+				Atk.Relation rel = relSet.GetRelation (i);
+				if (relSet.GetRelation (i).RelationType == Atk.RelationType.MemberOf)
+					relsToRemove.Add (rel);
+			}
+			foreach (Atk.Relation relation in relsToRemove)
+				relSet.Remove (relation);
+			
 			if (Parent != null) {
 				var rel = new Atk.Relation (((ComponentParentAdapter)Parent).RadioButtons.ToArray (), 
 				                            Atk.RelationType.MemberOf);
