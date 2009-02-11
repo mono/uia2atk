@@ -1,3 +1,8 @@
+2009-02-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Enable test, the bug mentioned in the FIXME is
+	resolved.
+
 2009-02-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Ooops, forgot to fix this Coord.Window position
