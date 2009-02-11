@@ -1,3 +1,9 @@
+2009-02-11  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: Fix the
+	BoundingRectangleProperty to return the rect around the tab's label,
+	similar to Vista and GAIL.
+
 2009-02-11  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxExpandCollapseProviderBehavior.cs:

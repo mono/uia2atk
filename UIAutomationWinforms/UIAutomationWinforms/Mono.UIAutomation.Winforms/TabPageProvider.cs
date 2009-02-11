@@ -40,6 +40,8 @@ namespace Mono.UIAutomation.Winforms
 	{
 		public TabPageProvider (TabPage control) : base (control)
 		{
+			this.tabPage = control;
+
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 				     new SelectionItemProviderBehavior (this));
 		}
@@ -50,6 +52,9 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.TabItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("tab item");
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				return Helper.GetControlScreenBounds (tabPage.TabBounds,
+				                                      tabPage, false);
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -66,5 +71,7 @@ namespace Mono.UIAutomation.Winforms
 				return TabControlProvider.IsItemSelected (this);
 			}
 		}
+		
+		private TabPage tabPage;
 	}
 }
