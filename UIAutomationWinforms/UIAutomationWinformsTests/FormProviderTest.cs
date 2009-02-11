@@ -825,6 +825,198 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 #endregion
+
+		#region Invisible/Visible Tests
+
+		[Test]
+		public void InvisibleVisibleTest ()
+		{
+			IRawElementProviderFragmentRoot rootProvider = null;
+			IRawElementProviderFragment buttonProvider = null;
+			Button button = null;
+			Form f = null;
+			
+			// Exposes 474634 and 464356
+			using (f = new Form ()) {
+				f.Size = new System.Drawing.Size (400, 400);
+				f.Show ();
+
+				// Empty form NO CHILDREN
+				rootProvider 
+					= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Assert.AreEqual (0, 
+				                 ChildrenCount (rootProvider),
+				                 "No children");
+
+				// Adding invisible button
+				button = new Button ();
+				button.Text = "button";
+				button.Visible = false;
+				f.Controls.Add (button);
+
+				Assert.AreEqual (0, 
+				                 ChildrenCount (rootProvider),
+				                 "No children");
+
+				// Changing visibility
+				bridge.ResetEventLists ();
+				button.Visible = true;
+				Assert.AreEqual (1, 
+				                 ChildrenCount (rootProvider),
+				                 "1 child");
+				buttonProvider
+					= (IRawElementProviderFragment) ProviderFactory.FindProvider (button);
+				Assert.IsNotNull (buttonProvider, "ButtonProvider missing");
+				Assert.IsNotNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+				                                                       StructureChangeType.ChildAdded),
+				                  "Button. StructureChangeType.ChildAdded event missing");
+				Assert.AreEqual (rootProvider,
+				                 buttonProvider.Navigate (NavigateDirection.Parent),
+				                 "FormProvider != button.Parent");
+				buttonProvider = null;
+				
+				bridge.ResetEventLists ();
+				button.Visible = false;
+				Assert.AreEqual (0, 
+				                 ChildrenCount (rootProvider),
+				                 "1 child");
+				buttonProvider
+					= (IRawElementProviderFragment) ProviderFactory.FindProvider (button);
+				Assert.IsNull (buttonProvider, "ButtonProvider missing");
+				Assert.IsNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+				                                                    StructureChangeType.ChildAdded),
+				               "Button. StructureChangeType.ChildAdded event missing");
+				buttonProvider = null;
+
+				// We are already invisible, we don't need to raise any event
+				bridge.ResetEventLists ();
+				f.Controls.Remove (button);
+				Assert.AreEqual (0,
+				                 ChildrenCount (rootProvider),
+				                 "No children");
+				buttonProvider
+					= (IRawElementProviderFragment) ProviderFactory.FindProvider (button);
+				Assert.IsNull (buttonProvider, "ButtonProvider missing");
+				Assert.IsNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+				                                                    StructureChangeType.ChildAdded),
+				               "Button. StructureChangeType.ChildAdded event missing");
+			}
+		}
+
+		[Test]
+		public void InvisibleVisibleTest1 ()
+		{
+			// Similar to InvisibleVisibleTest but with invisible items
+			// before calling Show and getting the provider.
+			IRawElementProviderFragmentRoot rootProvider = null;
+			IRawElementProviderSimple buttonProvider = null;
+			IRawElementProviderSimple checkBoxProvider = null;
+			Button button = null;
+			
+			Form f = new Form ();
+			f.Size = new System.Drawing.Size (400, 400);
+			f.Show ();
+
+			// Adding invisible button
+			button = new Button ();
+			button.Text = "button";
+			button.Visible = false;
+			f.Controls.Add (button);
+
+			// Adding a visible checkbox
+			CheckBox checkbox = new CheckBox ();
+			checkbox.Text = "checkbox";
+			checkbox.Visible = true;
+			f.Controls.Add (checkbox);
+
+			f.Show ();
+
+			// Empty form NO CHILDREN
+			rootProvider 
+				= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+			Assert.AreEqual (1, 
+			                 ChildrenCount (rootProvider),
+			                 "1 children = checkbox");
+
+			// Changing visibility
+			bridge.ResetEventLists ();
+			button.Visible = true;
+			Assert.AreEqual (2, 
+			                 ChildrenCount (rootProvider),
+			                 "2 children");
+			buttonProvider
+				= ProviderFactory.FindProvider (button);
+			Assert.IsNotNull (buttonProvider, "ButtonProvider missing");
+			Assert.IsNotNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+			                                                       StructureChangeType.ChildAdded),
+			                  "Button. StructureChangeType.ChildAdded event missing");
+			buttonProvider = null;
+			
+			bridge.ResetEventLists ();
+			button.Visible = false;
+			Assert.AreEqual (1, 
+			                 ChildrenCount (rootProvider),
+			                 "1 child = checkbox");
+			Assert.AreEqual (ControlType.CheckBox.Id,
+			                 (int) rootProvider.Navigate (NavigateDirection.FirstChild).GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 "CheckBox is the only child allowed");
+
+			buttonProvider
+				= ProviderFactory.FindProvider (button);
+			Assert.IsNull (buttonProvider, "ButtonProvider missing");
+			Assert.IsNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+			                                                    StructureChangeType.ChildAdded),
+			               "Button. StructureChangeType.ChildAdded event missing");
+			buttonProvider = null;
+
+			// We are already invisible, we don't need to raise any event
+			bridge.ResetEventLists ();
+			f.Controls.Remove (button);
+			Assert.AreEqual (1,
+			                 ChildrenCount (rootProvider),
+			                 "1 child = checkbox");
+			Assert.AreEqual (ControlType.CheckBox.Id,
+			                 (int) rootProvider.Navigate (NavigateDirection.FirstChild).GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 "CheckBox is the only child allowed");
+
+			buttonProvider
+				= ProviderFactory.FindProvider (button);
+			Assert.IsNull (buttonProvider, "ButtonProvider missing");
+			Assert.IsNull (bridge.GetStructureChangedEventFrom (buttonProvider,
+			                                                    StructureChangeType.ChildAdded),
+			               "Button. StructureChangeType.ChildAdded event missing");
+
+			// Set checkbox invisible
+			checkBoxProvider = ProviderFactory.FindProvider (checkbox);
+			bridge.ResetEventLists ();
+			checkbox.Visible = false;
+			Assert.AreEqual (0, 
+			                 ChildrenCount (rootProvider),
+			                 "No children");
+			Assert.IsNotNull (bridge.GetStructureChangedEventFrom (checkBoxProvider,
+			                                                       StructureChangeType.ChildRemoved),
+			                  "CheckBox. StructureChangeType.ChildRemoved event missing");
+
+			f.Dispose ();
+		}
+
+		private int ChildrenCount (IRawElementProviderFragmentRoot rootProvider)
+		{
+			int children = 0;
+			
+			IRawElementProviderFragment child 
+				= rootProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				children++;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			return children;
+		}
+
+		#endregion
 		
 #region BaseProviderTest Overrides
 		

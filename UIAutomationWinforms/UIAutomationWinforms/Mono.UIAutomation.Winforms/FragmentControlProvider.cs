@@ -43,6 +43,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private List<FragmentControlProvider> children;
+		private List<Component> componentChildren;
 		private INavigation navigation;
 		private SWF.ContextMenu contextMenu;
 		private SWF.ContextMenuStrip contextMenuStrip;
@@ -63,6 +64,7 @@ namespace Mono.UIAutomation.Winforms
 			componentProviders =
 				new Dictionary<Component, FragmentControlProvider> ();
 			children = new List<FragmentControlProvider> ();
+			componentChildren = new List<Component> ();
 
 			if (Control != null) {
 				Control.ContextMenuChanged += HandleContextMenuChanged;
@@ -223,30 +225,19 @@ namespace Mono.UIAutomation.Winforms
 			//       aren't sent to bridge until the parent's already
 			//       there.  There are about 100 ways to do this
 			//       better.
-			if (Control != null) {
+			if (Control != null) {				
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
 				
-				foreach (SWF.Control childControl in Control.Controls) {
-					FragmentControlProvider childProvider =
-						CreateProvider (childControl);
-					
-					if (childProvider == null)
-						continue;
-					// TODO: Null check, compound, etc?
-
-					componentProviders [childControl] = childProvider;
-					OnNavigationChildAdded (false,
-					                        (FragmentControlProvider) childProvider);
-				}
+				foreach (SWF.Control childControl in Control.Controls)
+					HandleComponentAdded (childControl, false);
 			}
 		}
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			for (; children.Count > 0; )
-				OnNavigationChildRemoved (false, 
-				                          (FragmentControlProvider) children [0]);
+			for (; componentChildren.Count > 0; )
+				HandleComponentRemoved (componentChildren [0], false);
 
 			children.Clear ();
 			componentProviders.Clear ();
@@ -320,35 +311,22 @@ namespace Mono.UIAutomation.Winforms
 	
 		private void OnControlAdded (object sender, SWF.ControlEventArgs args)
 		{
-			SWF.Control childControl = args.Control;
-			FragmentControlProvider childProvider = CreateProvider (childControl);
-			if (childProvider == null)
-				return;
-
-			componentProviders [childControl] = childProvider;	
-			OnNavigationChildAdded (true, 
-			                        (FragmentControlProvider) childProvider);
+			HandleComponentAdded (args.Control, true);
 		}
 	
 		private void OnControlRemoved (object sender, SWF.ControlEventArgs args)
 		{
-			FragmentControlProvider removedProvider;
-			
-			if (componentProviders.TryGetValue (args.Control, out removedProvider) == true) {
-				
-				// TODO: Some sort of disposal
-				
-				componentProviders.Remove (args.Control);
-				// StructureChangedEvent
-				// TODO: Use correct arguments, and fix bridge
-				//       to handle them!!!
-				//       Event source: Parent of removed child
-				//       runtimeId: The child that was removed.
-				//       (pg 6 of fxref_uiautomationtypes_p2.pdf)
-				OnNavigationChildRemoved (true, 
-				                          (FragmentControlProvider) removedProvider);
-				ProviderFactory.ReleaseProvider (args.Control);
-			}
+			HandleComponentRemoved (args.Control, true);
+		}
+
+		private void  OnControlVisibleChanged (object sender, EventArgs args)
+		{
+			SWF.Control control = (SWF.Control) sender;
+
+			if (control.Visible)
+				InitializeComponentProvider (control, true);
+			else
+				TerminateComponentProvider (control, true);
 		}
 
 		#endregion
@@ -362,6 +340,16 @@ namespace Mono.UIAutomation.Winforms
 
 			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
 		}
+
+		protected virtual FragmentControlProvider CreateProvider (Component component)
+		{
+			return (FragmentControlProvider) ProviderFactory.GetProvider (component);
+		}
+
+		protected virtual void DestroyProvider (Component component)
+		{
+			ProviderFactory.ReleaseProvider (component);
+		}
 		
 		protected FragmentControlProvider GetProvider (SWF.Control control)
 		{
@@ -369,6 +357,109 @@ namespace Mono.UIAutomation.Winforms
 				return componentProviders [control];
 			else
 				return null;
+		}
+
+		protected void InitializeComponentProvider (Component childComponent,
+		                                            bool raiseEvent)
+		{
+			SWF.Control control = null;
+			FragmentControlProvider childProvider = null;
+			
+			if ((control = childComponent as SWF.Control) != null)
+				childProvider = CreateProvider (control);
+			else
+				childProvider = CreateProvider (childComponent);
+			
+			if (childProvider == null)
+				return;
+			// TODO: Null check, compound, etc?
+
+			componentProviders [childComponent] = childProvider;
+			OnNavigationChildAdded (raiseEvent, childProvider);
+		}
+
+		protected void TerminateComponentProvider (Component childComponent,
+		                                           bool raiseEvent)
+		{			
+			FragmentControlProvider removedProvider;
+			
+			if (componentProviders.TryGetValue (childComponent, 
+			                                    out removedProvider)) {
+				componentProviders.Remove (childComponent);
+				// Event source:
+				//       Parent of removed child runtimeId: The child that was
+				//       removed. (pg 6 of fxref_uiautomationtypes_p2.pdf)
+				OnNavigationChildRemoved (raiseEvent, removedProvider);
+				DestroyProvider (childComponent);
+			}
+		}
+
+		protected void AddChildComponent (Component childComponent)
+		{
+			if (componentChildren.Contains (childComponent))
+				return;
+
+			componentChildren.Add (childComponent);
+			AddVisibleEvent (childComponent);
+		}
+
+		protected void RemoveChildComponent (Component childComponent)
+		{
+			if (!componentChildren.Contains (childComponent))
+				return;
+			
+			componentChildren.Remove (childComponent);
+			RemoveVisibleEvent (childComponent);
+		}
+
+		protected virtual void AddVisibleEvent (Component component)
+		{
+			SWF.Control control = null;
+
+			if ((control = component as SWF.Control) != null)
+				control.VisibleChanged += OnControlVisibleChanged;
+		}		
+
+		protected virtual void RemoveVisibleEvent (Component component)
+		{
+			SWF.Control control = null;
+
+			if ((control = component as SWF.Control) != null)
+				control.VisibleChanged -= OnControlVisibleChanged;			
+		}
+
+		protected virtual bool IsComponentVisible (Component component)
+		{
+			SWF.Control control = null;
+			if ((control = component as SWF.Control) != null)
+				return control.Visible;
+			else // Component based providers will need to override this method
+				return false;
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private void HandleComponentAdded (Component component, bool raiseEvent)
+		{
+			AddChildComponent (component);
+
+			// We don't add an invisible component but we keep track of its 
+			// Visible event to add it when Visible changes
+			if (!IsComponentVisible (component))
+				return;
+
+			InitializeComponentProvider (component, raiseEvent);
+		}
+
+		private void HandleComponentRemoved (Component component, bool raiseEvent)
+		{
+			// We will only need to Terminate when is visible.
+			if (IsComponentVisible (component))
+				TerminateComponentProvider (component, raiseEvent);
+
+			RemoveChildComponent (component);
 		}
 
 		#endregion

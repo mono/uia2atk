@@ -1,5 +1,10 @@
 2009-02-11  Mario Carrion  <mcarrion@novell.com>
 
+	* FormProviderTest.cs: Tests added: InvisibleVisibleTest and
+	InvisibleVisibleTest1 [Bug #474634]
+
+2009-02-11  Mario Carrion  <mcarrion@novell.com>
+
 	* ToolBarButtonProviderTest.cs: Test added to terminate ToolBar
 	children.
 

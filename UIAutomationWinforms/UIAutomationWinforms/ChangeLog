@@ -1,3 +1,9 @@
+2009-02-11  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Using
+	Control.Visible to add/remove control. Not adding control when
+	invisible. [Fixes Bug #474634]
+
 2009-02-11  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TabPageProvider.cs: Fix the
