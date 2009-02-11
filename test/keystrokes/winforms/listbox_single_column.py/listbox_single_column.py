@@ -60,6 +60,17 @@ sequence.append(utils.AssertPresentationAction(
      "SPEECH OUTPUT: ''",
      "SPEECH OUTPUT: '5'"]))
 
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("KP_Enter"))
+sequence.append(utils.AssertPresentationAction(
+    "ask: which item and how many",
+    ["BRAILLE LINE:  '5 ListItem'",
+     "     VISIBLE:  '5 ListItem', cursor=1",
+     "SPEECH OUTPUT: 'list item'",
+     "SPEECH OUTPUT: '5'",
+     "SPEECH OUTPUT: 'item 6 of 30'"]))
+
+
 
 sequence.append(utils.AssertionSummaryAction())
 
