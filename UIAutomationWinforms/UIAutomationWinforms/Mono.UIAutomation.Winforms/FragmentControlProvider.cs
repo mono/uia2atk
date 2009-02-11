@@ -437,11 +437,7 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 		}
 
-		#endregion
-
-		#region Private Methods
-
-		private void HandleComponentAdded (Component component, bool raiseEvent)
+		protected void HandleComponentAdded (Component component, bool raiseEvent)
 		{
 			AddChildComponent (component);
 
@@ -453,7 +449,7 @@ namespace Mono.UIAutomation.Winforms
 			InitializeComponentProvider (component, raiseEvent);
 		}
 
-		private void HandleComponentRemoved (Component component, bool raiseEvent)
+		protected void HandleComponentRemoved (Component component, bool raiseEvent)
 		{
 			// We will only need to Terminate when is visible.
 			if (IsComponentVisible (component))
