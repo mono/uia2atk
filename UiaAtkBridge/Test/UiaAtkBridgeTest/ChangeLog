@@ -1,3 +1,10 @@
+2009-02-11  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Expect TreeTable role for List-related tests.
+
+	* BridgeTests.cs: Allow alternate grid configurations in ListView test
+	  (was failing for me).
+
 2009-02-11  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Add test to ensure that #468337 doesn't happen again.

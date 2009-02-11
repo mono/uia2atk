@@ -885,7 +885,7 @@ namespace UiaAtkBridge
 			else if (provider is IGridProvider)
 				atkList = new ListWithGrid ((IRawElementProviderFragmentRoot)provider);
 			else
-				atkList = new List ((IRawElementProviderFragmentRoot)provider);
+				atkList = new Tree ((IRawElementProviderFragmentRoot)provider);
 
 			IncludeNewAdapter (atkList, parentObject);
 		}
@@ -895,8 +895,10 @@ namespace UiaAtkBridge
 			Adapter atkItem;
 			if (parentObject is ComboBoxOptions)
 				atkItem = new ComboBoxItem (provider);
-			else
+			else if (parentObject is List)
 				atkItem = new ListItem (provider);
+			else
+				atkItem = new TreeItem (provider);
 			
 			IncludeNewAdapter (atkItem, parentObject);
 		}
@@ -944,7 +946,7 @@ namespace UiaAtkBridge
 			Adapter newAdapter = null;
 			if (parentObject is DataGrid)
 				newAdapter = new DataGridGroup (provider);
-			else if (parentObject is List && provider is IRawElementProviderFragment)
+			else if (parentObject is Tree && provider is IRawElementProviderFragment)
 				newAdapter = new ListGroup ((IRawElementProviderFragment)provider);
 			else
 				newAdapter = new Container (provider);

@@ -1,3 +1,7 @@
+2009-02-11  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Expect TreeTable for a ListBox.
+
 2009-02-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Enable test, the bug mentioned in the FIXME is

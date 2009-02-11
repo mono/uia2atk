@@ -192,8 +192,14 @@ AtkObject,
 				if (listFocused)
 					Atk.Focus.TrackerNotify (this);
 			}
-			if (itemFocused)
+			if (itemFocused) {
+				// Orca wants to get Selection events before
+				// active-descendant-changed events; otherwise
+				// it is excessively verbose.
+				if (!CanSelectMultiple)
+					NotifyItemSelected (item);
 				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+			}
 			hasFocus = listFocused;
 		}
 
@@ -294,7 +300,7 @@ AtkObject,
 		{
 			if (provider == null)
 				return null;
-			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) != ControlType.TreeItem.Id)
+			if (!IsListItem (provider))
 				return GetObjectAtRow (provider.Navigate (NavigateDirection.NextSibling), target, ref index);
 			if (index == target)
 				return AutomationBridge.GetAdapterForProviderLazy (provider);
@@ -335,7 +341,7 @@ AtkObject,
 
 			private int GetRowForProvider (IRawElementProviderFragment provider, IRawElementProviderFragment target, ref int index)
 		{
-			if (provider != null && (int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) != ControlType.TreeItem.Id)
+			if (provider != null && !IsListItem (provider))
 				return GetRowForProvider (provider.Navigate (NavigateDirection.NextSibling), target, ref index);
 			if (provider == null)
 				return -1;
@@ -365,7 +371,7 @@ AtkObject,
 		{
 			if (provider == null)
 				return;
-			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.TreeItem.Id)
+			if (IsListItem (provider))
 				count++;
 			if (IsExpanded (provider))
 				CalculateRowCount  (provider.Navigate (NavigateDirection.FirstChild), ref count);
@@ -386,7 +392,7 @@ AtkObject,
 			int rowCount = 0;
 			IRawElementProviderFragment childProvider = (IRawElementProviderFragment)adapter.Provider;
 			for (IRawElementProviderFragment child = childProvider.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling))
-				if ((int)child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.TreeItem.Id)
+				if (IsListItem (child))
 					rowCount++;
 			if (rowCount > 0) {
 				GLib.Signal.Emit (this, (expanded? "row-inserted": "row-deleted"), row + 1, rowCount);
@@ -517,6 +523,12 @@ AtkObject,
 		public bool RemoveColumnSelection (int column)
 		{
 			return false;
+		}
+
+		private bool IsListItem (IRawElementProviderSimple provider)
+		{
+			int controlTypeId = (int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			return (controlTypeId == ControlType.TreeItem.Id || controlTypeId == ControlType.ListItem.Id);
 		}
 	}
 }

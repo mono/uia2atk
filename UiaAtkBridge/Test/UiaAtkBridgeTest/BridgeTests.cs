@@ -70,7 +70,7 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
-			Assert.AreEqual (Atk.Role.ListItem, listItemChild.Role, "ListBox child#0 should be a list item");
+			Assert.AreEqual (Atk.Role.TableCell, listItemChild.Role, "ListBox child#0 should be a table cell");
 			
 			States (listItemChild, 
 			  Atk.StateType.Enabled,
@@ -248,6 +248,7 @@ namespace UiaAtkBridgeTest
 		public void ListView2 ()
 		{
 			lv1.Items.Clear ();
+			lv1.Scrollable = false;
 			lv1.Groups.Clear ();
 			lv1.View = SWF.View.SmallIcon;
 			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
@@ -264,14 +265,14 @@ namespace UiaAtkBridgeTest
 			lv1.CheckBoxes = false;
 			Atk.Object accessible = GetAdapterForWidget (lv1);
 			Assert.IsNotNull (accessible, "Adapter should not be null");
-			// 2 groups + 1 scrollBar
-			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			// 2 groups
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
 			Atk.Object group1 = FindObjectByName (accessible, "group1");
 			Assert.IsNotNull (group1, "FindObjectByName (group1)");
 			Assert.AreEqual (Atk.Role.LayeredPane, group1.Role, "Group1 role");
 			Atk.Object item1 = FindObjectByName (group1, "item1");
 			Assert.IsNotNull (item1, "FindObjectByName (item1)");
-			Assert.AreEqual (Atk.Role.ListItem, item1.Role, "Item1 role");
+			Assert.AreEqual (Atk.Role.TableCell, item1.Role, "Item1 role");
 			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (item1.Parent);
 			string [] names = { "item1", "item2" };
 			InterfaceSelection (atkSelection, names, item1.Parent, BasicWidgetType.GroupBox);
@@ -309,43 +310,55 @@ namespace UiaAtkBridgeTest
 
 
 			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (group1);
-			Assert.AreEqual (2, atkTable.NRows, "Table NRows");
-			Assert.AreEqual (1, atkTable.NColumns, "Table NColumns");
+			Assert.AreEqual (2, atkTable.NRows * atkTable.NColumns, "Table NRows*NCols");
 			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
-			Assert.AreEqual ("item2", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
+			int row2 = (atkTable.NRows == 2? 1: 0);
+			int col2 = (atkTable.NRows == 2? 0: 1);
+			Assert.AreEqual ("item2", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", "+col2 + ")");
 			// Gail Indicies when using GetIndexAt are 1-based
 			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
-			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");
+			if (atkTable.NRows == 2)
+				Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");
+			else
+				Assert.AreEqual (2, atkTable.GetIndexAt (0, 1), "GetIndexAt (1, 0)");
 			Atk.Object group2 = FindObjectByName (accessible, "group2");
 			atkTable = CastToAtkInterface<Atk.Table> (group2);
 			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item3", atkTable.RefAt (0, 0).Name, "Cell (1, 0)");
-			Assert.AreEqual ("item4", atkTable.RefAt (1, 0).Name, "Cell (1, 1)");
+			Assert.AreEqual ("item4", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
 			// Gail Indicies when using GetIndexAt are 1-based
 			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
-			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (0, 1)");			
+			Assert.AreEqual (2, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
 
 			// Changing groups again
 			lv1.Items[2].Group = lv1.Groups[0];
 			lv1.Items[3].Group = lv1.Groups[0];
 			atkTable = CastToAtkInterface<Atk.Table> (group1);
 
-			// 1 groups + 1 scrollBars
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #2");
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren #2");
 
-			Assert.AreEqual (4, atkTable.NRows, "Table NRows");
-			Assert.AreEqual (1, atkTable.NColumns, "Table NColumns");
+			Assert.AreEqual (4, atkTable.NRows * atkTable.NColumns, "Table NRows * NColumns");
 			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
-			Assert.AreEqual ("item2", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
-			Assert.AreEqual ("item3", atkTable.RefAt (2, 0).Name, "Cell (2, 0)");
-			Assert.AreEqual ("item4", atkTable.RefAt (3, 0).Name, "Cell (3, 0)");
+			Assert.AreEqual ("item2", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
+			row2 = (atkTable.NRows == 4? 2: 1);
+			col2 = 0;
+			Assert.AreEqual ("item3", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
+			row2 = (atkTable.NRows == 4? 3: 1);
+			col2 = (atkTable.NRows == 4? 0: 1);
+			Assert.AreEqual ("item4", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
 			// Gail Indicies when using GetIndexAt are 1-based
 			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
-			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");			
-			Assert.AreEqual (3, atkTable.GetIndexAt (2, 0), "GetIndexAt (2, 0)");
-			Assert.AreEqual (4, atkTable.GetIndexAt (3, 0), "GetIndexAt (3, 0)");
+			row2 = (atkTable.NRows == 4? 1: 0);
+			col2 = (atkTable.NRows == 4? 0: 1);
+			Assert.AreEqual (2, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
+			row2 = (atkTable.NRows == 4? 2: 1);
+			col2 = 0;
+			Assert.AreEqual (3, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
+			row2 = (atkTable.NRows == 4? 3: 1);
+			col2 = (atkTable.NRows == 4? 0: 1);
+			Assert.AreEqual (4, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
 
 			accessible = group1 = item1 = null;
 			atkSelection = null;
@@ -892,7 +905,7 @@ namespace UiaAtkBridgeTest
 			// DayName, Month Day, Year
 			dateTimePicker.Format = SWF.DateTimePickerFormat.Long;
 			Atk.Role[] expectedRoles = new Atk.Role[] {
-				Atk.Role.List, Atk.Role.Label, Atk.Role.Label, Atk.Role.List,
+				Atk.Role.TreeTable, Atk.Role.Label, Atk.Role.Label, Atk.Role.TreeTable,
 				Atk.Role.Label, Atk.Role.SpinButton, Atk.Role.Label, Atk.Role.Label,
 				Atk.Role.SpinButton, Atk.Role.PushButton
 			};
@@ -917,6 +930,7 @@ namespace UiaAtkBridgeTest
 					Label (child, BasicWidgetType.Label);
 					break;
 				case Atk.Role.List:
+				case Atk.Role.TreeTable:
 					// TODO: add when general test for List is more self-contained
 					Atk.Object item = child.RefAccessibleChild (0);
 					States (item, Atk.StateType.Enabled,

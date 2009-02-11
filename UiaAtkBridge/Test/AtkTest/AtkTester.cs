@@ -960,7 +960,7 @@ namespace UiaAtkBridgeTest
 				return Atk.Role.ProgressBar;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:
-				return Atk.Role.List;
+				return Atk.Role.TreeTable;
 			case BasicWidgetType.Spinner:
 			case BasicWidgetType.DomainUpDown:
 				return Atk.Role.SpinButton;
