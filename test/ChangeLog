@@ -1,5 +1,11 @@
 2009-02-11  Calen Chen <cachen@novell.com>
 
+	* testers/toolbarbutton/toolbarbuttonframe.py: add test to check pushed 
+	ToggleStyle button's states
+	* testers/toolbarbutton_basic_ops.py: add bug474649 referance
+
+2009-02-11  Calen Chen <cachen@novell.com>
+
 	* samples/openfiledialog.py: add a button to invoke dialog to enable
 	HelpButton and OpenReadonlyCheckBox as visible
 

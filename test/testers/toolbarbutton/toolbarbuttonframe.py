@@ -132,19 +132,23 @@ class ToolBarButtonFrame(accessibles.Frame):
         #test AtkAction to unable label
         accessible.click()
         sleep(config.SHORT_DELAY)
+        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
         #click again to enable label
         accessible.click()
         sleep(config.SHORT_DELAY)
+        statesCheck(self.toggle_style, "Button")
         statesCheck(self.label, "Label")
                                           
         #test AtkComponent by mouse click to check its position
         accessible.mouseClick()
         sleep(config.SHORT_DELAY)
+        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
         #mouse click again to enable label
         accessible.mouseClick()
         sleep(config.SHORT_DELAY)
+        statesCheck(self.toggle_style, "Button")
         statesCheck(self.label, "Label")
 
     ##test for unable ToolBarButton

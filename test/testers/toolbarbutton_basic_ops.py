@@ -55,6 +55,7 @@ statesCheck(tbbFrame.dropdown_button, "Button")
 ##missing toggle button BUG473755
 statesCheck(tbbFrame.dropdown_toggle, "ToggleButton")
 
+##missing armed and checked states when this button is pushed BUG474649
 statesCheck(tbbFrame.toggle_style, "Button")
 
 ##extraneous states BUG474197
