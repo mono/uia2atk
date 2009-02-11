@@ -918,6 +918,11 @@ namespace UiaAtkBridgeTest
 					break;
 				case Atk.Role.List:
 					// TODO: add when general test for List is more self-contained
+					Atk.Object item = child.RefAccessibleChild (0);
+					States (item, Atk.StateType.Enabled,
+					        Atk.StateType.Focusable, Atk.StateType.Selectable,
+					        Atk.StateType.Sensitive, Atk.StateType.SingleLine,
+					        Atk.StateType.Transient);
 					break;
 				case Atk.Role.SpinButton:
 					// TODO: add when general test for Spinner has values less hard-coded

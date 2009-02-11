@@ -1158,6 +1158,9 @@ namespace UiaAtkBridge
 				return;
 			}
 
+			Log.Debug ("AutomationBridge: Creating new {0} adapter for {1}",
+			           newAdapter.GetType (), newAdapter.Provider.GetType ());
+
 			providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
 		}

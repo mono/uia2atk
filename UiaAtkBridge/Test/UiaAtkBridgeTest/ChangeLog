@@ -1,3 +1,7 @@
+2009-02-11  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Add test to ensure that #468337 doesn't happen again.
+
 2009-02-10  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTests.cs: DataGridView test added.

@@ -85,7 +85,7 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Checked);
 			}
 
-			if (valueProvider != null)
+			if (valueProvider != null && !valueProvider.IsReadOnly)
 				states.AddState (Atk.StateType.Editable);
 			else
 				states.RemoveState (Atk.StateType.Editable);
@@ -336,6 +336,8 @@ namespace UiaAtkBridge
 						Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 				else
 					valueProvider = null;
+			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !valueProvider.IsReadOnly);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}

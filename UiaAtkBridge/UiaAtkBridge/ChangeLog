@@ -1,3 +1,11 @@
+2009-02-11  Brad Taylor  <brad@getcoded.net>
+
+	* ListItem.cs: Properly handle when list items are ReadOnly, and
+	reflect when that property changes. [Fixes #468337]
+
+	* AutomationBridge.cs: Add some additional debugging to determine what
+	adapter is mapping to which provider.
+
 2009-02-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* RadioButton.cs: Really fix #447885 properly (see r126638).
