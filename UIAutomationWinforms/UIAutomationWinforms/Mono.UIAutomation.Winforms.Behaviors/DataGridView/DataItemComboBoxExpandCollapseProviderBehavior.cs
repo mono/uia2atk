@@ -132,7 +132,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			SWF.ComboBox combobox = provider.ItemProvider.DataGridView.EditingControl as SWF.ComboBox;
 			if (combobox != null) {
 				// We we'll basically are keeping a reference to the EditingControl
-				// to listen for DroppedDown event and set it we it changes.
+				// to listen for DroppedDown event and set it when it changes.
 				if (lastComboBox != combobox)
 					expandCollapseEvent.CurrentComboBox = combobox;
 				
