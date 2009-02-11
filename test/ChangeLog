@@ -1,3 +1,8 @@
+2009-02-11  Calen Chen <cachen@novell.com>
+
+	* samples/openfiledialog.py: add a button to invoke dialog to enable
+	HelpButton and OpenReadonlyCheckBox as visible
+
 2009-02-10  Ray Wang <rawang@novell.com>
 
 	* testers/datetimepicker_dropdown_ops.py: uncomment those working

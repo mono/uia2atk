@@ -34,9 +34,16 @@ class MenuStripOpenFileDialogApp(Form):
 
         #add button
         self.button = Button()
-        self.button.Text = "Button"
+        self.button.Text = "OpenDialog"
         self.button.Location = Point(10, 20)
         self.button.Click += self.Open_Document_Clicked
+
+        #add button to enable HelpButton as visible
+        self.button1 = Button()
+        self.button1.Text = "EnableVisible"
+        self.button1.Location = Point(100, 20)
+        self.button1.AutoSize = True
+        self.button1.Click += self.Open_Document_Clicked
 
         #add textbox
         self.textbox = TextBox()
@@ -46,18 +53,23 @@ class MenuStripOpenFileDialogApp(Form):
         self.textbox.Multiline = True
 
         self.Controls.Add(self.button)
+        self.Controls.Add(self.button1)
         self.Controls.Add(self.textbox)
 
     def Open_Document_Clicked(self, sender, event):
-        self.openfiledialog = OpenFileDialog()
-        self.openfiledialog.InitialDirectory = "%s/samples" % uiaqa_path
-        self.openfiledialog.RestoreDirectory = True
+
+        if sender:
+            self.openfiledialog = OpenFileDialog()
+            self.openfiledialog.InitialDirectory = "%s/samples" % uiaqa_path
+            self.openfiledialog.RestoreDirectory = True
+            if sender == self.button1:
+                self.openfiledialog.ShowHelp = True
+                self.openfiledialog.ShowReadOnly = True
 
         if(self.openfiledialog.ShowDialog() == DialogResult.OK):
             self.stream = System.IO.StreamReader(self.openfiledialog.OpenFile())
             self.textbox.Text = self.stream.ReadToEnd()
             self.stream.Close()
-
 
 form = MenuStripOpenFileDialogApp()
 Application.Run(form)
