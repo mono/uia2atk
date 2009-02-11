@@ -68,7 +68,7 @@ sequence.append(utils.AssertPresentationAction(
      "     VISIBLE:  '5 ListItem', cursor=1",
      "SPEECH OUTPUT: 'list item'",
      "SPEECH OUTPUT: '5'",
-     "SPEECH OUTPUT: 'item 6 of 30'"]))
+     "SPEECH OUTPUT: 'item 6 of 20'"]))
 
 
 
