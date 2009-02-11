@@ -1,3 +1,10 @@
+2009-02-11  Brad Taylor  <brad@getcoded.net>
+
+	* samples/gtklist_selection_single.py: 
+	* samples/gtklist_selection_multiple.py: These tests use deprecated
+	API, and we shouldn't be basing any of our work on this control.
+	Instead, please use GtkTreeView with a ListStore model.
+
 2009-02-11  Calen Chen <cachen@novell.com>
 
 	* testers/toolbarbutton/toolbarbuttonframe.py: add test to check pushed 
