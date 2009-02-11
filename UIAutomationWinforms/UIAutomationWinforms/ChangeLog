@@ -1,5 +1,10 @@
 2009-02-11  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Fixes test:
+	ToolBarButtonProviderTest.NavigationTest
+
+2009-02-11  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
 	HandleComponentAdded and HandleComponentRemoved should be protected.
 

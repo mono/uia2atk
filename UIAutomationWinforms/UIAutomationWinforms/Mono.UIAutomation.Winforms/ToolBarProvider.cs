@@ -84,8 +84,11 @@ namespace Mono.UIAutomation.Winforms
 			toolBar.Buttons.UIACollectionChanged -=
 				new CollectionChangeEventHandler (OnCollectionChanged);
 			
-			foreach (ToolBarButtonProvider button in toolBar.Buttons)
-				OnNavigationChildRemoved (false, button);
+			for (int index = 0; index < toolBar.Buttons.Count; index++) {
+				ToolBarButtonProvider buttonProvider 
+					= (ToolBarButtonProvider) ProviderFactory.FindProvider (toolBar.Buttons [index]);
+				OnNavigationChildRemoved (false, buttonProvider);
+			}
 			OnNavigationChildrenCleared (false);
 		}
 		
