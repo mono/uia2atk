@@ -1,3 +1,19 @@
+2009-02-12  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: Ensure that TabPages
+	are always visible, even if the control is not.  This occurs in
+	non-selected tabs. [Fixes #464356]
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Don't use indexOf if
+	it's greater than the number of columns in the DataGrid.
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Various tweaks
+	to detroy a control's children if that control becomes invisible, and
+	to restore the children when it becomes visible.  This is required to
+	support the TabPage case where when a tab becomes unselected, its
+	children dissappear.
+
 2009-02-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Fix the

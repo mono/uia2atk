@@ -684,6 +684,9 @@ namespace Mono.UIAutomation.Winforms
 				if (indexOf == -1)
 					return string.Empty;
 
+				if (indexOf >= provider.DataGrid.CurrentTableStyle.GridColumnStyles.Count)
+					return string.Empty;
+
 				object data = provider.DataGrid [Index, indexOf];
 				if (data == null || string.IsNullOrEmpty (data.ToString ()))
 					return style.GridColumnStyles [indexOf].NullText;

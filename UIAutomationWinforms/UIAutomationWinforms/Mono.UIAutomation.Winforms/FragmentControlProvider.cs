@@ -72,6 +72,8 @@ namespace Mono.UIAutomation.Winforms
 
 				HandleContextMenuChanged (null, EventArgs.Empty);
 				HandleContextMenuStripChanged (null, EventArgs.Empty);
+
+				visible = Control.Visible;
 			}
 		}
 
@@ -215,7 +217,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			FinalizeChildControlStructure ();
 		}
-	
+
 		//TODO: Are the generated events duplicated? Because we're already
 		//supporting StructureChangeType when Children are added to Controls.
 		//See: SimpleControlProvider.InitializeEvents
@@ -230,14 +232,23 @@ namespace Mono.UIAutomation.Winforms
 				Control.ControlRemoved += OnControlRemoved;
 				
 				foreach (SWF.Control childControl in Control.Controls)
-					HandleComponentAdded (childControl, false);
+					HandleComponentAdded (childControl, true);
+
+				Control.VisibleChanged += OnControlVisibleChanged;
 			}
 		}
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			for (; componentChildren.Count > 0; )
-				HandleComponentRemoved (componentChildren [0], false);
+			if (Control != null) {				
+				Control.ControlAdded -= OnControlAdded;
+				Control.ControlRemoved -= OnControlRemoved;
+				Control.VisibleChanged -= OnControlVisibleChanged;
+			}
+
+			for (; componentChildren.Count > 0; ) {
+				HandleComponentRemoved (componentChildren [0], true);
+			}
 
 			children.Clear ();
 			componentProviders.Clear ();
@@ -304,7 +315,7 @@ namespace Mono.UIAutomation.Winforms
 			                                              StructureChangeType.ChildrenReordered, 
 			                                              null));
 		}
-               
+
 		#endregion
 		
 		#region Private Methods: Event Handlers
@@ -319,14 +330,33 @@ namespace Mono.UIAutomation.Winforms
 			HandleComponentRemoved (args.Control, true);
 		}
 
-		private void  OnControlVisibleChanged (object sender, EventArgs args)
+		private bool visible = false;
+		
+		private void OnControlVisibleChanged (object sender, EventArgs args)
+		{
+			if (visible == Control.Visible)
+				return;
+
+			if (Control.Visible)
+				InitializeChildControlStructure ();
+			else
+				FinalizeChildControlStructure ();
+
+			visible = Control.Visible;
+		}
+
+		private void OnChildControlVisibleChanged (object sender, EventArgs args)
 		{
 			SWF.Control control = (SWF.Control) sender;
 
-			if (control.Visible)
-				InitializeComponentProvider (control, true);
-			else
-				TerminateComponentProvider (control, true);
+			bool controlExists = componentProviders.ContainsKey (control);
+			if (IsComponentVisible (control)) {
+				if (!controlExists)
+					InitializeComponentProvider (control, true);
+			} else {
+				if (controlExists)
+					TerminateComponentProvider (control, true);
+			}
 		}
 
 		#endregion
@@ -364,6 +394,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			SWF.Control control = null;
 			FragmentControlProvider childProvider = null;
+
+			if (componentProviders.ContainsKey (childComponent))
+				return;
 			
 			if ((control = childComponent as SWF.Control) != null)
 				childProvider = CreateProvider (control);
@@ -417,7 +450,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Control control = null;
 
 			if ((control = component as SWF.Control) != null)
-				control.VisibleChanged += OnControlVisibleChanged;
+				control.VisibleChanged += OnChildControlVisibleChanged;
 		}		
 
 		protected virtual void RemoveVisibleEvent (Component component)
@@ -425,7 +458,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Control control = null;
 
 			if ((control = component as SWF.Control) != null)
-				control.VisibleChanged -= OnControlVisibleChanged;			
+				control.VisibleChanged -= OnChildControlVisibleChanged;			
 		}
 
 		protected virtual bool IsComponentVisible (Component component)
@@ -451,9 +484,7 @@ namespace Mono.UIAutomation.Winforms
 
 		protected void HandleComponentRemoved (Component component, bool raiseEvent)
 		{
-			// We will only need to Terminate when is visible.
-			if (IsComponentVisible (component))
-				TerminateComponentProvider (component, raiseEvent);
+			TerminateComponentProvider (component, raiseEvent);
 
 			RemoveChildComponent (component);
 		}

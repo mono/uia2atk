@@ -72,6 +72,14 @@ namespace Mono.UIAutomation.Winforms
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		protected override bool IsComponentVisible (Component component)
+		{
+			// Ensure that even though the TabPages will have
+			// Visible = False when they're not selected, they stay
+			// in the A11y hierarchy.  This is to model Vista's
+			// behavior.
+			return true;
+		}
 #endregion
 
 		internal bool HasSelection {

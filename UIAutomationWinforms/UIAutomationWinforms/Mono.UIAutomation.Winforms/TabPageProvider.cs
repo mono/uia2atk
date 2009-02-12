@@ -35,8 +35,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (TabPage))]
-	internal class TabPageProvider
-		: PanelProvider
+	internal class TabPageProvider : PanelProvider
 	{
 		public TabPageProvider (TabPage control) : base (control)
 		{
@@ -57,6 +56,16 @@ namespace Mono.UIAutomation.Winforms
 				                                      tabPage, false);
 
 			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override bool IsComponentVisible (Component component)
+		{
+			// Hide the TabPage's children if it's not visible.
+			// This is to sweep under the rug the fact that SWF
+			// seems to keep a TabPages' children visible even if
+			// the TabPage isn't.  This is to model Vista's
+			// behavior.
+			return Control.Visible;
 		}
 
 		internal TabControlProvider TabControlProvider {
