@@ -70,16 +70,10 @@ CURRENT_DAY = dtpddFrame.localtime[2]
 # check the status of all days
 for i in range(NUM_DAYS):
     if i == CURRENT_WEEKDAY:
-        # BUG468337
-        # TODO: "editable" should be removed
-        #add_states=["focused", "selected"]
-        add_states=["editable", "focused", "selected"]
+        add_states=["focused", "selected"]
         invalid_states=[]
     else:
-        # BUG468337
-        # TODO: "editable" should be removed
-        #add_states=[]
-        add_states=["editable"]
+        add_states=[]
         invalid_states=["showing", "visible"]
     statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
 
@@ -90,16 +84,10 @@ statesCheck(dtpddFrame.month, "List")
 # check the status of all months
 for i in range(NUM_MONTHS):
     if i == CURRENT_MONTH:
-        # BUG468337
-        # TODO: "editable" should be removed
-        #add_states=["focused", "selected"]
-        add_states=["editable", "focused", "selected"]
+        add_states=["focused", "selected"]
         invalid_states=[]
     else:
-        # BUG468337
-        # TODO: "editable" should be removed
-        #add_states=[]
-        add_states=["editable"]
+        add_states=[]
         invalid_states=["showing", "visible"]
     statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
 

@@ -1,3 +1,13 @@
+2009-02-12  Ray Wang <rawang@novell.com>
+
+	* testers/datetimepicker_dropdown_ops.py: regression test
+	* testers/states.py: add ThreadExceptionDialog_Text class
+	* testers/threadexceptiondialog, 
+	* testers/threadexceptiondialog/__init__.py, 
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py, 
+	* testers/threadexceptiondialog_basic_ops.py: add 
+	ThreadExceptionDialog strongwind test
+
 2009-02-11  Brad Taylor  <brad@getcoded.net>
 
 	* samples/gtklist_selection_single.py: 

@@ -332,3 +332,6 @@ class TrackBar(object):
 
 class ContainerControl(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)
+
+class ThreadExceptionDialog_Text(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, MULTI_LINE, FOCUSABLE)
