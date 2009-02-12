@@ -498,14 +498,20 @@ namespace UiaAtkBridgeTest
 			Atk.Object listItemChild = accessible.RefAccessibleChild (1);
 			Focus (listItemChild);
 
-			// The below line would make the test fail, and it
-			// isn't clear to me what we can do about it.
-			// See bug 463299.
-			//dud1.Items.Clear ();
-			// so test this instead:
 			for (int i = names.Length - 1; i >= 0; i--)
 				dud1.Items.RemoveAt (i);
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
+		}
+
+		[Test]
+		[Ignore ("Dep. on BNC#463299")]
+		public void DomainUpDownClear ()
+		{
+			dud1.Items.Add ("first item");
+			Atk.Object accessible = GetAdapterForWidget (dud1);
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren");
+			dud1.Items.Clear ();
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear");
 		}
 
 		[Test]
@@ -556,8 +562,20 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (Atk.Role.Label, child1.Role, "Child role #1");
 			InterfaceText (child1, "first item");
 			
+			for (int i = ss1.Items.Count - 1; i >= 0; i--)
+				ss1.Items.RemoveAt (i);
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after remove");
+		}
+
+		[Test]
+		[Ignore ("Dep. on BNC#446783")]
+		public void StatusStripClear ()
+		{
+			ss1.Items.Add ("first item");
+			Atk.Object accessible = GetAdapterForWidget (ss1);
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren");
 			ss1.Items.Clear ();
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear");
 		}
 
 		[Test]

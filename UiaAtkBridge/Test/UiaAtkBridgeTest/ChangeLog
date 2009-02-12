@@ -1,5 +1,10 @@
 2009-02-11  Mike Gorse  <mgorse@novell.com>
 
+	* BridgeTests.cs: Separate Items.Clear tests for StatusStrip and
+	  DomainUpDown; ignore for now since they depend on SWF bugs.
+
+2009-02-11  Mike Gorse  <mgorse@novell.com>
+
 	* BridgeTests.cs: Expect TreeTable role for List-related tests.
 
 	* BridgeTests.cs: Allow alternate grid configurations in ListView test
