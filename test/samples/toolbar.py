@@ -27,9 +27,10 @@ clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
 from System.Drawing import *
+from System.IO import *
 
 harness_dir = path[0]
-i = harness_dir.rfind("/")
+i = harness_dir.rfind(Path.DirectorySeparatorChar)
 uiaqa_path = harness_dir[:i]
 
 class ToolBarSample(Form):
@@ -67,7 +68,11 @@ class ToolBarSample(Form):
             ]
 
         for i in names:
-            self.imagelist.Images.Add (Image.FromFile("%s/samples/listview-items-icons/32x32/" % uiaqa_path + i))
+            self.imagelist.Images.Add (Image.FromFile(uiaqa_path + 
+                                       Path.DirectorySeparatorChar + "samples" + 
+                                       Path.DirectorySeparatorChar + "listview-items-icons" + 
+                                       Path.DirectorySeparatorChar + "32x32" +
+                                       Path.DirectorySeparatorChar + i))
 
         self.toolbar.ImageList = self.imagelist
 
