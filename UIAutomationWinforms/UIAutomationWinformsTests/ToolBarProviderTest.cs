@@ -67,6 +67,37 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestHelper.TestPatterns (GetProvider ()); //no patterns
 		}
 
+		[Test]
+		//tested with UIAVerify, the bridge depends on this behaviour
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			var toolbar = (ToolBar)GetControlInstanceWithButton ();
+			TestFocus ();
+
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				ProviderFactory.GetProvider (toolbar.Buttons [0])
+					.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			invokeProvider.Invoke ();
+
+			TestFocus ();
+		}
+
+		private void TestFocus ()
+		{
+			var toolbar = (ToolBar)GetControlInstanceWithButton ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (toolbar);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+
+			object hasKbFocus = provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+			Assert.IsNotNull (hasKbFocus);
+			Assert.IsTrue (hasKbFocus is bool);
+			Assert.IsFalse ((bool)hasKbFocus);
+		}
+
 		#endregion
 
 		#region Navigation Test
@@ -110,10 +141,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#endregion
 
 		#region BaseProviderTest Overrides
+
+		static ToolBar toolbar = new ToolBar ();
 		
 		protected override Control GetControlInstance ()
 		{
 			return new ToolBar ();
+		}
+
+		protected Control GetControlInstanceWithButton ()
+		{
+			if (toolbar.Buttons.Count == 0)
+				toolbar.Buttons.Add ("one butt");
+			return toolbar;
 		}
 
 		public override void LabeledByAndNamePropertyTest ()

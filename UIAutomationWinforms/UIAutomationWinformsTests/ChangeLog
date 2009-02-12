@@ -1,3 +1,8 @@
+2009-02-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarProviderTest.cs: Fix the provider wrt focus+ToolBar.
+	Should fix #472279.
+
 2009-02-12  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Testing Name property in subitems. [For Bug
