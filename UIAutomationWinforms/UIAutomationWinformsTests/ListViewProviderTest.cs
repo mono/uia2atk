@@ -2220,6 +2220,71 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (valueProvider1.IsReadOnly, "Edit1.IsReadOnly should be true");
 		}
 
+		[Test]
+		public void Bug468250Test ()
+		{
+			// "ListView_details: "table cell" under second Column with wrong Text and Name"
+			ListView listview = new ListView ();
+			listview.View = View.Details;
+			listview.CheckBoxes = true;
+			listview.FullRowSelect = true;
+			listview.GridLines = true;
+			listview.Sorting = SortOrder.Ascending;
+			listview.Dock = DockStyle.Top;
+			listview.Width = 350;
+			listview.Height = 260;
+
+			listview.Columns.Add ("Column1", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column2", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column3", 200, HorizontalAlignment.Left);
+
+			for (int index = 0; index < 6; index++) {
+				ListViewItem item = new ListViewItem (string.Format ("Item:{0}", index));
+				item.SubItems.Add (index.ToString ());
+				item.SubItems.Add ((index+10).ToString ());
+				listview.Items.Add (item);
+			}
+
+			// We have the following table:
+			// "Column1"         | "Column2" | "Column3"
+			// ------------------|-----------|----------
+			// checkbox, "Item0" | "0"       | "10"
+			// checkbox, "Item1" | "1"       | "11"
+			// checkbox, "Item2" | "2"       | "12"
+			// checkbox, "Item3" | "3"       | "13"
+			// checkbox, "Item4" | "4"       | "14"
+			// checkbox, "Item5" | "5"       | "15"
+			
+			IRawElementProviderFragmentRoot root
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
+			Assert.IsNotNull (root, "Missing ListViewProvider");
+
+			IRawElementProviderFragment child = root.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Missing child");
+			int itemIndex = 0;
+			while (child != null) {				
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id) {
+					// Parent ListItem
+					IRawElementProviderFragment childListItem = child.Navigate (NavigateDirection.FirstChild);
+					int subItemIndex = 0;
+					while (childListItem != null) {
+						if ((int) childListItem.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+						    == ControlType.Edit.Id) {
+							Assert.AreEqual (listview.Items [itemIndex].SubItems [subItemIndex].Text,
+							                 childListItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+							                 "NameProperty value is different");
+							subItemIndex++;
+						}
+						childListItem = childListItem.Navigate (NavigateDirection.NextSibling);
+						
+					}
+					itemIndex++;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()

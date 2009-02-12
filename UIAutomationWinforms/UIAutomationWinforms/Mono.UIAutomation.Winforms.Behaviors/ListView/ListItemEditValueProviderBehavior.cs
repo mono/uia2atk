@@ -100,12 +100,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 				if (indexOf < 0 || indexOf >= listViewItem.SubItems.Count)
 					return string.Empty;
-				else {
-					if (indexOf == 0)
-						return listViewItem.Text;
-					else
-						return listViewItem.SubItems [indexOf - 1].Text;
-				}
+				else
+					return listViewItem.SubItems [indexOf].Text;
 			}
 		}
 		
