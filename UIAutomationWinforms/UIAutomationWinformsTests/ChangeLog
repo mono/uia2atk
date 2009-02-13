@@ -1,5 +1,10 @@
 2009-02-13  Brad Taylor  <brad@getcoded.net>
 
+	* DateTimePickerProviderTest.cs: Test that RangeValue exceptions when
+	you try to set the value on a unchecked DateTimePicker.
+
+2009-02-13  Brad Taylor  <brad@getcoded.net>
+
 	* DateTimePickerProviderTest.cs: Add test for new
 	AutomationHasKeyboardFocusEvent support.
 

@@ -1,6 +1,19 @@
 2009-02-13  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartAutomationIsEnabledPropertyEvent.cs: 
+	Properly send IsEnabledPropertyEvent changes when ShowCheckBox = true
+	and Checked is changed.
+
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs: 
+	Don't allow changes to RangeValue or selection of ShowCheckBox = true
+	and Checked = false.
+
+
+2009-02-13  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
 	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemAutomationHasKeyboardFocusPropertyEvent.cs: 
 	Implement AutomationHasKeyboardFocusPropertyEvent for DateTimePicker's

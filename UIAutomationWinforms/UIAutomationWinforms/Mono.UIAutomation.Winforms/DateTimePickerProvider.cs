@@ -35,6 +35,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Events.DateTimePicker;
 using Mono.UIAutomation.Winforms.Behaviors.DateTimePicker;
 
 using Mono.Unix;
@@ -297,6 +298,9 @@ namespace Mono.UIAutomation.Winforms
 				SetEvent (ProviderEventType.AutomationElementNameProperty,
 					  new Events.DateTimePicker.AutomationNamePropertyEvent (
 						this, rootProvider));
+
+				SetEvent (ProviderEventType.AutomationElementNameProperty,
+					  new PartAutomationIsEnabledPropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -313,6 +317,11 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Text.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("text");
+				else if (propertyId == AEIds.IsEnabledProperty.Id) {
+					DateTimePicker picker = (DateTimePicker) Control;
+					return Control.Enabled
+					       && !(picker.ShowCheckBox && !picker.Checked);
+				}
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
@@ -341,6 +350,9 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
+				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
+					return;
+
 				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
 			}
 
@@ -379,6 +391,9 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
+				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
+					return;
+
 				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
 			}
 
@@ -496,6 +511,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			public void SelectItem (ListItemProvider prov)
 			{
+				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
+					return;
+
 				DateTime cur = dateTimePicker.Value;
 				Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
 				DateTime date = (DateTime) prov.ObjectItem;

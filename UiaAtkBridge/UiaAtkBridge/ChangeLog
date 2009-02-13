@@ -1,3 +1,8 @@
+2009-02-13  Brad Taylor  <brad@getcoded.net>
+
+	* Spinner.cs: Handle when RangeValue's SetValue method isn't actually
+	enabled (when it's ReadOnly, for instance).
+
 2009-02-13  Neville Gao  <nevillegao@gmail.com>
 
 	* UiaAtkBridge.mdp, Makefile.am: Updated for added file.

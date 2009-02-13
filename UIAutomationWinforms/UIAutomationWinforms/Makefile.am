@@ -274,6 +274,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartAutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternIsSelectedEvent.cs \

@@ -298,6 +298,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ToggleTest ()
 		{
+			picker.Format = DateTimePickerFormat.Long;
 			picker.ShowCheckBox = false;
 
 			IRawElementProviderSimple child
@@ -336,6 +337,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (picker.Checked, "After toggling off, Checked is still true");
 			Assert.AreEqual (ToggleState.Off, toggleProvider.ToggleState,
 			                 "After toggling off, toggleProvider is not returning ToggleState.Off");
+
+			// Verify that parts aren't enabled
+			child = ((IRawElementProviderFragment) child).Navigate (
+				NavigateDirection.NextSibling);
+			TestProperty (child, AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Spinner.Id);
+			TestProperty (child, AutomationElementIdentifiers.IsEnabledProperty,
+			              false);
+
+			IRangeValueProvider rangeValueProvider = child.GetPatternProvider (
+				RangeValuePatternIdentifiers.Pattern.Id) as IRangeValueProvider;
+			bool gotException = false;
+			try {
+				rangeValueProvider.SetValue (1);
+			} catch (ElementNotEnabledException) {
+				gotException = true; 
+			}
+
+			if (!gotException) {
+				Assert.Fail ("Able to set RangeValue's value when picker is disabled");
+			}
 
 			toggleProvider.Toggle ();
 			Assert.IsTrue (picker.Checked, "After toggling on, Checked is still false");

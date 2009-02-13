@@ -212,6 +212,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
 #region Private Methods
 		private void PerformSetValue (double value) 
 		{
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
 			if (dateTimePicker.InvokeRequired) {
 				dateTimePicker.BeginInvoke (
 					new DateTimePickerPartSetValueDelegate (PerformSetValue),

@@ -217,13 +217,11 @@ namespace UiaAtkBridge
 					try {
 						editableRange.BeginEdit (value);
 					} catch (ElementNotEnabledException) {}
-				}
-				else if (valueProvider != null) {
+				} else if (valueProvider != null) {
 					try {
 						valueProvider.SetValue (value);
 					} catch (ElementNotEnabledException) {}
-			}
-				else
+				} else
 					NewText (value);
 			}
 		}
@@ -340,7 +338,12 @@ namespace UiaAtkBridge
 			double v = (double)value.Val;
 			if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
 				return false;
-			rangeValueProvider.SetValue (v);
+			try {
+				rangeValueProvider.SetValue (v);
+			} catch (ElementNotEnabledException) {
+				return false;
+			}
+
 			return true;
 		}
 		#endregion
@@ -406,8 +409,13 @@ namespace UiaAtkBridge
 			
 			if (editableRange != null)
 				editableRange.CommitEdit ();
-			else
-				rangeValueProvider.SetValue (double.Parse (textExpert.Text));
+			else {
+				try {
+					rangeValueProvider.SetValue (double.Parse (textExpert.Text));
+				} catch (ElementNotEnabledException) {
+					return false;
+				}
+			}
 			return true;
 		}
 
