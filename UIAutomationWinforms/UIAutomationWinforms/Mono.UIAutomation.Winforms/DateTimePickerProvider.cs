@@ -441,6 +441,10 @@ namespace Mono.UIAutomation.Winforms
 			public IConnectable GetListItemEventRealization (ProviderEventType eventType,
 			                                                 ListItemProvider prov)
 			{
+				if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty) {
+					return new PartListItemAutomationHasKeyboardFocusPropertyEvent (
+						prov, this);
+				}
 				return null;
 			}
 

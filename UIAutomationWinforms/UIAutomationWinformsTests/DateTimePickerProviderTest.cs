@@ -385,7 +385,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						picker.Value = awesome.AddDays (3);
 						
 						Assert.AreEqual (1, bridge.GetAutomationPropertyEventCount (
-							SelectionPatternIdentifiers.SelectionProperty), "Event count");
+						                 SelectionPatternIdentifiers.SelectionProperty),
+						                 "SelectionProperty Event count");
+						Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
+						                 AutomationElementIdentifiers.HasKeyboardFocusProperty),
+						                 "HasKeyboardFocusProperty Event count");
 
 						items = prov.GetSelection ();
 						Assert.IsNotNull (items, "Should never return null");
@@ -411,7 +415,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						
 						// Month will change, so will the day
 						Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
-							SelectionPatternIdentifiers.SelectionProperty), "Event count");
+						                 SelectionPatternIdentifiers.SelectionProperty),
+						                 "SelectionProperty Event count");
+						Assert.AreEqual (4, bridge.GetAutomationPropertyEventCount (
+						                 AutomationElementIdentifiers.HasKeyboardFocusProperty),
+						                 "HasKeyboardFocusProperty Event count");
 
 						items = prov.GetSelection ();
 						Assert.IsNotNull (items, "Should never return null");

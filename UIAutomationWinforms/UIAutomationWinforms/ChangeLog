@@ -1,3 +1,11 @@
+2009-02-13  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemAutomationHasKeyboardFocusPropertyEvent.cs: 
+	Implement AutomationHasKeyboardFocusPropertyEvent for DateTimePicker's
+	ListItem.
+
 2009-02-13  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added file.

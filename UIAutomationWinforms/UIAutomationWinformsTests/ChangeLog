@@ -1,3 +1,8 @@
+2009-02-13  Brad Taylor  <brad@getcoded.net>
+
+	* DateTimePickerProviderTest.cs: Add test for new
+	AutomationHasKeyboardFocusEvent support.
+
 2009-02-13  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.
