@@ -1,3 +1,10 @@
+2009-02-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* treeview,
+	* treeview/__init__.py,
+	* treeview/treeviewframe.py,
+	* treeview_basic_ops.py: Check in of initial test setup.
+
 2009-02-12  Ray Wang <rawang@novell.com>
 
 	* testers/datetimepicker_dropdown_ops.py: regression test
