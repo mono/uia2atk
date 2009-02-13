@@ -1,3 +1,7 @@
+2009-02-13  Neville Gao  <nevillegao@gmail.com>
+
+	* ToolBarButtonProviderTest.cs: Tested styles and Toggle() event.
+
 2009-02-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolBarProviderTest.cs: Fix the provider wrt focus+ToolBar.

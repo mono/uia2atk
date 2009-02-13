@@ -74,16 +74,54 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void BasicPropertiesTest ()
 		{
+			// default is PushButton style
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (toolBarButton);
-			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.MenuItem.Id);
-			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "menu item");
+
+			// DropDownButton style
+			ToolBarButton dropDownButton = new ToolBarButton ();
+			dropDownButton.Style = ToolBarButtonStyle.DropDownButton;
+			toolBar.Buttons.Add (dropDownButton);
+			IRawElementProviderSimple dropDownProvider =
+				ProviderFactory.GetProvider (dropDownButton);
+			TestProperty (dropDownProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.SplitButton.Id);
+			TestProperty (dropDownProvider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "split button");
+
+			// ToggleButton style
+			ToolBarButton toggleButton = new ToolBarButton ();
+			toggleButton.Style = ToolBarButtonStyle.ToggleButton;
+			toolBar.Buttons.Add (toggleButton);
+			IRawElementProviderSimple toggleProvider =
+				ProviderFactory.GetProvider (toggleButton);
+			TestProperty (toggleProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Button.Id);
+			TestProperty (toggleProvider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "button");
+
+			// Separator style
+			ToolBarButton separatorButton = new ToolBarButton ();
+			separatorButton.Style = ToolBarButtonStyle.Separator;
+			toolBar.Buttons.Add (dropDownButton);
+			IRawElementProviderSimple separatorProvider =
+				ProviderFactory.GetProvider (separatorButton);
+			TestProperty (separatorProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Separator.Id);
+			TestProperty (separatorProvider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "separator");
 			
 			string value = "ToolBarButton Name Property";
 			toolBarButton.Text = value;
@@ -188,6 +226,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
 			                 eventInfo.e.EventId,
 			                 "event args event type");
+		}
+
+		[Test]
+		public void ToggleTest ()
+		{
+			ToolBarButton toggleButton = new ToolBarButton ();
+			toggleButton.Style = ToolBarButtonStyle.ToggleButton;
+			toolBar.Buttons.Add (toggleButton);
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (toggleButton);
+			Assert.IsFalse (toggleButton.Pushed, "Button is not pushed by default.");
+			
+			IToggleProvider toggleProvider = (IToggleProvider) 
+				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			toggleProvider.Toggle ();
+			Assert.IsTrue (toggleButton.Pushed, "Button is pushed.");
 		}
 		
 		#endregion
