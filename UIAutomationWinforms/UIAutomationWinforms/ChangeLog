@@ -1,3 +1,7 @@
+2009-02-09 Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: Fix SetFocus.
+
 2009-02-13  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: FIXME: Lines

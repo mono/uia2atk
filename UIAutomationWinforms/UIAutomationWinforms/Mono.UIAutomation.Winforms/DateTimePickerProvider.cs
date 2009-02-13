@@ -333,11 +333,14 @@ namespace Mono.UIAutomation.Winforms
 		internal class DateTimePickerSpinnerPartProvider
 			: DateTimePickerPartProvider
 		{
+			private DateTimePicker dateTimePicker;
+
 			public DateTimePickerSpinnerPartProvider (DateTimePickerProvider rootProvider,
 			                                          DateTimePicker.PartData part_data,
 			                                          int part_index)
 				: base (rootProvider, part_data, part_index)
 			{
+				dateTimePicker = (DateTimePicker) rootProvider.Control;
 			}
 
 			public override void Initialize ()
@@ -350,10 +353,10 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
-//				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
-//					return;
+				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
+					return;
 
-				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
+				dateTimePicker.SelectPart (part_index);
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
