@@ -1,3 +1,12 @@
+2009-02-13  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added file.
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonTogglePatternToggleStateEvent.cs:
+	Changed ToolBarButton to different styles. Implemented IToggleProvider for
+	ToggleButton style.
+
 2009-02-12  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 

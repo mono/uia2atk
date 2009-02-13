@@ -159,6 +159,7 @@ namespace Mono.UIAutomation.Winforms
 			public ToolBarButtonProvider (ToolBarButton toolBarButton) : base (toolBarButton)
 			{
 				this.toolBarButton = toolBarButton;
+				this.style = toolBarButton.Style;
 			}
 		
 			#endregion
@@ -175,14 +176,20 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 				
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             new ToolBarButtonInvokeProviderBehavior (this));
 				SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
 				             new ToolBarButtonEmbeddedImageProviderBehavior (this));
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
 				          new ETB.AutomationHasKeyboardFocusPropertyEvent (this));
 				SetEvent (ProviderEventType.AutomationElementNameProperty,
 				          new ETB.AutomationNamePropertyEvent (this));
+
+				if (style == ToolBarButtonStyle.DropDownButton || 
+				    style == ToolBarButtonStyle.PushButton)
+					SetBehavior (InvokePatternIdentifiers.Pattern,
+					             new ToolBarButtonInvokeProviderBehavior (this));
+				else if (style == ToolBarButtonStyle.ToggleButton)
+					SetBehavior (TogglePatternIdentifiers.Pattern,
+					             new ToolBarButtonToggleProviderBehavior (this));
 			}
 			
 			#endregion
@@ -191,12 +198,28 @@ namespace Mono.UIAutomation.Winforms
 			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.MenuItem.Id;
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
+					if (style == ToolBarButtonStyle.DropDownButton)
+						return ControlType.SplitButton.Id;
+					else if (style == ToolBarButtonStyle.PushButton)
+						return ControlType.MenuItem.Id;
+					else if (style == ToolBarButtonStyle.ToggleButton)
+						return ControlType.Button.Id;
+					else
+						return ControlType.Separator.Id;
+				}
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return true;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("menu item");
+					return style == ToolBarButtonStyle.PushButton ? true : false;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
+					if (style == ToolBarButtonStyle.DropDownButton)
+						return Catalog.GetString ("split button");
+					else if (style == ToolBarButtonStyle.PushButton)
+						return Catalog.GetString ("menu item");
+					else if (style == ToolBarButtonStyle.ToggleButton)
+						return Catalog.GetString ("button");
+					else
+						return Catalog.GetString ("separator");
+				}
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
@@ -228,6 +251,7 @@ namespace Mono.UIAutomation.Winforms
 			#region Private Fields 	 
 			
 			private ToolBarButton toolBarButton;
+			private ToolBarButtonStyle style;
 			
 			#endregion
 		}
