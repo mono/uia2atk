@@ -1,5 +1,10 @@
 2009-02-13  Neville Gao  <nevillegao@gmail.com>
 
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.
+	* BaseColorControlProviderTest.cs: File added.
+
+2009-02-13  Neville Gao  <nevillegao@gmail.com>
+
 	* ToolBarButtonProviderTest.cs: Tested styles and Toggle() event.
 
 2009-02-12  Andrés G. Aragoneses  <aaragoneses@novell.com>

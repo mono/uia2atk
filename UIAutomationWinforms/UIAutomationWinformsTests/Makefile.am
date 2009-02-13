@@ -53,6 +53,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	AssemblyInfo.cs \
+	BaseColorControlProviderTest.cs \
 	BaseProviderTest.cs \
 	ButtonProviderTest.cs \
 	CheckBoxProviderTest.cs \
