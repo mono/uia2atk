@@ -1,4 +1,10 @@
-	2009-02-11  Mike Gorse  <mgorse@novell.com>
+2009-02-13  Neville Gao  <nevillegao@gmail.com>
+
+	* UiaAtkBridge.mdp, Makefile.am: Updated for added file.
+	* AutomationBridge.cs: Handled ToggleButton style ToolBarButton.
+	* ToggleButton.cs: File added.
+
+2009-02-11  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs, Tree.cs: Use TreeTable code for ListBox.
 

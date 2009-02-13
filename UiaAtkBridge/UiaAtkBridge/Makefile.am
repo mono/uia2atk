@@ -99,6 +99,7 @@ FILES =  \
 	TextImplementorFactory.cs \
 	TextLabel.cs \
 	TextProviderTextImplementor.cs \
+	ToggleButton.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Tree.cs \
