@@ -1,3 +1,8 @@
+2009-02-13  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Test added Bug468271Test: [Fixes part of Bug
+	#468271]
+
 2009-02-13  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Test that RangeValue exceptions when

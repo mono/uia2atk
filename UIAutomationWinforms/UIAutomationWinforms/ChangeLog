@@ -1,3 +1,17 @@
+2009-02-13  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: File added:
+	ListEditAutomationHasKeyboardFocusPropertyEvent.cs [Fixes part of Bug
+	#468271]
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Setting event to
+	update HasKeyboardFocusProperty. [Fixes part of Bug #468271]
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationHasKeyboardFocusPropertyEvent.cs:
+	File added: ListEditAutomationHasKeyboardFocusPropertyEvent.cs.
+	Listens for focusing events. [Fixes part of Bug #468271]
+
 2009-02-09 Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: Fix SetFocus.

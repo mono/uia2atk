@@ -341,6 +341,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs \

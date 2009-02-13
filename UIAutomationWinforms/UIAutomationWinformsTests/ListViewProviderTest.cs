@@ -2285,6 +2285,159 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 
+		[Test]
+		public void Bug468271Test ()
+		{
+			// NOTE: This test only exposes bug in Provider side.
+			// ListView_details: "table cell" isn't accessible without "focused"
+			ListView listview = new ListView ();
+			listview.View = View.Details;
+			listview.CheckBoxes = true;
+			listview.GridLines = true;
+			listview.Sorting = SortOrder.Ascending;
+			listview.Dock = DockStyle.Top;
+			listview.Width = 350;
+			listview.Height = 260;
+
+			listview.Columns.Add ("Column1", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column2", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column3", 200, HorizontalAlignment.Left);
+
+			for (int index = 0; index < 3; index++) {
+				ListViewItem item = new ListViewItem (string.Format ("Item:{0}", index));
+				item.SubItems.Add (index.ToString ());
+				item.SubItems.Add ((index+10).ToString ());
+				listview.Items.Add (item);
+			}
+
+			// We have the following table:
+			// "Column1"         | "Column2" | "Column3"
+			// ------------------|-----------|----------
+			// checkbox, "Item0" | "0"       | "10"
+			// checkbox, "Item1" | "1"       | "11"
+			// checkbox, "Item2" | "2"       | "12"
+
+			// ListViewUIATree:
+			// - Header
+			//   - HeaderItem "Column1"
+			//   - HeaderItem "Column2"
+			//   - HeaderItem "Column3"
+			// - DataItem "Item0"
+			//   - CheckBox
+			//   - "Item0"
+			//   - "0"
+			//   - "10"
+			// - DataItem "Item1"
+			//   - CheckBox
+			//   - "Item1"
+			//   - "1"
+			//   - "11"
+			// - DataItem "Item2"
+			//   - CheckBox
+			//   - "Item2"
+			//   - "2"
+			//   - "12"
+			IRawElementProviderFragmentRoot root
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
+			Assert.IsNotNull (root, "Missing ListViewProvider");
+			IRawElementProviderFragmentRoot []dataItems = new IRawElementProviderFragmentRoot [3];
+			IRawElementProviderFragment child = root.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Missing child");
+			
+			int dataItem = 0;
+			while (child != null) {				
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id) {
+					dataItems [dataItem] = (IRawElementProviderFragmentRoot) child;
+					dataItem++;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (dataItems.Length, dataItem, "Count != DataItems");
+
+			// You *can* only focus 1 item, so, focusing a different item
+			// will unfocus previous item and focus new item.
+
+			// listview.FullRowSelect = false: first subitem will is selected.
+			bridge.ResetEventLists ();
+			listview.Focus ();
+			listview.Items [0].Focused = true;
+			TestFocusInDataItemChildren (listview, 0, dataItems [0], true);
+
+			bridge.ResetEventLists ();
+			listview.Items [1].Focused = true;
+			TestFocusInDataItemChildren (listview, 1, dataItems [1], true);
+			TestFocusInDataItemChildren (listview, 0, dataItems [0], false);
+
+			bridge.ResetEventLists ();
+			listview.Items [2].Focused = true;
+			TestFocusInDataItemChildren (listview, 2, dataItems [2], true);			
+			TestFocusInDataItemChildren (listview, 1, dataItems [1], false);
+		}
+
+		private int GetIndexFromName (ListViewItem item, string name)
+		{
+			int index = 0;
+
+			foreach (ListViewItem.ListViewSubItem subItem in item.SubItems) {
+				if (subItem.Text == name)
+					break;
+				index++;
+			}
+
+			return index;
+		}
+
+		private void TestFocusInDataItemChildren (ListView listview, 
+		                                          int index, 
+		                                          IRawElementProviderFragmentRoot dataItemRoot,
+		                                          bool focused)
+		{
+			AutomationPropertyChangedEventTuple tuple 
+				= bridge.GetAutomationPropertyEventFrom (dataItemRoot, 
+				                                         AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+			Assert.AreEqual (focused, 
+			                 (bool) tuple.e.NewValue,
+			                 "DataItem Focused value.");
+
+			IRawElementProviderFragment child = dataItemRoot.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Child should not be null");
+			int subItem = 0;
+			while (child != null) {
+				bool hasfocus 
+					= (bool) child.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Edit.Id) {
+					string name
+						= (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+					if (!focused)
+						Assert.IsFalse (hasfocus,
+						                string.Format ("{0}.{1} Name: '{0}'",
+						                               index, subItem, name));
+					else {
+						if (listview.FullRowSelect
+						    || GetIndexFromName (listview.Items [index], name) == 0)
+							Assert.AreEqual (focused,
+							                 hasfocus,
+							                 string.Format ("{0}.{1} Name: '{0}'",
+							                                index, subItem, name));
+						else
+							Assert.AreNotEqual (focused,
+							                    hasfocus,
+							                    string.Format ("{0}.{1} Name: '{0}'",
+							                                   index, subItem, name));
+					}
+					subItem++;
+				} else 
+					// CheckBox is focused when fullrowSelected and is focused
+					// is expected
+					Assert.AreEqual (listview.FullRowSelect && focused, 
+					                 hasfocus,
+					                 string.Format ("{0}.CheckBox Focus should NOT be set", index));
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()

@@ -1163,6 +1163,8 @@ namespace Mono.UIAutomation.Winforms
 				// Automation Events
 				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 				          new ListItemEditAutomationIsOffscreenPropertyEvent (this));
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+				          new ListItemEditAutomationHasKeyboardFocusPropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -1175,10 +1177,13 @@ namespace Mono.UIAutomation.Winforms
 					IValueProvider valueProvider = (IValueProvider) GetBehavior (ValuePatternIdentifiers.Pattern);
 					return valueProvider.Value;
 				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return false;
-				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return IsFirstColumn || itemProvider.ListView.FullRowSelect;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
+					if (IsFirstColumn)
+						return itemProvider.GetPropertyValue (propertyId);
+					else
+						return false;
+				} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
@@ -1210,6 +1215,9 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
+			bool IsFirstColumn {
+				get { return header.Index == 0; }
+			}
 			private ListViewListItemProvider itemProvider;
 			private SWF.ColumnHeader header;
 		} //ListViewListItemEditProvider
