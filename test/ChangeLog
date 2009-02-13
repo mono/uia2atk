@@ -1,5 +1,14 @@
 2009-02-13  Calen Chen <cachen@novell.com>
 
+	* testers/openfiledialog,
+	* testers/openfiledialog/openfiledialogframe.py,
+	* testers/openfiledialog/__init__.py,
+	* testers/openfiledialog_basic_ops.py: add new test to check if all 
+	weidgets are showing up, especially test Action and states for 
+	dirComboBox and popUpButtonPanel and popUpButton
+
+2009-02-13  Calen Chen <cachen@novell.com>
+
 	* testers/form_basic_ops.py: add "modal" state for dialog
 
 2009-02-13  Calen Chen <cachen@novell.com>
