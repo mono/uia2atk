@@ -48,14 +48,10 @@ sleep(config.SHORT_DELAY)
 # check Frame and Dialog's AtkAccessible
 ##############################
 statesCheck(tedFrame, "Form")
-# BUG474694
-#statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"])
 statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"], invalid_states=["resizable"])
 
 tedFrame.mouseClick()
 statesCheck(tedFrame, "Form")
-# BUG474694
-#statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"])
 statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"], invalid_states=["resizable"])
 
 ##############################
@@ -79,12 +75,16 @@ statesCheck(tedFrame.abort_button, "Button")
 # perform click to show the textbox
 tedFrame.show_textbox(tedFrame.detail_button)
 statesCheck(tedFrame.errortitle_label, "Label")
+# BUG475136
 statesCheck(tedFrame.textbox, "ThreadExceptionDialog_Text")
 
 # test the textbox could be edit or not
 error_msg = tedFrame.textbox.text
 tedFrame.inputText(tedFrame.textbox, "test")
 tedFrame.assertText(tedFrame.textbox, error_msg)
+
+# BUG474254
+# XXX: put some scrollbar tests here 
 
 # hide the textbox
 tedFrame.hide_textbox(tedFrame.detail_button)

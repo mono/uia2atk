@@ -1,3 +1,8 @@
+2009-02-13  Ray Wang <rawang@novell.com>
+
+	* testers/threadexceptiondialog_basic_ops.py: update for regression
+	test
+
 2009-02-13  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog,
