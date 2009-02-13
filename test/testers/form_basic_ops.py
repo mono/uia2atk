@@ -59,7 +59,7 @@ fFrame.click(fFrame.button1)
 sleep(config.SHORT_DELAY)
 #message = fFrame.app.findFrame("Message Form")
 extra_form_1 = fFrame.app.findDialog("Message Form")
-statesCheck(extra_form_1, "Form", add_states=["active"], invalid_states=["resizable"])
+statesCheck(extra_form_1, "Form", add_states=["active", "modal"], invalid_states=["resizable"])
 
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
@@ -69,7 +69,7 @@ fFrame.mouseClick()
 #check main form's states again without 'active'
 statesCheck(fFrame, "Form")
 # make sure that the message widget's states stay the same
-statesCheck(extra_form_1, "Form", add_states=["active"], invalid_states=["resizable"])
+statesCheck(extra_form_1, "Form", add_states=["active", "modal"], invalid_states=["resizable"])
 
 #close message form widget, main form rise 'active' state again
 extra_form_1.altF4()
@@ -108,7 +108,7 @@ sleep(config.SHORT_DELAY)
 extra_form_3 = fFrame.app.findDialog("Extra Form")
 
 #check extra form widget's states with 'active' state
-statesCheck(extra_form_3, "Form", add_states=["active"])
+statesCheck(extra_form_3, "Form", add_states=["active", "modal"])
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
 
@@ -117,7 +117,7 @@ fFrame.mouseClick()
 # check main form's states again which is without 'active'
 statesCheck(fFrame, "Form")
 # make sure that the message widget's states stay the same
-statesCheck(extra_form_3, "Form", add_states=["active"])
+statesCheck(extra_form_3, "Form", add_states=["active", "modal"])
 
 # close message form widget, main form rise 'active' state again
 extra_form_3.altF4()
