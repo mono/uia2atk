@@ -350,8 +350,8 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
-				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
-					return;
+//				if (dateTimePicker.ShowCheckBox && !dateTimePicker.Checked)
+//					return;
 
 				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
 			}
