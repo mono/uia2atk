@@ -1,3 +1,9 @@
+2009-02-13  Calen Chen <cachen@novell.com>
+
+	* samples/toolbarbutton.py: push toggle button may set "Enable=False" 
+	for nop button refer to bug474197
+	* testers/toolbarbutton_basic_ops.py: expand states test for nop button
+
 2009-02-12 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* treeview,

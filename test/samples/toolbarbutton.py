@@ -100,7 +100,7 @@ class ToolBarSample(Form):
         self.toolbar_btn4 = ToolBarButton()
         self.toolbar_btn4.Text = "nop"
         self.toolbar_btn4.ImageIndex = 3
-        self.toolbar_btn4.Enabled = False
+        #self.toolbar_btn4.Enabled = False
 
         self.toolbar_btn5 = ToolBarButton()
         self.toolbar_btn5.Text = "separator"
@@ -124,8 +124,10 @@ class ToolBarSample(Form):
         elif btn == 2:
             if event.Button.Pushed:
                 self.label.Enabled = False
+                self.toolbar_btn4.Enabled = False
             else:
-                self.label.Enabled = True
+                self.label.Enabled = False
+                self.toolbar_btn4.Enabled = True
         elif btn == 3:
             self.label.Text = "You clicked nop button"
 
