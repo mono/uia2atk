@@ -65,6 +65,16 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'Fried Lizard check box not checked'"]))
 
 
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("KP_Subtract"))
+sequence.append(utils.AssertPresentationAction(
+    "switch to flat-review",
+    ["BRAILLE LINE:  '< > Fried Lizard < > Soylent Green'",
+    "     VISIBLE:  '< > Fried Lizard < > Soylent Green', cursor=1",
+    "SPEECH OUTPUT: 'not checked'"]))
+
+
+
 
 sequence.append(utils.AssertionSummaryAction())
 
