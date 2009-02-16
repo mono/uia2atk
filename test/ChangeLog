@@ -1,5 +1,12 @@
 2009-02-16  Calen Chen <cachen@novell.com>
 
+	* testers/combobox_dropdown/comboboxdropdownframe.py: add assertContent
+	method to test Streamable Content for text
+	* testers/combobox_dropdown_ops.py: modify comments, add test to check 
+	Streamable Content
+
+2009-02-16  Calen Chen <cachen@novell.com>
+
 	* testers/checkedlistbox/checkedlistboxframe.py: rewrite findList to 
 	findTreeTable due to development's change
 	* testers/checkedlistbox_basic_ops.py: update comments, add focused 

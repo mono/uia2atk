@@ -92,6 +92,16 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     def enterTextValue(self, textbox, values):
         procedurelogger.action('in %s enter %s' % (textbox, values))
         textbox.text = values
+
+    #assert Streamable Content implementation
+    def assertContent(self, accessible):
+        procedurelogger.action("Verify Streamable Content for %s" % accessible)
+        #text in gtk.textview shows the expected contents
+        expect = ['text/plain',]
+        result = accessible._accessible.queryStreamableContent().getContentTypes()
+
+        procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
+        assert result == expect, "Contents %s not match the expected" % result
     
     #close application main window after running test
     def quit(self):

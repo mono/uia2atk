@@ -143,16 +143,15 @@ statesCheck(cbddFrame.menuitem[8], "MenuItem")
 
 #check combo box selection is implemented
 #select menu to rise selected
-##selectChild cause crash BUG456319
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menu, "Menu", add_states=["selected"])
-statesCheck(cbddFrame.textbox, "Text")
+statesCheck(cbddFrame.textbox, "Text", add_states=["focused"])
 #select text to rise selected
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 1)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menu, "Menu")
-statesCheck(cbddFrame.textbox, "Text", add_states=["selected"])
+statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
 #clear selection to get rid of selected
 ##clearSelection doesn't get rid of selected BUG468456
 cbddFrame.assertClearSelection(cbddFrame.combobox)
@@ -176,6 +175,12 @@ statesCheck(cbddFrame.menuitem[3], "MenuItem")
 cbddFrame.assertClearSelection(cbddFrame.menu)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menuitem[5], "MenuItem")
+
+##############################################
+## test AtkStreamableContent for text
+##############################################
+
+cbddFrame.assertContent(cbddFrame.textbox)
 
 #close application frame window
 cbddFrame.quit()
