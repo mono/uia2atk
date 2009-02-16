@@ -43,18 +43,25 @@ if app is None:
 # just an alias to make things shorter
 clbFrame = app.checkedListBoxFrame
 
-########Check Action
+##########################
+##Check Action
+##########################
+
 #check listitem's actions
 actionsCheck(clbFrame.listitem[0], "CheckedListItem")
 actionsCheck(clbFrame.listitem[20], "CheckedListItem")
 
-########Check States after doing Click, Taggle, mouseClick, keyCombo actions
+#############################################################
+##Do Click, Taggle, mouseClick, keyCombo actions
+##then check states
+#############################################################
+
 #check list's states, list1 with focused
 statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 statesCheck(clbFrame.listbox2, "List")
 
 #check default states for ListItem 0 which in "CheckOnClick is True" list
-statesCheck(clbFrame.listitem[0], "CheckBoxListItem")
+statesCheck(clbFrame.listitem[0], "CheckBoxListItem", add_states=["focused"])
 #check default states for ListItem 20 which in "CheckOnClick is False" list
 statesCheck(clbFrame.listitem[20], "CheckBoxListItem")
 
@@ -65,10 +72,10 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
 #use keySpace to check listitem20
 clbFrame.keyCombo("space", grabFocus = False)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked"])
+statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked", "focused"])
 #press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
-statesCheck(clbFrame.listitem[20], "ListItem")
+statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
 
 #do click for listitem 1 to rise selected state
 clbFrame.click(clbFrame.listitem[1])
@@ -78,7 +85,7 @@ statesCheck(clbFrame.listitem[1], "ListItem", add_states=["selected"])
 #do click for listitem 21 to rise selected state
 clbFrame.click(clbFrame.listitem[21])
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[21], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listitem[21], "ListItem", add_states=["focused", "selected"])
 
 #do toggle to check/uncheck listitem2 which wouldn't rise selected state
 clbFrame.toggle(clbFrame.listitem[2])
@@ -102,38 +109,49 @@ statesCheck(clbFrame.listitem[22], "ListItem")
 clbFrame.mouseClick(log=False)
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected", "checked"])
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected", "checked"])
 statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 #mouse click listitem 3 again to uncheck it, but listbox1 still with focused
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused","selected"])
 statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 
 #mouse click listitem 23 to selected, focus to listbox2
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
 statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #mouse click listitem 23 again to checked
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected", "checked"])
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected", "checked"])
 #mouse click listitem 23 again to uncheck it, listbox2 still with focused
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
 statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
-########check list selection implementation
+###############################################
+##check list selection implementation
+###############################################
+
 #select item by childIndex to rise selected state
 clbFrame.assertSelectionChild(clbFrame.listbox1, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[0], "ListItem", add_states=["selected"])
 
+clbFrame.assertSelectionChild(clbFrame.listbox1, 2)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected"])
+
 clbFrame.assertSelectionChild(clbFrame.listbox2, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused", "selected"])
+
+clbFrame.assertSelectionChild(clbFrame.listbox2, 2)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[22], "ListItem", add_states=["focused", "selected"])
 
 #clear selection to get rid of selected state, listbox2 with focused
 clbFrame.assertClearSelection(clbFrame.listbox1)
@@ -146,7 +164,10 @@ sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[20], "ListItem")
 statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
-########mouseClick and Toggle listitem to change label's text
+#####################################################################
+##mouseClick and Toggle listitem to change label's text
+#####################################################################
+
 #one time mouseClick listitems in listbox1 would change label's text
 #check listitem 2 to change label to "Item 2 Checked"
 clbFrame.listitem[2].mouseClick()

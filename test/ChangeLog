@@ -1,3 +1,11 @@
+2009-02-16  Calen Chen <cachen@novell.com>
+
+	* testers/checkedlistbox/checkedlistboxframe.py: rewrite findList to 
+	findTreeTable due to development's change
+	* testers/checkedlistbox_basic_ops.py: update comments, add focused 
+	state when focus to checkbox items under treetable, add more selection
+	test to rise relate bug476065
+
 2009-02-13  Ray Wang <rawang@novell.com>
 
 	* testers/threadexceptiondialog_basic_ops.py: update for regression

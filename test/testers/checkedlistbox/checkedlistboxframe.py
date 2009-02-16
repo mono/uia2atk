@@ -27,7 +27,7 @@ class CheckedListBoxFrame(accessibles.Frame):
         super(CheckedListBoxFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.label2 = self.findLabel(self.LABEL2)
-        self.list = self.findAllLists(None)
+        self.list = self.findAllTreeTables(None)
         #listbox1 with CheckOnClick = True
         self.listbox1 = self.list[0]
         #listbox2 with CheckOnClick = False
