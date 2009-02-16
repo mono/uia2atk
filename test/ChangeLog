@@ -1,3 +1,11 @@
+2009-02-16  Ray Wang <rawang@novell.com>
+
+	* testers/actions.py: add TreeTable class
+	* testers/states.py: add TreeTable clas
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py,
+	* testers/datetimepicker_dropdown_ops.py: update for regression test
+	* samples/menustrip.py: add a event for select menuitem
+
 2009-02-16  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: add assertContent

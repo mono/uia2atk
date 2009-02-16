@@ -46,17 +46,17 @@ dtpddFrame = app.dateTimePickerDropDownFrame
 # check datetimepicker_dropdown  AtkAction
 ##############################
 actionsCheck(dtpddFrame.checkbox, "CheckBox")
-actionsCheck(dtpddFrame.weekdays[0], "ListItem")
-actionsCheck(dtpddFrame.weekdays[6], "ListItem")
-actionsCheck(dtpddFrame.months[0], "ListItem")
-actionsCheck(dtpddFrame.months[11], "ListItem")
+actionsCheck(dtpddFrame.weekdays[0], "TableCell")
+actionsCheck(dtpddFrame.weekdays[6], "TableCell")
+actionsCheck(dtpddFrame.months[0], "TableCell")
+actionsCheck(dtpddFrame.months[11], "TableCell")
 actionsCheck(dtpddFrame.dropdownbutton, "Button")
 
 ##############################
 # check datetimepicker_dropdown AtkAccessible
 ##############################
 statesCheck(dtpddFrame.panel, "Panel", add_states=["focused"])
-statesCheck(dtpddFrame.weekday, "List")
+statesCheck(dtpddFrame.weekday, "TreeTable")
 
 NUM_MONTHS = 12
 NUM_DAYS = 7
@@ -75,11 +75,11 @@ for i in range(NUM_DAYS):
     else:
         add_states=[]
         invalid_states=["showing", "visible"]
-    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.weekdays[i], "TableCell", invalid_states, add_states)
 
 statesCheck(dtpddFrame.commas[0], "Label")
 statesCheck(dtpddFrame.spaces[0], "Label")
-statesCheck(dtpddFrame.month, "List")
+statesCheck(dtpddFrame.month, "TreeTable")
 
 # check the status of all months
 for i in range(NUM_MONTHS):
@@ -89,7 +89,7 @@ for i in range(NUM_MONTHS):
     else:
         add_states=[]
         invalid_states=["showing", "visible"]
-    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.months[i], "TableCell", invalid_states, add_states)
 
 statesCheck(dtpddFrame.spaces[1], "Label")
 statesCheck(dtpddFrame.day, "DateTimePicker_Spin")
@@ -160,19 +160,17 @@ dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
 ##############################
 # checkbox is disabled
 ##############################
-# BUG471334
-# TODO: test when the bug is fixed
-#dtpddFrame.click(dtpddFrame.checkbox)
-#sleep(config.SHORT_DELAY)
+dtpddFrame.click(dtpddFrame.checkbox)
+sleep(config.SHORT_DELAY)
 
-#PREVIOUS_DATE = DATE
-#dtpddFrame.inputValue(dtpddFrame.day, 02)
-#sleep(config.SHORT_DELAY)
-#dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
+PREVIOUS_DATE = DATE
+dtpddFrame.inputValue(dtpddFrame.day, 02)
+sleep(config.SHORT_DELAY)
+dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
 
-#dtpddFrame.inputValue(dtpddFrame.year, 1980)
-#sleep(config.SHORT_DELAY)
-#dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
+dtpddFrame.inputValue(dtpddFrame.year, 1980)
+sleep(config.SHORT_DELAY)
+dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
 
 ##############################
 # Test Drop Down Button's AtkAction
@@ -192,6 +190,8 @@ dtpddFrame.assertText(dtpddFrame.label, "The date you select is: %s" % DATE)
 ##############################
 # End
 ##############################
+# close the drop down calendar
+dtpddFrame.click(dtpddFrame.dropdownbutton)
 # close application frame window
 dtpddFrame.quit()
 

@@ -75,4 +75,8 @@ class TableColumnHeader(object):
 
     actions = (CLICK, )
 
+class TableCell(object):
+    CLICK = "click"
+
+    actions = (CLICK, )
 

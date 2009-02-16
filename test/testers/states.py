@@ -306,6 +306,9 @@ class ToolStripTextBox(object):
 class TreeTable(object):
     states = (ENABLED, FOCUSABLE, MANAGES_DESCENDANTS, SENSITIVE, SHOWING, VISIBLE)
 
+class TableCell(object):
+    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, TRANSIENT, VISIBLE)
+
 class TableColumnHeader(object):
     states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 

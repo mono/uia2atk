@@ -22,17 +22,17 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
         super(DateTimePickerDropDownFrame, self).__init__(accessible)
         self.localtime = time.localtime()
         self.panel = self.findPanel(None)
-        self.lists = self.findAllLists(None)
+        self.treetables = self.findAllTreeTables(None)
         self.spinbuttons = self.findAllSpinButtons(None)
-        self.listitems = self.findAllListItems(None, checkShowing=False)
-        self.weekdays = self.listitems[0:7]
-        self.months = self.listitems[7:]
+        self.items = self.findAllTableCells(None, checkShowing=False)
+        self.weekdays = self.items[0:7]
+        self.months = self.items[7:]
         self.spaces = self.findAllLabels(self.LABEL_SPACE)
         self.commas = self.findAllLabels(self.LABEL_COMMA)
 
         self.checkbox = self.findCheckBox(None)
-        self.weekday = self.lists[0]
-        self.month = self.lists[1]
+        self.weekday = self.treetables[0]
+        self.month = self.treetables[1]
         self.day = self.spinbuttons[0]
         self.year = self.spinbuttons[1]
         self.dropdownbutton = self.findPushButton(None)
