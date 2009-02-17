@@ -1,3 +1,8 @@
+2009-02-17  Brad Taylor  <brad@getcoded.net>
+
+	* TextContainer.cs: Add MultiLine state to emulate Gail's pagetab
+	  implementation.  [Fixes #464071]
+
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ProgressBar.cs: ProgressBar doesn't implement Atk.Text.

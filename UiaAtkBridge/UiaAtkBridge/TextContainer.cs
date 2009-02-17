@@ -166,6 +166,16 @@ namespace UiaAtkBridge
 			// TODO
 			Log.Warn ("TextContainer: RaiseStructureChangedEvent not implemented.");
 		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (Role == Atk.Role.PageTab) 
+				states.AddState (Atk.StateType.MultiLine);
+
+			return states;
+		}
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)
 		{

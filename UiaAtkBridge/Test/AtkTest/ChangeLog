@@ -1,3 +1,7 @@
+2009-02-17  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: Assert that page tabs have the MultiLine state.
+
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: ProgressBar doesn't implement Atk.Text.
