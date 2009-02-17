@@ -1,5 +1,9 @@
 2009-02-17  Calen Chen <cachen@novell.com>
 
+	* testers/openfiledialog/__init__.py: correct an error on the comment
+
+2009-02-17  Calen Chen <cachen@novell.com>
+
 	* testers/progressbar_basic_ops.py: modify comments
 	* harness/tests.py: add in progressbar test
 

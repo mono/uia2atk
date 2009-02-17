@@ -41,7 +41,7 @@ def launchOpenFileDialog(exe=None):
 class OpenFileDialog(accessibles.Application):
     #checkShowing=False
     def __init__(self, accessible, subproc=None): 
-        'Get a reference to the printpreviewdialog window'
+        'Get a reference to the openfiledialog window'
         super(OpenFileDialog, self).__init__(accessible, subproc)
         
         self.findFrame(re.compile('^OpenFileDialog control'), logName='Open File Dialog')
