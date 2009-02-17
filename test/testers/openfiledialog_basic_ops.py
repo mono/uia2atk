@@ -52,8 +52,8 @@ ofdFrame = app.openFileDialogFrame
 #HelpButon and ReadOnlyCheckBox are showing up
 ofdFrame.click(ofdFrame.enable_button)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.AssertWidgets()
-ofdFrame.AssertVisibleWidget()
+ofdFrame.assertWidgets()
+ofdFrame.assertVisibleWidget()
 
 #close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
@@ -65,7 +65,7 @@ ofdFrame.click(ofdFrame.cancel_button)
 #click OpenDialog button to show openfiledialog page, then check subwidgets
 ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.AssertWidgets()
+ofdFrame.assertWidgets()
 
 ###########################################################
 ##search for all widgets from new folder dialog
@@ -73,17 +73,17 @@ ofdFrame.AssertWidgets()
 ###########################################################
 
 #click newdirtoolbarbutton to creat new folder, then check subwidgets
-ofdFrame.ItemClick(ofdFrame.newdirtoolbarbutton)
+ofdFrame.itemClick(ofdFrame.newdirtoolbarbutton)
 sleep(config.SHORT_DELAY)
-ofdFrame.NewFolderCheck()
+ofdFrame.newFolderCheck()
 #enter new folder name, then click Cancel button will not create it
-ofdFrame.CreatFolder(ofdFrame.newfolder_cancel)
+ofdFrame.creatFolder(ofdFrame.newfolder_cancel)
 
 #click newdirtoolbarbutton to creat new folder, then check subwidgets
-ofdFrame.ItemClick(ofdFrame.newdirtoolbarbutton)
+ofdFrame.itemClick(ofdFrame.newdirtoolbarbutton)
 sleep(config.SHORT_DELAY)
 #enter new folder name, then click OK button will create it
-ofdFrame.CreatFolder(ofdFrame.newfolder_ok)
+ofdFrame.creatFolder(ofdFrame.newfolder_ok)
 
 #######################################################
 ##dirComboBox test
@@ -112,9 +112,9 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 #click menuitem under dir_menu to check its AtkAction, move focus and selection
 #to recentlyused_menuitem, there is no "ANewFolder" folder on listview
 ##click menuitem doesn't change dir BUG475529
-ofdFrame.ItemClick(ofdFrame.recentlyused_menuitem)
+ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("ANewFolder")
+ofdFrame.assertMenuItemClick("ANewFolder")
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(samples_menuitem, "MenuItem")
 
@@ -131,7 +131,7 @@ ofdFrame.dir_menu.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.mycomputer_menuitem.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("My Computer")
+ofdFrame.assertMenuItemClick("My Computer")
 statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
 
@@ -147,22 +147,22 @@ statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
 statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
 #click popUpButton personal to rise focused, there is no "Personal" folder on listview
-ofdFrame.ItemClick(ofdFrame.personal_popup)
+ofdFrame.itemClick(ofdFrame.personal_popup)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("Personal")
+ofdFrame.assertMenuItemClick("Personal")
 statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
 
 #keyUp move focus to desktop_popup, there is no "Desktop" folder on listview
 ofdFrame.personal_popup.keyCombo("Up", grabFocus=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("Desktop")
+ofdFrame.assertMenuItemClick("Desktop")
 statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
 statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
 
 #mouseClick move focus to mycomputer_popup, there is no "My Computer" folder on listview
 ofdFrame.mycomputer_popup.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("My Computer")
+ofdFrame.assertMenuItemClick("My Computer")
 statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
 statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 

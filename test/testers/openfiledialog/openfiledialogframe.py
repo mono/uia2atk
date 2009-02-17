@@ -14,9 +14,8 @@ import states
 from strongwind import *
 from openfiledialog import *
 
-class SearchNewFolderError(Exception):
+class SearchFolderError(Exception):
     'Raised when search an extra item method fails'
-    print "ListView shows aa new folder"
     pass
 
 # class to represent the main window.
@@ -37,7 +36,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         button.click()
 
     #do click action and give action log
-    def ItemClick(self, itemname):
+    def itemClick(self, itemname):
         procedurelogger.action("click %s" % itemname)
         itemname.click()
 
@@ -47,7 +46,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         itemname.press()
 
     #assert if all widgets on Open dialog are showing
-    def AssertWidgets(self, button=None):
+    def assertWidgets(self, button=None):
         procedurelogger.action("search for all widgets from OpenDialog windows")
 
         procedurelogger.expectedResult("All widgets in OpenDialog is showing up")
@@ -101,13 +100,13 @@ class OpenFileDialogFrame(accessibles.Frame):
         assert len(self.listitems) != 0, "no list items under listview"
 
     #assert if help button and readonly checkbox are showing
-    def AssertVisibleWidget(self):
+    def assertVisibleWidget(self):
         procedurelogger.expectedResult('"Help" button and "Open Readonly" checkbox  widgets is showing up')
         self.help_button = self.opendialog.findPushButton("Help")
         self.readonly_checkbox = self.opendialog.findCheckBox("Open Readonly")
 
     #assert if all widgets on creat new folder dialog are showing
-    def NewFolderCheck(self):
+    def newFolderCheck(self):
 
         procedurelogger.expectedResult("All widgets in NewFolderOrFile dialog is showing up")
         self.newfolderdialog = self.app.findDialog("New Folder or File")
@@ -119,7 +118,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.newfolder_cancel = self.newfolderdialog.findPushButton("Cancel")
 
     #creat a new folder
-    def CreatFolder(self, button):       
+    def creatFolder(self, button):       
         #enter folder name to text click OK, then check list item from listview
         self.newfolder_text.enterText("ANewFolder")
         sleep(config.SHORT_DELAY)
@@ -128,9 +127,9 @@ class OpenFileDialogFrame(accessibles.Frame):
         if button == self.newfolder_cancel:
             procedurelogger.expectedResult("never create new folder")
             try:
-                aa_menuitem = self.listview.findListItem("ANewFolder")
-                if aa_menuitem:
-                    raise SearchNewFolderError
+                new_menuitem = self.listview.findListItem("ANewFolder")
+                if new_menuitem:
+                    raise SearchFolderError
             except SearchError:
                 pass
         elif button == self.newfolder_ok:
@@ -138,13 +137,13 @@ class OpenFileDialogFrame(accessibles.Frame):
             self.listview.findListItem("ANewFolder")
 
     #assert the foldername isn't been showing after click dir menuitem
-    def AssertMenuItemClick(self, foldername):
+    def assertMenuItemClick(self, foldername):
 
         procedurelogger.expectedResult("Directory is changed, you can't find aa folder again")
         try:
             foldername_menuitem = self.listview.findListItem(foldername)
             if foldername_menuitem:
-               raise SearchNewFolderError
+               raise SearchFolderError
         except SearchError:
             pass
 
