@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
@@ -318,8 +320,25 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SelectItem (ListItemProvider item)
 			{
-				if (ContainsItem (item) == true)
+				if (ContainsItem (item) == true) {
 					comboboxControl.SelectedIndex = item.Index;
+
+					// Raise SelectionChangeCommitted event
+					// on the ComboBox. Since we are simulating
+					// a user interacting with the control,
+					// this event is expected.
+					//
+					// NOTE: This is a protected method that
+					//       is a part of the documented
+					//       API for SWF.ComboBox.
+					MethodInfo onSelectionChangeCommitted =
+						comboboxControl.GetType ().GetMethod ("OnSelectionChangeCommitted",
+						                                      BindingFlags.NonPublic | BindingFlags.Instance);
+					if (onSelectionChangeCommitted != null) {
+						onSelectionChangeCommitted.Invoke (comboboxControl,
+							                                   new object [] {EventArgs.Empty});
+					}
+				}
 			}
 	
 			public override void UnselectItem (ListItemProvider item)

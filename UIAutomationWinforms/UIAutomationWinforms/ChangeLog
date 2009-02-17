@@ -1,3 +1,10 @@
+2009-02-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Raise
+	SelectionChangeCommitted event when selecting a ComboBox item.
+	This is expected when a user physically makes a selection, so
+	we should emulate. Fixes bug #475529.
+
 2009-02-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Using valid Rect

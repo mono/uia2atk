@@ -463,6 +463,72 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				"TextBox does not have keyboard focus when it should");
 		}
 
+		[Test]
+		// https://bugzilla.novell.com/show_bug.cgi?id=475529
+		public void MWFSelectionEventsRaisedTest ()
+		{
+			ComboBox combobox = GetComboBox ();
+			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			combobox.Items.Add ("item1");
+			combobox.Items.Add ("item2");
+			combobox.SelectedIndex = 0;
+			var cbProvider = GetProviderFromControl (combobox);
+
+			ISelectionItemProvider item1SelectionItem = null;
+			ISelectionItemProvider item2SelectionItem = null;
+
+			IRawElementProviderFragment listProvider = null;
+			
+			var childProvider = cbProvider.Navigate (NavigateDirection.FirstChild);
+
+			while (childProvider != null) {
+				if (ControlType.List.Id.Equals (childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id))) {
+					listProvider = childProvider;
+					break;
+				}
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			}
+
+			childProvider = listProvider.Navigate (NavigateDirection.FirstChild);
+			
+			while (childProvider != null) {
+				if ((bool) childProvider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id)) {
+					string name = (string)
+						childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+					var selectionItemProvider = (ISelectionItemProvider)
+						childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+					if (name == "item1")
+						item1SelectionItem = selectionItemProvider;
+					else if (name == "item2")
+						item2SelectionItem = selectionItemProvider;
+				}
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.IsNotNull (item1SelectionItem, "Could not find item1 SelectionItem");
+			Assert.IsNotNull (item2SelectionItem, "Could not find item2 SelectionItem");
+
+			bool selectedIndexChanged = false;
+			bool selectedValueChanged = false;
+			bool selectionChangeCommitted = false;
+
+			combobox.SelectedIndexChanged += delegate {
+				selectedIndexChanged = true;
+			};
+			combobox.SelectedValueChanged += delegate {
+				selectedValueChanged = true;
+			};
+			combobox.SelectionChangeCommitted += delegate {
+				selectionChangeCommitted = true;
+			};
+
+			item2SelectionItem.Select ();
+
+			Assert.IsTrue (selectedIndexChanged, "SelectedIndexChanged event expected");
+			Assert.IsTrue (selectedValueChanged, "SelectedValueChanged event expected");
+			Assert.IsTrue (selectionChangeCommitted, "SelectionChangeCommitted event expected");
+		}
+
 		#endregion
 
 		#region Protected Methods
