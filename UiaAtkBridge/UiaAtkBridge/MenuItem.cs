@@ -309,17 +309,17 @@ namespace UiaAtkBridge
 		
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.AddSelection (startOffset, endOffset);
 		}
 
 		bool Atk.TextImplementor.RemoveSelection (int i)
 		{
-			return false;
+			return textExpert.RemoveSelection (i);
 		}
 		
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
 		}
 		
 		public bool SetCaretOffset (int offset)

@@ -1,3 +1,16 @@
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs:
+	* TreeItem.cs:
+	* ListItem.cs:
+	* MenuItem.cs:
+	* TextLabel.cs:
+	* Hyperlink.cs:
+	* ProgressBar.cs:
+	* TextContainer.cs:
+	* BaseTextImplementor.cs: Fixes to make new tests pass. (First
+	patch for bug#446915.)
+
 2009-02-13  Brad Taylor  <brad@getcoded.net>
 
 	* Spinner.cs: Handle when RangeValue's SetValue method isn't actually

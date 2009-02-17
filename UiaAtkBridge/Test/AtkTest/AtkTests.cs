@@ -70,7 +70,7 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 
-			string name = "test";
+			string name = "test test";
 			Atk.Object accessible = GetAccessible (type, name);
 
 			Interfaces (accessible,
@@ -397,6 +397,9 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			Parent (type, accessible);
+
+			//TODO: why the bridge doesn't respect this?:
+			//Assert.IsNull (CastToAtkInterface <Atk.Text> (accessible));
 		}
 		
  		[Test]

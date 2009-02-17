@@ -65,9 +65,7 @@ namespace UiaAtkBridge
 		}
 
 		public int NSelections {
-			get {
-				return 0;
-			}
+			get { return 0; }
 		}
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)
@@ -136,17 +134,17 @@ namespace UiaAtkBridge
 
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.AddSelection (startOffset, endOffset);
 		}
 
 		public bool RemoveSelection (int selectionNum)
 		{
-			return false;
+			return textExpert.RemoveSelection (selectionNum);
 		}
 
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
 		}
 		
 		public char GetCharacterAtOffset (int offset)

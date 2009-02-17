@@ -67,6 +67,8 @@ namespace UiaAtkBridge
 		
 		public virtual bool AddSelection (int startOffset,  int endOffset)
 		{
+			selectionStartOffset = 0;
+			selectionEndOffset = 0;
 			return false;
 		}
 

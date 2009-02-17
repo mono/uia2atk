@@ -83,11 +83,8 @@ namespace UiaAtkBridge
 		
 		// Return the number of actions (Read-Only)
 		// Both IInvokeProvider and IToggleProvider have only one action
-		public int NActions
-		{
-			get {
-				return 1;
-			}
+		public int NActions {
+			get { return 1; }
 		}
 		
 		// Get a localized name for the specified action
@@ -247,26 +244,17 @@ namespace UiaAtkBridge
 
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
 		public char GetCharacterAtOffset (int offset)
@@ -291,24 +279,22 @@ namespace UiaAtkBridge
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = selectionStartOffset;
-			endOffset = selectionEndOffset;
-			return null;
+			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			throw new NotImplementedException ();
+			return textExpert.AddSelection (startOffset, endOffset);
 		}
 
 		public bool RemoveSelection (int selectionNum)
 		{
-			return false;
+			return textExpert.RemoveSelection (selectionNum);
 		}
 
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
 		}
 
 		public bool SetCaretOffset (int offset)

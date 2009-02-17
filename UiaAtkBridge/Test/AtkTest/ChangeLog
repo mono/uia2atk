@@ -1,3 +1,13 @@
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Make Button better testable for Atk.Test.
+
+	* AtkTester.cs: Call TestSelection for every Atk.Text
+	implementor.
+
+	* BasicWidgetType.cs: New exception type. New non-read-only
+	widgets.
+
 2009-02-11  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Expect TreeTable for a ListBox.

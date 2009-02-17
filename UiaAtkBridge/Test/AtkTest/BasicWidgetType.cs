@@ -115,12 +115,23 @@ namespace UiaAtkBridgeTest
 	
 	public static class Misc
 	{
-		public class AtkTestObject : Atk.Object {
+		public class UntestableException : Exception
+		{
+			public UntestableException (string message) : base (message)
+			{
+			}
 		}
 		
-		internal static bool HasReadOnlyText (BasicWidgetType type) {
-			if ((type == BasicWidgetType.TextBoxEntry) ||
-			    (type == BasicWidgetType.TextBoxView))
+		public class AtkTestObject : Atk.Object
+		{
+		}
+		
+		internal static bool HasReadOnlyText (BasicWidgetType type)
+		{
+			if (type == BasicWidgetType.TextBoxEntry ||
+			    type == BasicWidgetType.TextBoxView ||
+			    type == BasicWidgetType.RichTextBox ||
+			    type == BasicWidgetType.MaskedTextBoxEntry)
 				return false;
 			return true;
 		}

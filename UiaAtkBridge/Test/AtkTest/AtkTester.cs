@@ -925,6 +925,9 @@ namespace UiaAtkBridgeTest
 				return Atk.Role.PushButton;
 			case BasicWidgetType.Window:
 				return Atk.Role.Frame;
+			case BasicWidgetType.ListItem:
+				return Atk.Role.ListItem;
+			case BasicWidgetType.CheckedListItem:
 			case BasicWidgetType.CheckBox:
 				return Atk.Role.CheckBox;
 			case BasicWidgetType.ComboBoxDropDownEntry:
@@ -935,6 +938,7 @@ namespace UiaAtkBridgeTest
 				       Atk.Role.ComboBox : Atk.Role.TreeTable;
 			case BasicWidgetType.RadioButton:
 				return Atk.Role.RadioButton;
+			case BasicWidgetType.MaskedTextBoxEntry:
 			case BasicWidgetType.TextBoxEntry:
 			case BasicWidgetType.TextBoxView:
 			case BasicWidgetType.RichTextBox:
@@ -1015,7 +1019,9 @@ namespace UiaAtkBridgeTest
 			atkEditableText.TextContents = "abcdef";
 			InterfaceText (accessible, "abcdef");
 			atkEditableText.DeleteText (2, 4);
-			InterfaceText (accessible, "abef");
+			try {
+				InterfaceText (accessible, "abef");
+			} catch (Misc.UntestableException) { }
 			int pos = 0;
 			atkEditableText.InsertText ("xx", ref pos);
 			InterfaceText (accessible, "xxabef");
@@ -1135,9 +1141,7 @@ namespace UiaAtkBridgeTest
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 
-			if (Misc.HasReadOnlyText (type)
-			    && (type != BasicWidgetType.MaskedTextBoxEntry)
-			    && (type != BasicWidgetType.RichTextBox))
+			if (Misc.HasReadOnlyText (type))
 				Assert.AreEqual (name, accessible.Name, "accessible.Name");
 			else
 				Assert.IsNull (accessible.Name, "accessible.Name");
@@ -1251,8 +1255,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,WordEnd,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,WordEnd,eo SL");
 
-			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry
-			    || type == BasicWidgetType.RichTextBox) {
+			if (!Misc.HasReadOnlyText (type)) {
 				startCaretOffset = highCaretOffset;
 				endCaretOffset = highCaretOffset;
 			}
@@ -1262,7 +1265,8 @@ namespace UiaAtkBridgeTest
 			//NSelections == 0, however we have one selection, WTF?:
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16 SL");
 			
-			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#17 SL");
+			Assert.AreEqual (startCaretOffset, startOffset, 
+			                 "GetSelection#17 SL, we got: " + startOffset + ", should be: "  + highCaretOffset);
 			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18 SL");
 			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19 SL");
 			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#20 SL");
@@ -1401,12 +1405,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordStart,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordStart,eo SL");
 
-			if (type == BasicWidgetType.TextBoxEntry ||
-			    type == BasicWidgetType.TextBoxView ||
-			    type == BasicWidgetType.RichTextBox ||
-			    type == BasicWidgetType.DomainUpDown) {
-				TextSelection (type, atkText, name);
-			}
+			TextSelection (type, atkText, name);
 
 			if (onlySingleLine)
 				return accessible;
@@ -1725,25 +1724,38 @@ namespace UiaAtkBridgeTest
 		protected void TextSelection (BasicWidgetType type, Atk.Text atkText, string name)
 		{
 			if (name.Length < 5)
-				return;	// string not long enough
+				throw new Misc.UntestableException ("String not long enough to test.");
 
+			bool supportsSelection = (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.DomainUpDown);
+			if (!supportsSelection)
+				name = null;
+			
 			RunInGuiThread (delegate () {
 				int startOffset, endOffset;
-				Assert.IsTrue (atkText.AddSelection (1, 3), "AddSelection");
-				Assert.AreEqual (1, atkText.NSelections, "NSelections after AddSelect");
-				Assert.AreEqual (name.Substring (1, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
-				Assert.AreEqual (1, startOffset, "startOffset");
-				Assert.AreEqual (3, endOffset, "endOffset");
+				
+				Assert.AreEqual (supportsSelection, atkText.AddSelection (1, 3), "AddSelection, we should get:" + supportsSelection);
+				int nSelections = supportsSelection ? 1 : 
+					(type == BasicWidgetType.Label || type == BasicWidgetType.ToolStripLabel ? 0 : -1);
+				Assert.AreEqual (nSelections, atkText.NSelections, "NSelections after AddSelect, we should get: " + nSelections);
+				Assert.AreEqual (name == null ? null : name.Substring (1, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+				Assert.AreEqual (supportsSelection ? 1 : 0, startOffset, "startOffset, we got: " + startOffset);
+				Assert.AreEqual (supportsSelection ? 3 : 0, endOffset, "endOffset, we got: " + endOffset);
+				
 				StartEventMonitor ();
-				Assert.IsTrue (atkText.SetSelection (0, 2, 4), "AddSelection");
-				Atk.Role role = GetRole (type);
+				Assert.AreEqual (supportsSelection, atkText.SetSelection (0, 2, 4), "AddSelection#2");
 				// Ideally, we would only send one
 				// event, but that would be hard with
 				// the current design, so allowing 2
-				ExpectEvents (1, 2, role, "object:text-selection-changed");
-				Assert.AreEqual (name.Substring (2, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
-				Assert.AreEqual (2, startOffset, "startOffset");
-				Assert.AreEqual (4, endOffset, "endOffset");
+				int min = 1, max = 2;
+				if (!supportsSelection || type == BasicWidgetType.MaskedTextBoxEntry) {
+					min = 0;
+					max = 0;
+				}
+				ExpectEvents (min, max, GetRole (type), "object:text-selection-changed");
+				
+				Assert.AreEqual (name == null ? null : name.Substring (2, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+				Assert.AreEqual (supportsSelection ? 2 : 0, startOffset, "startOffset");
+				Assert.AreEqual (supportsSelection ? 4 : 0, endOffset, "endOffset");
 			});
 		}
 
