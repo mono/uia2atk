@@ -1,3 +1,18 @@
+2009-02-17  Ray Wang <rawang@novell.com>
+
+	* samples/toolstriplabel.py: correct my email address
+	* samples/toolstripsplitbutton.py: correct my email address
+	* samples/datetimepicker_showupdown.py: fix label's Text typo
+	* samples/menustrip.py: remove useless label
+	* testers/menustrip/menustripframe.py: add assertSelectChild method
+	to test menustrip's AtkSelection
+	* testers/menustrip_basic_ops.py: add AtkSelection test statements
+	* testers/datetimepicker_showupdown,
+	* testers/datetimepicker_showupdown/__init__.py
+	* testers/datetimepicker_showupdown/datetimepickershowupdownframe.py,
+	* testers/datetimepicker_showupdown_ops.py: update DateTimePicker
+	ShowUpDown style strongwind test
+
 2009-02-17  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py,

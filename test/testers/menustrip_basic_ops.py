@@ -41,9 +41,30 @@ if app is None:
 # just an alias to make things shorter
 msFrame = app.menuStripFrame
 
+##############################
+# check MenuStrip and its children's AtkAccessible
+##############################
 # check states of menustrip
 statesCheck(msFrame.menustrip, "MenuStrip")
+statesCheck(msFrame.menuitem_file, "MenuItem")
+statesCheck(msFrame.menuitem_edit, "MenuItem")
 
+##############################
+# check MenuStrip's AtkSelection
+##############################
+msFrame.assertSelectChild(msFrame.menustrip, 0)
+# BUG476362
+#statesCheck(msFrame.menuitem_file, "MenuItem", add_states=["selected"])
+statesCheck(msFrame.menuitem_edit, "MenuItem")
+
+msFrame.assertSelectChild(msFrame.menustrip, 1)
+statesCheck(msFrame.menuitem_file, "MenuItem")
+# BUG476362
+#statesCheck(msFrame.menuitem_edit, "MenuItem", add_states=["selected"])
+
+##############################
+# End
+##############################
 # close application frame window
 msFrame.quit()
 

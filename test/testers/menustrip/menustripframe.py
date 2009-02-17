@@ -16,6 +16,14 @@ class MenuStripFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(MenuStripFrame, self).__init__(accessible)
         self.menustrip = self.findMenuBar(None)
+        self.menuitem_file = self.findMenuItem("File")
+        self.menuitem_edit = self.findMenuItem("Edit")
+
+    def assertSelectChild(self, accessible, index):
+        """assert Selection implementation"""
+        procedurelogger.action('select index %s in "%s"' % (index, accessible))
+
+        accessible.selectChild(index)
 
     # close sample application after running the test
     def quit(self):

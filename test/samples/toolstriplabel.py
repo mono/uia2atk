@@ -1,7 +1,7 @@
 #!/usr/bin/env ipy
 # vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
-# Written by:  Ray Wang <cachen@novell.com>
+# Written by:  Ray Wang <rawang@novell.com>
 # Date:        12/10/2008
 # Description: The sample for winforms control:
 #              ToolStrip
