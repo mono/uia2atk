@@ -52,6 +52,8 @@ namespace Mono.UIAutomation.Winforms.Events
 			Provider.Control.LocationChanged += new EventHandler (OnIsOffScreen);
 			if (Provider.Control.Parent != null)
 				Provider.Control.Parent.LocationChanged += new EventHandler (OnIsOffScreen);
+			if (Provider.Control.FindForm () != null)
+				Provider.Control.FindForm ().Resize += new EventHandler (OnIsOffScreen);
 		}
 
 		public override void Disconnect ()
@@ -60,6 +62,8 @@ namespace Mono.UIAutomation.Winforms.Events
 			Provider.Control.LocationChanged -= new EventHandler (OnIsOffScreen);
 			if (Provider.Control.Parent != null)
 				Provider.Control.Parent.LocationChanged -= new EventHandler (OnIsOffScreen);
+			if (Provider.Control.FindForm () != null)
+				Provider.Control.FindForm ().Resize -= new EventHandler (OnIsOffScreen);
 		}
 		
 		#endregion

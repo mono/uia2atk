@@ -128,6 +128,10 @@ namespace Mono.UIAutomation.Winforms
 			else
 				screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
 
+			IRawElementProviderFragment formProvider = null;
+			if ((formProvider = ProviderFactory.FindProvider (referenceControl.FindForm ())) != null)
+				return !formProvider.BoundingRectangle.IntersectsWith (bounds) || !bounds.IntersectsWith (screen);
+
 			return !bounds.IntersectsWith (screen);
 		}
 

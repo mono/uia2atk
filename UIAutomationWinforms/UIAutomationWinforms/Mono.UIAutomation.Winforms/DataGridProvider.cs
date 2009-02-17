@@ -778,6 +778,11 @@ namespace Mono.UIAutomation.Winforms
 				if (datagrid.CaptionVisible)
 					rectangle.X += datagrid.UIACaptionArea.Height;
 
+				if (rectangle.Width < 0)
+					rectangle.Width = 0;
+				if (rectangle.Height < 0)
+					rectangle.Height = 0;
+
 				Rect screen = Helper.RectangleToRect (datagrid.Parent.RectangleToScreen (rectangle));
 				return !bounds.IntersectsWith (screen);
 			}

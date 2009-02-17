@@ -198,6 +198,73 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			TestLabeledByAndName (true, true);
 		}
+
+		[Test]
+		public virtual void IsOffScreenPropertyTest ()
+		{
+			// This is Control-based test. If your provider is Component-based
+			// you will need to override this test
+			Control control = GetControlInstance ();
+
+			// Also there are some controls either always-visible or special:
+			if (control == null || control is Form || control is StatusBar
+			    || control is MenuStrip || control is StatusStrip 
+			    || control is ToolBar || control is Splitter)
+				return;
+
+			Form.Controls.Clear ();
+			Form.Size = new System.Drawing.Size (150, 50);
+
+			// We are adding our control and is visible
+			control.Dock = DockStyle.None;
+			control.Size = new System.Drawing.Size (15, 15);
+			control.Location = new System.Drawing.Point (5, 5);
+
+			Form.Controls.Add (control);
+
+			IRawElementProviderFragment controlProvider = ProviderFactory.FindProvider (control);
+			Assert.IsNotNull (controlProvider, 
+			                  string.Format ("Control provider missing: {0}", control.GetType ()));
+
+			Assert.IsFalse ((bool) controlProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			                "Provider should be visible (!OffScreen)");
+
+			// Lets move it out of visible bounds
+			bridge.ResetEventLists ();
+			control.Location = new System.Drawing.Point (160, 100);
+
+			AutomationPropertyChangedEventTuple offscreenTuple 
+				= bridge.GetAutomationPropertyEventFrom (controlProvider,
+				                                         AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			Assert.IsNotNull (offscreenTuple, "IsOffScreen Event not raised");
+			Assert.IsTrue ((bool) offscreenTuple.e.NewValue, "Is OffScreen (not visible)");
+			Assert.IsFalse ((bool) offscreenTuple.e.OldValue, "Was not OffScreen (visible)");
+			Assert.IsTrue ((bool) controlProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "Provider should not be visible (OffScreen)");
+
+			// Lets resize our form to make sure our control is visible again
+			bridge.ResetEventLists ();
+			Form.Size = new System.Drawing.Size (300, 300);
+			offscreenTuple = bridge.GetAutomationPropertyEventFrom (controlProvider,
+			                                                        AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			Assert.IsNotNull (offscreenTuple, "IsOffScreen Event not raised");
+			Assert.IsFalse ((bool) offscreenTuple.e.NewValue, "Is Not OffScreen (visible)");
+			Assert.IsTrue ((bool) offscreenTuple.e.OldValue, "Was OffScreen (not visible)");
+			Assert.IsFalse ((bool) controlProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			                "Provider should be visible (OffScreen)");
+
+			// Lets resize again our form to its previous value to make sure our
+			// control is not visible again
+			bridge.ResetEventLists ();
+			Form.Size = new System.Drawing.Size (150, 50);
+			offscreenTuple = bridge.GetAutomationPropertyEventFrom (controlProvider,
+			                                                        AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			Assert.IsNotNull (offscreenTuple, "IsOffScreen Event not raised");
+			Assert.IsTrue ((bool) offscreenTuple.e.NewValue, "Is OffScreen (not visible)");
+			Assert.IsFalse ((bool) offscreenTuple.e.OldValue, "Was Not OffScreen (visible)");
+			Assert.IsTrue ((bool) controlProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "Provider should not be visible (OffScreen)");
+		}
 		
 		[Test]
 		public virtual void ClickablePointPropertyTest ()

@@ -1,3 +1,14 @@
+2009-02-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Using valid Rect
+	arguments, fixes exception.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: When Control.FindForm() is not
+	null we return its intersection state. [Fixes Bug #474698]
+
+	* Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs:
+	Listening Container.FindForm() Resize Event. [Fixes Bug #474698]
+
 2009-02-13  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
