@@ -1,3 +1,10 @@
+2009-02-17  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog/openfiledialogframe.py: add assertActivate to 
+	test activate action for table cell to enter folder or open file
+	* testers/openfiledialog_basic_ops.py: add test for assertActivate, 
+	relate bug476365
+
 2009-02-17  Ray Wang <rawang@novell.com>
 
 	* samples/toolstriplabel.py: correct my email address

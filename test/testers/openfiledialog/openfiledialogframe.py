@@ -141,11 +141,30 @@ class OpenFileDialogFrame(accessibles.Frame):
 
         procedurelogger.expectedResult("Directory is changed, you can't find aa folder again")
         try:
-            foldername_menuitem = self.listview.findListItem(foldername)
+            foldername_menuitem = self.listview.findTableCell(foldername)
             if foldername_menuitem:
                raise SearchFolderError
         except SearchError:
             pass
+
+    #assert activate table cell to enter folder or open file
+    def assertActivate(self, cellname):
+        tablecell = self.listview.findTableCell(cellname)
+        tablecell.activate()
+
+        sleep(config.SHORT_DELAY)
+
+        if cellname == "ANewFolder":
+            procedurelogger.expectedResult('Enter to "%s" folder' % cellname)
+            try:
+                table_cell = self.listview.findTableCell(None)
+                if len(table_cell) > 0:
+                    raise SearchFolderError
+            except SearchError:
+                pass
+        else:
+            procedurelogger.expectedResult('"%s" file is opened' % cellname)
+            self.opendialog.assertClosed()
 
    
     #close application main window after running test

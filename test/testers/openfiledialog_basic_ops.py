@@ -166,6 +166,20 @@ ofdFrame.assertMenuItemClick("My Computer")
 statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
 statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
+###############################################
+##test activate action for Tabel Cell
+###############################################
+##missing activate action BUG476365
+ofdFrame.click(ofdFrame.opendialog_button)
+sleep(config.MEDIUM_DELAY)
+#double click to open "README" file
+ofdFrame.assertActivate("README")
+
+ofdFrame.click(ofdFrame.opendialog_button)
+sleep(config.MEDIUM_DELAY)
+#double click to enter "ANewFolder" folder
+ofdFrame.assertActivate("ANewFolder")
+
 #close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
 
