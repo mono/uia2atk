@@ -179,10 +179,6 @@ AtkObject,
 
 			return states;
 		}
-		
-		public GLib.SList DefaultAttributes {
-			get { throw new NotImplementedException (); }
-		}
 
 		internal void HandleItemFocus (Adapter item, bool itemFocused)
 		{

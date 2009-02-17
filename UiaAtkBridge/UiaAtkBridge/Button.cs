@@ -41,7 +41,6 @@ namespace UiaAtkBridge
 		protected string					actionName = null;
 		
 		private ITextImplementor textExpert = null;
-		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
 		// UI Automation Properties supported
 		// AutomationElementIdentifiers.AcceleratorKeyProperty.Id

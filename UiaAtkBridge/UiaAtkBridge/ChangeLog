@@ -1,5 +1,11 @@
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs: Fix warning.
+
+	* Tree.cs: Remove obsolete property.
+
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Button.cs:
 	* TreeItem.cs:
 	* ListItem.cs:
