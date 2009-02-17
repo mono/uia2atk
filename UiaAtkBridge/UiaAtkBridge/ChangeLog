@@ -1,5 +1,10 @@
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ProgressBar.cs: ProgressBar doesn't implement Atk.Text.
+	(This removes another NIE for #446915.)
+
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Tree.cs: Cosmetic.
 
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>

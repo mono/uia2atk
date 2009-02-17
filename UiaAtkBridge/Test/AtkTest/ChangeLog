@@ -1,5 +1,9 @@
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: ProgressBar doesn't implement Atk.Text.
+
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Make Button better testable for Atk.Test.
 
 	* AtkTester.cs: Call TestSelection for every Atk.Text

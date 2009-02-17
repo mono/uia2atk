@@ -385,6 +385,11 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 
 			accessible = GetAccessible (type, name, true);
+
+			Interfaces (accessible, 
+			            typeof (Atk.Value),
+			            typeof (Atk.Component));
+
 			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
 			
 			InterfaceValue (type, atkValue);
@@ -397,9 +402,6 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			Parent (type, accessible);
-
-			//TODO: why the bridge doesn't respect this?:
-			//Assert.IsNull (CastToAtkInterface <Atk.Text> (accessible));
 		}
 		
  		[Test]

@@ -31,24 +31,13 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ProgressBar : ComponentAdapter, Atk.TextImplementor, Atk.ValueImplementor
+	public class ProgressBar : ComponentAdapter, Atk.ValueImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
-		private IValueProvider valueProvider;
-		private ITextImplementor textExpert = null;
-
+		
 		public ProgressBar (IRawElementProviderSimple provider) : base (provider)
 		{
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-
-			if (valueProvider != null)
-				textExpert = new ValueProviderTextImplementor (this, valueProvider);
-			else if (rangeValueProvider != null)
-				textExpert = new ProgressBarTextImplementor (this, rangeValueProvider);
-			else
-				textExpert = new NamePropertyTextImplementor (this, provider);
-
 			Role = Atk.Role.ProgressBar;
 		}
 		
@@ -69,7 +58,7 @@ namespace UiaAtkBridge
 
 		public void GetCurrentValue (ref GLib.Value value)
 		{
-			value = new GLib.Value(rangeValueProvider != null? rangeValueProvider.Value: 0);
+			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Value: 0);
 		}
 
 		public bool SetCurrentValue (GLib.Value value)
@@ -78,139 +67,17 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public string GetText (int startOffset, int endOffset)
-		{
-			return textExpert.GetText (startOffset, endOffset);
-		}
-
-		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
-		}
-
-		public Atk.Attribute [] DefaultAttributes {
-			get { return textExpert.DefaultAttributes; }
-		}
-
-		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
-		{
-			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
-		}
-
-		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
-		{
-			throw new NotImplementedException();
-		}
-
-		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
-		}
-
-		public bool AddSelection (int startOffset, int endOffset)
-		{
-			return textExpert.AddSelection (startOffset, endOffset);
-		}
-
-		public bool RemoveSelection (int selectionNum)
-		{
-			return textExpert.RemoveSelection (selectionNum);
-		}
-
-		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
-		{
-			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
-		}
-		
-		public char GetCharacterAtOffset (int offset)
-		{
-			return textExpert.GetCharacterAtOffset (offset);
-		}
-
-		public bool SetCaretOffset (int offset)
-		{
-			return false;
-		}
-
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
-		{
-			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
-		}
-
-		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
-		{
-			throw new NotImplementedException();
-		}
-		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			// TODO
 		}
 		
-		public int CaretOffset {
-			get {
-				return 0;
-			}
-		}
-		
-		public int CharacterCount {
-			get {
-				return textExpert.Length;
-			}
-		}
-
-		public int NSelections {
-			get {
-				return 0;
-			}
-		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
+			if (e.Property == RangeValuePatternIdentifiers.ValueProperty)
 				Notify ("accessible-value");
-
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-				string newText = ((double)e.NewValue).ToString ("F2");
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newText == null ? 0 : newText.Length);
-			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
-		}
-
-		private class ProgressBarTextImplementor : BaseTextImplementor
-		{
-			public override string Text {
-				get { return rangeValueProvider.Value.ToString ("F2"); }
-			}
-
-			public ProgressBarTextImplementor (Adapter resource,
-			                                   IRangeValueProvider rangeValueProvider)
-				: base (resource)
-			{
-				this.rangeValueProvider = rangeValueProvider;
-			}
-
-			private IRangeValueProvider rangeValueProvider;
 		}
 	}
 }
