@@ -339,8 +339,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "After toggling off, toggleProvider is not returning ToggleState.Off");
 
 			// Verify that parts aren't enabled
-			child = ((IRawElementProviderFragment) child).Navigate (
-				NavigateDirection.NextSibling);
+			for (int i = 0; i < 6; i++) {
+				child = ((IRawElementProviderFragment) child).Navigate (
+					NavigateDirection.NextSibling);
+			}
+
 			TestProperty (child, AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.Spinner.Id);
 			TestProperty (child, AutomationElementIdentifiers.IsEnabledProperty,

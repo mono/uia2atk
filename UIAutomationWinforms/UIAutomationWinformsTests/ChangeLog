@@ -1,3 +1,7 @@
+2009-02-17  Brad Taylor  <brad@getcoded.net>
+
+	* DateTimePickerProviderTest.cs: Fix failing test.
+
 2009-02-17  Mario Carrion  <mcarrion@novell.com>
 
 	* BaseProviderTest.cs: Testing IsOffScreen in control: moving out
