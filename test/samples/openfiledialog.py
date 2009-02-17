@@ -27,7 +27,7 @@ uiaqa_path = harness_dir[:i]
 class MenuStripOpenFileDialogApp(Form):
 
     def __init__(self):
-        self.Text = "OpenfileDialog controls"
+        self.Text = "OpenfileDialog control"
         self.Width = 300
         self.Height = 300
         self.FormBorderStyle = FormBorderStyle.Fixed3D
