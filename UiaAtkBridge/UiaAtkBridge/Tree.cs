@@ -31,21 +31,12 @@ namespace UiaAtkBridge
 {
 	public class Tree : ComponentParentAdapter, Atk.SelectionImplementor, Atk.TableImplementor
 	{
-		private IRawElementProviderFragment		provider;
-		private ISelectionProvider					selectionProvider;
+		private IRawElementProviderFragment	provider;
+		private ISelectionProvider		selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
 		private Adapter selectedItem;
 		private bool hasFocus = false;
 		private TableImplementorHelper tableExpert = null;
-		
-/*
-AtkObject,
-?AtkAction,
-?AtkSelection,
-?AtkRelation (to associate a text label with the control),
-?AtkRelationSet,
-?AtkStateSet
-*/
 
 
 #region UI Automation Properties supported
@@ -234,7 +225,6 @@ AtkObject,
 
 #endregion
 
-
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == AutomationElementIdentifiers.AsyncContentLoadedEvent) {
@@ -335,7 +325,7 @@ AtkObject,
 			return GetRowForProvider (child, (IRawElementProviderFragment)target.Provider, ref count);
 		}
 
-			private int GetRowForProvider (IRawElementProviderFragment provider, IRawElementProviderFragment target, ref int index)
+		private int GetRowForProvider (IRawElementProviderFragment provider, IRawElementProviderFragment target, ref int index)
 		{
 			if (provider != null && !IsListItem (provider))
 				return GetRowForProvider (provider.Navigate (NavigateDirection.NextSibling), target, ref index);
@@ -352,7 +342,9 @@ AtkObject,
 			return GetRowForProvider (provider.Navigate (NavigateDirection.NextSibling), target, ref index);
 		}
 
-		public int NColumns { get { return 1; } }
+		public int NColumns { 
+			get { return 1; }
+		}
 
 		public int NRows {
 			get {
@@ -363,7 +355,7 @@ AtkObject,
 			}
 		}
 
-			private void CalculateRowCount (IRawElementProviderFragment provider, ref int count)
+		private void CalculateRowCount (IRawElementProviderFragment provider, ref int count)
 		{
 			if (provider == null)
 				return;
@@ -398,12 +390,12 @@ AtkObject,
 
 		public int GetColumnExtentAt (int row, int column)
 		{
-			return (column == 0? 1: -1);
+			return (column == 0 ? 1: -1);
 		}
 
 		public int GetRowExtentAt (int row, int column)
 		{
-			return (column == 0? 1: -1);
+			return (column == 0 ? 1: -1);
 		}
 
 		public Atk.Object Caption

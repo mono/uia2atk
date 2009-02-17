@@ -1,5 +1,9 @@
 2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Tree.cs: Cosmetic.
+
+2009-02-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Button.cs: Fix warning.
 
 	* Tree.cs: Remove obsolete property.
