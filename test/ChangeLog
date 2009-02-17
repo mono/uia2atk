@@ -1,3 +1,9 @@
+2009-02-17  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/pagesetupdialog/__init__.py:
+	* testers/pagesetupdialog/pagesetupdialogframe.py:
+	* testers/pagesetupdialog_basic_ops.py: Check in of initial test setup.
+
 2009-02-17  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py: add assertActivate to 
