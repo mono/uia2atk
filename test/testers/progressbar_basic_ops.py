@@ -46,8 +46,8 @@ pbFrame = app.progressBarFrame
 #check progressbar's states list
 statesCheck(pbFrame.progressbar, "ProgressBar")
 
-#click button to check if label is changed, in each time current value is up 20,
-#value would return to 0 and start progress again after up to 100
+#click button to check if label and progressbar's current value is changed
+#value would return to 0 and start again after up to 100
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
@@ -72,7 +72,7 @@ pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("100%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 100)
-#start progress again after the value increase to 100
+#start progress again after the value up to 100
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
