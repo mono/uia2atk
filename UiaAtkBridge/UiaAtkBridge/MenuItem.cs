@@ -81,7 +81,7 @@ namespace UiaAtkBridge
 			else
 				states.RemoveState (Atk.StateType.Showing);
 
-			if (Parent != null){
+			if (Parent != null) {
 				if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
 					states.AddState (Atk.StateType.Visible);
 				if ((Parent is MenuBar && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
@@ -102,6 +102,7 @@ namespace UiaAtkBridge
 				}
 			} else {
 				states.RemoveState (Atk.StateType.Selected);
+				states.RemoveState (Atk.StateType.Focused);
 			}
 
 			if (Checked)

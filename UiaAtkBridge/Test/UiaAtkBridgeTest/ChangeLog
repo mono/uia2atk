@@ -1,3 +1,9 @@
+2009-02-18  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Change existing ToolStripDropDownButton so that it
+	passes.  Additionally, verify that after selecting item 1, that item
+	2 has the correct states restored.
+
 2009-02-11  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Separate Items.Clear tests for StatusStrip and

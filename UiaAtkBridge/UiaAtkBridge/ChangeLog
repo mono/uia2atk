@@ -1,3 +1,8 @@
+2009-02-18  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: Remove Focused if the MenuItem isn't selected. 
+	[Fixes #471411].
+
 2009-02-17  Brad Taylor  <brad@getcoded.net>
 
 	* TextContainer.cs: Add MultiLine state to emulate Gail's pagetab

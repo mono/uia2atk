@@ -692,8 +692,6 @@ namespace UiaAtkBridgeTest
 			
 			States (secondItem,
 				Atk.StateType.Enabled,
-				Atk.StateType.Focusable,
-				Atk.StateType.Focused,
 				Atk.StateType.Selectable,
 				Atk.StateType.Selected,
 				Atk.StateType.Sensitive,
@@ -703,7 +701,16 @@ namespace UiaAtkBridgeTest
 			Atk.Object firstItem = accessible.RefAccessibleChild (0);
 			States (firstItem,
 				Atk.StateType.Enabled,
-				Atk.StateType.Focusable,
+				Atk.StateType.Selectable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Visible);
+
+			atkAction = CastToAtkInterface <Atk.Action> (firstItem);
+			atkAction.DoAction (0);
+
+			// #471411 would cause Focused to show up in this list.
+			States (secondItem,
+				Atk.StateType.Enabled,
 				Atk.StateType.Selectable,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Visible);
