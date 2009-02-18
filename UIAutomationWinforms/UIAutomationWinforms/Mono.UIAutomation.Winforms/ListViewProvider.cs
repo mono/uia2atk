@@ -963,6 +963,10 @@ namespace Mono.UIAutomation.Winforms
 				return editProvider;
 			}
 
+			public IRawElementProviderFragment CheckboxProvider {
+				get { return checkboxProvider; }
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (ListView.View == SWF.View.Details) {

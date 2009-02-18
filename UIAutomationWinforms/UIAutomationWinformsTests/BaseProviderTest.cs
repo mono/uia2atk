@@ -33,6 +33,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.Unix;
 using NUnit.Framework;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -987,6 +988,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				return null;
 			} else
 				return GetProviderFromControl (control);
+		}
+
+		// Ripped off from AtkTests.Misc.LookForParentDir
+		protected string LookForParentDir (string pattern) {
+			// FIXME: it seems we should use this when bnc#450433 is fixed:
+			//string imgDir =  System.IO.Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().CodeBase);
+			string imgDir = System.IO.Directory.GetCurrentDirectory ();
+			
+			while (imgDir != "/"){
+				if (System.IO.Directory.GetFiles (imgDir, pattern).Length == 0)
+					imgDir = System.IO.Path.GetFullPath (System.IO.Path.Combine (imgDir, ".."));
+	
+				else
+					break;
+				
+				string samples = System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples");
+				if (System.IO.Directory.Exists (samples)) { 
+					if (System.IO.Directory.GetFiles (samples, pattern).Length > 0) {
+						imgDir = System.IO.Path.GetFullPath (samples);
+						break;
+					}
+				}
+			}
+	
+			if (imgDir != "/")
+				return imgDir;
+	
+			return null;
 		}
 
 		#endregion
@@ -2396,6 +2425,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected virtual void TestGridItemPattern_RemoveRowAfter (IRawElementProviderSimple provider)
 		{
 			// This must be overridden by providers to actually add the row!
+		}
+
+		protected virtual void TestEmbeddedImagePattern_All (IRawElementProviderSimple provider, bool imageExpected)
+		{
+			IEmbeddedImageProvider embeddedImage 
+				= provider.GetPatternProvider (EmbeddedImagePatternIdentifiers.Pattern.Id) as IEmbeddedImageProvider;
+
+			Assert.IsNotNull (embeddedImage, "Provider {0} is not implementing IEmbeddedImageProvider");
+			Assert.AreEqual (!imageExpected,
+			                 embeddedImage.Bounds.IsEmpty,
+			                 string.Format ("Image was {0}expected, but was {1}found", 
+			                                imageExpected ? "" : "not ",
+			                                embeddedImage.Bounds.IsEmpty ? "not " : ""));
+
+			if (imageExpected) {
+				Rect providerRect
+					= (Rect) provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				Rect imageRect = embeddedImage.Bounds;
+
+				Assert.IsTrue (imageRect.X >= providerRect.X,
+				               string.Format ("Image X: {0} must be >= than container X: {1}", imageRect.X, providerRect.X));
+				Assert.IsTrue (imageRect.Y >= providerRect.Y,
+				               string.Format ("Image Y: {0} must be >= than container Y: {1}", imageRect.Y, providerRect.Y));
+				Assert.IsTrue (imageRect.Width <= providerRect.Width,
+				               string.Format ("Image Width: {0} must be <= than container Width: {1}", imageRect.Width, providerRect.Width));
+				Assert.IsTrue (imageRect.Height <= providerRect.Height,
+				               string.Format ("Image Height: {0} must be <= than container Height: {1}", imageRect.Height, providerRect.Height));
+			}
 		}
 
 		private void TestSelectionItemPattern_RemoveFromSelection (IRawElementProviderFragment selectionParent,

@@ -1,3 +1,7 @@
+2009-02-18  Mario Carrion  <mcarrion@novell.com>
+
+	* TreeItem.cs: Implementation Atk.ImageImplementor. [Fixes bug #459152]
+
 2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Adapter.cs: Improved comment.

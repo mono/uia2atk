@@ -30,13 +30,15 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
+	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
+		Atk.ImageImplementor
 	{
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
 
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
+		private ImageImplementorHelper imageExpert = null;
 
 		public TreeItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -55,6 +57,8 @@ namespace UiaAtkBridge
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
+
+			imageExpert = new ImageImplementorHelper (this);
 		}
 		
 		protected IToggleProvider ToggleProvider {
@@ -361,5 +365,32 @@ namespace UiaAtkBridge
 				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
 			}
 		}
+
+		#region Atk.ImageImplementor implementation 
+		
+		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
+		{
+			imageExpert.GetImagePosition (out x, out y, coordType);
+		}
+
+		public void GetImageSize (out int width, out int height)
+		{
+			imageExpert.GetImageSize (out width, out height);
+		}
+
+		public bool SetImageDescription (string description)
+		{
+			return imageExpert.SetImageDescription (description);
+		}
+
+		public string ImageDescription {
+			get { return imageExpert.ImageDescription; }
+		}
+
+		public string ImageLocale {
+			get { return imageExpert.ImageLocale; }
+		}
+
+		#endregion
 	}
 }

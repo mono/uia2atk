@@ -2286,6 +2286,93 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		public void Bug459152Test ()
+		{
+			string imagePath = LookForParentDir ("*.gif");
+
+			ListView listview = new ListView ();
+			listview.Width = 350;
+			listview.Height = 260;
+
+			ImageList imageList = new ImageList ();
+			imageList.Images.Add (System.Drawing.Image.FromFile (System.IO.Path.Combine (imagePath, "opensuse60x38.gif")));
+			imageList.Images.Add (System.Drawing.Image.FromFile (System.IO.Path.Combine (imagePath, "apple-red.png")));
+
+			listview.SmallImageList = listview.LargeImageList = imageList;
+
+			// SmallIcon, no Checkboxes
+			listview.View = View.SmallIcon;
+			listview.Items.Add ("item1", 0); // opensuse60x38.gif
+			listview.Items.Add ("item2", 1); // apple-red.png
+			listview.Items.Add ("item3", -1);
+			listview.Items.Add ("item4", -1);
+
+			IRawElementProviderFragmentRoot root
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
+			Assert.IsNotNull (root, "Missing ListViewProvider");
+			IRawElementProviderFragment []listItems = new IRawElementProviderFragment [4];
+		
+			IRawElementProviderFragment child = root.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Missing child");
+
+			int listItem = 0;
+			while (child != null) {				
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.ListItem.Id) {
+					listItems [listItem] = child;
+					listItem++;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (listItems.Length, listItem, "Count != ListItems");
+
+			TestEmbeddedImagePattern_All (listItems [0], true);
+			TestEmbeddedImagePattern_All (listItems [1], true);
+			TestEmbeddedImagePattern_All (listItems [2], false);
+			TestEmbeddedImagePattern_All (listItems [3], false);
+
+			// SmallIcon, checkboxes
+			listview.CheckBoxes = true;
+
+			TestEmbeddedImagePattern_All (listItems [0], true);
+			TestEmbeddedImagePattern_All (listItems [1], true);
+			TestEmbeddedImagePattern_All (listItems [2], false);
+			TestEmbeddedImagePattern_All (listItems [3], false);
+
+			// LargeIcon, no CheckBoxes
+			listview.View = View.LargeIcon;
+			listview.CheckBoxes = false;
+			// When changing View children are removed and added, so we need
+			// to request navigate children again
+			listItem = 0;
+			listItems = new IRawElementProviderFragment [4];
+			child = root.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Missing child");
+			while (child != null) {				
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.ListItem.Id) {
+					listItems [listItem] = child;
+					listItem++;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (listItems.Length, listItem, "Count != ListItems");
+
+			TestEmbeddedImagePattern_All (listItems [0], true);
+			TestEmbeddedImagePattern_All (listItems [1], true);
+			TestEmbeddedImagePattern_All (listItems [2], false);
+			TestEmbeddedImagePattern_All (listItems [3], false);
+
+			// LargeIcon, checkboxes
+			listview.CheckBoxes = true;
+
+			TestEmbeddedImagePattern_All (listItems [0], true);
+			TestEmbeddedImagePattern_All (listItems [1], true);
+			TestEmbeddedImagePattern_All (listItems [2], false);
+			TestEmbeddedImagePattern_All (listItems [3], false);
+		}
+
+		[Test]
 		public void Bug468271Test ()
 		{
 			// NOTE: This test only exposes bug in Provider side.

@@ -1,5 +1,10 @@
 2009-02-18  Mario Carrion  <mcarrion@novell.com>
 
+	* BridgeTests.cs: Testing Atk.Image in ListView's children. [For Bug
+	#459152]
+
+2009-02-18  Mario Carrion  <mcarrion@novell.com>
+
 	* BridgeTester.cs: Stopping EventMonitor on TearDown to kill atspimon.py
 	automatically.
 

@@ -247,16 +247,21 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ListView2 ()
 		{
+			string uiaQaPath = Misc.LookForParentDir ("*.gif");
+			lv1.SmallImageList = new SWF.ImageList ();
+			lv1.SmallImageList.Images.Add (Image.FromFile (System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif")));
+			lv1.SmallImageList.Images.Add (Image.FromFile (System.IO.Path.Combine (uiaQaPath, "apple-red.png")));
+			
 			lv1.Items.Clear ();
 			lv1.Scrollable = false;
 			lv1.Groups.Clear ();
 			lv1.View = SWF.View.SmallIcon;
 			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
 			lv1.Groups.Add (new SWF.ListViewGroup ("group2"));
-			lv1.Items.Add("item1");
-			lv1.Items.Add("item2");
-			lv1.Items.Add("item3");
-			lv1.Items.Add("item4");
+			lv1.Items.Add("item1", 0); // opensuse60x38.gif
+			lv1.Items.Add("item2", 1); // apple-red.png
+			lv1.Items.Add("item3", -1);
+			lv1.Items.Add("item4", -1);
 			lv1.Items[0].Group = lv1.Groups[0];
 			lv1.Items[1].Group = lv1.Groups[0];
 			lv1.Items[2].Group = lv1.Groups[1];
@@ -359,6 +364,19 @@ namespace UiaAtkBridgeTest
 			row2 = (atkTable.NRows == 4? 3: 1);
 			col2 = (atkTable.NRows == 4? 0: 1);
 			Assert.AreEqual (4, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
+
+			// Image tests
+			Atk.Image atkWithOutImage, atkWithImage;
+			item1 = FindObjectByName (group1, "item1");
+			Atk.Object item3 = FindObjectByName (group1, "item3");
+			
+			atkWithOutImage = CastToAtkInterface <Atk.Image> (item3);
+			atkWithImage = CastToAtkInterface <Atk.Image> (item1);
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (item1);
+			InterfaceImage (BasicWidgetType.ListView, 
+			                atkWithImage, 
+			                atkComponent, 
+			                atkWithOutImage);
 
 			accessible = group1 = item1 = null;
 			atkSelection = null;

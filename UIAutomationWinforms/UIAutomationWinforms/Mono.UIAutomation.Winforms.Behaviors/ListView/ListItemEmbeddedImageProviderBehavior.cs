@@ -61,7 +61,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 #region IEmbeddedImageProvider Interface
 		public System.Windows.Rect Bounds {
 			get {
-				ListViewItem item = ((ListItemProvider) Provider).ObjectItem as ListViewItem;
+				ListViewProvider.ListViewListItemProvider itemProvider 
+					= (ListViewProvider.ListViewListItemProvider) Provider;
+				ListViewItem item = itemProvider.ObjectItem as ListViewItem;
 				if (item == null || item.ListView == null 
 				    || (item.ImageIndex == -1 && item.ImageKey == string.Empty))
 					return System.Windows.Rect.Empty;
@@ -75,10 +77,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				if (imageList == null)
 					return System.Windows.Rect.Empty;
 
-				return new System.Windows.Rect (0,
-				                                0,
-				                                imageList.ImageSize.Width,
-				                                imageList.ImageSize.Height);
+				Rect rect = itemProvider.BoundingRectangle;
+				rect.Width = imageList.ImageSize.Width;
+				rect.Height = imageList.ImageSize.Height;
+
+				if (itemProvider.CheckboxProvider != null) 
+					rect.X += itemProvider.CheckboxProvider.BoundingRectangle.Width;
+
+				return rect;
 			}
 		}
 		
