@@ -338,3 +338,6 @@ class ContainerControl(object):
 
 class ThreadExceptionDialog_Text(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, MULTI_LINE, FOCUSABLE)
+
+class Alert(object):
+    states = (ENABLED, MODAL, SENSITIVE, SHOWING, VISIBLE)

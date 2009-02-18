@@ -1,5 +1,14 @@
 2009-02-18  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: add states tuple for Alert
+	* samples/notifyicon.py: replace the old example
+	* testers/notifyicon/notifyiconframe.py: add balloonWidgets method to 
+	find all widgets from alert windows, initial two buttons
+	* testers/notifyicon_basic_ops.py: test widgets in alert to check 
+	states that alert, label, icon have incorrect states. update comments
+
+2009-02-18  Calen Chen <cachen@novell.com>
+
 	* testers/savefiledialog/savefiledialogframe.py,
 	* testers/savefiledialog/__init__.py,
 	* testers/savefiledialog_basic_ops.py,

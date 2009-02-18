@@ -43,18 +43,30 @@ if app is None:
 # just an alias to make things shorter
 niFrame = app.notifyIconFrame
 
-#click button rise notifyicon frame window
-niFrame.click(niFrame.button)
-#sleep(config.SHORT_DELAY)
-notifyicon = niFrame.app.findFrame("I'm NotifyIcon")
+################################################
+##check balloon Alert windows
+##search for label and icon from Alert
+##click balloon to close Alert
+################################################
 
-#check notifyicon frame states
-statesCheck(notifyicon, "Form", add_states=["focusable"])
+#click button rise notifyicon frame window
+niFrame.click(niFrame.balloon_button)
+sleep(config.SHORT_DELAY)
+##Alert with wrong name BUG476859
+niFrame.balloonWidgets()
+
+#check states
+##missing "mobal" and has extra "resizable" BUG476862
+statesCheck(niFrame.balloon_alert, "Alert")
+##incorrect states BUG476906
+statesCheck(niFrame.label, "Label")
+##incorrect states BUG476871
+statesCheck(niFrame.icon, "Icon")
 
 #mouse click notifyicon frame window would close it
-notifyicon.mouseClick()
+balloon.mouseClick()
 sleep(config.SHORT_DELAY)
-notifyicon.assertClosed()
+balloon.assertClosed()
 
 #close application frame window
 niFrame.quit()
