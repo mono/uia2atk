@@ -18,7 +18,7 @@ class PageSetupDialogFrame(accessibles.Frame):
         button.click()
 
     def assertPageSetupDialog(self, button=None):
-        procedurelogger.action('Searching for all widgets in PageSetupDialog diglog')
+        procedurelogger.action('Searching for all widgets in PageSetupDialog')
         procedurelogger.expectedResult('All widgets in PageSetupDialog should show up')
 
         # PageSetupDialog

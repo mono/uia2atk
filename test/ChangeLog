@@ -1,3 +1,12 @@
+2009-02-18  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/pagesetupdialog_basic_ops.py,
+	* testers/pagesetupdialog/pagesetupdialogframe.py: Fixed typo.
+	* samples/contextmenu_menuitem.py: Added RadioCheck and Checked property.
+	* testers/contextmenu/__init__.py,
+	* testers/contextmenu/contextmenuframe.py,
+	* testers/contextmenu_basic_ops.py: Check in of initial test setup.
+
 2009-02-18  Ray Wang <rawang@novell.com>
 
 	* samples/mainmenu.py: simplify mainmenu sample

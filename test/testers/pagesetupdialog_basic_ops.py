@@ -3,8 +3,8 @@
 ##############################################################################
 # Written by:  Neville Gao <nevillegao@gmail.com>
 # Date:        02/16/2009
-# Description: Test accessibility of treeview widget
-#              Use the pagesetupdialog.py wrapper script
+# Description: Test accessibility of pagesetupdialog widget
+#              Use the pagesetupdialogframe.py wrapper script
 #              Test the samples/pagesetupdialog.py script
 ##############################################################################
 
@@ -59,5 +59,5 @@ sleep(config.SHORT_DELAY)
 psdFrame.click(psdFrame.main_cancel_button)
 sleep(config.SHORT_DELAY)
 
-#close application frame window
+# close application frame window
 psdFrame.quit()

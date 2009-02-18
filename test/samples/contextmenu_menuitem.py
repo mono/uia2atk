@@ -29,12 +29,15 @@ class ContextMenuSample(Form):
         """ContextMenuSample class init function."""
 
         # setup title
-        self.Text = "ContextMenu_MenuItem controls"
+        self.Text = "ContextMenu_MenuItem control"
 
         # create menuitems
         self.menuitem1 = MenuItem("Item 1")
         self.menuitem2 = MenuItem("Item 2")
+        self.menuitem2.RadioCheck = True
+        self.menuitem2.Checked = True
         self.menuitem3 = MenuItem("Item 3")
+        self.menuitem3.Checked = True
         self.menuitem4 = MenuItem("Exit")
 
         self.menuitem1.Click += self.on_click
@@ -62,8 +65,12 @@ class ContextMenuSample(Form):
         self.Controls.Add(self.label)
 
     def on_click(self, sender, event):
-        if sender == self.menuitem4:
-            Application.Exit() 
+        if sender == self.menuitem2 or sender == self.menuitem3:
+            sender.Checked = not sender.Checked
+            status = sender.Checked and ' ' or ' not '
+            self.label.Text = "%s is%schecked" % (sender.Text, status)
+        elif sender == self.menuitem4:
+            Application.Exit()
         else:
             self.label.Text = "you have clicked %s" % sender.Text
 
