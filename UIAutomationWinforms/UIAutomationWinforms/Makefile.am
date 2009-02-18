@@ -432,6 +432,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonTogglePatternToggleStateEvent.cs \

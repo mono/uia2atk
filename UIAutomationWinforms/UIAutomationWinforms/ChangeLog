@@ -1,3 +1,14 @@
+2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationIsEnabledPropertyEvent.cs:
+	Use new event added in MWF trunk, to fix #474197.
+
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs:
+	Style.
+
 2009-02-18  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEmbeddedImageProviderBehavior.cs:

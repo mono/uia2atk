@@ -33,9 +33,9 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-    	[TestFixture]
-    	public class StatusBarProviderTest : BaseProviderTest
-    	{
+	[TestFixture]
+	public class StatusBarProviderTest : BaseProviderTest
+	{
 		#region Test
 
 		[Test]
@@ -231,7 +231,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelProviderPatternTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
@@ -255,7 +255,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelNamePropertyChangedEventTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 
 			string panelName = "original panel name";
@@ -321,7 +321,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelIGridItemProviderRowTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
@@ -340,7 +340,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelIGridItemProviderColumnTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			StatusBarPanel panel = new StatusBarPanel ();
@@ -362,7 +362,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelIGridItemProviderRowSpanTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
@@ -381,7 +381,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelIGridItemProviderColumnSpanTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
@@ -400,7 +400,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void StatusBarPanelIGridItemProviderContainingGridTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
@@ -443,5 +443,5 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-    	}
+	}
 }

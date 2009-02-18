@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 				                        "UIAScroll",
 				                        this, 
 				                        "OnButtonClicked");
-			} catch (NotSupportedException) {}			
+			} catch (NotSupportedException) {}
 		}
 
 		public override void Disconnect ()

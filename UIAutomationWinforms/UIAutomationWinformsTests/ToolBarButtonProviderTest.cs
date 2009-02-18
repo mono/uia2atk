@@ -128,6 +128,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,
 			              value);
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsEnabledProperty,
+			              toolBarButton.Enabled);
+
+			toolBarButton.Enabled = false;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsEnabledProperty,
+			              false);
+			toolBarButton.Enabled = true;
 		}
 
 		[Test]
@@ -242,6 +251,58 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			toggleProvider.Toggle ();
 			Assert.IsTrue (toggleButton.Pushed, "Button is pushed.");
+		}
+
+
+		[Test]
+		[Ignore ("Only works with MWF 2.6")]
+		public override void IsEnabledPropertyTest ()
+		{
+			var provider = GetProvider ();
+			
+			bridge.ResetEventLists ();
+			
+			object initialVal =
+				provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (initialVal, "Property returns null");
+			Assert.IsTrue ((bool)initialVal, "Should initialize to true");
+			
+			toolBarButton.Enabled = false;
+
+			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			                "Toggle to false");
+
+			AutomationPropertyChangedEventTuple tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			
+			Assert.IsNotNull (tuple, "Tuple missing");
+			Assert.AreEqual (initialVal,
+			                 tuple.e.OldValue,
+			                 string.Format ("1st. Old value should be true: '{0}'", tuple.e.OldValue));
+			Assert.AreEqual (false,
+			                 tuple.e.NewValue,
+			                 string.Format ("1st. New value should be true: '{0}'", tuple.e.NewValue));
+			
+			bridge.ResetEventLists ();
+			
+			toolBarButton.Enabled = true;
+			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			               "Toggle to true");
+			
+			tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (tuple, "Tuple missing");
+			Assert.AreEqual (false,
+			                 tuple.e.OldValue,
+			                 string.Format ("2nd. Old value should be false: '{0}'", tuple.e.OldValue));
+			Assert.AreEqual (true,
+			                 tuple.e.NewValue,
+			                 string.Format ("2nd. New value should be true: '{0}'", tuple.e.NewValue));
+
+			//restore state
+			toolBarButton.Enabled = true;
 		}
 		
 		#endregion

@@ -182,7 +182,9 @@ namespace Mono.UIAutomation.Winforms
 				          new ETB.AutomationHasKeyboardFocusPropertyEvent (this));
 				SetEvent (ProviderEventType.AutomationElementNameProperty,
 				          new ETB.AutomationNamePropertyEvent (this));
-
+				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
+				          new ETB.AutomationIsEnabledPropertyEvent (this));
+				
 				if (style == ToolBarButtonStyle.DropDownButton || 
 				    style == ToolBarButtonStyle.PushButton)
 					SetBehavior (InvokePatternIdentifiers.Pattern,
@@ -230,8 +232,9 @@ namespace Mono.UIAutomation.Winforms
 						                                                       "UIAHasFocus");
 					} catch (NotSupportedException) { }
 					return base.GetProviderPropertyValue (propertyId);
-				}
-				else
+				} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id) {
+					return toolBarButton.Enabled;
+				} else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
