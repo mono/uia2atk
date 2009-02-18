@@ -1176,6 +1176,8 @@ namespace UiaAtkBridgeTest
 			// with them for now!! (but if you get them, bug us, since
 			// it's a bug... probably related to the one fixed in r122955)
 			//BridgeTearDown ();
+
+			EventMonitor.Stop ();
 		}
 
 		public static void BridgeTearDown ()
