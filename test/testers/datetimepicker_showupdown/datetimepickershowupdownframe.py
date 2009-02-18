@@ -35,7 +35,6 @@ class DateTimePickerShowUpDownFrame(accessibles.Frame):
         self.month = self.treetables[1]
         self.day = self.spinbuttons[0]
         self.year = self.spinbuttons[1]
-        self.showupdownbutton = self.findSpinButton(None)
         self.label = self.findLabel(self.LABEL)
 
     def click(self, button):

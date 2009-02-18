@@ -31,70 +31,28 @@ class MainMenuSample(Form):
 
         # setup label
         self.label = Label()
-        self.label.Text = "Click a sub-menu of Main menu"
-        self.label.Dock = DockStyle.Bottom
+        self.label.Dock = DockStyle.Top
 
         # setup mainmenu
         self.mainmenu = MainMenu()
 
         # setup main menus
-        self.menu_file = MenuItem()
-        self.menu_file.Text = "File(&F)"
+        self.menu_file = MenuItem("&File")
+        self.menu_file.Click += self.click
 
-        self.menu_edit = MenuItem()
-        self.menu_edit.Text = "Edit(&E)"
-
-        self.menu_help = MenuItem()
-        self.menu_help.Text = "&Help(&H)"
-
-        # setup submenus of "File"
-        self.menu_file_open = MenuItem()
-        self.menu_file_open.Text = "Open(&O)"
-        self.menu_file_open.Click += self.on_click
-
-        self.menu_file_exit = MenuItem()
-        self.menu_file_exit.Text = "Exit(&X)"
-        self.menu_file_exit.Click += self.on_click
-
-        # setup submenus of "Edit"
-        self.menu_edit_undo = MenuItem()
-        self.menu_edit_undo.Text = "Undo(&U)"
-        self.menu_edit_undo.Click += self.on_click
-
-        self.menu_edit_redo = MenuItem()
-        self.menu_edit_redo.Text = "Redo(&R)"
-        self.menu_edit_redo.Click += self.on_click
-
-        # setup psubmenus of "Help"
-        self.menu_help_about = MenuItem()
-        self.menu_help_about.Text = "About(&A)"
-        self.menu_help_about.Click += self.on_click
+        self.menu_edit = MenuItem("&Edit")
+        self.menu_edit.Click += self.click
 
         # add menu item to mainmenu
         self.mainmenu.MenuItems.Add(self.menu_file)
         self.mainmenu.MenuItems.Add(self.menu_edit)
-        self.mainmenu.MenuItems.Add(self.menu_help)
-
-        # add submenus
-        self.menu_file.MenuItems.Add(self.menu_file_open)
-        self.menu_file.MenuItems.Add(self.menu_file_exit)
-        self.menu_edit.MenuItems.Add(self.menu_edit_undo)
-        self.menu_edit.MenuItems.Add(self.menu_edit_redo)
-        self.menu_help.MenuItems.Add(self.menu_help_about)
 
         # bind the MainMenu to Form
         self.Menu = self.mainmenu
         self.Controls.Add(self.label)
-
-    def on_click(self, sender, evernt):
-        if sender == self.menu_file_exit:
-            Application.Exit()
-        elif sender == self.menu_help_about:
-            MessageBox.Show("Mono:Accessibility winform controls test sample\n"
-                            "Developer: Novell a11y hackers",
-                            "About")
-        else:
-            self.label.Text = "You have clicked %s" % sender.Text
+        
+    def click(self, sender, event):
+        self.label.Text = "You are clicking %s" % sender.Text
 
 # run application
 form = MainMenuSample()

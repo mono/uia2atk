@@ -1,3 +1,19 @@
+2009-02-18  Ray Wang <rawang@novell.com>
+
+	* samples/mainmenu.py: simplify mainmenu sample
+	* samples/menustrip.py: add a label to reflect when you click a 
+	menu item
+	* testers/states.py: add MainMenu class
+	* testers/mainmenu, 
+	* testers/mainmenu/__init__.py, 
+	* testers/mainmenu/mainmenuframe.py,
+	* testers/mainmenu_basic_ops.py: add MainMenu strongwind test
+	* testers/menustrip/menustripframe.py: add a label member
+	* testers/menustrip_basic_ops.py: add test to check AtkComponent
+	* testers/datetimepicker_showupdown/datetimepickershowupdownframe.py,
+	* testers/datetimepicker_showupdown_ops.py: regression test due to 
+	bug fixes
+
 2009-02-18  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add states tuple for Alert

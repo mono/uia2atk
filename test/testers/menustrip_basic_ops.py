@@ -63,6 +63,21 @@ statesCheck(msFrame.menuitem_file, "MenuItem")
 #statesCheck(msFrame.menuitem_edit, "MenuItem", add_states=["selected"])
 
 ##############################
+# check MenuStrip and its children's AtkComponent
+##############################
+msFrame.menustrip.mouseClick()
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.label, "You are clicking ")
+
+msFrame.menuitem_file.mouseClick()
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.label, "You are clicking File")
+
+msFrame.menuitem_edit.mouseClick()
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.label, "You are clicking Edit")
+
+##############################
 # End
 ##############################
 # close application frame window

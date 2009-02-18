@@ -42,15 +42,14 @@ if app is None:
 # just an alias to make things shorter
 dtpsudFrame = app.dateTimePickerShowUpDownFrame
 
-##############################
+#############################
 # check datetimepicker_showupdown  AtkAction
-##############################
+#############################
 actionsCheck(dtpsudFrame.checkbox, "CheckBox")
 actionsCheck(dtpsudFrame.weekdays[0], "TableCell")
 actionsCheck(dtpsudFrame.weekdays[6], "TableCell")
 actionsCheck(dtpsudFrame.months[0], "TableCell")
 actionsCheck(dtpsudFrame.months[11], "TableCell")
-actionsCheck(dtpsudFrame.showupdownbutton, "Button")
 
 ##############################
 # check datetimepicker_showupdown AtkAccessible
@@ -96,9 +95,8 @@ statesCheck(dtpsudFrame.day, "DateTimePicker_Spin")
 statesCheck(dtpsudFrame.commas[1], "Label")
 statesCheck(dtpsudFrame.spaces[2], "Label")
 statesCheck(dtpsudFrame.year, "DateTimePicker_Spin")
-## XXX: the "focusable" problem is under discussion
+# XXX: the "focusable" problem is under discussion
 statesCheck(dtpsudFrame.checkbox, "CheckBox", add_states=["checked"], invalid_states=["focusable"])
-statesCheck(dtpsudFrame.showupdownbutton, "DateTimePicker_Spin", invalid_states=["focusable"])
 sleep(config.SHORT_DELAY)
 
 dtpsudFrame.inputText(dtpsudFrame.spaces[0], "test")
@@ -107,9 +105,6 @@ dtpsudFrame.inputText(dtpsudFrame.commas[0], "test")
 dtpsudFrame.assertText(dtpsudFrame.commas[0], ",")
 dtpsudFrame.inputText(dtpsudFrame.checkbox, "test")
 dtpsudFrame.assertText(dtpsudFrame.checkbox, "")
-dtpsudFrame.inputText(dtpsudFrame.showupdownbutton, "test")
-# TODO: should be equal to something
-dtpsudFrame.assertText(dtpsudFrame.showupdownbutton, "")
 
 dtpsudFrame.inputText(dtpsudFrame.months[0], "test")
 dtpsudFrame.assertText(dtpsudFrame.months[0], "January")
@@ -174,9 +169,69 @@ sleep(config.SHORT_DELAY)
 dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
 
 ##############################
-# Test ShowUpDown Button's AtkAction
+# test Up/Down 
 ##############################
-# TODO: when the spin button could be find, it should put some test code here.
+# make checkbox checked
+dtpsudFrame.keyCombo("space", grabFocus=False)
+# test Up/Down on weekday field
+dtpsudFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dtpsudFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 31)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+dtpsudFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+# test Up/Down on month field
+dtpsudFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dtpsudFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2009, 1, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+dtpsudFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+# test Up/Down on day field
+dtpsudFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dtpsudFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 31)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+dtpsudFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+# test Up/Down on year field
+dtpsudFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dtpsudFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2009, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
+
+dtpsudFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mkdate = datetime.date(2008, 12, 30)
+DATE = mkdate.strftime("%A, %B %d, %Y")
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
 
 ##############################
 # End

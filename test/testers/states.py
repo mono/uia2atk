@@ -273,6 +273,12 @@ class ToolBar(object):
 class Menu(object):
     states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
+class MainMenu(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
+class MenuStrip(MainMenu):
+    pass
+
 class MenuItem(object):
     states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
@@ -296,9 +302,6 @@ class TextBox(object):
 
 class MaskedTextBox(TextBox):
     pass
-
-class MenuStrip(object):
-    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class ToolStripTextBox(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)

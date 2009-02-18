@@ -1,23 +1,23 @@
 # vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
-# Date:        11/19/2008
-# Description: Application wrapper for menustrip.py
-#              be called by ../menustrip_basic_ops.py
+# Date:        02/17/2008
+# Description: Application wrapper for mainmenu.py
+#              be called by ../mainmenu_basic_ops.py
 ##############################################################################
 
-"""Application wrapper for menustrip.py"""
+"""Application wrapper for mainmenu.py"""
 
 from strongwind import *
 
-class MenuStripFrame(accessibles.Frame):
-    """the profile of the menustrip sample"""
+class MainMenuFrame(accessibles.Frame):
+    """the profile of the mainmenu sample"""
 
     def __init__(self, accessible):
-        super(MenuStripFrame, self).__init__(accessible)
-        self.menustrip = self.findMenuBar(None)
-        self.menuitem_file = self.findMenuItem("File")
-        self.menuitem_edit = self.findMenuItem("Edit")
+        super(MainMenuFrame, self).__init__(accessible)
+        self.mainmenu = self.findMenuBar(None)
+        self.menuitem_file = self.findMenuItem("&File")
+        self.menuitem_edit = self.findMenuItem("&Edit")
         self.label = self.findLabel(None)
 
     def assertText(self, accessible, text=None):
