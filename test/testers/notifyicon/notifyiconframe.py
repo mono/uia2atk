@@ -34,8 +34,7 @@ class NotifyIconFrame(accessibles.Frame):
 
     #find all widgets from alert windows
     def balloonWidgets(self):
-        #self.balloon_alert = self.app.findAlert("Hello")
-        self.balloon_alert = self.app.findAlert(None)
+        self.balloon_alert = self.app.findAlert("Hello")
         self.label = self.balloon_alert.findLabel("I'm NotifyIcon")
         self.icon = self.balloon_alert.findIcon(None)
  
