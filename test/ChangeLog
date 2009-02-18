@@ -1,3 +1,11 @@
+2009-02-18  Calen Chen <cachen@novell.com>
+
+	* testers/savefiledialog/savefiledialogframe.py,
+	* testers/savefiledialog/__init__.py,
+	* testers/savefiledialog_basic_ops.py,
+	* testers/savefiledialog: add new test: test details and methods are 
+	similar to openfiledialog
+
 2009-02-17  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/pagesetupdialog/__init__.py:
