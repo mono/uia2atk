@@ -307,12 +307,16 @@ namespace Mono.UIAutomation.Winforms
 				IRawElementProviderFragment sibling = this as IRawElementProviderFragment;
 				if (sibling == null)
 					return null;
+				IRawElementProviderFragment parent = sibling.Navigate (NavigateDirection.Parent);
+				if (parent == null || parent == sibling)
+					return null;
 				IRawElementProviderFragment closestLabel = null;
 				double closestLabelDistance = double.MaxValue;
-				do {
-					sibling = sibling.Navigate (NavigateDirection.NextSibling);
-					if (sibling == null)
-						break;
+				for (sibling = parent.Navigate (NavigateDirection.FirstChild);
+				     sibling != null;
+				     sibling = sibling.Navigate (NavigateDirection.NextSibling)) {
+					if (sibling == this)
+						continue;
 					if ((int)sibling.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.Text.Id) {
 						double siblingDistance;
 						if (closestLabel == null ||
@@ -321,7 +325,7 @@ namespace Mono.UIAutomation.Winforms
 							closestLabelDistance = siblingDistance;
 						}
 					}
-				} while (sibling != null && sibling != this);
+				}
 				
 				return closestLabel;
 				

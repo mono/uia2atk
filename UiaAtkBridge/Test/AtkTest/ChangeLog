@@ -1,3 +1,9 @@
+2009-02-17  Mike Gorse <mgorse@novell.com>
+
+	* AtkTests.cs, AtkTester.cs: Test that name is not set for TrackBar
+	  and TreeView.
+	  Fix ListBox and CheckedListBox name test.
+
 2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Cosmetic.

@@ -384,6 +384,7 @@ namespace UiaAtkBridgeTest
 			lv1.View = SWF.View.List;
 			CheckedListBox (true);
 			lv1.CheckBoxes = false;
+			lv1.SelectedItems.Clear ();
 			ListBox (true);
 		}
 

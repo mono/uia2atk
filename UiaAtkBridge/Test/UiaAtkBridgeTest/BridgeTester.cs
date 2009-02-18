@@ -188,6 +188,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (cbDDL);
 			form.Controls.Add (cbDD);
 			form.Controls.Add (cbSim);
+			lab1.Text = "test";
 			form.Controls.Add (lab1);
 			form.Controls.Add (linklab1);
 			form.Controls.Add (butWithoutImage);

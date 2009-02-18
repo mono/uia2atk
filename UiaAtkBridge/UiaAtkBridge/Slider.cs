@@ -44,6 +44,11 @@ namespace UiaAtkBridge
 			oldText = textExpert.Text;
 		}
 
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			// ControlType.Slider returns Name from one static label, Atk returns NULL
+		}
+
 		public void GetMinimumValue (ref GLib.Value value)
 		{
 			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Minimum: 0);

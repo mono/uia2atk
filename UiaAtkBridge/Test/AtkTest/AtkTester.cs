@@ -548,8 +548,6 @@ namespace UiaAtkBridgeTest
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = items [0];
-				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
-					accName = null;
 				else if (type == BasicWidgetType.TabControl ||
 				         type == BasicWidgetType.ComboBoxMenu ||
 				         type == BasicWidgetType.MainMenuBar ||

@@ -1,3 +1,7 @@
+2009-02-18  Mike Gorse <mgorse@novell.com>
+
+	* BaseProviderTest.cs: Test LabelledBy when the label is added first.
+
 2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolBarButtonProviderTest.cs: New test, ripped off from

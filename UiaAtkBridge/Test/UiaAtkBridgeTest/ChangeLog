@@ -1,3 +1,10 @@
+2009-02-17  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Clear selection in ListView2 before calling
+	  InterfaceSelect.
+
+	* BridgeTester.cs: Set label text in order to test names.
+
 2009-02-18  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTests.cs: Testing Atk.Image in ListView's children. [For Bug

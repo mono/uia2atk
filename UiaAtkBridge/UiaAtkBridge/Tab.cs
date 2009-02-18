@@ -46,6 +46,10 @@ namespace UiaAtkBridge
 			Role = Atk.Role.PageTabList;
 		}
 
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+		}
+
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == SelectionPatternIdentifiers.SelectionProperty) {

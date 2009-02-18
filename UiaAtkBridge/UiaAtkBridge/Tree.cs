@@ -149,12 +149,17 @@ namespace UiaAtkBridge
 		protected override void UpdateNameProperty (string newName, bool fromCtor)
 		{
 			// ControlType.Tree returns Name from one static label, Atk returns ""
-			int controlTypeId = (int) Provider.GetPropertyValue (
-				AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId != ControlType.List.Id)
-				base.UpdateNameProperty (newName, fromCtor);
 		}
 		
+		internal override void RemoveChild (Atk.Object childToRemove)
+		{
+			if (childToRemove == selectedItem) {
+				selectedItem = null;
+				Name = String.Empty;
+			}
+			base.RemoveChild (childToRemove);
+		}
+
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
@@ -271,6 +276,16 @@ namespace UiaAtkBridge
 				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
 			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
+			Name = selectedItem.Name;
+		}
+
+		internal void NotifyItemSelectionRemoved (Adapter item)
+		{
+			if (item != selectedItem)
+				return;
+			item.NotifyStateChange (Atk.StateType.Selected, false);
+			selectedItem = null;
+			Name = String.Empty;
 		}
 
 		public Atk.Object RefAt (int row, int column)

@@ -209,8 +209,12 @@ namespace UiaAtkBridge
 			}
 			else if (eventId == SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
 				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
-			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
+			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent) {
 				NotifyStateChange ((ulong) Atk.StateType.Selected, false);
+				Tree list = Parent as Tree;
+				if (list != null)
+					list.NotifyItemSelectionRemoved (this);
+			}
 		}
 		
 		public int CaretOffset {

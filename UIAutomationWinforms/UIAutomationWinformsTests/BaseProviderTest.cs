@@ -925,6 +925,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		                                     bool expectNameFromText, 
 		                                     bool expectNameFromAccessible)
 		{
+			TestLabeledByAndName (expectNonNullLabel, expectNameFromLabel, expectNonNullName, expectNameFromText, expectNameFromAccessible, true);
+			TestLabeledByAndName (expectNonNullLabel, expectNameFromLabel, expectNonNullName, expectNameFromText, expectNameFromAccessible, false);
+		}
+
+		protected void TestLabeledByAndName (bool expectNonNullLabel,
+		                                     bool expectNameFromLabel, 
+		                                     bool expectNonNullName, 
+		                                     bool expectNameFromText, 
+		                                     bool expectNameFromAccessible,
+		                                     bool controlFirst)
+		{
 			Control control = GetControlInstance ();
 			if (control == null)
 				return;
@@ -934,11 +945,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				return;
 			
 			using (f = new Form ()) {
-				f.Controls.Add (control);
 				
 				Label l = new Label ();
 				l.Text = "my label";
-				f.Controls.Add (l);				
+				f.Controls.Add (controlFirst? control: l);
+				f.Controls.Add (controlFirst? l: control);
 				f.Show ();
 			
 				Type formListenerType = typeof (FormListener);

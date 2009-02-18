@@ -51,10 +51,10 @@ namespace UiaAtkBridge
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
-			if (IsTableCell) {
-				Name = (string)Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			if (IsTableCell)
 				Role = Atk.Role.TableCell;
-			} else Role = Atk.Role.Text;
+			else
+				Role = Atk.Role.Text;
 
 			textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
 			valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -92,6 +92,12 @@ namespace UiaAtkBridge
 				int controlTypeId = (int)fragment.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 				return (controlTypeId == ControlType.DataItem.Id);
 			}
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			if (IsTableCell)
+				base.UpdateNameProperty (newName, fromCtor);
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

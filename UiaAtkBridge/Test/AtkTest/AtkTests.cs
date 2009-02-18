@@ -1101,6 +1101,8 @@ namespace UiaAtkBridgeTest
 
 			accessible = GetAccessible (type, simpleTable, true);
 			
+			Assert.AreEqual (null, accessible.Name, "acc.name==null");
+
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			
@@ -1247,7 +1249,7 @@ namespace UiaAtkBridgeTest
 			if (accessible == null)
 				accessible = GetAccessible (type);
 
-			Assert.AreEqual (accessible.Name, null, "acc.name==null");
+			Assert.AreEqual (null, accessible.Name, "acc.name==null");
 			
 			Interfaces (accessible,
 			            typeof (Atk.Component));
@@ -1352,6 +1354,7 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 
 			accessible = GetAccessible (type, name, true);
+			Assert.IsNull (accessible.Name, "TrackBar should not have a name");
 			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
 			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
 

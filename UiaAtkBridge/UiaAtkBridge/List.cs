@@ -164,7 +164,7 @@ AtkObject,
 			// ControlType.List returns Name from one static label, Atk returns NULL
 			int controlTypeId = (int) Provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId != ControlType.List.Id)
+			if (controlTypeId != ControlType.List.Id && controlTypeId != ControlType.Spinner.Id)
 				base.UpdateNameProperty (newName, fromCtor);
 		}
 		
@@ -279,6 +279,7 @@ AtkObject,
 				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
 			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
+			Name = selectedItem.Name;
 		}
 	}
 
