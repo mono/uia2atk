@@ -88,9 +88,8 @@ namespace UiaAtkBridge
 
 				bool focused = (bool)e.NewValue;
 				Window focusWindow = null;
-				// Hack -- we get the window activate event
-				// event after a focus event, which isn't the
-				// order we want.
+				// FIXME: Gail sends the events in a slighly different order:
+				// window:activate , object:state-changed:focused, object:state-changed:activate
 				if (focused) {
 					Atk.Object container = Parent;
 					while (container != null) {

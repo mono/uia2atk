@@ -1,3 +1,7 @@
+2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Cosmetic.
+
 2009-02-18  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, EventCollection.cs: Allow fetching events by name.

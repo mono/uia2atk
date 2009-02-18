@@ -1,3 +1,7 @@
+2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs: Improved comment.
+
 2009-02-18  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs, AutomationBridge.cs, TopLevelRootItem.cs, Window.cs:
