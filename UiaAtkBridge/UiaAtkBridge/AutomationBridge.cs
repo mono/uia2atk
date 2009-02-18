@@ -809,7 +809,6 @@ namespace UiaAtkBridge
 			pointerProviderMapping [providerHandle] = provider;
 
 			GLib.Signal.Emit (newWindow, "create");
-			GLib.Signal.Emit (newWindow, "activate");
 			
 			windowProviders++;
 		}

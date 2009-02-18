@@ -152,6 +152,7 @@ namespace UiaAtkBridge
 		}
 
 		private bool active = false;
+		private bool needStateChange = false;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
@@ -222,13 +223,29 @@ namespace UiaAtkBridge
 
 		private void NewActiveState (bool active)
 		{
+			if (this.active == active)
+				return;
 			this.active = active;
-			NotifyStateChange (Atk.StateType.Active, active);
+			if (active)
+				GLib.Signal.Emit (this, "activate");
+			needStateChange = true;
 		}
 		
+		// gail sends activate followed by object:state-changed:focused
+		// for the control, followed by state-changed:active, so this
+		// function emulates that order
+		internal void SendActiveStateChange ()
+		{
+			if (needStateChange) {
+				NotifyStateChange (Atk.StateType.Active, active);
+				needStateChange = false;
+			}
+		}
+
 		internal void LoseActiveState ()
 		{
 			NewActiveState (false);
+			TopLevelRootItem.Instance.WindowDeactivated (this);
 		}
 
 		internal void GainActiveState ()

@@ -1,3 +1,7 @@
+2009-02-18  Mike Gorse  <mgorse@novell.com>
+
+	* gailtester.cs: Add test for bug 445210.
+
 2009-02-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: New tests prepared for the event of the menu

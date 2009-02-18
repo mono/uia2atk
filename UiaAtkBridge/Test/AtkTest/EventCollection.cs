@@ -74,6 +74,11 @@ namespace UiaAtkBridgeTest
 			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.Type == type; }), originalRepr);
 		}
 		
+		public EventCollection FindByName (string name)
+		{
+			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.SourceName == name; }), originalRepr);
+		}
+		
 		public EventCollection FindByRole (Atk.Role role)
 		{
 			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.SourceRole == role; }), originalRepr);

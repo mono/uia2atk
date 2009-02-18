@@ -1374,6 +1374,18 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 		}
 		
+		[Test]
+		public void Bug445210 ()
+		{
+				StartEventMonitor ();
+			object f = ActivateAdditionalForm ("445210");
+			ExpectEvents (1, Atk.Role.Frame, "window:activate", "445210");
+			ExpectEvents (0, Atk.Role.Frame, "window:activate", "UiaAtkBridge test");
+			StartEventMonitor ();
+			RemoveAdditionalForm (f);
+			ExpectEvents (1, Atk.Role.Frame, "window:activate", "MainWindow");
+			ExpectEvents (0, Atk.Role.Frame, "window:activate", "445210");
+		}
 		public void HSplitter (Atk.Object accessible)
 		{
 			BasicWidgetType type = BasicWidgetType.HSplitContainer;

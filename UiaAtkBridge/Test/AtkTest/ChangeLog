@@ -1,3 +1,9 @@
+2009-02-18  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, EventCollection.cs: Allow fetching events by name.
+
+	* AtkTester.cs, AtkTests.cs: Add test for bug 445210.
+
 2009-02-17  Brad Taylor  <brad@getcoded.net>
 
 	* AtkTests.cs: Assert that page tabs have the MultiLine state.

@@ -125,6 +125,25 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
+		public override object ActivateAdditionalForm (string name)
+		{
+			Gtk.Window win = new Gtk.Window (name);
+			Gtk.Button button = new Gtk.Button ("test");
+			win.Add (button);
+			RunInGuiThread (delegate () {
+				win.Show ();
+				button.GrabFocus ();
+			});
+			return win;
+		}
+
+		public override void RemoveAdditionalForm (object obj)
+		{
+			Gtk.Window win = (Gtk.Window)obj;
+			win.Hide ();
+			GailTestApp.MainClass.GiveMeARealButton (true).GrabFocus ();
+		}
+
 		public override void EnableWidget (Atk.Object accessible)
 		{
 			RunInGuiThread (delegate () {

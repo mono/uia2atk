@@ -71,6 +71,8 @@ namespace UiaAtkBridgeTest
 
 		public abstract void ExpandTreeView (BasicWidgetType type);
 		public abstract void CollapseTreeView (BasicWidgetType type);
+		public abstract object ActivateAdditionalForm (string name);
+		public abstract void RemoveAdditionalForm (object obj);
 
 		public abstract Atk.Object GetTopLevelRootItem ();
 
@@ -2126,6 +2128,15 @@ namespace UiaAtkBridgeTest
 			if (events == null)
 				events = EventMonitor.Pause ();
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
+		}
+
+		protected void ExpectEvents (int count, Atk.Role role, string evType, string name)
+		{
+			if (events == null)
+				events = EventMonitor.Pause ();
+			EventCollection evs = events.FindByRole (role).FindByType (evType).FindByName (name);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
 		}

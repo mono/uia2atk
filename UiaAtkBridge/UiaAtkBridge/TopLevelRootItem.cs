@@ -53,12 +53,6 @@ namespace UiaAtkBridge
 			}
 		}
 
-		public void SendWindowActivate ()
-		{
-			if (currentActiveWindow != null)
-				GLib.Signal.Emit (currentActiveWindow, "activate");
-		}
-
 		private UiaAtkBridge.Window currentActiveWindow = null;
 		
 		internal override void AddOneChild (Atk.Object child)
@@ -75,9 +69,16 @@ namespace UiaAtkBridge
 			if (currentActiveWindow != null)
 				currentActiveWindow.LoseActiveState ();
 			currentActiveWindow = newWin;
-			currentActiveWindow.GainActiveState ();
+			if (currentActiveWindow != null)
+				currentActiveWindow.GainActiveState ();
 		}
 		
+		internal void WindowDeactivated (Window win)
+		{
+			if (object.ReferenceEquals (currentActiveWindow, win))
+				currentActiveWindow = null;
+		}
+
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			// TODO

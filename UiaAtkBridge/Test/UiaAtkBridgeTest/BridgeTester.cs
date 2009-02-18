@@ -231,7 +231,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (flp);
 			form.Controls.Add (tlp);
 			form.Controls.Add (containerControl);
-			form.Text = "UiaAtkBridge test";
+			form.Text = "MainWindow";
 			SWF.Application.EnableVisualStyles ();
 		}
 		
@@ -355,6 +355,23 @@ namespace UiaAtkBridgeTest
 			treeView.CollapseAll ();
 		}
 
+		public override object ActivateAdditionalForm (string name)
+		{
+			SWF.Form f = new SWF.Form ();
+			f.Text = name;
+			SWF.Button button = new SWF.Button ();
+			f.Controls.Add (button);
+			f.Show ();
+			button.Focus ();
+			return f;
+		}
+
+		public override void RemoveAdditionalForm (object obj)
+		{
+			SWF.Form f = (SWF.Form)obj;
+			f.Close ();
+			butWithImage.Focus ();
+		}
 		public override object CastToAtkInterface (Type t, Atk.Object accessible)
 		{
 			if (t == typeof (Atk.Action)) {

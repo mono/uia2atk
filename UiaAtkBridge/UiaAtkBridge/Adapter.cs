@@ -48,8 +48,6 @@ namespace UiaAtkBridge
 
 #region Adapter Methods
 	
-		static long lastFocusLossTime = System.DateTime.Now.Ticks;
-
 		protected void NotifyStateChange (Atk.StateType state) {
 			NotifyStateChange (state, RefStateSet ().ContainsState (state));
 		}
@@ -81,7 +79,6 @@ namespace UiaAtkBridge
 		
 		public virtual void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			long curTime = System.DateTime.Now.Ticks;
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool canFocus = (bool) Provider.GetPropertyValue (
 				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
@@ -90,17 +87,27 @@ namespace UiaAtkBridge
 				}
 
 				bool focused = (bool)e.NewValue;
+				Window focusWindow = null;
 				// Hack -- we get the window activate event
 				// event after a focus event, which isn't the
 				// order we want.
-				if (focused && (curTime - lastFocusLossTime > 1000000))
-					TopLevelRootItem.Instance.SendWindowActivate ();
+				if (focused) {
+					Atk.Object container = Parent;
+					while (container != null) {
+						if (container is Window) {
+							focusWindow = (Window)container;
+							TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (focusWindow);
+							break;
+						}
+						container = container.Parent;
+					}
+				}
 
 				NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (this);
-				else
-					lastFocusLossTime = curTime;
+				if (focusWindow != null)
+					focusWindow.SendActiveStateChange ();
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				bool offscreen = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Visible, !offscreen);

@@ -1,3 +1,8 @@
+2009-02-18  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs, AutomationBridge.cs, TopLevelRootItem.cs, Window.cs:
+	  Rework emission of activate signals [bug 445210].
+
 2009-02-18  Brad Taylor  <brad@getcoded.net>
 
 	* MenuItem.cs: Remove Focused if the MenuItem isn't selected. 
