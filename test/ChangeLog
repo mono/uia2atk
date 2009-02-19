@@ -1,3 +1,9 @@
+2009-02-19  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu/contextmenuframe.py: Deleted click and mouseClick
+	actions.
+	* testers/contextmenu_basic_ops.py: Tested states. Bugs found and filed.
+	* testers/states.py: Added ContextMenu class.
 
 2009-02-18  Neville Gao  <nevillegao@gmail.com>
 

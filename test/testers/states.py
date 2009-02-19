@@ -344,3 +344,6 @@ class ThreadExceptionDialog_Text(object):
 
 class Alert(object):
     states = (ENABLED, MODAL, SENSITIVE, SHOWING, VISIBLE)
+
+class ContextMenu(MenuStrip):
+	pass

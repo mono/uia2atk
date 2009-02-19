@@ -14,15 +14,9 @@ class ContextMenuFrame(accessibles.Frame):
         super(ContextMenuFrame, self).__init__(accessible)
         self.label = self.findLabel(re.compile('^Right'))
 
-    def click(self, button):
-        button.click()
-
-    def mClick(self, widget):
-        widget.mouseClick(button=3)
-
     def assertWidgets(self):
-        procedurelogger.action('Searching for all widgets in PageSetupDialog')
-        procedurelogger.expectedResult('All widgets in PageSetupDialog should show up')
+        procedurelogger.action('Searching for all widgets in ContextMenu')
+        procedurelogger.expectedResult('All widgets in ContextMenu should show up')
 
         # ContextMenu
         self.context_menu = self.app.findWindow(None, checkShowing=False)
