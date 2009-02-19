@@ -22,6 +22,7 @@ import time
 from strongwind import *
 from combobox_dropdownlist import *
 from helpers import *
+from states import *
 from sys import argv
 from os import path
 
@@ -56,11 +57,13 @@ for k in cbddlFrame.menu_items:
 statesCheck(cbddlFrame.combobox, "ComboBox", add_states=["focused"])
 statesCheck(cbddlFrame.menu, "Menu", invalid_states=["showing", "visible"])
 
+'''
 #check menu item default states
 for k in cbddlFrame.menu_items:
     statesCheck(cbddlFrame.menu_items[k],
                 "MenuItem",
                 invalid_states=["showing"])
+'''
 
 # click on the combo box, this will change the states of the menu and
 # the menu items
@@ -92,7 +95,7 @@ cbddlFrame.menu_items[3].mouseClick()
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertLabel('3')
 
-# now use press and click atspi actions isntead of mouseClick
+# now use press and click atspi actions instead of mouseClick
 cbddlFrame.combobox.press()
 sleep(config.SHORT_DELAY)
 cbddlFrame.menu_items[4].click()
@@ -101,11 +104,13 @@ cbddlFrame.assertLabel('4')
 
 # do click action to select menu_item 0 but not change the states
 # (the same as Gtk), also update text value
-cbddlFrame.click(cbddlFrame.menu_item[0])
+cbddlFrame.menu_items[0].click()
 sleep(config.SHORT_DELAY)
-cbddlFrame.assertText(cbddlFrame.textbox, 0)
+cbddlFrame.assertText(cbddlFrame.menu_items[0], 0)
 
-statesCheck(cbddlFrame.menu_item[0], "MenuItem")
+statesCheck(cbddlFrame.menu_items[0],
+            "MenuItem",
+            add_states=[SELECTED, FOCUSED])
 
 # scroll to the bottom
 # XXX: fails due to bug 462447
@@ -156,5 +161,5 @@ cbddlFrame.app.findWindow(None)
 
 # close application frame window
 cbddlFrame.quit()
-'''
+
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

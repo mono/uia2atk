@@ -54,8 +54,8 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
 
     #assert Text value after do click action
     def assertText(self, accessible, value):
-        procedurelogger.expectedResult('the text value of %s is %s' % (accessible,values))
-        assert accessible.text == str(values)
+        procedurelogger.expectedResult('the text value of %s is %s' % (accessible,value))
+        assert accessible.text == str(value)
 
     #assert Selection implementation for Menu
     def assertSelectionChild(self, accessible, childIndex):

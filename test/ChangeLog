@@ -1,5 +1,11 @@
 2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* combobox_dropdownlist_ops.py,
+	* combobox_dropdownlist/comboboxdropdownlistframe.py: fix some test
+	cases that I couldn't test before because of bugs.
+
+2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/treeview_basic_ops.py: add BUG references
 
 2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
