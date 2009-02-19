@@ -29,6 +29,8 @@ class TreeViewSample(Form):
         # init treeview
         self.init_treeview()
 
+        self.Width = 300
+
 
     def init_treeview(self):
         """initialize TreeView control"""
@@ -36,7 +38,7 @@ class TreeViewSample(Form):
         # setup treeview
         self.treeview = TreeView()
         self.treeview.Dock = DockStyle.Left
-        self.treeview.Width = 200
+        self.treeview.Width = 300
         self.treeview.BeginUpdate()
         self.treeview.Nodes.Add("Parent 1")
         self.treeview.Nodes[0].Nodes.Add("Child 1");

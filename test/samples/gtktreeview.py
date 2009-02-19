@@ -11,7 +11,7 @@ class MainWindow(object):
         # Create a new window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_title(title)
-        #self.window.set_size_request(width, height)
+        self.window.set_size_request(width, height)
         self.window.connect("delete_event", self.delete_event)
 
     def get_widget(self):

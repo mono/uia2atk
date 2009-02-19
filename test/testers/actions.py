@@ -1,8 +1,9 @@
+EXPAND_OR_CONTRACT = "expand or contract"
+ACTIVATE = "activate"
+
 # very incomplete
 class Button(object):
     CLICK = "click"
-    PRESS = "press"
-    RELEASE = "release"
 
     actions = (CLICK,)
 class ToggleButton(Button):
@@ -29,8 +30,8 @@ class OptionMenu(object):
 class Range(object):
     ACTIVATE = "activate"
 
-class TreeView:
-    EXPAND_OR_CONTRACT = "expand or contract"
+class TreeViewTableCell:
+    actions = (ACTIVATE, )
 
 class CheckBox(Button):
     pass

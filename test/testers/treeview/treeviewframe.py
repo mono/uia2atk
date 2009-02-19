@@ -20,9 +20,33 @@ from treeview import *
 class TreeViewFrame(accessibles.Frame):
 
     # constants
+    PARENT1 = "Parent 1"
+    PARENT2 = "Parent 2"
+    CHILD1 = "Child 1"
+    CHILD2 = "Child 2"
+    CHILD3 = "Child 3"
+    GRANDCHILD = "Grandchild"
+    GREATGRANDCHILD = "Great Grandchild"
+    
 
     def __init__(self, accessible):
         super(TreeViewFrame, self).__init__(accessible)
+        # find the tree table
+        self.tree_table = self.findTreeTable("")
+        # the rest of the controls should be children of the tree table
+        self.parent1 = self.tree_table.findTableCell(self.PARENT1)
+        self.parent2 = self.tree_table.findTableCell(self.PARENT2)
+        self.child1 = self.tree_table.findTableCell(self.CHILD1,
+                                                    checkShowing=False)
+        self.child2 = self.tree_table.findTableCell(self.CHILD2,
+                                                    checkShowing=False)
+        self.child3 = self.tree_table.findTableCell(self.CHILD3,
+                                                    checkShowing=False)
+        self.grandchild = self.tree_table.findTableCell(self.GRANDCHILD,
+                                                        checkShowing=False)
+        self.great_grandchild = \
+                        self.tree_table.findTableCell(self.GREATGRANDCHILD,
+                                                      checkShowing=False)
 
     def quit(self):
         self.altF4()

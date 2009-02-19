@@ -1,3 +1,15 @@
+2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtktreeview.py: set window width.
+	* samples/treeview.py: set treeview width.
+	* testers/treeview/treeviewframe.py: find all the accessibles.
+	* testers/actions.py: this file needs to be dastically reorganized.
+	I started by adding the constants to the top of the file for this
+	TreeView test.
+	* testers/states.py: add TreeView states.
+	* testers/treeview_basic_ops.py: add test cases and finished test for
+	now.
+
 2009-02-19  Calen Chen <cachen@novell.com>
 
 	* harness/tests.py: add in scrollbar test
