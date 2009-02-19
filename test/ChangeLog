@@ -1,3 +1,12 @@
+2009-02-19  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog/openfiledialogframe.py: delete the new folder 
+	that is added by creatFolder before exit the test
+	* testers/savefiledialog/savefiledialogframe.py: delete the new folder 
+	that is added by creatFolder before exit the test. in assertActivate 
+	after activate a file to save, need click OK to close save dialog 
+	before assert the dialog is closed
+
 2009-02-19  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenu/contextmenuframe.py: Deleted click and mouseClick

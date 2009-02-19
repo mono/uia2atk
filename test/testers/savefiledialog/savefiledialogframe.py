@@ -13,6 +13,7 @@ import states
 
 from strongwind import *
 from savefiledialog import *
+from sys import path
 
 class SearchFolderError(Exception):
     'Raised when search an extra item method fails'
@@ -147,7 +148,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         sleep(config.LONG_DELAY)
         #do activate action
         tablecell = self.treetable.findTableCell(cellname, checkShowing=False)
-        ##tablecell.activate()
+        tablecell.activate()
 
         sleep(config.SHORT_DELAY)
 
@@ -168,4 +169,12 @@ class SaveFileDialogFrame(accessibles.Frame):
    
     #close application main window after running test
     def quit(self):
+        #delete ANewFolder
+        harness_dir = path[0]
+        i = harness_dir.rfind("/")
+        uiaqa_path = harness_dir[:i]
+        os.rmdir("%s/samples/ANewFolder" % uiaqa_path)
+
+        sleep(config.SHORT_DELAY)
+        #close form
         self.altF4()

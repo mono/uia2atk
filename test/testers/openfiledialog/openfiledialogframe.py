@@ -169,4 +169,12 @@ class OpenFileDialogFrame(accessibles.Frame):
    
     #close application main window after running test
     def quit(self):
+        #delete ANewFolder
+        harness_dir = path[0]
+        i = harness_dir.rfind("/")
+        uiaqa_path = harness_dir[:i]
+        os.rmdir("%s/samples/ANewFolder" % uiaqa_path)
+
+        sleep(config.SHORT_DELAY)
+        #close form
         self.altF4()
