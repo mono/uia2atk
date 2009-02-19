@@ -67,26 +67,36 @@ hsbFrame.assertLabel(40)
 hsbFrame.valueScrollBar(10)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(10)
+#update label's text
+hsbFrame.assertLabel(10)
 
 #set value to 0
 hsbFrame.valueScrollBar(0)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(0)
+#update label's text
+hsbFrame.assertLabel(0)
 
 #set value to 100
 hsbFrame.valueScrollBar(100)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(100)
+#update label's text
+hsbFrame.assertLabel(100)
 
 #set value to -10, minimum value is 0
 hsbFrame.valueScrollBar(-10)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(-10)
+#doesn't change label's text
+hsbFrame.assertLabel(0)
 
 #set value to 120, maximum value is 119
 hsbFrame.valueScrollBar(120)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(120)
+#doesn't change label's text
+hsbFrame.assertLabel(0)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

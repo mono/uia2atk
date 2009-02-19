@@ -41,7 +41,7 @@ class HScrollBarSample(Form):
         self.hscrollbar.Maximum = 119 
         self.hscrollbar.Value = 0
         self.hscrollbar.Dock = DockStyle.Bottom
-        self.hscrollbar.Scroll += self.on_scroll
+        self.hscrollbar.ValueChanged += self.on_scroll
 
         # add controls
         self.Controls.Add(self.label)

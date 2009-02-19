@@ -31,7 +31,7 @@ class HScrollBarFrame(accessibles.Frame):
     def valueScrollBar(self, newValue=None):
 
         procedurelogger.action('set scrollbar value to "%s"' % newValue)
-        self.hscrollbar.__setattr__('value', newValue)
+        self.hscrollbar.value = newValue
 
     def assertLabel(self, newValue=None):
         procedurelogger.expectedResult('label\'s value changed to "%s"' % newValue)
@@ -44,15 +44,15 @@ class HScrollBarFrame(accessibles.Frame):
 
         if 0 <= newValue <= maximumValue:
             procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-            assert self.hscrollbar.__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.hscrollbar.__getattr__('value')
+            assert self.hscrollbar.value == newValue, \
+                       "scrollbar's current value is %s:" % self.hscrollbar.value
         else:
             if newValue > maximumValue:
                 procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, maximumValue))
             elif newValue < minimumValue:
                 procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, minimumValue))
-            assert not self.hscrollbar.__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.hscrollbar.__getattr__('value')
+            assert not self.hscrollbar.value == newValue, \
+                       "scrollbar's current value is %s:" % self.hscrollbar.value
     
     #close application window
     def quit(self):

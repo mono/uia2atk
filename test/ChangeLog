@@ -1,5 +1,13 @@
 2009-02-19  Calen Chen <cachen@novell.com>
 
+	* samples/hscrollbar.py: change event to ValueChanged
+	* testers/hscrollbar/hscrollbarframe.py: change 
+	accessible.__getattr__('value') to accessible.value
+	* testers/hscrollbar_basic_ops.py: add assertLabel after set value for 
+	scrollbar
+
+2009-02-19  Calen Chen <cachen@novell.com>
+
 	* testers/columnheader/columnheaderframe.py: modify assertImageSize, 
 	modify table cell initialization
 	* testers/columnheader_basic_ops.py: delete "focused" from 
