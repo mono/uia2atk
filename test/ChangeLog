@@ -1,5 +1,9 @@
 2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/treeview_basic_ops.py: add BUG references
+
+2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/gtktreeview.py: set window width.
 	* samples/treeview.py: set treeview width.
 	* testers/treeview/treeviewframe.py: find all the accessibles.
