@@ -1,3 +1,7 @@
+2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* HelloButton.cs: Fix build.
+
 2008-12-10  Full Name  <Email Address>
 
 	* atkSharpHelloWorld.mdp:

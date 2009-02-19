@@ -39,7 +39,7 @@ namespace atkSharpHelloWorld
 			}
 		}
 
-		public GLib.SList DefaultAttributes {
+		public Atk.Attribute [] DefaultAttributes {
 			get {
 				Console.WriteLine ("ATKTEXT: DefaultAttributes");
 				throw new NotImplementedException();
@@ -149,7 +149,7 @@ namespace atkSharpHelloWorld
 			throw new NotImplementedException();
 		}
 
-		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int start_offset, out int end_offset)
 		{
 			Console.WriteLine ("ATKTEXT: GetRunAttributes");
 			throw new NotImplementedException();
