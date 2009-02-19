@@ -57,12 +57,13 @@ chFrame.assertText(chFrame.column_a, "Column A")
 chFrame.assertText(chFrame.column_b, "Num")
 
 #check item's order after click column header
+##click action doesn't work BUG476304
 chFrame.click(chFrame.column_a)
-sleep(config.SHORT_DELAY)
+sleep(config.LONG_DELAY)
 chFrame.assertOrder(itemone="Item5")
 
 chFrame.click(chFrame.column_b)
-sleep(config.SHORT_DELAY)
+sleep(config.LONG_DELAY)
 chFrame.assertOrder(itemone="Item0")
 
 #check item's order after mouse click column header, also the test can check 
@@ -71,17 +72,18 @@ chFrame.column_a.mouseClick()
 sleep(config.SHORT_DELAY)
 chFrame.assertOrder(itemone="Item5")
 
-statesCheck(chFrame.column_a, "TableColumnHeader", add_states=["focused"])
+statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
 chFrame.column_b.mouseClick()
 sleep(config.SHORT_DELAY)
 chFrame.assertOrder(itemone="Item0")
 
-statesCheck(chFrame.column_b, "TableColumnHeader", add_states=["focused"])
+statesCheck(chFrame.column_b, "TableColumnHeader")
 statesCheck(chFrame.column_a, "TableColumnHeader")
 
 #check ColumnHeader AtkImage implementation
+##incorrect imageSize BUG477563
 chFrame.assertImageSize(chFrame.column_a)
 
 chFrame.assertImageSize(chFrame.column_b)

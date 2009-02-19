@@ -1,5 +1,12 @@
 2009-02-19  Calen Chen <cachen@novell.com>
 
+	* testers/columnheader/columnheaderframe.py: modify assertImageSize, 
+	modify table cell initialization
+	* testers/columnheader_basic_ops.py: delete "focused" from 
+	table_column_header, add bug reference
+
+2009-02-19  Calen Chen <cachen@novell.com>
+
 	* testers/openfiledialog/openfiledialogframe.py: delete the new folder 
 	that is added by creatFolder before exit the test
 	* testers/savefiledialog/savefiledialogframe.py: delete the new folder 

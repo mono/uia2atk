@@ -30,15 +30,19 @@ class ColumnHeaderFrame(accessibles.Frame):
         self.treetable = self.findTreeTable(None)
         self.column_a = self.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
         self.column_b = self.findTableColumnHeader(self.COLUMN_B, checkShowing=False)
-        self.texts = self.findAllTexts(None)
+        self.item0 = self.findTableCell("Item0")
+        self.num0 = self.findTableCell("0")
+        self.item5 = self.findTableCell("Item5")
+        self.num5 = self.findTableCell("5")
         #search for initial position for assert order test
-        self.item0_position = self.texts[0]._getAccessibleCenter()
-        self.num0_position = self.texts[1]._getAccessibleCenter()
-        self.item5_position = self.texts[10]._getAccessibleCenter()
-        self.num5_position = self.texts[11]._getAccessibleCenter()
+        self.item0_position = self.item0._getAccessibleCenter()
+        self.num0_position = self.num0._getAccessibleCenter()
+        self.item5_position = self.item5._getAccessibleCenter()
+        self.num5_position = self.num5._getAccessibleCenter()
 
     #give 'click' action
     def click(self,accessible):
+        procedurelogger.action("click %s" % accessible)
         accessible.click()
 
     #assert Text implementation for ColumnHeader
@@ -53,15 +57,15 @@ class ColumnHeaderFrame(accessibles.Frame):
     def assertOrder(self, itemone=None):        
         if itemone == "Item5":
             procedurelogger.expectedResult('Item5 and Num5 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item5_new_position = self.texts[10]._getAccessibleCenter()
-            num5_new_position = self.texts[11]._getAccessibleCenter()
+            item5_new_position = self.item5._getAccessibleCenter()
+            num5_new_position = self.num5._getAccessibleCenter()
 
             assert item5_new_position == self.item0_position and \
                    num5_new_position == self.num0_position
         elif itemone == "Item0":
             procedurelogger.expectedResult('Item0 and Num0 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item0_new_position = self.texts[0]._getAccessibleCenter()
-            num0_new_position = self.texts[1]._getAccessibleCenter()
+            item0_new_position = self.item0._getAccessibleCenter()
+            num0_new_position = self.num0._getAccessibleCenter()
 
             assert item0_new_position == self.item0_position and \
                    num0_new_position == self.num0_position
@@ -69,7 +73,7 @@ class ColumnHeaderFrame(accessibles.Frame):
     #assert TableColumnHeaders image
     def assertImageSize(self, accessible, width=16, height=16):
         procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible.imageSize
+        size = accessible._accessible.queryImage().getImageSize()
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
                                                   (accessible, width, height))
