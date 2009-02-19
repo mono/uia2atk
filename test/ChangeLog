@@ -1,5 +1,12 @@
 2009-02-19  Calen Chen <cachen@novell.com>
 
+	* testers/scrollbar/scrollbarframe.py: modify to find TreeTable and 
+	TableCell
+	* testers/scrollbar_basic_ops.py: add focused states to TableCell when 
+	doing mouseClick
+
+2009-02-19  Calen Chen <cachen@novell.com>
+
 	* harness/tests.py: add in hscrollbar test
 
 2009-02-19  Calen Chen <cachen@novell.com>
