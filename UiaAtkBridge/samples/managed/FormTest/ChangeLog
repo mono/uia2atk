@@ -1,3 +1,7 @@
+2009-02-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* FormTest.cs: Fix warning.
+
 2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* FormTest.cs: Upload latest experiments.

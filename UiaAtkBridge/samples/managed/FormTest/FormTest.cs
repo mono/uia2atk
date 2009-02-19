@@ -94,8 +94,9 @@ namespace FormTest
 			f1.Height += 90;
 			f1.Width += 70;
 
-			InitializeMyToolBar (f1);
-			
+//			//InitializeMyToolBar (f1);
+//			TextBox t;
+//			t.PasswordChar = "*";
 			Button b = new Button ();
 			b.Text = "Click me to open second form!";
 			b.Width = f1.Width;
