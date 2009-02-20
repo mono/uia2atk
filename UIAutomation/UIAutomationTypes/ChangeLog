@@ -1,3 +1,9 @@
+2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationTypes.mdp:
+	* UIAutomationTypesTests.mdp: Point projects at Makefile.am,
+	not Makefile.
+
 2009-02-18  Mario Carrion  <mcarrion@novell.com>
 
 	* AssemblyInfo.cs.in: Friend assembly UIAutomationWinformsTest added.

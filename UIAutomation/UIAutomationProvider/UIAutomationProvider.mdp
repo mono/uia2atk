@@ -50,7 +50,7 @@
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
   <GtkDesignInfo />
-  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am">
     <BuildFilesVar />
     <DeployFilesVar />
     <ResourcesVar />

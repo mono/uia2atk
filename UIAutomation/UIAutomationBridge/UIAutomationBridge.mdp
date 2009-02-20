@@ -25,7 +25,7 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
-  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am">
     <BuildFilesVar />
     <DeployFilesVar />
     <ResourcesVar />

@@ -1,3 +1,8 @@
+2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationBridge.mdp: Point projects at Makefile.am, not
+	Makefile.
+
 2009-02-05  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationBridge.mdp: Mono.UIAutomation.Services/Log.cs file
