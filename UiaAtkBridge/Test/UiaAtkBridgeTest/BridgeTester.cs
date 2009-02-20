@@ -322,20 +322,28 @@ namespace UiaAtkBridgeTest
 				throw new NotSupportedException ();
 		}
 		
-		public override void SetReadOnly (Atk.Object accessible, bool readOnly)
+		public override void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly)
 		{
-			System.ComponentModel.Component comp = mappings [accessible];
+			System.ComponentModel.Component comp = null;
 
-			if (comp is SWF.UpDownBase)
-				((SWF.UpDownBase)comp).ReadOnly = readOnly;
-			else if (comp is SWF.TextBox)
-				((SWF.TextBox)comp).ReadOnly = readOnly;
-			else if (comp is SWF.RichTextBox)
-				((SWF.RichTextBox)comp).ReadOnly = readOnly;
-			else if (comp is SWF.ToolStripTextBox)
-				((SWF.ToolStripTextBox)comp).ReadOnly = readOnly;
-			else
-				throw new NotSupportedException ();
+			if (!mappings.TryGetValue (accessible, out comp)) {
+				// Is a fake provider
+				if (type == BasicWidgetType.ListView) {
+					lv1.LabelEdit = !readOnly;
+				} else
+					throw new NotSupportedException ();
+			} else {
+				if (comp is SWF.UpDownBase)
+					((SWF.UpDownBase)comp).ReadOnly = readOnly;
+				else if (comp is SWF.TextBox)
+					((SWF.TextBox)comp).ReadOnly = readOnly;
+				else if (comp is SWF.RichTextBox)
+					((SWF.RichTextBox)comp).ReadOnly = readOnly;
+				else if (comp is SWF.ToolStripTextBox)
+					((SWF.ToolStripTextBox)comp).ReadOnly = readOnly;
+				else
+					throw new NotSupportedException ();
+			}
 		}
 
 		public override void ExpandTreeView (BasicWidgetType type)

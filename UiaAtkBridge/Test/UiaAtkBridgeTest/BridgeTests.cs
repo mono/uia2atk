@@ -378,6 +378,10 @@ namespace UiaAtkBridgeTest
 			                atkComponent, 
 			                atkWithOutImage);
 
+			// TextEditable tests
+			lv1.LabelEdit = true;
+			InterfaceEditableText (BasicWidgetType.ListView, item1);
+
 			accessible = group1 = item1 = null;
 			atkSelection = null;
 			atkTable = null;
@@ -512,7 +516,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.SingleLine,
 				Atk.StateType.Visible);
 
-			EditReadOnly (accessible);
+			EditReadOnly (type, accessible);
 
 			Atk.Object listItemChild = accessible.RefAccessibleChild (1);
 			Focus (listItemChild);

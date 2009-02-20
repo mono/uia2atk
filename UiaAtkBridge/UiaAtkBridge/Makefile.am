@@ -61,6 +61,7 @@ FILES =  \
 	ContextMenu.cs \
 	DataGrid.cs \
 	DataGridGroup.cs \
+	EditableTextImplementor.cs \
 	ExpandCollapseButton.cs \
 	HeaderItem.cs \
 	Hyperlink.cs \

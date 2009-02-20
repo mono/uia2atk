@@ -31,7 +31,7 @@ namespace UiaAtkBridge
 {
 
 	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
-		Atk.ImageImplementor
+		Atk.ImageImplementor, Atk.EditableTextImplementor
 	{
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
@@ -39,6 +39,7 @@ namespace UiaAtkBridge
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
+		private EditableTextImplementor editableTextExpert = null;
 
 		public TreeItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -59,6 +60,7 @@ namespace UiaAtkBridge
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 
 			imageExpert = new ImageImplementorHelper (this);
+			editableTextExpert = new EditableTextImplementor (this, this);
 		}
 		
 		protected IToggleProvider ToggleProvider {
@@ -309,6 +311,9 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+				return;
+			
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool focused = (bool) e.NewValue;
 				Adapter parentAdapter = (Adapter) Parent;
@@ -319,22 +324,6 @@ namespace UiaAtkBridge
 				parentAdapter.NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (parentAdapter);
-			} else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				String stringValue = (String)e.NewValue;
-				
-				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == stringValue)
-					return;
-
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         stringValue == null ? 0 : stringValue.Length);
-
-				EmitVisibleDataChanged ();
 			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
 			} else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
@@ -395,6 +384,47 @@ namespace UiaAtkBridge
 			get { return imageExpert.ImageLocale; }
 		}
 
+		#endregion
+
+		#region Atk.EditableTextImplementor implementation 
+		
+		public bool SetRunAttributes (GLib.SList attribSet, int startOffset, int endOffset)
+		{
+			return editableTextExpert.SetRunAttributes (attribSet, 
+			                                            startOffset,
+			                                            endOffset);
+		}
+		
+		public void InsertText (string str, ref int position)
+		{
+			editableTextExpert.InsertText (str, ref position);
+		}
+		
+		public void CopyText (int startPos, int endPos)
+		{
+			editableTextExpert.CopyText (startPos, endPos);
+		}
+		
+		public void CutText (int startPos, int endPos)
+		{
+			editableTextExpert.CutText (startPos, endPos);
+		}
+		
+		public void DeleteText (int startPos, int endPos)
+		{
+			editableTextExpert.DeleteText  (startPos, endPos);
+		}
+		
+		public void PasteText (int position)
+		{
+			editableTextExpert.PasteText (position);
+		}
+		
+		public string TextContents {
+			get { return editableTextExpert.TextContents; }
+			set { editableTextExpert.TextContents = value; }
+		}
+		
 		#endregion
 	}
 }

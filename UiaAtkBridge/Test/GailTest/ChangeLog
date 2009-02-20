@@ -1,3 +1,7 @@
+2009-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* GailTester.cs: SetReadOnly updated to match API.
+
 2009-02-18  Mike Gorse  <mgorse@novell.com>
 
 	* gailtester.cs: Add test for bug 445210.

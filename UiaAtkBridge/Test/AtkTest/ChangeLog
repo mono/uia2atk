@@ -1,3 +1,8 @@
+2009-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: SetReadOnly updated to match API.
+
 2009-02-17  Mike Gorse <mgorse@novell.com>
 
 	* AtkTests.cs, AtkTester.cs: Test that name is not set for TrackBar

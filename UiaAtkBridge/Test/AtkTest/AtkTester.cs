@@ -67,7 +67,7 @@ namespace UiaAtkBridgeTest
 
 		public abstract void EnableWidget (Atk.Object accessible);
 
-		public abstract void SetReadOnly (Atk.Object accessible, bool readOnly);
+		public abstract void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly);
 
 		public abstract void ExpandTreeView (BasicWidgetType type);
 		public abstract void CollapseTreeView (BasicWidgetType type);
@@ -1044,7 +1044,7 @@ namespace UiaAtkBridgeTest
 			});
 			InterfaceText (accessible, "dAnd your head is made of clouds, but your feet are made of ground.");
 
-			EditReadOnly (accessible);
+			EditReadOnly (type, accessible);
 		}
 
 		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
@@ -1087,23 +1087,23 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("65", atkText.GetText (0, -1), "GetText #6");
 			Assert.AreEqual (2, pos, "InsertText pos");
 
-			EditReadOnly (accessible);
+			EditReadOnly (type, accessible);
 		}
 
-		protected void EditReadOnly (Atk.Object accessible)
+		protected void EditReadOnly (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
 			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
 
-			SetReadOnly (accessible, false);
+			SetReadOnly (type, accessible, false);
 			atkEditableText.TextContents = "0";
-			SetReadOnly (accessible, true);
+			SetReadOnly (type, accessible, true);
 			atkEditableText.TextContents = "5";
 			int pos = 0;
 			atkEditableText.InsertText ("6", ref pos);
 			atkEditableText.DeleteText (0, 2);
 			Assert.AreEqual ("0", atkText.GetText (0, -1), "AtkEditableText should not change text if ReadOnly");
-			SetReadOnly (accessible, false);
+			SetReadOnly (type, accessible, false);
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)

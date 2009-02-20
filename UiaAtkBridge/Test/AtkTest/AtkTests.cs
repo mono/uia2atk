@@ -432,10 +432,10 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
-			SetReadOnly (accessible, true);
+			SetReadOnly (type, accessible, true);
 			Assert.IsFalse (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "ReadOnly spinner should not be editable");
 			StartEventMonitor ();
-			SetReadOnly (accessible, false);
+			SetReadOnly (type, accessible, false);
 			ExpectEvents (1, Atk.Role.SpinButton, "object:state-changed:editable");
 			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly spinner should be editable");
 		}

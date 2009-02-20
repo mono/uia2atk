@@ -95,7 +95,7 @@ namespace UiaAtkBridgeTest
 		[DllImport("libgobject-2.0.so.0")]
 		static extern void g_object_set_property (IntPtr obj, IntPtr name, ref GLib.Value val);
 
-		public override void SetReadOnly (Atk.Object accessible, bool readOnly)
+		public override void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly)
 		{
 			RunInGuiThread (delegate () {
 				GLib.Value val = new GLib.Value (!readOnly);

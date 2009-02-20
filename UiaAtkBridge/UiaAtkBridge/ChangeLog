@@ -1,3 +1,17 @@
+2009-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* TreeItem.cs: Atk.EditableTextImplementor implementation, uses
+	EditableTextImplementor class. [Fixes Bug #459153]
+
+	* TextBoxEntryView.cs: Replaces custom Atk.EditableTextImplementor with
+	EditableTextImplementor. [Fixes Bug #459153]
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: File added: EditableTextImplementor.cs
+
+	* EditableTextImplementor.cs: File added, implements
+	Atk.EditableTextImplementor.
+
 	2009-02-18  Mike Gorse  <mgorse@novell.com>
 
 	* Tree.cs, TreeItem.cs, List.cs, Tab.cs,, Slider.cs:

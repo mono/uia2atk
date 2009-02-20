@@ -41,13 +41,8 @@ namespace UiaAtkBridge
 	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private ITextImplementor textExpert = null;
-		private IText iText = null;
 		private bool multiLine = false;
-		private bool editable = true;
-		private ITextProvider textProvider;
-		private IValueProvider valueProvider;
-		private string oldText;
-		private IClipboardSupport clipboardSupport;
+		private EditableTextImplementor editableTextExpert;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -56,31 +51,16 @@ namespace UiaAtkBridge
 			else
 				Role = Atk.Role.Text;
 
-			textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
-			valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			if ((textProvider == null) && (valueProvider == null))
+			editableTextExpert = new EditableTextImplementor (this, this);
+
+			if (provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id) == null
+			    && provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) == null)
 				throw new ArgumentException ("Provider for TextBox should either implement IValue or IText");
 			
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
-			    ControlType.Document.Id)
+			if ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+			    == ControlType.Document.Id)
 				multiLine = true;
-
-			if (valueProvider != null && valueProvider.IsReadOnly)
-				editable = false;
-
-			iText = textProvider as IText;
-			if (iText == null)
-				iText = valueProvider as IText;
-			caretOffset = (iText != null? iText.CaretOffset: textExpert.Length);
-
-			clipboardSupport = textProvider as IClipboardSupport;
-
-			oldText = textExpert.Text;
-		}
-
-		public string GetRealText {
-			get { return textProvider.DocumentRange.GetText (-1); }
 		}
 
 		protected bool IsTableCell {
@@ -104,7 +84,7 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			if (editable)
+			if (editableTextExpert.Editable)
 				states.AddState (Atk.StateType.Editable);
 			else
 				states.RemoveState (Atk.StateType.Editable);
@@ -179,18 +159,16 @@ namespace UiaAtkBridge
 		{
 			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
 		}
-
-		int caretOffset = -1;
 		
 		public bool SetCaretOffset (int offset)
 		{
-			if (iText != null) {
-				if (iText.SetCaretOffset (offset))
-					caretOffset = offset;
+			if (editableTextExpert.CaretProvider != null) {
+				if (editableTextExpert.CaretProvider.SetCaretOffset (offset))
+					editableTextExpert.CaretOffset = offset;
 				// gail always returns true; tracking it
 				// because of tests
 			} else
-				caretOffset = offset;
+				editableTextExpert.CaretOffset = offset;
 			return true;
 		}
 		
@@ -206,7 +184,7 @@ namespace UiaAtkBridge
 		
 		public int CaretOffset {
 			get {
-				return caretOffset;
+				return editableTextExpert.CaretOffset;
 			}
 		}
 		
@@ -225,69 +203,39 @@ namespace UiaAtkBridge
 		
 		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
 		{
-			return false;
+			return editableTextExpert.SetRunAttributes (attrib_set, 
+			                                            start_offset,
+			                                            end_offset);
 		}
 		
 		public void InsertText (string str, ref int position)
 		{
-			if (position < 0 || position > textExpert.Length)
-				position = textExpert.Length;	// gail
-			TextContents = textExpert.Text.Substring (0, position)
-				+ str
-				+ textExpert.Text.Substring (position);
+			editableTextExpert.InsertText (str, ref position);
 		}
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Copy (start_pos, end_pos);
+			editableTextExpert.CopyText (start_pos, end_pos);
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Copy (start_pos, end_pos);
-			DeleteText (start_pos, end_pos);
+			editableTextExpert.CutText (start_pos, end_pos);
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
 		{
-			if (start_pos < 0)
-				start_pos = 0;
-			if (end_pos < 0 || end_pos > textExpert.Length)
-				end_pos = textExpert.Length;
-			if (start_pos > end_pos)
-				start_pos = end_pos;
-
-			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
+			editableTextExpert.DeleteText (start_pos, end_pos);
 		}
 		
 		public void PasteText (int position)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Paste (position);
+			editableTextExpert.PasteText (position);
 		}
 		
 		public string TextContents {
-			get { return valueProvider.Value.ToString (); }
-			set {
-				if (valueProvider == null) {
-					Log.Warn ("TextBoxEntryView: Cannot set text on a TextBox that does not implement IValueProvider.");
-					return;
-				}
-
-				if (!valueProvider.IsReadOnly)
-					valueProvider.SetValue (value);
-			}
+			get { return editableTextExpert.TextContents; }
+			set { editableTextExpert.TextContents = value; }
 		}
 		
 		#endregion 
@@ -295,47 +243,18 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
-				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.HandleSimpleChange (ref oldText, ref caretOffset, iText == null))
-					return;
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+				return;
 
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-				string newText = textExpert.Text;
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
-
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newText == null ? 0 : newText.Length);
-
-				if (iText == null)
-					caretOffset = textExpert.Length;
-
-				oldText = newText;
-			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
-				bool? isReadOnlyVal = e.NewValue as bool?;
-				if (isReadOnlyVal == null && valueProvider != null)
-					isReadOnlyVal = valueProvider.IsReadOnly;
-				editable = isReadOnlyVal ?? false;
-				
-				NotifyStateChange (Atk.StateType.Editable, editable);
-			} else
-				base.RaiseAutomationPropertyChangedEvent (e);
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
-				int newCaretOffset = iText.CaretOffset;
-				if (newCaretOffset != caretOffset) {
-					caretOffset = newCaretOffset;
-					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
-				}
-			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
-				GLib.Signal.Emit (this, "text_selection_changed");
-			} else
-				base.RaiseAutomationEvent (eventId, e);
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e))
+				return;
+
+			base.RaiseAutomationEvent (eventId, e);
 		}
 
 		#region StreamableContentImplementor implementation 

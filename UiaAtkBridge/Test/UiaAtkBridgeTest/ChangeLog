@@ -1,3 +1,11 @@
+2009-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: Testing EditableText in ListView children. [For Bug
+	#459153]
+
+	* BridgeTester.cs: SetReadOnly updated to handle fake-providers
+	adapters. [For Bug #459153]
+
 2009-02-17  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Clear selection in ListView2 before calling
