@@ -34,6 +34,9 @@ class SaveFileDialogFrame(accessibles.Frame):
     def click(self, button):
         button.click()
 
+        #click button will invoke dialog page
+        self.savedialog = self.app.findDialog("Save As")
+
     #do click action and give action log
     def ItemClick(self, itemname):
         procedurelogger.action("click %s" % itemname)
@@ -48,17 +51,17 @@ class SaveFileDialogFrame(accessibles.Frame):
     def AssertWidgets(self, button=None):
         procedurelogger.action("search for all widgets from SaveDialog windows")
 
-        procedurelogger.expectedResult("All widgets in SaveDialog is showing up")
-        #click button will invoke dialog page
-        self.savedialog = self.app.findDialog("Save As")
         #there are 3 labels in dialog
+        procedurelogger.expectedResult("3 Labels are showing up")
         self.lookin_label = self.savedialog.findLabel("Save in:")
         self.filename_label = self.savedialog.findLabel("File name:")
         self.savetype_label = self.savedialog.findLabel("Save as type:")
         #there are 2 push button in dialog
+        procedurelogger.expectedResult("2 PushButtons are showing up")
         self.Save_button = self.savedialog.findPushButton("Save")
         self.cancel_button = self.savedialog.findPushButton("Cancel")
         #there are 5 popupbutton in popupbuttonpanel on the left side
+        procedurelogger.expectedResult("5 PopUpButton are showing up")
         self.toolbars = self.savedialog.findAllToolBars(None)
         self.popuptoolbar = self.toolbars[1]
         self.recentlyused_popup = self.popuptoolbar.findMenuItem(re.compile('^Recently'))
@@ -67,6 +70,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.mycomputer_popup = self.popuptoolbar.findMenuItem("My Computer")
         self.mynetwork_popup = self.popuptoolbar.findMenuItem("My Network")
         #toolbar with 4 small toolbarbuttons on the top right side
+        procedurelogger.expectedResult("4 PushButton in small toolbar are showing up")
         self.smalltoolbar = self.toolbars[0]
         self.toolbarbuttons = self.smalltoolbar.findAllPushButtons(None)
         self.backtoolbarbutton = self.toolbarbuttons[0]
@@ -75,17 +79,20 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.menutoolbarbutton = self.toolbarbuttons[3]
         self.menutogglebutton = self.smalltoolbar.findToggleButton(None)
         #there are 5 menuitems under menutogglebutton
+        procedurelogger.expectedResult("5 MenuItem under menutogglebutton are showing up")
         self.smallicon_menuitem = self.menutogglebutton.findMenuItem("Small Icon", checkShowing=False)
         self.tiles_menuitem = self.menutogglebutton.findMenuItem("Tiles", checkShowing=False)
         self.largeicon_menuitem = self.menutogglebutton.findMenuItem("Large Icon", checkShowing=False)
         self.list_menuitem = self.menutogglebutton.findMenuItem("List", checkShowing=False)
         self.details_menuitem = self.menutogglebutton.findMenuItem("Details", checkShowing=False)
         #there are 2 normal combobox on bottom and 1 dirComboBox on top
+        procedurelogger.expectedResult("2 normal combobox on bottom and 1 dirComboBox on top are showing up")
         self.comboboxs = self.savedialog.findAllComboBoxs(None)
         self.filename_combobox = self.comboboxs[0]
         self.filetype_combobox = self.comboboxs[1]
         self.dir_combobox = self.comboboxs[2]
         #there are 5 menuitems under dir_combobox
+        procedurelogger.expectedResult("5 MenuItems under dir_combobox are showing up")
         self.dir_menu = self.dir_combobox.findMenu(None, checkShowing=False)
         self.recentlyused_menuitem = self.dir_menu.findMenuItem("Recently used", checkShowing=False)
         self.desktop_menuitem = self.dir_menu.findMenuItem("Desktop", checkShowing=False)
@@ -93,6 +100,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.mycomputer_menuitem = self.dir_menu.findMenuItem("My Computer", checkShowing=False)
         self.mynetwork_menuitem = self.dir_menu.findMenuItem("My Network", checkShowing=False)
         #a treetable to show files
+        procedurelogger.expectedResult("1 TreeTable with many TableCells are showing up")
         self.treetable = self.savedialog.findTreeTable(None)
         self.tablecells = self.treetable.findAllTableCells(None)
 

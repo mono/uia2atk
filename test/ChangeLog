@@ -1,3 +1,17 @@
+2009-02-20  Calen Chen <cachen@novell.com>
+
+	* 
+	* 
+	* 
+	* 
+	* 
+
+2009-02-20  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog/openfiledialogframe.py,
+	* testers/savefiledialog/savefiledialogframe.py: move findDialog up to 
+	click method. add some expectedResult log in AssertWidgets
+
 2009-02-19 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: Add a simple toolstrip test
