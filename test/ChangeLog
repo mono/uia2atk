@@ -1,10 +1,12 @@
 2009-02-20  Calen Chen <cachen@novell.com>
 
-	* 
-	* 
-	* 
-	* 
-	* 
+	* testers/fontdialog/fontdialogframe.py,
+	* testers/fontdialog/__init__.py,
+	* testers/fontdialog_basic_ops.py,
+	* testers/fontdialog: add new test to assert all widgets and children 
+	are showing up. completelly test color ComboBox(menuitems have wrong 
+	name and text)
+	* samples/fontdialog.py: add help and apply button
 
 2009-02-20  Calen Chen <cachen@novell.com>
 

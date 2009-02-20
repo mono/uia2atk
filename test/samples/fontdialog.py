@@ -41,7 +41,7 @@ class FontDialogSample(Form):
         self.button = Button()
         self.button.Text = "Click me"
         self.button.Location = Point(25, 125)
-        self.button.Click += self.font_dialog
+        self.button.Click += self.font_dialog  
 
         # add controls
         self.Controls.Add(self.label)
@@ -53,6 +53,8 @@ class FontDialogSample(Form):
         # preserve the previous label font to FontDialog dialog.
         self.fontdialog = FontDialog()
         self.fontdialog.ShowColor = True
+        self.fontdialog.ShowApply = True
+        self.fontdialog.ShowHelp = True
         self.fontdialog.Font = self.label.Font
         self.fontdialog.Color = self.label.ForeColor
         
