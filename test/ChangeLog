@@ -1,3 +1,11 @@
+2009-02-20 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/richtextbox.py: Fix app so that it will load the text file
+	regardless of where the app is executed from
+	* testers/richtextbox/richtextboxframe.py,
+	* testers/richtextbox/__init__.py,
+	* testers/richtextbox_basic_ops.py: Initial RichTextBox test
+
 2009-02-20  Calen Chen <cachen@novell.com>
 
 	* testers/fontdialog/fontdialogframe.py,

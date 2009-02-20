@@ -12,6 +12,9 @@
 
 
 import clr
+import sys
+import os
+
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 clr.AddReference('System')
@@ -20,6 +23,7 @@ from System.Windows.Forms import *
 from System.Drawing import *
 from System import *
 
+SAMPLES_DIR = os.path.dirname(sys.argv[0])
 
 class RichTextBoxApp(Form):
 
@@ -54,7 +58,8 @@ class RichTextBoxApp(Form):
         self.richtextbox1.Width = 200
         self.richtextbox1.Height = 200
         self.richtextbox1.Dock = DockStyle.Fill
-        self.richtextbox1.LoadFile("richtextbox_text.txt")
+        self.richtextbox1.LoadFile(os.path.join(SAMPLES_DIR,
+                                                "richtextbox_text.txt"))
         self.richtextbox1.SelectAll()
         self.richtextbox1.SelectionColor = Color.Red
 
