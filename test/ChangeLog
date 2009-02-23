@@ -1,3 +1,7 @@
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* tools: Add hierarchy.py.
+
 2009-02-23  Ray Wang <rawang@novell.com>
 
 	* samples/monthcalendar.py: add show week number
