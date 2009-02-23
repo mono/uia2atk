@@ -50,10 +50,11 @@ class RunApp(Form):
         self.button1.Click += self.button1Click
         self.Controls.Add(self.button1)        
 
+    def button1Click(self, sender, event):
         self.colordialog1 = ColorDialog()
         self.colordialog1.Color = Color.Red
+        self.colordialog1.ShowHelp = True
 
-    def button1Click(self, sender, event):
         if(self.colordialog1.ShowDialog() == self.DialogResult.OK):
             self.textbox1.BackColor = self.colordialog1.Color
             self.mainLabel1.Text = str(self.colordialog1.Color)

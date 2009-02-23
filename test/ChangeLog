@@ -1,3 +1,9 @@
+2009-02-23  Calen Chen <cachen@novell.com>
+
+	* samples/colordialog.py: modify example to show help button(BUG
+	* testers/savefiledialog_basic_ops.py,
+	* testers/fontdialog_basic_ops.py: correct comment error
+
 2009-02-20 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/richtextbox.py: Fix app so that it will load the text file

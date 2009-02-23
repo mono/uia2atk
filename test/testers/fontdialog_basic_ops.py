@@ -30,7 +30,7 @@ try:
 except IndexError:
   pass #expected
 
-# open the savefiledialog sample application
+# open the fontdialog sample application
 try:
   app = launchFontDialog(app_path)
 except IOError, msg:
@@ -45,7 +45,7 @@ if app is None:
 fdFrame = app.fontDialogFrame
 
 ###################################################
-##search for all widgets from open dialog
+##search for all widgets from font dialog
 ###################################################
 
 #click "Click me" button to show fontdialog page, then check subwidgets

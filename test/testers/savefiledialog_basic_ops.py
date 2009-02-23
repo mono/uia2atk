@@ -45,7 +45,7 @@ if app is None:
 ofdFrame = app.saveFileDialogFrame
 
 ###################################################
-##search for all widgets from open dialog
+##search for all widgets from save dialog
 ###################################################
 
 #click "Click me" button to show savedialog page, then check subwidgets
