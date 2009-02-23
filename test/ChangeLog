@@ -1,3 +1,11 @@
+2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/richtextbox/richtextboxframe.py: Find accessibles, implement
+	assertion method to compare text, and stub out some other assert
+	methods.
+	* testers/states.py: Add RichTextBox
+	* testers/richtextbox_basic_ops.py: Start by testing the states.
+
 2009-02-23  Brad Taylor  <brad@getcoded.net>
 
 	* testers/eventlistener.py: Add a helper class to allow the testing of

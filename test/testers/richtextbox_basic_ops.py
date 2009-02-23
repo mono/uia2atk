@@ -45,6 +45,8 @@ if app is None:
 # just an alias to make things shorter
 rtbFrame = app.richTextBoxFrame
 
-sleep(config.SHORT_DELAY)
+# BUG478886 - RichTextBox text accessible does not receive "focused" state
+statesCheck(rtbFrame.richtextbox_top, "RichTextBox")
+statesCheck(rtbFrame.richtextbox_bottom, "RichTextBox")
 
 rtbFrame.quit()
