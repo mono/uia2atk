@@ -1,3 +1,8 @@
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
+	* testers/datagridview/datagridviewframe.py: Methods added.
+	* testers/datagridview_detail_ops.py: Failing bugs added and code commented.
+
 2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/richtextbox/richtextboxframe.py: Find accessibles, implement

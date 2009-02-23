@@ -28,7 +28,8 @@ class DataGridViewFrame(accessibles.Frame):
 		self.textbox_column = self.findTableColumnHeader(self.COLUMN_TEXTBOX, checkShowing=False)
 		self.tablecells = self.findAllTableCells(None)
 
-		self.edits = self.checkbox = dict([(x, self.findTableCell("Item" + str(x))) for x in range(6)])
+		self.edits = dict([(x, self.findTableCell("Item" + str(x))) for x in range(6)])
+		self.checkboxes = self.findAllCheckBoxes(None)
 
 	#assert Edits' Text implementation for ListView Items
 	def assertEditsText(self, accessible):
@@ -45,6 +46,22 @@ class DataGridViewFrame(accessibles.Frame):
 				assert accessible[index].text == items[index]
 			else: # Editable
 				assert accessible[index].text == new_value
+
+	#assert Selection implementation
+	def assertSelectionChild(self, accessible, childIndex):
+		procedurelogger.action('selected childIndex %s in "%s"' % (childIndex, accessible))
+		accessible.selectChild(childIndex)
+
+	def assertClearSelection(self, accessible):
+		procedurelogger.action('clear selection in "%s"' % (accessible))
+		accessible.clearSelection()
+
+	def assertTable(self, accessible, row=0, col=0):
+		procedurelogger.action('check "%s" Table implemetation' % accessible)
+		itable = accessible._accessible.queryTable()
+
+		procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
+		assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" % (itable.nRows, itable.nColumns)
  
 	#close application main window after running test
 	def quit(self):
