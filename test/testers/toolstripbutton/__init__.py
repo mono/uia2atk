@@ -1,6 +1,6 @@
 
 ##############################################################################
-# Written by:  Andrés G. Aragoneses <aaragoneses@novell.com>
+# Written by:  Andres G. Aragoneses <aaragoneses@novell.com>
 # Date:        02/23/2009
 #              Application wrapper for toolstripbutton.py
 #              Used by the toolstripbutton-*.py tests

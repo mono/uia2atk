@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 ##############################################################################
-# Written by:  Andrés G. Aragoneses <aaragoneses@novell.com>
+# Written by:  Andres G. Aragoneses <aaragoneses@novell.com>
 # Date:        02/23/2009
 # Description: Test accessibility of toolstripbutton widget 
 #              Use the toolstripbuttonframe.py wrapper script
@@ -18,7 +18,7 @@ import sys
 import os
 
 from strongwind import *
-from toolbarbutton import *
+from toolstripbutton import *
 from helpers import *
 from sys import argv
 from os import path
