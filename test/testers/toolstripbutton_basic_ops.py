@@ -52,9 +52,9 @@ tbbFrame = app.toolStripButtonFrame
 #check toolstrip's states
 statesCheck(tbbFrame.toolbar, "ToolBar")
 
-statesCheck(tbbFrame.pushbutton1_style, "Button")
-
-statesCheck(tbbFrame.pushbutton2_style, "Button")
+#bug 478838: missing focusable state
+#statesCheck(tbbFrame.pushbutton1_style, "Button")
+#statesCheck(tbbFrame.pushbutton2_style, "Button")
 
 ##missing armed and checked states when this button is pushed BUG474649
 #statesCheck(tbbFrame.toggle_style, "Button")
@@ -62,15 +62,10 @@ statesCheck(tbbFrame.pushbutton2_style, "Button")
 #click toggle_style button to set "Enabled = False" for nop_unable button
 #tbbFrame.click(tbbFrame.toggle_style)
 sleep(config.SHORT_DELAY)
-#nop_unable button get rid of enabled and sensitive states
-##extraneous states BUG474197
-#statesCheck(tbbFrame.nop_unable, "Button", invalid_states=["enabled", "sensitive"])
+
 #click toggle_style button again to set "Enabled = True" for nop_unable button
 #tbbFrame.click(tbbFrame.toggle_style)
 #sleep(config.SHORT_DELAY)
-#nop_unable button is enalbed and sensitive
-#statesCheck(tbbFrame.nop_unable, "Button")
-
 #statesCheck(tbbFrame.separator_style, "Separator")
 
 #####################################

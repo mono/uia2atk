@@ -1,3 +1,10 @@
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected some tests and added some info about bugs logged.
+
 2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/richtextbox_text.txt: update text with many different
@@ -12,6 +19,14 @@
 	  Text values.
 	* samples/datagridview.py: Test updated to set rows readonly.
 
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Correct a semantic error that a statically-typed-language-compiler would have been warned.
+	Also, python doesn't like accents in my name.
+
 2009-02-23  Mario Carrion <mcarrion@novell.com>
 
 	* samples/datagridview.py: Updated to work with tests.
@@ -24,6 +39,17 @@
 	* testers/contextmenustrip_basic_ops.py,
 	  testers/contextmenustrip/__init.py,
 	  testers/contextmenustrip/contextmenustripframe.py: Added.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Added toolstripbutton strongwind tests (untested yet)
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/toolstripdropdown_toolstripbutton.py: Enable one image in a toolstripbutton.
 
 2009-02-23  Mario Carrion <mcarrion@novell.com>
 

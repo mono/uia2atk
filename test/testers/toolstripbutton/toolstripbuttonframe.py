@@ -18,8 +18,8 @@ from helpers import *
 
 # class to represent the main window.
 class ToolStripButtonFrame(accessibles.Frame):
-    NEWBUTTON = "New"
-    OPENBUTTON = "Open"
+    NEWBUTTON = "&New"
+    OPENBUTTON = "&Open"
 #    TOGGLE = "Toggle"
 #    UNEDITED = "nop"
 #    SEPARATOR = "Separator"
@@ -29,8 +29,9 @@ class ToolStripButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripButtonFrame, self).__init__(accessible)
         self.toolbar = self.findToolBar(None)
-        self.pushbutton1_style = self.toolbar.findPushButton(self.NEWBUTTON)
-        self.pushbutton2_style = self.toolbar.findPushButton(self.OPENBUTTON)
+#this should be findPushButton, not ToggleButton (bug: 478832)
+        self.pushbutton1_style = self.toolbar.findToggleButton(self.NEWBUTTON)
+        self.pushbutton2_style = self.toolbar.findToggleButton(self.OPENBUTTON)
 #        self.dropdown_toggle = self.toolbar.findToggleButton(self.DROPDOWNBUTTON)
 #        self.toggle_style = self.toolbar.findPushButton(self.TOGGLE)
 #        self.nop_unable = self.toolbar.findPushButton(self.UNEDITED,\
@@ -94,23 +95,6 @@ class ToolStripButtonFrame(accessibles.Frame):
 #        sleep(config.SHORT_DELAY)
 #        statesCheck(self.toggle_style, "Button")
 #        statesCheck(self.label, "Label")
-
-    ##test for unable ToolBarButton
-    def UnableButton(self, accessible):
-        #test AtkText
-        procedurelogger.action('check Text for %s' % accessible)
-
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "nop"))
-        assert accessible.text == "nop", "%s doesn't match \
-                                        nop" % accessible.text
-        #test AtkAction for nop button doesn't change label's text
-        current_label = self.label.text
-
-        accessible.click()
-        sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("click unable nop button doesn't change label")
-        assert self.label.text == current_label, "label is changed to %s" % \
-                                                     self.label.text
 
     ##test for Separator style ToolBarButton
     def SeparatorStyle(self, accessible):

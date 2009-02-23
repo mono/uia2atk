@@ -45,5 +45,5 @@ class ToolStripButton(accessibles.Application):
         'Get a reference to the toolstripbutton window'
         super(ToolStripButton, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^ToolStrip Example'), logName='ToolStripButton')
+        self.findFrame("ToolStripButton Example", logName='Tool Strip Button')
 
