@@ -12,7 +12,6 @@
 This sample will show "DataGricView". It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
-
 import clr
 
 clr.AddReference('System.Windows.Forms')
@@ -40,9 +39,9 @@ class RunApp(Form):
 
 	# Set up Columns
 	dtgvcboxcolumn = DataGridViewCheckBoxColumn()
-	dtgvcboxcolumn.Name = "Checkbox column"
+	dtgvcboxcolumn.Name = "COLUMN_CHECKBOX"
 	dtgvtextboxcolumn = DataGridViewTextBoxColumn()
-	dtgvtextboxcolumn.Name = "Textbox column"
+	dtgvtextboxcolumn.Name = "COLUMN_TEXTBOX"
 
 	self.datagridview1.Columns.Add(dtgvcboxcolumn)
 	self.datagridview1.Columns.Add(dtgvtextboxcolumn)
