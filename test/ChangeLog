@@ -1,3 +1,10 @@
+2009-02-23  Brad Taylor  <brad@getcoded.net>
+
+	* testers/eventlistener.py: Add a helper class to allow the testing of
+	events.
+
+	* testers/datagridview_detail_ops.py: Test the check column.
+
 2009-02-23  Mike Gorse <mgorse@novell.com>
 
 	* samples/contextmenustrip.py: Add a sub-menu.

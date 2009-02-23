@@ -20,8 +20,10 @@ import os
 from strongwind import *
 from datagridview import *
 from helpers import *
+from eventlistener import *
 from sys import argv
 from os import path
+import pyatspi
 
 app_path = None 
 try:
@@ -46,6 +48,36 @@ dtgvFrame = app.dataGridViewFrame
 # Check DataGridView TableColumnHeader's actions list
 actionsCheck(dtgvFrame.checkbox_column, "TableColumnHeader")
 actionsCheck(dtgvFrame.textbox_column,  "TableColumnHeader")
+
+statesCheck(dtgvFrame.checkbox_column, "TableColumnHeader")
+
+checkbox = dtgvFrame.findAllCheckBoxes(None)[0]
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "checked", "focused" \
+])
+
+reg = EventListener(event_names='object:state-changed')
+reg.start()
+
+checkbox.click()
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused" \
+])
+
+sleep(config.SHORT_DELAY)
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+reg.clearQueuedEvents()
+
+checkbox.click()
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "checked", "focused" \
+])
+
+sleep(config.SHORT_DELAY)
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+reg.stop()
 
 # Testing Edits Text value
 dtgvFrame.assertEditsText(dtgvFrame.edits)
