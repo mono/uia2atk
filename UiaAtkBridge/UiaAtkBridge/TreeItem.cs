@@ -277,10 +277,15 @@ namespace UiaAtkBridge
 
 		internal virtual bool DoClick ()
 		{
-			Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
-			if (sel == null)
+			if (selectionItemProvider == null) 
 				return false;
-			return sel.AddSelection (IndexInParent);
+
+			try {
+				selectionItemProvider.Select ();
+				return true;
+			} catch (InvalidOperationException) { }
+			
+			return false;
 		}
 
 		internal bool DoToggle ()

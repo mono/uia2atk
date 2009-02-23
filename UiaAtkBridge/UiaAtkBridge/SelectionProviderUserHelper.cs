@@ -33,7 +33,7 @@ namespace UiaAtkBridge
 	internal class SelectionProviderUserHelper
 	{
 		private IRawElementProviderFragment		provider;
-		private ISelectionProvider				selectionProvider;
+		private ISelectionProvider			selectionProvider;
 		private IRawElementProviderFragment		childrenHolder;
 
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
@@ -65,10 +65,19 @@ namespace UiaAtkBridge
 			if (childItem == null)
 				return false;
 			
-			if (selectionProvider.CanSelectMultiple)
-				childItem.AddToSelection();
-			else
-				childItem.Select();
+			if (selectionProvider.CanSelectMultiple) {
+				try { 
+					childItem.AddToSelection();
+				} catch (InvalidOperationException) {
+					return false;
+				}
+			} else {
+				try {
+					childItem.Select();
+				} catch (InvalidOperationException) {
+					return false;
+				}
+			}
 			return true;
 		}
 
@@ -147,7 +156,11 @@ namespace UiaAtkBridge
 					  SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null) {
-					selectionItemProvider.AddToSelection();
+					try {
+						selectionItemProvider.AddToSelection();
+					} catch (InvalidOperationException) {
+						return false;
+					}
 				} else
 					return false;
 				child = child.Navigate (NavigateDirection.NextSibling);

@@ -1,3 +1,14 @@
+2009-02-23  Brad Taylor  <brad@getcoded.net>
+
+	* TreeItem.cs: 
+	* ListItem.cs: Using AddSelection didn't really make sense here, as the
+	default action of most controls is to change the selection, not to add
+	to the selection (with shift).
+
+	* SelectionProviderUserHelper.cs: Be safer about calling AddToSelection
+	and Select when it may throw an InvalidOperationException when it can't
+	accept any more selections.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* TreeItem.cs: Atk.EditableTextImplementor implementation, uses
