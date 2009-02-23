@@ -1,5 +1,13 @@
 2009-02-23  Mario Carrion <mcarrion@novell.com>
 
+	* testers/datagridview_detail_ops.py,
+	  testers/datagridview/__init__.py, 
+	  testers/datagridview/datagridviewframe.py: Test updated: testing
+	  Text values.
+	* samples/datagridview.py: Test updated to set rows readonly.
+
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
 	* samples/datagridview.py: Updated to work with tests.
 	* testers/datagridview_detail_ops.py,
 	  testers/datagridview/__init__.py,
