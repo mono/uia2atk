@@ -31,7 +31,8 @@ class MonthCalendarSample(Form):
         # setup monthcalendar
         self.monthcalendar = MonthCalendar()
         # set one days that can be selected in a month calendar control
-        self.monthcalendar.MaxSelectionCount = 1
+        self.monthcalendar.MaxSelectionCount = 2
+        self.monthcalendar.ShowWeekNumbers = True
         self.monthcalendar.DateChanged += self.date_select
 
         # setup label

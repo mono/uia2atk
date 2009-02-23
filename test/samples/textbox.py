@@ -2,10 +2,10 @@
 
 ##############################################################################
 # Written by:  Calen Chen <cachen@novell.com>
+#              Ray Wang <rawang@novell.com>
 # Date:        03/11/2008
 # Description: This is a test application sample for winforms control:
 #              TextBox
-#              Button
 ##############################################################################
 
 import clr
@@ -17,21 +17,19 @@ from System.Drawing import *
 from System.Windows.Forms import *
 
 
-class TextBoxButtonApp(Form):
+class TextBoxApp(Form):
 
     def __init__(self):
         self.Text = "TextBox Control"
 
         self.label1 = Label()
         self.label1.Text = "Normal TextBox"
-        self.label1.Dock = DockStyle.Top
+        self.label1.Dock = DockStyle.Bottom
     
         self.textbox1 = TextBox()
-        self.textbox1.AccessibleName = "explicitly set name"
-        self.textbox1.AccessibleDescription = "explicitly set description"
         self.textbox1.AcceptsTab = True
         self.textbox1.AcceptsReturn = True
-        self.textbox1.Dock = DockStyle.Top
+        self.textbox1.Dock = DockStyle.Bottom
         self.textbox1.Name = "self.textbox1"
         self.textbox1.TextChanged += self.textbox1_enter
 
@@ -39,11 +37,11 @@ class TextBoxButtonApp(Form):
         # instead of the text typed
         self.label2 = Label()
         self.label2.Text = "Multi-Line TextBox"
-        self.label2.Dock = DockStyle.Top
+        self.label2.Dock = DockStyle.Bottom
         self.label2.Height = 80
 
         self.textbox2 = TextBox()
-        self.textbox2.Dock = DockStyle.Top
+        self.textbox2.Dock = DockStyle.Bottom
         self.textbox2.Height = 100
         self.textbox2.Multiline = True
         self.textbox2.ScrollBars = ScrollBars.Both
@@ -54,19 +52,19 @@ class TextBoxButtonApp(Form):
 
         self.label3 = Label()
         self.label3.Text = "Password TextBox"
-        self.label3.Dock = DockStyle.Top
+        self.label3.Dock = DockStyle.Bottom
 
         self.textbox3 = TextBox()
-        self.textbox3.Dock = DockStyle.Top
+        self.textbox3.Dock = DockStyle.Bottom
         self.textbox3.UseSystemPasswordChar = True
         self.textbox3.TextChanged += self.textbox3_enter
 
-        self.Controls.Add(self.textbox3)
-        self.Controls.Add(self.label3)
-        self.Controls.Add(self.textbox2)
-        self.Controls.Add(self.label2)
-        self.Controls.Add(self.textbox1)
         self.Controls.Add(self.label1)
+        self.Controls.Add(self.textbox1)
+        self.Controls.Add(self.label2)
+        self.Controls.Add(self.textbox2)
+        self.Controls.Add(self.label3)
+        self.Controls.Add(self.textbox3)
 
     def textbox1_enter(self, sender, event):
         self.label1.Text = self.textbox1.Text
@@ -77,5 +75,5 @@ class TextBoxButtonApp(Form):
     def textbox3_enter(self, sender, event):
         self.label3.Text = self.textbox3.Text
 
-form = TextBoxButtonApp()
+form = TextBoxApp()
 Application.Run(form)

@@ -1,3 +1,15 @@
+2009-02-23  Ray Wang <rawang@novell.com>
+
+	* samples/monthcalendar.py: add show week number
+	* samples/textbox.py: re-order the texts and labels
+	* testers/textbox,
+	* testers/textbox/textboxframe.py,
+	* testers/textbox/__init__.py,
+	* testers/textbox_basic_ops.py: init textbox strongwind test
+	* testers/datetimepicker_showupdown/datetimepickershowupdownframe.py,
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py:
+	update comments
+
 2009-02-23  Calen Chen <cachen@novell.com>
 
 	* samples/colordialog.py: modify example to show help button(BUG

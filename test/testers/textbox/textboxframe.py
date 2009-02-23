@@ -1,41 +1,35 @@
 # vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
-# Date:        02/16/2008
-# Description: Application wrapper for datetimepicker_showupdown.py
-#              be called by ../datetimepicker_showupdown_ops.py
+# Date:        02/20/2008
+# Description: Application wrapper for textbox.py
+#              be called by ../textbox_basic_ops.py
 ##############################################################################
 
-"""Application wrapper for datetimepicker_showupdown.py"""
+"""Application wrapper for textbox.py"""
 
 from strongwind import *
 import time
 
-class DateTimePickerShowUpDownFrame(accessibles.Frame):
-    """the profile of the datetimepicker_showupdown sample"""
+class TextBoxFrame(accessibles.Frame):
+    """the profile of the textbox sample"""
 
-    LABEL = 'The date you select is:'
-    LABEL_SPACE = ' '
-    LABEL_COMMA = ','
+    LABEL_NORMAL = "Normal TextBox"
+    LABEL_MLINE = "Multi-Line TextBox"
+    LABEL_PASSWD = "Password TextBox"
 
     def __init__(self, accessible):
-        super(DateTimePickerShowUpDownFrame, self).__init__(accessible)
-        self.localtime = time.localtime()
-        self.panel = self.findPanel(None)
-        self.treetables = self.findAllTreeTables(None)
-        self.spinbuttons = self.findAllSpinButtons(None)
-        self.items = self.findAllTableCells(None, checkShowing=False)
-        self.weekdays = self.items[0:7]
-        self.months = self.items[7:]
-        self.spaces = self.findAllLabels(self.LABEL_SPACE)
-        self.commas = self.findAllLabels(self.LABEL_COMMA)
+        super(TextBoxFrame, self).__init__(accessible)
+        self.label_normal = self.findLabel(self.LABEL_NORMAL)
+        self.label_mline = self.findLabel(self.LABEL_MLINE)
+        self.label_passwd = self.findLabel(self.LABEL_PASSWD)
 
-        self.checkbox = self.findCheckBox(None)
-        self.weekday = self.treetables[0]
-        self.month = self.treetables[1]
-        self.day = self.spinbuttons[0]
-        self.year = self.spinbuttons[1]
-        self.label = self.findLabel(self.LABEL)
+        self.textboxes = self.findAllTexts(None)
+        assert len(self.textboxes) == 3, "the number of textboxes is incorrect"
+
+        self.textbox_normal = self.textboxes[0]
+        self.textbox_mline = self.textboxes[1]
+        self.textbox_passwd = self.textboxes[2]
 
     def click(self, button):
         procedurelogger.action("click %s" % button)
@@ -49,6 +43,14 @@ class DateTimePickerShowUpDownFrame(accessibles.Frame):
                                                 (accessible, accessible.text))
         assert accessible.text == text, '%s is not match with "%s"' % \
                                                 (accessible, accessible.text)
+
+    def assertOffset(self, accessible, offset=None):
+        """assert text's offset is equal to the input"""
+
+        procedurelogger.expectedResult('check the offset of "%s"' % accessible)
+
+        assert accessible.caretOffset == offset, '%s is not match with "%s"' % \
+                                                (accessible.caretOffset, offset)
 
     def inputText(self, accessible, text):
         procedurelogger.action('set %s text to "%s"' % (accessible, text))

@@ -3,7 +3,7 @@
 # Written by:  Ray Wang <rawang@novell.com>
 # Date:        01/13/2008
 # Description: Application wrapper for datetimepicker_dropdown.py
-#              be called by ../datetimepicker_dropdown_basic_ops.py
+#              be called by ../datetimepicker_dropdown_ops.py
 ##############################################################################
 
 """Application wrapper for datetimepicker_dropdown.py"""
