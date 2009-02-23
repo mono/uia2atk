@@ -44,4 +44,4 @@ class ContextMenuStrip(accessibles.Application):
     def __init__(self, accessible, subproc=None):
         'Get a reference to the label window'
         super(ContextMenuStrip, self).__init__(accessible, subproc)
-        self.findFrame('ContextMenuStrip control', logName='ContextMenuStrip')
+        self.findFrame('ContextMenuStrip control', logName='Context Menu Strip')

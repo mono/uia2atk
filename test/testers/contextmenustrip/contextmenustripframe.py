@@ -19,12 +19,19 @@ class ContextMenuStripFrame(accessibles.Frame):
         procedurelogger.expectedResult('All widgets in ContextMenuStrip should show up')
 
         # ContextMenuStrip
+	self.label = self.findLabel ('Right Click on me to see ContextMenuStrip');
+	# Simulate a mouse click to make the menu appear
+	self.label.mouseClick (3)
         self.context_menu_strip = self.app.findWindow(None, checkShowing=False)
         # Menu items
-        self.orig_item = self.context_menu_strip.findMenuItem('Item 1')
-        self.radio_item = self.context_menu_strip.findMenuItem('Item 2')
-        self.check_item = self.context_menu_strip.findMenuItem('Item 3')
-        self.exit_item = self.context_menu_strip.findMenuItem('Exit')
+	self.menu = self.context_menu_strip.findMenu (None);
+        self.item1 = self.menu.findMenu ('Apple')
+        self.item1a = self.item1.findMenuItem ('Macintosh', checkShowing = False)
+        self.item1b = self.item1.findMenuItem ('Delicious', checkShowing = False)
+        self.item2 = self.menu.findMenuItem ('Banana')
+        self.item3 = self.menu.findMenuItem ('Watermelon')
+        self.item4 = self.menu.findMenuItem ('Orange')
+        self.item5 = self.menu.findMenuItem ('Peach')
 
     def quit(self):
         self.altF4()

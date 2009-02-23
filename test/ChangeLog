@@ -1,3 +1,11 @@
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* samples/contextmenustrip.py: Add a sub-menu.
+
+	* testers/contextmenustrip/__init__.py,
+	  testers/contextmenustrip/contextmenustripframe.py,
+	  testers/contextmenustrip_basic_ops.py: Various fixes.
+
 2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* testers/toolstripbutton/toolstripbuttonframe.py:
