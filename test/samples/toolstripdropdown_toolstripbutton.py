@@ -16,9 +16,15 @@ clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
+from System.IO import Path
 from System.Drawing import *
 import System.Drawing.Text
 
+from sys import path
+
+harness_dir = path[0]
+i = harness_dir.rfind(Path.DirectorySeparatorChar)
+uiaqa_path = harness_dir[:i]
 
 class RunApp(Form):
 
@@ -52,9 +58,13 @@ class RunApp(Form):
 
         self.count_o = 0
         self.tb2 = ToolStripButton()
-        #self.tb2.Image = Bitmap.FromFile("images/document-open.png")
-        #self.tb2.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-        self.tb2.DisplayStyle = ToolStripItemDisplayStyle.Text
+        self.tb2.Image = Bitmap.FromFile(uiaqa_path + 
+                                       Path.DirectorySeparatorChar + "samples" + 
+                                       Path.DirectorySeparatorChar + "listview-items-icons" + 
+                                       Path.DirectorySeparatorChar + "32x32" +
+                                       Path.DirectorySeparatorChar + "evolution.png")
+        self.tb2.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+        #self.tb2.DisplayStyle = ToolStripItemDisplayStyle.Text
         self.tb2.Text = "&Open"
         self.tb2.Click += self.Open_Document_Clicked
         self.ts.Items.Add(self.tb2)
