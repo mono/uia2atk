@@ -1,3 +1,9 @@
+2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/richtextbox_text.txt: update text with many different
+	non-letter characters.
+	* samples/richtextbox.py: add a second RichTextBox
+
 2009-02-23  Mario Carrion <mcarrion@novell.com>
 
 	* testers/datagridview_detail_ops.py,
