@@ -1,5 +1,12 @@
 2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	Corrected info about a bug (it only applies to the 2nd button).
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected a test and remove some commented out stuff.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* testers/toolstripbutton/__init__.py
 	* testers/toolstripbutton/toolstripbuttonframe.py
 	* testers/toolstripbutton_basic_ops.py:

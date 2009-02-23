@@ -63,24 +63,16 @@ statesCheck(tbbFrame.toolbar, "ToolBar")
 #tbbFrame.click(tbbFrame.toggle_style)
 sleep(config.SHORT_DELAY)
 
-#click toggle_style button again to set "Enabled = True" for nop_unable button
-#tbbFrame.click(tbbFrame.toggle_style)
-#sleep(config.SHORT_DELAY)
-#statesCheck(tbbFrame.separator_style, "Separator")
-
 #####################################
 ##Text, Action, Component test
 #####################################
 
 #test PushButton style
-tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
+tbbFrame.PushButtonStyle(tbbFrame.pushbutton1_style)
 
 #test Toggle style
 #tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 
-#test Separator style
-##Separator style toolbarbutton have wrong role name BUG473763
-#tbbFrame.SeparatorStyle(tbbFrame.separator_style)
 
 ############################
 ##Image test

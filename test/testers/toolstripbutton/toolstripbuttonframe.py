@@ -29,9 +29,11 @@ class ToolStripButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripButtonFrame, self).__init__(accessible)
         self.toolbar = self.findToolBar(None)
-#this should be findPushButton, not ToggleButton (bug: 478832)
         self.pushbutton1_style = self.toolbar.findToggleButton(self.NEWBUTTON)
+
+#this should be findPushButton, not ToggleButton (bug: 478832)
         self.pushbutton2_style = self.toolbar.findToggleButton(self.OPENBUTTON)
+
 #        self.dropdown_toggle = self.toolbar.findToggleButton(self.DROPDOWNBUTTON)
 #        self.toggle_style = self.toolbar.findPushButton(self.TOGGLE)
 #        self.nop_unable = self.toolbar.findPushButton(self.UNEDITED,\
