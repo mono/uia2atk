@@ -26,26 +26,37 @@ class DataGridViewFrame(accessibles.Frame):
 		self.treetable = self.findTreeTable(None)
 		self.checkbox_column = self.findTableColumnHeader(self.COLUMN_CHECKBOX, checkShowing=False)
 		self.textbox_column = self.findTableColumnHeader(self.COLUMN_TEXTBOX, checkShowing=False)
+		
+		self.columns = [self.checkbox_column, self.textbox_column]
+		
 		self.tablecells = self.findAllTableCells(None)
 
-		self.edits = dict([(x, self.findTableCell("Item" + str(x))) for x in range(6)])
+		self.edits = self.findAllTableCells(re.compile("Item*"))
 		self.checkboxes = self.findAllCheckBoxes(None)
 
 	#assert Edits' Text implementation for ListView Items
 	def assertEditsText(self, accessible):
 		procedurelogger.action("check DataGridView Items Text Value")
+		
+		index = 0
+		for item in accessible:
+			actual_states = item._accessible.getState().getStates()
+			actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
-		items = ["Item0", "Item1", "Item2", "Item3", "Item4", "Item5"]
-		for index in range(6):
-			procedurelogger.expectedResult('the text[%s] is %s' % (index,items[index]))
 			new_value = 'Item%s' % (index + 10)
-			accessible[index].text = new_value
+			old_value = item.text
+			
+			item.text = new_value
 			sleep(config.SHORT_DELAY) # We need this because sometimes the assert fails
 
-			if index % 2 == 0: # Not Editable
-				assert accessible[index].text == items[index]
-			else: # Editable
-				assert accessible[index].text == new_value
+			if "editable" in actual_states:
+				procedurelogger.expectedResult('editable: current %s new %s' % (item.text,new_value))
+				assert item.text == new_value
+			else:
+				procedurelogger.expectedResult('not-editable: current %s new %s' % (item.text,old_value))
+				assert item.text == old_value
+				
+			index += 1
 
 	#assert Selection implementation
 	def assertSelectionChild(self, accessible, childIndex):

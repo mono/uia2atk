@@ -1,5 +1,12 @@
 2009-02-24  Mario Carrion <mcarrion@novell.com>
 
+	* datagridview_detail_ops.py: Testing headers, selection tests.
+	Failing asserts commented.
+	* datagridview/datagridviewframe.py: assertEditsText updated to change
+	text when "editable".
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
 	* samples/datagridview.py: Button and Link columns added.
 
 2009-02-24  Mario Carrion <mcarrion@novell.com>

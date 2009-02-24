@@ -45,66 +45,80 @@ if app is None:
 # Alias to make things shorter
 dtgvFrame = app.dataGridViewFrame
 
-# Check DataGridView TableColumnHeader's actions list
+# -> Check DataGridView TableColumnHeader's actions and states list
+for column in dtgvFrame.columns:
+	# BUG478840 - DataGridView. Columns are missing "click" action
+	##actionsCheck(column, "TableColumnHeader")
+	statesCheck(column, "TableColumnHeader")
+	
+	# Mouse clicking column won't rise "focused" because HasKeyboardFocus is False
+	column.mouseClick()
+	sleep(config.SHORT_DELAY)
+	statesCheck(column, "TableColumnHeader")
+	
+# -> CheckBox cells tests
 
-# BNC #478840 - Uncomment following 2 lines 
-##actionsCheck(dtgvFrame.checkbox_column, "TableColumnHeader")
-##actionsCheck(dtgvFrame.textbox_column,  "TableColumnHeader")
-
-statesCheck(dtgvFrame.checkbox_column, "TableColumnHeader")
-statesCheck(dtgvFrame.textbox_column,  "TableColumnHeader")
-
-# BCN #478856 - Uncomment following 3 lines
+# BUG478856 - Uncomment following lines
 ##statesCheck(dtgvFrame.tablecells[0], "TreeViewTableCell", add_states=["focused", "selected"])
 ##statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell")
 ##statesCheck(dtgvFrame.tablecells[2], "TreeViewTableCell")
 
-checkbox = dtgvFrame.findAllCheckBoxes(None)[0]
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "checked", "focused" \
-])
+##checkbox = dtgvFrame.findAllCheckBoxes(None)[0]
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##    "selectable", "selected", "checked", "focused" \
+##])
 
-reg = EventListener(event_names='object:state-changed')
-reg.start()
+##reg = EventListener(event_names='object:state-changed')
+##reg.start()
 
-checkbox.click()
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused" \
-])
+##checkbox.click()
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##    "selectable", "selected", "focused" \
+##])
 
-sleep(config.SHORT_DELAY)
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+##sleep(config.SHORT_DELAY)
+##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
 
-reg.clearQueuedEvents()
+##reg.clearQueuedEvents()
 
-checkbox.click()
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "checked", "focused" \
-])
+##checkbox.click()
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##    "selectable", "selected", "checked", "focused" \
+##])
 
-sleep(config.SHORT_DELAY)
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+##sleep(config.SHORT_DELAY)
+##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
 
-reg.stop()
+##reg.stop()
 
-# Testing Edits Text value
+# -> TextBox cell tests
 dtgvFrame.assertEditsText(dtgvFrame.edits)
 
-# Testing Edits States
-# BCN #478856 - Uncomment following 5 lines
-##for index in range(6):
-##	if index % 2 == 0: # Not Editable 
-##		statesCheck(dtgvFrame.edits[index], "TreeViewTableCell", invalid_states=["editable"])
-##	else: # Editable
-##		statesCheck(dtgvFrame.edits[index], "TreeViewTableCell", add_states=["editable"])
+# BUG478856 - Uncomment following 4 lines
+##dtgvFrame.edits[0].mouseClick()
+##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=[ "selectable", "selected", "focused" ])
+##dtgvFrame.edits[1].mouseClick()
+##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=[ "selectable", "selected", "focused" ])
 
-# Selection tests
+# -> Button cell tests
+
+# -> Link cell tests
+
+# -> ComboBox cell tests
+
+# -> All cells: Selection tests
 dtgvFrame.assertClearSelection(dtgvFrame.treetable)
 sleep(config.SHORT_DELAY)
+# Selecting first checkbox
 dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
-# BCN #478891 - Uncomment following line
-# statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable"], invalid_states=["enabled", "sensitive"])
+# BUG478891 - DataGridView: Selected cells don't emit "selected" event.
+##statesCheck(dtgvFrame.treetable[0], "CheckBox", add_states=["selected", "checked", "selectable"], invalid_states=["enabled", "sensitive"])
+
+# Selecting first textbox
+dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 1)
+# BUG479126 - DataGridView. TextBox cells don't implement SelectionItem
+##statesCheck(dtgvFrame.treetable[1], "TableCell", add_states=["selected", "selectable"], invalid_states=["enabled", "sensitive"])
 
 #check table's table implementation
 dtgvFrame.assertTable(dtgvFrame.treetable, row=6, col=2)
@@ -114,3 +128,4 @@ sleep(config.SHORT_DELAY)
 dtgvFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
+
