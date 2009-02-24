@@ -63,33 +63,42 @@ for column in dtgvFrame.columns:
 ##statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell")
 ##statesCheck(dtgvFrame.tablecells[2], "TreeViewTableCell")
 
-##checkbox = dtgvFrame.findAllCheckBoxes(None)[0]
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##    "selectable", "selected", "checked", "focused" \
-##])
+reg = EventListener(event_types='object:state-changed')
+reg.start()
 
-##reg = EventListener(event_names='object:state-changed')
-##reg.start()
+checkbox = dtgvFrame.findAllCheckBoxes(None)[1]
+checkbox.grabFocus()
 
-##checkbox.click()
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##    "selectable", "selected", "focused" \
-##])
+#assert reg.containsEvent(checkbox, 'object:state-changed:focused')
 
-##sleep(config.SHORT_DELAY)
-##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+reg.clearQueuedEvents()
 
-##reg.clearQueuedEvents()
+sleep(config.SHORT_DELAY)
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused" \
+])
 
-##checkbox.click()
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##    "selectable", "selected", "checked", "focused" \
-##])
+checkbox.click()
 
-##sleep(config.SHORT_DELAY)
-##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+sleep(config.SHORT_DELAY)
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused", "checked" \
+])
 
-##reg.stop()
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+reg.clearQueuedEvents()
+
+checkbox.click()
+sleep(config.LONG_DELAY)
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused", \
+])
+
+sleep(config.LONG_DELAY)
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+reg.stop()
 
 # -> TextBox cell tests
 dtgvFrame.assertEditsText(dtgvFrame.edits)
