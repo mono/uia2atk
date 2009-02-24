@@ -1,3 +1,7 @@
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* tools/hierarchy.py: Print states.
+
 2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* testers/toolstripbutton_basic_ops.py:
