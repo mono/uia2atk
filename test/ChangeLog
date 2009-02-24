@@ -1,3 +1,11 @@
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: Labels added to keep track when CellClick or
+	CurrentCellChanged.
+	* testers/datagridview_detail_ops.py: Button and Link cells test.
+	* testers/datagridview/datagridviewframe.py: New method
+	assertCellClickValue.
+
 2009-02-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* testers/monthcalendar:

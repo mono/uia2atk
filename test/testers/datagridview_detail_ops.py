@@ -63,42 +63,45 @@ for column in dtgvFrame.columns:
 ##statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell")
 ##statesCheck(dtgvFrame.tablecells[2], "TreeViewTableCell")
 
-reg = EventListener(event_types='object:state-changed')
-reg.start()
+##reg = EventListener(event_types='object:state-changed')
+##reg.start()
 
 checkbox = dtgvFrame.findAllCheckBoxes(None)[1]
 checkbox.grabFocus()
 
+# BUG478856 - focusable is missing
 #assert reg.containsEvent(checkbox, 'object:state-changed:focused')
 
-reg.clearQueuedEvents()
+##reg.clearQueuedEvents()
 
-sleep(config.SHORT_DELAY)
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused" \
-])
+##sleep(config.LONG_DELAY)
+# BUG478856 - focusable is missing
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##    "selectable", "selected", "focused" \
+##])
+
+##checkbox.click()
+##sleep(config.LONG_DELAY)
+# BUG478856 - focusable is missing
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##    "selectable", "selected", "focused", "checked" \
+##])
+
+# assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+##reg.clearQueuedEvents()
 
 checkbox.click()
+# BUG478856 - focusable is missing
+##sleep(config.LONG_DELAY)
+##statesCheck(checkbox, "CheckBox", add_states=[ \
+##   "selectable", "selected", "focused", \
+##])
 
-sleep(config.SHORT_DELAY)
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused", "checked" \
-])
+##sleep(config.LONG_DELAY)
+##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
 
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
-
-reg.clearQueuedEvents()
-
-checkbox.click()
-sleep(config.LONG_DELAY)
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused", \
-])
-
-sleep(config.LONG_DELAY)
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
-
-reg.stop()
+##reg.stop()
 
 # -> TextBox cell tests
 dtgvFrame.assertEditsText(dtgvFrame.edits)
@@ -111,7 +114,30 @@ dtgvFrame.assertEditsText(dtgvFrame.edits)
 
 # -> Button cell tests
 
+for button in dtgvFrame.buttons:
+	actionsCheck(button,"Button")
+	# BUG478856 "focusable"
+	# statesCheck(button,"Button")
+	
+# Testing click
+dtgvFrame.buttons[0].mouseClick()
+sleep(config.SHORT_DELAY)
+dtgvFrame.assertCellClickValue(0, 3)
+# BUG478856 - focusable is missing
+##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["focused", "selectable", "selected"])
+dtgvFrame.buttons[1].mouseClick()
+sleep(config.SHORT_DELAY)
+# BUG478856 - focusable is missing
+##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
+dtgvFrame.assertCellClickValue(1, 3)
+# BUG478856 - focusable is missing
+# statesCheck(dtgvFrame.buttons[1],"Button", add_states=["focused", "selectable", "selected"])
+
 # -> Link cell tests
+
+# BUG478856  missing focusable
+##for label in dtgvFrame.labels:
+##	statesCheck(button,"Label", invalid_states=["multi line"], add_states=["selectable", "focusable"])
 
 # -> ComboBox cell tests
 
@@ -130,7 +156,7 @@ dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 1)
 ##statesCheck(dtgvFrame.treetable[1], "TableCell", add_states=["selected", "selectable"], invalid_states=["enabled", "sensitive"])
 
 #check table's table implementation
-dtgvFrame.assertTable(dtgvFrame.treetable, row=6, col=2)
+dtgvFrame.assertTable(dtgvFrame.treetable, row=6, col=5)
 sleep(config.SHORT_DELAY)
 
 #close application frame window

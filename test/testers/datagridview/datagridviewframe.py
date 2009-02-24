@@ -33,6 +33,12 @@ class DataGridViewFrame(accessibles.Frame):
 
 		self.edits = self.findAllTableCells(re.compile("Item*"))
 		self.checkboxes = self.findAllCheckBoxes(None)
+		self.buttons = self.findAllPushButtons(re.compile("Item*"))
+		self.comboboxes = self.findAllComboBoxes(None)
+		self.labels = self.findAllLabels(re.compile("Item*"))
+		
+		self.label_cellclick = self.findLabel(re.compile("^CellClick(.*)$"))
+		self.label_currentcellchanged = self.findLabel(re.compile("^CurrentCell(.*)$"))
 
 	#assert Edits' Text implementation for ListView Items
 	def assertEditsText(self, accessible):
@@ -68,11 +74,17 @@ class DataGridViewFrame(accessibles.Frame):
 		accessible.clearSelection()
 
 	def assertTable(self, accessible, row=0, col=0):
-		procedurelogger.action('check "%s" Table implemetation' % accessible)
+		procedurelogger.action('check "%s" Table implementation' % accessible)
 		itable = accessible._accessible.queryTable()
 
 		procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
 		assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" % (itable.nRows, itable.nColumns)
+	
+	#assert Click
+	def assertCellClickValue(self, row, column):
+		new_labelcellclick_value = "CellClick: %s,%s" % (row,column)
+		procedurelogger.action('cell click %s = %s' % (self.label_cellclick.text,new_labelcellclick_value))
+		assert self.label_cellclick.text == new_labelcellclick_value
  
 	#close application main window after running test
 	def quit(self):

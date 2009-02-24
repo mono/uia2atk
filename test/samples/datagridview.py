@@ -29,6 +29,18 @@ class RunApp(Form):
 
 		self.Text = "DataGridView control"
 		self.Size = Size(650,300)
+		
+		# Label updated when cell is clicked
+		self.label_cellclick = Label()
+		self.label_cellclick.Size = Size(600,30)
+		self.label_cellclick.Location = Point(10,220)
+		self.label_cellclick.Text = "CellClick. Row and Column will appear here."
+		
+		# Label updated when current cell is changed
+		self.label_currentcellchanged = Label()
+		self.label_currentcellchanged.Size = Size(600,30)
+		self.label_currentcellchanged.Location = Point(10,250)
+		self.label_currentcellchanged.Text = "CurrentCell. Row and Column will appear here."
 
 		# Set up DataGridView control
 		self.datagridview1 = DataGridView()
@@ -93,9 +105,25 @@ class RunApp(Form):
 			row.Cells.Add(linkcell)
 		
 			self.datagridview1.Rows.Add(row)
+			
+		# Events
+		self.datagridview1.CellClick += self.datagridview1_cellclick
+		self.Load += self.datagridview1_load
 
-		# Add DataGridView
+		# Add controls
 		self.Controls.Add(self.datagridview1)
+		self.Controls.Add(self.label_cellclick)
+		self.Controls.Add(self.label_currentcellchanged)
+		
+	def datagridview1_cellclick(self, sender, event):
+		self.label_cellclick.Text = "CellClick: %s,%s" % (event.RowIndex,event.ColumnIndex)
+
+	def datagridview1_load(self, sender, event):
+		self.datagridview1.CurrentCellChanged += self.datagridview1_currencellchanged
+
+	def datagridview1_currencellchanged(self, sender, event):
+		self.label_currentcellchanged.Text = "CurrenCellChanged: %s,%s" % (self.datagridview1.CurrentCell.RowIndex,self.datagridview1.CurrentCell.ColumnIndex)
+
 	
 form = RunApp()
 Application.Run(form)
