@@ -1,5 +1,9 @@
 2009-02-24  Mario Carrion <mcarrion@novell.com>
 
+	* samples/datagridview.py: Button and Link columns added.
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
 	* samples/datagridview.py: ComboBox column added.
 
 2009-02-23  Mike Gorse <mgorse@novell.com>

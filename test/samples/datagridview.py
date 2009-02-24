@@ -28,31 +28,36 @@ class RunApp(Form):
 		"""RunApp class init function."""
 
 		self.Text = "DataGridView control"
-		self.Size = Size(550,300)
+		self.Size = Size(650,300)
 
 		# Set up DataGridView control
 		self.datagridview1 = DataGridView()
 		self.datagridview1.Name = "datagridview1"
 		self.datagridview1.Location = Point(10,10)
-		self.datagridview1.Size = Size(500,200)
+		self.datagridview1.Size = Size(600,200)
 		self.datagridview1.AllowUserToAddRows = False
 		# Set up Columns
 		dtgvcboxcolumn = DataGridViewCheckBoxColumn()
-		dtgvcboxcolumn.Name = "COLUMN_CHECKBOX"
+		dtgvcboxcolumn.HeaderText = "COLUMN_CHECKBOX"
 		dtgvtextboxcolumn = DataGridViewTextBoxColumn()
-		dtgvtextboxcolumn.Name = "COLUMN_TEXTBOX"
+		dtgvtextboxcolumn.HeaderText = "COLUMN_TEXTBOX"
 		dtgvcomboboxcolumn = DataGridViewComboBoxColumn()
-		dtgvcomboboxcolumn.Name = "COLUMN_COMBOBOX"
+		dtgvcomboboxcolumn.HeaderText = "COLUMN_COMBOBOX"		
 		combobox_items = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-		
 		for combobox_item in combobox_items:
 			dtgvcomboboxcolumn.Items.Add(combobox_item)
-		# Crash: Comment previous 2 lines and uncomment next line
-		#dtgvcomboboxcolumn.Items.AddRange(combobox_items)
+		dtgvbuttoncolumn = DataGridViewButtonColumn()
+		dtgvbuttoncolumn.HeaderText = "COLUMN_BUTTON"
+		dtgvlinkcolumn = DataGridViewLinkColumn()
+		dtgvlinkcolumn.HeaderText = "COLUMN_LINK"
+		#dtgvlinkcolumn.Text = "Click here"
+		#dtgvlinkcolumn.UseColumnTextForLinkValue = True 
 
 		self.datagridview1.Columns.Add(dtgvcboxcolumn)
 		self.datagridview1.Columns.Add(dtgvtextboxcolumn)
 		self.datagridview1.Columns.Add(dtgvcomboboxcolumn)
+		self.datagridview1.Columns.Add(dtgvbuttoncolumn)
+		self.datagridview1.Columns.Add(dtgvlinkcolumn)
 
 		# Even rows = editable
 		# Odd rows = not editable
@@ -72,10 +77,20 @@ class RunApp(Form):
 			textboxcell.ReadOnly = checkbox_items[count]
 			row.Cells.Add(textboxcell)
 			
-			#comboboxcell = DataGridViewComboBoxCell()
-			#comboboxcell.Value = "0"
-			#comboboxcell.ReadOnly = checkbox_items[count]
-			#row.Cells.Add(comboboxcell)
+			comboboxcell = DataGridViewComboBoxCell()
+			comboboxcell.Value = "0"
+			for combobox_item in combobox_items:
+				comboboxcell.Items.Add(combobox_item)
+			comboboxcell.ReadOnly = checkbox_items[count]
+			row.Cells.Add(comboboxcell)
+			
+			buttoncell = DataGridViewButtonCell()
+			buttoncell.Value = textbox_items[count]
+			row.Cells.Add(buttoncell)
+			
+			linkcell = DataGridViewLinkCell()
+			linkcell.Value = textbox_items[count]
+			row.Cells.Add(linkcell)
 		
 			self.datagridview1.Rows.Add(row)
 
