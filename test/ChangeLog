@@ -1,3 +1,15 @@
+2009-02-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* testers/monthcalendar:
+	* testers/monthcalendar/__init__.py:
+	* testers/monthcalendar_basic_ops.py:
+	* testers/monthcalendar/monthcalendarframe.py: Add initial
+	strongwind tests for MonthCalendar. Note TODOs for testing
+	multiple selection and top-level accessible name.
+
+	* samples/monthcalendar.py: Initialize date selection to
+	1/23/2008 for strongwind testing purposes.
+
 2009-02-24  Mario Carrion <mcarrion@novell.com>
 
 	* datagridview_detail_ops.py: Testing headers, selection tests.

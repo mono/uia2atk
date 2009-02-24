@@ -16,7 +16,8 @@ Test accessibility of "MonthCalendar" control
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
-from System.Windows.Forms import Application, Form, MonthCalendar, Label
+from System import DateTime
+from System.Windows.Forms import Application, Form, MonthCalendar, Label, SelectionRange
 from System.Drawing import Point
 
 class MonthCalendarSample(Form):
@@ -33,6 +34,9 @@ class MonthCalendarSample(Form):
         # set one days that can be selected in a month calendar control
         self.monthcalendar.MaxSelectionCount = 2
         self.monthcalendar.ShowWeekNumbers = True
+        #NOTE: Strongwind tests depend on this date setting! Make sure to update them if you change it
+        initialRange = SelectionRange(DateTime.Parse("1/23/2008"), DateTime.Parse("1/23/2008"))
+        self.monthcalendar.SelectionRange = initialRange
         self.monthcalendar.DateChanged += self.date_select
 
         # setup label
