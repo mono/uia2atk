@@ -1,3 +1,8 @@
+2009-02-24  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ContextMenuProvider.cs: Check for null
+	  window.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:

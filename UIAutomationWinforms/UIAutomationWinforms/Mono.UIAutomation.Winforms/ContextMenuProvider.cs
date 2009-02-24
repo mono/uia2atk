@@ -57,6 +57,8 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+				if (contextMenu.Wnd == null)
+					return System.Windows.Rect.Empty;
 				System.Drawing.Rectangle rect = contextMenu.Rect;
 				rect.Y -= rect.Height;
 				return Helper.RectangleToRect (contextMenu.Wnd.RectangleToScreen (rect));
