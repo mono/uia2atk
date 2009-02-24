@@ -1,3 +1,10 @@
+2009-02-24  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog,
+	* testers/colordialog/colordialogframe.py,
+	* testers/colordialog/__init__.py,
+	* testers/colordialog_basic_ops.py: add new strongwind test
+
 2009-02-23  Mario Carrion <mcarrion@novell.com>
 
 	* testers/datagridview/datagridviewframe.py: Methods added.
@@ -116,7 +123,8 @@
 
 2009-02-23  Calen Chen <cachen@novell.com>
 
-	* samples/colordialog.py: modify example to show help button(BUG
+	* samples/colordialog.py: modify example to show help button(winform 
+	BUG478555)
 	* testers/savefiledialog_basic_ops.py,
 	* testers/fontdialog_basic_ops.py: correct comment error
 
