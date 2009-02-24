@@ -16,13 +16,13 @@ class PageSetupDialogFrame(accessibles.Frame):
 
     def click(self, button):
         button.click()
+        # PageSetupDialog
+        self.main_dialog = self.app.findDialog('Page Setup')
 
     def assertPageSetupDialog(self, button=None):
         procedurelogger.action('Searching for all widgets in PageSetupDialog')
         procedurelogger.expectedResult('All widgets in PageSetupDialog should show up')
 
-        # PageSetupDialog
-        self.main_dialog = self.app.findDialog('Page Setup')
         # Preview panel
         self.area_panel = self.main_dialog.findPanel(None)
         # Buttons

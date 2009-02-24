@@ -15,11 +15,12 @@ class ContextMenuFrame(accessibles.Frame):
         self.label = self.findLabel(re.compile('^Right'))
 
     def assertWidgets(self):
+        # ContextMenu
+        self.context_menu = self.app.findWindow(None, checkShowing=False)
+
         procedurelogger.action('Searching for all widgets in ContextMenu')
         procedurelogger.expectedResult('All widgets in ContextMenu should show up')
 
-        # ContextMenu
-        self.context_menu = self.app.findWindow(None, checkShowing=False)
         # Menu items
         self.orig_item = self.context_menu.findMenuItem('Item 1')
         self.radio_item = self.context_menu.findMenuItem('Item 2')

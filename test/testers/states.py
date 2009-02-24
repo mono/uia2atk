@@ -353,3 +353,6 @@ class Alert(object):
 
 class ContextMenu(MenuStrip):
 	pass
+
+class ContextMenuStrip(ContextMenu):
+	pass

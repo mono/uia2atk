@@ -42,6 +42,5 @@ def launchContextMenu(exe=None):
 # class to represent the application
 class ContextMenu(accessibles.Application):
     def __init__(self, accessible, subproc=None):
-        'Get a reference to the label window'
         super(ContextMenu, self).__init__(accessible, subproc)
         self.findFrame('ContextMenu_MenuItem control', logName='Context Menu')

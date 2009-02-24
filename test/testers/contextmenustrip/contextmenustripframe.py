@@ -15,16 +15,14 @@ class ContextMenuStripFrame(accessibles.Frame):
         self.label = self.findLabel(re.compile('^Right'))
 
     def assertWidgets(self):
+        # ContextMenuStrip
+        self.context_menu_strip = self.app.findWindow(None, checkShowing=False)
+
         procedurelogger.action('Searching for all widgets in ContextMenuStrip')
         procedurelogger.expectedResult('All widgets in ContextMenuStrip should show up')
 
-        # ContextMenuStrip
-	self.label = self.findLabel ('Right Click on me to see ContextMenuStrip');
-	# Simulate a mouse click to make the menu appear
-	self.label.mouseClick (3)
-        self.context_menu_strip = self.app.findWindow(None, checkShowing=False)
         # Menu items
-	self.menu = self.context_menu_strip.findMenu (None);
+        self.menu = self.context_menu_strip.findMenu (None);
         self.item1 = self.menu.findMenu ('Apple')
         self.item1a = self.item1.findMenuItem ('Macintosh', checkShowing = False)
         self.item1b = self.item1.findMenuItem ('Delicious', checkShowing = False)

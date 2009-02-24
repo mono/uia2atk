@@ -1,3 +1,17 @@
+2009-02-24  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/states.py: Added ContextMenuStrip class.
+
+	* testers/pagesetupdialog/__init__.py,
+	* testers/contextmenu/__init__.py,
+	* testers/contextmenustrip/__init__.py: Removed comments.
+
+	* testers/pagesetupdialog/pagesetupdialogframe.py,
+	* testers/contextmenu/contextmenuframe.py,
+	* testers/contextmenustrip/contextmenustripframe.py: Revamped logs.
+	
+	* testers/contextmenustrip_basic_ops.py: Tested AtkSelection.
+
 2009-02-24  Calen Chen <cachen@novell.com>
 
 	* samples/datagridboolcolumn.py: add new sample
