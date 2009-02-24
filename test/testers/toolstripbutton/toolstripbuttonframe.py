@@ -23,23 +23,17 @@ class ToolStripButtonFrame(accessibles.Frame):
 #    TOGGLE = "Toggle"
 #    UNEDITED = "nop"
 #    SEPARATOR = "Separator"
-#    LABEL = "ToolBar and ToolBarButton example"
+    LABEL = "Font:"
 
 
     def __init__(self, accessible):
         super(ToolStripButtonFrame, self).__init__(accessible)
         self.toolbar = self.findToolBar(None)
-        self.pushbutton1_style = self.toolbar.findToggleButton(self.NEWBUTTON)
+        self.toggle_style = self.toolbar.findToggleButton(self.NEWBUTTON)
 
 #this should be findPushButton, not ToggleButton (bug: 478832)
-        self.pushbutton2_style = self.toolbar.findToggleButton(self.OPENBUTTON)
-
-#        self.dropdown_toggle = self.toolbar.findToggleButton(self.DROPDOWNBUTTON)
-#        self.toggle_style = self.toolbar.findPushButton(self.TOGGLE)
-#        self.nop_unable = self.toolbar.findPushButton(self.UNEDITED,\
-#                                                  checkShowing=False)
-#        self.separator_style = self.toolbar.findSeparator(self.SEPARATOR)
-#        self.label = self.findLabel(self.LABEL)
+        self.pushbutton_style = self.toolbar.findToggleButton(self.OPENBUTTON)
+        self.label = self.findLabel(self.LABEL)
 
     def click(self, accessible):
         accessible.click()
@@ -49,75 +43,70 @@ class ToolStripButtonFrame(accessibles.Frame):
         #test AtkText
         procedurelogger.action('check Text for %s' % accessible)
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "PushButton"))
-        assert accessible.text == "PushButton", "%s doesn't match \
+        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "&Open"))
+        assert accessible.text == "&Open", "%s doesn't match \
                                         PushButton" % accessible.text
         #test AtkAction
         accessible.click()
 
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you have clicked %s 1 time" % accessible)
-        assert self.label.text == "You clicked PushButton 1 times", \
-                "lable shows %s" % self.label.text
-                                          
+##all of the above is commented out because of bug 478872 (if it gets fixed, drop a mouseClick() call above when enabling this)
+#        procedurelogger.expectedResult("label shows you have clicked %s 1 time" % accessible)
+#        assert self.label.text == "You clicked PushButton 1 times", \
+#                "label shows %s" % self.label.text
+#                                          
         #test AtkComponent by mouse click it to check its position
+        accessible.mouseClick()
+
+        sleep(config.SHORT_DELAY)
+
         accessible.mouseClick()
 
         sleep(config.SHORT_DELAY)
         procedurelogger.expectedResult("label shows you clicked %s 2 times" % accessible)
         assert self.label.text == "You clicked PushButton 2 times", \
-                "lable shows %s" % self.label.text
+                "label shows %s" % self.label.text
 
     ##test for Toggle style ToolBarButton
-#    def ToggleStyle(self, accessible):
-        #test AtkText
-#        procedurelogger.action('check Text for %s' % accessible)
-
-#        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "Toggle"))
-#        assert accessible.text == "Toggle", "%s doesn't match \
-#                                        Toggle" % accessible.text
-        #test AtkAction to unable label
-#        accessible.click()
-#        sleep(config.SHORT_DELAY)
-#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
-#        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
-        #click again to enable label
-#        accessible.click()
-#        sleep(config.SHORT_DELAY)
-#        statesCheck(self.toggle_style, "Button")
-#        statesCheck(self.label, "Label")
-                                          
-        #test AtkComponent by mouse click to check its position
-#        accessible.mouseClick()
-#        sleep(config.SHORT_DELAY)
-#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
-#        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
-        #mouse click again to enable label
-#        accessible.mouseClick()
-#        sleep(config.SHORT_DELAY)
-#        statesCheck(self.toggle_style, "Button")
-#        statesCheck(self.label, "Label")
-
-    ##test for Separator style ToolBarButton
-    def SeparatorStyle(self, accessible):
+    def ToggleStyle(self, accessible):
         #test AtkText
         procedurelogger.action('check Text for %s' % accessible)
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "separator"))
-        assert accessible.text == "separator", "%s doesn't match \
-                                        separator" % accessible.text
+        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "&New"))
+        assert accessible.text == "&New", "%s doesn't match \
+                                        Toggle" % accessible.text
+        #test AtkAction to unable label
+        accessible.click()
+        sleep(config.SHORT_DELAY)
+##all of the above is commented out because of bug 478872 (if it gets fixed, drop a mouseClick() call above when enabling this)
+#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
+#        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
+        #click again to enable label
+        accessible.click()
+        sleep(config.SHORT_DELAY)
+#bug 478838: missing focusable state
+#        statesCheck(self.toggle_style, "Button")
+        statesCheck(self.label, "Label")
+                                          
+        #test AtkComponent by mouse click to check its position
+        accessible.mouseClick()
+        sleep(config.SHORT_DELAY)
 
-        #AtkAction is unimplementd for separator style toolbarbutton
-        procedurelogger.action('check Action for %s' % accessible)
-        procedurelogger.expectedResult("AtkAction is unimplemented")
-        try:
-           accessible.click()
-        except NotImplementedError:
-           pass
-    
+##missing armed and checked states when this button is pushed BUG474649
+#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
+        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
+        #mouse click again to enable label
+        accessible.mouseClick()
+        sleep(config.SHORT_DELAY)
+#bug 478838: missing focusable state
+#        statesCheck(self.toggle_style, "Button")
+        statesCheck(self.label, "Label")
+
     #in this example all buttons with 24*24 image size, except separator
     def assertImageSize(self, button, width=0, height=0):
         procedurelogger.action("assert %s's image size" % button)
+#	print dir(button) 
+#this is failing, and I don't know why:
         size = button.imageSize
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %

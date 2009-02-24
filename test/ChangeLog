@@ -28,6 +28,14 @@
 
 2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* samples/toolstripdropdown_toolstripbutton.py:
+	Adapted behaviours to new testing.
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected tests and filed notes about bugs. Still lacking image testing.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* testers/toolstripbutton/toolstripbuttonframe.py:
 	Corrected info about a bug (it only applies to the 2nd button).
 	* testers/toolstripbutton_basic_ops.py:

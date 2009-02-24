@@ -53,25 +53,20 @@ tbbFrame = app.toolStripButtonFrame
 statesCheck(tbbFrame.toolbar, "ToolBar")
 
 #bug 478838: missing focusable state
-#statesCheck(tbbFrame.pushbutton1_style, "Button")
-#statesCheck(tbbFrame.pushbutton2_style, "Button")
-
-##missing armed and checked states when this button is pushed BUG474649
+#statesCheck(tbbFrame.pushbutton_style, "Button")
 #statesCheck(tbbFrame.toggle_style, "Button")
 
-#click toggle_style button to set "Enabled = False" for nop_unable button
-#tbbFrame.click(tbbFrame.toggle_style)
 sleep(config.SHORT_DELAY)
 
 #####################################
 ##Text, Action, Component test
 #####################################
 
-#test PushButton style
-tbbFrame.PushButtonStyle(tbbFrame.pushbutton1_style)
-
 #test Toggle style
-#tbbFrame.ToggleStyle(tbbFrame.toggle_style)
+tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
+
+#test PushButton style
+tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 
 
 ############################
@@ -79,12 +74,8 @@ tbbFrame.PushButtonStyle(tbbFrame.pushbutton1_style)
 ############################
 
 #test Image size for all toolbar buttons
-tbbFrame.assertImageSize(tbbFrame.pushbutton2_style, width=0, height=0)
-tbbFrame.assertImageSize(tbbFrame.pushbutton2_style, width=32, height=32)
-
-#tbbFrame.assertImageSize(tbbFrame.toggle_style, width=24, height=24)
-
-#tbbFrame.assertImageSize(tbbFrame.separator_style, width=-1, height=-1)
+tbbFrame.assertImageSize(tbbFrame.pushbutton_style, width=32, height=32)
+tbbFrame.assertImageSize(tbbFrame.toggle_style, width=0, height=0)
 
 #close main window
 tbbFrame.quit()
