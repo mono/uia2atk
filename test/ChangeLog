@@ -1,5 +1,9 @@
 2009-02-24  Calen Chen <cachen@novell.com>
 
+	* samples/datagridboolcolumn.py: add new sample
+
+2009-02-24  Calen Chen <cachen@novell.com>
+
 	* testers/colordialog,
 	* testers/colordialog/colordialogframe.py,
 	* testers/colordialog/__init__.py,
