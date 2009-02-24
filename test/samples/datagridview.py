@@ -41,9 +41,18 @@ class RunApp(Form):
 		dtgvcboxcolumn.Name = "COLUMN_CHECKBOX"
 		dtgvtextboxcolumn = DataGridViewTextBoxColumn()
 		dtgvtextboxcolumn.Name = "COLUMN_TEXTBOX"
+		dtgvcomboboxcolumn = DataGridViewComboBoxColumn()
+		dtgvcomboboxcolumn.Name = "COLUMN_COMBOBOX"
+		combobox_items = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+		
+		for combobox_item in combobox_items:
+			dtgvcomboboxcolumn.Items.Add(combobox_item)
+		# Crash: Comment previous 2 lines and uncomment next line
+		#dtgvcomboboxcolumn.Items.AddRange(combobox_items)
 
 		self.datagridview1.Columns.Add(dtgvcboxcolumn)
 		self.datagridview1.Columns.Add(dtgvtextboxcolumn)
+		self.datagridview1.Columns.Add(dtgvcomboboxcolumn)
 
 		# Even rows = editable
 		# Odd rows = not editable
@@ -62,6 +71,11 @@ class RunApp(Form):
 			textboxcell.Value = textbox_items[count]
 			textboxcell.ReadOnly = checkbox_items[count]
 			row.Cells.Add(textboxcell)
+			
+			#comboboxcell = DataGridViewComboBoxCell()
+			#comboboxcell.Value = "0"
+			#comboboxcell.ReadOnly = checkbox_items[count]
+			#row.Cells.Add(comboboxcell)
 		
 			self.datagridview1.Rows.Add(row)
 
