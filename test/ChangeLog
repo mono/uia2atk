@@ -1,3 +1,8 @@
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton_basic_ops.py:
+	Finished toolstripbutton test (image testing).
+
 2009-02-24  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/states.py: Added ContextMenuStrip class.

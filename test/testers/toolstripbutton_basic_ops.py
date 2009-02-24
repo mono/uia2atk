@@ -74,7 +74,8 @@ tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 ############################
 
 #test Image size for all toolbar buttons
-tbbFrame.assertImageSize(tbbFrame.pushbutton_style, width=32, height=32)
+#NOTE: for this to work you need to patch strongwind with the diff in BGO#72995
+tbbFrame.assertImageSize(tbbFrame.pushbutton_style, width=16, height=16)
 tbbFrame.assertImageSize(tbbFrame.toggle_style, width=0, height=0)
 
 #close main window
