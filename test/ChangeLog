@@ -1,3 +1,10 @@
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/propertygrid_basic_ops.py:
+	* testers/propertygrid/__init__.py:
+	* testers/propertygrid/propertygridframe.py:
+	New propertygrid QA test.
+
 2009-02-24  Mario Carrion <mcarrion@novell.com>
 
 	* samples/datagridview.py: Labels added to keep track when CellClick or
