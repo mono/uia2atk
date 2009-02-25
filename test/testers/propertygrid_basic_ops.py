@@ -81,14 +81,15 @@ sleep(config.SHORT_DELAY)
 #pgFrame.findTableCell(pgFrame.CELL_A11Y, checkShowing=False)
 
 #use index = 1 instead of 0 when bug 479113 is fixed:
+child = pgFrame.tablecells[0]
 
-assert pgFrame.tablecells[0].name == pgFrame.CELL_ACCESSIBLE_DESC
+assert child.name == pgFrame.CELL_ACCESSIBLE_DESC
 
 #figure out why this doesn't work:
-pgFrame.treetable._accessible.querySelection().addSelection(0)
+pgFrame.treetable._accessible.querySelection().selectChild(child)
 sleep(config.SHORT_DELAY)
 
-pgFrame.textpanel.findLabel(pgFrame.CELL_ACCESSIBLE_DESC)
+pgFrame.textpanel.findLabel(pgFrame.child.name)
 
 #close application frame window
 pgFrame.quit()

@@ -1,3 +1,13 @@
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ChangeLog: 
+
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/propertygrid_basic_ops.py:
+	* testers/propertygrid/propertygridframe.py:
+	Fixed some problems.
+
 2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* testers/propertygrid_basic_ops.py:

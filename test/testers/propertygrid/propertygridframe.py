@@ -31,7 +31,7 @@ class PropertyGridFrame(accessibles.Frame):
 
                 #maybe this check is useless because the first panel just holds the treetable
                 #so change it to "1" if this changes in the future:
-                assert len(self.subpanels) = 2
+                assert len(self.subpanels) == 2
 
                 self.textpanel = self.subpanels [1]
 
