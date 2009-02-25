@@ -184,7 +184,6 @@
     <File name="testers/contextmenustrip/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/contextmenustrip/contextmenustripframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/datagridview/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/datagridview/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/datagridview/datagridviewframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/datetimepicker_dropdown/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/datetimepicker_dropdown/datetimepickerdropdownframe.py" subtype="Code" buildaction="Compile" />
@@ -218,9 +217,7 @@
     <File name="testers/hscrollbar/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/hscrollbar/hscrollbarframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/label/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/label/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/label/labelframe.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/label/labelframe.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/linklabel/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/linklabel/linklabelframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/listbox/__init__.py" subtype="Code" buildaction="Compile" />
@@ -252,9 +249,7 @@
     <File name="testers/panel/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/panel/panelframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/picturebox/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/picturebox/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/picturebox/pictureboxframe.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/picturebox/pictureboxframe.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/printpreviewcontrol/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/printpreviewcontrol/printpreviewcontrolframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/printpreviewdialog/__init__.py" subtype="Code" buildaction="Compile" />
@@ -262,11 +257,7 @@
     <File name="testers/progressbar/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/progressbar/progressbarframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/propertygrid/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/propertygrid/__init__.py~" subtype="Code" buildaction="Nothing" />
-    <File name="testers/propertygrid/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/propertygrid/propertygridframe.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/propertygrid/propertygridframe.py~" subtype="Code" buildaction="Nothing" />
-    <File name="testers/propertygrid/propertygridframe.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/radiobutton/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/radiobutton/radiobuttonframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/richtextbox/__init__.py" subtype="Code" buildaction="Compile" />
@@ -280,9 +271,7 @@
     <File name="testers/splitter_vertical/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/splitter_vertical/splitterframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/statusbar/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/statusbar/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/statusbar/statusbarframe.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/statusbar/statusbarframe.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/statusbarpanel/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/statusbarpanel/statusbarpanelframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/statusstrip/__init__.py" subtype="Code" buildaction="Compile" />
@@ -300,16 +289,11 @@
     <File name="testers/toolbar/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolbar/toolbarframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolbarbutton/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/toolbarbutton/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/toolbarbutton/toolbarbuttonframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolstrip/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolstrip/toolstripframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolstripbutton/__init__.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/toolstripbutton/__init__.py~" subtype="Code" buildaction="Nothing" />
-    <File name="testers/toolstripbutton/__init__.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/toolstripbutton/toolstripbuttonframe.py" subtype="Code" buildaction="Compile" />
-    <File name="testers/toolstripbutton/toolstripbuttonframe.py~" subtype="Code" buildaction="Nothing" />
-    <File name="testers/toolstripbutton/toolstripbuttonframe.pyc" subtype="Code" buildaction="Nothing" />
     <File name="testers/toolstripcombobox/__init__.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolstripcombobox/toolstripcomboboxframe.py" subtype="Code" buildaction="Compile" />
     <File name="testers/toolstripdropdownbutton/__init__.py" subtype="Code" buildaction="Compile" />
