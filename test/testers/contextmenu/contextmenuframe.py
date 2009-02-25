@@ -22,6 +22,7 @@ class ContextMenuFrame(accessibles.Frame):
         procedurelogger.expectedResult('All widgets in ContextMenu should show up')
 
         # Menu items
+        self.menu = self.context_menu.findMenu(None)
         self.orig_item = self.context_menu.findMenuItem('Item 1')
         self.radio_item = self.context_menu.findMenuItem('Item 2')
         self.check_item = self.context_menu.findMenuItem('Item 3')

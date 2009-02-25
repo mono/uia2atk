@@ -1,3 +1,9 @@
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu/contextmenuframe.py: Added Menu layer.
+	* testers/contextmenu_basic_ops.py: Tested AtkSelection.
+	* testers/contextmenustrip_basic_ops.py: Modified test order.
+
 2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* test.mdp: Added project for QA files.
