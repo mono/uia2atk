@@ -25,6 +25,7 @@ class ComboBoxSample(Form):
 
         # setup title
         self.Text = "ComboBox control"
+        self.Height = 400
 
         # setup label
         self.label = Label()
@@ -38,7 +39,7 @@ class ComboBoxSample(Form):
         self.combobox.SelectionChangeCommitted += self.select
         self.combobox.DropDownStyle = ComboBoxStyle.Simple
         self.combobox.SelectedIndexChanged += self.select
-
+        self.combobox.Height = 300
 
         # add items in ComboBox
         for i in range(10):
