@@ -1,3 +1,11 @@
+2009-02-25  Ray Wang <rawang@novell.com>
+
+	* testers/eventlistener.py: add a module name ahead of class which is
+	missing
+	* testers/textbox/textboxframe.py: remove useless inputText method
+	which is a duplicate method to enterText
+	* testers/textbox_basic_ops.py: update some new test
+
 2009-02-25  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenu/contextmenuframe.py: Added Menu layer.

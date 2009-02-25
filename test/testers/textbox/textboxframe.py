@@ -43,21 +43,16 @@ class TextBoxFrame(accessibles.Frame):
                                                 (accessible, accessible.text))
         assert accessible.text == text, '%s is not match with "%s"' % \
                                                 (accessible, accessible.text)
-
+        
     def assertOffset(self, accessible, offset=None):
         """assert text's offset is equal to the input"""
 
         procedurelogger.expectedResult('check the offset of "%s"' % accessible)
 
-        assert accessible.caretOffset == offset, '%s is not match with "%s"' % \
-                                                (accessible.caretOffset, offset)
-
-    def inputText(self, accessible, text):
-        procedurelogger.action('set %s text to "%s"' % (accessible, text))
-        try:
-            accessible.text = text
-        except NotImplementedError:
-            pass
+        assert accessible.caretOffset == offset, '%s is not match with "%s"' \
+                                            % (accessible.caretOffset, offset)
+        #assert accessible._accessible.queryText().caretOffset == offset, \
+        #        '%s is not match with "%s"' % (accessible.caretOffset, offset)
 
     def inputValue(self, accessible, value):
         procedurelogger.action('set %s value to "%s"' % (accessible, value))

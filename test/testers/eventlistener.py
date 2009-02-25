@@ -24,7 +24,7 @@ class EventListener(threading.Thread):
     >>> nautilus = Application(pyatspi.findDescendant(desktop, lambda x: x.name == 'nautilus', breadth_first=True))
     >>> icon_view = nautilus.findLayeredPane('Icon View')    
     >>> icon_view.clearSelection()
-    >>> listener = EventListener(event_types='object:selection-changed')
+    >>> listener = eventlistener.EventListener(event_types='object:selection-changed')
     >>> listener.start()
     >>> icon_view.selectChild(0)
     >>> # Make sure to stop the listener as soon as you're done testing.

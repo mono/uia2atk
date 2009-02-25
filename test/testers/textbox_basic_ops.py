@@ -14,10 +14,12 @@ Test accessibility of TextBox widget
 """
 
 # imports
+import pdb
 from textbox import *
 from helpers import *
 from actions import *
 from states import *
+from eventlistener import *
 from sys import argv
 
 app_path = None 
@@ -45,53 +47,78 @@ tbFrame = app.textBoxFrame
 ##############################
 # check TextBox's AtkAccessible
 ##############################
-# check mormal textbox
-statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
-statesCheck(tbFrame.textbox_passwd, "TextBox")
-
-# switch focus to next multi line  textbox
-tbFrame.keyCombo("Tab", grabFocus=False)
-sleep(config.SHORT_DELAY)
-
-statesCheck(tbFrame.textbox_normal, "TextBox")
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line", "focused"], invalid_states=["single line"])
-statesCheck(tbFrame.textbox_passwd, "TextBox")
-
-# switch focus to next password textbox
-tbFrame.textbox_passwd.mouseClick()
-sleep(config.SHORT_DELAY)
-
-statesCheck(tbFrame.textbox_normal, "TextBox")
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
-statesCheck(tbFrame.textbox_passwd, "TextBox", add_states=["focused"])
+## check mormal textbox
+#statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
+#statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
+#statesCheck(tbFrame.textbox_passwd, "TextBox")
+#
+## switch focus to next multi line  textbox
+#tbFrame.keyCombo("Tab", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#statesCheck(tbFrame.textbox_normal, "TextBox")
+#statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line", "focused"], invalid_states=["single line"])
+#statesCheck(tbFrame.textbox_passwd, "TextBox")
+#
+## switch focus to next password textbox
+#tbFrame.textbox_passwd.mouseClick()
+#sleep(config.SHORT_DELAY)
+#
+#statesCheck(tbFrame.textbox_normal, "TextBox")
+#statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
+#statesCheck(tbFrame.textbox_passwd, "TextBox", add_states=["focused"])
 
 ##############################
 # check TextBox's AtkAction and AtkComponent 
 ##############################
+# check its events
+#reg = EventListener(event_types=("object:text-caret-moved", "text-changed", "text-selection-changed"))
+#reg.start()
+
 # switch focus to normal textbox
 tbFrame.textbox_normal.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
 
-# TODO: test move cursor: text-caret-moved
-
 # Insert a character: text-changed:insert, text-caret-moved
 tbFrame.textbox_normal.typeText("test")
 sleep(config.SHORT_DELAY)
 tbFrame.assertText(tbFrame.textbox_normal, "test")
-tbFrame.assertOffset(tbFrame.textbox_normal, 4)
+# TODO: need to write some test to test event change or assert offset to indicate the event is occured. 
+#assert reg.containsEvent(tbFrame.textbox_normal, 'object:text-caret-moved')
+#reg.clearQueuedEvents()
+
+tbFrame.textbox_normal.enterText("sample")
+sleep(config.SHORT_DELAY)
+tbFrame.assertText(tbFrame.textbox_normal, "sample")
+# TODO: need to write some test to test event change or assert offset to indicate the event is occured. 
+#assert reg.containsEvent(tbFrame.textbox_normal, 'object:text-caret-moved')
+#reg.clearQueuedEvents()
 
 tbFrame.textbox_normal.insertText("test", 0)
 sleep(config.SHORT_DELAY)
-tbFrame.assertText(tbFrame.textbox_normal, "testtest")
-tbFrame.assertOffset(tbFrame.textbox_normal, 8)
+tbFrame.assertText(tbFrame.textbox_normal, "testsample")
+# TODO: need to write some test to test event change or assert offset to indicate the event is occured. 
+#assert reg.containsEvent(tbFrame.textbox_normal, ["object:text-caret-moved"])
+#reg.clearQueuedEvents()
 
-tbFrame.textbox_normal.inputText("test", 0)
-sleep(config.SHORT_DELAY)
-tbFrame.assertText(tbFrame.textbox_normal, "testtesttest")
-tbFrame.assertOffset(tbFrame.textbox_normal, 12)
+# Select a character: text-caret-moved, text-selection-changed 
+#tbFrame.textbox_normal.getSelectedText(0)
+tbFrame.textbox_normal.assertSelectedText("sample", 3)
+# TODO: need to write some test to test event change or assert offset to indicate the event is occured. 
+#assert reg.containsEvent(tbFrame.textbox_normal, ["object:text-caret-moved"])
+#reg.clearQueuedEvents()
+tbFrame.textbox_normal.removeTextSelection()
 
+# Delete a character: text-changed:delete, text-caret-moved 
+# delete text from 4 to end (delete "sample")
+tbFrame.textbox_normal.deleteText(4)
+tbFrame.assertText(tbFrame.textbox_normal, "text")
+
+# Drag and drop a character: text-changed:insert, text-changed:delete, 
+#                            text-caret-moved 
+
+#reg.stop()
 ##############################
 # check TextBox's AtkStreamableContent
 ##############################
