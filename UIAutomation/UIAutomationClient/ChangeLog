@@ -1,5 +1,22 @@
 2009-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* UIAutomationClient.mdp:
+	* System.Windows.Automation/OrCondition.cs:
+	* System.Windows.Automation/NotCondition.cs:
+	* System.Windows.Automation/PropertyConditon.cs: Add new files
+
+	* System.Windows.Automation/TextPattern.cs: Add missing fields
+	and properties.
+
+	* System.Windows.Automation/AutomationElement.cs: Add many
+	(but not all) missing fields.
+
+	* System.Windows.Automation/AndCondition.cs: Constructor takes
+	a params array.
+
+2009-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* System.Windows.Automation/Condition.cs:
 	* System.Windows.Automation/TreeWalker.cs:
 	* System.Windows.Automation/Automation.cs:

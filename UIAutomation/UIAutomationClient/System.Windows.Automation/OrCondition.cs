@@ -27,11 +27,11 @@ using System;
 
 namespace System.Windows.Automation
 {
-	public class AndCondition : Condition
+	public class OrCondition : Condition
 	{
 		private Condition [] conditions;
 		
-		public AndCondition (params Condition [] conditions)
+		public OrCondition (params Condition [] conditions)
 		{
 			this.conditions = conditions;
 		}

@@ -58,7 +58,7 @@ namespace System.Windows.Automation
 		}
 
 		public static AutomationElement RootElement {
-			get { throw new NotImplementedException (); }
+			get { return null; }
 		}
 #endregion
 
@@ -73,8 +73,9 @@ namespace System.Windows.Automation
 		public override bool Equals (Object obj)
 		{
 			AutomationElement other = obj as AutomationElement;
-			if (other == null)
+			if (null == obj)
 				return false;
+			
 			return other.Current.AutomationId == Current.AutomationId; // TODO: Review
 		}
 
@@ -192,13 +193,13 @@ namespace System.Windows.Automation
 		public static bool operator == (AutomationElement left,
 		                                AutomationElement right)
 		{
-			throw new NotImplementedException ();
+			return object.Equals (left, right);
 		}
 
 		public static bool operator != (AutomationElement left,
 		                                AutomationElement right)
 		{
-			throw new NotImplementedException ();
+			return !(left == right);
 		}
 #endregion
 
@@ -214,7 +215,7 @@ namespace System.Windows.Automation
 			}
 
 			public string AutomationId {
-				get { throw new NotImplementedException (); }
+				get { return string.Empty; }
 			}
 
 			public Rect BoundingRectangle {
@@ -307,11 +308,65 @@ namespace System.Windows.Automation
 
 		public static readonly AutomationProperty IsScrollPatternAvailableProperty;
 
+		public static readonly AutomationProperty IsScrollItemPatternAvailableProperty;
+
 		public static readonly AutomationProperty ControlTypeProperty;
 
 		public static readonly AutomationProperty FrameworkIdProperty;
 
 		public static readonly AutomationProperty NativeWindowHandleProperty;
+
+		public static readonly AutomationProperty AutomationIdProperty;
+
+		public static readonly AutomationProperty NameProperty;
+
+		public static readonly AutomationProperty ClassNameProperty;
+
+		public static readonly AutomationProperty IsSelectionPatternAvailableProperty;
+
+		public static readonly AutomationProperty IsSelectionItemPatternAvailableProperty;
+
+		public static readonly AutomationProperty LocalizedControlTypeProperty;
+
+		public static readonly AutomationProperty IsRangeValuePatternAvailableProperty;
+
+		public static readonly AutomationProperty IsValuePatternAvailableProperty;
+
+		public static readonly AutomationProperty BoundingRectangleProperty;
+
+		public static readonly AutomationProperty IsEnabledProperty;
+
+		public static readonly AutomationProperty IsKeyboardFocusableProperty;
+
+		public static readonly AutomationProperty IsContentElementProperty;
+
+		public static readonly AutomationProperty IsWindowPatternAvailableProperty;
+
+		public static readonly AutomationProperty IsExpandCollapsePatternAvailableProperty;
+
+		public static readonly AutomationProperty OrientationProperty;
+
+		public static readonly AutomationProperty IsTextPatternAvailableProperty;
+
+		public static readonly AutomationProperty IsOffscreenProperty;
+
+		public static readonly AutomationProperty IsPasswordProperty;
+
+		public static readonly AutomationProperty IsControlElementProperty;
+
+		public static readonly AutomationProperty RuntimeIdProperty;
+
+		public static readonly AutomationProperty HasKeyboardFocusProperty;
+
+		public static readonly AutomationProperty ClickablePointProperty;
+
+		public static readonly AutomationProperty IsGridPatternAvailableProperty;
+
+		public static readonly AutomationProperty IsTogglePatternAvailableProperty;
+
+		public static readonly AutomationProperty ProcessIdProperty;
+
+		public static readonly Object NotSupported;
 
 #endregion
 	}

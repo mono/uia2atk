@@ -27,18 +27,19 @@ using System;
 
 namespace System.Windows.Automation
 {
-	public class AndCondition : Condition
+	public class NotCondition : Condition
 	{
-		private Condition [] conditions;
+		private Condition condition;
 		
-		public AndCondition (params Condition [] conditions)
+		public NotCondition (Condition condition)
 		{
-			this.conditions = conditions;
+			this.condition = condition;
 		}
 
-		public Condition [] GetConditions ()
-		{
-			return conditions;
+		public Condition Condition {
+			get {
+				return condition;
+			}
 		}
 	}
 }

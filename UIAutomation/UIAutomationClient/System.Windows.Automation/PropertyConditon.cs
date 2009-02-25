@@ -27,18 +27,47 @@ using System;
 
 namespace System.Windows.Automation
 {
-	public class AndCondition : Condition
+	[Flags]
+	public enum PropertyConditionFlags
 	{
-		private Condition [] conditions;
+		None,
+		IgnoreCase
+	}
+	
+	public class PropertyCondition : Condition
+	{
+		private AutomationProperty property;
+		private object val;
+		private PropertyConditionFlags flags;
 		
-		public AndCondition (params Condition [] conditions)
+		public PropertyCondition (AutomationProperty property, object value, PropertyConditionFlags flags) : base ()
 		{
-			this.conditions = conditions;
+			this.property = property;
+			val = value;
+			this.flags = flags;
+		}
+		
+		public PropertyCondition (AutomationProperty property, object value) :
+			this (property, value, PropertyConditionFlags.None)
+		{
 		}
 
-		public Condition [] GetConditions ()
-		{
-			return conditions;
+		public AutomationProperty Property {
+			get {
+				return property;
+			}
+		}
+
+		public object Value {
+			get {
+				return val;
+			}
+		}
+
+		public PropertyConditionFlags Flags {
+			get {
+				return flags;
+			}
 		}
 	}
 }

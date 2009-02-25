@@ -43,6 +43,9 @@
     <File name="System.Windows.Automation/TogglePattern.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/TransformPattern.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/ValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/PropertyConditon.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/NotCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/OrCondition.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
