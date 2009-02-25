@@ -1,31 +1,35 @@
-<Combine name="Uia2Atk" fileversion="2.0">
+<Combine fileversion="2.0" name="Uia2Atk">
   <Policies>
     <VersionControlPolicy inheritsSet="Mono" />
     <ChangeLogPolicy UpdateMode="Nearest" inheritsSet="Mono">
       <MessageStyle LineAlign="0" />
     </ChangeLogPolicy>
-    <TextStylePolicy FileWidth="80" TabWidth="8" TabsToSpaces="False" NoTabsAfterNonTabs="False" RemoveTrailingWhitespace="True" />
+    <TextStylePolicy FileWidth="80" TabWidth="8" TabsToSpaces="False" NoTabsAfterNonTabs="False" RemoveTrailingWhitespace="True" EolMarker="Native" />
   </Policies>
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="UIAutomationWinforms" configuration="Debug" />
       <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
       <Entry build="True" name="UIAutomation" configuration="Debug" />
+      <Entry build="True" name="test" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="UIAutomationWinforms" configuration="Release" />
       <Entry build="True" name="UiaAtkBridge" configuration="Release" />
       <Entry build="True" name="UIAutomation" configuration="Release" />
+      <Entry build="True" name="test" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="UIAutomationWinforms" single="True">
     <Execute type="None" entry="UIAutomationWinforms" />
     <Execute type="None" entry="UiaAtkBridge" />
     <Execute type="None" entry="UIAutomation" />
+    <Execute type="None" entry="test" />
   </StartMode>
   <Entries>
     <Entry filename="UIAutomationWinforms/UIAutomationWinforms.mds" />
     <Entry filename="UiaAtkBridge/UiaAtkBridge.mds" />
     <Entry filename="UIAutomation/UIAutomation.mds" />
+    <Entry filename="test/test.mdp" />
   </Entries>
 </Combine>
