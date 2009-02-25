@@ -30,6 +30,10 @@ namespace System.Windows.Automation
 {
 	public sealed class AutomationElement
 	{
+#region Private Members
+		private AutomationElementInformation current;
+#endregion
+		
 #region Public Properties
 		public AutomationElementInformation Cached {
 			get { throw new NotImplementedException (); }
@@ -44,7 +48,7 @@ namespace System.Windows.Automation
 		}
 
 		public AutomationElementInformation Current {
-			get { throw new NotImplementedException (); }
+			get { return current; }
 		}
 #endregion
 
@@ -59,15 +63,19 @@ namespace System.Windows.Automation
 #endregion
 
 #region Constructor
-		private AutomationElement ()
+		internal AutomationElement ()
 		{
+			current = new AutomationElementInformation ();
 		}
 #endregion
 		
 #region Public Methods
 		public override bool Equals (Object obj)
 		{
-			throw new NotImplementedException ();
+			AutomationElement other = obj as AutomationElement;
+			if (other == null)
+				return false;
+			return other.Current.AutomationId == Current.AutomationId; // TODO: Review
 		}
 
 		public AutomationElementCollection FindAll (TreeScope scope, Condition condition)
@@ -257,7 +265,7 @@ namespace System.Windows.Automation
 				get { throw new NotImplementedException (); }
 			}
 
-			public bool IsRequiredForm {
+			public bool IsRequiredForForm {
 				get { throw new NotImplementedException (); }
 			}
 
@@ -281,7 +289,7 @@ namespace System.Windows.Automation
 				get { throw new NotImplementedException (); }
 			}
 
-			public IntPtr NativeWindowHandle {
+			public int NativeWindowHandle {
 				get { throw new NotImplementedException (); }
 			}
 
@@ -293,6 +301,18 @@ namespace System.Windows.Automation
 				get { throw new NotImplementedException (); }
 			}
 		}
+#endregion
+
+#region Public Static ReadOnly Fields
+
+		public static readonly AutomationProperty IsScrollPatternAvailableProperty;
+
+		public static readonly AutomationProperty ControlTypeProperty;
+
+		public static readonly AutomationProperty FrameworkIdProperty;
+
+		public static readonly AutomationProperty NativeWindowHandleProperty;
+
 #endregion
 	}
 }

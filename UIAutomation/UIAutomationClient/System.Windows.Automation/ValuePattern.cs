@@ -20,25 +20,55 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class ValuePattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct ValuePatternInformation
+		{
+			public string Value {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public bool IsReadOnly {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+		}
+		
+		internal ValuePattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public ValuePatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public ValuePatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public void SetValue (string value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty ValueProperty;
+
+		public static readonly AutomationProperty IsReadOnlyProperty;
 	}
 }

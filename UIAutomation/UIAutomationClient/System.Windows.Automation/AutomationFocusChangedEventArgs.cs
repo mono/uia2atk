@@ -20,25 +20,38 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public delegate void AutomationFocusChangedEventHandler (Object sender,
+	                                                         AutomationFocusChangedEventArgs e);
+	
+	public class AutomationFocusChangedEventArgs : AutomationEventArgs
 	{
-#region Constructor
-		internal Condition ()
-		{
-		}
-#endregion
+		int idObject;
+		int idChild;
 		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
+		public AutomationFocusChangedEventArgs (int idObject, int idChild) :
+			base (AutomationEvent.LookupById (0)) // TODO: Correct ID
+		{
+			this.idObject = idObject;
+			this.idChild = idChild;
+		}
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public int ObjectId {
+			get {
+				return idObject;
+			}
+		}
+
+		public int ChildId {
+			get {
+				return idChild;
+			}
+		}
 	}
 }

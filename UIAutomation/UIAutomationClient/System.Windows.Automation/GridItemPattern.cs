@@ -20,25 +20,74 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class GridItemPattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct GridItemPatternInformation
+		{
+			public int Row {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int Column {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int RowSpan {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int ColumnSpan {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public AutomationElement ContainingGrid {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+		}
+		
+		internal GridItemPattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public GridItemPatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public GridItemPatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty RowProperty;
+
+		public static readonly AutomationProperty ColumnProperty;
+
+		public static readonly AutomationProperty RowSpanProperty;
+
+		public static readonly AutomationProperty ColumnSpanProperty;
+
+		public static readonly AutomationProperty ContainingGridProperty;
 	}
 }

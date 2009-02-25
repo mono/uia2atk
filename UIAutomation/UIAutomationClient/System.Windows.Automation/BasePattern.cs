@@ -29,6 +29,8 @@ namespace System.Windows.Automation
 {
 	public class BasePattern
 	{
-		// Yes, this is an intentionally empty class.
+		internal BasePattern ()
+		{
+		}
 	}
 }

@@ -20,56 +20,78 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Collections;
 
 namespace System.Windows.Automation
 {
-	public class AutomationElementCollection : ICollection, IEnumerable
+	public class TableItemPattern : GridItemPattern
 	{
-#region Public Properties
-		public int Count {
-			get { throw new NotImplementedException (); }
-		}
-
-		public virtual bool IsSynchronized {
-			get { throw new NotImplementedException (); }
-		}
-
-		public AutomationElement this [int index] {
-			get { throw new NotImplementedException (); }
-		}
-
-		public virtual object SyncRoot {
-			get { throw new NotImplementedException (); }
-		}
-#endregion
-
-#region Constructor
-		private AutomationElementCollection ()
+		public struct TableItemPatternInformation
 		{
+			public int Row {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int Column {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int RowSpan {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int ColumnSpan {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public AutomationElement ContainingGrid {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+
+			public AutomationElement [] GetRowHeaderItems ()
+			{
+				throw new NotImplementedException ();
+			}
+
+			public AutomationElement [] GetColumnHeaderItems ()
+			{
+				throw new NotImplementedException ();
+			}
 		}
-#endregion
 		
-#region Public Methods
-		public virtual void CopyTo (Array array, int index)
+		internal TableItemPattern ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		public void CopyTo (AutomationElement[] array, int index)
-		{
-			throw new NotImplementedException ();
+		public new TableItemPatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
 		}
 
-		public IEnumerator GetEnumerator ()
-		{
-			throw new NotImplementedException ();
+		public new TableItemPatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
 		}
 
-#endregion
+		public new static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty RowHeaderItemsProperty;
+
+		public static readonly AutomationProperty ColumnHeaderItemsProperty;
 	}
 }

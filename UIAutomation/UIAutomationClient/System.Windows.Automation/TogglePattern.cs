@@ -20,25 +20,47 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class TogglePattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct TogglePatternInformation
+		{
+			public ToggleState ToggleState {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+		}
+		
+		internal TogglePattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public TogglePatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public TogglePatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public void Toggle ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty ToggleStateProperty;
 	}
 }

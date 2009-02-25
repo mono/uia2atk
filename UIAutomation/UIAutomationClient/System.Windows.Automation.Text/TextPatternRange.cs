@@ -48,6 +48,11 @@ namespace System.Windows.Automation.Text
 			throw new NotImplementedException ();
 		}
 
+		public TextPatternRange Clone ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public bool Compare (TextPatternRange range)
 		{
 			throw new NotImplementedException ();

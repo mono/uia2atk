@@ -20,25 +20,59 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class MultipleViewPattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct MultipleViewPatternInformation
+		{
+			public int CurrentView {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int [] GetSupportedViews ()
+			{
+				throw new NotImplementedException ();
+			}
+		}
+		
+		internal MultipleViewPattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public MultipleViewPatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public MultipleViewPatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public string GetViewName (int viewId)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void SetCurrentView (int viewId)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty CurrentViewProperty;
+
+		public static readonly AutomationProperty SupportedViewsProperty;
 	}
 }

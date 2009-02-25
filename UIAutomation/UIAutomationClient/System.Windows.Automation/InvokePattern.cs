@@ -20,25 +20,26 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class InvokePattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		internal InvokePattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public void Invoke ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationEvent InvokedEvent;
 	}
 }

@@ -1,23 +1,27 @@
 <Combine name="UIAutomation" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationClient" configuration="Debug" />
       <Entry build="True" name="UIAutomationProvider" configuration="Debug" />
       <Entry build="True" name="UIAutomationTypes" configuration="Debug" />
       <Entry build="True" name="UIAutomationBridge" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationClient" configuration="Release" />
       <Entry build="True" name="UIAutomationProvider" configuration="Release" />
       <Entry build="True" name="UIAutomationTypes" configuration="Release" />
       <Entry build="True" name="UIAutomationBridge" configuration="Release" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="UIAutomationProvider" single="True">
+  <StartMode startupentry="UIAutomationClient" single="True">
+    <Execute type="None" entry="UIAutomationClient" />
     <Execute type="None" entry="UIAutomationProvider" />
     <Execute type="None" entry="UIAutomationTypes" />
     <Execute type="None" entry="UIAutomationBridge" />
   </StartMode>
   <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
   <Entries>
+    <Entry filename="UIAutomationClient/UIAutomationClient.mds" />
     <Entry filename="UIAutomationProvider/UIAutomationProvider.mds" />
     <Entry filename="UIAutomationTypes/UIAutomationTypes.mds" />
     <Entry filename="UIAutomationBridge/UIAutomationBridge.mds" />

@@ -1,0 +1,16 @@
+<Combine name="UIAutomationClient" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationClient" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationClient" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UIAutomationClient" single="True">
+    <Execute type="None" entry="UIAutomationClient" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UIAutomationClient.mdp" />
+  </Entries>
+</Combine>

@@ -20,25 +20,25 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class AndCondition : Condition
 	{
-#region Constructor
-		internal Condition ()
-		{
-		}
-#endregion
+		private Condition [] conditions;
 		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
+		public AndCondition (Condition [] conditions)
+		{
+			this.conditions = conditions;
+		}
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public Condition [] GetConditions ()
+		{
+			return conditions;
+		}
 	}
 }

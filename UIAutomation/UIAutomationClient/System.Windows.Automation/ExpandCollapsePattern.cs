@@ -20,25 +20,52 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class ExpandCollapsePattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct ExpandCollapsePatternInformation
+		{
+			public ExpandCollapseState ExpandCollapseState {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+		}
+		
+		internal ExpandCollapsePattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public ExpandCollapsePatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public ExpandCollapsePatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public void Expand ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Collapse ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty ExpandCollapseStateProperty;
 	}
 }

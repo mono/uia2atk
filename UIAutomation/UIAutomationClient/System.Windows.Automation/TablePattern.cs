@@ -20,25 +20,68 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class TablePattern : GridPattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct TablePatternInformation
+		{
+			public int RowCount {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public int ColumnCount {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public RowOrColumnMajor RowOrColumnMajor {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+
+			public AutomationElement [] GetRowHeaders ()
+			{
+				throw new NotImplementedException ();
+			}
+
+			public AutomationElement [] GetColumnHeaders ()
+			{
+				throw new NotImplementedException ();
+			}
+		}
+		
+		internal TablePattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public new TablePatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public new TablePatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public new static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty RowHeadersProperty;
+
+		public static readonly AutomationProperty ColumnHeadersProperty;
+
+		public static readonly AutomationProperty RowOrColumnMajorProperty;
 	}
 }

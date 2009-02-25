@@ -20,25 +20,59 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public abstract class Condition
+	public class SelectionPattern : BasePattern
 	{
-#region Constructor
-		internal Condition ()
+		public struct SelectionPatternInformation
+		{
+			public bool CanSelectMultiple {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public bool IsSelectionRequired {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+
+			public AutomationElement [] GetSelection ()
+			{
+				throw new NotImplementedException ();
+			}
+		}
+		
+		internal SelectionPattern ()
 		{
 		}
-#endregion
-		
-#region Public Static Fields
-		public static readonly Condition FalseCondition;
 
-		public static readonly Condition TrueCondition;
-#endregion
+		public SelectionPatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public SelectionPatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty SelectionProperty;
+
+		public static readonly AutomationProperty CanSelectMultipleProperty;
+
+		public static readonly AutomationProperty IsSelectionRequiredProperty;
+
+		public static readonly AutomationEvent InvalidatedEvent;
 	}
 }

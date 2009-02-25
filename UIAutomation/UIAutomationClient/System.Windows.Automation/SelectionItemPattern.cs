@@ -20,56 +20,71 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Collections;
 
 namespace System.Windows.Automation
 {
-	public class AutomationElementCollection : ICollection, IEnumerable
+	public class SelectionItemPattern : BasePattern
 	{
-#region Public Properties
-		public int Count {
-			get { throw new NotImplementedException (); }
-		}
-
-		public virtual bool IsSynchronized {
-			get { throw new NotImplementedException (); }
-		}
-
-		public AutomationElement this [int index] {
-			get { throw new NotImplementedException (); }
-		}
-
-		public virtual object SyncRoot {
-			get { throw new NotImplementedException (); }
-		}
-#endregion
-
-#region Constructor
-		private AutomationElementCollection ()
+		public struct SelectionItemPatternInformation
 		{
+			public bool IsSelected {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
+			
+			public AutomationElement SelectionContainer {
+				get {
+					throw new NotImplementedException ();
+				}
+			}
 		}
-#endregion
 		
-#region Public Methods
-		public virtual void CopyTo (Array array, int index)
+		internal SelectionItemPattern ()
+		{
+		}
+
+		public SelectionItemPatternInformation Cached {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public SelectionItemPatternInformation Current {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public void Select ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void CopyTo (AutomationElement[] array, int index)
+		public void AddToSelection ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public IEnumerator GetEnumerator ()
+		public void RemoveFromSelection ()
 		{
 			throw new NotImplementedException ();
 		}
 
-#endregion
+		public static readonly AutomationPattern Pattern;
+
+		public static readonly AutomationProperty IsSelectedProperty;
+
+		public static readonly AutomationProperty SelectionContainerProperty;
+
+		public static readonly AutomationEvent ElementAddedToSelectionEvent;
+
+		public static readonly AutomationEvent ElementRemovedFromSelectionEvent;
+
+		public static readonly AutomationEvent ElementSelectedEvent;
 	}
 }
