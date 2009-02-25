@@ -72,6 +72,7 @@ def checkCells(selectedDateNums=[], checkStates=True, checkActions=True):
                 statesCheck(mcFrame.tablecells[r][c], "TableCell", add_states=addstates, pause=False)
             if checkActions:
                 actionsCheck(mcFrame.tablecells[r][c], "TableCell", pause=False)
+            #TODO: Test treetable selection status
 
 #check states and actions
 statesCheck(mcFrame.backbutton, "Button", add_states=["selectable","focused"], pause=False) #extraneous: selectable, focused

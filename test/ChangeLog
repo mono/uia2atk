@@ -1,3 +1,7 @@
+2009-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* testers/monthcalendar_basic_ops.py: Add another TODO note.
+
 2009-02-25  Ray Wang <rawang@novell.com>
 
 	* testers/eventlistener.py: add a module name ahead of class which is
