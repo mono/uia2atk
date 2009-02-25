@@ -1,3 +1,7 @@
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTest.mdp: Corrected location of atspimon.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTests.cs:
