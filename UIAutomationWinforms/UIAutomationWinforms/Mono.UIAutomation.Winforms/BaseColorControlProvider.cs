@@ -89,6 +89,8 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("button");
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return string.Empty;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

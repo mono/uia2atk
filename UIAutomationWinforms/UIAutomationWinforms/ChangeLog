@@ -1,3 +1,12 @@
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/BaseColorControlProvider.cs:
+	LabeledByProperty returns string.Empty.
+	[Fixes Bug #478911]
+	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:
+	SmallColorControls can only be single selected.
+	[Fixes Bug #478541]
+
 2009-02-24  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ContextMenuProvider.cs: Check for null
