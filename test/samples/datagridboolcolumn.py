@@ -23,7 +23,7 @@ class DataGridApp(Form):
 
     def __init__(self):
         self.Text = "DataGridBoolColumn control"
-        self.Size = Size(400, 350)
+        self.Size = Size(330, 230)
 
         self.InitializeComponent()
         self.PopulateGrid()
@@ -39,18 +39,17 @@ class DataGridApp(Form):
         self.datagrid.DataMember = ""
         self.datagrid.HeaderForeColor = SystemColors.ControlText
 
-        self.datagrid.Location = Point(10, 50)
+        self.datagrid.Location = Point(10, 30)
         self.datagrid.Text = "datagrid"
-        self.datagrid.Size = Size(350, 200)
-    
-        self.buttonFocus.Location = Point(300, 280)
-        self.buttonFocus.Name = "buttonFocus"
-        self.buttonFocus.TabIndex = 1
-        self.buttonFocus.Text = "GetFocus"
-        self.buttonFocus.Click += self.buttonFocus_Click
+        self.datagrid.Size = Size(300, 150)
 
-        self.Controls.Add(self.buttonFocus)
+        self.label = Label()
+        self.label.Text = "CurrentCell:"
+        self.label.Location = Point(10, 10)
+        self.label.AutoSize = True
+
         self.Controls.Add(self.datagrid)
+        self.Controls.Add(self.label)
 
         self.datagrid.EndInit()
         self.ResumeLayout(False)
@@ -59,53 +58,40 @@ class DataGridApp(Form):
         #add datatable
         self.datatable = DataTable("DataTable")
 
-        #add textbox column
-        self.datatable.Columns.Add(DataColumn("TextBoxColumn"))
-
         #add bool column
         self.boolcolumn = DataColumn("BoolColumn")
-        self.boolcolumn.DefaultValue = False
+        self.boolcolumn.DataType = System.Boolean
+        self.boolcolumn.DefaultValue = None
         self.datatable.Columns.Add(self.boolcolumn)
 
         #add style for datagrid
         self.tablestyle = DataGridTableStyle()
         self.tablestyle.MappingName = "DataTable"
 
-        self.textcolumnstyle = DataGridTextBoxColumn()
-        self.textcolumnstyle.MappingName = "TextBoxColumn"
-        self.textcolumnstyle.HeaderText = "TextBoxColumn"
-        self.textcolumnstyle.Width = 150
-        self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle)
-
         self.boolcolumnstyle = DataGridBoolColumn()
         self.boolcolumnstyle.MappingName = "BoolColumn"
         self.boolcolumnstyle.HeaderText = "BoolColumn"
-        self.boolcolumnstyle.Width = 150	
-
+        self.boolcolumnstyle.Width = 120
         self.tablestyle.GridColumnStyles.Add(self.boolcolumnstyle)
 
         self.datagrid.TableStyles.Add(self.tablestyle)
-
 
         #####add new rows
         for i in range(0,4):
             self.newRow1 = self.datatable.NewRow()
             self.datatable.Rows.Add(self.newRow1)
-        self.datatable.Rows[0]["TextBoxColumn"] = "Item0"
-        self.datatable.Rows[1]["TextBoxColumn"] = "Item1"
-        self.datatable.Rows[2]["TextBoxColumn"] = "Item2"
-        self.datatable.Rows[3]["TextBoxColumn"] = "Item3"
+        self.datatable.Rows[1][0] = True
+        self.datatable.Rows[2][0] = False
 
-    def GetFocus(self, row, col):
-        self.datagrid.Focus()
-        self.dgc = DataGridCell(int(row), int(col))
-        self.datagrid.CurrentCell = self.dgc
-        self.dgtb = self.datagrid.TableStyles[0].GridColumnStyles[col]
+        #self.datatable.AcceptChanges()
 
-        self.dgtb.TextBox.Focus()
+        self.datagrid.CurrentCellChanged += self.datagrid_currencellchanged
 
-    def buttonFocus_Click(self, sender, event):
-        self.GetFocus(1, 0)
+    def datagrid_currencellchanged(self, sender, event):
+        cell = self.datagrid.CurrentCell
+        bool_value = self.datatable.Rows[cell.RowNumber][cell.ColumnNumber]
+
+        self.label.Text = "row:%s col:%s Value:%s" % (cell.RowNumber, cell.ColumnNumber, bool_value)
 
 
 form = DataGridApp()

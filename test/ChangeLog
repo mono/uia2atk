@@ -1,3 +1,9 @@
+2009-02-26  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: update sample to add ReadOnly TextBox, rename 
+	column
+	* samples/datagridboolcolumn.py: remain BoolColumn
+
 2009-02-25 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/combobox_simple.py: Explicitly specify height of application
