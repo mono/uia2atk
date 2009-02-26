@@ -1,3 +1,8 @@
+2009-02-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/Global.cs: First draft of the new
+	mechanism for loading the bridge on Moonlight.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:

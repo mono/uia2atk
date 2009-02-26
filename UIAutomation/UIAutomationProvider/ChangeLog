@@ -1,3 +1,9 @@
+2009-02-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	First draft of the new mechanism for loading the bridge on
+	Moonlight.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationProvider.mdp:

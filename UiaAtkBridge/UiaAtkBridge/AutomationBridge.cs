@@ -439,10 +439,13 @@ namespace UiaAtkBridge
 			// TODO: Other structure changes
 		}
 
-		public void Initialize ()
+		public void Initialize (IntPtr parentObject)
 		{
-			if (appMonitor == null)
-				appMonitor = Monitor.Instance;
+			if (parentObject == IntPtr.Zero)
+				if (appMonitor == null)
+					appMonitor = Monitor.Instance;
+			else
+				new Monitor (parentObject);
 		}
 
 		public void Terminate ()

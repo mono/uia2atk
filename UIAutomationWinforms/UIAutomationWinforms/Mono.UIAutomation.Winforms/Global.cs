@@ -45,6 +45,9 @@ namespace Mono.UIAutomation.Winforms
 		public static void Initialize ()
 		{
 			Application.PreRun += new EventHandler (OnPreRun);
+			
+			AutomationInteropProvider.HostProviderFromHandle (IntPtr.Zero);
+			
 			FormListener.Initialize ();
 			ToolTipListener.Initialize ();
 			HelpProviderListener.Initialize ();

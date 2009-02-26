@@ -104,7 +104,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider = provider, e = e});
 		}
 
-		public void Initialize () {}
+		public void Initialize (IntPtr parentObject) {}
 
 		public void Terminate () {}
 #endregion

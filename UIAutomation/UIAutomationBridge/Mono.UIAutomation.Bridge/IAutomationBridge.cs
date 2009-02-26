@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Bridge
 		bool ClientsAreListening { get; }
 		
 		object HostProviderFromHandle (IntPtr hwnd);
-		
+
 		void RaiseAutomationEvent (AutomationEvent eventId,
 		                           object provider,
 		                           AutomationEventArgs e);
@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Bridge
 		void RaiseStructureChangedEvent (object provider,
 		                                 StructureChangedEventArgs e);
 
-		void Initialize ();
+		void Initialize (IntPtr parentObject);
 		
 		void Terminate ();
 	}

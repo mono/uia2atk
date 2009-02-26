@@ -45,7 +45,7 @@ namespace System.Windows.Automation.Provider
 		
 		static AutomationInteropProvider ()
 		{
-			bridge = BridgeManager.GetAutomationBridge ();
+			
 		}
 
 		public static bool ClientsAreListening {
@@ -58,8 +58,10 @@ namespace System.Windows.Automation.Provider
 
 		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd)
 		{
-			if (bridge == null)
+			if (bridge == null) {
+				bridge = BridgeManager.GetAutomationBridge (hwnd);
 				return null;
+			}
 			return (IRawElementProviderSimple) bridge.HostProviderFromHandle (hwnd);
 		}
 
@@ -93,7 +95,7 @@ namespace System.Windows.Automation.Provider
 			// enough.  I am concerned about being called multiple
 			// times for the same hwnd before the value is
 			// retrieved though.
-			providerMapping[hwnd] = new WeakReference (el);
+			providerMapping [hwnd] = new WeakReference (el);
 			return hwnd;
 		}
 
@@ -103,7 +105,7 @@ namespace System.Windows.Automation.Provider
 				return null;
 			}
 
-			WeakReference weakRef = providerMapping[result];
+			WeakReference weakRef = providerMapping [result];
 			if (!weakRef.IsAlive) {
 				return null;
 			}
@@ -118,7 +120,7 @@ namespace System.Windows.Automation.Provider
 		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		
-		public static IAutomationBridge GetAutomationBridge ()
+		public static IAutomationBridge GetAutomationBridge (IntPtr parentObject)
 		{
 			// Let MONO_UIA_BRIDGE env var override default bridge
 			string bridgeAssemblyName =
@@ -158,7 +160,7 @@ namespace System.Windows.Automation.Provider
 				if (!bridge.IsAccessibilityEnabled)
 					return null;
 
-				bridge.Initialize ();
+				bridge.Initialize (parentObject);
 				return bridge;
 			} catch (Exception e) {
 				Console.WriteLine ("Failed to load UIA bridge: " + e);
