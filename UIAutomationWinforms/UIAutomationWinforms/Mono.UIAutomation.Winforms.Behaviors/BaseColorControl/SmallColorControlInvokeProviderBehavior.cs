@@ -88,11 +88,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.BaseColorControl
 				return;
 			}
 
-			
-			ColorDialog.BaseColorControl.SmallColorControl selected =
-				((ColorDialog.BaseColorControl) baseColorControl).UIASelectedSmallColorControl;
-			if (selected != null)
-				selected.IsSelected = false;
+			// TODO: Use internal property when backport
+//			ColorDialog.BaseColorControl.SmallColorControl selected =
+//				((ColorDialog.BaseColorControl) baseColorControl).UIASelectedSmallColorControl;
+			try {
+				ColorDialog.BaseColorControl.SmallColorControl selected =
+					Helper.GetPrivateProperty<ColorDialog.BaseColorControl, ColorDialog.BaseColorControl.SmallColorControl>
+						((ColorDialog.BaseColorControl) baseColorControl, "UIASelectedSmallColorControl");
+				if (selected != null)
+					selected.IsSelected = false;
+			} catch (NotSupportedException) { }
 			smallColorControl.IsSelected = true;
 		}
 		

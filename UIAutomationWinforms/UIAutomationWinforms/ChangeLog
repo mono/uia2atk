@@ -1,5 +1,10 @@
 2009-02-25  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:
+	Use reflection instead of internal property.
+
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms/BaseColorControlProvider.cs:
 	LabeledByProperty returns string.Empty.
 	[Fixes Bug #478911]
