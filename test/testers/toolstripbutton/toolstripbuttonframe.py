@@ -20,9 +20,6 @@ from helpers import *
 class ToolStripButtonFrame(accessibles.Frame):
     NEWBUTTON = "&New"
     OPENBUTTON = "&Open"
-#    TOGGLE = "Toggle"
-#    UNEDITED = "nop"
-#    SEPARATOR = "Separator"
     LABEL = "Font:"
 
 

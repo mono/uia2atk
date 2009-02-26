@@ -1,3 +1,11 @@
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* tools/hierarchy.py:
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	* testers/propertygrid/propertygridframe.py:
+	Cleaned up (correct identation, removed dead code,
+	removed unused namespaces).
+
 2009-02-26  Calen Chen <cachen@novell.com>
 
 	* samples/datagrid.py: update sample to add ReadOnly TextBox, rename 
