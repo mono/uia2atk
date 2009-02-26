@@ -1,3 +1,9 @@
+2009-02-26 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/richtextbox/richtextboxframe.py,
+	* testers/richtextbox_basic_ops.py: Yay! added a bunch of tests and
+	this one if finished for now.
+
 2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* tools/hierarchy.py:
