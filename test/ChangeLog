@@ -1,8 +1,17 @@
+2009-02-27  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: update sample to delete button
+	* testers/datagrid_basic_ops.py,
+	* testers/datagrid/datagridframe.py,
+	* testers/datagrid/__init__.py,
+	* testers/datagrid: add new test to test AtkText AtkAction AtkTable 
+	AtkSelection AtkAccessible for columnheader, treetable and tablecell
+
 2009-02-26 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/richtextbox/richtextboxframe.py,
 	* testers/richtextbox_basic_ops.py: Yay! added a bunch of tests and
-	this one if finished for now.
+	this one is finished for now.
 
 2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

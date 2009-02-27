@@ -50,20 +50,11 @@ class DataGridApp(Form):
         self.datagrid.Size = Size(550, 230)
         self.datagrid.TabIndex = 0
 
-    
-        self.buttonFocus.Location = Point(420, 310)
-        self.buttonFocus.Name = "buttonFocus"
-        self.buttonFocus.Size = Size(84, 23)
-        self.buttonFocus.TabIndex = 1
-        self.buttonFocus.Text = "GetFocus"
-        self.buttonFocus.Click += self.buttonFocus_Click
-
         self.label = Label()
         self.label.Text = "CurrentCell:"
         self.label.Location = Point(10, 10)
         self.label.AutoSize = True
 
-        self.Controls.Add(self.buttonFocus)
         self.Controls.Add(self.datagrid)
         self.Controls.Add(self.label)
 
@@ -94,17 +85,21 @@ class DataGridApp(Form):
         self.datagrid.DataSource = self.datatable
 
         #####add new rows
-        for i in range(0,4):
+        for i in range(0,3):
             self.newRow1 = self.datatable.NewRow()
             self.datatable.Rows.Add(self.newRow1)
-        self.datatable.Rows[0]["TextBox_Read"] = "Read0"
-        self.datatable.Rows[1]["TextBox_Read"] = "Read1"
-        self.datatable.Rows[2]["TextBox_Read"] = "Read2"
-        self.datatable.Rows[3]["TextBox_Read"] = "Read3"
         self.datatable.Rows[0]["TextBox_Edit"] = "Edit0"
         self.datatable.Rows[1]["TextBox_Edit"] = "Edit1"
         self.datatable.Rows[2]["TextBox_Edit"] = "Edit2"
-        self.datatable.Rows[3]["TextBox_Edit"] = "Edit3"
+
+        self.datatable.Rows[0]["TextBox_Read"] = "Read0"
+        self.datatable.Rows[1]["TextBox_Read"] = "Read1"
+        self.datatable.Rows[2]["TextBox_Read"] = "Read2"
+
+        self.datatable.Rows[0]["ComboBox"] = "Box0"
+        self.datatable.Rows[1]["ComboBox"] = "Box1"
+        self.datatable.Rows[2]["ComboBox"] = "Box2"
+
         self.datatable.Rows[1]["BoolColumn"] = True
         self.datatable.Rows[2]["BoolColumn"] = False
 
@@ -119,16 +114,16 @@ class DataGridApp(Form):
         self.tablestyle.GridColumnStyles.Add(self.boolcolumnstyle)
 
         self.textcolumnstyle = DataGridTextBoxColumn()
-        self.textcolumnstyle.MappingName = "TextBox_Read"
-        self.textcolumnstyle.HeaderText = "TextBox_Read"
+        self.textcolumnstyle.MappingName = "TextBox_Edit"
+        self.textcolumnstyle.HeaderText = "TextBox_Edit"
         self.textcolumnstyle.Width = 120
         self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle)
 
         self.textcolumnstyle1 = DataGridTextBoxColumn()
-        self.textcolumnstyle1.MappingName = "TextBox_Edit"
-        self.textcolumnstyle1.HeaderText = "TextBox_Edit"
+        self.textcolumnstyle1.MappingName = "TextBox_Read"
+        self.textcolumnstyle1.HeaderText = "TextBox_Read"
         self.textcolumnstyle1.Width = 120
-        self.textcolumnstyle.ReadOnly = True
+        self.textcolumnstyle1.ReadOnly = True
         self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle1)
 
         self.datagrid.TableStyles.Add(self.tablestyle)
@@ -150,21 +145,8 @@ class DataGridApp(Form):
 
         self.label.Text = "row:%s col:%s Value:%s" % (cell.RowNumber, cell.ColumnNumber, bool_value)
 
-    def GetFocus(self, row, col):
-        self.datagrid.Focus()
-        self.dgc = DataGridCell(int(row), int(col))
-        self.datagrid.CurrentCell = self.dgc
-        self.dgtb = self.datagrid.TableStyles[0].GridColumnStyles[col]
-
-        self.dgtb.TextBox.Focus()
-
     def comboboxstyle_SelectionChangeCommitted(self, sender, event):
         self.datagrid[self.datagrid.CurrentCell] = self.comboboxstyle.SelectedItem.ToString()
-
-    def buttonFocus_Click(self, sender, event):
-        self.GetFocus(1, 2)
-
-
 
 form = DataGridApp()
 Application.Run(form)
