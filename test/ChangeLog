@@ -1,5 +1,9 @@
 2009-02-27  Calen Chen <cachen@novell.com>
 
+	* samples/textbox.py: add AccessibleName for textbox1
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
 	* samples/gtktextview.py: replace the old sample to add 
 	get_accessible().set_name
 

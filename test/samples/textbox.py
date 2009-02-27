@@ -31,6 +31,7 @@ class TextBoxApp(Form):
         self.textbox1.AcceptsReturn = True
         self.textbox1.Dock = DockStyle.Bottom
         self.textbox1.Name = "self.textbox1"
+        self.textbox1.AccessibleName = "explicitly set name"
         self.textbox1.TextChanged += self.textbox1_enter
 
         # create a password entry textbox to display asterisks 
