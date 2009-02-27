@@ -69,6 +69,7 @@ class RichTextBoxFrame(accessibles.Frame):
                                 (accessible, text))
         offset = len(accessible.text)
         accessible.insertText(text, offset)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = "%s%s" % (self.TEXT_TOP, text)
@@ -94,6 +95,7 @@ class RichTextBoxFrame(accessibles.Frame):
         character_count = len(accessible.text)
         offset = 0
         accessible.insertText(text, offset)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = "%s%s" % (text, self.TEXT_TOP)
@@ -129,6 +131,7 @@ class RichTextBoxFrame(accessibles.Frame):
         '''Insert text starting at offset'''
         procedurelogger.action('Insert text beginning at index %d' % offset)
         accessible.insertText(text, offset)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = "%s%s%s" % \
@@ -155,6 +158,7 @@ class RichTextBoxFrame(accessibles.Frame):
         procedurelogger.action("Delete n character from the end of the editable test and make sure it actually happens")        
         character_count = len(accessible.text)
         accessible.deleteText(character_count - n)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = self.TEXT_TOP[:-n]
@@ -178,6 +182,7 @@ class RichTextBoxFrame(accessibles.Frame):
         '''Delete n characters from the beginning of the editable text'''
         procedurelogger.action("Delete n character from the beginning of the editable test and make sure it actually happens")        
         accessible.deleteText(0, n)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = self.TEXT_TOP[n:]
@@ -204,6 +209,7 @@ class RichTextBoxFrame(accessibles.Frame):
                     (end, start)
         procedurelogger.action("Delete the characters from the start index to the end index, then make sure it actually happens")
         accessible.deleteText(start, end)
+        sleep(config.SHORT_DELAY)
         actual_text = accessible.text
         if accessible is self.richtextbox_top:
             expected_text = "%s%s" % \

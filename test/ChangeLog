@@ -1,5 +1,10 @@
 2009-02-27  Calen Chen <cachen@novell.com>
 
+	* testers/richtextbox/richtextboxframe.py: add sleep after append/
+	delete/insert
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
 	* samples/datagrid.py: update sample to delete button
 	* testers/datagrid_basic_ops.py,
 	* testers/datagrid/datagridframe.py,
