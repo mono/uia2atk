@@ -1,5 +1,10 @@
 2009-02-27  Calen Chen <cachen@novell.com>
 
+	* samples/gtktextview.py: replace the old sample to add 
+	get_accessible().set_name
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
 	* testers/richtextbox/richtextboxframe.py: add sleep after append/
 	delete/insert
 
