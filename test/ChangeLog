@@ -1,3 +1,9 @@
+2009-02-27  Ray Wang <rawang@novell.com>
+
+	* samples/textbox.py: add a non-editable textbox
+	* testers/textbox/textboxframe.py: add assertStreamableContent method
+	* testers/textbox_basic_ops.py: update many test for each textbox
+
 2009-02-27  Calen Chen <cachen@novell.com>
 
 	* samples/textbox.py: add AccessibleName for textbox1
