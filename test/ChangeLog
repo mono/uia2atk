@@ -1,3 +1,10 @@
+2009-03-02  Calen Chen <cachen@novell.com>
+
+	* samples/textbox.py: add AccessibleName for label(Edit and Document 
+	type should leave Name to empty, so AccessibleName for TextBox is 
+	unusefull)
+	* testers/datagridboolcolumn_basic_ops.py: add test for boolcolumn
+
 2009-02-27  Ray Wang <rawang@novell.com>
 
 	* samples/textbox.py: add a non-editable textbox
