@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="CustomControl.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:custom="clr-namespace:CustomControl"
+    Width="210" Height="120">
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <custom:MyCustomControl x:Name="myCustomControl" Canvas.Left="10" Canvas.Top="10"></custom:MyCustomControl>
+        <Button Content="Add new item" Canvas.Left="120" Canvas.Top="10" Click="Button_Click"></Button>
+    </Canvas>
+</UserControl>
