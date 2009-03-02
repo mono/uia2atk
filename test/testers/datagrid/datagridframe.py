@@ -31,17 +31,18 @@ class DataGridFrame(accessibles.Frame):
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
         #there are 4 columns under TreeTable
-        self.bool_column = self.treetable.findTableColumnHeader(self.COLUMN_A)
-        self.edittext_column = self.treetable.findTableColumnHeader(self.COLUMN_C)
-        self.readtext_column = self.treetable.findTableColumnHeader(self.COLUMN_B)
-        self.combobox_column = self.treetable.findTableColumnHeader(self.COLUMN_D)
+        self.bool_column = self.treetable.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
+        self.edittext_column = self.treetable.findTableColumnHeader(self.COLUMN_C, checkShowing=False)
+        self.readtext_column = self.treetable.findTableColumnHeader(self.COLUMN_B, checkShowing=False)
+        self.combobox_column = self.treetable.findTableColumnHeader(self.COLUMN_D, checkShowing=False)
         #there are 4 kind of TableCells under TreeTable
-        self.nullbool_cell = self.treetable.findTableCell("(null)")
-        self.true_cell = self.treetable.findTableCell("True")
-        self.false_cell = self.treetable.findTableCell("False")
-        self.edit_cells = self.treetable.findAllTableCells(re.compile("Edit*"))
-        self.read_cells = self.treetable.findAllTableCells(re.compile("Read*"))
-        self.combobox_cells = self.treetable.findAllTableCells(re.compile("Box*"))
+        self.nullbool_cell = self.treetable.findTableCell("(null)", checkShowing=False)
+        self.true_cell = self.treetable.findTableCell("True", checkShowing=False)
+        self.false_cell = self.treetable.findTableCell("False", checkShowing=False)
+        self.edit_cells = self.treetable.findAllTableCells(re.compile("Edit*"), checkShowing=False)
+        self.read_cells = self.treetable.findAllTableCells(re.compile("Read*"), checkShowing=False)
+        self.combobox_cells = self.treetable.findAllTableCells(re.compile("Box*"), checkShowing=False)
+        self.item_menuitems = self.treetable.findAllMenuItems(re.compile("Item*"), checkShowing=False)
         #search for initial position for assert order test
         self.read0_position = self.read_cells[0]._getAccessibleCenter()
         self.edit0_position = self.edit_cells[0]._getAccessibleCenter()
@@ -50,6 +51,7 @@ class DataGridFrame(accessibles.Frame):
 
     #give 'click' action
     def click(self,accessible):
+        procedurelogger.action("click %s" % accessible)
         accessible.click()
 
     #assert Label is changed due to CurrentCellChanged
@@ -120,7 +122,7 @@ class DataGridFrame(accessibles.Frame):
         accessible.clearSelection()
 
     #assert Table implementation for List role to check row and column number is matched
-    def assertTable(self, accessible, row=0, col=0):
+    def assertTable(self, accessible, row=4, col=1):
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
 
@@ -148,16 +150,19 @@ class DataGridFrame(accessibles.Frame):
     #enter Text Value to make sure the ReadOnly TextBox is uneditable
     def enterTextValue(self, accessible, entertext, oldtext=None):
         procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
+        if entertext == "uneditable":
+            try:
+                accessible.text = entertext
+            except NotImplementedError:
+                pass
 
-        try:
-            accessible.text = entertext
-        except NotImplementedError:
-            pass
+            sleep(config.SHORT_DELAY)
 
-        sleep(config.SHORT_DELAY)
-
-        procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
-        assert accessible.text == oldtext
+            procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
+            assert accessible.text == oldtext
+        elif entertext == "editable":
+            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext)
+            assert accessible.text == entertext
 
     
     #close application main window after running test

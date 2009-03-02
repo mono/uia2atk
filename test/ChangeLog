@@ -1,5 +1,13 @@
 2009-03-02  Calen Chen <cachen@novell.com>
 
+	* testers/datagridtextboxcolumn_basic_ops.py: add new strongwind test
+	* testers/datagridboolcolumn_basic_ops.py: add state test
+	* testers/datagrid_basic_ops.py: update expected states
+	* testers/datagrid/datagridframe.py: : update enterTextValue to test 
+	editable textbox, search for menuitems under combobox
+
+2009-03-02  Calen Chen <cachen@novell.com>
+
 	* samples/textbox.py: add AccessibleName for label(Edit and Document 
 	type should leave Name to empty, so AccessibleName for TextBox is 
 	unusefull)

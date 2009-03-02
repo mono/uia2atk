@@ -91,11 +91,11 @@ dgFrame.assertText(dgFrame.null_cell, "True")
 ##Text is uneditable
 ##########################
 
-dgFrame.enterTextValue(dgFrame.true_cell, "True")
+dgFrame.enterTextValue(dgFrame.true_cell, "True", oldtext="False")
 
-dgFrame.enterTextValue(dgFrame.null_cell, "(null)")
+dgFrame.enterTextValue(dgFrame.null_cell, "(null)", oldtext="True")
 
-dgFrame.enterTextValue(dgFrame.false_cell, "False")
+dgFrame.enterTextValue(dgFrame.false_cell, "False", oldtext="(null)")
 
 #close application frame window
 dgFrame.quit()

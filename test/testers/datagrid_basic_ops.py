@@ -100,14 +100,14 @@ statesCheck(dgFrame.combobox_column, "TableColumnHeader")
 #mouse click TableCell 'Edit0' to raise "focused"
 dgFrame.edit_cells[0].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["focused"])
+statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["focused", "editable"])
 dgFrame.assertLabel("row:0 col:1 Value:Edit0")
 
 #keyRight move focus to 'Read0'
 dgFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.read_cells[0], "TableCell", add_states=["focused"])
-statesCheck(dgFrame.edit_cells[0], "TableCell")
+statesCheck(dgFrame.edit_cells[0], "TableCell", "editable")
 dgFrame.assertLabel("row:0 col:2 Value:Read0")
 
 #keyDown move focus to 'Read1'
@@ -120,7 +120,7 @@ dgFrame.assertLabel("row:1 col:1 Value:Read1")
 #do click action for TableCell 'Edit2' to raise "checked"
 dgFrame.click(dgFrame.edit_cells[2])
 sleep(config.SHORT_DELAY)
-statesCheck(dgFrame.edit_cells[2], "TableCell", add_states=["focused"])
+statesCheck(dgFrame.edit_cells[2], "TableCell", add_states=["focused", "editable"])
 statesCheck(dgFrame.read_cells[1], "TableCell")
 dgFrame.assertLabel("row:2 col:1 Value:Edit2")
 
@@ -128,7 +128,7 @@ dgFrame.assertLabel("row:2 col:1 Value:Edit2")
 dgFrame.click(dgFrame.combobox_cells[1])
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.combobox_cells[1], "TableCell", add_states=["focused"])
-statesCheck(dgFrame.edit_cells[2], "TableCell")
+statesCheck(dgFrame.edit_cells[2], "TableCell", add_states=["editable"])
 dgFrame.assertLabel("row:0 col:3 Value:Box1")
 
 ########################
@@ -144,7 +144,7 @@ statesCheck(dgFrame.bool_column, "TableColumnHeader", add_states = ["selected"])
 dgFrame.assertSelectionChild(dgFrame.treetable, 3)
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.nullbool_cell, "TableCell", add_states=["selected"])
-statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["selected"])
+statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["selected", "editable"])
 statesCheck(dgFrame.read_cells[0], "TableCell", add_states=["selected"])
 statesCheck(dgFrame.combobox_cells[0], "TableCell", add_states=["selected"])
 
