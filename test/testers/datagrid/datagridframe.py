@@ -150,7 +150,11 @@ class DataGridFrame(accessibles.Frame):
     #enter Text Value to make sure the ReadOnly TextBox is uneditable
     def enterTextValue(self, accessible, entertext, oldtext=None):
         procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
-        if entertext == "uneditable":
+
+        if entertext == "editable":
+            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext)
+            assert accessible.text == entertext
+        else:
             try:
                 accessible.text = entertext
             except NotImplementedError:
@@ -160,9 +164,6 @@ class DataGridFrame(accessibles.Frame):
 
             procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
             assert accessible.text == oldtext
-        elif entertext == "editable":
-            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext)
-            assert accessible.text == entertext
 
     
     #close application main window after running test
