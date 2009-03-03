@@ -110,7 +110,7 @@ class FontDialogFrame(accessibles.Frame):
         statesCheck(self.color_combobox, "ComboBox")
         statesCheck(self.color_menu, "Menu", add_states=["selected"],\
                                            invalid_states=["visible", "showing"])
-        statesCheck(self.color_menuitems[0], "MenuItem", add_states=["selected"])
+        statesCheck(self.color_menuitems[0], "MenuItem", add_states=["focused", "selected"])
 
         #test menuitems' text
         self.textTest(self.color_menuitems[0], "Black")
