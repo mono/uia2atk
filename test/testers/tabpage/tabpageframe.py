@@ -25,12 +25,7 @@ class TabPageFrame(accessibles.Frame):
     TAB2 = "Tab 2"
     TAB3 = "Tab 3"
     LABEL0 = "I'm in tab page 0"
-    LABEL1 = "I'm in tab page 1"
-    LABEL2 = "I'm in tab page 2"
-    LABEL3 = "I'm in tab page 3"
     BUTTON = "Button"
-    CHECKBOX = "CheckBox"
-    RADIOBUTTON = "RadioButton"
 
     def __init__(self, accessible):
         super(TabPageFrame, self).__init__(accessible)
@@ -39,13 +34,7 @@ class TabPageFrame(accessibles.Frame):
         self.tabpage2 = self.findPageTab(self.TAB2)
         self.tabpage3 = self.findPageTab(self.TAB3)
         self.label0 = self.tabpage0.findLabel(self.LABEL0)
-        self.label1 = self.tabpage1.findLabel(self.LABEL1, checkShowing=False)
-        self.label2 = self.tabpage2.findLabel(self.LABEL2, checkShowing=False)
-        self.label3 = self.tabpage3.findLabel(self.LABEL3, checkShowing=False)
         self.button = self.tabpage0.findPushButton(self.BUTTON)
-        self.checkbox = self.tabpage2.findCheckBox(self.CHECKBOX, checkShowing=False)
-        self.radiobutton = self.tabpage3.findRadioButton(self.RADIOBUTTON, checkShowing=False)
-        self.textbox = self.tabpage1.findText(None, checkShowing=False)
 
     #give 'click' action
     def click(self,accessible):
@@ -67,17 +56,25 @@ class TabPageFrame(accessibles.Frame):
     #assert if label is changed after click items those are locate in TabPages,
     #by this way to test items in TabPage still with correct actions and useful
     def assertLabeChange(self,newlabel):
-        procedurelogger.expectedResult("%s is changed to %s" % \
-                                           (label, newlabel))
+        procedurelogger.expectedResult("lable in statusbar is changed to %s" % \
+                                           newlabel)
 
         assert self.findLabel(newlabel) 
 
     #assert if enter to a new tab page after press keyLeft/Right by checking 
     #label that shows in statusbar
-    def assertTabChange(self, tabname):
+    def assertTabChange(self, tabpage, tabname):
         procedurelogger.expectedResult("you enter to %s" % tabname)
 
-        assert self.findLabel("The current tab is: %s" % newlabel)
+        self.label = tabpage.findLabel(None)
+        if tabpage == self.tabpage1:
+            self.textbox = tabpage.findText(None)
+        elif tabpage == self.tabpage2:
+            self.checkbox = tabpage.findCheckBox(None)
+        elif tabpage == self.tabpage3:
+            self.radiobutton = tabpage.findRadioButton(None)
+        
+        assert self.findLabel("The current tab is: %s" % tabname)
 
     #close application main window after running test
     def quit(self):

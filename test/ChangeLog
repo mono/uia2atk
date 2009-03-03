@@ -1,4 +1,10 @@
-2009-03-02  Calen Chen <cachen@novell.com>
+2009-03-03  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: move 'selectable' from Text
+	* testers/tabpage/tabpageframe.py: modify assertTabChange, correct typo
+	* testers/tabpage_basic_ops.py: update test
+
+2009-03-03  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown_ops.py,
 	* testers/fontdialog/fontdialogframe.py,
