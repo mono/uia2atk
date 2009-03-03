@@ -1,5 +1,14 @@
 2009-03-03  Calen Chen <cachen@novell.com>
 
+	* samples/toolbarbutton.py: toggle to set label unable
+	* testers/states.py: add focusable to ToggleButton
+	* testers/toolbarbutton_basic_ops.py,
+	* testers/toolbar_basic_ops.py,
+	* testers/toolbarbutton/toolbarbuttonframe.py: correct some typo, give 
+	some update
+
+2009-03-03  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: move 'selectable' from Text
 	* testers/tabpage/tabpageframe.py: modify assertTabChange, correct typo
 	* testers/tabpage_basic_ops.py: update test

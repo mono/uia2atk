@@ -126,7 +126,7 @@ class ToolBarSample(Form):
                 self.label.Enabled = False
                 self.toolbar_btn4.Enabled = False
             else:
-                self.label.Enabled = False
+                self.label.Enabled = True
                 self.toolbar_btn4.Enabled = True
         elif btn == 3:
             self.label.Text = "You clicked nop button"

@@ -22,7 +22,7 @@ class ToolBarButtonFrame(accessibles.Frame):
     DROPDOWNBUTTON = "DropDownButton"
     TOGGLE = "Toggle"
     UNEDITED = "nop"
-    SEPARATOR = "Separator"
+    SEPARATOR = "separator"
     LABEL = "ToolBar and ToolBarButton example"
 
 
@@ -32,7 +32,7 @@ class ToolBarButtonFrame(accessibles.Frame):
         self.pushbutton_style = self.toolbar.findPushButton(self.PUSHBUTTON)
         self.dropdown_button = self.toolbar.findPushButton(self.DROPDOWNBUTTON)
         self.dropdown_toggle = self.toolbar.findToggleButton(self.DROPDOWNBUTTON)
-        self.toggle_style = self.toolbar.findPushButton(self.TOGGLE)
+        self.toggle_style = self.toolbar.findToggleButton(self.TOGGLE)
         self.nop_unable = self.toolbar.findPushButton(self.UNEDITED,\
                                                   checkShowing=False)
         self.separator_style = self.toolbar.findSeparator(self.SEPARATOR)
@@ -133,23 +133,18 @@ class ToolBarButtonFrame(accessibles.Frame):
         accessible.click()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
-        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
+        assert not self.label.sensitive
         #click again to enable label
         accessible.click()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button")
-        statesCheck(self.label, "Label")
+        assert self.label.sensitive
                                           
         #test AtkComponent by mouse click to check its position
         accessible.mouseClick()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
-        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
-        #mouse click again to enable label
-        accessible.mouseClick()
-        sleep(config.SHORT_DELAY)
-        statesCheck(self.toggle_style, "Button")
-        statesCheck(self.label, "Label")
+        assert not self.label.sensitive
 
     ##test for unable ToolBarButton
     def UnableButton(self, accessible):
