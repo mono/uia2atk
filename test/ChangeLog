@@ -1,3 +1,13 @@
+2009-03-03  Ray Wang <rawang@novell.com>
+
+	* testers/listbox/listboxframe.py,
+	* testers/listbox_basic_ops.py: update script due to some children 
+	change their mapping role.
+	* testers/listview_list/listviewframe.py,
+	* testers/listview_list_ops.py: update script due to some children 
+	change their mapping role, and add BUGxxxxxx comments for future 
+	regression test.
+
 2009-03-03  Calen Chen <cachen@novell.com>
 
 	* samples/toolbarbutton.py: toggle to set label unable
