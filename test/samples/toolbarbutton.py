@@ -26,9 +26,10 @@ clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
 from System.Drawing import *
+from System.IO import *
 
 harness_dir = path[0]
-i = harness_dir.rfind("/")
+i = harness_dir.rfind(Path.DirectorySeparatorChar)
 uiaqa_path = harness_dir[:i]
 
 class ToolBarSample(Form):

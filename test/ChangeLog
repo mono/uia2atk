@@ -1,3 +1,7 @@
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/toolbarbutton.py: Make this test crossplatform.
+
 2009-03-03  Ray Wang <rawang@novell.com>
 
 	* testers/listbox/listboxframe.py,
