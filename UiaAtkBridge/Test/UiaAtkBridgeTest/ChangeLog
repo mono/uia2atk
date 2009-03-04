@@ -1,3 +1,12 @@
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Wrap ToolStripButton as a bridge Button.
+	Fixes #478932.
+
+	* BridgeTester.cs: Wrap ToolStripButton as a bridge Button and
+	use a wrapper panel for ToolBarButton toggle-style. Fixes
+	#478932.
+
 2009-03-04  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs: Add TextBoxHasScrollBar.

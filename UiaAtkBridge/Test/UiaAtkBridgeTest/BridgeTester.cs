@@ -78,6 +78,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TextBox tbx1 = new SWF.TextBox ();
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
 		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
+		protected SWF.ToolStripButton toolStripButton = new SWF.ToolStripButton ("TestTSB");
 		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDDL = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDD = new SWF.ToolStripComboBox ();
@@ -152,6 +153,7 @@ namespace UiaAtkBridgeTest
 			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
 
+			toolStrip.Items.Add (toolStripButton);
 			toolStrip.Items.Add (toolStripComboBoxSim);
 			toolStrip.Items.Add (toolStripComboBoxDDL);
 			toolStrip.Items.Add (toolStripComboBoxDD);
@@ -627,6 +629,7 @@ namespace UiaAtkBridgeTest
 				}
 				accessible = GetAdapterForWidget (tssb);
 				break;
+				
 			case BasicWidgetType.ToolStripDropDownButton:
 				while (tsddb.DropDownItems.Count > 0)
 					tsddb.DropDownItems.Remove (tsddb.DropDownItems [0]);
@@ -692,11 +695,19 @@ namespace UiaAtkBridgeTest
 				
 			case BasicWidgetType.ToolbarButton:
 				if (!real)
-					throw new NotSupportedException ("Not unreal support for ToolbarButton");
+					throw new NotSupportedException ("No unreal support for ToolbarButton");
 
 				SWF.ToolBarButton theButton = (embeddedImage) ? toolBarButtonWithImage : toolBarButton;
 				theButton.Text = name;
 				accessible = GetAdapterForWidget (theButton);
+				break;
+				
+			case BasicWidgetType.ToolStripButton:
+				if (!real)
+					throw new NotSupportedException ("No unreal support for ToolbarButton");
+
+				toolStripButton.Text = name;
+				accessible = GetAdapterForWidget (toolStripButton);
 				break;
 				
 			case BasicWidgetType.Window:

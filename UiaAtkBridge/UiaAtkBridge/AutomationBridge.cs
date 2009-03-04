@@ -847,8 +847,16 @@ namespace UiaAtkBridge
 				return; //Not replicating DomainUpDown buttons
 
 			if (parentObject is UiaAtkBridge.Container && parentObject.Role == Atk.Role.ToolBar) {
-				ToggleButton atkToggle = new ToggleButton (provider);
-				IncludeNewAdapter (atkToggle, parentObject);
+				var wrapperPanel = new WrapperPanel (provider);
+				parentObject.AddOneChild (wrapperPanel);
+				parentObject = wrapperPanel;
+
+				Adapter newAdapter = null;
+				if (provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) != null)
+					newAdapter = new ToggleButton (provider);
+				else
+					newAdapter = new Button (provider);
+				IncludeNewAdapter (newAdapter, parentObject);
 				return;
 			}
 			

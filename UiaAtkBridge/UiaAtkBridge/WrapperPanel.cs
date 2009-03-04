@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 	{
 		public WrapperPanel (IRawElementProviderSimple provider): base (provider)
 		{
+			Role = Atk.Role.Panel;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -42,6 +43,10 @@ namespace UiaAtkBridge
 			states.RemoveState (Atk.StateType.Focusable);
 			states.RemoveState (Atk.StateType.Focused);
 			return states;
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
 		}
 	}
 }

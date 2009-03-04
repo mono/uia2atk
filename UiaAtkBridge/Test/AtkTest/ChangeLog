@@ -1,3 +1,9 @@
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Wrap ToolStripButton as a bridge Button.
+	Fixes #478932.
+
 2009-03-04  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs, AtkTests.cs: Test ScrollBar in TextBox.

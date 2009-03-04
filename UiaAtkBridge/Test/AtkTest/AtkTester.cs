@@ -922,6 +922,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripLabel:
 				return Atk.Role.Label;
 			case BasicWidgetType.ToolbarButton:
+			case BasicWidgetType.ToolStripButton:
 			case BasicWidgetType.NormalButton:
 				return Atk.Role.PushButton;
 			case BasicWidgetType.Window:

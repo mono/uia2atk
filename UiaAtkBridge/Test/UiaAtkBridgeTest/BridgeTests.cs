@@ -877,7 +877,7 @@ namespace UiaAtkBridgeTest
 			TextBoxView (BasicWidgetType.TextBoxView, toolStripTextBox2, false);
 		}
 
-		[Test] //TODO: move to AtkTests.cs
+		[Test] //TODO: move to AtkTests.cs (along with ToolStripButton) and call it from here
 		public void ToolBarButton ()
 		{
 			BasicWidgetType type = BasicWidgetType.ToolbarButton;
@@ -927,6 +927,59 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+		}
+
+		[Test] //TODO: move to AtkTests.cs (along with ToolBarButton) and call it from here
+		public void ToolStripButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolStripButton;
+
+			string name = "test-caption";
+			Atk.Object accessible = GetAccessible (type, name);
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (Atk.Role.Panel, accessible.Parent.Role);
+
+			Assert.IsNull (accessible.Parent.Name);
+			Assert.AreEqual (0, accessible.NAccessibleChildren);
+
+			Interfaces (accessible.Parent,
+			            typeof (Atk.Component));
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible.Parent);
+			InterfaceComponent (type, atkComponent);
+			
+			States (accessible.Parent,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+
+//TODO: missing Focusable: for some reason ToolBarButton implements this correctly even lacking IsKeyboardFocusable
+//			States (accessible,
+//				Atk.StateType.Enabled,
+//				Atk.StateType.Focusable,
+//				Atk.StateType.Sensitive,
+//				Atk.StateType.Showing,
+//				Atk.StateType.Visible);
+
+			//from here, like Button test
+			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
+
+			InterfaceText (type);
+
+			//TODO: test with an image
+//			Atk.Image atkWithOutImage, atkWithImage;
+//			accessible = GetAccessible (type, name, true);
+//			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+//			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+//			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+//			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+//			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
 		[Test]
