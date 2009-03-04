@@ -1,3 +1,7 @@
+2009-03-04  Mario Carrion <mcarrion@novell.com>
+
+	* providertest.sh.in: Added -noshadow to NUNIT_FLAGS.
+
 2009-02-18  Mike Gorse <mgorse@novell.com>
 
 	* BaseProviderTest.cs: Test LabelledBy when the label is added first.
