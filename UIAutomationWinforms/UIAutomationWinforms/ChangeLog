@@ -1,3 +1,9 @@
+2009-03-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Mark
+	componentProviders protected instead of internal, and remove
+	ancient TODO associated with this.
+
 2009-02-25  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:

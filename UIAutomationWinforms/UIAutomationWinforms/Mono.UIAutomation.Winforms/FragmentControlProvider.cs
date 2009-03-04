@@ -52,8 +52,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Data
 		
-		internal IDictionary<Component, FragmentControlProvider>
-			componentProviders;  // TODO: Fix this...
+		protected IDictionary<Component, FragmentControlProvider>
+			componentProviders;
 		
 		#endregion
 
