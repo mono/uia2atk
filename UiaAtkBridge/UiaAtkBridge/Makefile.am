@@ -106,7 +106,8 @@ FILES =  \
 	Tree.cs \
 	TreeItem.cs \
 	ValueProviderTextImplementor.cs \
-	Window.cs 
+	Window.cs  \
+	WrapperPanel.cs
 
 DATA_FILES = 
 

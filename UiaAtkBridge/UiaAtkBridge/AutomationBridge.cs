@@ -1079,7 +1079,7 @@ namespace UiaAtkBridge
 			Adapter newAdapter = null;
 			ParentAdapter wrapperPanel = null;
 			if (parentObject is Container && parentObject.Role == Atk.Role.ToolBar) {
-				wrapperPanel = new Container (provider);
+				wrapperPanel = new WrapperPanel (provider);
 				parentObject.AddOneChild (wrapperPanel);
 				parentObject = wrapperPanel;
 

@@ -20,6 +20,7 @@
     <File name="Tree.cs" subtype="Code" buildaction="Compile" />
     <File name="TreeItem.cs" subtype="Code" buildaction="Compile" />
     <File name="Window.cs" subtype="Code" buildaction="Compile" />
+    <File name="WrapperPanel.cs" subtype="Code" buildaction="Compile" />
     <File name="AutomationBridge.cs" subtype="Code" buildaction="Compile" />
     <File name="Button.cs" subtype="Code" buildaction="Compile" />
     <File name="ActionImplementorHelper.cs" subtype="Code" buildaction="Compile" />

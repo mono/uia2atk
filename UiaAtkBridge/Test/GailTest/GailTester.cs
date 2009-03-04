@@ -183,6 +183,10 @@ namespace UiaAtkBridgeTest
 			get { return true; }
 		}
 
+		protected override bool TextBoxHasScrollBar { 
+			get { return false; }
+		}
+
 		public override Atk.Object GetAccessible (BasicWidgetType type)
 		{
 			if (type != BasicWidgetType.ToolBar)
@@ -596,7 +600,6 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.HPaned ();
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealHPaned ();
-				((Gtk.HPaned)widget).CanFocus = false;
 				break;
 			case BasicWidgetType.VTrackBar:
 				widget = new Gtk.VScale (adj);

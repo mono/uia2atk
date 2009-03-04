@@ -1,3 +1,9 @@
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* GailTester.cs: Add TextBoxHasScrollBar.
+
+	* GailTester.cs: Reinstate CanFocus for splitter.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* GailTester.cs: SetReadOnly updated to match API.

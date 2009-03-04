@@ -37,7 +37,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class TextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
+	public class TextBoxEntryView : ComponentParentAdapter, Atk.TextImplementor, 
 	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private ITextImplementor textExpert = null;
@@ -91,9 +91,15 @@ namespace UiaAtkBridge
 			
 			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);
 			states.RemoveState (multiLine ? Atk.StateType.SingleLine : Atk.StateType.MultiLine);
+
 			return states;
 		}
 		
+		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
+		{
+			// TODO
+		}
+
 		#region TextImplementor implementation 
 		
 		public string GetText (int startOffset, int endOffset)

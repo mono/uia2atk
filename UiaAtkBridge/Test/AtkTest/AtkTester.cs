@@ -160,6 +160,7 @@ namespace UiaAtkBridgeTest
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
 		protected abstract bool AllowsSelectingChildMenus { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
+		protected abstract bool TextBoxHasScrollBar { get; }
 		
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                                Atk.Action actionable2, Atk.Object accessible2,

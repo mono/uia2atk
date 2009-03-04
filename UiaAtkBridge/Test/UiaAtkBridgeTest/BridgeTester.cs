@@ -293,6 +293,10 @@ namespace UiaAtkBridgeTest
 			get { return false; }
 		}
 
+		protected override bool TextBoxHasScrollBar { 
+			get { return true; }
+		}
+
 		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = 
 			new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		
@@ -826,6 +830,7 @@ namespace UiaAtkBridgeTest
 				} else {
 					accessible = GetAdapterForWidget (tbxView);
 					tbx2.Text = name;
+					tbx2.ScrollBars = SWF.ScrollBars.Both;
 				}
 				break;
 

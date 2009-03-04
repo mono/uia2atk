@@ -1132,7 +1132,7 @@ namespace UiaAtkBridgeTest
 		public void ContainerControl ()
 		{
 			Atk.Object accessible = GetAdapterForWidget (containerControl);
-			Pane (accessible);
+			Pane (accessible, true);
 			PaneChildren (containerControl);
 		}
 

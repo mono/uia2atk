@@ -172,6 +172,8 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Modal);
 			}
 			
+			states.RemoveState (Atk.StateType.Focusable);
+
 			return states;
 		}
 		

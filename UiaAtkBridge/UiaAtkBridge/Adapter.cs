@@ -186,6 +186,19 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Enabled);
 				}
 				
+				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+				if (canFocus)
+					states.AddState (Atk.StateType.Focusable);
+				else
+					states.RemoveState (Atk.StateType.Focusable);
+
+				bool focused = canFocus && (bool) Provider.GetPropertyValue (
+				  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+				if (focused)
+					states.AddState (Atk.StateType.Focused);
+				else
+					states.RemoveState (Atk.StateType.Focused);
+
 				bool is_offscreen = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
 				if (Parent != null && !is_offscreen) {
 					states.AddState (Atk.StateType.Showing);

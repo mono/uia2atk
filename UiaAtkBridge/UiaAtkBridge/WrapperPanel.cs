@@ -30,34 +30,17 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Splitter : SplitContainer
+	public class WrapperPanel: Container
 	{
-		
-		public Splitter (IRawElementProviderSimple provider) : base (provider)
+		public WrapperPanel (IRawElementProviderSimple provider): base (provider)
 		{
-		}
-
-		internal override void PostInit ()
-		{
-			componentExpert = new ComponentImplementorHelper (Parent as Adapter);
-			base.PostInit ();
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{
-			Adapter parent = Parent as Adapter;
-			if (parent == null)
-				return null;
-			// We pretend to be a sub-window, not a splitter
-			Atk.StateSet states = Parent.RefStateSet ();
-			states.RemoveState (Atk.StateType.Active);
-			states.RemoveState (Atk.StateType.Resizable);
-			if (base.OnRefStateSet().ContainsState (Atk.StateType.Horizontal))
-				states.AddState (Atk.StateType.Horizontal);
-			else
-				states.AddState (Atk.StateType.Vertical);
-			if ((bool)parent.Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id))
-				states.AddState (Atk.StateType.Focusable);
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.RemoveState (Atk.StateType.Focusable);
+			states.RemoveState (Atk.StateType.Focused);
 			return states;
 		}
 	}

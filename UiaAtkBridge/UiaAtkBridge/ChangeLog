@@ -1,3 +1,15 @@
+	2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* TextBoxEntryView.cs: Derive from ParentAdapter [bug 478005]
+
+	* ParentAdapter.cs, Tree.cs, Splitter.cs, List.cs, Table.cs,
+	  Hyperlink.cs, Window.cs, ComboBox.cs, ComponentParentAdapter.cs,
+	  Adapter.cs, MenuItem.cs, ComponentAdapter.cs: Refactor to set Focusable
+	  and Focused in Adapter.RefStateSet.
+
+	* AutomationBridge.cs, WrapperPanel.cs, Makefile.am, UiaAtkBridge.mdp:
+	  Subclass WrapperPanel from Container; remove Focused state.
+
 2009-02-23  Brad Taylor  <brad@getcoded.net>
 
 	* TreeItem.cs: 

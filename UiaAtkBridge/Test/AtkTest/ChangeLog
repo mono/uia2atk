@@ -1,3 +1,11 @@
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs: Test ScrollBar in TextBox.
+
+	* AtkTests.cs: Allow testing a focusable pane.
+
+	* AtkTests.cs: Expect Focusable for a Splitter.
+
 2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTest.mdp: Corrected location of atspimon.

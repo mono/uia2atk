@@ -508,6 +508,12 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Visible);
 
 			InterfaceEditableText (type, accessible);
+
+			if (type == BasicWidgetType.TextBoxView && widget == null) {
+				accessible = GetAccessible (type, "a\rb\rc\rd\re\rf\rg\rh\ri\rj\rk\rl\rm\rn\ro\rp\rq\rr\rs\rt\r");
+				int nAccessibleChildren = (TextBoxHasScrollBar? 1: 0);
+				Assert.AreEqual (nAccessibleChildren, accessible.NAccessibleChildren, "TextBoxView NAccessibleChildren");
+			}
 		}
 
 		[Test]
@@ -1217,6 +1223,11 @@ namespace UiaAtkBridgeTest
 
 		public void Pane (Atk.Object accessible)
 		{
+			Pane (accessible, false);
+		}
+
+		public void Pane (Atk.Object accessible, bool expectFocusable)
+		{
 			BasicWidgetType type = BasicWidgetType.ContainerPanel;
 			
 			string name = "test";
@@ -1232,6 +1243,7 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
+			  expectFocusable? Atk.StateType.Focusable: Atk.StateType.Enabled,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
@@ -1401,6 +1413,7 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
+			Atk.StateType.Focusable,
 			  Atk.StateType.Horizontal,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,

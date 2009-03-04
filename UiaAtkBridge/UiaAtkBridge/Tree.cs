@@ -164,14 +164,6 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.ManagesDescendants);
-			states.AddState (Atk.StateType.Focusable);
-
-			bool focused = (bool) Provider.GetPropertyValue (
-			  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-			if (focused)
-				states.AddState (Atk.StateType.Focused);
-			else
-				states.RemoveState (Atk.StateType.Focused);
 
 			return states;
 		}
