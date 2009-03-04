@@ -1,5 +1,9 @@
 2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Better a verbose exception than an NRE.
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* bridgetest.sh.in: Use -noshadow to launch NUnit.
 
 2009-02-19  Mario Carrion  <mcarrion@novell.com>

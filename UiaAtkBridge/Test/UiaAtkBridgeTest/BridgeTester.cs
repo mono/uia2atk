@@ -119,6 +119,8 @@ namespace UiaAtkBridgeTest
 			form.Show ();
 
 			string uiaQaPath = Misc.LookForParentDir ("*.gif");
+			if (uiaQaPath == null)
+				throw new Exception ("Path for images not found");
 			string imgPath = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 
 			SWF.ImageList imageList = new SWF.ImageList ();
@@ -149,7 +151,7 @@ namespace UiaAtkBridgeTest
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-			
+
 			toolStrip.Items.Add (toolStripComboBoxSim);
 			toolStrip.Items.Add (toolStripComboBoxDDL);
 			toolStrip.Items.Add (toolStripComboBoxDD);
