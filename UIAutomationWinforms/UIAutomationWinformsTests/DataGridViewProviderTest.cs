@@ -186,6 +186,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (header, "Header is missing");
 			Assert.AreEqual (1, childCount, "Children (Header)");
 
+			// Exposes BNC #478840
+			TestChildPatterns (header);
+
 			SWF.DataGridViewRow row = new SWF.DataGridViewRow ();
 			row.Cells.Add (cell);
 			datagridview.Rows.Add (row);

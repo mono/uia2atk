@@ -479,6 +479,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
+			public DataGridProvider DataGridProvider {
+				get { return provider; }
+			}
+
 			public SWF.GridColumnStylesCollection GridColumnStyles {
 				get { return styles; }
 			}
@@ -602,7 +606,23 @@ namespace Mono.UIAutomation.Winforms
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { return header; }
 			}
+			
+			public DataGridHeaderProvider HeaderProvider {
+				get { return header; }
+			}
 
+			public SWF.DataGridColumnStyle ColumnStyle {
+				get { return style; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new HeaderItemInvokeProviderBehavior (this));
+			}
+			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -624,14 +644,16 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					int indexOf = header.GridColumnStyles.IndexOf (style);
-					SD.Rectangle rectangle = style.DataGridTableStyle.DataGrid.UIAColumnHeadersArea;
-					rectangle.Width = header.GridColumnStyles [indexOf].Width;
-					
-					for (int index = 0; index < indexOf; index++)
-						rectangle.X += header.GridColumnStyles [index].Width;
+					Rect bounds
+						= (Rect) header.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 
-					return Helper.GetControlScreenBounds (rectangle, style.DataGridTableStyle.DataGrid);
+					int indexOf = header.GridColumnStyles.IndexOf (style);
+					for (int index = 0; index < indexOf; index++)
+						bounds.X += header.GridColumnStyles [index].Width;
+
+					bounds.Width = header.GridColumnStyles [indexOf].Width;
+
+					return bounds;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
@@ -771,7 +793,7 @@ namespace Mono.UIAutomation.Winforms
 				rectangle.Height -= datagrid.UIACellsArea.Y - rectangle.Y - datagrid.UIARowHeight;
 				rectangle.Y = datagrid.UIACellsArea.Y;
 				if (datagrid.ColumnHeadersVisible) {
-					rectangle.X += DataGridProvider.DataGrid.RowHeaderWidth;
+					rectangle.X += datagrid.RowHeaderWidth;
 					rectangle.Y += datagrid.UIAColumnHeadersArea.Height;
 					rectangle.Height -= datagrid.UIACaptionArea.Height;
 				}
@@ -878,11 +900,13 @@ namespace Mono.UIAutomation.Winforms
 					return Catalog.GetString ("edit");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 
-					return Helper.GetControlScreenBounds (provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
-					                                                                                        provider.GetColumnIndexOf (this)),
-					                                      provider.DataGridProvider.DataGrid);
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					SD.Rectangle rectangle = provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
+					                                                                           provider.GetColumnIndexOf (this));
+					Rect rect = Helper.GetControlScreenBounds (rectangle,
+					                                           provider.DataGridProvider.DataGrid);
+					return rect;
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return provider.IsOffScreen (provider.DataGridProvider.DataGrid, bounds);

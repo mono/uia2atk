@@ -402,6 +402,22 @@ namespace Mono.UIAutomation.Winforms
 				get { return headerProvider; }
 			}
 
+			public SWF.DataGridViewColumn Column {
+				get { return column; }
+			}
+
+			public DataGridViewHeaderProvider HeaderProvider {
+				get { return headerProvider; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new HeaderItemInvokeProviderBehavior (this));
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -906,7 +922,7 @@ namespace Mono.UIAutomation.Winforms
 				if (listboxProvider != null) {
 					listboxProvider.Terminate ();
 					OnNavigationChildRemoved (false, listboxProvider);
-					buttonProvider = null;
+					listboxProvider = null;
 				}
 				if (buttonProvider != null) {
 					buttonProvider.Terminate ();
@@ -1143,7 +1159,7 @@ namespace Mono.UIAutomation.Winforms
 
 				SetBehavior (InvokePatternIdentifiers.Pattern, 
 				             new DataItemComboBoxButtonInvokeProviderBehavior (this));
-			}
+			}				
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{

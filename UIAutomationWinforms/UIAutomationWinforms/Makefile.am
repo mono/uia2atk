@@ -66,6 +66,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/HeaderItemInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
@@ -84,6 +85,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/HeaderItemInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/TableProviderBehavior.cs \
@@ -237,6 +239,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/HeaderItemInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -269,6 +272,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/HeaderItemInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \

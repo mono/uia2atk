@@ -1,3 +1,26 @@
+2009-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid & DataGridView.
+	HeaderItem.Invoke behaviors and events added. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/HeaderItemInvokePatternInvokedEvent.cs:
+	DataGridView.HeaderItem: InvokePattern.Invoked event. [Fixes Bug
+	#478840]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/HeaderItemInvokePatternInvokedEvent.cs:
+	DataGrid.HeaderItem: InvokePattern.Invoked event. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/HeaderItemInvokeProviderBehavior.cs:
+	DataGridView.HeaderItem: Invoke behavior. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/HeaderItemInvokeProviderBehavior.cs:
+	DataGrid.HeaderItem: Invoke behavior. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Properties added
+	to handle HeaderItem.Invoke. [Fixes Bug #478840]
+
 2009-03-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Mark

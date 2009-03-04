@@ -30,6 +30,7 @@ using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms;
 using NUnit.Framework;
 
@@ -160,6 +161,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 			Assert.IsNotNull (headerChild, "We should have a header. ColumnHeadersVisible doesn't affect Pattern nor Child");
 
+			// Reproduces: BNC #478840
+			datagrid.ColumnHeadersVisible = true;
+			datagrid.AllowSorting = true; 
+			TestChildPatterns (headerChild);
+
 			Assert.IsNotNull (dataItemChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id),
 			                  "SelectionItem not implement in DataItem");
 			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
@@ -286,6 +292,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
             datagrid.DataSource = dataset;
 			datagrid.DataMember = "MyTable";
+			datagrid.CaptionVisible = false;
 			return datagrid;
 		}
 
@@ -345,6 +352,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			// Read TestGridItemPattern_RowPropertyEvent
 		}
+
+		protected override void TestEditPatterns (IRawElementProviderSimple provider) 
+		{
+			// LAMESPEC: Edit must always support ITextProvider, but this *is not true* in Edit Cells
+			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
+			               "Edit ControlType in DataGrid must support IValueProvider");
+			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
+			                "Edit ControlType in DataGrid MUST NOT support IRangeValueProvider");
+
+			Assert.AreEqual (Catalog.GetString ("edit"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+			
+			TestValuePattern_All (provider);
+		}
+
+		protected override void TestValuePattern_IsReadOnlyPropertyEvent (IRawElementProviderSimple provider)
+		{
+			// We just can't set cells read only.
+		}		
 
 		#endregion
 	}

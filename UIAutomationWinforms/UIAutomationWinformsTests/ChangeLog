@@ -1,3 +1,10 @@
+2009-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseProviderTest.cs: Tests added.
+
+	* DataGridProviderTest.cs:
+	* DataGridViewProviderTest.cs: Test updated  [For Bug #478840]
+
 2009-03-04  Mario Carrion <mcarrion@novell.com>
 
 	* providertest.sh.in: Added -noshadow to NUNIT_FLAGS.
