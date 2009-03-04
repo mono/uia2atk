@@ -3,9 +3,10 @@
 	* Container.cs:
 	* WrapperPanel.cs:
 	* AutomationBridge.cs: Wrap ToolStripButton as a bridge
-	Button. Fixes #478932.
+	Button and use a wrapper panel for ToolBarButton 
+	toggle-style. Fixes #478932.
 
-	2009-03-04  Mike Gorse  <mgorse@novell.com>
+2009-03-04  Mike Gorse  <mgorse@novell.com>
 
 	* TextBoxEntryView.cs: Derive from ParentAdapter [bug 478005]
 
