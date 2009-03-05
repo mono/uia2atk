@@ -1,3 +1,7 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs: Remove unneeded cast since previous commit.
+
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
 	* Adapter.cs: Handling NodeChildOf when Parent is DataGrid, Table,

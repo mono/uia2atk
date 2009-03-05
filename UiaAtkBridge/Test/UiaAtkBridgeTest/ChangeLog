@@ -1,3 +1,7 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* bridgetest.sh.in: Move labels to NUNIT_FLAGS.
+
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
 	* bridgetest.sh.in: Using -noshadow in NUNIT_FLAGS.

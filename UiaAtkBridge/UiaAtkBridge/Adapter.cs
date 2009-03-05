@@ -278,7 +278,7 @@ namespace UiaAtkBridge
 			for (;;) {
 				Adapter parent = adapter.Parent as Adapter;
 				if (this is ContextMenu)
-					parent = ((ContextMenu)this).VirtualParent;
+					parent = VirtualParent;
 				if (parent == null || parent is TopLevelRootItem) {
 					if (adapter is Window) {
 						System.Windows.Rect rect = adapter.BoundingRectangle;
