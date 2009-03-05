@@ -30,6 +30,8 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
 namespace UiaAtkBridge
 {
 	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
@@ -74,9 +76,27 @@ namespace UiaAtkBridge
 		{
 		}
 
+		//TODO: we could move this to a ToolBar class if we had it :-/
+		private bool ToolBarHasFocusableElements (Adapter toolbar)
+		{
+			object isContentElement = toolbar.Provider.GetPropertyValue (AEIds.IsContentElementProperty.Id);
+			return (isContentElement is bool && ((bool)isContentElement) == false);
+		}
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (!states.ContainsState (Atk.StateType.Focusable) && Parent != null) {
+				if (Parent.Role == Atk.Role.ToolBar &&
+				    ToolBarHasFocusableElements ((Adapter)Parent))
+					states.AddState (Atk.StateType.Focusable);
+
+				if (Parent.Parent != null && Parent.Parent.Role == Atk.Role.ToolBar &&
+				    ToolBarHasFocusableElements ((Adapter)Parent.Parent))
+					states.AddState (Atk.StateType.Focusable);
+			}
+			
 			return states;
 		}
 

@@ -1064,13 +1064,11 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 
-//TODO: commented because of bug 478838
-//			States (accessible,
-//				Atk.StateType.Enabled,
-//				Atk.StateType.Focusable,
-//				Atk.StateType.Sensitive,
-//				Atk.StateType.Showing,
-//				Atk.StateType.Visible);
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
 
 			//from here, like Button test
 			atkComponent = CastToAtkInterface <Atk.Component> (accessible);

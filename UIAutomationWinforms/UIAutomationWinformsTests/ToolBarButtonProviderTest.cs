@@ -79,10 +79,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				ProviderFactory.GetProvider (toolBarButton);
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.MenuItem.Id);
+			              ControlType.Button.Id);
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "menu item");
+			              "button");
 
 			// DropDownButton style
 			ToolBarButton dropDownButton = new ToolBarButton ();
@@ -148,7 +148,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
-			              true);
+			              false);
 
 			object hasKbFocus = provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 			Assert.IsNotNull (hasKbFocus);

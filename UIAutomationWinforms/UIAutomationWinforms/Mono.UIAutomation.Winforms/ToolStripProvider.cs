@@ -60,6 +60,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else if (propertyId == AEIds.NameProperty.Id)
 				return strip.Text;
+			else if (propertyId == AEIds.IsContentElementProperty.Id)
+				return true;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

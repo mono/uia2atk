@@ -62,6 +62,8 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("tool bar");
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return false;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -203,21 +205,19 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
 					if (style == ToolBarButtonStyle.DropDownButton)
 						return ControlType.SplitButton.Id;
-					else if (style == ToolBarButtonStyle.PushButton)
-						return ControlType.MenuItem.Id;
-					else if (style == ToolBarButtonStyle.ToggleButton)
+					else if (style == ToolBarButtonStyle.PushButton ||
+					         style == ToolBarButtonStyle.ToggleButton)
 						return ControlType.Button.Id;
 					else
 						return ControlType.Separator.Id;
 				}
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return style == ToolBarButtonStyle.PushButton ? true : false;
+					return false;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
 					if (style == ToolBarButtonStyle.DropDownButton)
 						return Catalog.GetString ("split button");
-					else if (style == ToolBarButtonStyle.PushButton)
-						return Catalog.GetString ("menu item");
-					else if (style == ToolBarButtonStyle.ToggleButton)
+					else if (style == ToolBarButtonStyle.ToggleButton ||
+					         style == ToolBarButtonStyle.PushButton)
 						return Catalog.GetString ("button");
 					else
 						return Catalog.GetString ("separator");

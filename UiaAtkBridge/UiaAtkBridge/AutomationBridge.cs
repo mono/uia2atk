@@ -854,7 +854,7 @@ namespace UiaAtkBridge
 				Adapter newAdapter = null;
 				if (provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) != null)
 					newAdapter = new ToggleButton (provider);
-				else
+				else 
 					newAdapter = new Button (provider);
 				IncludeNewAdapter (newAdapter, parentObject);
 				return;
@@ -1090,17 +1090,9 @@ namespace UiaAtkBridge
 				wrapperPanel = new WrapperPanel (provider);
 				parentObject.AddOneChild (wrapperPanel);
 				parentObject = wrapperPanel;
-
-				//toolbarbutton is keyboard-focusable while toolstripdropdownbutton is not
-				bool isKeyboardFocusable = (bool) 
-					provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (isKeyboardFocusable)
-					newAdapter = new Button (provider);
 			}
-			if (newAdapter == null) {
-				var child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
-				newAdapter = (child == null) ? new MenuItem (provider) : new ParentMenu (provider);
-			}
+			var child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
+			newAdapter = (child == null) ? new MenuItem (provider) : new ParentMenu (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 

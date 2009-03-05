@@ -1,5 +1,12 @@
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Mimic (in the provider) and workaround (in
+	the bridge) bug in UIA about not returning KeyboardFocusable
+	for ToolBarButtons. Reenable state tests for ToolStripButton.
+	Fixes #478838.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* bridgetest.sh.in: Move labels to NUNIT_FLAGS.
 
 2009-03-05  Mario Carrion  <mcarrion@novell.com>

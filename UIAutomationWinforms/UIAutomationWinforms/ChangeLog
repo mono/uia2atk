@@ -1,3 +1,11 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Mimic (in
+	the provider) and workaround (in the bridge) bug in UIA about
+	not returning KeyboardFocusable for ToolBarButtons. Reenable
+	state tests for ToolStripButton. Fixes #478838.
+
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
 	Fixes #465467, #465018, #465091, #466598 and #465095.

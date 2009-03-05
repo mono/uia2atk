@@ -1,5 +1,15 @@
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs:
+	* AutomationBridge.cs: Mimic (in the provider) and workaround
+	(in the bridge) bug in UIA about not returning
+	KeyboardFocusable for ToolBarButtons. Reenable state tests for
+	ToolStripButton. Fixes #478838.
+
+	* TreeItem.cs: Cosmetic.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Adapter.cs: Remove unneeded cast since previous commit.
 
 2009-03-05  Mario Carrion  <mcarrion@novell.com>

@@ -33,7 +33,7 @@ namespace UiaAtkBridge
 	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
 		Atk.ImageImplementor, Atk.EditableTextImplementor
 	{
-		private IInvokeProvider				invokeProvider;
+		private IInvokeProvider			invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
 
 		private ITextImplementor textExpert = null;

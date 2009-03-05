@@ -53,12 +53,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "tool bar");
-			
+
 			string value = "ToolBar Name Property";
 			toolBar.Text = value;
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,
 			              value);
+		}
+
+		protected override bool IsContentElement {
+			get { return false; }
 		}
 
 		[Test]

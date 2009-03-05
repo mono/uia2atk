@@ -1,3 +1,11 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarProviderTest.cs:
+	* ToolBarButtonProviderTest.cs: Mimic (in the provider) and
+	workaround (in the bridge) bug in UIA about not returning
+	KeyboardFocusable for ToolBarButtons. Reenable state tests for
+	ToolStripButton. Fixes #478838.
+
 2009-03-04  Mario Carrion  <mcarrion@novell.com>
 
 	* BaseProviderTest.cs: Tests added.
