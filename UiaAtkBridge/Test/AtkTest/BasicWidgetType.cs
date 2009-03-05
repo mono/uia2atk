@@ -49,6 +49,7 @@ namespace UiaAtkBridgeTest
 		TextBoxView,        // textbox multi-line (gtk: textview)
 		PasswordCharTextBoxEntry, // textbox with PasswordChar set (gtk: entry with visibility:false)
 		RichTextBox, // RichTextBox (gtk: textview)
+		HeaderItem, // part of widget: GTK: treeview, and MWF: listview.details, datagrid and datagridview
 		
 		MainMenuBar,
 		ParentMenu,

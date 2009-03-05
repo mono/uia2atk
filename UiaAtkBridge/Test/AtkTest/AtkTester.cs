@@ -249,6 +249,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ListItem || 
 			    type == BasicWidgetType.ParentMenu ||
 			    type == BasicWidgetType.ChildMenu ||
+			    type == BasicWidgetType.HeaderItem ||
 			    type == BasicWidgetType.Spinner)
 				validNumberOfActions = 1;
 			else if (type == BasicWidgetType.CheckedListItem)
@@ -419,6 +420,7 @@ namespace UiaAtkBridgeTest
 
 			//sub-items cannot be disabled, mainly because they are not widgets
 			if ((type != BasicWidgetType.ListItem) &&
+			    (type != BasicWidgetType.HeaderItem) &&
 			    (type != BasicWidgetType.CheckedListItem) &&
 			    (type != BasicWidgetType.ComboBoxItem)) { //disable a combobox item? let's not try weird things
 				DisableWidget (accessible);

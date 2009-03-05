@@ -1,3 +1,13 @@
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Adapter.cs: Handling NodeChildOf when Parent is DataGrid, Table,
+	Group, ListItem or DataItem. New internal property VirtualParent
+	[Fixes Bug #479142]
+
+	* ContextMenu.cs: VirtualParent moved to Adapter. [For Bug #479142]
+
+	* TreeItem.cs: OnRefRelationSet handled on Adapter. [Fixes Bug #479142]
+
 	2009-03-05  Mike Gorse  <mgorse@novell.com>
 
 	* EditableTextImplementor.cs: Fix Editable when readOnly changes.

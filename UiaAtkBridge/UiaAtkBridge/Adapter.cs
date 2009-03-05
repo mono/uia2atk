@@ -212,6 +212,39 @@ namespace UiaAtkBridge
 			return states;
 		}
 
+		protected override Atk.RelationSet OnRefRelationSet ()
+		{
+			Atk.RelationSet relationSet = base.OnRefRelationSet ();
+
+			if (Role == Atk.Role.ScrollBar 
+			    || Role == Atk.Role.RadioButton)
+				return relationSet;
+			
+			Adapter parentAdapter = VirtualParent;
+			if (parentAdapter != null) {
+				// To support NodeChildOf parent must be either
+				// - DataGrid, Table or Group, or
+				// - ListItem or DataItem, in this case the parent of parent is used,
+				//   because we are ignoring this parent (either ListItem or DataItem).
+				int controlType 
+					= (int) parentAdapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+
+				if (controlType == ControlType.ListItem.Id
+				    || controlType == ControlType.DataItem.Id)
+					parentAdapter = parentAdapter.VirtualParent;
+				else if (controlType != ControlType.DataGrid.Id
+				         && controlType != ControlType.Table.Id
+				         && controlType != ControlType.Group.Id)
+					return relationSet;
+				
+				if (parentAdapter != null)
+					relationSet.AddRelationByType (Atk.RelationType.NodeChildOf, 
+					                               parentAdapter);
+			}
+
+			return relationSet;
+		}
+
 		protected override int OnGetIndexInParent()
 		{
 			if (Parent == null)
@@ -257,6 +290,10 @@ namespace UiaAtkBridge
 				adapter = parent;
 			}
 		}
+
+		internal Adapter VirtualParent {
+			get { return AutomationBridge.GetParentAdapter (Provider); }
+		}		
 
 		private void EmitBoundsChanged (System.Windows.Rect rect)
 		{

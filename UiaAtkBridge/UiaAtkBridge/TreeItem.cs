@@ -113,19 +113,6 @@ namespace UiaAtkBridge
 			return states;
 		}
 
-		protected override Atk.RelationSet OnRefRelationSet ()
-		{
-			Atk.RelationSet relSet = base.OnRefRelationSet ();
-			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
-			IRawElementProviderFragment parentProvider = fragment.Navigate (NavigateDirection.Parent);
-			if (parentProvider != null) {
-				Atk.Object parent = AutomationBridge.GetAdapterForProviderLazy (parentProvider);
-				if (parent != null)
-					relSet.AddRelationByType (Atk.RelationType.NodeChildOf, parent);
-			}
-			return relSet;
-		}
-
 		public string GetText (int startOffset, int endOffset)
 		{
 			return textExpert.GetText (startOffset, endOffset);

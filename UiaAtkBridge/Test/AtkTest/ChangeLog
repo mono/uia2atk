@@ -1,3 +1,11 @@
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs: InterfaceAction test updated. [For bug #479142]
+
+	* AtkTests.cs: ListView test updated. [For bug #479142]
+
+	* BasicWidgetType.cs: HeaderItem value added. [For bug #479142]
+
 2009-03-05  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Test Editable state when ReadOnly and disabled.

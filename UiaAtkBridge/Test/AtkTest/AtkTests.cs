@@ -953,7 +953,7 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
-		//[Test]
+		[Test]
 		public void ListView ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListView;
@@ -984,7 +984,6 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Focusable,
-			  Atk.StateType.Focused, // from InterfaceSelection
 			  Atk.StateType.ManagesDescendants,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
@@ -997,10 +996,13 @@ namespace UiaAtkBridgeTest
 			Atk.Object header = FindObjectByRole (accessible, Atk.Role.TableColumnHeader);
 			Assert.IsNotNull (header, "Header not null");
 			States (header,
+			    Atk.StateType.Selectable,
 				Atk.StateType.Enabled,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
+			Atk.Action action = CastToAtkInterface<Atk.Action> (header);
+			InterfaceAction (BasicWidgetType.HeaderItem, action, header);
 
 			Atk.Object child1 = FindObjectByName (accessible, "Programming Windows with C#");
 			int child1Index = child1.IndexInParent;
@@ -1015,14 +1017,9 @@ namespace UiaAtkBridgeTest
 
 			InterfaceText (group, "C#");
 
-			// For some reason, the next line would cause crashes
-			// in later tests.
-			//Relation (Atk.RelationType.NodeChildOf, child1, group);
+			Relation (Atk.RelationType.NodeChildOf, child1, group);
 
 			Assert.AreEqual (3, atkTable.NColumns, "Table NumColumns");
-			Assert.AreEqual (1, atkTable.GetRowAtIndex (groupIndex), "GetRowAtIndex");
-			Assert.AreEqual (0, atkTable.GetColumnAtIndex (groupIndex), "GetColumnAtIndex");
-			Assert.AreEqual (group, atkTable.RefAt (1, 0), "ListView RefAt");
 		}
 
 		protected string simpleTable = "<table>"+

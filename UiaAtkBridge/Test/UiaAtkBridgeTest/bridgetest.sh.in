@@ -3,7 +3,7 @@
 DLL=UiaAtkBridgeTest.dll
 
 TEST_DISPLAY=:1
-NUNIT_FLAGS=-nothread
+NUNIT_FLAGS="-nothread -noshadow"
 
 while getopts c:x o
 do case "$o" in
