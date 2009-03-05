@@ -149,7 +149,16 @@ lvFrame.assertText(lvFrame.tablecell[4], "Item 4")
 ##############################
 # check tablecell's LabelEdit
 ##############################
-# TODO: should edit list items' text from GUI
+# edit item's text from GUI
+lvFrame.tablecell[4].mouseClick()
+sleep(config.SHORT_DELAY)
+lvFrame.tablecell[4].mouseClick()
+sleep(config.SHORT_DELAY)
+lvFrame.tablecell[4].insertText("Item 99")
+sleep(config.SHORT_DELAY)
+lvFrame.tablecell[0].mouseClick()
+sleep(config.SHORT_DELAY)
+lvFrame.assertText(lvFrame.tablecell[4], "Item 99Item 4")
 
 # TODO: BUG481456 could not edit in "Text(Editable)"
 #lvFrame.inputText(lvFrame.tablecell[3], "Item 99")

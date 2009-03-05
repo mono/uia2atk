@@ -96,8 +96,6 @@ nudFrame.editable_numericupdown.mouseClick()
 nudFrame.valueNumericUpDown(nudFrame.editable_numericupdown, 0)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 0)
-# the text wont change until enter a "Return" 
-# the behavior is similar to gtk sample
 nudFrame.assertText(nudFrame.editable_numericupdown, "0")
 
 ############################

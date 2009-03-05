@@ -1,3 +1,13 @@
+2009-03-05  Ray Wang <rawang@novell.com>
+
+	* testers/states.py: add MANAGES_DESCENDANTS state for DomainUpDown.
+	* testers/domainupdown/domainupdownframe.py: add selectChild method
+	to select the spin button's children.
+	* testers/domainupdown_basic_ops.py: update script due to regression
+	test.
+	* testers/numericupdown_basic_ops.py: remove useless comments.
+	* testers/listview_list_ops.py: add some GUI test statements.
+
 2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/toolbarbutton.py: Make this test crossplatform.
