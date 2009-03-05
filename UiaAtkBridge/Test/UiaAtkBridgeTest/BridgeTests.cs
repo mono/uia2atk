@@ -852,10 +852,10 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		[Ignore ("Not ready yet. For 1.0.")]
-		public override void MaskedTextBoxEntry ()
+		[Ignore ("Not ready yet.")]
+		public override void PasswordCharTextBoxEntry ()
 		{
-			base.MaskedTextBoxEntry ();
+			base.PasswordCharTextBoxEntry ();
 		}
 
 		[Test]
