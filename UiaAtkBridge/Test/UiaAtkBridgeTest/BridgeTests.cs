@@ -955,7 +955,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 
-//TODO: missing Focusable: for some reason ToolBarButton implements this correctly even lacking IsKeyboardFocusable
+//TODO: commented because of bug 478838
 //			States (accessible,
 //				Atk.StateType.Enabled,
 //				Atk.StateType.Focusable,

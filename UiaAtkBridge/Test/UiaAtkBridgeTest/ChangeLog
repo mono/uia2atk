@@ -1,3 +1,8 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Better a bug number with full info than a
+	spirous comment.
+
 2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Wrap ToolStripButton as a bridge Button.
