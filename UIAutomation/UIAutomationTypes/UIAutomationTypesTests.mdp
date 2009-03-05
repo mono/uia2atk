@@ -63,7 +63,6 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
   </References>
   <Deployment.LinuxDeployData generatePcFile="False" />
-  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ExecuteTargetName="run">
     <BuildFilesVar />
     <DeployFilesVar />

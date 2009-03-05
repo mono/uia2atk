@@ -1,3 +1,10 @@
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationTypes.mdp: Removing GtkDesignInfo.
+	InsertDeleteTextPatternIdentifiers.cs file added to project.
+
+	* UIAutomationTypesTests.mdp: Removing GtkDesignInfo.
+
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
