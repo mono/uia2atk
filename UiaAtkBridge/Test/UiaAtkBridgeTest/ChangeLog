@@ -1,5 +1,10 @@
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
+	* BridgeTests.cs: 
+	* BridgeTester.cs: Fix build due to silly merge conflict.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
 	* BridgeTests.cs: Add an entry in GetAccessible () for
 	MaskedTextBoxEntry.
 

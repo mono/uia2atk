@@ -647,9 +647,6 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.DateTimePicker:
 				accessible = GetAdapterForWidget (dateTimePicker);
 				break;
-			case BasicWidgetType.MaskedTextBoxEntry:
-				accessible = GetAdapterForWidget (maskedTextBox);
-				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
@@ -962,10 +959,6 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.MonthCalendar:
 				accessible = GetAdapterForWidget (monthCalendar);
-				break;
-			case BasicWidgetType.MaskedTextBoxEntry:
-				maskedTextBox.Mask = name;
-				accessible = GetAdapterForWidget (maskedTextBox);
 				break;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:

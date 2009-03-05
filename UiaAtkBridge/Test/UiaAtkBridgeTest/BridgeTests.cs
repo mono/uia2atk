@@ -859,14 +859,12 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		public void MaskedTextBoxEntry ()
+		public void MaskedTextBox ()
 		{
-			BasicWidgetType type = BasicWidgetType.MaskedTextBoxEntry;
-			Atk.Object accessible = null;
-			
-			string mask = "(000)000-0000";
-			accessible = GetAccessible (type, mask, true);
+			maskedTextBox.Mask = "(000)000-0000";
 
+			Atk.Object accessible = GetAdapterForWidget (maskedTextBox);
+			
 			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
 			Atk.EditableText editableText = CastToAtkInterface<Atk.EditableText> (accessible);
 
