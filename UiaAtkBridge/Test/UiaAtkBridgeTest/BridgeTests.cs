@@ -859,6 +859,115 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void MaskedTextBoxEntry ()
+		{
+			BasicWidgetType type = BasicWidgetType.MaskedTextBoxEntry;
+			Atk.Object accessible = null;
+			
+			string mask = "(000)000-0000";
+			accessible = GetAccessible (type, mask, true);
+
+			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.EditableText editableText = CastToAtkInterface<Atk.EditableText> (accessible);
+
+			string baseMask = "(___)___-____";
+			Assert.AreEqual (baseMask, text.GetText (0, -1));
+
+			string[] testMasks = new string[] {
+				"(1__)___-____",
+				"(1__)___-____",
+				"(_1_)___-____",
+				"(__1)___-____",
+				"(___)1__-____",
+				"(___)1__-____",
+				"(___)_1_-____",
+				"(___)__1-____",
+				"(___)___-1___",
+				"(___)___-1___",
+				"(___)___-_1__",
+				"(___)___-__1_",
+				"(___)___-___1",
+			};
+
+			int[] testMaskPositions = new int[] {
+				1, 1, 2, 3, 5, 5, 6, 7, 9, 9, 10, 11, 12
+			};
+
+			int position = 0;
+
+			for (int i = 0; i < testMasks.Length; i++) {
+				position = i;
+				editableText.InsertText ("1", ref position);
+
+				Assert.AreEqual (testMasks[i], text.GetText (0, -1),
+				                 String.Format ("Masks are not equal at position {0}", i));
+				Assert.AreEqual (testMaskPositions[i], position,
+				                 String.Format ("Returned position is incorrect at position {0}", i));
+
+				maskedTextBox.Text = String.Empty;
+			}
+
+			// Insert multiple characters spanning a placeholder
+			maskedTextBox.Text = String.Empty;
+			
+			position = 0;
+			editableText.InsertText ("4019924027", ref position);
+			
+			Assert.AreEqual ("(401)992-4027", text.GetText (0, -1));
+			Assert.AreEqual (1, position);
+
+			// Overwriting
+			maskedTextBox.Text = String.Empty;
+
+			position = 2;
+			editableText.InsertText ("1", ref position);
+			Assert.AreEqual ("(_1_)___-____", text.GetText (0, -1));
+			Assert.AreEqual (2, position);
+
+			// XXX: This is different than what would happen in the
+			// gui, namely because we can't handle all the edge
+			// cases it does.  In the GUI, this would be (231)...
+			position = 1;
+			editableText.InsertText ("23", ref position);
+			Assert.AreEqual ("(21_)___-____", text.GetText (0, -1));
+			Assert.AreEqual (1, position);
+
+			// Extra text
+			maskedTextBox.Text = String.Empty;
+
+			position = 2;
+			editableText.InsertText ("1234567890", ref position);
+			Assert.AreEqual ("(_12)345-6789", text.GetText (0, -1));
+			Assert.AreEqual (2, position);
+
+			// Invalid removal
+			editableText.DeleteText (0, 1);
+			Assert.AreEqual ("(_12)345-6789", text.GetText (0, -1));
+
+			// Valid removal
+			editableText.DeleteText (2, 3);
+			Assert.AreEqual ("(__2)345-6789", text.GetText (0, -1));
+
+			editableText.DeleteText (2, 6);
+			Assert.AreEqual ("(___)_45-6789", text.GetText (0, -1));
+
+			editableText.DeleteText (11, 12);
+			Assert.AreEqual ("(___)_45-67_9", text.GetText (0, -1));
+
+			editableText.DeleteText (0, 100);
+			Assert.AreEqual ("(___)___-____", text.GetText (0, -1));
+			
+			States (accessible,
+			  Atk.StateType.Editable, 
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Focusable,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible,
+			  Atk.StateType.SingleLine);
+		}
+
+		[Test]
 		[Ignore ("Blocking test")]
 		public void ContextMenuDeprecated ()
 		{

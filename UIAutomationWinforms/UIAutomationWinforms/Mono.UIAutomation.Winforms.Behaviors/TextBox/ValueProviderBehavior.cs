@@ -24,8 +24,8 @@
 // 
 using System;
 using System.Windows.Automation;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.TextBox;
 
@@ -83,11 +83,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		#region IValueProvider: Specialization
 		
 		public bool IsReadOnly {
-			get { return ((TextBoxBase) Provider.Control).ReadOnly; }
+			get { return ((SWF.TextBoxBase) Provider.Control).ReadOnly; }
 		}
 		
 		public string Value {
-			get { return Provider.Control.Text; }
+			get {
+				if (Provider.Control is SWF.MaskedTextBox) {
+					System.ComponentModel.MaskedTextProvider mtp
+						= ((SWF.MaskedTextBox) Provider.Control).MaskedTextProvider;
+					if (mtp != null)
+						return mtp.ToDisplayString ();
+				}
+
+				return Provider.Control.Text;
+			}
 		}
 
 		public void SetValue (string value)
@@ -96,23 +105,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				throw new ElementNotEnabledException ();
 
 			PerformSetValue (value);
-		}
-		
-		#endregion
-
-		#region Private Properties
-		
-		private int MaxLength {
-			get {
-				int maxLength = 0;
-				if (Provider.Control is System.Windows.Forms.TextBox) {
-					maxLength = ((System.Windows.Forms.TextBox) Provider.Control).MaxLength;
-				} else if (Provider.Control is RichTextBox) {
-					maxLength = ((RichTextBox) Provider.Control).MaxLength;
-				}
-				// NOTE: MaxLength when set on MaskedTextBox always returns 32767.
-				return maxLength;
-			}
 		}
 		
 		#endregion
@@ -127,9 +119,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				return;
 			}
 
-			if (MaxLength > 0
-			    && value.Length > MaxLength) {
-				value = value.Substring (0, MaxLength);
+			int maxLength = ((TextBoxProvider) Provider).MaxLength;
+			if (maxLength > 0
+			    && value.Length > maxLength) {
+				value = value.Substring (0, maxLength);
 			}
 			
 			Provider.Control.Text = value;

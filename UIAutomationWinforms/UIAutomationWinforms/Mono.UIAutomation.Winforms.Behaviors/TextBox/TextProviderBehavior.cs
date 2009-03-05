@@ -157,7 +157,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 
 		public void Copy (int start, int end)
 		{
-			string text = TextBoxBase.Text;
+			string text = Text;
 			start = (int) System.Math.Max (start, 0);
 			end = (int) System.Math.Min (end, text.Length);
 			SWF.Clipboard.SetText (text.Substring (start, end - start));
@@ -165,10 +165,28 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public void Paste (int position)
 		{
-			string text = TextBoxBase.Text;
+			string text = Text;
 			position = (int) System.Math.Max (position, 0);
 			position = (int) System.Math.Min (position, text.Length);
-			TextBoxBase.Text = text.Insert (position, SWF.Clipboard.GetText ());
+
+			// If you were to paste using the GUI, it would only
+			// paste enough until the control was full, so emulate
+			// that behavior.
+			int maxLength = 0;
+			if (Provider is TextBoxProvider)
+				maxLength = ((TextBoxProvider) Provider).MaxLength;
+
+			string clipboardText = SWF.Clipboard.GetText ();
+			if (maxLength > 0 && clipboardText.Length > (maxLength - position))
+				clipboardText = clipboardText.Substring (0, maxLength - position);
+
+			IInsertDeleteTextProvider insertDeleteProv
+				= Provider.GetPatternProvider (InsertDeleteTextPatternIdentifiers.Pattern.Id)
+					as IInsertDeleteTextProvider;
+			if (insertDeleteProv != null)
+				insertDeleteProv.InsertText (clipboardText, ref position);
+			else
+				TextBoxBase.Text = text.Insert (position, clipboardText);
 		}
 
 		#endregion
@@ -190,6 +208,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		// as this class is reused for RichTextBox
 		private SWF.TextBox TextBox {
 			get { return Provider.Control as SWF.TextBox; }
+		}
+
+		private string Text {
+			get {
+				if (TextBoxBase is SWF.MaskedTextBox)
+					return ((SWF.MaskedTextBox) TextBoxBase).MaskedTextProvider.ToDisplayString ();
+				else
+					return TextBoxBase.Text;
+			}
+			set { TextBoxBase.Text = value; }
 		}
 		
 		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
@@ -218,7 +246,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				// find a better way of doing it
 				SWF.Document document = Document;
 				if (document.caret.line.line_no > document.Lines)
-					return TextBoxBase.Text.Length;
+					return Text.Length;
 				return Document.LineTagToCharIndex
 					(document.caret.line, document.CaretPosition);
 			}

@@ -48,6 +48,7 @@ FILES =  \
 	System.Windows.Automation/ExpandCollapseState.cs \
 	System.Windows.Automation/GridItemPatternIdentifiers.cs \
 	System.Windows.Automation/GridPatternIdentifiers.cs \
+	System.Windows.Automation/InsertDeleteTextPatternIdentifiers.cs \
 	System.Windows.Automation/InvokePatternIdentifiers.cs \
 	System.Windows.Automation/KeyEventArgs.cs \
 	System.Windows.Automation/MultipleViewPatternIdentifiers.cs \

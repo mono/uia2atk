@@ -17,36 +17,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Brad Taylor <brad@getcoded.net>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
 using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors.MaskedTextBox;
 
-namespace Mono.UIAutomation.Winforms
+namespace System.Windows.Automation.Provider
 {
-	[MapsComponent (typeof (MaskedTextBox))]
-	internal class MaskedTextBoxProvider : TextBoxProvider
+	internal interface IInsertDeleteTextProvider
 	{
-#region Public Methods
-		public MaskedTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
-		{
-		}
+		void InsertText (string str, ref int position);
 
-		public override void Initialize ()
-		{
-			base.Initialize ();
-			
-			SetBehavior (InsertDeleteTextPatternIdentifiers.Pattern,
-			             new InsertDeleteTextProviderBehavior (this));
-		}
-#endregion
+		void DeleteText (int start, int end);
 	}
 }

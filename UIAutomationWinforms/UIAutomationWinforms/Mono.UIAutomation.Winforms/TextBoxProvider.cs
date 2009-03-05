@@ -150,6 +150,24 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
+
+		#region Internal Properties
+		
+		internal int MaxLength {
+			get {
+				if (textboxbase is TextBox) {
+					return ((TextBox) textboxbase).MaxLength;
+				} else if (textboxbase is RichTextBox) {
+					return ((RichTextBox) textboxbase).MaxLength;
+				} else if (textboxbase is MaskedTextBox) {
+					// Length of the mask, removing mask modifiers
+					return ((MaskedTextBox) textboxbase).MaskedTextProvider.Length;
+				}
+				return 0;
+			}
+		}
+
+		#endregion
 		
 		#region Private Methods
 

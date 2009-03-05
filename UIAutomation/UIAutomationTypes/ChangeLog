@@ -1,3 +1,10 @@
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation/InsertDeleteTextPatternIdentifiers.cs: 
+	Add a new internal InsertDeleteTextPatternIdentifiers to support the
+	new IInsertDeleteTextProvider.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationTypes.mdp:

@@ -34,6 +34,7 @@ FILES =  \
 	System.Windows.Automation.Provider/IExpandCollapseProvider.cs \
 	System.Windows.Automation.Provider/IGridItemProvider.cs \
 	System.Windows.Automation.Provider/IGridProvider.cs \
+	System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs \
 	System.Windows.Automation.Provider/IInvokeProvider.cs \
 	System.Windows.Automation.Provider/IMultipleViewProvider.cs \
 	System.Windows.Automation.Provider/IRangeValueProvider.cs \

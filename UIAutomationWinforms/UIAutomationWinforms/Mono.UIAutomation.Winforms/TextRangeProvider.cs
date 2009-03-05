@@ -199,7 +199,7 @@ namespace Mono.UIAutomation.Winforms
 		public ITextRangeProvider FindText (string text, bool backward, 
 		                                    bool ignoreCase)
 		{
-			string contents = textboxbase.Text;	
+			string contents = normalizer.Text;	
 			StringComparison cmp = ignoreCase ? StringComparison.CurrentCultureIgnoreCase
 			                                  : StringComparison.CurrentCulture;
 			if (String.IsNullOrEmpty (text) || String.IsNullOrEmpty (contents)) {
@@ -263,7 +263,7 @@ namespace Mono.UIAutomation.Winforms
 		public Rect[] GetBoundingRectangles ()
 		{
 			if (StartPoint == EndPoint
-			    || String.IsNullOrEmpty (textboxbase.Text)) {
+			    || String.IsNullOrEmpty (normalizer.Text)) {
 				return new Rect[0];
 			}
 
@@ -320,7 +320,7 @@ namespace Mono.UIAutomation.Winforms
 			if (length > maxLength && maxLength != -1)
 				length = maxLength;
 
-			return textboxbase.Text.Substring (startPoint, length);
+			return normalizer.Text.Substring (startPoint, length);
 		}
 
 		public int Move (TextUnit unit, int count)

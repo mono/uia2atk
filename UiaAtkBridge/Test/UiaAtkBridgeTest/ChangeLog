@@ -1,3 +1,11 @@
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Add an entry in GetAccessible () for
+	MaskedTextBoxEntry.
+
+	* BridgeTester.cs: Add a test for MaskedTextBox's EditableText
+	interface.
+
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Fix build, oops.

@@ -1,3 +1,34 @@
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	Fixes #465467, #465018, #465091, #466598 and #465095.
+
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: 
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Special case
+	MaskedTextBox so that we return .ToDisplayString () not .Text, as the
+	former is what is actually displayed.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Move MaxLength here so
+	that it can be used by other providers.
+
+	* Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs: Add a new
+	InsertDeleteTextProvider to the list of behaviors.  This is necessary
+	as simply manipulating the ValuePattern in the bridge won't work.
+	The semantics of Atk.Editable's InsertText are better mapped to a
+	character by character replace when the insertion is happening on a
+	blank (represented by the '_' character) cell.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	When dealing with the MaskedTextBox control, return .ToDisplayString ()
+	instead of .Text.
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox: 
+	* Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox/InsertDeleteTextProviderBehavior.cs: 
+	Implement the new behavior so that Atk.EditableText's methods can be
+	proxied directly to the actual control.  This will allow us to handle
+	these methods as the user expects.
+
 2009-03-04  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

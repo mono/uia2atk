@@ -48,10 +48,12 @@ namespace UiaAtkBridge
 					as ITextProvider;
 			textExpert = TextImplementorFactory.GetImplementor (adapter, adapter.Provider);
 
-			valueProvider = adapter.Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id)
-				as IValueProvider;
 			if (valueProvider != null)
 				editable = !valueProvider.IsReadOnly;
+
+			insertDeleteProvider
+				= adapter.Provider.GetPatternProvider (InsertDeleteTextPatternIdentifiers.Pattern.Id)
+					as IInsertDeleteTextProvider;
 
 			oldText = textExpert.Text;
 			
@@ -111,6 +113,13 @@ namespace UiaAtkBridge
 			if (position < 0 || position > textExpert.Length)
 				position = textExpert.Length;	// gail
 
+			// This provider allows us to avoid string manip when
+			// the control itself supports manipulation directly.
+			if (insertDeleteProvider != null) {
+				insertDeleteProvider.InsertText (str, ref position);
+				return;
+			}
+
 			TextContents = textExpert.Text.Substring (0, position)
 				+ str
 				+ textExpert.Text.Substring (position);
@@ -144,6 +153,13 @@ namespace UiaAtkBridge
 
 			if (TextContents == null)
 				return;
+
+			// This provider allows us to avoid string manip when
+			// the control itself supports manipulation directly.
+			if (insertDeleteProvider != null) {
+				insertDeleteProvider.DeleteText (startPos, endPos);
+				return;
+			}
 
 			TextContents = TextContents.Remove (startPos, endPos - startPos);
 		}
@@ -274,6 +290,7 @@ namespace UiaAtkBridge
 		private Atk.TextImplementor textImplementor;
 		private ITextProvider textProvider;
 		private IValueProvider valueProvider;
+		private IInsertDeleteTextProvider insertDeleteProvider;
 
 		#endregion
 	}

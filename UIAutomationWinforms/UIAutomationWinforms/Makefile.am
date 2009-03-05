@@ -127,6 +127,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox/InsertDeleteTextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/ExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/SelectionItemProviderBehavior.cs \

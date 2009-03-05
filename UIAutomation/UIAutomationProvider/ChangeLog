@@ -1,3 +1,9 @@
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs: Add
+	a new internal IInsertDeleteTextProvider class for MaskedTextBox.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationProvider.mdp:
