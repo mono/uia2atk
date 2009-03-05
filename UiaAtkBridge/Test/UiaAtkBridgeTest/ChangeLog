@@ -1,3 +1,7 @@
+2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Expect Editable in ListView items.
+
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: 

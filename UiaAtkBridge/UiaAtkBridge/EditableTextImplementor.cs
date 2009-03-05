@@ -253,7 +253,7 @@ namespace UiaAtkBridge
 				bool? isReadOnlyVal = e.NewValue as bool?;
 				if (isReadOnlyVal == null && valueProvider != null)
 					isReadOnlyVal = valueProvider.IsReadOnly;
-				Editable = isReadOnlyVal ?? false;
+				Editable = isReadOnlyVal.HasValue? !isReadOnlyVal.Value : false;
 
 				return true;
 			}

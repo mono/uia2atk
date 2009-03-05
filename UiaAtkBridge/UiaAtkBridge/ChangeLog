@@ -1,3 +1,11 @@
+	2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* EditableTextImplementor.cs: Fix Editable when readOnly changes.
+
+	* List.cs: Do not set Editable when a DomainUpDown is disabled.
+
+	* TreeItem.cs: Set Editable when appropriate.
+
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
 	* EditableTextImplementor.cs: Use the new IInsertDeleteTextProvider

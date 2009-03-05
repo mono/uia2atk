@@ -105,6 +105,11 @@ namespace UiaAtkBridge
 					states.AddState (Atk.StateType.Expanded);
 			}
 
+			if (editableTextExpert.Editable)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+
 			return states;
 		}
 

@@ -161,7 +161,7 @@ namespace UiaAtkBridgeTest
 		protected abstract bool AllowsSelectingChildMenus { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
 		protected abstract bool TextBoxHasScrollBar { get; }
-		
+
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                                Atk.Action actionable2, Atk.Object accessible2,
 		                                                Atk.Action actionable3, Atk.Object accessible3)
@@ -1047,6 +1047,10 @@ namespace UiaAtkBridgeTest
 			InterfaceText (accessible, "dAnd your head is made of clouds, but your feet are made of ground.");
 
 			EditReadOnly (type, accessible);
+			// Enabling/disabling doesn't currently work in the
+			// test for ListView items
+			if (type != BasicWidgetType.ListView)
+				EditDisable (accessible);
 		}
 
 		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
@@ -1090,6 +1094,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (2, pos, "InsertText pos");
 
 			EditReadOnly (type, accessible);
+			EditDisable (accessible);
 		}
 
 		protected void EditReadOnly (BasicWidgetType type, Atk.Object accessible)
@@ -1100,12 +1105,29 @@ namespace UiaAtkBridgeTest
 			SetReadOnly (type, accessible, false);
 			atkEditableText.TextContents = "0";
 			SetReadOnly (type, accessible, true);
+			Assert.IsFalse (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "ReadOnly element should not have Editable state");
 			atkEditableText.TextContents = "5";
 			int pos = 0;
 			atkEditableText.InsertText ("6", ref pos);
 			atkEditableText.DeleteText (0, 2);
 			Assert.AreEqual ("0", atkText.GetText (0, -1), "AtkEditableText should not change text if ReadOnly");
 			SetReadOnly (type, accessible, false);
+			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly element should have Editable state");
+		}
+
+		protected void EditDisable (Atk.Object accessible)
+		{
+			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+
+			EnableWidget (accessible);
+			atkEditableText.TextContents = "0";
+			DisableWidget (accessible);
+			atkEditableText.TextContents = "5";
+			bool editableExpected = (atkText.GetText (0, -1) == "5");
+			Assert.AreEqual (editableExpected, accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Editable state when disabled");
+			EnableWidget (accessible);
+			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly element should have Editable state");
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)

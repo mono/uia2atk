@@ -1,3 +1,7 @@
+2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Test Editable state when ReadOnly and disabled.
+
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

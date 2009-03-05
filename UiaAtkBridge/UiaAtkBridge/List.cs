@@ -283,6 +283,7 @@ AtkObject,
 		private ITextProvider textProvider;
 		private IClipboardSupport clipboardSupport;
 		private string oldText;
+		private bool editable = false;
 
 		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
 			: base (provider)
@@ -304,14 +305,15 @@ AtkObject,
 			caretOffset = (iText != null? iText.CaretOffset: text_helper.Length);
 
 			oldText = text_helper.Text;
+
+			RefreshEditable ();
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			bool readOnly = (bool) Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id);
-			if (!readOnly)
+			if (editable)
 				states.AddState (Atk.StateType.Editable);
 			else
 				states.RemoveState (Atk.StateType.Editable);
@@ -340,7 +342,10 @@ AtkObject,
 
 				oldText = newText;
 			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
-				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
+				RefreshEditable ();
+			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+				RefreshEditable ();
+				base.RaiseAutomationPropertyChangedEvent (e);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
@@ -359,6 +364,22 @@ AtkObject,
 				base.RaiseAutomationEvent (eventId, e);
 		}
 
+		protected void RefreshEditable ()
+		{
+			Editable =
+				(!(bool)Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id)) &&
+				(bool)Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+		}
+
+		protected bool Editable {
+			get { return editable; }
+			set {
+				if (value == editable)
+					return;
+				editable = value;
+				NotifyStateChange (Atk.StateType.Editable, value);
+			}
+		}
 #region TextImplementor Implementation 
 		public string GetText (int startOffset, int endOffset)
 		{

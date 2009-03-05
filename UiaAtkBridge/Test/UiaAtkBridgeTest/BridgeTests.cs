@@ -74,6 +74,7 @@ namespace UiaAtkBridgeTest
 			
 			States (listItemChild, 
 			  Atk.StateType.Enabled,
+				(listView? Atk.StateType.Editable: Atk.StateType.Enabled),
 			  Atk.StateType.Focusable,
 			  Atk.StateType.Selectable,
 			  Atk.StateType.Sensitive,
@@ -128,6 +129,7 @@ namespace UiaAtkBridgeTest
 			
 			States (listItemChild,
 				Atk.StateType.Enabled,
+				(listView? Atk.StateType.Editable: Atk.StateType.Enabled),
 				Atk.StateType.Focusable,
 				Atk.StateType.Selectable,
 				Atk.StateType.Sensitive,
