@@ -1,5 +1,9 @@
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
+	* bridgetest.sh.in: Using -noshadow in NUNIT_FLAGS.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
 	* bridgetest.sh.in: Added -noshadow to NUNIT_FLAGS.
 
 2009-03-05  Mike Gorse  <mgorse@novell.com>

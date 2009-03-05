@@ -48,7 +48,7 @@ else
 fi
 
 (cd bin/Debug; \
-	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe -noshadow -labels ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
+	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe -labels ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
 
 if [ "x$xephyr" == "xyes" ]; then
 	kill $metacity_pid $xephyr_pid
