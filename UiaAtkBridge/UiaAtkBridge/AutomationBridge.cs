@@ -175,7 +175,7 @@ namespace UiaAtkBridge
 		
 		public bool ClientsAreListening {
 			get {
-				// FXIME: Implement to enable/disable bridge when ATs are/aren't running.
+				// FIXME: Implement to enable/disable bridge when ATs are/aren't running.
 				return true;
 			}
 		}

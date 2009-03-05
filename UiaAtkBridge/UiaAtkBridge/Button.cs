@@ -34,11 +34,12 @@ namespace UiaAtkBridge
 {
 	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
 	{
-		private static string default_invoke_name = "click";
+		//TODO: use ActionImplementorHelper
+		private static readonly string	default_invoke_name = "click";
 
-		private IInvokeProvider				invokeProvider;
-		private string						actionDescription = null;
-		protected string					actionName = null;
+		private IInvokeProvider		invokeProvider;
+		private string			actionDescription = null;
+		protected string		actionName = null;
 		
 		private ITextImplementor textExpert = null;
 		

@@ -1,3 +1,9 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs:
+	* Makefile.am:
+	* AutomationBridge.cs: Cosmetic.
+
 2009-03-04  Mario Carrion  <mcarrion@novell.com>
 
 	* HeaderItem.cs: Using actionExpert instead of local handling. [Fixes
