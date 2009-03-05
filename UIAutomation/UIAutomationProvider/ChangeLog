@@ -1,3 +1,10 @@
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationProvider.mdp: Removing GtkDesignInfo.
+	IInsertDeleteTextProvider.cs file added.
+
+	* UIAutomationProviderTests.mdp: Removing GtkDesignInfo.
+
 2009-03-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
