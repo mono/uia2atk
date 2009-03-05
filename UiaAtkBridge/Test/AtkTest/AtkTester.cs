@@ -940,7 +940,7 @@ namespace UiaAtkBridgeTest
 				       Atk.Role.ComboBox : Atk.Role.TreeTable;
 			case BasicWidgetType.RadioButton:
 				return Atk.Role.RadioButton;
-			case BasicWidgetType.MaskedTextBoxEntry:
+			case BasicWidgetType.PasswordCharTextBoxEntry:
 			case BasicWidgetType.TextBoxEntry:
 			case BasicWidgetType.TextBoxView:
 			case BasicWidgetType.RichTextBox:
@@ -1157,7 +1157,7 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (caret, atkText.CaretOffset, "CaretOffset SL");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
-			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry) {
 				Assert.AreEqual (String.Empty + name [0], String.Empty + atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
 				Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
 			} else {
@@ -1168,7 +1168,7 @@ namespace UiaAtkBridgeTest
 
 			int highCaretOffset = 15;
 			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
-			bool expectTrue = (type == BasicWidgetType.MaskedTextBoxEntry
+			bool expectTrue = (type == BasicWidgetType.PasswordCharTextBoxEntry
 			                   || type == BasicWidgetType.RichTextBox);
 			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue, 
 			                 atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
@@ -1188,14 +1188,14 @@ namespace UiaAtkBridgeTest
 			    (type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.TextBoxView) ||
 			    (type == BasicWidgetType.RichTextBox) ||
-			    (type == BasicWidgetType.MaskedTextBoxEntry))
+			    (type == BasicWidgetType.PasswordCharTextBoxEntry))
 				nSelections = 0;
 			
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 
 			int caretOffset = 0;
 			if (!Misc.HasReadOnlyText (type)
-			    || type == BasicWidgetType.MaskedTextBoxEntry
+			    || type == BasicWidgetType.PasswordCharTextBoxEntry
 			    || type == BasicWidgetType.RichTextBox)
 				caretOffset = highCaretOffset;
 			
@@ -1245,7 +1245,7 @@ namespace UiaAtkBridgeTest
 
 			int startCaretOffset = name.IndexOf (expected);
 			int endCaretOffset = name.IndexOf (expected) + expected.Length;
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString;
 				startCaretOffset = 0;
 				endCaretOffset = name.Length;
@@ -1291,7 +1291,7 @@ namespace UiaAtkBridgeTest
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
 
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString.Substring (0, 12);
 				startCaretOffset = 12;
 				endCaretOffset = passwordString.Length;
@@ -1306,7 +1306,7 @@ namespace UiaAtkBridgeTest
 			expected = simpleTestText;
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString;
 				startCaretOffset = 0;
 			}
@@ -1336,7 +1336,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,SentenceStart,eo SL");
 
 			expected = "t";
-			if (type == BasicWidgetType.MaskedTextBoxEntry)
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = String.Empty + passwordChar;
 			
 			Assert.AreEqual (expected,
@@ -1344,7 +1344,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so SL");
 			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo SL");
 
-			if (type != BasicWidgetType.MaskedTextBoxEntry)
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = ".";
 			
 			Assert.AreEqual (expected,
@@ -1358,7 +1358,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo SL");
 			
 			
-			if (type != BasicWidgetType.MaskedTextBoxEntry)
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = "e";
 			
 			Assert.AreEqual (expected,
@@ -1383,7 +1383,7 @@ namespace UiaAtkBridgeTest
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
 			
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				startCaretOffset = name.Length;
 				endCaretOffset = startCaretOffset;
 				expected = String.Empty;
@@ -1395,7 +1395,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordEnd,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordEnd,eo SL");
 			
-			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = "sentence.";
 				startCaretOffset = name.IndexOf (expected);
 				endCaretOffset = name.IndexOf (expected) + expected.Length;
@@ -1749,7 +1749,7 @@ namespace UiaAtkBridgeTest
 				// event, but that would be hard with
 				// the current design, so allowing 2
 				int min = 1, max = 2;
-				if (!supportsSelection || type == BasicWidgetType.MaskedTextBoxEntry) {
+				if (!supportsSelection || type == BasicWidgetType.PasswordCharTextBoxEntry) {
 					min = 0;
 					max = 0;
 				}

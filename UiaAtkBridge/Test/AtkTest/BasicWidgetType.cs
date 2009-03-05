@@ -47,7 +47,7 @@ namespace UiaAtkBridgeTest
 		ToolBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)
 		TextBoxView,        // textbox multi-line (gtk: textview)
-		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
+		PasswordCharTextBoxEntry, // textbox with PasswordChar set (gtk: entry with visibility:false)
 		RichTextBox, // RichTextBox (gtk: textview)
 		
 		MainMenuBar,
@@ -132,7 +132,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.TextBoxEntry ||
 			    type == BasicWidgetType.TextBoxView ||
 			    type == BasicWidgetType.RichTextBox ||
-			    type == BasicWidgetType.MaskedTextBoxEntry)
+			    type == BasicWidgetType.PasswordCharTextBoxEntry)
 				return false;
 			return true;
 		}

@@ -507,7 +507,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.TextView)widget).Buffer.Text = text;
 				});
 				break;
-			case BasicWidgetType.MaskedTextBoxEntry:
+			case BasicWidgetType.PasswordCharTextBoxEntry:
 				if (!real)
 					throw new NotSupportedException ();
 				

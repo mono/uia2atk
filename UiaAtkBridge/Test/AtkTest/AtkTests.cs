@@ -517,9 +517,9 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		public virtual void MaskedTextBoxEntry ()
+		public virtual void PasswordCharTextBoxEntry ()
 		{
-			BasicWidgetType type = BasicWidgetType.MaskedTextBoxEntry;
+			BasicWidgetType type = BasicWidgetType.PasswordCharTextBoxEntry;
 			Atk.Object accessible = null;
 			
 			accessible = InterfaceText (type, true);

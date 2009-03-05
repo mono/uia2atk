@@ -1,3 +1,11 @@
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTest.mdp: Fix refs.
+
+	* GailTester.cs: Rename MaskedTextBoxEntry enum to
+	PasswordCharTextBoxEntry. (A new separate test for
+	MaskedTextBox will come.)
+
 2009-03-04  Mike Gorse  <mgorse@novell.com>
 
 	* GailTester.cs: Add TextBoxHasScrollBar.
