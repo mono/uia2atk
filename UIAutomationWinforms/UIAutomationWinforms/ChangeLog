@@ -1,3 +1,14 @@
+2009-03-06  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonExpandCollapseProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonExpandCollapsePatternExpandCollapseStateEvent.cs:
+	Implemented IExpandCollapseProvider for ToolBarDropDownButton.
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:
+	Used internal method to perform click event.
+	[Fixes Bug #481360]
+
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:

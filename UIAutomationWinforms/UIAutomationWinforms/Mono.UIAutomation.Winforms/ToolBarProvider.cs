@@ -187,8 +187,10 @@ namespace Mono.UIAutomation.Winforms
 				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 				          new ETB.AutomationIsEnabledPropertyEvent (this));
 				
-				if (style == ToolBarButtonStyle.DropDownButton || 
-				    style == ToolBarButtonStyle.PushButton)
+				if (style == ToolBarButtonStyle.DropDownButton)
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+					             new ToolBarButtonExpandCollapseProviderBehavior (this));
+				else if (style == ToolBarButtonStyle.PushButton)
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
 				else if (style == ToolBarButtonStyle.ToggleButton)

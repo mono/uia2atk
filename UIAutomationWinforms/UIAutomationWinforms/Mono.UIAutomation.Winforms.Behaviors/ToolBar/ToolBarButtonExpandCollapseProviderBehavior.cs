@@ -5,10 +5,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to 
 // permit persons to whom the Software is furnished to do so, subject to 
 // the following conditions: 
-//  
+// 
 // The above copyright notice and this permission notice shall be 
 // included in all copies or substantial portions of the Software. 
-//  
+// 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
@@ -26,6 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Drawing;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
@@ -33,11 +34,11 @@ using Mono.UIAutomation.Winforms.Events.ToolBar;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 {
-	internal class ToolBarButtonToggleProviderBehavior : ProviderBehavior, IToggleProvider
+	internal class ToolBarButtonExpandCollapseProviderBehavior : ProviderBehavior, IExpandCollapseProvider
 	{
 		#region Constructor
 
-		public ToolBarButtonToggleProviderBehavior (ToolBarProvider.ToolBarButtonProvider provider)
+		public ToolBarButtonExpandCollapseProviderBehavior (ToolBarProvider.ToolBarButtonProvider provider)
 			: base (provider)
 		{
 			this.toolBarButton = (SWF.ToolBarButton) Provider.Component;
@@ -49,63 +50,74 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 		#region IProviderBehavior Interface
 		
 		public override AutomationPattern ProviderPattern { 
-			get { return TogglePatternIdentifiers.Pattern; }
+			get { return ExpandCollapsePatternIdentifiers.Pattern; }
 		}
 
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   new ToolBarButtonTogglePatternToggleStateEvent (Provider));
+			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty,
+			                   new ToolBarButtonExpandCollapsePatternExpandCollapseStateEvent (Provider));
 		}
 		
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
+			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty,
 			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == TogglePatternIdentifiers.ToggleStateProperty.Id)
-				return ToggleState;
+			if (propertyId == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
+				return ExpandCollapseState;
 			else
 				return null;
 		}
 
 		#endregion
 		
-		#region IToggleProvider Members
+		#region IExpandCollapseProvider Members
 		
-		public ToggleState ToggleState
+		public ExpandCollapseState ExpandCollapseState
 		{
 			get {
-				if (toolBarButton.Pushed)
-					return ToggleState.On;
-				else
-					return ToggleState.Off;
+				SWF.Menu menu = toolBarButton.DropDownMenu;
+				if (menu == null)
+					return ExpandCollapseState.Collapsed;
+
+				return toolBarButton.Pushed ? ExpandCollapseState.Expanded
+					: ExpandCollapseState.Collapsed;
 			}
 		}
 
-		public void Toggle ()
+		public void Expand ()
 		{
-			if (!toolBarButton.Enabled)
-				throw new ElementNotEnabledException ();
+			if (ExpandCollapseState == ExpandCollapseState.LeafNode)
+				throw new InvalidOperationException ();
 
-			PerformToggle ();
+			PerformExpandCollapse ();
+		}
+
+		public void Collapse ()
+		{
+			if (ExpandCollapseState == ExpandCollapseState.LeafNode)
+				throw new InvalidOperationException ();
+
+			PerformExpandCollapse ();
 		}
 		
 		#endregion
 
 		#region Private Methods
 
-		private void PerformToggle ()
+		private void PerformExpandCollapse ()
 		{
 			if (toolBar.InvokeRequired == true) {
-				toolBar.BeginInvoke (new SWF.MethodInvoker (PerformToggle));
+				toolBar.BeginInvoke (new SWF.MethodInvoker (PerformExpandCollapse));
 				return;
 			}
 
-			toolBarButton.Parent.UIAPerformClick (toolBarButton);
+			((SWF.ContextMenu) toolBarButton.DropDownMenu).Show (toolBar,
+			                                                     new Point (toolBarButton.Rectangle.X, toolBar.Height));
 		}
 		
 		#endregion
