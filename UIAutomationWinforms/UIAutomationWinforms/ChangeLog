@@ -1,3 +1,9 @@
+2009-03-06  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Account for the fact
+	that the MaskedTextProvider can sometimes be null.  Fixes failing unit
+	test.
+
 2009-03-06  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.

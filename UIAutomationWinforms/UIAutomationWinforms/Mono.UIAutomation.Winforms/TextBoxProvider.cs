@@ -161,7 +161,11 @@ namespace Mono.UIAutomation.Winforms
 					return ((RichTextBox) textboxbase).MaxLength;
 				} else if (textboxbase is MaskedTextBox) {
 					// Length of the mask, removing mask modifiers
-					return ((MaskedTextBox) textboxbase).MaskedTextProvider.Length;
+					MaskedTextBox mtb = (MaskedTextBox) textboxbase;
+					if (mtb.MaskedTextProvider != null)
+						return mtb.MaskedTextProvider.Length;
+					else
+						return mtb.Mask.Length;
 				}
 				return 0;
 			}
