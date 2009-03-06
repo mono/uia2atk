@@ -1,5 +1,11 @@
 2009-03-06  Calen Chen <cachen@novell.com>
 
+	* testers/numericupdown/numericupdownframe.py: rewrite enterTextValue 
+	to using insertText method	
+	* testers/numericupdown_basic_ops.py: correct some errors
+
+2009-03-06  Calen Chen <cachen@novell.com>
+
 	* testers/toolstripdropdownbutton_basic_ops.py,
 	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: update test
 	* testers/printpreviewcontrol_basic_ops.py: remove BUG reference
