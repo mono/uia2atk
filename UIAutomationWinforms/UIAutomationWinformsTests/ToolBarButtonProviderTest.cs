@@ -253,6 +253,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (toggleButton.Pushed, "Button is pushed.");
 		}
 
+		[Test]
+		public void ToggleEventTest ()
+		{
+			ToolBarButton toggleButton = new ToolBarButton ();
+			toggleButton.Style = ToolBarButtonStyle.ToggleButton;
+			toolBar.Buttons.Add (toggleButton);
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (toggleButton);
+			IToggleProvider toggleProvider = (IToggleProvider) 
+				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			
+			Label label = new Label ();
+			label.Text = "Old Text";
+			toolBar.Controls.Add (label);
+			Assert.AreEqual (label.Text, "Old Text", "Button is not pushed by default.");
+			
+			toolBar.ButtonClick += delegate(object sender, ToolBarButtonClickEventArgs e) {
+				label.Text = "New Text";
+			};
+			toggleProvider.Toggle ();
+			Assert.AreEqual (label.Text, "New Text", "Button is pushed.");
+		}
 
 		[Test]
 		[Ignore ("Only works with MWF 2.6")]

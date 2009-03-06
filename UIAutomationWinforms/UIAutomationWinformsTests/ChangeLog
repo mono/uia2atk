@@ -1,3 +1,7 @@
+2009-03-06  Neville Gao  <nevillegao@gmail.com>
+
+	* ToolBarButtonProviderTest.cs: Tested ToggleEvent.
+
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolBarProviderTest.cs:
