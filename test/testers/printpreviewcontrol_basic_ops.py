@@ -45,15 +45,14 @@ ppcFrame = app.printPreviewControlFrame
 
 #click button to show PrintPreviewControl page
 ppcFrame.click(ppcFrame.button)
-sleep(config.SHORT_DELAY)
+sleep(config.MEDIUM_DELAY)
 
 #in this example panel should have "focusable" state that is different from #Panel control due to IsKeyboardFocusable is True
-##missing focusable BUG465945
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable"])
+sleep(config.SHORT_DELAY)
 
 #panel role may rise "focused" state by press Tab
-##missing focused BUG473757
-ppcFrame.keyCombo("Tab", grabFocus=False)
+ppcFrame.keyCombo("Tab", grabFocus=True)
 sleep(config.SHORT_DELAY)
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable", "focused"])
 
