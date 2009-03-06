@@ -75,25 +75,18 @@ namespace UiaAtkBridge
 		protected virtual void InitializeAdditionalProviders ()
 		{
 		}
-
-		//TODO: we could move this to a ToolBar class if we had it :-/
-		private bool ToolBarHasFocusableElements (Adapter toolbar)
-		{
-			object isContentElement = toolbar.Provider.GetPropertyValue (AEIds.IsContentElementProperty.Id);
-			return (isContentElement is bool && ((bool)isContentElement) == false);
-		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
 			if (!states.ContainsState (Atk.StateType.Focusable) && Parent != null) {
-				if (Parent.Role == Atk.Role.ToolBar &&
-				    ToolBarHasFocusableElements ((Adapter)Parent))
+				if (Parent is ToolBar &&
+				    ((ToolBar)Parent).HasFocusableElements ())
 					states.AddState (Atk.StateType.Focusable);
 
-				if (Parent.Parent != null && Parent.Parent.Role == Atk.Role.ToolBar &&
-				    ToolBarHasFocusableElements ((Adapter)Parent.Parent))
+				if (Parent.Parent != null && Parent.Parent is ToolBar &&
+				    ((ToolBar)Parent.Parent).HasFocusableElements ())
 					states.AddState (Atk.StateType.Focusable);
 			}
 			

@@ -101,6 +101,7 @@ FILES =  \
 	TextLabel.cs \
 	TextProviderTextImplementor.cs \
 	ToggleButton.cs \
+	ToolBar.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Tree.cs \
