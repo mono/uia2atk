@@ -46,7 +46,7 @@ class ListViewFrame(accessibles.Frame):
         procedurelogger.action('clear selection in "%s"' % (accessible))
         accessible.clearSelection()
 
-    def assertTable(self, accessible, row=4, col=2):
+    def assertTable(self, accessible, row=None, col=None):
         """assert Table implementation"""
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()

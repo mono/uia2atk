@@ -44,69 +44,116 @@ cbFrame = app.comboBoxSimpleFrame
 ##############################
 # check Combobox children's AtkAction
 ##############################
-#check ComboBox's actions
-actionsCheck(cbFrame.combobox, "ComboBox")
+#check tablecell's actions
+#for i in range(10):
+#    actionsCheck(cbFrame.tablecell[i], "TableCell")
 
-#check ComboBox item's actions list
-actionsCheck(cbFrame.menuitem[0], "MenuItem")
-
+##############################
+# check Combobox children's AtkAccessible
+##############################
 #check ComboBox's states list
-statesCheck(cbFrame.combobox, "ComboBox", add_states=["focused"])
-statesCheck(cbFrame.menu, "Menu")
+# TODO: BUG483233, Extraneous "focuable" and "manages descendants" states, 
+# and reluctant "focused" state
+#statesCheck(cbFrame.combobox, "ComboBox")
+# TODO: BUG483234, Extraneous "focuable" state
+#statesCheck(cbFrame.textbox, "TextBox", add_states=["focused"])
+# TODO: BUG483235, Extraneous "selectable" state, 
+# missing "manages descendants" state, and reluctant "focused" state
+#statesCheck(cbFrame.tree, "TreeTable")
+# TODO: BUG483236, missing 'focusable', 'transient' and  'single line' states
+#for i in range(10):
+#    statesCheck(cbFrame.tablecell[i], "TableCell")
 
-#check menuitem0,1's default states
-statesCheck(cbFrame.menuitem[0], "MenuItem")
-statesCheck(cbFrame.menuitem[1], "MenuItem")
+##############################
+# check Combobox AtkSelection
+##############################
+# TODO: put some tests here
 
-#check menuitem's text implemented
-cbFrame.assertItemText()
+##############################
+# check "text" in combo box
+##############################
+# TODO: put some tests for Screamable Content here
 
-#test press action than using mouse click menuitem to change label's text
-cbFrame.press(cbFrame.combobox)
-cbFrame.menuitem[1].mouseClick()
+# check text's "Text(Editable)"
+cbFrame.textbox.typeText("2")
 sleep(config.SHORT_DELAY)
-cbFrame.assertLabel('1')
+cbFrame.assertText(cbFrame.textbox, "2")
 
-cbFrame.press(cbFrame.combobox)
-cbFrame.menuitem[9].mouseClick()
+cbFrame.textbox.enterText("9")
 sleep(config.SHORT_DELAY)
-cbFrame.assertLabel('9')
+cbFrame.assertText(cbFrame.textbox, "9")
 
-#do click action to select menuitem0 but not change the states(the same as Gtk),
-#also update text value
-cbFrame.click(cbFrame.menuitem[0])
+##############################
+# check "treetable"'s AtkSelection and AtkTable
+##############################
+# TODO: mark all statesCheck due to BUG483236
+# check AtkSelecton
+cbFrame.selectChild(cbFrame.tree, 0)
 sleep(config.SHORT_DELAY)
-cbFrame.assertText(cbFrame.textbox, 0)
+cbFrame.assertText(cbFrame.textbox, "0")
+#statesCheck(cbFrame.tablecell[0], "TableCell", add_states=["selected"])
 
-statesCheck(cbFrame.menuitem[0], "MenuItem")
-
-#check list selection implementation
-#select item2 to rise focused and selected states
-cbFrame.assertSelectionChild(cbFrame.menu, 2)
+cbFrame.selectChild(cbFrame.tree, 9)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
-#select item5 to rise focused and selected states
-cbFrame.assertSelectionChild(cbFrame.menu, 5)
+cbFrame.assertText(cbFrame.textbox, "9")
+#statesCheck(cbFrame.tablecell[9], "TableCell", add_states=["selected"])
+
+cbFrame.tablecell[1].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
-#item2 get rid of focused and selected states
-statesCheck(cbFrame.menuitem[2], "MenuItem")
+cbFrame.assertText(cbFrame.textbox, "1")
+#statesCheck(cbFrame.tablecell[1], "TableCell", add_states=["selected"])
 
-#clear selection
-cbFrame.assertClearSelection(cbFrame.ComboBox)
+cbFrame.tablecell[8].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.menuitem[5], "MenuItem")
+cbFrame.assertText(cbFrame.textbox, "8")
+#statesCheck(cbFrame.tablecell[8], "TableCell", add_states=["selected"])
 
-#inter '6' to text box to check the text value, menuitem[6] would be selected
-cbFrame.inputText(6)
+# press Up/Down 
+cbFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "7")
+#statesCheck(cbFrame.tablecell[7], "TableCell", add_states=["selected"])
 
-statesCheck(cbFrame.menuitem[6], "MenuItem", add_states=["focused", "selected"])
+cbFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "8")
+#statesCheck(cbFrame.tablecell[8], "TableCell", add_states=["selected"])
 
-#test editable Text by enter text value '8' without change the states
-cbFrame.enterTextValue(8)
+# press PageUp/PageDown
+cbFrame.keyCombo("PageUp", grabFocus=False)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "0")
+#statesCheck(cbFrame.tablecell[0], "TableCell", add_states=["selected"])
 
-statesCheck(cbFrame.menuitem[8], "MenuItem")
+cbFrame.keyCombo("PageDown", grabFocus=False)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "9")
+#statesCheck(cbFrame.tablecell[9], "TableCell", add_states=["selected"])
 
+# TODO: mark all statesCheck due to BUG483235
+# check clear Selection
+cbFrame.clearSelection(cbFrame.tree)
+sleep(config.SHORT_DELAY)
+#statesCheck(cbFrame.tree, "TreeTable")
+
+# TODO: mark all statesCheck due to BUG483233
+cbFrame.clearSelection(cbFrame.combobox)
+sleep(config.SHORT_DELAY)
+#statesCheck(cbFrame.combobox, "ComboBox")
+
+# check AtkTable
+cbFrame.assertTable(cbFrame.tree, 10, 1)
+
+##############################
+# check "tablecell"'s AtkText
+##############################
+cbFrame.inputText(cbFrame.tablecell[0], "10")
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.tablecell[0], "0")
+
+##############################
+# End
+##############################
 #close application frame window
 cbFrame.quit()
 
