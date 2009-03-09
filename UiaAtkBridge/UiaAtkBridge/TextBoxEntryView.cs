@@ -42,7 +42,7 @@ namespace UiaAtkBridge
 	{
 		private ITextImplementor textExpert = null;
 		private bool multiLine = false;
-		private EditableTextImplementor editableTextExpert;
+		private EditableTextImplementorHelper editableTextExpert;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 			else
 				Role = Atk.Role.Text;
 
-			editableTextExpert = new EditableTextImplementor (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 
 			if (provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id) == null
 			    && provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) == null)
@@ -84,10 +84,7 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			if (editableTextExpert.Editable)
-				states.AddState (Atk.StateType.Editable);
-			else
-				states.RemoveState (Atk.StateType.Editable);
+			editableTextExpert.UpdateStates (states);
 			
 			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);
 			states.RemoveState (multiLine ? Atk.StateType.SingleLine : Atk.StateType.MultiLine);
@@ -168,14 +165,7 @@ namespace UiaAtkBridge
 		
 		public bool SetCaretOffset (int offset)
 		{
-			if (editableTextExpert.CaretProvider != null) {
-				if (editableTextExpert.CaretProvider.SetCaretOffset (offset))
-					editableTextExpert.CaretOffset = offset;
-				// gail always returns true; tracking it
-				// because of tests
-			} else
-				editableTextExpert.CaretOffset = offset;
-			return true;
+			return textExpert.SetCaretOffSet (offset);
 		}
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
@@ -190,7 +180,7 @@ namespace UiaAtkBridge
 		
 		public int CaretOffset {
 			get {
-				return editableTextExpert.CaretOffset;
+				return textExpert.CaretOffset;
 			}
 		}
 		
@@ -249,7 +239,8 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e)
+			    || textExpert.RaiseAutomationPropertyChangedEvent (e))
 				return;
 
 			base.RaiseAutomationPropertyChangedEvent (e);
@@ -257,7 +248,8 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationEvent (eventId, e))
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e)
+			    || textExpert.RaiseAutomationEvent (eventId, e))
 				return;
 
 			base.RaiseAutomationEvent (eventId, e);

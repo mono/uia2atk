@@ -66,6 +66,10 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextProviderBehavior (this));
+			SetBehavior (ClipboardPatternIdentifiers.Pattern,
+			             new ClipboardProviderBehavior (this));
+			SetBehavior (CaretPatternIdentifiers.Pattern,
+			             new CaretProviderBehavior (this));
 
 			control.Items.CollectionChanged += OnCollectionChanged;
 		}

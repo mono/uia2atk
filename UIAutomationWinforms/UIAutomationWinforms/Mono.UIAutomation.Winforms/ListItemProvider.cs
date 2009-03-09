@@ -109,6 +109,10 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (EmbeddedImagePatternIdentifiers.Pattern,
 			                                                          this));
+			//When supports clipboard (Internal Pattern)
+			SetBehavior (ClipboardPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ClipboardPatternIdentifiers.Pattern,
+			                                                          this));
 			
 			// Default Events
 			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,

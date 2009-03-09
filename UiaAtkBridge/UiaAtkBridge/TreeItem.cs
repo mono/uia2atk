@@ -39,7 +39,7 @@ namespace UiaAtkBridge
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
-		private EditableTextImplementor editableTextExpert = null;
+		private EditableTextImplementorHelper editableTextExpert = null;
 
 		public TreeItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -60,7 +60,7 @@ namespace UiaAtkBridge
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 
 			imageExpert = new ImageImplementorHelper (this);
-			editableTextExpert = new EditableTextImplementor (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 		}
 		
 		protected IToggleProvider ToggleProvider {
@@ -105,10 +105,7 @@ namespace UiaAtkBridge
 					states.AddState (Atk.StateType.Expanded);
 			}
 
-			if (editableTextExpert.Editable)
-				states.AddState (Atk.StateType.Editable);
-			else
-				states.RemoveState (Atk.StateType.Editable);
+			editableTextExpert.UpdateStates (states);
 
 			return states;
 		}
@@ -194,6 +191,10 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e)
+				|| textExpert.RaiseAutomationEvent (eventId, e))
+				return;
+			
 			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				Tree list = Parent as Tree;
 				if (list != null)
@@ -308,7 +309,8 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e)
+				|| textExpert.RaiseAutomationPropertyChangedEvent (e))
 				return;
 			
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {

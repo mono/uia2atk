@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -27,17 +27,15 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-	internal class ListItemValueProviderBehavior
-		: ProviderBehavior, IValueProvider
+	internal class ListItemClipboardProviderBehavior
+		: ProviderBehavior, IClipboardProvider
 	{
 		#region Constructors
 		
-		public ListItemValueProviderBehavior (ListItemProvider itemProvider)
+		public ListItemClipboardProviderBehavior (ListItemProvider itemProvider)
 			: base (itemProvider)
 		{
 			viewItem = (SWF.ListViewItem) itemProvider.ObjectItem;
@@ -48,55 +46,40 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region ProviderBehavior Specialization
 		
 		public override AutomationPattern ProviderPattern {
-			get { return ValuePatternIdentifiers.Pattern; }
+			get { return ClipboardPatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   new ListItemValuePatternIsReadOnlyEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new ListItemValuePatternValueEvent ((ListItemProvider) Provider));
 		}
 		
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   null);
-		}
-
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
-				return IsReadOnly;
-			else if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
-				return Value;
-			else
-				return base.GetPropertyValue (propertyId);
 		}
 
 		#endregion
 
-		#region IValueProvider implementation 
-		
-		public void SetValue (string value)
-		{
-			if (IsReadOnly == true)
-				throw new ElementNotEnabledException ();
+		#region IClipboardProvider Implementation	
 
-			PerformSetValue (value);
+		public void Copy (int start, int end)
+		{
+			string text = viewItem.Text;
+			start = (int) System.Math.Max (start, 0);
+			end = (int) System.Math.Min (end, text.Length);
+			SWF.Clipboard.SetText (text.Substring (start, end - start));
 		}
 		
-		public bool IsReadOnly {
-			get { return viewItem.ListView.LabelEdit == false; }
+		public void Paste (int position)
+		{
+			// TODO: What about viewItem.ListView.LabelEdit = false ?
+			string text = viewItem.Text;
+			position = (int) System.Math.Max (position, 0);
+			position = (int) System.Math.Min (position, text.Length);
+
+			string newValue = viewItem.Text.Insert (position, SWF.Clipboard.GetText ());
+			PerformSetValue (newValue);
 		}
-		
-		public string Value {
-			get { return viewItem.Text; }
-		}
-		
+
 		#endregion
 
 		#region Private Methods
@@ -120,4 +103,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#endregion
 	}
+
+	delegate void ListItemSetValueDelegate (string value);
 }

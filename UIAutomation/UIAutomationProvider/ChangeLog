@@ -1,3 +1,15 @@
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationProvider.mdp:
+	* UIAutomationProvider.dll.sources: IClipboardSupport, IEditableRange
+	and IText moved from UIAutomationBridge.
+
+	* System.Windows.Automation.Provider/ICaretProvider.cs:
+	* System.Windows.Automation.Provider/IClipboardProvider.cs:
+	* System.Windows.Automation.Provider/IEditableRangeProvider.cs: Moved
+	from UIAutomationBridge.
+
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationProvider.mdp: Removing GtkDesignInfo.

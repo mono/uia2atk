@@ -17,38 +17,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 
-using Mono.UIAutomation.Winforms.Behaviors.NumericUpDown;
-
-namespace Mono.UIAutomation.Winforms
+namespace System.Windows.Automation.Provider
 {
-	[MapsComponent (typeof (NumericUpDown))]
-	internal class NumericUpDownProvider : UpDownBaseProvider
+	internal interface ICaretProvider
 	{
-		public NumericUpDownProvider (NumericUpDown upDown) : base (upDown)
-		{
-		}
-		
-		public override void Initialize ()
-		{
-			base.Initialize ();
-			
-			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new RangeValueProviderBehavior (this));
-			SetBehavior (EditableRangePatternIdentifiers.Pattern,
-			             new EditableRangeProviderBehavior (this));
-			
-		}
-
+		int CaretOffset { get; }
+		bool SetCaretOffset (int offset);
+		string GetSelection (int selectionNum, out int startOffset, out int endOffset);
 	}
 }

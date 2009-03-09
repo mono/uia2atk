@@ -20,18 +20,55 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
-using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.Winforms.Events.NumericUpDown
 {
-	public interface IEditableRange
+	internal class RangeValuePatternMinimumEvent : BaseAutomationPropertyEvent
 	{
-		void BeginEdit (string text);
-		void CommitEdit ();
+		#region Constructor
+
+		public RangeValuePatternMinimumEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.MinimumProperty)
+		{
+		}
+		
+		#endregion
+		
+		#region IConnectable Overrides
+
+		public override void Connect ()
+		{
+			((SWF.NumericUpDown) Provider.Control).UIAMinimumChanged
+				+= new EventHandler (OnMinimumChanged);
+		}
+
+		public override void Disconnect ()
+		{
+			((SWF.NumericUpDown) Provider.Control).UIAMinimumChanged
+				-= new EventHandler (OnMinimumChanged);
+		}
+		
+		#endregion 
+		
+		#region Private Methods
+		
+		#pragma warning disable 169
+		
+		private void OnMinimumChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		#pragma warning restore 169
+		
+		#endregion
 	}
 }

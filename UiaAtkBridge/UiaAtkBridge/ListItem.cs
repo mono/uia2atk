@@ -37,15 +37,14 @@ namespace UiaAtkBridge
 		private IInvokeProvider invokeProvider;
 		private ISelectionItemProvider selectionItemProvider;
 		private IToggleProvider toggleProvider;
-		private IValueProvider valueProvider;
 
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
+		private EditableTextImplementorHelper editableTextExpert;
 
 		public ListItem (IRawElementProviderSimple provider) : base (provider)
 		{
-			valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selectionItemProvider == null)
@@ -55,6 +54,7 @@ namespace UiaAtkBridge
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			imageExpert = new ImageImplementorHelper (this);
 			actionExpert = new ActionImplementorHelper ();
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
@@ -85,10 +85,7 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Checked);
 			}
 
-			if (valueProvider != null && !valueProvider.IsReadOnly)
-				states.AddState (Atk.StateType.Editable);
-			else
-				states.RemoveState (Atk.StateType.Editable);
+			editableTextExpert.UpdateStates (states);
 
 			return states;
 		}
@@ -173,6 +170,9 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e))
+				return;
+			
 			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				List list = Parent as List;
 				if (list != null)
@@ -282,6 +282,9 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+				return;
+			
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool focused = (bool) e.NewValue;
 				Adapter parentAdapter = (Adapter) Parent;
@@ -292,24 +295,7 @@ namespace UiaAtkBridge
 				parentAdapter.NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (parentAdapter);
-			} else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				String stringValue = (String)e.NewValue;
-				
-				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == stringValue)
-					return;
-
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         stringValue == null ? 0 : stringValue.Length);
-
-				EmitVisibleDataChanged ();
-			}
-			else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
+			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
 				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
 			else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
 				if ((bool)e.NewValue == true) {
@@ -319,14 +305,6 @@ namespace UiaAtkBridge
 					toggleProvider = null;
 					actionExpert.Remove ("toggle");
 				}
-			} else if (e.Property == AutomationElementIdentifiers.IsValuePatternAvailableProperty) {
-				if ((bool) e.NewValue)
-					valueProvider = (IValueProvider)
-						Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-				else
-					valueProvider = null;
-			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
-				NotifyStateChange (Atk.StateType.Editable, !valueProvider.IsReadOnly);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
@@ -348,60 +326,38 @@ namespace UiaAtkBridge
 		
 		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
 		{
-			return false;
+			return editableTextExpert.SetRunAttributes (attrib_set, start_offset, end_offset);
 		}
 		
 		public void InsertText (string str, ref int position)
 		{
-			if (position < 0 || position > textExpert.Length)
-				position = textExpert.Length;	// gail
-			TextContents = textExpert.Text.Substring (0, position)
-				+ str
-				+ textExpert.Text.Substring (position);
+			editableTextExpert.InsertText (str, ref position);
 		}
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			Log.Warn ("ListItem: CopyText not implemented");
+			editableTextExpert.CopyText (start_pos, end_pos);
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			Log.Warn ("ListItem: CutText not implemented");
+			editableTextExpert.CutText (start_pos, end_pos);
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
 		{
-			if (start_pos < 0)
-				start_pos = 0;
-			if (end_pos < 0 || end_pos > textExpert.Length)
-				end_pos = textExpert.Length;
-			if (start_pos > end_pos)
-				start_pos = end_pos;
-
-			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
+			editableTextExpert.DeleteText (start_pos, end_pos);
 		}
 		
 		public void PasteText (int position)
 		{
-			Log.Warn ("ListItem: PasteText not implemented");
+			editableTextExpert.PasteText (position);
 		}
 		
 		public string TextContents {
-			get { return valueProvider.Value.ToString (); }
+			get { return editableTextExpert.TextContents; }
 			set {
-				if (valueProvider == null) {
-					Log.Warn ("ListItem: Cannot set text on a ListItem that does not implement IValueProvider");
-					return;
-				}
-
-				if (!valueProvider.IsReadOnly) {
-					try {
-						valueProvider.SetValue (value);
-					} catch (Exception e) {
-						Log.Error ("ListItem: Caught exception while trying to set value:\n{0}", e);
-					}
-				}
+				editableTextExpert.TextContents = value;
 			}
 		}
 		

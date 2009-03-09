@@ -34,11 +34,11 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-	internal class EmbeddedImageProviderBehavior
+	internal class ListItemEmbeddedImageProviderBehavior
 		: ProviderBehavior, IEmbeddedImageProvider
 	{
 #region Constructors
-		public EmbeddedImageProviderBehavior (ListItemProvider provider)
+		public ListItemEmbeddedImageProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
 		}

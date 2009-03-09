@@ -38,9 +38,12 @@ FILES =  \
 	System.Windows.Automation/AutomationPropertyChangedEventArgs.cs \
 	System.Windows.Automation/AutomationProperty.cs \
 	System.Windows.Automation/AutomationTextAttribute.cs \
+	System.Windows.Automation/CaretPatternIdentifiers.cs \
+	System.Windows.Automation/ClipboardPatternIdentifiers.cs \
 	System.Windows.Automation/ControlType.cs \
 	System.Windows.Automation/DockPatternIdentifiers.cs \
 	System.Windows.Automation/DockPosition.cs \
+	System.Windows.Automation/EditableRangePatternIdentifiers.cs \
 	System.Windows.Automation/ElementNotAvailableException.cs \
 	System.Windows.Automation/ElementNotEnabledException.cs \
 	System.Windows.Automation/EmbeddedImagePatternIdentifiers.cs \

@@ -54,6 +54,11 @@ namespace UiaAtkBridge
 		public BaseTextImplementor (Adapter resource)
 		{
 			this.resource = resource;
+
+			caretProvider
+				= resource.Provider.GetPatternProvider (CaretPatternIdentifiers.Pattern.Id)
+					as ICaretProvider;
+			caretOffset = -1;
 		}
 		
 		public virtual int NSelections { get { return 0; } }
@@ -80,6 +85,28 @@ namespace UiaAtkBridge
 		public virtual bool SetSelection (int selectionNum, int startOffset,  int endOffset)
 		{
 			return false;
+		}
+
+		public int CaretOffset { 
+			get {
+				if (caretProvider == null)
+					return caretOffset;
+
+				return caretProvider.CaretOffset;
+			}
+		}
+
+		public bool SetCaretOffSet (int offset)
+		{
+			if (caretProvider != null) {
+				if (caretProvider.SetCaretOffset (offset))
+					caretOffset = offset;
+				// gail always returns true; tracking it
+				// because of tests
+			} else
+				caretOffset = offset;
+
+			return true;
 		}
 
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
@@ -363,9 +390,51 @@ namespace UiaAtkBridge
 			}
 			return false;
 		}
+
+		public bool RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			UpdateCaretToValidValue ();
+			
+			if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
+				// Don't fire spurious events if the text hasn't changed
+				string oldText = (string) e.OldValue;
+				if (HandleSimpleChange (ref oldText,
+				                        ref caretOffset, 
+				                        caretProvider == null))
+					return false;
+
+				if (caretProvider == null)
+					caretOffset = Length;
+
+				return false;
+			}
+			
+			return false;
+		}
+
+		public bool RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			UpdateCaretToValidValue ();
+
+			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
+				int newCaretOffset = caretProvider.CaretOffset;
+				if (newCaretOffset != caretOffset) {
+					caretOffset = newCaretOffset;
+					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+				}
+				return true;
+			}
+				
+			return false;
+		}
 #endregion
 
 #region Protected Fields
+
+		protected ICaretProvider CaretProvider {
+			get { return caretProvider; }
+		}
+		
 		protected Adapter resource = null;
 		protected int selectionStartOffset = 0;
 		protected int selectionEndOffset = 0;
@@ -531,6 +600,12 @@ namespace UiaAtkBridge
 			offset = startOff;
 			return (startOff > endOff);
 		}
+
+		private void UpdateCaretToValidValue ()
+		{
+			if (caretOffset == -1)
+				caretOffset = (caretProvider != null ? caretProvider.CaretOffset : Length);
+		}
 #endregion
 
 #region Private Fields
@@ -540,7 +615,9 @@ namespace UiaAtkBridge
 		private static char [] newLineSeparators = new char [] { '\n', '\r' };
 		private static char [] sentenceSeparators = new char [] { '\n', '\r', '.' };
 		private static char [] softSentenceSeparators = new char [] { '.', ':'};
-		
+
+		private ICaretProvider caretProvider;
+		private int caretOffset;
 		private string deleteHack = null;
 #endregion
 	}

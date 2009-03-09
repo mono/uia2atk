@@ -17,38 +17,34 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Forms;
 
-using System.Windows.Automation;
-
-using Mono.UIAutomation.Winforms.Behaviors.NumericUpDown;
-
-namespace Mono.UIAutomation.Winforms
+namespace System.Windows.Automation
 {
-	[MapsComponent (typeof (NumericUpDown))]
-	internal class NumericUpDownProvider : UpDownBaseProvider
+	internal static class ClipboardPatternIdentifiers
 	{
-		public NumericUpDownProvider (NumericUpDown upDown) : base (upDown)
+		#region Constructor
+		
+		private const int PatternId = 70004;
+		
+		static ClipboardPatternIdentifiers ()
 		{
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "ClipboardPatternIdentifiers.Pattern");
 		}
 		
-		public override void Initialize ()
-		{
-			base.Initialize ();
-			
-			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new RangeValueProviderBehavior (this));
-			SetBehavior (EditableRangePatternIdentifiers.Pattern,
-			             new EditableRangeProviderBehavior (this));
-			
-		}
-
+		#endregion
+		
+		#region Public Fields
+		
+		public static readonly AutomationPattern Pattern;
+		
+		#endregion
 	}
 }

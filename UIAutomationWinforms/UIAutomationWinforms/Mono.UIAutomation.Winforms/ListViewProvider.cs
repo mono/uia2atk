@@ -143,7 +143,9 @@ namespace Mono.UIAutomation.Winforms
 				else
 					return null;
 			} else if (behavior == EmbeddedImagePatternIdentifiers.Pattern)
-				return new EmbeddedImageProviderBehavior (listItem);
+				return new ListItemEmbeddedImageProviderBehavior (listItem);
+			else if (behavior == ClipboardPatternIdentifiers.Pattern)
+				return new ListItemClipboardProviderBehavior (listItem);
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
@@ -1058,6 +1060,7 @@ namespace Mono.UIAutomation.Winforms
 			private void OnUIALabelEditChanged (object sender, EventArgs args)
 			{
 				UpdateBehavior (ValuePatternIdentifiers.Pattern);
+				UpdateBehavior (ClipboardPatternIdentifiers.Pattern);
 			}
 
 			private void OnUIAViewChanged (object sender, EventArgs args)

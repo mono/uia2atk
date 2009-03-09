@@ -47,11 +47,11 @@ namespace UiaAtkBridge
 #endregion
 
 #region Public Methods
-		public TextProviderTextImplementor (Adapter resource, ITextProvider textProvider)
+		public TextProviderTextImplementor (Adapter resource, 
+		                                    ITextProvider textProvider)
 			: base (resource)
 		{
 			this.textProvider = textProvider;
-			this.iText = textProvider as IText;
 		}
 
 		public override Atk.Attribute [] GetRunAttributes (int offset,
@@ -92,8 +92,8 @@ namespace UiaAtkBridge
 
 		public override string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			if (iText != null)
-				return iText.GetSelection (selectionNum, out startOffset, out endOffset);
+			if (CaretProvider != null) 
+				return CaretProvider.GetSelection (selectionNum, out startOffset, out endOffset);
 			return base.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 
@@ -118,7 +118,7 @@ namespace UiaAtkBridge
 			if (textProvider.SupportedTextSelection == SupportedTextSelection.Single || selectionNum == 0) {
 				if (selectionNum < 0 || selectionNum >= NSelections)
 					return false;
-				int offset = (iText != null? iText.CaretOffset: 0);
+				int offset = (CaretProvider != null ? CaretProvider.CaretOffset : 0);
 				ITextRangeProvider textRange = GetTextRange (offset, offset);
 				textRange.Select ();
 				return true;
@@ -307,9 +307,8 @@ namespace UiaAtkBridge
 		}
 #endregion
 
-#region Public Fields
+#region Private Fields
 		private ITextProvider textProvider;
-		private IText iText;
 
 		// TODO: put these somewhere shared with provider
 		// Font weights

@@ -1,3 +1,65 @@
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: UpDownBase Events/Behaviors moved to
+	NumericUpDown. Added behaviors to match UIAutomationTypes added:
+	CaretProvider, ClipboardProvider and EditableRangeProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemClipboardProviderBehavior.cs:
+	Behavior that implements IClipboardProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEmbeddedImageProviderBehavior.cs:
+	Class renamed: EmbeddedImageProviderBehavior ->
+	ListItemEmbeddedImageProviderBehavior
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:
+	IClipboardProvider implementation moved to
+	ListItemClipboardProviderBehavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown: NumericUpDown
+	Behaviors.
+
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/EditableRangeProviderBehavior.cs:
+	Implements IEditableRangeProvider in NumericUpDown.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/CaretProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ClipboardProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMinimumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMaximumEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternIsReadOnlyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternSmallChangeEvent.cs:
+	Moved from UpDownBase.
+
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs:
+	Moved to NumericUpDown.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	IText implementation moved to CaretProviderBehavior, IClipboard
+	implementation moved to ClipboardProviderBehavior.
+
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown: NumericUpDown Events.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Setting behaviors:
+	Clipboard and Caret.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Setting default
+	internal Clipboard behavior.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Setting Clipboard
+	behavior. Class EmbeddedImageProviderBehavior renamed to
+	ListItemEmbeddedImageProviderBehavior.
+
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Setting behavior:
+	EditableRange.
+
 2009-03-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ListProvider.cs: Use

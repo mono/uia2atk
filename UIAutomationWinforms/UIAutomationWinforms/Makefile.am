@@ -114,6 +114,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemCheckBoxToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemClipboardProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs \
@@ -141,6 +142,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/EditableRangeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PictureBox/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
@@ -173,6 +176,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/CaretProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/ClipboardProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
@@ -194,7 +199,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationControlTypePropertyEvent.cs \
@@ -382,6 +386,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternSmallChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -475,11 +484,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \

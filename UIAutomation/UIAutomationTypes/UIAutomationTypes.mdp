@@ -70,6 +70,10 @@
     <File name="System.Windows.Automation/WindowClosedEventArgs.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/TreeScope.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/InsertDeleteTextPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/EditableRangePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/EmbeddedImagePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ClipboardPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/CaretPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am">
     <BuildFilesVar />

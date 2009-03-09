@@ -1,3 +1,20 @@
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationTypes.mdp:
+	* UIAutomationTypes.dll.sources: Internal classes added:
+	ClipboardPatternIdentifiers, EditableRangePatternIdentifiers and
+	CaretPatternIdentifiers.
+
+	* System.Windows.Automation/CaretPatternIdentifiers.cs: Class added,
+	used by ICaretProvider.
+
+	* System.Windows.Automation/ClipboardPatternIdentifiers.cs: Class added,
+	used by IClipboardProvider.
+
+	* System.Windows.Automation/EditableRangePatternIdentifiers.cs: Class
+	added, used by IEditableRangeProvider.
+
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationTypes.mdp: Removing GtkDesignInfo.

@@ -17,21 +17,34 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Bridge
+namespace System.Windows.Automation
 {
-	public interface IText
+	internal static class CaretPatternIdentifiers
 	{
-		int CaretOffset { get; }
-		bool SetCaretOffset (int offset);
-		string GetSelection (int selectionNum, out int startOffset, out int endOffset);
+		#region Constructor
+		
+		private const int PatternId = 70005;
+		
+		static CaretPatternIdentifiers ()
+		{
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "CaretPatternIdentifiers.Pattern");
+		}
+		
+		#endregion
+		
+		#region Public Fields
+		
+		public static readonly AutomationPattern Pattern;
+		
+		#endregion
 	}
 }

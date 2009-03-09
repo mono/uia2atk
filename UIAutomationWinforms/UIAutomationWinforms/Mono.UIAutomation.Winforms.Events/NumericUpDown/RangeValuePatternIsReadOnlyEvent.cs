@@ -26,17 +26,17 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace Mono.UIAutomation.Winforms.Events.NumericUpDown
 {
-	internal class RangeValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal class RangeValuePatternIsReadOnlyEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
+		public RangeValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
@@ -46,25 +46,28 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 
 		public override void Connect ()
 		{
-			((NumericUpDown) Provider.Control).ValueChanged +=
-				new EventHandler (OnValueChanged);
+			UpDownBase.txtView.ReadOnlyChanged +=
+				new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((NumericUpDown) Provider.Control).ValueChanged -=
-				new EventHandler (OnValueChanged);
+			UpDownBase.txtView.ReadOnlyChanged -=
+				new EventHandler (OnIsReadOnlyChanged);
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
-		private void OnValueChanged (object sender, EventArgs e)
+		private void OnIsReadOnlyChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
+		SWF.UpDownBase UpDownBase {
+			get { return (SWF.UpDownBase)Provider.Control; }
+		}
 		#endregion
 	}
 }

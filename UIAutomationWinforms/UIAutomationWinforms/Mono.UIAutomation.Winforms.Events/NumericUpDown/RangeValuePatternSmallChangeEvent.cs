@@ -29,14 +29,14 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace Mono.UIAutomation.Winforms.Events.NumericUpDown
 {
-	internal class RangeValuePatternMaximumEvent : BaseAutomationPropertyEvent
+	internal class RangeValuePatternSmallChangeEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public RangeValuePatternMaximumEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.MaximumProperty)
+		public RangeValuePatternSmallChangeEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.SmallChangeProperty)
 		{
 		}
 		
@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 
 		public override void Connect ()
 		{
-			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
-				+= new EventHandler (OnMaximumChanged);
+			((SWF.NumericUpDown) Provider.Control).UIASmallChangeChanged
+				+= new EventHandler (OnSmallChangeChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
-				-= new EventHandler (OnMaximumChanged);
+			((SWF.NumericUpDown) Provider.Control).UIASmallChangeChanged
+				-= new EventHandler (OnSmallChangeChanged);
 		}
 		
 		#endregion 
@@ -62,7 +62,7 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 		
 		#pragma warning disable 169
 		
-		private void OnMaximumChanged (object sender, EventArgs e)
+		private void OnSmallChangeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

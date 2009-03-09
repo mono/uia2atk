@@ -68,6 +68,10 @@ namespace Mono.UIAutomation.Winforms
 			//Text pattern is supported by both Control Types: Document and Edit
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextProviderBehavior (this));
+			SetBehavior (ClipboardPatternIdentifiers.Pattern,
+			             new ClipboardProviderBehavior (this));
+			SetBehavior (CaretPatternIdentifiers.Pattern,
+			             new CaretProviderBehavior (this));
 
 			observer = new ScrollBehaviorObserver (this, textboxbase.UIAHScrollBar,
 			                                       textboxbase.UIAVScrollBar);

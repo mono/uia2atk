@@ -17,57 +17,34 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace System.Windows.Automation
 {
-	internal class RangeValuePatternIsReadOnlyEvent : BaseAutomationPropertyEvent
+	internal static class EditableRangePatternIdentifiers
 	{
 		#region Constructor
-
-		public RangeValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
+		
+		private const int PatternId = 70003;
+		
+		static EditableRangePatternIdentifiers ()
 		{
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "EditableRangePatternIdentifiers.Pattern");
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
-
-		public override void Connect ()
-		{
-			UpDownBase.txtView.ReadOnlyChanged +=
-				new EventHandler (OnIsReadOnlyChanged);
-		}
-
-		public override void Disconnect ()
-		{
-			UpDownBase.txtView.ReadOnlyChanged -=
-				new EventHandler (OnIsReadOnlyChanged);
-		}
+		#region Public Fields
 		
-		#endregion 
+		public static readonly AutomationPattern Pattern;
 		
-		#region Private Methods
-		
-		private void OnIsReadOnlyChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-		
-		SWF.UpDownBase UpDownBase {
-			get { return (SWF.UpDownBase)Provider.Control; }
-		}
 		#endregion
 	}
 }

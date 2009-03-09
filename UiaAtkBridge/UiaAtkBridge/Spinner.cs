@@ -35,12 +35,13 @@ namespace UiaAtkBridge
 	/// <summary>
 	/// Adapter for a ControlType.Spinner that does not implement SelectionPattern.
 	/// </summary>
+	// FIXME: This class *needs* to use TextImplementorHelper and EditableTextImplementorHelper
 	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		#region Fields
 		protected IRangeValueProvider rangeValueProvider;
 		protected IValueProvider valueProvider;
-		protected IEditableRange editableRange = null;
+		internal IEditableRangeProvider editableRange = null;
 		internal ITextImplementor textExpert = null;
 		private string oldText;
 		#endregion
@@ -50,8 +51,9 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			if (rangeValueProvider != null)
-				editableRange = rangeValueProvider as IEditableRange;
+			
+			editableRange
+				= provider.GetPatternProvider (EditableRangePatternIdentifiers.Pattern.Id) as IEditableRangeProvider;
 
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);

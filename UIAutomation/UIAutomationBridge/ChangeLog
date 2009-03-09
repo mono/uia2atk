@@ -1,3 +1,14 @@
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationBridge.mdp: IClipboardSupport, IEditableRange and IText
+	moved to UIAutomationProvider.
+
+	* Mono.UIAutomation.Bridge/IText.cs:
+	* Mono.UIAutomation.Bridge/IEditableRange.cs:
+	* Mono.UIAutomation.Bridge/IClipboardSupport.cs: Moved to
+	UIAutomationProvider.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationBridge.mdp: Point projects at Makefile.am, not

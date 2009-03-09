@@ -82,7 +82,7 @@
     <File name="TextProviderTextImplementor.cs" subtype="Code" buildaction="Compile" />
     <File name="ValueProviderTextImplementor.cs" subtype="Code" buildaction="Compile" />
     <File name="ToggleButton.cs" subtype="Code" buildaction="Compile" />
-    <File name="EditableTextImplementor.cs" subtype="Code" buildaction="Compile" />
+    <File name="EditableTextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolBar.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

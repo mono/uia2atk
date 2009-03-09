@@ -26,12 +26,10 @@
 
 using System;
 using System.Windows;
-using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Text;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.TextBox;
 
@@ -40,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 	// NOTE: This class also supports RichTextBox as they share pretty much
 	// everything
 	internal class TextProviderBehavior
-		: ProviderBehavior, ITextProvider, IText, IClipboardSupport
+		: ProviderBehavior, ITextProvider
 	{
 		#region Constructor
 		
@@ -59,8 +57,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
-			                   new TextPatternCaretMovedEvent (Provider));
 			Provider.SetEvent (ProviderEventType.TextPatternTextSelectionChangedEvent,
 			                   new TextPatternTextSelectionChangedEvent (Provider));
 		}
@@ -68,8 +64,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.TextPatternTextSelectionChangedEvent,
-			                   null);
-			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
 			                   null);
 		}
 
@@ -152,44 +146,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			return (ITextRangeProvider) new TextRangeProvider (
 				this, TextBoxBase, index, index);
 		}
-		
-		#region IClipboardSupport Implementation	
-
-		public void Copy (int start, int end)
-		{
-			string text = Text;
-			start = (int) System.Math.Max (start, 0);
-			end = (int) System.Math.Min (end, text.Length);
-			SWF.Clipboard.SetText (text.Substring (start, end - start));
-		}
-		
-		public void Paste (int position)
-		{
-			string text = Text;
-			position = (int) System.Math.Max (position, 0);
-			position = (int) System.Math.Min (position, text.Length);
-
-			// If you were to paste using the GUI, it would only
-			// paste enough until the control was full, so emulate
-			// that behavior.
-			int maxLength = 0;
-			if (Provider is TextBoxProvider)
-				maxLength = ((TextBoxProvider) Provider).MaxLength;
-
-			string clipboardText = SWF.Clipboard.GetText ();
-			if (maxLength > 0 && clipboardText.Length > (maxLength - position))
-				clipboardText = clipboardText.Substring (0, maxLength - position);
-
-			IInsertDeleteTextProvider insertDeleteProv
-				= Provider.GetPatternProvider (InsertDeleteTextPatternIdentifiers.Pattern.Id)
-					as IInsertDeleteTextProvider;
-			if (insertDeleteProv != null)
-				insertDeleteProv.InsertText (clipboardText, ref position);
-			else
-				TextBoxBase.Text = text.Insert (position, clipboardText);
-		}
-
-		#endregion
 
 		#endregion
 
@@ -210,79 +166,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return Provider.Control as SWF.TextBox; }
 		}
 
-		private string Text {
-			get {
-				if (TextBoxBase is SWF.MaskedTextBox)
-					return ((SWF.MaskedTextBox) TextBoxBase).MaskedTextProvider.ToDisplayString ();
-				else
-					return TextBoxBase.Text;
-			}
-			set { TextBoxBase.Text = value; }
-		}
-		
-		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
-		{
-			// Copied from TextRangeProvider.cs
-			// I couldn't think of a good way to share this without
-			// introducing a cyclical dependency -- Brad
-			// %-< -------------------------------------------------
-			Type textbox_type = textbox.GetType ();
-			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (textbox_fi == null) {
-				throw new Exception ("document field not found in TextBoxBase");
-			}
-
-			return textbox_fi.GetValue (textbox);
-			// ------------------------------------------------- >-%
-		}
-
-		internal SWF.Document Document { 
+		private SWF.Document Document { 
 			get { return TextBoxBase.Document; }
 		}
 
-		public int CaretOffset {
-			get {
-				// TODO: This won't scale; we really should
-				// find a better way of doing it
-				SWF.Document document = Document;
-				if (document.caret.line.line_no > document.Lines)
-					return Text.Length;
-				return Document.LineTagToCharIndex
-					(document.caret.line, document.CaretPosition);
-			}
-		}
 
-		bool IText.SetCaretOffset (int offset)
-		{
-			if (offset < 0)
-				return false;
-			SWF.Document document = Document;
-			int curPos = 0;
-			SWF.Line line = null;
-			for (int i = 1;i <= document.Lines;i++) {
-				line = document.GetLine (i);
-				int length = line.Text.ToString().Length;
-				if (curPos + length >= offset) {
-					document.PositionCaret (line, offset - curPos);
-					return true;
-				}
-				curPos += length;
-			}
-			return false;
-		}
-
-		string IText.GetSelection (int selectionNum, out int startOffset, out int endOffset)
-		{
-			startOffset = endOffset = CaretOffset;
-			if (selectionNum != 0)
-				return null;
-			SWF.TextBoxBase textBoxBase = TextBoxBase;
-			if (TextBoxBase.Document.SelectionVisible) {
-				startOffset = textBoxBase.SelectionStart;
-				endOffset = startOffset + textBoxBase.SelectionLength;
-				return textBoxBase.Text.Substring (startOffset, endOffset - startOffset);
-			}
-			return null;
-		}
 	}
 }

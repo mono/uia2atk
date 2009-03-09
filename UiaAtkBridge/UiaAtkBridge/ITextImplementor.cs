@@ -25,6 +25,8 @@
 
 using Atk;
 using System;
+using System.Windows.Automation;
+
 
 namespace UiaAtkBridge
 {
@@ -69,5 +71,11 @@ namespace UiaAtkBridge
 
 		bool HandleSimpleChange (ref string oldText, ref int caretOffset);
 		bool HandleSimpleChange (ref string oldText, ref int caretOffset, bool updateCaret);
+
+		bool SetCaretOffSet (int offset);
+		int CaretOffset { get; }
+
+		bool RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
+		bool RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
 	}
 }
