@@ -23,16 +23,24 @@ class ToolStripComboBoxFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripComboBoxFrame, self).__init__(accessible)
         self.label = self.findLabel("Please Select one Font Size from the ComboxBox")
+        self.toolbar = self.findToolBar(None)
         self.toolstripcombobox = self.findComboBox(None)
 
     def press(self, accessible):
         accessible.press()
-        self.toolstripcombobox_menu = self.findMenu(str(self.MENU))
-        #self.toolstripcombobox_menuitem_6 = self.findMenuItem(self.MENUITEM_6)
-        #self.toolstripcombobox_menuitem_8 = self.findMenuItem(self.MENUITEM_8)
-        #self.toolstripcombobox_menuitem_10 = self.findMenuItem(self.MENUITEM_10)
-        #self.toolstripcombobox_menuitem_12 = self.findMenuItem(self.MENUITEM_12)
-        #self.toolstripcombobox_menuitem_14 = self.findMenuItem(self.MENUITEM_14)
+        self.menu = self.findMenu(None)
+        self.menuitem_6 = self.findMenuItem(self.MENUITEM_6)
+        self.menuitem_8 = self.findMenuItem(self.MENUITEM_8)
+        self.menuitem_10 = self.findMenuItem(self.MENUITEM_10)
+        self.menuitem_12 = self.findMenuItem(self.MENUITEM_12)
+        self.menuitem_14 = self.findMenuItem(self.MENUITEM_14)
+
+    def inputText(self, accessible, text):
+        try:
+            procedurelogger.action('input %s to %s' % (text, accessible))
+            accessible.text = text
+        except NotImplementedError:
+            pass
 
     def assertText(self, accessible, text=None):
         """assert text is equal to the input"""
@@ -43,11 +51,11 @@ class ToolStripComboBoxFrame(accessibles.Frame):
         assert accessible.text == text, '%s text is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, index):
         """assert Selection implementation"""
-        procedurelogger.action('select childIndex %s in "%s"' % \
-                                        (childIndex, accessible))
-        accessible.selectChild(childIndex)
+        procedurelogger.action('select index %s in "%s"' % \
+                                        (index, accessible))
+        accessible.selectChild(index)
 
     def quit(self):
         self.altF4()

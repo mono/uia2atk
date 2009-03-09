@@ -1,3 +1,12 @@
+2009-03-07  Ray Wang <rawang@novell.com>
+
+	* testers/toolstripcombobox/toolstripcomboboxframe.py: add inputText
+	method to test items' "Text(Editable)".
+	* testers/toolstripcombobox_basic_ops.py: regression updates.
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: add
+	inputText method to test items' "Text(Editable)".
+	* testers/toolstripsplitbutton_basic_ops.py: regression updates.
+
 2009-03-06  Ray Wang <rawang@novell.com>
 
 	* testers/toolstriplabel_basic_ops.py: add comments to remind, it 

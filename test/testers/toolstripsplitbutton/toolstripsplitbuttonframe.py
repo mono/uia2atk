@@ -22,6 +22,7 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripSplitButtonFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
+        self.toolbar = self.findToolBar(None)
         self.push_button = self.findPushButton(self.PUSH_BUTTON)
         self.toggle_button = self.findToggleButton(None)
         self.menuitem_10 = self.findMenuItem(self.MENUITEM_10, checkShowing=False)
@@ -58,14 +59,23 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         assert accessible.text == text, '%s is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, index):
         """assert Selection implementation"""
-        procedurelogger.action('select childIndex %s in "%s"' % \
-                                        (childIndex, accessible))
-        accessible.selectChild(childIndex)
+        procedurelogger.action('select index %s in "%s"' % \
+                                        (index, accessible))
+        accessible.selectChild(index)
+
+    def inputText(self, accessible, text):
+        try:
+            procedurelogger.action('input %s to %s' % (text, accessible))
+            accessible.text = text
+        except NotImplementedError:
+            pass
 
     def assertComponent(self):
         self.menuitems = self.findAllMenuItems(None)
+        assert len(self.menuitems) == 3, \
+                        "the number of menu items is not correct"
 
     def quit(self):
         self.altF4()
