@@ -86,13 +86,17 @@ namespace UiaAtkBridge
 					states.AddState (Atk.StateType.Showing);
 			}
 
-			bool canFocus = (bool) Provider.GetPropertyValue (
-			     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			bool hasFocus = (bool) Provider.GetPropertyValue (
 			     AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 
+			// Intentionally ignore IsKeyboardFocusable, as
+			// MenuItems always report False even if they are
+			// focusable
+			// Additionally, we don't want to reoprt Focusable
+			// ourselves, as Gtk+ menus and menu items don't.
+
 			if (states.ContainsState (Atk.StateType.Showing)
-			    && canFocus && hasFocus) {
+			    && hasFocus) {
 				states.AddState (Atk.StateType.Selected);
 				states.AddState (Atk.StateType.Focused);
 			} else {

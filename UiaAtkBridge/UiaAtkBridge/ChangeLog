@@ -1,5 +1,11 @@
 2009-03-09  Brad Taylor  <brad@getcoded.net>
 
+	* MenuItem.cs: Intentionally ignore focusable as MenuItems should
+	always report IsKeyboardFocusable = False in the provider.
+	[Really fixes #471405]
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
 	* MenuItem.cs: Reconfigure the way Focus and Selection are done.  When
 	invoked, no longer select/focus as it doesn't correctly reflect the
 	state of the widget which is currently invisible.  Additionally, don't
