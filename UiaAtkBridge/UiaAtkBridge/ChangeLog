@@ -1,3 +1,10 @@
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* AutomationBridge.cs: 
+	* ContextMenuWindow.cs: Add a new Window subclass to properly export
+	the correct states for ContextMenu.  [Fixes #477657]
+
 2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* DataGrid.cs: Cosmetic.

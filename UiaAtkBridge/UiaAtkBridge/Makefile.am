@@ -59,6 +59,7 @@ FILES =  \
 	ComponentParentAdapter.cs \
 	Container.cs \
 	ContextMenu.cs \
+	ContextMenuWindow.cs \
 	DataGrid.cs \
 	DataGridGroup.cs \
 	EditableTextImplementorHelper.cs \

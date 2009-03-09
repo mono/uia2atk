@@ -1068,7 +1068,7 @@ namespace UiaAtkBridge
 			}
 
 			// Handle context menu
-			var fakeWindow = new Window ();
+			ContextMenuWindow fakeWindow = new ContextMenuWindow ();
 			TopLevelRootItem.Instance.AddOneChild (fakeWindow);
 			IncludeNewAdapter (new ContextMenu (provider), fakeWindow);
 		}
