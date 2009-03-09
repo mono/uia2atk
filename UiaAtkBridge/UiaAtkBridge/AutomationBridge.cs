@@ -456,6 +456,9 @@ namespace UiaAtkBridge
 		
 		internal static ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
 		{
+			if (provider == null)
+				throw new ArgumentNullException ("provider");
+			
 			IRawElementProviderFragment fragment = (IRawElementProviderFragment)provider;
 			IRawElementProviderFragment parentProvider;
 

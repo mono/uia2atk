@@ -1,3 +1,9 @@
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs:
+	* AutomationBridge.cs: Some protection against NRE's found
+	when trying to reproduce #479404.
+
 2009-03-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs:
@@ -31,7 +37,7 @@
 
 	* TreeItem.cs: OnRefRelationSet handled on Adapter. [Fixes Bug #479142]
 
-	2009-03-05  Mike Gorse  <mgorse@novell.com>
+2009-03-05  Mike Gorse  <mgorse@novell.com>
 
 	* EditableTextImplementor.cs: Fix Editable when readOnly changes.
 
@@ -100,7 +106,7 @@
 	* EditableTextImplementor.cs: File added, implements
 	Atk.EditableTextImplementor.
 
-	2009-02-18  Mike Gorse  <mgorse@novell.com>
+2009-02-18  Mike Gorse  <mgorse@novell.com>
 
 	* Tree.cs, TreeItem.cs, List.cs, Tab.cs,, Slider.cs:
 	  TextBoxEntryView.cs: Various Name fixes.
@@ -974,7 +980,7 @@
 
 	* Tree.cs: Cosmetic.
 
-2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Tab.cs:
 	* List.cs:
@@ -2643,8 +2649,6 @@
 
 	* ScrollBar.cs: Not using Parent in constructor, instead calling it
 	  when needed in GetCurrentValue and SetCurrentValue.
-	
-	  
 	
 	  [Fixes Bug #414937]
 

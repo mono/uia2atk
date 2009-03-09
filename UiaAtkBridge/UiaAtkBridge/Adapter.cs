@@ -292,8 +292,8 @@ namespace UiaAtkBridge
 		}
 
 		internal Adapter VirtualParent {
-			get { return AutomationBridge.GetParentAdapter (Provider); }
-		}		
+			get { return (Provider == null) ? null : AutomationBridge.GetParentAdapter (Provider); }
+		}
 
 		private void EmitBoundsChanged (System.Windows.Rect rect)
 		{
