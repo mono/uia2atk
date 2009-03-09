@@ -79,6 +79,8 @@ namespace UiaAtkBridgeTest
 		public abstract bool IsBGO561414Addressed ();
 
 		public abstract bool IsBGO567991Addressed ();
+
+		public abstract bool IsBGO574674Addressed ();
 		
 		public abstract void CloseContextMenu (Atk.Object accessible);
 
@@ -313,7 +315,7 @@ namespace UiaAtkBridgeTest
 				});
 			}
 
-			if (type == BasicWidgetType.ParentMenu)
+			if (type == BasicWidgetType.ParentMenu && !IsBGO574674Addressed ())
 				Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.Selected),
 				               "should contain Selected after DoAction");
 
@@ -531,7 +533,9 @@ namespace UiaAtkBridgeTest
 					shouldSuccess = AllowsSelectingChildMenus;
 				Assert.AreEqual (selected.Value, shouldSuccess, "AddSelection(" + i + "), we got:" + selected.Value);
 				
-				CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
+				if (!IsBGO574674Addressed ())
+					CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
+
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (val), "accessible.RefAccessibleChild (" + i + ") != null");
 				if (shouldSuccess)
@@ -758,7 +762,12 @@ namespace UiaAtkBridgeTest
 				    type != BasicWidgetType.ContextMenu &&
 				    type != BasicWidgetType.ComboBoxSimpleMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
-				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
+				
+				if (!(IsBGO574674Addressed ()
+				      && (type == BasicWidgetType.ContextMenu
+				          || type == BasicWidgetType.MainMenuBar
+				          || type == BasicWidgetType.ParentMenu)))
+					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
 		}
 		

@@ -161,6 +161,11 @@ namespace UiaAtkBridgeTest
 			return false;
 		}
 
+		public override bool IsBGO574674Addressed ()
+		{
+			return false;
+		}
+
 		public override void CloseContextMenu (Atk.Object accessible) {
 			RunInGuiThread (delegate () {
 				((Gtk.Menu)mappings [accessible]).Popdown ();

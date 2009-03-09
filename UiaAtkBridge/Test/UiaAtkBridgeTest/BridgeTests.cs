@@ -718,9 +718,7 @@ namespace UiaAtkBridgeTest
 			States (secondItem,
 				Atk.StateType.Enabled,
 				Atk.StateType.Selectable,
-				Atk.StateType.Selected,
 				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 			
 			Atk.Object firstItem = accessible.RefAccessibleChild (0);
@@ -762,7 +760,6 @@ namespace UiaAtkBridgeTest
 				States (accessible,
 					Atk.StateType.Enabled,
 					Atk.StateType.Selectable,
-					Atk.StateType.Selected,
 					Atk.StateType.Sensitive,
 					Atk.StateType.Showing,
 					Atk.StateType.Visible);

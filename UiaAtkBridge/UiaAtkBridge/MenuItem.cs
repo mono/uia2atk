@@ -76,35 +76,31 @@ namespace UiaAtkBridge
 			
 			states.AddState (Atk.StateType.Selectable);
 
-			if (selected)
-				states.AddState (Atk.StateType.Showing);
-			else
-				states.RemoveState (Atk.StateType.Showing);
-
 			if (Parent != null) {
-				if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
+				Atk.StateSet parentsStates = Parent.RefStateSet ();
+				if (parentsStates.ContainsState (Atk.StateType.Visible))
 					states.AddState (Atk.StateType.Visible);
-				if ((Parent is MenuBar && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
-				    || Parent.RefStateSet ().ContainsState (Atk.StateType.Selected))
+
+				if ((Parent is MenuBar && parentsStates.ContainsState (Atk.StateType.Visible))
+				    || parentsStates.ContainsState (Atk.StateType.Selected))
 					states.AddState (Atk.StateType.Showing);
 			}
 
 			bool canFocus = (bool) Provider.GetPropertyValue (
 			     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			bool hasFocus = (bool) Provider.GetPropertyValue (
+			     AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 
-			if (selected || SelectionItemSelected) {
+			if (states.ContainsState (Atk.StateType.Showing)
+			    && canFocus && hasFocus) {
 				states.AddState (Atk.StateType.Selected);
-
-				if (selected && canFocus)
-					states.AddState (Atk.StateType.Focused);
-				else
-					states.RemoveState (Atk.StateType.Focused);
+				states.AddState (Atk.StateType.Focused);
 			} else {
 				states.RemoveState (Atk.StateType.Selected);
 				states.RemoveState (Atk.StateType.Focused);
 			}
 
-			if (Checked)
+			if (Checked || SelectionItemSelected)
 				states.AddState (Atk.StateType.Checked);
 			else
 				states.RemoveState (Atk.StateType.Checked);
@@ -152,11 +148,11 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
-				selected = (bool)e.NewValue;
-				NotifyStateChange (Atk.StateType.Selected, selected);
-			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+			if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				selected = (bool) e.NewValue ? false : selected;
 				NotifyStateChange (Atk.StateType.Showing);
+			} else if (e.Property.Id == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
+				NotifyStateChange (Atk.StateType.Selected, (bool) e.NewValue);
 			} else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
 				toggleProvider = (IToggleProvider)
 					Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);

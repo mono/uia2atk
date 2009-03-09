@@ -1,3 +1,7 @@
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTester.cs: Work around bug #574674 in AtkTester.
+
 2009-03-05  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTester.cs: InterfaceAction test updated. [For bug #479142]

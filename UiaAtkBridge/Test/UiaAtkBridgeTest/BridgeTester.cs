@@ -272,6 +272,11 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
+		public override bool IsBGO574674Addressed ()
+		{
+			return true;
+		}
+
 		public override void CloseContextMenu (Atk.Object accessible)
 		{
 			var comp = mappings [accessible];

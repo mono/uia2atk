@@ -1,3 +1,8 @@
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: 
+	* BridgeTester.cs: Work around #574674.
+
 2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Mimic (in the provider) and workaround (in
