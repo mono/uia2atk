@@ -1,3 +1,9 @@
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Pass
+	null to the base ctor or else we'll end holding the same
+	children providers in multiple providers. Fixes #480829.
+
 2009-03-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

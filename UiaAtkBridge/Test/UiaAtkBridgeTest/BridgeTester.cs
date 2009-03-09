@@ -104,6 +104,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ContainerControl containerControl = new SWF.ContainerControl ();
 		protected SWF.DataGridView datagridView = new SWF.DataGridView ();
 		protected SWF.MaskedTextBox maskedTextBox = new SWF.MaskedTextBox ();
+		protected SWF.PropertyGrid pgrid = new SWF.PropertyGrid ();
 
 		protected int lastClickedLink = -1;
 
@@ -169,6 +170,12 @@ namespace UiaAtkBridgeTest
 			toolBar.Buttons.Add (toolBarButtonWithImage);
 			toolBarButtonWithImage.ImageIndex = 0;
 			form.Controls.Add (toolBar);
+
+			pgrid.CommandsVisibleIfAvailable = true;
+			pgrid.Dock = SWF.DockStyle.Top;
+			pgrid.Text = "PGrid TestText";
+			pgrid.SelectedObject = lab1;
+			form.Controls.Add (pgrid);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";

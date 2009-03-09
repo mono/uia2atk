@@ -1,3 +1,9 @@
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Added general test for PropertyGrid and
+	some bits that cover bug #480829.
+
 2009-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: 

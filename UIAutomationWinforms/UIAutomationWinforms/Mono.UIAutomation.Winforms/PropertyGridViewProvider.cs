@@ -393,7 +393,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public PropertyGridListItemChildProvider (PropertyGridListItemProvider itemProvider,
 		                                          PropertyGridView view)
-			: base (view)
+			: base (null)
 		{
 			this.itemProvider = itemProvider;
 			this.propertyGrid = itemProvider.PropertyGridViewProvider.PropertyGrid;
