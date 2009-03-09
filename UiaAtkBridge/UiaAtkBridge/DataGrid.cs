@@ -32,7 +32,7 @@ namespace UiaAtkBridge
 
 	public class DataGrid : Table, Atk.SelectionImplementor
 	{
-		private ISelectionProvider					selectionProvider;
+		private ISelectionProvider		selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
 		
 		public DataGrid (IRawElementProviderFragment provider): base (provider)

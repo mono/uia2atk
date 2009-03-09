@@ -1357,7 +1357,7 @@ namespace UiaAtkBridgeTest
 		public void PropertyGrid ()
 		{
 			Atk.Object accessible =  GetAdapterForWidget (pgrid);
-Console.WriteLine ("beforenocin");
+
 			Assert.AreEqual (accessible.Role, Atk.Role.Panel);
 			Assert.AreEqual (accessible.NAccessibleChildren, 4);
 
