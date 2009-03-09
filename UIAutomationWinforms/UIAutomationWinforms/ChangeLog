@@ -1,3 +1,10 @@
+2009-03-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Use
+	ScrollBehaviorObserver property instead of private observer
+	field, as the former can be overridden. Add null check to
+	UpdateScrollBehavior. Fixes crash in bug #474611.
+
 2009-03-06  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Account for the fact

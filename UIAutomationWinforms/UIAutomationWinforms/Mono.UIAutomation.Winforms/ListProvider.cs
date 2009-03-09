@@ -279,12 +279,12 @@ namespace Mono.UIAutomation.Winforms
 
 		private void UpdateScrollBehavior ()
 		{
-			UpdateScrollBehavior (observer);
+			UpdateScrollBehavior (ScrollBehaviorObserver);
 		}
 
 		protected void UpdateScrollBehavior (IScrollBehaviorObserver observer)
 		{
-			if (observer.SupportsScrollPattern)
+			if (observer != null && observer.SupportsScrollPattern)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
 			else
