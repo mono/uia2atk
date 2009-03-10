@@ -1354,6 +1354,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("we had to reopen 480829")]
 		public void PropertyGrid ()
 		{
 			Atk.Object accessible =  GetAdapterForWidget (pgrid);

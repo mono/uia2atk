@@ -1,3 +1,8 @@
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Revert main bits of r128916, it's causing regessions.
+
 2009-03-10  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomationWinforms.Behaviors/TextBox/ValueProviderBehavior.cs,
