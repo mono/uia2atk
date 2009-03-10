@@ -1,6 +1,12 @@
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Sandy keeps getting failures so revert completely the
+	PropertyGrid stuff.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
 	Reapply fix for 480829 without breaking tests.
 
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>

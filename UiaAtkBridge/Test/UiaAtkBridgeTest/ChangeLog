@@ -1,6 +1,12 @@
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:
+	* BridgeTester.cs: Sandy keeps getting failures so revert
+	completely the PropertyGrid stuff.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
 	* BridgeTester.cs: Reenable PropertyGrid test.
 
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
