@@ -1,4 +1,10 @@
-2009-03-07  Ray Wang <rawang@novell.com>
+2009-03-10  Ray Wang <rawang@novell.com>
+
+	* testers/datetimepicker_showupdown_ops.py: update for regression 
+	test
+	* testers/datetimepicker_dropdown_ops.py: update for regression test.
+
+2009-03-09  Ray Wang <rawang@novell.com>
 
 	* testers/toolstripcombobox/toolstripcomboboxframe.py: add inputText
 	method to test items' "Text(Editable)".

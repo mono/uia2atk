@@ -54,7 +54,8 @@ actionsCheck(dtpsudFrame.months[11], "TableCell")
 ##############################
 # check datetimepicker_showupdown AtkAccessible
 ##############################
-statesCheck(dtpsudFrame.panel, "Panel", add_states=["focused"])
+# TODO: BUG483735
+#statesCheck(dtpsudFrame.panel, "Panel", add_states=["focused"])
 statesCheck(dtpsudFrame.weekday, "TreeTable")
 
 NUM_MONTHS = 12
