@@ -1,5 +1,10 @@
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* samples/gtktoolbar_combobox.py: add another widget (button) for testing
+	focus losses.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* samples/gtkcombobox.py: add another widget (button) for testing
 	focus losses.
 

@@ -19,6 +19,8 @@ class Toolbar:
         self.window.set_border_width(12)
         self.window.resize(200, 50)
 
+        button = gtk.Button("ButtoN")
+
         toolbar = gtk.Toolbar()
         store = gtk.ListStore(gobject.TYPE_STRING)
         combo = gtk.ComboBox(store)
@@ -28,6 +30,7 @@ class Toolbar:
         combo.insert_text(0, "Apple")
         combo.insert_text(1, "Banana")
         combo.insert_text(2, "Cherry")
+        toolbar.add(button)
         toolbar.add(combo)
         #toolbar.insert(gtk.ToolButton(gtk.STOCK_ABOUT), 0)
         #toolbar.insert(gtk.ToolButton(gtk.STOCK_OPEN), 1)
