@@ -175,7 +175,8 @@ namespace UiaAtkBridgeTest
 			pgrid.Dock = SWF.DockStyle.Top;
 			pgrid.Text = "PGrid TestText";
 			pgrid.SelectedObject = lab1;
-			//form.Controls.Add (pgrid);
+			form.Size = new Size (800, 600);
+			form.Controls.Add (pgrid);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
