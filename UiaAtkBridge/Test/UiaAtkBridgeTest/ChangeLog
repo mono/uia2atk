@@ -1,5 +1,10 @@
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Don't add the PropertyGrid to the form
+	(this is the fix what I was supposed to do in r129007).
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: Revert main bits of r128916, it's causing
 	regessions.
 
