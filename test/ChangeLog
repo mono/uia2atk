@@ -1,3 +1,8 @@
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkcombobox.py: add another widget (button) for testing
+	focus losses.
+
 2009-03-10  Ray Wang <rawang@novell.com>
 
 	* testers/datetimepicker_showupdown_ops.py: update for regression 
@@ -701,6 +706,14 @@
 	* testers/printpreviewcontrol_basic_ops.py: add BUG465945 and BUG473757 
 	as referance for regression test, add add sleep time after click button
 
+2009-02-09  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: more experiments with menus+selection.
+
+2009-02-09  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkcontextmenu.py: committed some interesting experiments.
+
 2009-02-09  Ray Wang <rawang@novell.com>
 
 	* samples/trackbar.py: change the Scroll event to ValueChanged event
@@ -871,6 +884,30 @@
 	* samples/splitter_vertical.py: Add new sample for Splitter that has
 	a vertical splitter (other Splitter sample has a horizontal splitter)
 	* testers/states.py: Add default states for Splitter and SplitContainer
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolbar.py: add nop subbutton.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: drop commented code..
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: Add subchilds in toolstripmenuitem test.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: Add subchilds in toolstripmenuitem test.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: tabs to spaces..
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: Add subchilds in gtkmenubar test.
 
 2009-01-28 Brian G. Merrell <bgmerrell@gmail.com>
 
@@ -2108,6 +2145,10 @@
 	* testers/scrollbar_basic_ops.py: modify the value to test the out of 
 	running situation
 
+2008-11-12  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* test/samples/samples/gtkentry.py: prevent exception.
+
 2008-11-12  Ray Wang <rawang@novell.com>
 
 	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the
@@ -2581,6 +2622,11 @@
 
 	* samples/gtkmenubar.py: add gtk.MenuBar widget sample
 
+2008-10-21  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* test/samples/combobox_dropdown(default_style).py:
+	* test/samples/combobox.py: Renamed to make this clearer.
+
 2008-10-21  Calen Chen <cachen@novell.com>
 
 	* samples/panel.py: add example for panel
@@ -2617,6 +2663,15 @@
 	* tools/dashboard/dashboard.xsl: Show summary and status images
 	* tools/dashboard/reports: text reports for each control linked to by
 	the dashboard will go here.
+
+2008-10-20  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtktextview.py: Added a gtktextview example.
+	* samples/gtkentry.py: Corrected the title.
+
+2008-10-20  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkentry.py: New entry test.
 
 2008-10-20  Calen Chen <cachen@novell.com>
 
@@ -3390,6 +3445,10 @@
 	harness.
 	* keystrokes/gtktutorial.py/gtktutorial_example_1.py:  Orca test
 	example for Gtk sample application gtktutorial.py
+
+2008-09-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkfontchooser.py: Added another sample.
 
 2008-09-05  Brad Taylor  <brad@getcoded.net>
 	

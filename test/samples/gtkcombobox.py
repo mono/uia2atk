@@ -18,6 +18,10 @@ class ComboBox:
         self.window.connect("delete_event", self.delete_event)
         self.window.set_border_width(12)
 
+        # create a horizontal box (VBox) to organize widgets
+        # we will pack two buttons in this box.
+        self.vbox = gtk.VBox(False, 0)
+
         store = gtk.ListStore(gobject.TYPE_STRING)
         combo = gtk.ComboBox(store)
         cell = gtk.CellRendererText()
@@ -35,7 +39,14 @@ class ComboBox:
         combo.insert_text(9, "Mango")
         combo.insert_text(10, "Orange")
         combo.insert_text(11, "Papaya")
-        self.window.add(combo)
+
+        self.button = gtk.Button("ButtoN")
+
+        self.vbox.pack_start(self.button, True, True, 0)
+        self.vbox.pack_start(combo, True, True, 0)
+        self.window.add(self.vbox)
+        self.button.show()
+	self.vbox.show()
 
         combo.show()
         self.window.show()

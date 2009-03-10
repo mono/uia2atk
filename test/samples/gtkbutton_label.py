@@ -32,7 +32,7 @@ class MainWindow:
         self.label.set_name("label name")
         self.label.set_markup("<span color=\"red\">This is a label</span>"); 
 
-        # create a horizontal box (HBox) to organize widgets
+        # create a horizontal box (VBox) to organize widgets
         # we will pack two buttons in this box.
         self.vbox = gtk.VBox(False, 0)
 
