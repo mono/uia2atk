@@ -1,3 +1,9 @@
+2009-03-10  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomationWinforms.Behaviors/TextBox/ValueProviderBehavior.cs,
+	  Mono.UIAutomationWinforms.Events/TextBox/ValuePatternValueIsreadOnlyEvent.cs:
+	  Set ReadOnly when disabled [bug 480266]
+
 2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Pass

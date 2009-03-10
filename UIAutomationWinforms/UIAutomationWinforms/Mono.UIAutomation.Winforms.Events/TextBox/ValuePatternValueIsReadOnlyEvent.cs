@@ -50,10 +50,14 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		{
 			((TextBoxBase) Provider.Control).ReadOnlyChanged 
 				+= new EventHandler (OnIsReadOnlyChanged);
+			Provider.Control.EnabledChanged 
+				+= new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect ()
 		{
+			Provider.Control.EnabledChanged 
+				-= new EventHandler (OnIsReadOnlyChanged);
 			((TextBoxBase) Provider.Control).ReadOnlyChanged 
 				-= new EventHandler (OnIsReadOnlyChanged);
 		}

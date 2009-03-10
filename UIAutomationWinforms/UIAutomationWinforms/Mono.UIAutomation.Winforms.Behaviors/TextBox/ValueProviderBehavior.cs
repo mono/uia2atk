@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		#region IValueProvider: Specialization
 		
 		public bool IsReadOnly {
-			get { return ((SWF.TextBoxBase) Provider.Control).ReadOnly; }
+			get { return ((SWF.TextBoxBase) Provider.Control).ReadOnly || !Provider.Control.Enabled; }
 		}
 		
 		public string Value {
