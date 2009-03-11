@@ -35,6 +35,7 @@ namespace UiaAtkBridge
 	{
 		private IInvokeProvider			invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
+		private IExpandCollapseProvider expandCollapseProvider;
 
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
@@ -48,6 +49,9 @@ namespace UiaAtkBridge
 			if (selectionItemProvider == null)
 				throw new ArgumentException ("TreeItem should always implement ISelectionItemProvider");
 
+			expandCollapseProvider = provider.GetPatternProvider (
+				ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
+
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			actionExpert = new ActionImplementorHelper ();
 
@@ -57,6 +61,11 @@ namespace UiaAtkBridge
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
+
+			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
+			if (fragment != null && fragment.Navigate (NavigateDirection.FirstChild) != null)
+				AddExpandContractAction ();
+
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 
 			imageExpert = new ImageImplementorHelper (this);
@@ -70,9 +79,7 @@ namespace UiaAtkBridge
 		}
 
 		protected IExpandCollapseProvider ExpandCollapseProvider {
-			get {
-				return (IExpandCollapseProvider) Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			}
+			get { return expandCollapseProvider; }
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -96,9 +103,10 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Checked);
 			}
 
-			IExpandCollapseProvider expandCollapseProvider = ExpandCollapseProvider;
 			if (expandCollapseProvider != null) {
-				ExpandCollapseState expandCollapseState = (ExpandCollapseState)Provider.GetPropertyValue (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+				ExpandCollapseState expandCollapseState
+					= (ExpandCollapseState) Provider.GetPropertyValue (
+					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
 				if (expandCollapseState != ExpandCollapseState.LeafNode)
 					states.AddState (Atk.StateType.Expandable);
 				if (expandCollapseState == ExpandCollapseState.Expanded)
@@ -301,6 +309,46 @@ namespace UiaAtkBridge
 			}
 			return true;
 		}
+
+		internal bool DoExpandCollapse ()
+		{
+			if (expandCollapseProvider == null)
+				return false;
+
+			ExpandCollapseState expandCollapseState
+				= (ExpandCollapseState) Provider.GetPropertyValue (
+					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+			if (expandCollapseState == ExpandCollapseState.Expanded)
+				expandCollapseProvider.Collapse ();
+			else
+				expandCollapseProvider.Expand ();
+
+			return true;
+		}
+
+		internal void AddExpandContractAction ()
+		{
+			if (expandCollapseProvider == null) 
+				return;
+
+			actionExpert.Add ("expand or contract",
+					  "expand or contract",
+					  "expands or contracts the row in the tree view containing this cell",
+					  DoExpandCollapse);
+		}
+
+		internal void NotifyChildAdded (Atk.Object child)
+		{
+			AddExpandContractAction ();
+		}
+
+		internal void NotifyChildRemoved (Atk.Object child)
+		{
+			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
+			if (fragment != null && fragment.Navigate (NavigateDirection.FirstChild) != null)
+				actionExpert.Remove ("expand or contract");
+		}
+
 		public int NSelections {
 			get {
 				return -1;

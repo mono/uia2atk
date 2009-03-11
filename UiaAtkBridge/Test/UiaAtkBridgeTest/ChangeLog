@@ -1,3 +1,8 @@
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTester.cs: Fall back on the parent's expand/collapse support.
+	This will use the "expand or collapse" Atk.Action.
+
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:

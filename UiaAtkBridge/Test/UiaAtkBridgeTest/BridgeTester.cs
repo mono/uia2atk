@@ -361,24 +361,6 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
-		public override void ExpandTreeView (BasicWidgetType type)
-		{
-			if (type == BasicWidgetType.ListView)
-				return;
-			if (type != BasicWidgetType.TreeView)
-				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
-			treeView.ExpandAll ();
-		}
-
-		public override void CollapseTreeView (BasicWidgetType type)
-		{
-			if (type == BasicWidgetType.ListView)
-				return;
-			if (type != BasicWidgetType.TreeView)
-				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
-			treeView.CollapseAll ();
-		}
-
 		public override object ActivateAdditionalForm (string name)
 		{
 			SWF.Form f = new SWF.Form ();

@@ -960,7 +960,8 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 
 			accessible = GetAccessible (type, simpleTable, true);
-			ExpandTreeView (type);
+			ExpandTreeView (accessible);
+
 			// A group cannot be selected, so exclude names of
 			// groups from selection test
 			string[] names = NamesFromTableXml (simpleTable, 1);
@@ -1148,7 +1149,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 
 			StartEventMonitor ();
-			ExpandTreeView (type);
+			ExpandTreeView (accessible);
 
 			// I'd expect 2 events, but gail only gives us 1. A bug?
 			ExpectEvents (1, 2, Atk.Role.TableCell, "object:state-changed:expanded");
@@ -1175,7 +1176,7 @@ namespace UiaAtkBridgeTest
 			//Relation (Atk.RelationType.NodeChildOf, item4, group2);
 
 			item4 = null;
-			CollapseTreeView (type);
+			CollapseTreeView (accessible);
 			Assert.AreEqual (2, atkTable.NRows, "TreeView NRows after collapse");
 			item4 = FindObjectByName (accessible, "Item4");
 			if (item4 != null) {

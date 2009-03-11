@@ -105,20 +105,21 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
-		public override void ExpandTreeView (BasicWidgetType type)
+		// This is a hack.  For some reason, our Tree Cell instances in
+		// our Gtk.TreeView don't support AtkAction.  I suspect this
+		// has something to do with the way the TreeView is
+		// initialized, but I don't have the time to research this any
+		// further.
+		protected override void ExpandTreeView (Atk.Object obj)
 		{
-			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
-				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
 			RunInGuiThread (delegate {
-			Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+				Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
 				widget.ExpandAll ();
 			});
 		}
 
-		public override void CollapseTreeView (BasicWidgetType type)
+		protected override void CollapseTreeView (Atk.Object obj)
 		{
-			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
-				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
 			RunInGuiThread (delegate {
 				Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
 				widget.CollapseAll ();

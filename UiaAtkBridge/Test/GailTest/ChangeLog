@@ -1,3 +1,7 @@
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* GailTester.cs: Note the bad hack, fix whitespace.
+
 2009-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* GailTester.cs: Note that bug #574674 isn't addressed yet.

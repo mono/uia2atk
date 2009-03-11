@@ -69,8 +69,6 @@ namespace UiaAtkBridgeTest
 
 		public abstract void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly);
 
-		public abstract void ExpandTreeView (BasicWidgetType type);
-		public abstract void CollapseTreeView (BasicWidgetType type);
 		public abstract object ActivateAdditionalForm (string name);
 		public abstract void RemoveAdditionalForm (object obj);
 
@@ -2181,6 +2179,50 @@ namespace UiaAtkBridgeTest
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.IsTrue (evs.Count >= min && evs.Count <= max, "Expected " + min +"-" + max +" " + evType + " events but got " + evs.Count +": " + eventsInXml);
+		}
+
+		protected bool DoActionByName (Atk.Object accessible, string name)
+		{
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			Assert.IsNotNull (atkAction,
+			                  String.Format ("Accessible with Name = {0} and Role = {1} does not implement AtkAction.",
+			                                 accessible.Name, accessible.Role));
+
+			int nActions = atkAction.NActions;
+			for (int i = 0; i < nActions; i++) {
+				string actionName = atkAction.GetName (i);
+				if (actionName == name)
+					return atkAction.DoAction (i);
+			}
+
+			Assert.Fail (String.Format ("Couldn't find action {0} on {1}.  Type is {2}",
+			                            name, accessible.Name, accessible.GetType ()));
+
+			return false;	// keep the compiler happy
+		}
+
+		protected virtual void ExpandTreeView (Atk.Object accessible)
+		{
+			int nChildren = accessible.NAccessibleChildren;
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = accessible.RefAccessibleChild (i);
+				if (child.Role == Atk.Role.TableCell
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expandable)
+				    && !child.RefStateSet().ContainsState (Atk.StateType.Expanded))
+					DoActionByName (child, "expand or contract");
+			}
+		}
+
+		protected virtual void CollapseTreeView (Atk.Object accessible)
+		{
+			int nChildren = accessible.NAccessibleChildren;
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = accessible.RefAccessibleChild (i);
+				if (child.Role == Atk.Role.TableCell
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expandable)
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expanded)) 
+					DoActionByName (child, "expand or contract");
+			}
 		}
 
 		public abstract void RunInGuiThread (System.Action d);

@@ -1,3 +1,13 @@
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+	
+	Committing Mike Gorse's fixes with some minor tweaks.
+	
+	* TreeItem.cs: If the provider has at least 1 child, and exports
+	IExpandCollapseProvider, add "expand or collapse" to our Actions list.
+	[Fixes #475882]
+
+	* ActionImplementorHelper.cs: Check for duplicate Action items.
+
 2009-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

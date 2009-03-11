@@ -1,3 +1,9 @@
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: 
+	* AtkTester.cs: Test for the existance of the new "expand or collapse"
+	action for bug #475882.
+
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTest.mdp: Fix project file.
