@@ -1,3 +1,10 @@
+2009-03-11  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs,
+	Mono.UIAutomation.Winforms/MenuItemProvider.cs,
+	Mono.UIAutomation.Winforms/Helper.cs: Strip ampersands from names
+	of menu items [bug #484375]
+
 2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FormListener.cs:

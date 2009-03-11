@@ -1,3 +1,7 @@
+2009-03-11  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs, MenuItem.cs: Pass on Focus events for MenuItems.
+
 2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ComboBoxItem.cs: Add some null checks that get rid of the

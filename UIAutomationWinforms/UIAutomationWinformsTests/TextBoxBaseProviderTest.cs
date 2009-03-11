@@ -212,6 +212,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			textBoxBase.ReadOnly = false;
 			Assert.AreEqual (valueProvider.IsReadOnly, false, "Is not only");
+
+			textBoxBase.Enabled = false;
+			Assert.IsTrue (valueProvider.IsReadOnly, "Is ReadOnly when disabled");
+
+			textBoxBase.Enabled = true;
+			Assert.IsFalse (valueProvider.IsReadOnly, "Is not ReadOnly when re-enabled");
 		}
 		
 		[Test]

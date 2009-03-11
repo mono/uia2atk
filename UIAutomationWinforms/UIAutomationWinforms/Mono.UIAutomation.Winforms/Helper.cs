@@ -430,6 +430,18 @@ namespace Mono.UIAutomation.Winforms
 					return SWF.DockStyle.None;
 		}
 
+		internal static string StripAmpersands (string s)
+		{
+			if (s == null)
+				return null;
+			// Remove &, except the second in a pair
+			// Will not remove an & at the end of a string, but
+			// having one there wouldn't make much sense anyhow.
+			for (int i = 0; i < s.Length - 1; i++)
+				if (s [i] == '&')
+					s = s.Remove (i, 1);
+			return s;
+		}
 		#endregion
 		
 		#region Private Static Methods

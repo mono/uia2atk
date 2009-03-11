@@ -146,6 +146,7 @@ namespace UiaAtkBridge
 				NotifyStateChange (Atk.StateType.Showing);
 			} else if (e.Property.Id == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
 				NotifyStateChange (Atk.StateType.Selected, (bool) e.NewValue);
+				base.RaiseAutomationPropertyChangedEvent (e);
 			} else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
 				toggleProvider = (IToggleProvider)
 					Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);

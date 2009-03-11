@@ -53,6 +53,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return Helper.StripAmpersands (dropDrownItem.Text);
+			else
+				return base.GetProviderPropertyValue (propertyId);
+		}
+
 		public override void Initialize()
 		{
 			base.Initialize ();

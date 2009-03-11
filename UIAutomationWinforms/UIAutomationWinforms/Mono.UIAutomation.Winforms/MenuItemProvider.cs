@@ -62,7 +62,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("menu item");
 			else if (propertyId == AEIds.NameProperty.Id)
-				return menuItem.Text;
+				return Helper.StripAmpersands (menuItem.Text);
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
 			else if (propertyId == AEIds.IsEnabledProperty.Id)
@@ -84,6 +84,8 @@ namespace Mono.UIAutomation.Winforms
 			          new EMI.AutomationNamePropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
 			          new EMI.AutomationBoundingRectanglePropertyEvent (this));
+			//SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          //new EMI.AutomationHasKeyboardFocusPropertyEvent (this));
 
 			menuItem.UIACheckedChanged += OnBehaviorChanged;
 			menuItem.UIARadioCheckChanged += OnBehaviorChanged;

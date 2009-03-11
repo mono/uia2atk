@@ -82,7 +82,9 @@ namespace UiaAtkBridge
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool canFocus = (bool) Provider.GetPropertyValue (
 				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (!canFocus) {
+				// Menus do not report Focusable even though they are, as in gtk.
+				// TODO: Report a gail bug?
+				if (!canFocus && !(this is Menu)) {
 					return;
 				}
 

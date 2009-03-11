@@ -1,3 +1,12 @@
+2009-03-11  Mike Gorse <mgorse@novell.com>
+
+	* MenuItemProviderTest.cs, ToolStripDropDownItemProviderTest.cs:
+	Test that ampersands are stripped from names [bug #484375].
+
+2009-03-09  Mike Gorse <mgorse@novell.com>
+
+	* TextBoxBaseProviderTest.cs: Test ReadOnly when disabled.
+
 2009-03-06  Neville Gao  <nevillegao@gmail.com>
 
 	* ToolBarButtonProviderTest.cs: Tested ToggleEvent.
