@@ -219,7 +219,7 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			foreach (ListItemProvider item in Items)
-				OnNavigationChildRemoved (false, item);
+				RemoveChildProvider (item);
 
 			ClearItemsList ();
 		}
@@ -299,13 +299,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (args.Action == CollectionChangeAction.Add) {
 				ListItemProvider item = GetItemProviderFrom (this, args.Element);
-				OnNavigationChildAdded (true, item);
+				AddChildProvider (item);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				ListItemProvider item = RemoveItemFrom (args.Element);
-				OnNavigationChildRemoved (true, item);
+				RemoveChildProvider (item);
 			} else if (args.Action == CollectionChangeAction.Refresh) {
 				ClearItemsList ();
-				OnNavigationChildrenCleared (true);
+				OnNavigationChildrenCleared ();
 			}
 		}
 		

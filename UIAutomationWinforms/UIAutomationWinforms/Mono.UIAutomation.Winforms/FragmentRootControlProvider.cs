@@ -82,17 +82,17 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected override void OnNavigationChildAdded (bool raiseEvent, FragmentControlProvider childProvider)
+		public override void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index)
 		{
-			base.OnNavigationChildAdded (raiseEvent, childProvider);
+			base.InsertChildProvider (raiseEvent, childProvider, index);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
 			CheckForRadioButtonChild (childProvider);
 		}
 
-		protected override void OnNavigationChildRemoved (bool raiseEvent, FragmentControlProvider removedProvider)
+		public override void RemoveChildProvider (bool raiseEvent, FragmentControlProvider removedProvider)
 		{
-			base.OnNavigationChildRemoved (raiseEvent, removedProvider);
+			base.RemoveChildProvider (raiseEvent, removedProvider);
 
 			if (hasRadioButtonChild) {
 				bool radioButtonFound = false;
@@ -110,7 +110,6 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 		}
-
 
 		#endregion
 		

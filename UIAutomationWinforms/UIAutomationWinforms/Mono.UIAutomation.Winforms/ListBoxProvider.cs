@@ -126,7 +126,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (object objectItem in listboxControl.Items) {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
-				OnNavigationChildAdded (false, item);
+				AddChildProvider (item);
 			}
 		}
 		

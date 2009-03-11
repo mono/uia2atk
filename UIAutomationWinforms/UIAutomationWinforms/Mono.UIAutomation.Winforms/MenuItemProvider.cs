@@ -109,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			if (menuItem.MenuItems.Count > 0) {
 				menuProvider = new MenuItemMenuProvider (menuItem);
 				menuProvider.Initialize ();
-				OnNavigationChildAdded (false, menuProvider);
+				AddChildProvider (menuProvider);
 			}
 		}
 		
@@ -117,15 +117,15 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (menuProvider != null) {
 				menuProvider.Terminate ();
-				OnNavigationChildRemoved (false, menuProvider);
-				OnNavigationChildrenCleared (false);
+				RemoveChildProvider (menuProvider);
+				OnNavigationChildrenCleared ();
 			}
 		}
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get {
 				return (IRawElementProviderFragmentRoot)
-					ProviderFactory.GetProvider (menuItem.Parent);
+					ProviderFactory.GetProvider (parentMenu);
 			}
 		}
 
@@ -152,11 +152,11 @@ namespace Mono.UIAutomation.Winforms
 			if (menuProvider == null && menuItem.MenuItems.Count > 0) {
 				menuProvider = new MenuItemMenuProvider (menuItem);
 				menuProvider.Initialize ();
-				OnNavigationChildAdded (true, menuProvider);
+				AddChildProvider (menuProvider);
 			} else if (menuProvider != null && menuItem.MenuItems.Count == 0) {
 				menuProvider.Terminate ();
-				OnNavigationChildRemoved (true, menuProvider);
-				OnNavigationChildrenCleared (true);
+				RemoveChildProvider (menuProvider);
+				OnNavigationChildrenCleared ();
 				menuProvider = null;
 			}
 			

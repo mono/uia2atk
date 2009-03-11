@@ -467,7 +467,7 @@ namespace UiaAtkBridgeTest
 //		}
 //		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
 //		{
-			var provider = ProviderFactory.GetProvider (widget, true, true);
+			var provider = ProviderFactory.GetProvider (widget);
 			Assert.IsNotNull (provider, "ProviderFactory returned null for this widget");
 			Atk.Object acc = GetAdapterForProvider (provider);
 			mappings [acc] = widget;

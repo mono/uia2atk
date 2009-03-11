@@ -101,14 +101,14 @@ namespace Mono.UIAutomation.Winforms
 			editChild = new MonthCalendarListItemEditProvider (
 				this, Control);
 			editChild.Initialize ();
-			AddChildProvider (true, editChild);
+			AddChildProvider (editChild);
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 
-			RemoveChildProvider (true, editChild);
+			RemoveChildProvider (editChild);
 			editChild.Terminate ();
 		}
 

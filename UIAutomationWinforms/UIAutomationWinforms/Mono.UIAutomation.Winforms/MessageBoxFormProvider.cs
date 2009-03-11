@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 			if (labelProvider == null) {
 				labelProvider = new MessageBoxFormLabelProvider (this);
 				labelProvider.Initialize ();
-				OnNavigationChildAdded (false, labelProvider);
+				AddChildProvider (labelProvider);
 			}
 			if (imageProvider == null
 			    && form.UIAIconRectangle.Width >= 0
@@ -72,7 +72,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				imageProvider = new MessageBoxImageProvider (this);
 				imageProvider.Initialize ();
-				OnNavigationChildAdded (false, imageProvider);
+				AddChildProvider (imageProvider);
 			}
 		}
 
@@ -82,12 +82,12 @@ namespace Mono.UIAutomation.Winforms
 
 			if (labelProvider != null) {
 				labelProvider.Terminate ();
-				OnNavigationChildRemoved (false, labelProvider);
+				RemoveChildProvider (labelProvider);
 				labelProvider = null;
 			}
 			if (imageProvider != null) {
 				imageProvider.Terminate ();
-				OnNavigationChildRemoved (false, imageProvider);
+				RemoveChildProvider (imageProvider);
 				imageProvider = null;
 			}
 		}

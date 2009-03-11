@@ -138,7 +138,7 @@ namespace Mono.UIAutomation.Winforms
 			// Table Pattern is *only* supported when Header exists
 			if (datagrid.CurrentTableStyle.GridColumnStyles.Count > 0
 			    && datagrid.ColumnHeadersVisible)
-				CreateHeader (false, datagrid.CurrentTableStyle);
+				CreateHeader (datagrid.CurrentTableStyle);
 		}
 
 		public override void Terminate ()
@@ -151,14 +151,14 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			datagrid.DataSourceChanged += OnDataSourceChanged;
-			UpdateChildren (false);
+			UpdateChildren ();
 			
 			datagrid.UIACollectionChanged += OnUIACollectionChanged;
 		}
 
 		public override void FinalizeChildControlStructure ()
 		{
-			OnNavigationChildrenCleared (false);
+			OnNavigationChildrenCleared ();
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
 
 			datagrid.UIACollectionChanged -= OnUIACollectionChanged;
@@ -334,20 +334,20 @@ namespace Mono.UIAutomation.Winforms
 
 			// FIXME: Remove CurrentTableStyle property after committing SWF patch
 			SWF.DataGridTableStyle tableStyle = CurrentTableStyle;
-			CreateHeader (true, tableStyle);
+			CreateHeader (tableStyle);
 			
 			if (args.Action == CollectionChangeAction.Add) {
 				if (tableStyle.GridColumnStyles.Count == 0)
 					return;
 
 				for (int index = items.Count; index < lastCurrencyManager.Count; index++)
-					CreateListItem (true, index, tableStyle);
+					CreateListItem (index, tableStyle);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				// TODO: Is there a better way to do this?
 				int toRemove = items.Count - lastCurrencyManager.Count;
 				while (toRemove > 0) {
 					ListItemProvider item = items [items.Count - 1];
-					OnNavigationChildRemoved (true, item);
+					RemoveChildProvider (item);
 					item.Terminate ();
 					items.Remove (item);
 					toRemove--;
@@ -355,15 +355,15 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		private void UpdateChildren (bool raiseEvent)
+		private void UpdateChildren ()
 		{
 			if (lastDataSource != null) {
-				OnNavigationChildrenCleared (raiseEvent);
+				OnNavigationChildrenCleared ();
 				items.Clear ();
 			}
 
 			if (header != null) {
-				OnNavigationChildRemoved (true, header);
+				RemoveChildProvider (header);
 				header.Terminate ();
 				header = null;
 
@@ -383,12 +383,12 @@ namespace Mono.UIAutomation.Winforms
 				DataGridCustomProvider customProvider 
 					= new DataGridCustomProvider (this, 0, string.Empty);
 				customProvider.Initialize ();
-				OnNavigationChildAdded (raiseEvent, customProvider);
+				AddChildProvider (customProvider);
 			} else {
-				CreateHeader (raiseEvent, datagrid.CurrentTableStyle);
+				CreateHeader (datagrid.CurrentTableStyle);
 
 				for (int row = 0; row < lastCurrencyManager.Count; row++)
-					CreateListItem (raiseEvent, row, datagrid.CurrentTableStyle);
+					CreateListItem (row, datagrid.CurrentTableStyle);
 			}
 
 			lastDataSource = datagrid.DataSource;
@@ -412,7 +412,7 @@ namespace Mono.UIAutomation.Winforms
 
 			if (refreshChildren) {
 				lastCurrencyManager = manager;
-				UpdateChildren (true);
+				UpdateChildren ();
 			}
 		}
 
@@ -425,26 +425,26 @@ namespace Mono.UIAutomation.Winforms
 			                                                      datagrid.DataMember];
 		}
 
-		private void CreateHeader (bool raiseEvent, SWF.DataGridTableStyle tableStyle)
+		private void CreateHeader (SWF.DataGridTableStyle tableStyle)
 		{
 			if (!datagrid.ColumnHeadersVisible || header != null)
 				return;
 	
 			header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
 			header.Initialize ();
-			OnNavigationChildAdded (raiseEvent, header);
+			AddChildProvider (header);
 
 			SetBehavior (TablePatternIdentifiers.Pattern,
 			             new TableProviderBehavior (this));
 		}
 
-		private void CreateListItem (bool raiseEvent, int row, SWF.DataGridTableStyle tableStyle)
+		private void CreateListItem (int row, SWF.DataGridTableStyle tableStyle)
 		{
 			DataGridDataItemProvider item = new DataGridDataItemProvider (this,
 			                                                              row,
 			                                                              datagrid,
 			                                                              tableStyle);
-			OnNavigationChildAdded (raiseEvent, item);
+			AddChildProvider (item);
 			item.Initialize ();
 			items.Add (item);
 		}
@@ -546,7 +546,7 @@ namespace Mono.UIAutomation.Winforms
 				foreach (SWF.DataGridColumnStyle style in styles) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, style);
-					OnNavigationChildAdded (false, headerItem);
+					AddChildProvider (headerItem);
 					headerItem.Initialize ();
 					dictionary [style] = headerItem;
 				}
@@ -568,7 +568,7 @@ namespace Mono.UIAutomation.Winforms
 				if (args.Action == CollectionChangeAction.Add) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, column);
-					OnNavigationChildAdded (true, headerItem);
+					AddChildProvider (headerItem);
 					headerItem.Initialize ();
 					dictionary [column] = headerItem;
 				} else if (args.Action == CollectionChangeAction.Remove) {
@@ -576,12 +576,12 @@ namespace Mono.UIAutomation.Winforms
 					if (!dictionary.TryGetValue (column, out headerItem))
 						return;
 					headerItem.Terminate ();
-					OnNavigationChildRemoved (true, headerItem);
+					RemoveChildProvider (headerItem);
 					dictionary.Remove (column);
 				} else if (args.Action == CollectionChangeAction.Refresh) {
 					foreach (DataGridHeaderItemProvider headerItem in dictionary.Values)
 						headerItem.Terminate ();
-					OnNavigationChildrenCleared (true);
+					OnNavigationChildrenCleared ();
 				}  
 			}
 
@@ -738,7 +738,7 @@ namespace Mono.UIAutomation.Winforms
 					
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, columnStyle);
-					OnNavigationChildAdded (false, edit);
+					AddChildProvider (edit);
 					edit.Initialize ();
 
 					if (column == 0)
@@ -816,20 +816,20 @@ namespace Mono.UIAutomation.Winforms
 				if (args.Action == CollectionChangeAction.Remove) {
 					DataGridDataItemEditProvider edit = columns [column];
 					edit.Terminate ();
-					OnNavigationChildRemoved (true, edit);
+					RemoveChildProvider (edit);
 
 					columns.Remove (column);
 				} else if (args.Action == CollectionChangeAction.Add) {
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, column);
-					OnNavigationChildAdded (true, edit);
+					AddChildProvider (edit);
 					edit.Initialize ();
 
 					columns [column] = edit;
 				} else if (args.Action == CollectionChangeAction.Refresh) {
 					foreach (DataGridDataItemEditProvider edit in columns.Values)
 						edit.Terminate ();
-					OnNavigationChildrenCleared (true);
+					OnNavigationChildrenCleared ();
 				} 
 			}
 

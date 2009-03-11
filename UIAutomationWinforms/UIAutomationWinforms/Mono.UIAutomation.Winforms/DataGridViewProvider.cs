@@ -217,12 +217,12 @@ namespace Mono.UIAutomation.Winforms
 
 			header = new DataGridViewHeaderProvider (this);
 			header.Initialize ();
-			OnNavigationChildAdded (false, header);
+			AddChildProvider (header);
 
 			datagridview.Rows.CollectionChanged += OnCollectionChanged;
 			foreach (SWF.DataGridViewRow row in datagridview.Rows) {
 				ListItemProvider itemProvider = GetItemProviderFrom (this, row);
-				OnNavigationChildAdded (false, itemProvider);
+				AddChildProvider (itemProvider);
 			}
 		}
 
@@ -342,7 +342,7 @@ namespace Mono.UIAutomation.Winforms
 				DataGridView.Columns.CollectionChanged += OnColumnsCollectionChanged;
 				
 				foreach (SWF.DataGridViewColumn column in DataGridView.Columns)
-					UpdateCollection (column, CollectionChangeAction.Add, false);
+					UpdateCollection (column, CollectionChangeAction.Add);
 			}
 
 			public override void FinalizeChildControlStructure ()
@@ -359,23 +359,21 @@ namespace Mono.UIAutomation.Winforms
 			                                         CollectionChangeEventArgs args)
 			{
 				UpdateCollection ((SWF.DataGridViewColumn) args.Element,
-				                  args.Action,
-				                  true);
+				                  args.Action);
 			}
 
 			private void UpdateCollection (SWF.DataGridViewColumn column, 
-			                               CollectionChangeAction change,
-			                               bool raiseEvent)
+			                               CollectionChangeAction change)
 			{
 				if (change == CollectionChangeAction.Remove) {
 					DataGridViewHeaderItemProvider headerItem = headers [column];
-					OnNavigationChildRemoved (raiseEvent, headerItem);
+					RemoveChildProvider (headerItem);
 					headers.Remove (column);
 				} else if (change == CollectionChangeAction.Add) {
 					DataGridViewHeaderItemProvider headerItem 
 						= new DataGridViewHeaderItemProvider (this, column);
 					headerItem.Initialize ();
-					OnNavigationChildAdded (raiseEvent, headerItem);
+					AddChildProvider (headerItem);
 					headers [column] = headerItem;
 				}
 			}
@@ -535,7 +533,7 @@ namespace Mono.UIAutomation.Winforms
 			public override void InitializeChildControlStructure ()
 			{
 				foreach (SWF.DataGridViewColumn column in datagridview.Columns)
-					UpdateCollection (column, CollectionChangeAction.Add, false);
+					UpdateCollection (column, CollectionChangeAction.Add);
 
 				datagridview.Columns.CollectionChanged += OnColumnsCollectionChanged;
 			}
@@ -551,17 +549,15 @@ namespace Mono.UIAutomation.Winforms
 			                                         CollectionChangeEventArgs args)
 			{
 				UpdateCollection ((SWF.DataGridViewColumn) args.Element,
-				                  args.Action, 
-				                  true);
+				                  args.Action);
 			}
 
 			private void UpdateCollection (SWF.DataGridViewColumn column, 
-			                               CollectionChangeAction change,
-			                               bool raiseEvent)
+			                               CollectionChangeAction change)
 			{
 				if (change == CollectionChangeAction.Remove) {
 					DataGridViewDataItemChildProvider child = columns [column];
-					OnNavigationChildRemoved (raiseEvent, child);
+					RemoveChildProvider (child);
 					child.Terminate ();
 					columns.Remove (child.Column);
 				} else if (change == CollectionChangeAction.Add) {
@@ -581,7 +577,7 @@ namespace Mono.UIAutomation.Winforms
 						child = new DataGridViewDataItemEditProvider (this, column);
 
 					child.Initialize ();
-					OnNavigationChildAdded (raiseEvent, child);
+					AddChildProvider (child);
 					columns [child.Column] = child;
 				}
 			}
@@ -908,12 +904,12 @@ namespace Mono.UIAutomation.Winforms
 				if (listboxProvider == null) {
 					listboxProvider = new DataGridViewDataItemComboBoxListBoxProvider (this);
 					listboxProvider.Initialize ();
-					OnNavigationChildAdded (false, listboxProvider);
+					AddChildProvider (listboxProvider);
 				}
 				if (buttonProvider == null) {
 					buttonProvider = new DataGridViewDataItemComboBoxButtonProvider (this);
 					buttonProvider.Initialize ();
-					OnNavigationChildAdded (false, buttonProvider);
+					AddChildProvider (buttonProvider);
 				}
 			}
 
@@ -921,12 +917,12 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (listboxProvider != null) {
 					listboxProvider.Terminate ();
-					OnNavigationChildRemoved (false, listboxProvider);
+					RemoveChildProvider (listboxProvider);
 					listboxProvider = null;
 				}
 				if (buttonProvider != null) {
 					buttonProvider.Terminate ();
-					OnNavigationChildRemoved (false, buttonProvider);
+					RemoveChildProvider (buttonProvider);
 					buttonProvider = null;
 				}
 			}
@@ -983,7 +979,7 @@ namespace Mono.UIAutomation.Winforms
 
 				foreach (string str in comboboxProvider.ComboBoxCell.Items) {
 					ListItemProvider item = GetItemProviderFrom (this, str);
-					OnNavigationChildAdded (false, item);
+					AddChildProvider (item);
 				}
 			}
 

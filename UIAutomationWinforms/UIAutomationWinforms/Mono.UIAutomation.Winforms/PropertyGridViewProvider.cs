@@ -258,7 +258,7 @@ namespace Mono.UIAutomation.Winforms
 
 					itemProvider.Initialize ();
 					children.Add (itemProvider);
-					AddChildProvider (true, itemProvider);
+					AddChildProvider (itemProvider);
 				}
 			}
 		}
@@ -267,7 +267,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			foreach (PropertyGridListItemProvider prov
 			         in children) {
-				RemoveChildProvider (true, prov);
+				RemoveChildProvider (prov);
 				prov.Terminate ();
 			}
 
@@ -343,11 +343,11 @@ namespace Mono.UIAutomation.Winforms
 			
 			nameProvider = new PropertyGridListItemNameProvider (this, view);
 			nameProvider.Initialize ();
-			AddChildProvider (true, nameProvider);
+			AddChildProvider (nameProvider);
 		
 			valueProvider = new PropertyGridListItemValueProvider (this, view);
 			valueProvider.Initialize ();
-			AddChildProvider (true, valueProvider);
+			AddChildProvider (valueProvider);
 		}
 
 		public override void FinalizeChildControlStructure ()
@@ -355,10 +355,10 @@ namespace Mono.UIAutomation.Winforms
 			base.FinalizeChildControlStructure ();
 			
 			nameProvider.Terminate ();
-			RemoveChildProvider (true, nameProvider);
+			RemoveChildProvider (nameProvider);
 			
 			valueProvider.Terminate ();
-			RemoveChildProvider (true, valueProvider);
+			RemoveChildProvider (valueProvider);
 		}
 #endregion
 

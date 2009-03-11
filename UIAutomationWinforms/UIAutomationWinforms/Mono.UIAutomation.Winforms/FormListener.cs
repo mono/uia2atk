@@ -109,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			} else {
 				FormProvider ownerProvider 
 					= (FormProvider) ProviderFactory.FindProvider (f.Owner);
-				ownerProvider.AddChildProvider (true, provider);
+				ownerProvider.AddChildProvider (provider);
 			}
 		}
 		

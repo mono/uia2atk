@@ -334,9 +334,9 @@ namespace Mono.UIAutomation.Winforms
 		                                             CollectionChangeEventArgs args)
 		{		
 			if (args.Action == CollectionChangeAction.Add)
-				InitializeProviderFrom (args.Element, true);
+				InitializeProviderFrom (args.Element);
 			else if (args.Action == CollectionChangeAction.Remove)
-				FinalizeProviderFrom (args.Element, true);
+				FinalizeProviderFrom (args.Element);
 			else
 				base.OnCollectionChanged (sender, args);
 		}
@@ -405,7 +405,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods
 		
-		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
+		private void InitializeProviderFrom (object objectItem)
 		{
 			// FIXME: In Vista when listView.Groups == 0 && View.Details 
 			// no Groups are added.
@@ -424,7 +424,7 @@ namespace Mono.UIAutomation.Winforms
 					                                           listView);
 					groups [listViewGroup] = groupProvider;
 					groupProvider.Initialize ();
-					OnNavigationChildAdded (raiseEvent, groupProvider);
+					AddChildProvider (groupProvider);
 				}
 
 				ListItemProvider item = GetItemProviderFrom (this, objectItem, false);
@@ -435,7 +435,7 @@ namespace Mono.UIAutomation.Winforms
 						oldGroupProvider.RemoveItemFrom (item);
 						RemoveItemFrom (objectItem);
 						if (oldGroupProvider.ChildrenCount == 0) {
-							OnNavigationChildRemoved (raiseEvent, oldGroupProvider);
+							RemoveChildProvider (oldGroupProvider);
 							groups.Remove (oldGroupProvider.Group);
 							oldGroupProvider.Terminate ();
 						}
@@ -443,15 +443,15 @@ namespace Mono.UIAutomation.Winforms
 				}
 
 				item = GetItemProviderFrom (groupProvider, objectItem);
-				groupProvider.AddChildProvider (raiseEvent, item);
+				groupProvider.AddChildProvider (item);
 			// Not using groups
 			} else {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
-				OnNavigationChildAdded (raiseEvent, item);
+				AddChildProvider (item);
 			}
 		}
 
-		private void FinalizeProviderFrom (object objectItem, bool raiseEvent)
+		private void FinalizeProviderFrom (object objectItem)
 		{
 			// Using groups
 			if (showGroups == true && listView.View != SWF.View.List
@@ -466,10 +466,10 @@ namespace Mono.UIAutomation.Winforms
 				                        out groupProvider) == true) {
 					ListItemProvider item = GetItemProviderFrom (groupProvider, 
 					                                             objectItem);
-					groupProvider.RemoveChildProvider (raiseEvent, item);
+					groupProvider.RemoveChildProvider (item);
 
 					if (groupProvider.ChildrenCount == 0) {
-						OnNavigationChildRemoved (raiseEvent, groupProvider);
+						RemoveChildProvider (groupProvider);
 						groups.Remove (listViewGroup);
 						groupProvider.Terminate ();
 					}
@@ -477,7 +477,7 @@ namespace Mono.UIAutomation.Winforms
 			// Not using groups
 			} else {
 				ListItemProvider item = RemoveItemFrom (objectItem);
-				OnNavigationChildRemoved (raiseEvent, item);
+				RemoveChildProvider (item);
 			}
 		}
 
@@ -487,19 +487,19 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (updateView == true || forceUpdate == true) {			
 				foreach (ListViewGroupProvider groupProvider in groups.Values) {
-					OnNavigationChildRemoved (true, groupProvider);
+					RemoveChildProvider (groupProvider);
 					groupProvider.Terminate ();
 				}
 				groups.Clear ();
 
 				if (lastView == SWF.View.Details && header != null) {
-					OnNavigationChildRemoved (true, header);
+					RemoveChildProvider (header);
 					header.Terminate ();
 					header = null;
 				}
 
 				foreach (ListItemProvider itemProvider in Items)
-					OnNavigationChildRemoved (true, itemProvider);
+					RemoveChildProvider (itemProvider);
 				
 				ClearItemsList ();
 			}
@@ -508,12 +508,12 @@ namespace Mono.UIAutomation.Winforms
 				if (header == null) {
 					header = new ListViewHeaderProvider (listView);
 					header.Initialize ();
-					OnNavigationChildAdded (updateView || forceUpdate, header);
+					AddChildProvider (updateView || forceUpdate, header);
 				}
 			}
 			
 			foreach (object objectItem in listView.Items)
-				InitializeProviderFrom (objectItem, updateView || forceUpdate);
+				InitializeProviderFrom (objectItem);
 		}
 
 		private void OnUIAViewChanged (object sender, EventArgs args)
@@ -699,7 +699,7 @@ namespace Mono.UIAutomation.Winforms
 
 			internal void RemoveItemFrom (ListItemProvider child)
 			{
-				OnNavigationChildRemoved (true, child);
+				RemoveChildProvider (child);
 				child.Terminate ();
 			}
 
@@ -786,7 +786,7 @@ namespace Mono.UIAutomation.Winforms
 					ListViewHeaderItemProvider item 
 						= new ListViewHeaderItemProvider (this, column);
 					item.Initialize ();
-					OnNavigationChildAdded (false, item);
+					AddChildProvider (item);
 					headerItems [column] = item;
 				}
 			}
@@ -812,11 +812,11 @@ namespace Mono.UIAutomation.Winforms
 						= new ListViewHeaderItemProvider (this, column);
 					itemProvider.Initialize ();
 					headerItems [column] = itemProvider;
-					OnNavigationChildAdded (true, itemProvider);
+					AddChildProvider (itemProvider);
 				} else if (args.Action == CollectionChangeAction.Remove) {
 					ListViewHeaderItemProvider itemProvider;
 					if (headerItems.TryGetValue (column, out itemProvider)) {
-						OnNavigationChildRemoved (true, itemProvider);
+						RemoveChildProvider (itemProvider);
 						itemProvider.Terminate ();
 						headerItems.Remove (column);
 					}
@@ -825,7 +825,7 @@ namespace Mono.UIAutomation.Winforms
 						item.Terminate ();
 					headerItems.Clear ();
 
-					OnNavigationChildrenCleared (true);
+					OnNavigationChildrenCleared ();
 				}
 			}
 
@@ -1007,12 +1007,12 @@ namespace Mono.UIAutomation.Winforms
 				base.InitializeChildControlStructure ();
 
 				if (lastView == SWF.View.Details)
-					AddEditChildren (false);
+					AddEditChildren ();
 
 				if (listView.CheckBoxes == true) {
 					checkboxProvider = new ListViewListItemCheckBoxProvider (this);
 					checkboxProvider.Initialize ();
-					OnNavigationChildAdded (false, checkboxProvider);
+					AddChildProvider (checkboxProvider);
 				}
 			}
 
@@ -1030,7 +1030,7 @@ namespace Mono.UIAutomation.Winforms
 				listViewProvider.ProviderBehaviorSet -= OnProviderBehaviorSet;
 			}
 
-			private void AddEditChildren (bool raiseEvent)
+			private void AddEditChildren ()
 			{
 				foreach (SWF.ColumnHeader column in listView.Columns) {
 					ListViewListItemEditProvider editProvider 
@@ -1038,7 +1038,7 @@ namespace Mono.UIAutomation.Winforms
 					editProvider.Initialize ();
 					providers [column] = editProvider;
 
-					OnNavigationChildAdded (raiseEvent, editProvider);
+					AddChildProvider (editProvider);
 				}
 			}
 	
@@ -1049,10 +1049,10 @@ namespace Mono.UIAutomation.Winforms
 				if (checkboxProvider == null) {
 					checkboxProvider = new ListViewListItemCheckBoxProvider (this);
 					checkboxProvider.Initialize ();
-					OnNavigationChildAdded (true, checkboxProvider);
+					AddChildProvider (checkboxProvider);
 				} else {
 					checkboxProvider.Terminate ();
-					OnNavigationChildRemoved (true, checkboxProvider);
+					RemoveChildProvider (checkboxProvider);
 					checkboxProvider = null;
 				}
 			}
@@ -1067,9 +1067,9 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (lastView == SWF.View.Details) {
 					providers.Clear ();
-					OnNavigationChildrenCleared (true);
+					OnNavigationChildrenCleared ();
 				} else if (listView.View == SWF.View.Details)
-					AddEditChildren (true);
+					AddEditChildren ();
 	
 				lastView = listView.View;
 			}
@@ -1087,11 +1087,11 @@ namespace Mono.UIAutomation.Winforms
 						= new ListViewListItemEditProvider (column, this);
 					editProvider.Initialize ();
 					providers [column] = editProvider;
-					OnNavigationChildAdded (true, editProvider);
+					AddChildProvider (editProvider);
 				} else if (args.Action == CollectionChangeAction.Remove) {
 					ListViewListItemEditProvider editProvider;
 					if (providers.TryGetValue (column, out editProvider)) {
-						OnNavigationChildRemoved (true, editProvider);
+						RemoveChildProvider (editProvider);
 						editProvider.Terminate ();
 						providers.Remove (column);
 					}
@@ -1100,7 +1100,7 @@ namespace Mono.UIAutomation.Winforms
 						provider.Terminate ();
 					providers.Clear ();
 
-					OnNavigationChildrenCleared (true);
+					OnNavigationChildrenCleared ();
 				}
 			}
 

@@ -61,7 +61,7 @@ namespace Mono.UIAutomation.Winforms
 
 			childDataGrid = new MonthCalendarDataGridProvider (this);
 			childDataGrid.Initialize ();
-			AddChildProvider (true, childDataGrid);
+			AddChildProvider (childDataGrid);
 			
 			// Don't ask me why, but Calendar needs to implement
 			// Grid as well as the DataGrid child...

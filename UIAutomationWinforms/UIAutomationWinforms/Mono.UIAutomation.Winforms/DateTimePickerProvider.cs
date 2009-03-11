@@ -104,11 +104,11 @@ namespace Mono.UIAutomation.Winforms
 			if (control.ShowCheckBox) {
 				if (checkBox == null) {
 					checkBox = new DateTimePickerCheckBoxProvider (this);
-					OnNavigationChildAdded (true, checkBox, 0);
+					InsertChildProvider (checkBox, 0);
 				}
 			} else {
 				if (checkBox != null) {
-					OnNavigationChildRemoved (true, checkBox);
+					RemoveChildProvider (checkBox);
 					checkBox.Terminate ();
 					checkBox = null;
 				}
@@ -116,7 +116,7 @@ namespace Mono.UIAutomation.Winforms
 
 			if (control.ShowUpDown) {
 				if (dropDownButton != null) {
-					OnNavigationChildRemoved (true, dropDownButton);
+					RemoveChildProvider (dropDownButton);
 					dropDownButton.Terminate ();
 					dropDownButton = null;
 				}
@@ -124,7 +124,7 @@ namespace Mono.UIAutomation.Winforms
 				if (dropDownButton == null) {
 					dropDownButton
 						= new DateTimePickerButtonProvider (this);
-					OnNavigationChildAdded (true, dropDownButton);
+					AddChildProvider (dropDownButton);
 				}
 			}
 		}
@@ -161,7 +161,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 
 				prov.Initialize ();
-				AddChildProvider (true, prov);
+				AddChildProvider (prov);
 				children.Add (prov);
 			}
 		}
@@ -169,7 +169,7 @@ namespace Mono.UIAutomation.Winforms
 		private void RemoveSegmentItems ()
 		{
 			foreach (FragmentControlProvider prov in children) {
-				RemoveChildProvider (true, prov);
+				RemoveChildProvider (prov);
 				prov.Terminate ();
 			}
 
@@ -599,7 +599,7 @@ namespace Mono.UIAutomation.Winforms
 
 				children.Add (item);
 				childrenData [date] = item;
-				OnNavigationChildAdded (true, item);
+				AddChildProvider (item);
 			}
 
 			private bool IsTimePM (DateTime date)

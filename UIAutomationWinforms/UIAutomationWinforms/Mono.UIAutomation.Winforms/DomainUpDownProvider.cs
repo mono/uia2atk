@@ -205,7 +205,7 @@ namespace Mono.UIAutomation.Winforms
 					this, (IListProvider)this, val
 				);
 				prov.Initialize ();
-				AddChildProvider (true, prov);
+				AddChildProvider (prov);
 				children.Add (val, prov);
 			}
 		}
@@ -213,7 +213,7 @@ namespace Mono.UIAutomation.Winforms
 		internal void RemoveCollectionItems ()
 		{
 			foreach (ListItemProvider prov in children.Values) {
-				RemoveChildProvider (true, prov);
+				RemoveChildProvider (prov);
 				prov.Terminate ();
 			}
 

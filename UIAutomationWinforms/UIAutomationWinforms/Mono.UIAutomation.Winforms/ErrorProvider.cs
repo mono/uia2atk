@@ -90,7 +90,7 @@ namespace Mono.UIAutomation.Winforms
 				if (controls.Count == 1 && control.Visible == true) {
 					FragmentRootControlProvider root 
 						= (FragmentRootControlProvider) ProviderFactory.GetProvider (Parent);
-					root.AddChildProvider (true, this);
+					root.AddChildProvider (this);
 				}
 				control.VisibleChanged += new EventHandler (OnControlVisibleChanged);
 			}
@@ -102,7 +102,7 @@ namespace Mono.UIAutomation.Winforms
 				if (controls.Count == 1) {
 					FragmentRootControlProvider root 
 						= (FragmentRootControlProvider) ProviderFactory.GetProvider (Parent);
-					root.RemoveChildProvider (true, this);
+					root.RemoveChildProvider (this);
 				}
 				controls.Remove (control);
 				control.VisibleChanged -= new EventHandler (OnControlVisibleChanged);
@@ -158,7 +158,7 @@ namespace Mono.UIAutomation.Winforms
 			if (control.Visible == true) {
 				FragmentRootControlProvider root 
 					= (FragmentRootControlProvider) ProviderFactory.GetProvider (Parent);
-				root.AddChildProvider (true, this);
+				root.AddChildProvider (this);
 			} else
 				DeleteControl (control);
 		}		

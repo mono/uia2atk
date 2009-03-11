@@ -92,7 +92,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			for (int i = 0; i < statusBar.Panels.Count; ++i) {
 				StatusBarPanelProvider panel = GetPanelProvider (i);
-				OnNavigationChildAdded (false, panel);
+				AddChildProvider (panel);
 			}
 		}
 		
@@ -102,8 +102,8 @@ namespace Mono.UIAutomation.Winforms
 				new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			foreach (StatusBarPanelProvider panel in panels)
-				OnNavigationChildRemoved (false, panel);
-			OnNavigationChildrenCleared (false);
+				RemoveChildProvider (panel);
+			OnNavigationChildrenCleared ();
 		}
 
 		#endregion
@@ -156,13 +156,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (e.Action == CollectionChangeAction.Add) {
 				StatusBarPanelProvider panel = GetPanelProvider ((int) e.Element);
-				OnNavigationChildAdded (true, panel);
+				AddChildProvider (panel);
 			} else if (e.Action == CollectionChangeAction.Remove) {
 				StatusBarPanelProvider panel = RemovePanelAt ((int) e.Element);
-				OnNavigationChildRemoved (true, panel);
+				RemoveChildProvider (panel);
 			} else if (e.Action == CollectionChangeAction.Refresh) {
 				ClearPanelsCollection ();
-				OnNavigationChildrenCleared (true);
+				OnNavigationChildrenCleared ();
 			}
 		}
 		

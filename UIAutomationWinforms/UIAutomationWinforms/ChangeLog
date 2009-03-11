@@ -1,3 +1,58 @@
+2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FormListener.cs:
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/FormProvider.cs:
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms/MainMenuProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms/TrackBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs:
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs:
+	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs:
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs:
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:
+	Update according to FragmentControlProvider refactoring.
+	Always raise events. Mostly affects child initialization, as
+	this is now handled properly by the bridge.
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Update
+	according to FragmentControlProvider refactoring. Always raise
+	events. Mostly affects child initialization, as this is now
+	handled properly by the bridge. Update ComboBoxProvider to set
+	up behaviors during Initialize, as the ComboBox adapter on the
+	bridge is currently unable to handle dynamic pattern support
+	changes.
+
+	* Mono.UIAutomation.Winforms/MenuItemProvider.cs: Update
+	according to FragmentControlProvider refactoring. Always raise
+	events. Mostly affects child initialization, as this is now
+	handled properly by the bridge. Fix FragmentRoot override to
+	return provider for parentMenu, not menuItem.Parent (which
+	could be a MenuItem, and therefore not a fragment root).
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
+	Remove OnNavigationChild(Added|Removed), and move their
+	contents to (Add|Remove|Insert)ChildProvider, which now have
+	overrides that either take a raiseEvents bool, or default to
+	raising events.
+
 2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:

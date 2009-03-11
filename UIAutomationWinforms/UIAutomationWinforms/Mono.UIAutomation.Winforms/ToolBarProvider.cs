@@ -79,7 +79,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			for (int i = 0; i < toolBar.Buttons.Count; ++i) {
 				var button = ProviderFactory.GetProvider (toolBar.Buttons [i]);
-				OnNavigationChildAdded (false, (FragmentControlProvider)button);
+				AddChildProvider ((FragmentControlProvider)button);
 			}
 		}
 		
@@ -91,9 +91,9 @@ namespace Mono.UIAutomation.Winforms
 			for (int index = 0; index < toolBar.Buttons.Count; index++) {
 				ToolBarButtonProvider buttonProvider 
 					= (ToolBarButtonProvider) ProviderFactory.FindProvider (toolBar.Buttons [index]);
-				OnNavigationChildRemoved (false, buttonProvider);
+				RemoveChildProvider (buttonProvider);
 			}
-			OnNavigationChildrenCleared (false);
+			OnNavigationChildrenCleared ();
 		}
 		
 		#endregion
@@ -131,13 +131,13 @@ namespace Mono.UIAutomation.Winforms
 			if (e.Action == CollectionChangeAction.Add) {
 				ToolBarButtonProvider button = (ToolBarButtonProvider)
 					ProviderFactory.GetProvider (toolBar.Buttons [(int) e.Element]);
-				OnNavigationChildAdded (true, button);
+				AddChildProvider (button);
 			} else if (e.Action == CollectionChangeAction.Remove) {
 				ToolBarButtonProvider button = RemoveButtonAt ((int) e.Element);
-				OnNavigationChildRemoved (true, button);
+				RemoveChildProvider (button);
 			} else if (e.Action == CollectionChangeAction.Refresh) {
 				ClearButtonsCollection ();
-				OnNavigationChildrenCleared (true);
+				OnNavigationChildrenCleared ();
 			}
 		}
 		

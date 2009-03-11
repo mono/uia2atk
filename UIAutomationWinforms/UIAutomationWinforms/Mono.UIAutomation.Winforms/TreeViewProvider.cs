@@ -464,15 +464,15 @@ namespace Mono.UIAutomation.Winforms
 			foreach (SWF.TreeNode node in Nodes) {
 				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
 				if (nodeProvider != null)
-					OnNavigationChildAdded (false, nodeProvider);
+					AddChildProvider (nodeProvider);
 			}
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
-				OnNavigationChildRemoved (false, nodeProvider);
-			OnNavigationChildrenCleared (false);
+				RemoveChildProvider (nodeProvider);
+			OnNavigationChildrenCleared ();
 		}
 
 		#endregion
@@ -531,12 +531,12 @@ namespace Mono.UIAutomation.Winforms
 			if (e.Action == CollectionChangeAction.Add) {
 				nodeProvider = GetOrCreateNodeProvider (changedNode);
 				if (nodeProvider != null)
-					OnNavigationChildAdded (true, nodeProvider);
+					AddChildProvider (nodeProvider);
 			} else if (e.Action == CollectionChangeAction.Remove) {
 				if (nodeProviders.TryGetValue (changedNode, out nodeProvider)) {
 					nodeProviders.Remove (changedNode);
 					nodeProvider.Terminate ();
-					OnNavigationChildRemoved (true, nodeProvider);
+					RemoveChildProvider (nodeProvider);
 				}
 			}
 		}
