@@ -51,9 +51,7 @@ tbFrame = app.textBoxFrame
 statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
 statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox")
-# TODO: BUG480266, non-editable textbox should not have "editable" state
-#statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
 # switch focus to next multi line  textbox
 tbFrame.keyCombo("Tab", grabFocus=False)
@@ -61,9 +59,7 @@ sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox")
 statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line", "focused"], invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox")
-# TODO: BUG480266, non-editable textbox should not have "editable" state
-#statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
 # switch focus to next password textbox
 tbFrame.textbox_passwd.mouseClick()

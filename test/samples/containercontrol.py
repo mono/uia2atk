@@ -52,19 +52,19 @@ class ContainerControlSample(Form):
         # setup containercontrols
         self.containercontrol1 = ContainerControl()
         self.containercontrol1.Height = 100
-        self.containercontrol1.Dock = DockStyle.Top
+        self.containercontrol1.Dock = DockStyle.Bottom
         self.containercontrol1.LostFocus += self.focus
 
         self.containercontrol2 = ContainerControl()
         self.containercontrol2.Height = 100
-        self.containercontrol2.Dock = DockStyle.Top
+        self.containercontrol2.Dock = DockStyle.Bottom
         self.containercontrol2.LostFocus += self.focus
 
         # add controls
-        self.containercontrol2.Controls.Add(self.label2)
         self.containercontrol1.Controls.Add(self.label1)
-        self.Controls.Add(self.containercontrol2)
+        self.containercontrol2.Controls.Add(self.label2)
         self.Controls.Add(self.containercontrol1)
+        self.Controls.Add(self.containercontrol2)
 
     def focus(self, sender, event):
         if self.count == 1:

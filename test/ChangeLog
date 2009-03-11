@@ -1,3 +1,17 @@
+2009-03-10  Ray Wang <rawang@novell.com>
+
+	* testers/trackbar_basic_ops.py: comment some tests for BUG484189
+	and BUG484195.
+	* samples/containercontrol.py: change controls dock style from top to
+	bottom.
+	* testers/containercontrol/containercontrolframe.py: reorder controls.
+	* testers/containercontrol_basic_ops.py: update for regression test.
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py:
+	add some tests since BUG474254 has been fixed.
+	* testers/threadexceptiondialog_basic_ops.py: add some tests since 
+	BUG474254 has been fixed.
+	* testers/textbox_basic_ops.py: regression tests for BUG480266.
+
 2009-03-11  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenu_basic_ops.py: Added MenuItem default states.

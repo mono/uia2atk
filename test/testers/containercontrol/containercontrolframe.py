@@ -18,11 +18,11 @@ class ContainerControlFrame(accessibles.Frame):
         self.panels = self.findAllPanels(None)
         self.labels = self.findAllLabels(None)
 
-        self.panel_top = self.panels[1]
-        self.label_top = self.labels[1]
+        self.panel_top = self.panels[0]
+        self.label_top = self.labels[0]
 
-        self.panel_bottom = self.panels[0]
-        self.label_bottom = self.labels[0]
+        self.panel_bottom = self.panels[1]
+        self.label_bottom = self.labels[1]
 
         assert len(self.panels) == 2, "The numbers of panel is wrong!"
         assert len(self.labels) == 2, "The numbers of label is wrong!"
