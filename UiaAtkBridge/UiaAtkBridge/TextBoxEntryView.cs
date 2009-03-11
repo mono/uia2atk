@@ -140,7 +140,7 @@ namespace UiaAtkBridge
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -175,13 +175,11 @@ namespace UiaAtkBridge
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
-			get {
-				return textExpert.CaretOffset;
-			}
+			get { return textExpert.CaretOffset; }
 		}
 		
 		public int CharacterCount {

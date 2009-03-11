@@ -1,3 +1,28 @@
+2009-03-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* List.cs:
+	* Slider.cs:
+	* Button.cs:
+	* Spinner.cs:
+	* ListItem.cs:
+	* MenuItem.cs:
+	* TreeItem.cs:
+	* Hyperlink.cs:
+	* ListGroup.cs:
+	* TextLabel.cs:
+	* ComboBoxItem.cs:
+	* TextContainer.cs:
+	* TextBoxEntryView.cs:
+	* ITextImplementor.cs:
+	* BaseTextImplementor.cs:
+	* ComboBoxOptionsTable.cs:
+	* ComponentImplementorHelper.cs: Replace NIE's with Log.Warns.
+	Use *experts when needed in order to centralize calls to
+	unimplemented stuff. Fixes the majority of bug#446915.
+
+	* TableImplementorHelper.cs: Use SemiLazy instead of Lazy to
+	prevent NRE's.
+
 2009-03-11  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs, MenuItem.cs: Pass on Focus events for MenuItems.

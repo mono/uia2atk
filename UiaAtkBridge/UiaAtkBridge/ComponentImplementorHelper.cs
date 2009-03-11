@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Windows.Automation;
 
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -66,7 +67,8 @@ namespace UiaAtkBridge
 
 		public virtual Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coordType)
 		{
-			//TODO: check for children at this point?
+			//TODO: check for children at this point? (maybe use ElementProviderFromPoint ? )
+			Log.Warn (this.resource.GetType ().Name + ":RefAccessibleAtPoint not implemented");
 			return this.resource;
 		}
 

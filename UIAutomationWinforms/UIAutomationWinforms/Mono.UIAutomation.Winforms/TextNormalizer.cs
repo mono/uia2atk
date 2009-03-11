@@ -28,6 +28,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Windows.Automation.Text;
 using System.Windows.Forms;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -131,13 +132,15 @@ namespace Mono.UIAutomation.Winforms
 		public int FormatMoveEndPoint (int count)
 		{
 			//TODO: Doesn't work with non-RichTextBox controls
-			throw new NotImplementedException ();
+			Log.Warn ("TextNormalizer:FormatMoveEndPoint not implemented");
+			return -1;
 		}
 		
 		public int FormatMoveStartPoint (int count)
 		{
 			//TODO: Doesn't work with non-RichTextBox controls
-			throw new NotImplementedException ();
+			Log.Warn ("TextNormalizer:FormatMoveStartPoint not implemented");
+			return -1;
 		}
 #endregion
 		

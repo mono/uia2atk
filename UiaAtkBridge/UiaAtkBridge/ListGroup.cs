@@ -147,28 +147,29 @@ namespace UiaAtkBridge
 
 		public Atk.Object Summary
 		{
-			get { return tableExpert.Summary; } set { tableExpert.Summary = value; }
+			get { return tableExpert.Summary; } 
+			set { tableExpert.Summary = value; }
 		}
 
 
 		public void SetColumnDescription (int column, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnDescription (column, description);
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnHeader (column, header);
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowDescription (row, description);
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowHeader (row, header);
 		}
 
 		// TODO: Remove next two methods when atk-sharp is fixed

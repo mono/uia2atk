@@ -35,6 +35,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ListBox;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListBox;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -101,7 +102,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			throw new NotImplementedException ();
+			//TODO
+			Log.Warn ("ListBoxProvider:ElementProviderFromPoint not implemented");
+			return null;
 		}
 		
 		#endregion

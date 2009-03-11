@@ -113,7 +113,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			throw new NotImplementedException ();
+			//TODO
+			Log.Warn ("ListBoxProvider:ElementProviderFromPoint not implemented");
+			return null;
 		}
 
 		#endregion
@@ -386,7 +388,7 @@ namespace Mono.UIAutomation.Winforms
 			public override void ScrollItemIntoView (ListItemProvider item) 
 			{ 
 				//FIXME: Implement
-				throw new NotImplementedException ();
+				Log.Warn ("ComboBoxListBoxProvider not implemented");
 			}
 
 			public override object GetItemPropertyValue (ListItemProvider item,

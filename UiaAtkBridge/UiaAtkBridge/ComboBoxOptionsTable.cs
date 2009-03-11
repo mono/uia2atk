@@ -25,22 +25,66 @@
 
 using System;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
 	public class ComboBoxOptionsTable : ComboBoxOptions, Atk.TableImplementor
 	{
+		//FIXME: only used for untested behaviours:
+		TableImplementorHelper tableExpert = null;
 		
 		public ComboBoxOptionsTable (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.TreeTable;
+			tableExpert = new TableImplementorHelper (this);
 		}
 		
 		#region TableImplementor implementation 
 		
 		public Atk.Object RefAt (int row, int column)
 		{
-			throw new System.NotImplementedException ();
+			return tableExpert.RefAt (row, column);
+		}
+		
+		public string GetColumnDescription (int column)
+		{
+			return tableExpert.GetColumnDescription (column);
+		}
+
+		public bool AddRowSelection (int row)
+		{
+			return tableExpert.AddRowSelection (row);
+		}
+		
+		public bool RemoveRowSelection (int row)
+		{
+			return tableExpert.RemoveRowSelection (row);
+		}
+		
+		public Atk.Object GetColumnHeader (int column)
+		{
+			return tableExpert.GetColumnHeader (column);
+		}
+		
+		public string GetRowDescription (int row)
+		{
+			return tableExpert.GetRowDescription (row);
+		}
+		
+		public Atk.Object GetRowHeader (int row)
+		{
+			return tableExpert.GetRowHeader (row);
+		}
+		
+		public void SetColumnDescription (int column, string description)
+		{
+			tableExpert.SetColumnDescription (column, description);
+		}
+		
+		public void SetColumnHeader (int column, Atk.Object header)
+		{
+			tableExpert.SetColumnHeader (column, header);
 		}
 		
 		public int GetIndexAt (int row, int column)
@@ -74,44 +118,14 @@ namespace UiaAtkBridge
 			return 0;
 		}
 		
-		public string GetColumnDescription (int column)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		public Atk.Object GetColumnHeader (int column)
-		{
-			throw new System.NotImplementedException ();
-		}
-		
-		public string GetRowDescription (int row)
-		{
-			throw new System.NotImplementedException ();
-		}
-		
-		public Atk.Object GetRowHeader (int row)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		public void SetColumnDescription (int column, string description)
-		{
-			throw new System.NotImplementedException ();
-		}
-		
-		public void SetColumnHeader (int column, Atk.Object header)
-		{
-			throw new System.NotImplementedException ();
-		}
-		
 		public void SetRowDescription (int row, string description)
 		{
-			throw new System.NotImplementedException ();
+			tableExpert.SetRowDescription (row, description);
 		}
 		
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new System.NotImplementedException ();
+			tableExpert.SetRowHeader (row, header);
 		}
 		
 		public int GetSelectedColumns (out int selected)
@@ -143,16 +157,6 @@ namespace UiaAtkBridge
 			return IsRowSelected (row);
 		}
 		
-		public bool AddRowSelection (int row)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		public bool RemoveRowSelection (int row)
-		{
-			throw new System.NotImplementedException();
-		}
-		
 		public bool AddColumnSelection (int column)
 		{
 			return false;
@@ -164,15 +168,11 @@ namespace UiaAtkBridge
 		}
 		
 		public int NColumns {
-			get {
-				return 1;
-			}
+			get { return 1; }
 		}
 		
 		public int NRows {
-			get {
-				return NAccessibleChildren;
-			}
+			get { return NAccessibleChildren; }
 		}
 		
 		public Atk.Object Caption { get; set; }

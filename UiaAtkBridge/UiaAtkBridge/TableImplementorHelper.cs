@@ -78,7 +78,7 @@ namespace UiaAtkBridge
 				if (column >= headers.Length)
 					return null;
 
-				return AutomationBridge.GetAdapterForProviderLazy (
+				return AutomationBridge.GetAdapterForProviderSemiLazy (
 					headers [column]);
 			}
 
@@ -92,7 +92,7 @@ namespace UiaAtkBridge
 			if (item == null)
 				return null;
 
-			return AutomationBridge.GetAdapterForProviderLazy (item);
+			return AutomationBridge.GetAdapterForProviderSemiLazy (item);
 		}
 
 		public int GetIndexAt (int row, int column)

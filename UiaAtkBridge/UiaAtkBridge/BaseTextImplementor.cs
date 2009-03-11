@@ -31,6 +31,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Text;
 using CG = System.Collections.Generic;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -338,6 +339,20 @@ namespace UiaAtkBridge
 			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / length;
 			if (coordType == Atk.CoordType.Window)
 				resource.ConvertCoords (ref rect.X, ref rect.Y, false);
+		}
+
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
+		{
+			//TODO
+			Log.Warn ("GetBoundedRanges not implemented");
+			return new Atk.TextRange ();
+		}
+
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			//TODO
+			Log.Warn ("GetOffsetAtPoint not implemented");
+			return -1;
 		}
 
 		public virtual Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)

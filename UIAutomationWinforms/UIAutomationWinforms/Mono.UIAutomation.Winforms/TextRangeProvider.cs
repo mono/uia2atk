@@ -32,6 +32,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Automation.Text;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -76,7 +77,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 	
 		public ITextRangeProvider Clone ()
-		{		
+		{
 			return new TextRangeProvider (provider, textboxbase,
 			                              StartPoint, EndPoint); 
 		}
@@ -283,10 +284,11 @@ namespace Mono.UIAutomation.Winforms
 		{
 			// TextBoxes don't have children
 			if (textboxbase is TextBox) {
-				return new IRawElementProviderSimple[0];
+				return new IRawElementProviderSimple [0];
 			}
 
-			throw new NotImplementedException();
+			Log.Warn ("GetChildren not implemented for non-TextBox widgets");
+			return new IRawElementProviderSimple [0];
 		}
 
 		public IRawElementProviderSimple GetEnclosingElement ()
@@ -301,7 +303,8 @@ namespace Mono.UIAutomation.Winforms
 			// elements such as tables or hyperlinks, then the
 			// enclosing element could be a descendant of the text
 			// provider.
-			throw new NotImplementedException();
+			Log.Warn ("GetEnclosingElement not implemented for non-TextBox widgets");
+			return null;
 		}
 
 		public string GetText (int maxLength)

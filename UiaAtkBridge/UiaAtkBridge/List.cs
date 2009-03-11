@@ -362,7 +362,7 @@ AtkObject,
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return text_helper.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -397,7 +397,7 @@ AtkObject,
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return text_helper.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
