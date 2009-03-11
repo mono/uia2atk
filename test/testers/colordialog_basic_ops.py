@@ -59,7 +59,7 @@ cdFrame.AssertWidgets()
 
 statesCheck(cdFrame.colordialog, "Dialog", add_states=["active", "modal"], \
                                            invalid_states=["resizable"])
-
+##color panel has extra focusable state BUG484217
 statesCheck(cdFrame.panels[0], "Panel")
 
 statesCheck(cdFrame.panels[1], "Panel")
@@ -90,9 +90,9 @@ statesCheck(cdFrame.smallcolor_buttons[50], "Button")
 
 #SmallColorControls' Text are None
 #extraneous Text value BUG478911
-##cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[5])
+cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[5])
 
-##cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
+cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
 
 ################################################
 ##AtkImage test for SmallColorControls
@@ -107,6 +107,7 @@ cdFrame.assertImageSize(cdFrame.smallcolor_buttons[40])
 ###########################################################################
 
 #do click action for SmallColorControl, then click OK button
+#do click action may multi select SmallColorControl BUG478541
 cdFrame.click(cdFrame.smallcolor_buttons[0])
 sleep(config.SHORT_DELAY)
 cdFrame.click(cdFrame.ok_button)
