@@ -1,3 +1,9 @@
+2009-03-11  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu_basic_ops.py: Added MenuItem default states.
+	* testers/contextmenustrip_basic_ops.py: Enable ContextMenuStrip states
+	check.
+
 2009-03-11  Calen Chen <cachen@novell.com>
 
 	* testers/fontdialog/fontdialogframe.py: modify test and add a comment 

@@ -53,10 +53,10 @@ cmFrame.assertWidgets()
 ##############################################################################
 # STATES: DEFAULT
 ##############################################################################
-statesCheck(cmFrame.orig_item, 'MenuItem')
-statesCheck(cmFrame.radio_item, 'MenuItem')
-statesCheck(cmFrame.check_item, 'MenuItem')
-statesCheck(cmFrame.exit_item, 'MenuItem')
+statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focusable'])
+statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable', 'checked'])
+statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focusable', 'checked'])
+statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focusable'])
 
 ##############################################################################
 # CHECK ATKSELECTION

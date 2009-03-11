@@ -47,7 +47,7 @@ cmsFrame.assertWidgets()
 ##############################################################################
 # STATES: CONTEXT MENU STRIP
 ##############################################################################
-#statesCheck(cmsFrame.context_menu_strip, 'ContextMenuStrip')
+statesCheck(cmsFrame.context_menu_strip, 'ContextMenuStrip')
 
 ##############################################################################
 # STATES: DEFAULT
