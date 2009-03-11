@@ -57,8 +57,9 @@ namespace UiaAtkBridge
 
 		private bool Selected {
 			get {
-				return (bool)Provider.GetPropertyValue (
+				object isSelectedVal = Provider.GetPropertyValue (
 				  SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+				return isSelectedVal is bool && (bool) isSelectedVal;
 			}
 		}
 
@@ -87,7 +88,7 @@ namespace UiaAtkBridge
 				states.RemoveState (Atk.StateType.Showing);
 			}
 
-			if ((Parent.Parent is ComboBoxDropDown) &&
+			if (Parent != null && (Parent.Parent is ComboBoxDropDown) &&
 			    (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)))
 				states.AddState (Atk.StateType.Visible);
 			
