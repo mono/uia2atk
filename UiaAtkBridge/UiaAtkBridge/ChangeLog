@@ -1,3 +1,8 @@
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: Fix regression when MenuItem is being used to represent
+	ToolStripDropDownButton.  In this case, we don't want to set focusable.
+
 2009-03-10  Brad Taylor  <brad@getcoded.net>
 	
 	Committing Mike Gorse's fixes with some minor tweaks.
