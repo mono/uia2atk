@@ -1,3 +1,13 @@
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/Helper.cs: If the control is visible,
+	return Rect.Empty.  This allows us to avoid #478598 which is caused by
+	us asking for the bounds of a control which has recently become
+	unmapped. [Fixes #478598]
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Refactor to use
+	Helper.GetControlScreenBounds ()
+
 2009-03-11  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs,
