@@ -71,6 +71,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripButton
 			if (button.Enabled == false)
 				throw new ElementNotEnabledException ();
 
+			PerformClick ();
+		}
+
+		private void PerformClick ()
+		{
+			SWF.ToolStrip toolstrip = ((SWF.ToolStripButton)Provider.Component).Owner;
+			if (toolstrip.InvokeRequired == true) {
+				toolstrip.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+				return;
+			}
 			button.PerformClick ();
 		}
 #endregion	
