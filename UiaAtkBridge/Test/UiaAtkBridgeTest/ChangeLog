@@ -1,3 +1,10 @@
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	Patch from Matt Guo <matt@mattguo.net>
+
+	* BridgeTests.cs: Test that the accessible name is changed and events
+	are sent when the MonthCalendar's Month is changed.
+
 2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:

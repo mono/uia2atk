@@ -1405,6 +1405,7 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.MonthCalendar;
 			
 			Atk.Object accessible = GetAccessible (type, String.Empty);
+					
 			Assert.AreEqual (1, accessible.NAccessibleChildren,
 			                 "Too many or too few children under Calendar");
 			
@@ -1413,6 +1414,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (table);
 
 			InterfaceTable (table, 6, 7, 0, 0, true);
+
+			StartEventMonitor ();
+			DateTime newDate = new DateTime (1999, 12, 31);
+			monthCalendar.SelectionStart = newDate;
+			ExpectEvents (1, Atk.Role.Filler, "object:property-change:accessible-name");
+			Assert.AreEqual (newDate.ToShortDateString (), accessible.Name,
+			                 "Calendar's name is its selected date");
 		}
 		
 		// This test tries to simulate inserting and deleting a single
