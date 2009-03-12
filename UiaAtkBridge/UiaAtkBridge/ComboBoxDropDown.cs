@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -79,10 +80,20 @@ namespace UiaAtkBridge
 			try {
 				switch (expandColapseProvider.ExpandCollapseState) {
 				case ExpandCollapseState.Collapsed:
-					expandColapseProvider.Expand ();
+					try {
+						expandColapseProvider.Expand ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
 					break;
 				case ExpandCollapseState.Expanded:
-					expandColapseProvider.Collapse ();
+					try {
+						expandColapseProvider.Collapse ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
 					break;
 				default:
 					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");

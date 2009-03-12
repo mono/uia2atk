@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 
@@ -67,14 +68,16 @@ namespace UiaAtkBridge
 			
 			if (selectionProvider.CanSelectMultiple) {
 				try { 
-					childItem.AddToSelection();
-				} catch (InvalidOperationException) {
+					childItem.AddToSelection ();
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
 					return false;
 				}
 			} else {
 				try {
-					childItem.Select();
-				} catch (InvalidOperationException) {
+					childItem.Select ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
 					return false;
 				}
 			}
@@ -96,7 +99,8 @@ namespace UiaAtkBridge
 				if (selectionItemProvider != null) {
 					try {
 						selectionItemProvider.RemoveFromSelection ();
-					} catch (System.InvalidOperationException) {
+					} catch (InvalidOperationException e) {
+						Log.Debug (e);
 						result = false;
 					}
 				}
@@ -132,11 +136,12 @@ namespace UiaAtkBridge
 			ISelectionItemProvider childItem;
 			childItem = ChildItemAtIndex (i);
 
-			if(childItem != null) {
+			if (childItem != null) {
 				try {
-					childItem.RemoveFromSelection();
-				} catch (System.InvalidOperationException) {
+					childItem.RemoveFromSelection ();
+				} catch (InvalidOperationException e) {
 					// May happen, ie, if a ComboBox requires a selection
+					Log.Debug (e);
 					return false;
 				}
 				return true;
@@ -157,8 +162,9 @@ namespace UiaAtkBridge
 				
 				if (selectionItemProvider != null) {
 					try {
-						selectionItemProvider.AddToSelection();
-					} catch (InvalidOperationException) {
+						selectionItemProvider.AddToSelection ();
+					} catch (InvalidOperationException e) {
+						Log.Debug (e);
 						return false;
 					}
 				} else

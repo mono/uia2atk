@@ -1,3 +1,30 @@
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	* Button.cs: 
+	* Slider.cs: 
+	* Spinner.cs: 
+	* TreeItem.cs: 
+	* ListItem.cs: 
+	* MenuItem.cs: 
+	* ScrollBar.cs: 
+	* Hyperlink.cs: 
+	* HeaderItem.cs: 
+	* RadioButton.cs: 
+	* ToggleButton.cs: 
+	* ComboBoxItem.cs: 
+	* CheckBoxButton.cs: 
+	* SplitContainer.cs: 
+	* ComboBoxDropDown.cs: 
+	* ExpandCollapseButton.cs: 
+	* TableImplementorHelper.cs: 
+	* ComponentImplementorHelper.cs: 
+	* TextProviderTextImplementor.cs: 
+	* SelectionProviderUserHelper.cs: 
+	* EditableTextImplementorHelper.cs: Be more defensive about exception
+	handling.  Providers do throw exceptions (it's part of the UIA spec)
+	and we need to catch them when it is reasonable to do so to avoid our
+	host app dying.
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Hyperlink.cs: Call AdjustLinkObjects at start of GetLink and

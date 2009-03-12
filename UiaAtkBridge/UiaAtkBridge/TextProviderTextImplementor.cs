@@ -27,6 +27,7 @@ using System;
 using System.Drawing;
 using Mono.UIAutomation.Bridge;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Text;
 using CG = System.Collections.Generic;
 using System.Windows.Automation.Provider;
@@ -84,7 +85,8 @@ namespace UiaAtkBridge
 				try {
 					ITextRangeProvider [] selection = textProvider.GetSelection ();
 					return selection.Length;
-				} catch (System.NotSupportedException) {
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
 					return 0;
 				}
 			}
@@ -104,10 +106,11 @@ namespace UiaAtkBridge
 				textRange.Select ();
 				return true;
 			}
+
 			try {
-			textRange.AddToSelection ();
-	
-			} catch (System.InvalidOperationException) {
+				textRange.AddToSelection ();
+			} catch (InvalidOperationException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -127,7 +130,13 @@ namespace UiaAtkBridge
 			string selection = GetSelection (selectionNum, out startOffset, out endOffset);
 			if (selection != null && selection != String.Empty) {
 				ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
-				textRange.RemoveFromSelection ();
+				try {
+					textRange.RemoveFromSelection ();
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			return false;

@@ -87,8 +87,14 @@ namespace UiaAtkBridge
 			if (headers != null)
 				row -= 1;
 
-			IRawElementProviderSimple item
-				= GridProvider.GetItem (row, column);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, column);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);	
+				return null;
+			}
+
 			if (item == null)
 				return null;
 
@@ -191,7 +197,14 @@ namespace UiaAtkBridge
 				}
 			}
 
-			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, column);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return -1;
+			}
+
 			int controlTypeId = (int) item.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.Group.Id)
 				return NColumns;
@@ -222,7 +235,14 @@ namespace UiaAtkBridge
 				}
 			}
 
-			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, column);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return -1;
+			}
+
 			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 			if (g != null)
 				return g.RowSpan;
@@ -383,7 +403,8 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple item;
 			try {
 				item = GridProvider.GetItem (row, 0);
-			} catch (ArgumentOutOfRangeException) {
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
 				return false;
 			}
 
@@ -414,9 +435,17 @@ namespace UiaAtkBridge
 				}
 			}
 
-			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, column);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return false;
+			}
+
 			if (item == null)
 				return false;
+
 			ISelectionItemProvider selectionItemProvider 
 				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selectionItemProvider == null)
@@ -444,7 +473,14 @@ namespace UiaAtkBridge
 				}
 			}
 			
-			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, 0);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return false;
+			}
+
 			if (item == null)
 				return false;
 
@@ -455,7 +491,8 @@ namespace UiaAtkBridge
 			
 			try {
 				selectionItem.AddToSelection ();
-			} catch (InvalidOperationException) {
+			} catch (InvalidOperationException e) {
+				Log.Debug (e);
 				return false;
 			}
 			
@@ -481,7 +518,14 @@ namespace UiaAtkBridge
 				}
 			}
 			
-			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, 0);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return false;
+			}
+			
 			if (item == null)
 				return false;
 
@@ -492,7 +536,8 @@ namespace UiaAtkBridge
 			
 			try {
 				selectionItem.RemoveFromSelection ();
-			} catch (InvalidOperationException) {
+			} catch (InvalidOperationException e) {
+				Log.Debug (e);
 				return false;
 			}
 			
@@ -579,7 +624,15 @@ namespace UiaAtkBridge
 			int localRow = row - adj;
 			if (localRow < 0 || localRow >= grid.RowCount || column < 0 || column >= grid.ColumnCount)
 				return null;
-			return grid.GetItem (localRow, column);
+
+			IRawElementProviderSimple item = null;
+			try {
+				item = grid.GetItem (localRow, column);
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+			}
+
+			return item;
 		}
 
 		internal IRawElementProviderSimple GetGridForRow (int row, out int adj)

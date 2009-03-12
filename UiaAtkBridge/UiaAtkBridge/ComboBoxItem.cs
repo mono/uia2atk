@@ -147,9 +147,10 @@ namespace UiaAtkBridge
 			if (i == 0) {
 				try {
 					selectionItemProvider.Select ();
-					
 					return true;
-				} catch (ElementNotEnabledException) { }
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
 			}
 			return false;
 		}

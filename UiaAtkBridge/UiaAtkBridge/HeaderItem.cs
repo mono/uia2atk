@@ -24,6 +24,7 @@
 // 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -130,7 +131,8 @@ namespace UiaAtkBridge
 			NotifyStateChange (Atk.StateType.Armed, true);
 			try {
 				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			NotifyStateChange (Atk.StateType.Armed, false);

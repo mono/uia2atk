@@ -98,19 +98,26 @@ namespace UiaAtkBridge
 		
 		public void InsertText (string str, ref int position)
 		{
+			if (!Editable)
+				return;
+
 			if (position < 0 || position > textExpert.Length)
 				position = textExpert.Length;	// gail
 
 			// This provider allows us to avoid string manip when
 			// the control itself supports manipulation directly.
 			if (insertDeleteProvider != null) {
-				insertDeleteProvider.InsertText (str, ref position);
+				try {
+					insertDeleteProvider.InsertText (str, ref position);
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
+
 				return;
 			}
 
 			TextContents = textExpert.Text.Substring (0, position)
-				+ str
-				+ textExpert.Text.Substring (position);
+				+ str + textExpert.Text.Substring (position);
 		}
 		
 		public void CopyText (int startPos, int endPos)
@@ -123,7 +130,7 @@ namespace UiaAtkBridge
 		
 		public void CutText (int startPos, int endPos)
 		{
-			if (ClipboardProvider == null)
+			if (ClipboardProvider == null || !Editable)
 				return;
 
 			ClipboardProvider.Copy (startPos, endPos);
@@ -132,6 +139,9 @@ namespace UiaAtkBridge
 		
 		public void DeleteText (int startPos, int endPos)
 		{
+			if (!Editable)
+				return;
+
 			if (startPos < 0)
 				startPos = 0;
 			if (endPos < 0 || endPos > textExpert.Length)
@@ -145,7 +155,11 @@ namespace UiaAtkBridge
 			// This provider allows us to avoid string manip when
 			// the control itself supports manipulation directly.
 			if (insertDeleteProvider != null) {
-				insertDeleteProvider.DeleteText (startPos, endPos);
+				try {
+					insertDeleteProvider.DeleteText (startPos, endPos);
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
 				return;
 			}
 
@@ -154,10 +168,14 @@ namespace UiaAtkBridge
 		
 		public void PasteText (int position)
 		{
-			if (ClipboardProvider == null)
+			if (ClipboardProvider == null || !Editable)
 				return;
 
-			ClipboardProvider.Paste (position);
+			try {
+				ClipboardProvider.Paste (position);
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
+			}
 		}
 		
 		public string TextContents {
@@ -185,8 +203,8 @@ namespace UiaAtkBridge
 				if (!valueProvider.IsReadOnly) {
 					try {
 						valueProvider.SetValue (value);
-					} catch (Exception e) {
-						Log.Error ("EditableTextImplementor: Caught exception while trying to set value:\n{0}", e);
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
 					}
 				}
 			}

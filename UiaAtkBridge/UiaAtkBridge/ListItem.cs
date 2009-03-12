@@ -251,7 +251,9 @@ namespace UiaAtkBridge
 			try {
 				selectionItemProvider.Select ();
 				return true;
-			} catch (InvalidOperationException) { }
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
+			}
 
 			return false;
 		}
@@ -259,9 +261,9 @@ namespace UiaAtkBridge
 		internal bool DoToggle ()
 		{
 			try {
-				toggleProvider.Toggle();
-			} catch (ElementNotEnabledException) {
-				// TODO: handle this exception?
+				toggleProvider.Toggle ();
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -271,7 +273,8 @@ namespace UiaAtkBridge
 		{
 			try {
 				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;

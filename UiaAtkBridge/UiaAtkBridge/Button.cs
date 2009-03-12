@@ -28,6 +28,7 @@
 using System;
 using System.Windows;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
@@ -164,7 +165,8 @@ namespace UiaAtkBridge
 				OnPressed ();
 				try {
 					invokeProvider.Invoke ();
-				} catch (ElementNotEnabledException) {
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
 					return false;
 				}
 				OnReleased ();

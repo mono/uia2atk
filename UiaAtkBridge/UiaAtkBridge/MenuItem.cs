@@ -188,21 +188,31 @@ namespace UiaAtkBridge
 				try {
 					invokeProvider.Invoke ();
 					return true;
-				} catch (ElementNotEnabledException) {}
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
 			} else if (expandCollapseProvider != null) {
-				try {
-					switch (expandCollapseProvider.ExpandCollapseState) {
-					case ExpandCollapseState.Collapsed:
+				switch (expandCollapseProvider.ExpandCollapseState) {
+				case ExpandCollapseState.Collapsed:
+					try {
 						expandCollapseProvider.Expand ();
-						return true;
-					case ExpandCollapseState.Expanded:
-						expandCollapseProvider.Collapse ();
-						return true;
-					default:
-						// Should never happen
-						break;
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
 					}
-				} catch (ElementNotEnabledException) { }
+					return true;
+				case ExpandCollapseState.Expanded:
+					try {
+						expandCollapseProvider.Collapse ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
+					return true;
+				default:
+					// Should never happen
+					break;
+				}
 			}
 
 			return false;

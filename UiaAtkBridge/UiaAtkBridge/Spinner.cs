@@ -218,11 +218,15 @@ namespace UiaAtkBridge
 				if (editableRange != null) {
 					try {
 						editableRange.BeginEdit (value);
-					} catch (ElementNotEnabledException) {}
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+					}
 				} else if (valueProvider != null) {
 					try {
 						valueProvider.SetValue (value);
-					} catch (ElementNotEnabledException) {}
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+					}
 				} else
 					NewText (value);
 			}
@@ -342,7 +346,11 @@ namespace UiaAtkBridge
 				return false;
 			try {
 				rangeValueProvider.SetValue (v);
-			} catch (ElementNotEnabledException) {
+			} catch (ArgumentOutOfRangeException e) {
+				Log.Debug (e);
+				return false;
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 
@@ -414,7 +422,11 @@ namespace UiaAtkBridge
 			else {
 				try {
 					rangeValueProvider.SetValue (double.Parse (textExpert.Text));
-				} catch (ElementNotEnabledException) {
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
 					return false;
 				}
 			}

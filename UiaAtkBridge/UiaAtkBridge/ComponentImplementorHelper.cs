@@ -121,8 +121,17 @@ namespace UiaAtkBridge
 			if ((transformProvider != null) && 
 			    (transformProvider.CanResize) && 
 			    (transformProvider.CanMove)) {
-				transformProvider.Move (x, y);
-				transformProvider.Resize (width, height);
+				try {
+					transformProvider.Move (x, y);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
+
+				try {
+					transformProvider.Resize (width, height);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;
@@ -134,7 +143,11 @@ namespace UiaAtkBridge
 				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			
 			if ((transformProvider != null) && (transformProvider.CanMove)) {
-				transformProvider.Move (x, y);
+				try {
+					transformProvider.Move (x, y);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;
@@ -146,7 +159,11 @@ namespace UiaAtkBridge
 				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			
 			if ((transformProvider != null) && (transformProvider.CanResize)) {
-				transformProvider.Resize (width, height);
+				try {
+					transformProvider.Resize (width, height);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;

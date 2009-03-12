@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Bridge;
@@ -379,7 +380,8 @@ namespace UiaAtkBridge
 				return false;
 			try {
 				hyperlink.hypertext.Invoke (index);
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;

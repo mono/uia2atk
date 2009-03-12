@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -284,17 +285,18 @@ namespace UiaAtkBridge
 			try {
 				selectionItemProvider.Select ();
 				return true;
-			} catch (InvalidOperationException) { }
-			
-			return false;
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
+				return false;
+			}
 		}
 
 		internal bool DoToggle ()
 		{
 			try {
-				ToggleProvider.Toggle();
-			} catch (ElementNotEnabledException) {
-				// TODO: handle this exception?
+				ToggleProvider.Toggle ();
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -304,7 +306,8 @@ namespace UiaAtkBridge
 		{
 			try {
 				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -318,10 +321,21 @@ namespace UiaAtkBridge
 			ExpandCollapseState expandCollapseState
 				= (ExpandCollapseState) Provider.GetPropertyValue (
 					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
-			if (expandCollapseState == ExpandCollapseState.Expanded)
-				expandCollapseProvider.Collapse ();
-			else
-				expandCollapseProvider.Expand ();
+			if (expandCollapseState == ExpandCollapseState.Expanded) {
+				try {
+					expandCollapseProvider.Collapse ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			} else {
+				try {
+					expandCollapseProvider.Expand ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			}
 
 			return true;
 		}

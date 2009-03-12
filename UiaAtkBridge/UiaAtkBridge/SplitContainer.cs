@@ -87,7 +87,17 @@ namespace UiaAtkBridge
 					return false;
 				if (v < rangeValueProvider.Minimum)
 					v = rangeValueProvider.Minimum;
-				rangeValueProvider.SetValue (v);
+				
+				try {
+					rangeValueProvider.SetValue (v);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			return false;

@@ -25,6 +25,7 @@
 using System;
 using System.Windows;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -56,15 +57,21 @@ namespace UiaAtkBridge
 			OnPressed ();
 
 			ExpandCollapseState state = ec_prov.ExpandCollapseState;
-			try {
-				if (state == ExpandCollapseState.Expanded
-				    || state == ExpandCollapseState.PartiallyExpanded) {
+			if (state == ExpandCollapseState.Expanded
+			    || state == ExpandCollapseState.PartiallyExpanded) {
+				try {
 					ec_prov.Collapse ();
-				} else {
-					ec_prov.Expand ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
 				}
-			} catch (ElementNotEnabledException) {
-				return false;
+			} else {
+				try {
+					ec_prov.Expand ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
 			}
 
 			OnReleased ();

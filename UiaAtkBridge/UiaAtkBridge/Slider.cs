@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -77,7 +78,17 @@ namespace UiaAtkBridge
 					return false;
 				if (v < rangeValueProvider.Minimum)
 					v = rangeValueProvider.Minimum;
-				rangeValueProvider.SetValue (v);
+
+				try {
+					rangeValueProvider.SetValue (v);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			
