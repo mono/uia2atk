@@ -801,7 +801,7 @@ namespace UiaAtkBridgeTest
 			                 "numChildren; children roles:" + DescribeChildren (accessible));
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names, false);
+			CheckComboBoxMenuChild (menuChild, names, type);
 
 			TestInnerTextBoxInComboBox (accessible);
 
@@ -855,7 +855,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names, false);
+			CheckComboBoxMenuChild (menuChild, names, type);
 
 			//we get the accessible again because the MWF toolkit doesn't support clearing the selection
 			names = new string [] { "1st item", "Second Item", "Third Item", "Last Item" };
@@ -1076,7 +1076,7 @@ namespace UiaAtkBridgeTest
 			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (subcomboChild);
 			InterfaceTable (atkTable, names.Length, 1, 0, 0, false);
 
-			CheckComboBoxMenuChild (subcomboChild, names, true, false);
+			CheckComboBoxMenuChild (subcomboChild, names, type, false);
 
 			Interfaces (subcomboChild,
 			            typeof (Atk.Component),

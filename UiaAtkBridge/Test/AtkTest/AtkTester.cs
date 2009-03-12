@@ -326,7 +326,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
-				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, false, false);
+				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, type, false);
 
 				Atk.Object menu = accessible.RefAccessibleChild (0);
 				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
@@ -845,16 +845,47 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
 
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, BasicWidgetType comboType)
 		{
-			CheckComboBoxMenuChild (menuChild, items, simpleLayout, true);
+			CheckComboBoxMenuChild (menuChild, items, comboType, true);
 		}
 		
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout, bool checkStates)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, BasicWidgetType comboType, bool defaultState)
 		{
+			if (comboType != BasicWidgetType.ComboBoxDropDownEntry &&
+			    comboType != BasicWidgetType.ComboBoxDropDownList &&
+			    comboType != BasicWidgetType.ComboBoxSimple)
+				throw new ArgumentException ("comboType", "The comboType should be a comboBox");
+
+			if (defaultState)
+				States (menuChild,
+				        Atk.StateType.Enabled,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Sensitive);
+			else {
+				if (comboType == BasicWidgetType.ComboBoxSimple)
+					States (menuChild,
+					        Atk.StateType.Enabled,
+					        Atk.StateType.Sensitive,
+					        Atk.StateType.Showing,
+					        Atk.StateType.Visible,
+					        Atk.StateType.Focusable,
+					        Atk.StateType.ManagesDescendants);
+				else
+					States (menuChild,
+					        Atk.StateType.Enabled,
+					        Atk.StateType.Selectable,
+					        Atk.StateType.Sensitive,
+					        Atk.StateType.Selected,
+					        Atk.StateType.Showing,
+					        Atk.StateType.Visible,
+					        comboType == BasicWidgetType.ComboBoxDropDownEntry ? 
+					        Atk.StateType.Focused : Atk.StateType.Enabled);
+			}
+			
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
-			if (simpleLayout)
+			if (comboType == BasicWidgetType.ComboBoxSimple)
 				Assert.AreEqual (menuChild.Role, Atk.Role.TreeTable, "ComboBox child#0 should be a table");
 			else
 				Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
@@ -863,7 +894,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.Action");
 
 			//HACK: no way to hide the column header!
-			int childrenCorrection = (simpleLayout && !HasComboBoxSimpleLayout)? 1 : 0;
+			int childrenCorrection = (comboType == BasicWidgetType.ComboBoxSimple && !HasComboBoxSimpleLayout)? 1 : 0;
 			
 			Assert.AreEqual (items.Length + childrenCorrection, 
 			                 menuChild.NAccessibleChildren, 
@@ -874,7 +905,7 @@ namespace UiaAtkBridgeTest
 				int nth = i + childrenCorrection;
 				Atk.Object menuItemChild = menuChild.RefAccessibleChild (nth);
 				Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#" + nth + " should not be null");
-				if (simpleLayout)
+				if (comboType == BasicWidgetType.ComboBoxSimple)
 					Assert.AreEqual (menuItemChild.Role, Atk.Role.TableCell, "ComboBox child#0 child#0 should be a tableCell");
 				else
 					Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
@@ -883,7 +914,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 				Assert.IsNull (CastToAtkInterface <Atk.Selection> (menuItemChild), "a comboboxitem should not implement Atk.Selection");
 
-				if (checkStates)//&& (!simpleLayout) <- enable this as soon as we have this bool param
+				if (defaultState)
 					States (menuItemChild,
 				            Atk.StateType.Enabled,
 				            Atk.StateType.Selectable,
@@ -894,7 +925,8 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (menuChild);
 			Assert.IsNotNull (atkSelection, "the Menu child of a combobox should implement Atk.Selection");
 			InterfaceSelection (atkSelection, items, menuChild, 
-			                    simpleLayout ? BasicWidgetType.ComboBoxSimpleMenu : BasicWidgetType.ComboBoxMenu);
+			                    comboType == BasicWidgetType.ComboBoxSimple ? 
+			                      BasicWidgetType.ComboBoxSimpleMenu : BasicWidgetType.ComboBoxMenu);
 		}
 		
 		protected void StatesComboBox (Atk.Object accessible)
@@ -1875,7 +1907,19 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue ((missingTypes.Count == 0) && (superfluousTypes.Count == 0),
 				missingTypesMsg + " .. " + superfluousTypesMsg);
 		}
-		
+
+		protected void PrintStates (Atk.Object accessible)
+		{
+			string res = String.Empty;
+			Atk.StateSet stateSet = accessible.RefStateSet ();
+			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType))) {
+				if (stateSet.ContainsState (state))
+					res += state.ToString () + ",";
+			}
+			Console.WriteLine ("Object of type " + accessible.Role.ToString () + 
+			                   " contains the following states: " + res);
+		}
+			
 		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
 			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);

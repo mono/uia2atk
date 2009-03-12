@@ -39,6 +39,18 @@ namespace UiaAtkBridge
 			Role = Atk.Role.TreeTable;
 			tableExpert = new TableImplementorHelper (this);
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.RemoveState (Atk.StateType.Focused);
+			states.AddState (Atk.StateType.ManagesDescendants);
+			
+			//TODO: figure out why the gail side doesn't like this state:
+			states.RemoveState (Atk.StateType.Selectable);
+			
+			return states;
+		}
 		
 		#region TableImplementor implementation 
 		

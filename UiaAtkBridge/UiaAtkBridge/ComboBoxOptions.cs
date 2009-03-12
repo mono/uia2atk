@@ -52,6 +52,20 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Menu;
 		}
 
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			ComboBoxDropDown dropdown = Parent as ComboBoxDropDown;
+			if (dropdown != null) {
+				states.RemoveState (Atk.StateType.Focusable);
+				
+				if (dropdown.ExpandCollapseState == ExpandCollapseState.Collapsed ||
+				    !dropdown.IsEditable)
+					states.RemoveState (Atk.StateType.Focused);
+			}
+			return states;
+		}
+
 		#region SelectionImplementor implementation //FIXME: consider making ComboBoxOptions inherit from List
 		
 		public int SelectionCount {
