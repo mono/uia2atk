@@ -188,6 +188,7 @@ namespace UiaAtkBridge
 		
 		public Atk.Hyperlink GetLink (int link_index)
 		{
+			AdjustLinkObjects ();
 			if (link_index < 0 || link_index >= links.Count)
 				return null;
 			return links [link_index];
@@ -218,6 +219,7 @@ namespace UiaAtkBridge
 
 		public int GetLinkIndex (int char_index)
 		{
+			AdjustLinkObjects ();
 			for (int i = 0; i < links.Count; i++)
 				if (hypertext.Start (i) <= char_index && (hypertext.Start (i) + hypertext.Length (i)) > char_index)
 					return i;

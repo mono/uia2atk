@@ -1,5 +1,10 @@
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* BridgeTests.cs: Test that GetLink and GetLinkIndex work
+	correctly when called before NLinks property.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* DialogTester.cs: Expand OpenFileDialog test to include
 	states test for PopupButton. Refactor DialogTesterInner into
 	DialogRunner class that makes it easier to write varied tests.

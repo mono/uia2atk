@@ -191,7 +191,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (link1.GetObject (1), "GetObject OOR #1");
 			Assert.IsNull (link1.GetObject (-1), "GetObject OOR #2");
 			Atk.Hyperlink link2 = hypertext.GetLink (1);
-			Assert.AreEqual ("gmail.novell.com", link2.GetUri (0), "Link 1 uri");
+			Assert.AreEqual ("gmail.novell.com", link2.GetUri (0), "Link 2 uri");
 			Assert.AreEqual (35, link2.StartIndex, "Link 1 StartIndex");
 			Assert.AreEqual (51, link2.EndIndex, "Link 1 EndIndex");
 			Atk.Object obj2 = link2.GetObject (0);
@@ -205,6 +205,19 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
 			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
+
+			// Add another link to test that GetLink can be accessed before NLinks
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com \n\n webmail:qmail.novell.com";
+			linklab1.Links.Add (61, 16, "qmail.novell.com");
+			Atk.Hyperlink link3 = hypertext.GetLink (2);
+			Assert.AreEqual ("qmail.novell.com", link3.GetUri (0), "Link 3 uri");
+			Assert.AreEqual (3, hypertext.NLinks, "Updated LinkLabel NLinks");
+
+			// Add another link to test that GetLinkIndex can be accessed before NLinks
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com \n\n webmail:qmail.novell.com \n\n webmail:ymail.novell.com";
+			linklab1.Links.Add (87, 16, "ymail.novell.com");
+			Assert.AreEqual (3, hypertext.GetLinkIndex (88), "GetLinkIndex after update");
+			Assert.AreEqual (4, hypertext.NLinks, "Updated LinkLabel NLinks");
 		}
 
 		[Test]

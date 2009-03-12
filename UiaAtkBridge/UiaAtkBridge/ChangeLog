@@ -1,5 +1,11 @@
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Hyperlink.cs: Call AdjustLinkObjects at start of GetLink and
+	GetLinkIndex, just like with NLinks property. Fixes bug
+	#459640.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Hyperlink.cs: Fix typo in GetOffsetAtPoint so it doesn't
 	call itself.
 
