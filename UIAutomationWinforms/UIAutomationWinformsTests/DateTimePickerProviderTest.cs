@@ -468,6 +468,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new DateTimePicker ();
 		}
 
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// DataTimePicker doesn't use & in Text
+		}
+
 		private DateTimePicker picker;
 		private IRawElementProviderSimple pickerProvider;
 

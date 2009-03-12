@@ -244,6 +244,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              false);
 		}
+
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// ScrollBar doesn't use Control.Text when returning NameProperty
+		}
 		
 		#endregion
 		

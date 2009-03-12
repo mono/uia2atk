@@ -277,9 +277,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override ToggleState GetItemToggleState (ListItemProvider item)
 		{
-			if (listView.CheckBoxes == false)
+			if (listView.CheckBoxes == false || item.Index == -1)
 				return ToggleState.Indeterminate;
-			
+
 			if (ContainsItem (item) == true)
 				return listView.Items [item.Index].Checked ? ToggleState.On : ToggleState.Off;
 			else
@@ -900,6 +900,8 @@ namespace Mono.UIAutomation.Winforms
 					int indexOf = headerProvider.ListView.Columns.IndexOf (columnHeader);
 					Rect headerBounds
 						= (Rect) headerProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					if (headerBounds.IsEmpty)
+						return headerBounds;
 					
 					for (int index = 0; index < indexOf; index++)
 						headerBounds.X += headerProvider.ListView.Columns [index].Width;
@@ -1203,6 +1205,8 @@ namespace Mono.UIAutomation.Winforms
 					int indexOf = itemProvider.ListView.Columns.IndexOf (header);
 					Rect itemBounds
 						= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					if (itemBounds.IsEmpty)
+						return itemBounds;
 
 					for (int index = 0; index < indexOf; index++)
 						itemBounds.X += itemProvider.ListView.Columns [index].Width;
@@ -1281,6 +1285,8 @@ namespace Mono.UIAutomation.Winforms
 					SD.Size checkBoxSize = ItemProvider.ListView.CheckBoxSize;
 					Rect itemSize 
 						= (Rect) ItemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					if (itemSize.IsEmpty)
+						return itemSize;
 					
 					Rect checkBoxRect = itemSize;
 					checkBoxRect.Y = itemSize.Y + (itemSize.Height / 2) - (checkBoxSize.Height / 2);

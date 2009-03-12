@@ -1,3 +1,14 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* FormProviderTest.cs:
+	* BaseProviderTest.cs:
+	* StatusBarProviderTest.cs:
+	* ScrollBarProviderTest.cs:
+	* TextBoxBaseProviderTest.cs:
+	* MonthCalendarProviderTest.cs:
+	* NumericUpDownProviderTest.cs:
+	* DateTimePickerProviderTest.cs: Test added AmpersandsAndNameTest.
+
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 	
 	Patch from Matt Guo <matt@mattguo.net>

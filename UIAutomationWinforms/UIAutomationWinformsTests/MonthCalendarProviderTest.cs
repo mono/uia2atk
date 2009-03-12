@@ -689,6 +689,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			base.TestTablePatternChild (provider);
 		}
 
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// MonthCalendar doesn't use & in Text
+		}
+
 		private MonthCalendar calendar;
 		private IRawElementProviderSimple calendarProvider;
 		private Calendar currentCalendar;

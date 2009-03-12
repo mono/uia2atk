@@ -233,6 +233,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new NumericUpDown ();
 		}
+
+
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// NumericUpDown uses numbers not text
+		}
 		
 		#endregion
 	}

@@ -296,7 +296,7 @@ namespace Mono.UIAutomation.Winforms
 					if (controlType == ControlType.Edit.Id || controlType == ControlType.Document.Id)
 						return string.Empty;
 					else
-						return Control.Text;
+						return Helper.StripAmpersands (Control.Text);
 				} else
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {

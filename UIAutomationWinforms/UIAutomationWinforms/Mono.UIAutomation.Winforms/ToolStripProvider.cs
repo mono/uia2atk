@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.NameProperty.Id)
-				return strip.Text;
+				return Helper.StripAmpersands (strip.Text);
 			else if (propertyId == AEIds.IsContentElementProperty.Id)
 				return true;
 			else

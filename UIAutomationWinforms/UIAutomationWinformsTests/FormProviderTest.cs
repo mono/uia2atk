@@ -1026,6 +1026,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new Form ();
 		}
+
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// Form uses Control.Text when returning NameProperty but it returns the & anyway
+		}
 		
 #endregion
 		

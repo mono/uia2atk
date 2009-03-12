@@ -339,6 +339,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return GetTextBoxBase ();
 		}
+
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// TextBox doesn't use Control.Text when returning NameProperty
+		}
 		
 #endregion
 

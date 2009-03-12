@@ -89,7 +89,7 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("list");
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 				if (string.IsNullOrEmpty (listboxControl.AccessibleName))
-					return listboxControl.Text;
+					return Helper.StripAmpersands (listboxControl.Text);
 				else
 					return listboxControl.AccessibleName;
 			} else

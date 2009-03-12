@@ -1,3 +1,15 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Returns valid
+	NameProperty, no ampersands.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs:
+	Null validation. [Fixes Bug #484929]
+
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 	
 	Patch from Matt Guo <matt@mattguo.net>

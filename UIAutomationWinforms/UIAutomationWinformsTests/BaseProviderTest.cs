@@ -357,6 +357,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              control.CanFocus);
 		}
+
+		[Test]
+		public virtual void AmpersandsAndNameTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			if (provider == null) {
+				// This can be triggered by controls which
+				// don't actually register themselves with
+				// ProviderFactory (typically when they're
+				// "fake" controls, e.g., they don't map to a
+				// widget)
+				return;
+			}
+
+			control.Text = "I like &ampersands";
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "I like ampersands");
+
+			control.Text = "I like double &&ampersands";
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "I like double &ampersands");
+		}
 		
 		[Test]
 		public virtual void FragmentRootAsParentTest ()
