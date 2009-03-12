@@ -1,3 +1,9 @@
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Reapplying fix for #480829. We now know it
+	was not regressing.
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* BridgeTests.cs: Test that GetLink and GetLinkIndex work

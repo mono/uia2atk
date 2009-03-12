@@ -1,3 +1,8 @@
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Reapplying fix for #480829. We now know it was not regressing.
+
 2009-03-12  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

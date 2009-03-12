@@ -1366,6 +1366,39 @@ namespace UiaAtkBridgeTest
 			                 "text/plain stream differs from original text");
 		}
 
+ 		[Test]
+		public void PropertyGrid ()
+		{
+			Atk.Object accessible =  GetAdapterForWidget (pgrid);
+
+			Assert.AreEqual (accessible.Role, Atk.Role.Panel);
+			Assert.AreEqual (accessible.NAccessibleChildren, 4);
+
+			Assert.AreEqual (accessible.RefAccessibleChild (0).Role, Atk.Role.Panel);
+			Assert.IsTrue (accessible.RefAccessibleChild (0).NAccessibleChildren > 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (1).Role, Atk.Role.ToolBar);
+			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (2).Role, Atk.Role.SplitPane);
+			Assert.AreEqual (accessible.RefAccessibleChild (2).NAccessibleChildren, 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (3).Role, Atk.Role.Panel);
+			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
+
+			accessible = FindObjectByRole (accessible.RefAccessibleChild (0), Atk.Role.ScrollBar, true);
+			Assert.IsNotNull (accessible);
+
+			//BNC#480829
+			Atk.Value val = CastToAtkInterface <Atk.Value> (accessible);
+			GLib.Value value = new GLib.Value ();
+			val.GetCurrentValue (ref value);
+			Assert.AreEqual (value.Val, 0);
+			val.SetCurrentValue (new GLib.Value (2.0));
+			val.GetCurrentValue (ref value);
+			Assert.AreEqual (value.Val, 2.0);
+		}
+		
 		[Test]
 		public void MonthCalendar ()
 		{
