@@ -1920,7 +1920,7 @@ namespace UiaAtkBridgeTest
 			                   " contains the following states: " + res);
 		}
 			
-		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
+		public static void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
 			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);
 			List <Atk.StateType> missingStates = new List <Atk.StateType> ();

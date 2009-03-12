@@ -59,6 +59,8 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("menu item");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return Control.CanFocus;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

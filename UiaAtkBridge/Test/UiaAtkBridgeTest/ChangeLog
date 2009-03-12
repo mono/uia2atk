@@ -1,3 +1,9 @@
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* DialogTester.cs: Expand OpenFileDialog test to include
+	states test for PopupButton. Refactor DialogTesterInner into
+	DialogRunner class that makes it easier to write varied tests.
+
 2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* BridgeTester.cs: Use the correct GetProvider overload for

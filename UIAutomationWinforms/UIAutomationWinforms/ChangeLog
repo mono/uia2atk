@@ -1,5 +1,11 @@
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs: Override
+	IsKeyboardFocusableProperty, as base class implementation
+	doesn't work because PopupButton.CanSelect is always false.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Initialize
 	provider before calling AddChildProvider, because that will
 	trigger InitializeChildControlStructure, which should always
