@@ -1,3 +1,12 @@
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Initialize
+	provider before calling AddChildProvider, because that will
+	trigger InitializeChildControlStructure, which should always
+	happen *after* Initialize is called. This makes sure patterns
+	are set up when the bridge receives the provider, and fixes
+	the crash from bug #484646.
+
 2009-03-12  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:

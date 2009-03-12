@@ -444,8 +444,8 @@ namespace Mono.UIAutomation.Winforms
 			                                                              row,
 			                                                              datagrid,
 			                                                              tableStyle);
-			AddChildProvider (item);
 			item.Initialize ();
+			AddChildProvider (item);
 			items.Add (item);
 		}
 
@@ -546,8 +546,8 @@ namespace Mono.UIAutomation.Winforms
 				foreach (SWF.DataGridColumnStyle style in styles) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, style);
-					AddChildProvider (headerItem);
 					headerItem.Initialize ();
+					AddChildProvider (headerItem);
 					dictionary [style] = headerItem;
 				}
 
@@ -568,8 +568,8 @@ namespace Mono.UIAutomation.Winforms
 				if (args.Action == CollectionChangeAction.Add) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, column);
-					AddChildProvider (headerItem);
 					headerItem.Initialize ();
+					AddChildProvider (headerItem);
 					dictionary [column] = headerItem;
 				} else if (args.Action == CollectionChangeAction.Remove) {
 					DataGridHeaderItemProvider headerItem = null;
@@ -738,8 +738,8 @@ namespace Mono.UIAutomation.Winforms
 					
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, columnStyle);
-					AddChildProvider (edit);
 					edit.Initialize ();
+					AddChildProvider (edit);
 
 					if (column == 0)
 						name = GetName (edit);
@@ -822,8 +822,8 @@ namespace Mono.UIAutomation.Winforms
 				} else if (args.Action == CollectionChangeAction.Add) {
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, column);
-					AddChildProvider (edit);
 					edit.Initialize ();
+					AddChildProvider (edit);
 
 					columns [column] = edit;
 				} else if (args.Action == CollectionChangeAction.Refresh) {
