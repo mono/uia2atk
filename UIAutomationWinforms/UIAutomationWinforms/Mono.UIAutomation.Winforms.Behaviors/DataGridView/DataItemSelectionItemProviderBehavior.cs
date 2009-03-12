@@ -26,13 +26,13 @@ using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.DataGridView;
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using ListItem = Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
 
 	internal class DataItemSelectionItemProviderBehavior 
-		: SelectionItemProviderBehavior
+		: ListItem.SelectionItemProviderBehavior
 	{
 		
 		#region Constructors

@@ -88,7 +88,7 @@ namespace Mono.UIAutomation.Winforms
 			// No way in SWF to do this
 		}
 
-		public override ListItemProvider[] GetSelectedItems ()
+		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
 			foreach (PropertyGridListItemProvider item in children)
 				if (IsItemSelected (item))

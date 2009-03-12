@@ -83,8 +83,11 @@ namespace Mono.UIAutomation.Winforms
 			else {
 				List<IRawElementProviderSimple> selection = new List<IRawElementProviderSimple> ();
 				foreach (ListItemProvider item in items) {
-					if (IsItemSelected (item))
-						selection.Add (item);
+					if (IsItemSelected (item)) {
+						// We are returning the children of the items
+						foreach (IRawElementProviderSimple child in item)
+							selection.Add (child);
+					}
 				}
 				return selection.ToArray ();
 			}
@@ -843,7 +846,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Data Item Edit
 
-		internal class DataGridDataItemEditProvider : FragmentRootControlProvider
+		internal class DataGridDataItemEditProvider : FragmentRootControlProvider, ISelectableItem
 		{
 			public DataGridDataItemEditProvider (DataGridDataItemProvider provider,
 			                                     SWF.DataGridColumnStyle column) : base (null)
@@ -875,6 +878,8 @@ namespace Mono.UIAutomation.Winforms
 				             new DataItemEditGridItemProviderBehavior (this));
 				SetBehavior (TableItemPatternIdentifiers.Pattern,
 				             new DataItemEditTableItemProviderBehavior (this));
+				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+				             new DataItemEditSelectionItemProviderBehavior (this));
 
 				//Events
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
@@ -892,19 +897,52 @@ namespace Mono.UIAutomation.Winforms
 				                                                                           ItemProvider.GetColumnIndexOf (this));
 			}
 
+			public SWF.Control ContainerControl { 
+				get { return ItemProvider.DataGridProvider.DataGrid; }
+			}
+	
+			public IRawElementProviderSimple SelectionContainer { 
+				get { return ItemProvider.DataGridProvider; }
+			}
+			
+			public bool Selected { 
+				get { return ItemProvider.Selected; }
+			}
+	
+			public void Select ()
+			{
+				// SWF.DataGrid doesn't support cell-by-cell selection
+				// so we are selecting all row anyway.
+				ItemProvider.Select ();
+			}
+			
+			public void Unselect ()
+			{
+				// SWF.DataGrid doesn't support cell-by-cell unselection
+				// so we are unselecting all row anyway.
+				ItemProvider.Unselect ();
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("edit");
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					// ItemProvider.DataGridProvider.DataGrid.Focused should be used here, but seems SWF.DataGrid loses this state randomly
+					return ItemProvider.DataGridProvider.DataGrid.CurrentCell.RowNumber == ItemProvider.Index
+						&& ItemProvider.DataGridProvider.DataGrid.CurrentCell.ColumnNumber == ItemProvider.GetColumnIndexOf (this);
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return ItemProvider.DataGridProvider.DataGrid.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 					SD.Rectangle rectangle = provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
 					                                                                           provider.GetColumnIndexOf (this));
 					Rect rect = Helper.GetControlScreenBounds (rectangle,
-					                                           provider.DataGridProvider.DataGrid);
+					                                           provider.DataGridProvider.DataGrid,
+					                                           true);
 					return rect;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 

@@ -33,6 +33,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DataGridView;
 
@@ -110,13 +111,18 @@ namespace Mono.UIAutomation.Winforms
 			datagridview.FirstDisplayedCell = dataItem.Row.Cells [0];
 		}
 
-		public override ListItemProvider[] GetSelectedItems ()
+		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
-			List<ListItemProvider> items = new List<ListItemProvider> ();
-
-			foreach (SWF.DataGridViewRow row in datagridview.Rows) {
-				if (row.Cells [0].Selected)
-					items.Add (GetItemProviderFrom (this, row, false));
+			List<DataGridViewDataItemChildProvider> items = new List<DataGridViewDataItemChildProvider> ();
+			
+			foreach (SWF.DataGridViewCell cell in datagridview.SelectedCells) {
+				DataGridDataItemProvider itemProvider
+					= (DataGridDataItemProvider) GetItemProviderFrom (this,
+					                                                  datagridview.Rows [cell.RowIndex],
+					                                                  false);
+				if (itemProvider == null) //Not yet initialized
+					break;
+				items.Add (itemProvider.GetChildItem (cell.ColumnIndex));
 			}
 
 			return items.ToArray ();
@@ -163,7 +169,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return provider.Row.Cells [0].Value as string;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return false;
+				return datagridview.CurrentCell == provider.Row.Cells [0] && datagridview.Focused;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				SD.Rectangle rectangle = datagridview.GetRowDisplayRectangle (provider.Row.Index, false);
 				if (datagridview.RowHeadersVisible)
@@ -520,6 +526,14 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 			}
 
+			public DataGridViewDataItemChildProvider GetChildItem (int columnIndex)
+			{
+				if (columnIndex < 0 || columnIndex >= columns.Count)
+					return null;
+
+				return GetChildItem (datagridview.Columns [columnIndex]);
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -592,7 +606,8 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Data Item Child Provider
 
-		internal abstract class DataGridViewDataItemChildProvider : FragmentRootControlProvider
+		internal abstract class DataGridViewDataItemChildProvider 
+			: FragmentRootControlProvider, ISelectableItem
 		{
 			public DataGridViewDataItemChildProvider (DataGridDataItemProvider itemProvider,
 			                                          SWF.DataGridViewColumn column) : base (null)
@@ -638,10 +653,38 @@ namespace Mono.UIAutomation.Winforms
 				             new DataItemChildGridItemProviderBehavior (this));
 				SetBehavior (TableItemPatternIdentifiers.Pattern,
 				             new DataItemChildTableItemProviderBehavior (this));
+				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+				             new DataItemChildSelectionItemProviderBehavior (this));
 
 //				// Automation Events
 //				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 //				          new ListItemEditAutomationIsOffscreenPropertyEvent (this));
+
+				// Automation Events
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+				          new DataItemChildHasKeyboardFocusPropertyEvent (this));
+			}
+
+			public SWF.Control ContainerControl {
+				get { return itemProvider.DataGridView; }
+			}
+	
+			public IRawElementProviderSimple SelectionContainer { 
+				get { return gridProvider; }
+			}
+			
+			public bool Selected { 
+				get { return cell.Selected; }
+			}
+
+			public void Select () 
+			{
+				cell.Selected = true;
+			}
+
+			public void Unselect ()
+			{
+				cell.Selected = false;
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -649,9 +692,9 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return cell.Value as string;
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return false;
+					return gridProvider.DataGridView.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-					return false;
+					return gridProvider.DataGridView.CurrentCell == cell && gridProvider.DataGridView.Focused;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return !Cell.ReadOnly;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
@@ -977,11 +1020,24 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.InitializeChildControlStructure ();
 
-				foreach (string str in comboboxProvider.ComboBoxCell.Items) {
-					ListItemProvider item = GetItemProviderFrom (this, str);
-					AddChildProvider (item);
+				foreach (object obj in comboboxProvider.ComboBoxCell.Items) {
+					ListItemProvider itemProvider = GetItemProviderFrom (this, obj);
+					AddChildProvider (itemProvider);
 				}
 			}
+
+			public string GetDisplayMemberFromValue (object value)
+			{
+				return GetDataBindingValueFromObjectItem (value, 
+				                                          DataSourceBindingMemberType.DisplayMember) as string;
+			}
+
+			public object GetValueMemberFromValue (object value)
+			{
+				return GetDataBindingValueFromObjectItem (value, 
+				                                          DataSourceBindingMemberType.ValueMember);
+			}
+
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
@@ -1049,17 +1105,33 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetListItemBehaviorRealization (behavior, listItem);
 			}
 
-			public override ListItemProvider[] GetSelectedItems ()
+			public override IRawElementProviderSimple[] GetSelectedItems ()
 			{
 				if (SelectedItemsCount == 0)
 					return new ListItemProvider [0];
-				else
-					return new ListItemProvider [1] {
-						GetItemProviderFrom (this,
-						                     comboboxProvider.ComboBoxCell.Value as string,
-						                     false)  
+				else {
+					if (comboboxProvider.ComboBoxCell.DataSource == null)  {
+						return new ListItemProvider [1] { 
+							GetItemProviderFrom (this,
+							                     comboboxProvider.ComboBoxCell.Value,
+							                     false) 
+								};
+					} else {
+						ListItemProvider itemProvider = null;
+						foreach (ListItemProvider item in Items) {
+							object value = GetValueMemberFromValue (item.ObjectItem);
+							if (object.Equals (value, comboboxProvider.ComboBoxCell.Value)) {
+								itemProvider = item;
+								break;
+							}
+						}
 
-					};
+						if (itemProvider == null) // Happens when initializing
+							return new ListItemProvider [0];
+
+						return new ListItemProvider [1] { itemProvider };
+					}
+				}
 			}
 			
 			public override bool IsItemSelected (ListItemProvider item)
@@ -1067,7 +1139,7 @@ namespace Mono.UIAutomation.Winforms
 				if (comboboxProvider.ComboBoxCell.Value == null)
 					return false;
 				
-				return item.ObjectItem as string == comboboxProvider.ComboBoxCell.Value as string;
+				return GetValueMemberFromValue (item.ObjectItem) == comboboxProvider.ComboBoxCell.Value;
 			}
 			
 			public override void SelectItem (ListItemProvider item)
@@ -1076,9 +1148,8 @@ namespace Mono.UIAutomation.Winforms
 					return;
 
 				SWF.DataGridViewCell oldCell = comboboxProvider.ComboBoxCell.DataGridView.CurrentCell;
-
 				comboboxProvider.ComboBoxCell.DataGridView.CurrentCell = comboboxProvider.ComboBoxCell;
-				comboboxProvider.ComboBoxCell.Value = item.ObjectItem as string;
+				comboboxProvider.ComboBoxCell.Value = GetValueMemberFromValue (item.ObjectItem);
 				comboboxProvider.ComboBoxCell.DataGridView.CurrentCell = oldCell;
 			}
 			
@@ -1089,12 +1160,11 @@ namespace Mono.UIAutomation.Winforms
 
 			public override int IndexOfObjectItem (object objectItem)
 			{
-				string str = objectItem as string;
-				if (str == null)
+				if (objectItem == null)
 					return -1;
 
 				for (int index = 0; index < comboboxProvider.ComboBoxCell.Items.Count; index++) {
-					if (comboboxProvider.ComboBoxCell.Items [index] as string == str)
+					if (comboboxProvider.ComboBoxCell.Items [index] == objectItem)
 						return index;
 				}
 
@@ -1109,7 +1179,7 @@ namespace Mono.UIAutomation.Winforms
 			                                             int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return item.ObjectItem as string;
+					return GetDisplayMemberFromValue (item.ObjectItem);
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return comboboxProvider.GetPropertyValue (propertyId);
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
@@ -1124,6 +1194,37 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override void InitializeScrollBehaviorObserver ()
 			{
+			}
+
+			private object GetDataBindingValueFromObjectItem (object objectItem,
+			                                                  DataSourceBindingMemberType memberType)
+			{
+				SWF.DataGridViewComboBoxColumn column = (SWF.DataGridViewComboBoxColumn) comboboxProvider.Column;
+				
+				if (column.DataSource == null)
+					return objectItem;
+				else {
+					string valueType = null;
+					if (memberType == DataSourceBindingMemberType.ValueMember)
+						valueType = column.ValueMember;
+					else
+						valueType = column.DisplayMember;
+					
+					SWF.BindingContext bindingContext = new SWF.BindingContext ();
+					SWF.CurrencyManager manager = (SWF.CurrencyManager) bindingContext [column.DataSource];
+					PropertyDescriptorCollection col = manager.GetItemProperties ();
+	
+					PropertyDescriptor prop = col.Find (valueType, true);
+					if (prop == null)
+						return null;
+
+					return prop.GetValue (objectItem);
+				}
+			}
+
+			private enum DataSourceBindingMemberType {
+				DisplayMember,
+				ValueMember
 			}
 
 			private DataGridViewDataItemComboBoxProvider comboboxProvider;

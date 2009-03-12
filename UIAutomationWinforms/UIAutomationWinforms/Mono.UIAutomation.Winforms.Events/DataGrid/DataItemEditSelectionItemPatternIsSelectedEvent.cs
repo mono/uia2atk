@@ -17,30 +17,64 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Behaviors.Generic;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal abstract class SelectionItemProviderBehavior
-		: SelectionItemProviderBehavior<ListItemProvider>
+	internal class DataItemEditSelectionItemPatternIsSelectedEvent
+		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 
-		protected SelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+		public DataItemEditSelectionItemPatternIsSelectedEvent (DataGridProvider.DataGridDataItemEditProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
 		
+		#region ProviderEvent Methods
+
+		public override void Connect ()
+		{
+			provider.ItemProvider.DataGridProvider.DataGrid.UIASelectionChanged += OnIsSelectedChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			provider.ItemProvider.DataGridProvider.DataGrid.UIASelectionChanged -= OnIsSelectedChanged;
+		}
+		
+		#endregion 
+		
+		#region Private methods
+		
+		private void OnIsSelectedChanged (object sender, CollectionChangeEventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+
+		#endregion
+
+		#region Private Fields
+
+		private DataGridProvider.DataGridDataItemEditProvider provider;
+		
+		#endregion
 	}
 }
+

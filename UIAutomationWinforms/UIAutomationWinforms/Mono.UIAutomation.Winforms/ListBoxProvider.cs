@@ -196,7 +196,7 @@ namespace Mono.UIAutomation.Winforms
 			return listboxControl.Items.IndexOf (objectItem);
 		}
 		
-		public override ListItemProvider[] GetSelectedItems ()
+		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
 			ListItemProvider []items;
 

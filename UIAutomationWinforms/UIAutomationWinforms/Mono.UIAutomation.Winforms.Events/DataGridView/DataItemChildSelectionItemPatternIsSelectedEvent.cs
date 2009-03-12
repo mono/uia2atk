@@ -17,30 +17,60 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using System;
+using System.Windows.Automation;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Behaviors.Generic;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
-	internal abstract class SelectionItemProviderBehavior
-		: SelectionItemProviderBehavior<ListItemProvider>
+	internal class DataItemChildSelectionItemPatternIsSelectedEvent
+		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 
-		protected SelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+		public DataItemChildSelectionItemPatternIsSelectedEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
 		
+		#region Overridden Methods
+
+		public override void Connect ()
+		{
+			provider.DataGridViewProvider.DataGridView.CellStateChanged += OnCellStateChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			provider.DataGridViewProvider.DataGridView.CellStateChanged -= OnCellStateChanged;
+		}
+		
+		#endregion 
+		
+		#region Private methods
+
+		private void OnCellStateChanged (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
+		{	
+			if (args.Cell.ColumnIndex == provider.Cell.ColumnIndex
+			    && args.Cell.RowIndex == provider.Cell.RowIndex) {
+			    RaiseAutomationPropertyChangedEvent ();
+			}
+		}
+
+		private DataGridViewProvider.DataGridViewDataItemChildProvider provider;
+		
+		#endregion
 	}
 }

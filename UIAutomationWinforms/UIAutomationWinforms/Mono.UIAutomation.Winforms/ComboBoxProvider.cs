@@ -322,13 +322,13 @@ namespace Mono.UIAutomation.Winforms
 				return comboboxControl.Items.IndexOf (objectItem);
 			}	
 
-			public override ListItemProvider[] GetSelectedItems ()
+			public override IRawElementProviderSimple[] GetSelectedItems ()
 			{
 				if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
-					return new ListItemProvider [0];
+					return new IRawElementProviderSimple [0];
 				else
-					return new ListItemProvider [] { GetItemProviderFrom (this,
-					                                                      comboboxControl.SelectedItem) };
+					return new IRawElementProviderSimple [] { GetItemProviderFrom (this,
+					                                                               comboboxControl.SelectedItem) };
 			}
 
 			public override void SelectItem (ListItemProvider item)

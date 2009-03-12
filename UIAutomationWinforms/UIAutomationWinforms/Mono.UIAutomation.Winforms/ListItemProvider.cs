@@ -36,7 +36,7 @@ using Mono.UIAutomation.Bridge;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ListItemProvider : FragmentRootControlProvider
+	internal class ListItemProvider : FragmentRootControlProvider, ISelectableItem
 	{
 
 		#region Constructors
@@ -50,6 +50,32 @@ namespace Mono.UIAutomation.Winforms
 			listProvider = provider;
 			this.rootProvider = rootProvider;
 			this.objectItem = objectItem;
+		}
+
+		#endregion
+
+		#region ISelectionItemProvider realization
+
+		public virtual Control ContainerControl {
+			get { return ListProvider.Control; }
+		}
+
+		public IRawElementProviderSimple SelectionContainer { 
+			get { return ListProvider; }
+		}
+		
+		public bool Selected { 
+			get { return ListProvider.IsItemSelected (this); }
+		}
+
+		public void Select ()
+		{
+			ListProvider.SelectItem (this);
+		}
+		
+		public void Unselect ()
+		{
+			ListProvider.UnselectItem (this);
 		}
 
 		#endregion
@@ -152,7 +178,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void SetFocus ()
 		{
-			((IRawElementProviderFragment)listProvider).SetFocus ();
+			((IRawElementProviderFragment) listProvider).SetFocus ();
 			listProvider.FocusItem (ObjectItem);
 		}
 

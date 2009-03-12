@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract int SelectedItemsCount { get; }
 				
-		public abstract ListItemProvider[] GetSelectedItems ();
+		public abstract IRawElementProviderSimple[] GetSelectedItems ();
 		
 		public abstract bool IsItemSelected (ListItemProvider item);
 		

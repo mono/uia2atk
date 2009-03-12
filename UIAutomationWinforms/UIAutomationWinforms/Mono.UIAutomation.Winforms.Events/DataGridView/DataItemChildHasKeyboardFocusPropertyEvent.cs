@@ -22,43 +22,56 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DataGridView;
-using ListItem = Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
+namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
 
-	internal class DataItemComboBoxListItemSelectionItemProviderBehavior 
-		: ListItem.SelectionItemProviderBehavior
+	internal class DataItemChildHasKeyboardFocusPropertyEvent
+		: AutomationHasKeyboardFocusPropertyEvent
 	{
 		
 		#region Constructors
-		
-		public DataItemComboBoxListItemSelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+
+		public DataItemChildHasKeyboardFocusPropertyEvent (DataGridViewProvider.DataGridViewDataItemChildProvider itemProvider)
+			: base (itemProvider)
 		{
+			this.itemProvider = itemProvider;
 		}
 		
 		#endregion
 		
-		#region IProviderBehavior Interface
-		
+		#region IConnectable Overrides
+	
 		public override void Connect ()
 		{
-			// NOTE: 
-			//       - ComboBox doesn't support multiple selection so:
-			//         - ElementAddedEvent not generated.
-			//         - ElementRemovedEvent not generated.
-			//       - SelectionContainer never changes.
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
-			                   new DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   new DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
-		}	
+			itemProvider.DataGridViewProvider.DataGridView.GotFocus += OnCurrentCellChanged;
+			itemProvider.DataGridViewProvider.DataGridView.LostFocus += OnCurrentCellChanged;
+			itemProvider.DataGridViewProvider.DataGridView.CurrentCellChanged += OnCurrentCellChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			itemProvider.DataGridViewProvider.DataGridView.GotFocus -= OnCurrentCellChanged;
+			itemProvider.DataGridViewProvider.DataGridView.LostFocus -= OnCurrentCellChanged;
+			itemProvider.DataGridViewProvider.DataGridView.CurrentCellChanged -= OnCurrentCellChanged;
+		}
 		
+		#endregion
+		
+		#region Private Fields
+		
+		private void OnCurrentCellChanged (object sender, EventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		private DataGridViewProvider.DataGridViewDataItemChildProvider itemProvider;
+
 		#endregion
 	}
 }

@@ -245,7 +245,7 @@ namespace Mono.UIAutomation.Winforms
 			return listView.SelectedIndices.Contains (item.Index);
 		}
 		
-		public override ListItemProvider[] GetSelectedItems ()
+		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
 			if (listView.SelectedIndices.Count == 0)
 				return new ListItemProvider [0];

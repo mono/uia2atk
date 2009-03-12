@@ -17,30 +17,25 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
-using System;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Behaviors.Generic;
+//
+using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms
 {
-	internal abstract class SelectionItemProviderBehavior
-		: SelectionItemProviderBehavior<ListItemProvider>
-	{
-		
-		#region Constructors
 
-		protected SelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
-		{
-		}
-		
-		#endregion
-		
+	internal interface ISelectableItem
+	{
+		Control ContainerControl { get; }
+
+		IRawElementProviderSimple SelectionContainer { get ;}
+		bool Selected { get; }
+
+		void Select ();
+		void Unselect ();
 	}
 }

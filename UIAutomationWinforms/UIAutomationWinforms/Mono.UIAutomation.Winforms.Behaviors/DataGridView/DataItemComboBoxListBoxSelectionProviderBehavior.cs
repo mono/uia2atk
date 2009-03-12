@@ -100,6 +100,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public IRawElementProviderSimple[] GetSelection ()
 		{
+			if (provider == null)
+				return new IRawElementProviderSimple [0];
+
 			return provider.GetSelectedItems ();
 		}
 

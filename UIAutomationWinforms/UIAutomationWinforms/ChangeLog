@@ -1,3 +1,82 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Files added to handle: SelectionItem
+	behavior in DataGrid and DataGridView, and HasKeyboardFocus event in
+	DataGrid and DataGridView.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs:
+	Fixed typo
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditSelectionItemProviderBehavior.cs:
+	DataGrid Selection Item behavior. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildSelectionItemProviderBehavior.cs:
+	DataGridView SelectionItem behavior. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs:
+	Returns empty selection when provider is nul..
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs:
+	Updated to default SelectionItem implementation in ListItem. [Fixes
+	Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/SelectionItemProviderBehavior.cs:
+	Generic SelectionItem implementation. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs:
+	Always calling RaiseAutomationPropertyChangedEvent. [Fixes Bug
+	#478856]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditSelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternIsSelectedEvent.cs:
+	DataGrid Provider: Raises IsSelectedProperty. [Fixes Bug #478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildHasKeyboardFocusPropertyEvent.cs:
+	DataGridView Provider: Raises HasKeyboardFocus. [Fixes Bug #478856]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementAddedEvent.cs:
+	DataGridView Provider: Raises ElementAdded event. [Fixes Bug #478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementRemovedEvent.cs:
+	DataGridView Provider: Raises ElementRemoved event. [Fixes Bug
+	#478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementSelectedEvent.cs:
+	DataGridView Provider: Raises ElementSelected event. [Fixes Bug
+	#478891]
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Updated to API
+	changes: GetSelectedItems returns IRawElementProviderSimple[] instead
+	of ListItemProvider[]
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	DataGridDataItemEditProvider: ISelectableItem implemented. [Fixes Bug
+	#479126] Returning valid HasKeyboardFocusProperty [Fixes: Bug #478891
+	and Bug #478856] Returning valid BoundingRectangle [Fixes Bug
+	#479382]
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	DataGridViewDataItemChildProvider: ISelectableItem implemented.
+	[Fixes Bug #479126] Returning valid HasKeyboardFocusProperty [Fixes:
+	Bug #478891 and Bug #478856] Returning valid BoundingRectangle [Fixes
+	Bug #479382]. DataBinding support in ComboBox Column/Cell. [Fixes Bug
+	#482834]
+
+	* Mono.UIAutomation.Winforms/ISelectableItem.cs: Interface added to
+	support Generic SelectionItem provider.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: ISelectableItem
+	interface realization, implementation using default methods:
+	ListProvider.SelectItem, ListProvider.UnselectedItem and
+	ListProvider.IsItemSelected
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs: Override

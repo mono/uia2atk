@@ -17,49 +17,48 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+//
+using System;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Behaviors.Generic;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DataGrid;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
+namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
-
-	internal class DataItemSelectionItemProviderBehavior 
-		: SelectionItemProviderBehavior
+	internal class DataItemChildSelectionItemProviderBehavior
+		: SelectionItemProviderBehavior<DataGridViewProvider.DataGridViewDataItemChildProvider>
 	{
 		
 		#region Constructors
-		
-		public DataItemSelectionItemProviderBehavior (ListItemProvider provider)
+
+		public DataItemChildSelectionItemProviderBehavior (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
 			: base (provider)
 		{
 		}
 		
 		#endregion
-		
-		#region IProviderBehavior Interface
-		
+
+		#region ProviderBehavior Specialization
+
 		public override void Connect ()
 		{
-			// FIXME: You may think SelectionItem.SelectionContainer can change,
-			// because of the DataSource property, however the values shown on the
-			// DataGrid are not the real values those are re-drawn and the datagrid
-			// doesn't keep a reference but the datasource.
+			//NOTE: SelectionItem.SelectionContainer never changes.
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
-			                   new DataItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
+			                   new DataItemChildSelectionItemPatternElementSelectedEvent (ItemProvider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
-			                   new DataItemSelectionItemPatternElementAddedEvent ((ListItemProvider) Provider));
+			                   new DataItemChildSelectionItemPatternElementAddedEvent (ItemProvider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
-			                   new DataItemSelectionItemPatternElementRemovedEvent ((ListItemProvider) Provider));
+			                   new DataItemChildSelectionItemPatternElementRemovedEvent (ItemProvider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   new DataItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
-		}	
-		
+			                   new DataItemChildSelectionItemPatternIsSelectedEvent (ItemProvider));
+		}
+
 		#endregion
+		
 	}
 }

@@ -22,42 +22,63 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+using System;
+using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DataGridView;
-using ListItem = Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
+namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
 
-	internal class DataItemComboBoxListItemSelectionItemProviderBehavior 
-		: ListItem.SelectionItemProviderBehavior
+	internal class DataItemChildSelectionItemPatternElementRemovedEvent
+		: BaseAutomationEvent
 	{
-		
+
 		#region Constructors
-		
-		public DataItemComboBoxListItemSelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+
+		public DataItemChildSelectionItemPatternElementRemovedEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
 		{
+			this.provider = provider;
+			wasSelected = provider.Cell.Selected;
 		}
 		
 		#endregion
 		
-		#region IProviderBehavior Interface
-		
+		#region Overridden Methods
+
 		public override void Connect ()
 		{
-			// NOTE: 
-			//       - ComboBox doesn't support multiple selection so:
-			//         - ElementAddedEvent not generated.
-			//         - ElementRemovedEvent not generated.
-			//       - SelectionContainer never changes.
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
-			                   new DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   new DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
-		}	
+			provider.DataGridViewProvider.DataGridView.CellStateChanged += OnCellStateChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			provider.DataGridViewProvider.DataGridView.CellStateChanged -= OnCellStateChanged;
+		}
+		
+		#endregion 
+		
+		#region Private members
+		
+		private void OnCellStateChanged (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
+		{
+			bool selectionStatus = provider.Cell.Selected;
+			
+			if (args.Cell.RowIndex == provider.Cell.RowIndex
+			    && wasSelected
+			    && !selectionStatus
+			    && provider.DataGridViewProvider.DataGridView.SelectedCells.Count > 1)
+				RaiseAutomationEvent ();
+
+			wasSelected = selectionStatus;
+		}
+
+		private bool wasSelected;
+		private DataGridViewProvider.DataGridViewDataItemChildProvider provider;
 		
 		#endregion
 	}

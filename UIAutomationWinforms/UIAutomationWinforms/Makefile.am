@@ -58,6 +58,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs \
@@ -73,6 +74,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildEmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs \
@@ -101,6 +103,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Generic/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs \
@@ -236,6 +239,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs \
@@ -257,7 +261,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs \
@@ -521,6 +530,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/IListProvider.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
+	Mono.UIAutomation.Winforms/ISelectableItem.cs \
 	Mono.UIAutomation.Winforms/KeyFilter.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
