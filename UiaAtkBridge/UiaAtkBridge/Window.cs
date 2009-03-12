@@ -67,10 +67,12 @@ namespace UiaAtkBridge
 		{
 			base.PostInit ();
 			if (balloonWindow) {
-				fakeLabel = new TextLabel (Provider);
-				AddOneChild (fakeLabel);
-				fakeImage = new Image (Provider);
-				AddOneChild (fakeImage);
+				fakeLabel = AutomationBridge.CreateAdapter<TextLabel> (Provider);
+				if (fakeLabel != null)
+					AddOneChild (fakeLabel);
+				fakeImage = AutomationBridge.CreateAdapter<Image> (Provider);
+				if (fakeImage != null)
+					AddOneChild (fakeImage);
 			} else {
 				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
 					Role = Atk.Role.Dialog;
@@ -106,7 +108,7 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (balloonWindow && e.Property == AutomationElementIdentifiers.NameProperty)
+			if (fakeLabel != null && balloonWindow && e.Property == AutomationElementIdentifiers.NameProperty)
 				fakeLabel.RaiseAutomationPropertyChangedEvent (e);
 			else if (e.Property == TransformPatternIdentifiers.CanResizeProperty)
 				NotifyStateChange (Atk.StateType.Resizable, (bool) e.NewValue);

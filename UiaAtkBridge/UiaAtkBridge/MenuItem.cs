@@ -356,7 +356,15 @@ namespace UiaAtkBridge
 		//       remove this transformation (although it may be useful for the case in which menus are added/removed)
 		internal override void AddOneChild (Atk.Object child)
 		{
-			AutomationBridge.PerformTransformation <ParentMenu> (this, new ParentMenu (Provider)).AddOneChild (child);
+			if (NAccessibleChildren > 0) {
+				Log.Error ("MenuItem adapter should not have any children.");
+				return;
+			}
+			var parentMenu =
+				AutomationBridge.CreateAdapter<ParentMenu> (Provider);
+			if (parentMenu == null)
+				return;
+			AutomationBridge.PerformTransformation <ParentMenu> (this, parentMenu).AddOneChild (child);
 		}
 		
 		protected virtual void AddChildToParent (Atk.Object child)

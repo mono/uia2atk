@@ -74,6 +74,34 @@ namespace UiaAtkBridge
 		static object adapterLookup = new object ();
 		static bool alreadyInLookup = false;
 		const uint INFINITE = uint.MaxValue;
+
+		public static T CreateAdapter<T> (IRawElementProviderSimple provider) where T: Adapter
+		{
+			// Attempt to create an Adapter of type T. Requires a
+			// constructor that takes a single provider as its
+			// only argument.  Returns null in the case of missing
+			// constructor or ArgumentException.
+			T adapter = null;
+			Type adapterType = typeof (T);
+			try {
+				adapter = (T) Activator.CreateInstance (adapterType,
+				                                        new object [] {provider});
+			} catch (MissingMemberException) {
+				Log.Error ("UiaAtkBridge: No valid constructor found for {0}",
+				           adapterType);
+			} catch (System.Reflection.TargetInvocationException e) {
+				if (e.InnerException is ArgumentException) {
+					Log.Error (e);
+					Log.Error ("Full stack trace for above error: {0}",
+					           Environment.StackTrace);
+				} else {
+					// Create a new Exception that generates
+					// a nicer stack trace.
+					throw new Exception ("Adapter creation failed", e);
+				}
+			}
+			return adapter;
+		}
 		
 		public static Adapter GetAdapterForProviderLazy (IRawElementProviderSimple provider)
 		{
@@ -360,6 +388,11 @@ namespace UiaAtkBridge
 				HandleKeyEvent (eventId, (KeyEventArgs)e);
 				return;
 			}
+			
+			if (provider == null) {
+				Log.Error ("AutomationBridge: Null provider passed to RaiseAutomationEvent inappropriately");
+				return;
+			}
 
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
@@ -373,8 +406,10 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
+			if (element == null) {
+				Log.Error ("AutomationBridge: Null element passed to RaiseAutomationPropertyChangedEvent");
+				return;
+			}
 			
 //			Console.WriteLine ("RaiseAutomationPropertyChangedEvent{0}:{1}", 
 //			  e.Property.ProgrammaticName, e == null ? "" : e.NewValue == null ? "" : e.NewValue.ToString());
@@ -413,6 +448,11 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
+			if (provider == null) {
+				Log.Error ("AutomationBridge: Null provider passed to RaiseStructureChangedEvent");
+				return;
+			}
+			
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
 			//Console.WriteLine (String.Format("RaiseStructureChangedEvent:{0}-{1}",
 			//                                 e.StructureChangeType.ToString (),
@@ -511,6 +551,11 @@ namespace UiaAtkBridge
 
 		private static void HandleElementAddition (IRawElementProviderSimple simpleProvider)
 		{
+			if (simpleProvider == null) {
+				Log.Warn ("UiaAtkBridge: Null provider passed to HandleElementAddition");
+				return;
+			}
+				
 			bool? hasNativeAtkObj = (bool?) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty.Id);
 			if (hasNativeAtkObj == true &&
 			    HandleNewControlWithNativeObject (simpleProvider))
@@ -804,7 +849,10 @@ namespace UiaAtkBridge
 
 		private static void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
-			Window newWindow = new Window (provider);
+			var newWindow = CreateAdapter<Window> (provider);
+
+			if (newWindow == null)
+				return;
 
 			IncludeNewAdapter (newWindow, TopLevelRootItem.Instance);
 
@@ -818,12 +866,19 @@ namespace UiaAtkBridge
 		
 		private static void HandleNewToolTipControlType (IRawElementProviderSimple provider)
 		{
-			IncludeNewAdapter (new ToolTip (provider), TopLevelRootItem.Instance);
+			var toolTip = CreateAdapter<ToolTip> (provider);
+
+			if (toolTip == null)
+				return;
+			
+			IncludeNewAdapter (toolTip, TopLevelRootItem.Instance);
 		}
 
 		private static bool HandleNewControlWithNativeObject (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null)
+				Log.Error ("UiaAtkBridge: Control with existing ATK object has no parent");
 
 			// TODO: Thread this better
 			System.Threading.Thread.Sleep (500);
@@ -848,80 +903,96 @@ namespace UiaAtkBridge
 				return; //Not replicating DomainUpDown buttons
 
 			if (parentObject is ToolBar) {
-				var wrapperPanel = new WrapperPanel (provider);
+				var wrapperPanel = CreateAdapter<WrapperPanel> (provider);
+
+				if (wrapperPanel == null)
+					return;
+				
 				parentObject.AddOneChild (wrapperPanel);
 				parentObject = wrapperPanel;
 
 				Adapter newAdapter = null;
 				if (provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) != null)
-					newAdapter = new ToggleButton (provider);
-				else 
-					newAdapter = new Button (provider);
-				IncludeNewAdapter (newAdapter, parentObject);
+					newAdapter = CreateAdapter<ToggleButton> (provider);
+				else
+					newAdapter = CreateAdapter<Button> (provider);
+
+				if (newAdapter != null)
+					IncludeNewAdapter (newAdapter, parentObject);
 				return;
 			}
-			
+
+			// TODO: Should this be at the top of the method?
 			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
 				return;
 
-			IncludeNewAdapter (new Button (provider), parentObject);
+			var button = CreateAdapter<Button> (provider);
+			if (button != null)
+				IncludeNewAdapter (button, parentObject);
 		}
 
 		private static void HandleNewLabelControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			TextLabel atkLabel;
+			TextLabel atkLabel = null;
 
 			if (parentObject != null &&
 			    ((int) parentObject.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)) == ControlType.StatusBar.Id)
-				atkLabel = new TextImageLabel (provider);
+				atkLabel = CreateAdapter<TextImageLabel> (provider);
 			else
-				atkLabel = new TextLabel (provider);
+				atkLabel = CreateAdapter<TextLabel> (provider);
 
-			IncludeNewAdapter (atkLabel, parentObject);
+			if (atkLabel != null)
+				IncludeNewAdapter (atkLabel, parentObject);
 		}
 
 		private static void HandleNewCheckBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new CheckBoxButton (provider), parentObject);
+			var checkBoxButton = CreateAdapter<CheckBoxButton> (provider);
+			
+			if (checkBoxButton != null)
+				IncludeNewAdapter (checkBoxButton, parentObject);
 		}
 		
 		private static void HandleNewListControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkList;
+			Adapter atkList = null;
 			if (parentObject is UiaAtkBridge.ComboBoxDropDown)
-				atkList = new ComboBoxOptions (provider);
+				atkList = CreateAdapter<ComboBoxOptions> (provider);
 			else if (parentObject is UiaAtkBridge.ComboBox)
-				atkList = new ComboBoxOptionsTable (provider);
+				atkList = CreateAdapter<ComboBoxOptionsTable> (provider);
 			else if (provider is IGridProvider)
-				atkList = new ListWithGrid ((IRawElementProviderFragmentRoot)provider);
+				atkList = CreateAdapter<ListWithGrid> (provider);
 			else
-				atkList = new Tree ((IRawElementProviderFragmentRoot)provider);
+				atkList = CreateAdapter<Tree> (provider);
 
-			IncludeNewAdapter (atkList, parentObject);
+			if (atkList != null)
+				IncludeNewAdapter (atkList, parentObject);
 		}
 
 		private static void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkItem;
+			Adapter atkItem = null;
 			if (parentObject is ComboBoxOptions)
-				atkItem = new ComboBoxItem (provider);
+				atkItem = CreateAdapter<ComboBoxItem> (provider);
 			else if (parentObject is List)
-				atkItem = new ListItem (provider);
+				atkItem = CreateAdapter<ListItem> (provider);
 			else
-				atkItem = new TreeItem (provider);
-			
-			IncludeNewAdapter (atkItem, parentObject);
+				atkItem = CreateAdapter<TreeItem> (provider);
+
+			if (atkItem != null)
+				IncludeNewAdapter (atkItem, parentObject);
 		}
 
 		private static void HandleNewComboBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			ComboBox atkCombo;
 			if (UiaAtkBridge.ComboBox.IsSimple (provider))
-				atkCombo = new ComboBox (provider);
+				atkCombo = CreateAdapter<ComboBox> (provider);
 			else
-				atkCombo = new ComboBoxDropDown (provider);
-			
-			IncludeNewAdapter (atkCombo, parentObject);
+				atkCombo = CreateAdapter<ComboBoxDropDown> (provider);
+
+			if (atkCombo != null)
+				IncludeNewAdapter (atkCombo, parentObject);
 		}
 		
 		private static void HandleNewStatusBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -930,68 +1001,79 @@ namespace UiaAtkBridge
 			//FIXME: probably we shouldn't split this in 2 classes
 			//FIXME: not sure if this interface check is correct
 			if (provider is IGridProvider)
-				atkStatus = new TextContainerWithGrid (provider);
+				atkStatus = CreateAdapter<TextContainerWithGrid> (provider);
  			else 
-				atkStatus = new TextContainer (provider);
+				atkStatus = CreateAdapter<TextContainer> (provider);
 
-			IncludeNewAdapter (atkStatus, parentObject);
+			if (atkStatus != null)
+				IncludeNewAdapter (atkStatus, parentObject);
 		}
 
 		private static void HandleNewProgressBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ProgressBar atkProgress = new ProgressBar (provider);
-			
-			IncludeNewAdapter (atkProgress, parentObject);
+			ProgressBar atkProgress = CreateAdapter<ProgressBar> (provider);
+
+			if (atkProgress != null)
+				IncludeNewAdapter (atkProgress, parentObject);
 		}
 		
 		private static void HandleNewScrollBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ScrollBar atkScroll = new ScrollBar (provider);
+			ScrollBar atkScroll = CreateAdapter<ScrollBar> (provider);
 
-			IncludeNewAdapter (atkScroll, parentObject);
+			if (atkScroll != null)
+				IncludeNewAdapter (atkScroll, parentObject);
 		}
 		
 		private static void HandleNewGroupControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter newAdapter = null;
 			if (parentObject is DataGrid)
-				newAdapter = new DataGridGroup (provider);
+				newAdapter = CreateAdapter<DataGridGroup> (provider);
 			else if (parentObject is Tree && provider is IRawElementProviderFragment)
-				newAdapter = new ListGroup ((IRawElementProviderFragment)provider);
+				newAdapter = CreateAdapter<ListGroup> ((IRawElementProviderFragment)provider);
 			else
-				newAdapter = new Container (provider);
+				newAdapter = CreateAdapter<Container> (provider);
 
-			IncludeNewAdapter (newAdapter, parentObject);
+			if (newAdapter != null)
+				IncludeNewAdapter (newAdapter, parentObject);
 		}
 		
 		private static void HandleNewRadioButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			RadioButton atkRadio = new RadioButton (provider);
+			RadioButton atkRadio = CreateAdapter<RadioButton> (provider);
 
-			IncludeNewAdapter (atkRadio, parentObject);
+			if (atkRadio != null)
+				IncludeNewAdapter (atkRadio, parentObject);
 		}
 		
 		private static void HandleNewSpinnerControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkSpinner;
-			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
+			Adapter atkSpinner = null;
+			IRawElementProviderFragmentRoot fragmentRoot =
+				provider as IRawElementProviderFragmentRoot;
+			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null) {
+				if (fragmentRoot == null)
+					return;
 				if (provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) != null)
-					atkSpinner = new ListWithEditableText ((IRawElementProviderFragmentRoot)provider);
+					atkSpinner = CreateAdapter<ListWithEditableText> (fragmentRoot);
 				else
-					atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
-			else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
-				atkSpinner = new SpinnerWithValue (provider);
+					atkSpinner = CreateAdapter<List> (fragmentRoot);
+			} else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
+				atkSpinner = CreateAdapter<SpinnerWithValue> (provider);
  			else
 				return;
 
-			IncludeNewAdapter (atkSpinner, parentObject);
+			if (atkSpinner != null)
+				IncludeNewAdapter (atkSpinner, parentObject);
 		}
 		
 		private static void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
-			
-			IncludeNewAdapter (atkEditOrDoc, parentObject);
+			Adapter atkEditOrDoc = CreateAdapter<TextBoxEntryView> (provider);
+
+			if (atkEditOrDoc != null)
+				IncludeNewAdapter (atkEditOrDoc, parentObject);
 		}
 
 		private static void HandleNewHyperlinkControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -999,23 +1081,28 @@ namespace UiaAtkBridge
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			if (invokeProvider is IHypertext)
-				atkHyperlink = new Hyperlink (provider);
+				atkHyperlink = CreateAdapter<Hyperlink> (provider);
 			else
 				// We don't have the extension needed to
 				// properly support a hyperlink
-				atkHyperlink = new TextLabel (provider);
+				atkHyperlink = CreateAdapter<TextLabel> (provider);
 
-			IncludeNewAdapter (atkHyperlink, parentObject);
+			if (atkHyperlink != null)
+				IncludeNewAdapter (atkHyperlink, parentObject);
 		}
 
 		private static void HandleNewImageControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new Image (provider), parentObject);
+			var atkImage = CreateAdapter<Image> (provider);
+			if (atkImage != null)
+				IncludeNewAdapter (atkImage, parentObject);
 		}
 
 		private static void HandleNewToolBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new ToolBar (provider), parentObject);
+			var atkToolBar = CreateAdapter<ToolBar> (provider);
+			if (atkToolBar != null)
+				IncludeNewAdapter (atkToolBar, parentObject);
 		}
 
 		private static void HandleNewPane (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1031,20 +1118,27 @@ namespace UiaAtkBridge
 				if (parentObject is Window &&
 					((bounds.Height < 10 && bounds.Width > 50) ||
 					 (bounds.Width < 10 && bounds.Height > 50)))
-					atkItem = new Splitter (provider);
+					atkItem = CreateAdapter<Splitter> (provider);
 				else
-					atkItem = new SplitContainer (provider);
+					atkItem = CreateAdapter<SplitContainer> (provider);
 			}
 			if (atkItem == null)
-				atkItem = new Container (provider);
-			providerAdapterMapping [provider] = atkItem;
+				atkItem = CreateAdapter<Container> (provider);
+
+			if (atkItem == null)
+				return;
 			
+			// TODO: Is this line necessary? Shouldn't IncludeNewAdapter
+			//       be doing this work?
+			providerAdapterMapping [provider] = atkItem;
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
 		private static void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new MenuBar (provider), parentObject);
+			var atkMenuBar = CreateAdapter<MenuBar> (provider);
+			if (atkMenuBar != null)
+				IncludeNewAdapter (atkMenuBar, parentObject);
 		}
 
 		private static void HandleNewMenuControlType (IRawElementProviderSimple provider)
@@ -1070,7 +1164,9 @@ namespace UiaAtkBridge
 			// Handle context menu
 			ContextMenuWindow fakeWindow = new ContextMenuWindow ();
 			TopLevelRootItem.Instance.AddOneChild (fakeWindow);
-			IncludeNewAdapter (new ContextMenu (provider), fakeWindow);
+			var atkContextMenu = CreateAdapter<ContextMenu> (provider);
+			if (atkContextMenu != null)
+				IncludeNewAdapter (atkContextMenu, fakeWindow);
 		}
 
 		private static void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1078,18 +1174,23 @@ namespace UiaAtkBridge
 			Adapter newAdapter = null;
 			ParentAdapter wrapperPanel = null;
 			if (parentObject is ToolBar) {
-				wrapperPanel = new WrapperPanel (provider);
+				wrapperPanel = CreateAdapter<WrapperPanel> (provider);
+				if (wrapperPanel == null)
+					return;
 				parentObject.AddOneChild (wrapperPanel);
 				parentObject = wrapperPanel;
 			}
 			var child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
-			newAdapter = (child == null) ? new MenuItem (provider) : new ParentMenu (provider);
-			IncludeNewAdapter (newAdapter, parentObject);
+			newAdapter = (child == null) ? CreateAdapter<MenuItem> (provider) : CreateAdapter<ParentMenu> (provider);
+			if (newAdapter != null)
+				IncludeNewAdapter (newAdapter, parentObject);
 		}
 
 		private static void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new SplitButton (provider), parentObject);
+			var atkSplitButton = CreateAdapter<SplitButton> (provider);
+			if (atkSplitButton != null)
+				IncludeNewAdapter (atkSplitButton, parentObject);
 		}
 
 		private static void HandleNewTab (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1099,13 +1200,17 @@ namespace UiaAtkBridge
 				Log.Warn ("UiaAtkBridge: Tab must be a fragment; ignoring");
 				return;
 			}
-				
-			IncludeNewAdapter (new Tab (fragment), parentObject);
+
+			var atkTab = CreateAdapter<Tab> (fragment);
+			if (atkTab != null)
+				IncludeNewAdapter (atkTab, parentObject);
 		}
 
 		private static void HandleNewTabItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new TextContainer (provider), parentObject);
+			var atkTextContainer = CreateAdapter<TextContainer> (provider);
+			if (atkTextContainer != null)
+				IncludeNewAdapter (atkTextContainer, parentObject);
 		}
 
 		private static void HandleNewTree (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1115,13 +1220,17 @@ namespace UiaAtkBridge
 				Log.Warn ("UiaAtkBridge: Tree must be a fragment; ignoring");
 				return;
 			}
-			
-			IncludeNewAdapter (new Tree (fragment), parentObject);
+
+			var atkTree = CreateAdapter<Tree> (fragment);
+			if (atkTree != null)
+				IncludeNewAdapter (atkTree, parentObject);
 		}
 
 		private static void HandleNewTreeItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			TreeItem treeItem = new TreeItem (provider);
+			var treeItem = CreateAdapter<TreeItem> (provider);
+			if (treeItem == null)
+				return;
 			
 			IncludeNewAdapter (treeItem, parentObject);
 
@@ -1135,8 +1244,10 @@ namespace UiaAtkBridge
 
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)
 		{
-			if (newAdapter.Provider == null)
-				throw new ArgumentException (String.Format ("{0} adapter should have a not null provider", newAdapter.GetType ().Name));
+			if (newAdapter.Provider == null) {
+				Log.Error ("{0} adapter should have a not null provider", newAdapter.GetType ().Name);
+				return;
+			}
 
 			//FIXME: figure out why we can't uncomment this:
 //			if (providerAdapterMapping.ContainsKey (newAdapter.Provider))
@@ -1161,7 +1272,9 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
 				return;
-			IncludeNewAdapter (new DataGrid (fragment), parentObject);
+			var atkDataGrid = CreateAdapter<DataGrid> (fragment);
+			if (atkDataGrid != null)
+				IncludeNewAdapter (atkDataGrid, parentObject);
 		}
 
 		private static void HandleNewTableControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1169,12 +1282,16 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
 				return;
-			IncludeNewAdapter (new Table (fragment), parentObject);
+			var atkTable = CreateAdapter<Table> (fragment);
+			if (atkTable != null)
+				IncludeNewAdapter (atkTable, parentObject);
 		}
 
 		private static void HandleNewSeparator (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new Separator (provider), parentObject);
+			var atkSeparator = CreateAdapter<Separator> (provider);
+			if (atkSeparator != null)
+				IncludeNewAdapter (atkSeparator, parentObject);
 		}
 		
 		internal static void AddChildrenToParent (IRawElementProviderSimple provider)
@@ -1195,18 +1312,24 @@ namespace UiaAtkBridge
 
 		private static void HandleNewHeaderItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new HeaderItem (provider), parentObject);
+			var atkHeaderItem = CreateAdapter<HeaderItem> (provider);
+			if (atkHeaderItem != null)
+				IncludeNewAdapter (atkHeaderItem, parentObject);
 		}
 		
 		private static void HandleNewSliderControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new Slider (provider), parentObject);
+			var atkSlider = CreateAdapter<Slider> (provider);
+			if (atkSlider != null)
+				IncludeNewAdapter (atkSlider, parentObject);
 		}
 
 		private static void HandleNewCalendarControlType (IRawElementProviderSimple provider,
 		                                           ParentAdapter parentObject)
 		{
-			IncludeNewAdapter (new Container (provider), parentObject);
+			var atkContainer = CreateAdapter<Container> (provider);
+			if (atkContainer != null)
+				IncludeNewAdapter (atkContainer, parentObject);
 		}
 		
 		// This whole function is a hack to work around the

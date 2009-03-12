@@ -1,3 +1,21 @@
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Tree.cs: Encapsulate Adapter creation in new
+	AutomationBridge.CreateAdapter<T> method, which returns null
+	in the case of an ArgumentException. Use this everywhere, and
+	check for null. Check inputs to prevent known exceptions, and
+	remove a few inappropriate throws. Part of bug #446915.
+
+	* Window.cs:
+	* Adapter.cs:
+	* MenuItem.cs:
+	* SplitButton.cs:
+	* AutomationBridge.cs: Encapsulate Adapter creation in new
+	AutomationBridge.CreateAdapter<T> method, which returns null
+	in the case of an ArgumentException. Use this everywhere, and
+	check for null. Check inputs to prevent known exceptions, and
+	remove a few inappropriate throws.
+
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 
 	* Button.cs: 

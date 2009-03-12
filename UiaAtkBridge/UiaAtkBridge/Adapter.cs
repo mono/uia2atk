@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -70,8 +71,10 @@ namespace UiaAtkBridge
 
 			Atk.Object parent = this; //in case this.GetType () == typeof(UiaAtkBridge.Window) 
 			while (!(parent is UiaAtkBridge.Window)) {
-				if (parent == null)
-					throw new Exception ("Parent of an object should not be null");
+				if (parent == null) {
+					Log.Error ("Parent of an object should not be null");
+					return;
+				}
 				parent = parent.Parent;
 			}
 			TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)parent);
