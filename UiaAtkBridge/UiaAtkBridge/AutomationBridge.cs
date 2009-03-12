@@ -1070,10 +1070,14 @@ namespace UiaAtkBridge
 		
 		private static void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkEditOrDoc = CreateAdapter<TextBoxEntryView> (provider);
+			Adapter atkEditOrDoc = null;
 
-			if (atkEditOrDoc != null)
-				IncludeNewAdapter (atkEditOrDoc, parentObject);
+			if (parentObject is DataGrid || parentObject is DataGridGroup)
+				atkEditOrDoc =  CreateAdapter<TreeItem> (provider);
+			else
+				atkEditOrDoc = CreateAdapter<TextBoxEntryView> (provider);
+			
+			IncludeNewAdapter (atkEditOrDoc, parentObject);
 		}
 
 		private static void HandleNewHyperlinkControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)

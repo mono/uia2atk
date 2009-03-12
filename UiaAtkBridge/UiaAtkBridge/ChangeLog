@@ -1,3 +1,9 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* TreeItem.cs:
+	* AutomationBridge.cs: Using TreeItem instead of default TextBox
+	implementation [Fixes Bug #479787].
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Tree.cs: Encapsulate Adapter creation in new

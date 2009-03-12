@@ -47,8 +47,6 @@ namespace UiaAtkBridge
 		{
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
-			if (selectionItemProvider == null)
-				throw new ArgumentException ("TreeItem should always implement ISelectionItemProvider");
 
 			expandCollapseProvider = provider.GetPatternProvider (
 				ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
@@ -89,10 +87,12 @@ namespace UiaAtkBridge
 
 			states.AddState (Atk.StateType.Transient);
 			states.AddState (Atk.StateType.SingleLine);
-			
-			states.AddState (Atk.StateType.Selectable);
-			if (selectionItemProvider.IsSelected)
-				states.AddState (Atk.StateType.Selected);
+
+			if (selectionItemProvider != null) {
+				states.AddState (Atk.StateType.Selectable);
+				if (selectionItemProvider.IsSelected)
+					states.AddState (Atk.StateType.Selected);
+			}
 
 			IToggleProvider toggleProvider = ToggleProvider;
 			if (toggleProvider != null) {

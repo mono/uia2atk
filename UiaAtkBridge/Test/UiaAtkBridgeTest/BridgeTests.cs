@@ -488,7 +488,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("Website", atkTable.RefAt (0, 3).Name, "Cell (0, 3)");
 			Assert.AreEqual ("Year", atkTable.RefAt (0, 4).Name, "Cell (0, 4)");
 			Assert.AreEqual ("Request Header", atkTable.RefAt (0, 5).Name, "Cell (0, 5)");
+
+			Atk.Object tableCell = FindObjectByName (accessible, "Programming Windows");
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (tableCell);
+			InterfaceAction (BasicWidgetType.TableCell, atkAction, tableCell);
 		}
+		
 
 		[Test]
 		public void DomainUpDown ()

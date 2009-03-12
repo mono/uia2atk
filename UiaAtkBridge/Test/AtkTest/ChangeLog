@@ -1,3 +1,8 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs:
+	* BasicWidgetType.cs: TableCell added. [For Bug #479787].
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* AtkTester.cs: Make States method public static so it can be

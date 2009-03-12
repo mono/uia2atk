@@ -422,6 +422,7 @@ namespace UiaAtkBridgeTest
 			if ((type != BasicWidgetType.ListItem) &&
 			    (type != BasicWidgetType.HeaderItem) &&
 			    (type != BasicWidgetType.CheckedListItem) &&
+			    (type != BasicWidgetType.TableCell) &&
 			    (type != BasicWidgetType.ComboBoxItem)) { //disable a combobox item? let's not try weird things
 				DisableWidget (accessible);
 				for (int i = 0; i < validNumberOfActions; i++) 
