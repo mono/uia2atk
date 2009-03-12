@@ -1,3 +1,8 @@
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Services/Log.cs: Add log methods that allow
+	Exceptions to be dumped.
+
 2009-03-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
