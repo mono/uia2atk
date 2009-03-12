@@ -1,3 +1,7 @@
+2009-03-12  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog_basic_ops.py: add test cases due to bug474611
+
 2009-03-12  Ray Wang <rawang@novell.com>
 
 	* samples/mainmenu.py: refactor the sample, add 1-3 levels sub-items.
