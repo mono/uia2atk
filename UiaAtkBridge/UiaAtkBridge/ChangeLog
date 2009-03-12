@@ -1,3 +1,8 @@
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Hyperlink.cs: Fix typo in GetOffsetAtPoint so it doesn't
+	call itself.
+
 2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBoxOptions.cs:

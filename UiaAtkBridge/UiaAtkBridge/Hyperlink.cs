@@ -143,7 +143,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			return GetOffsetAtPoint (x, y, coords);
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
