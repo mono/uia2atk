@@ -105,7 +105,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 				return;
 			}
 
-			toolBarButton.Parent.UIAPerformClick (toolBarButton);
+			toolBar.UIAPerformClick (toolBarButton);
 		}
 		
 		#endregion

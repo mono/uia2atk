@@ -1,3 +1,8 @@
+2009-03-12  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:
+	Use toolBar instead of toolBarButton.Parent.
+
 2009-03-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
