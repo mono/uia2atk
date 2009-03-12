@@ -26,7 +26,7 @@ class ComboBoxSample(Form):
         """ComboBoxSample class init function."""
 
         # setup title
-        self.Text = "ComboBox control"
+        self.Text = "ComboBox Style Changes"
         self.Width = 400
         self.Height = 500
 

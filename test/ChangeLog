@@ -1,3 +1,12 @@
+2009-03-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/combobox_stylechanges.py: Renamed from
+	combobox_style_changes.py for consistency.
+	* testers/combobox_stylechanges_basic_ops.py, 
+	* testers/combobox_stylechanges/comboboxstylechangesframe.py,
+	* testers/combobox_stylechanges/__init__.py: Getting started on this
+	test.
+
 2009-03-12  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog_basic_ops.py: add test cases due to bug474611
