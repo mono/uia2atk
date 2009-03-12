@@ -388,6 +388,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementSelectedEvent.cs \

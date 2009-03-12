@@ -1,3 +1,10 @@
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+	
+	Patch from Matt Guo <matt@mattguo.net>
+
+	* MonthCalendarProviderTest.cs: Test that MonthCalendar's name is
+	correct, and that it changes when the Month changes.
+
 2009-03-11  Brad Taylor  <brad@getcoded.net>
 
 	* FormProviderTest.cs: The window needs to be shown to have vaild

@@ -1,3 +1,13 @@
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+	
+	Patch from Matt Guo <matt@mattguo.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/AutomationNamePropertyEvent.cs: 
+	Set MonthCalendar's NameProperty according to the specification.  Also
+	make sure events are sent when the Name changes. [Fixes #479130]
+
 2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:

@@ -84,6 +84,46 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (calendarProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "calendar");
+
+			TestProperty (calendarProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              calendar.SelectionStart.ToShortDateString ());
+		}
+
+		[Test]
+		public void NamePropertyEventTest ()
+		{	
+			bridge.ResetEventLists ();
+
+			object oldName = calendarProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			calendar.SelectionStart = new DateTime(2012, 2, 29);
+
+			AutomationPropertyChangedEventTuple eventInfo = null;
+			int eventCount = 0;
+			
+			foreach (AutomationPropertyChangedEventTuple evnt in bridge.AutomationPropertyChangedEvents) {
+				if (evnt.e.Property.Id == AutomationElementIdentifiers.NameProperty.Id) {
+					eventCount++;
+					eventInfo = evnt;
+				}
+			}
+			Assert.AreEqual (1, eventCount, "event count");
+
+			Assert.AreEqual (oldName,
+			                 eventInfo.e.OldValue,
+			                 "event old value");
+
+			TestProperty (calendarProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              eventInfo.e.NewValue);
+
+			Assert.AreEqual (AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id,
+			                 eventInfo.e.EventId.Id,
+			                 "event id");
+			
+			Assert.AreEqual (calendarProvider,
+			                 eventInfo.element,
+			                 "event element");
 		}
 
 		[Test]
@@ -623,6 +663,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return new MonthCalendar ();
+		}
+
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			TestLabeledByAndName (true, false);
 		}
 
 		protected override void TestSelectionPattern_GetSelectionMethod (IRawElementProviderSimple provider)
