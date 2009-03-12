@@ -1,3 +1,8 @@
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Services/Log.cs: Fix typo in string
+	formatting.
+
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Services/Log.cs: Add log methods that allow
