@@ -457,6 +457,7 @@ namespace UiaAtkBridgeTest
 			// Link tests
 			Atk.Object link = FindObjectByName (accessible, "http://www.microsoft.com/");
 			States (link,
+			    Atk.StateType.Focusable, // Cells are focusable
 				Atk.StateType.Enabled,
 				Atk.StateType.MultiLine,
 				Atk.StateType.Sensitive,

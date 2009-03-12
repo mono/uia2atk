@@ -1,3 +1,7 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: Fixes BridgeTests: cells in datagrid are focusable.
+
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 
 	Patch from Matt Guo <matt@mattguo.net>
