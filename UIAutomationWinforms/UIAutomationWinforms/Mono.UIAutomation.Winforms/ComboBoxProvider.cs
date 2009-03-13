@@ -395,7 +395,7 @@ namespace Mono.UIAutomation.Winforms
 			                                             int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return item.ObjectItem.ToString ();
+					return comboboxControl.GetItemText (item.ObjectItem);
 
 				int topItem = -1;
 				if (ListBoxControl != null)

@@ -1,3 +1,9 @@
+2009-03-13  Matt Guo  <matt@mattguo.com>
+
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	Set the NameProperty of the items of ListBox and ComboBox to their displaying text, [bug #482686]
+
 2009-03-12  Mario Carrion  <mcarrion@novell.com>
 
 	* FormProviderTest.cs:
@@ -11,7 +17,7 @@
 
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 	
-	Patch from Matt Guo <matt@mattguo.net>
+	Patch from Matt Guo <matt@mattguo.com>
 
 	* MonthCalendarProviderTest.cs: Test that MonthCalendar's name is
 	correct, and that it changes when the Month changes.

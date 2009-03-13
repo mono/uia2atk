@@ -1,3 +1,10 @@
+2009-03-13  Matt Guo  <matt@mattguo.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	Set the NameProperty of the items of ListBox and ComboBox to their
+	displaying text, [bug #482686]
+
 2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs:
@@ -18,7 +25,7 @@
 
 2009-03-12  Brad Taylor  <brad@getcoded.net>
 	
-	Patch from Matt Guo <matt@mattguo.net>
+	Patch from Matt Guo <matt@mattguo.com>
 
 	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 

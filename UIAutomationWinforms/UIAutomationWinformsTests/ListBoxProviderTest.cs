@@ -341,6 +341,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 			
 		}
+
+		[Test]
+		// https://bugzilla.novell.com/show_bug.cgi?id=482686
+		public void DisplayMemberTest ()
+		{
+			ListBox listbox = (ListBox) GetControlInstance ();
+			listbox.Items.Clear ();
+			for (int i = 0; i < 5; i++)
+				listbox.Items.Add (new DateTime (2000 + i, 12, 26));
+			listbox.DisplayMember = "Year";
+			
+			var rootProvider = GetProviderFromControl (listbox);
+			var childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+
+			int startYear = 2000;
+			while (childProvider != null) {
+				Assert.AreEqual (startYear.ToString(),
+				                 childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+				                 "Item's name");
+				startYear++;
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			}
+		}
 		
 		#endregion
 

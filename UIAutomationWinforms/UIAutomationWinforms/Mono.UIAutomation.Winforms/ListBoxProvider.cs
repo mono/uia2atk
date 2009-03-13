@@ -148,7 +148,7 @@ namespace Mono.UIAutomation.Winforms
 		                                             int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return item.ObjectItem.ToString ();
+				return listboxControl.GetItemText (item.ObjectItem);
 			
 			if (ContainsItem (item) == false)
 				return null;
