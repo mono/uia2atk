@@ -1,3 +1,13 @@
+2009-03-13  Ray Wang <rawang@novell.com>
+
+	* testers/toolstripcombobox_basic_ops.py: regression tests.
+	* testers/textbox/textboxframe.py: add assertScrollBars method to 
+	assert scroll bars of multi-line textbox.
+	* testers/textbox_basic_ops.py: update tests for scroll bars.
+	* testers/mainmenu/mainmenuframe.py: add find new children statements.
+	* testers/mainmenu_basic_ops.py: add new actions check, and menu items
+	check.
+
 2009-03-12 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/combobox_stylechanges.py: Renamed from

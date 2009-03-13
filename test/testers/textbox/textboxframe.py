@@ -14,7 +14,7 @@ import time
 class TextBoxFrame(accessibles.Frame):
     """the profile of the textbox sample"""
 
-    LABEL_NORMAL = "Normal TextBox"
+    LABEL_NORMAL = "explicitly set name for label"
     LABEL_MLINE = "Multi-Line TextBox"
     LABEL_PASSWD = "Password TextBox"
     LABEL_NONEDIT = "non-Editable TextBox"
@@ -56,6 +56,13 @@ class TextBoxFrame(accessibles.Frame):
 
         procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
         assert expect == result, "Contents %s not match the expected" % result
+
+    def assertScrollBars(self, accessible):
+        procedurelogger.action("Assert the scroll bars of multiline textbox" % \
+                                                                accessible)
+        self.scrollbars = accessible.findAllScrollBars(None)
+        assert len(self.scrollbars) == 2, \
+                                    "the number of Scroll Bars is not correct."
 
     def quit(self):
         self.altF4()

@@ -67,9 +67,7 @@ sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox")
 statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox", add_states=["focused"])
-# TODO: BUG480266, non-editable textbox should not have "editable" state
-#statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
 # switch focus to single line textbox
 tbFrame.keyCombo("Tab", grabFocus=False)
@@ -77,9 +75,7 @@ sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
 statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox")
-# TODO: BUG480266, non-editable textbox should not have "editable" state
-#statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
 ##############################
 # check TextBox's AtkAction, AtkComponent, AtkEditableText and AtkText
@@ -135,9 +131,9 @@ Strongwind is a GUI test automation framework Strongwind is object-oriented and 
 """
 # TODO: when you use typeText method to input strings to textbox, all upper chars converted to lower chars, 
 # so it leads to the actual text does not match the expected text.
-#tbFrame.textbox_mline.typeText(mline_content1)
-#sleep(config.SHORT_DELAY)
-#tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1)
+tbFrame.textbox_mline.enterText(mline_content1)
+sleep(config.SHORT_DELAY)
+tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1)
 
 mline_content2 = """
 Strongwind is written in Python and uses the pyatspi library to manipulate and query the state of applications. Strongwind automatically classifies widgets by their ATK role and provides implementations for common actions on regular widgets --for example, selecting an item in a menu or asserting that a window has closed --but you can extend Strongwind\'s implementations or add your own implementations for custom widgets to handle alternate behaviors or custom widgets in your applications.
@@ -152,16 +148,19 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1 + mline_content2) 
 
 # append text test
+mline_content3 = "\nmulti-line textbox\n\n"
 text_len = len(tbFrame.textbox_mline.text)
-tbFrame.textbox_mline.insertText("\nmulti-line textbox", text_len) 
+tbFrame.textbox_mline.insertText(mline_content3, text_len) 
 sleep(config.SHORT_DELAY)
-tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1 + mline_content2 + "\nmulti-line textbox")
+tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1 + mline_content2 + mline_content3)
+
+tbFrame.assertScrollBars(tbFrame.textbox_mline)
 
 # Select a character: text-caret-moved, text-selection-changed 
 # Delete a character: text-changed:delete, text-caret-moved 
 # delete text from end (delete "\nmulti-line textbox")
 text_len = len(tbFrame.textbox_mline.text)
-tbFrame.textbox_mline.deleteText(text_len - 19)
+tbFrame.textbox_mline.deleteText(text_len - len(mline_content3))
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1 + mline_content2) 
 
@@ -212,7 +211,6 @@ tbFrame.assertEditableText(tbFrame.textbox_passwd, "textbox")
 ##
 ## Non-Editable TextBox
 ## 
-# TODO: BUG480752 non-Enabled textbox should not be editable
 tbFrame.textbox_nonedit.enterText("non-Enabled textbox")
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_nonedit, "")

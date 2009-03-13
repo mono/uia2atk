@@ -44,11 +44,33 @@ mmFrame = app.mainMenuFrame
 ##############################
 # check MainMenu and its children's AtkAccessible
 ##############################
-# BUG476878
+actionsCheck(mmFrame.mainmenu, "Menu")
+actionsCheck(mmFrame.menuitem_file, "Menu")
+actionsCheck(mmFrame.menuitem_file_new, "Menu")
+actionsCheck(mmFrame.menuitem_file_new_doc, "MenuItem")
+actionsCheck(mmFrame.menuitem_file_open, "MenuItem")
+actionsCheck(mmFrame.menuitem_file_exit, "MenuItem")
+actionsCheck(mmFrame.menuitem_edit, "Menu")
+actionsCheck(mmFrame.menuitem_edit_undo, "MenuItem")
+actionsCheck(mmFrame.menuitem_edit_redo, "MenuItem")
+actionsCheck(mmFrame.menuitem_help, "Menu")
+actionsCheck(mmFrame.menuitem_help_about, "MenuItem")
+
+##############################
+# check MainMenu and its children's AtkAccessible
+##############################
 # check states of mainmenu
-statesCheck(mmFrame.mainmenu, "MainMenu", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_file, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_edit, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.mainmenu, "MainMenu")
+statesCheck(mmFrame.menuitem_file, "Menu", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_file_new, "Menu", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_file_open, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_file_exit, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_edit_undo, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_edit_redo, "MenuItem", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_help, "Menu", add_states=["focusable"])
+statesCheck(mmFrame.menuitem_help_about, "MenuItem", add_states=["focusable"])
 
 ##############################
 # check MainMenu's AtkSelection

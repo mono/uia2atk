@@ -56,10 +56,10 @@ actionsCheck(tscbFrame.menuitem_14, "MenuItem")
 ##############################
 statesCheck(tscbFrame.toolbar, "ToolBar")
 # TODO: BUG483300, confused "focusable" and "focused" states
-#statesCheck(tscbFrame.toolstripcombobox, "ComboBox")
-#statesCheck(tscbFrame.menu, "Menu")
+statesCheck(tscbFrame.toolstripcombobox, "ComboBox")
+statesCheck(tscbFrame.menu, "Menu")
 statesCheck(tscbFrame.menuitem_6, "MenuItem")
-#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
 statesCheck(tscbFrame.menuitem_10, "MenuItem")
 statesCheck(tscbFrame.menuitem_12, "MenuItem")
 statesCheck(tscbFrame.menuitem_14, "MenuItem")
@@ -69,13 +69,13 @@ tscbFrame.toolstripcombobox.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
-#statesCheck(tscbFrame.menuitem_8, "MenuItem")
+statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
+statesCheck(tscbFrame.menuitem_8, "MenuItem")
 
 tscbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
-#statesCheck(tscbFrame.menuitem_6, "MenuItem")
+statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+statesCheck(tscbFrame.menuitem_6, "MenuItem")
 
 ##############################
 # check toolstripcombobox's AtkSelection
@@ -108,16 +108,16 @@ tscbFrame.assertText(tscbFrame.menuitem_14, "14")
 tscbFrame.menuitem_10.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 10")
-#statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
-#statesCheck(tscbFrame.menuitem_10, "MenuItem")
+statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
+statesCheck(tscbFrame.menuitem_10, "MenuItem", add_states=["selected","focused"])
 
 tscbFrame.toolstripcombobox.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.menuitem_12.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 12")
-#statesCheck(tscbFrame.menuitem_10, "MenuItem", add_states=["selected","focused"])
-#statesCheck(tscbFrame.menuitem_6, "MenuItem")
+statesCheck(tscbFrame.menuitem_12, "MenuItem", add_states=["selected","focused"])
+statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # End
