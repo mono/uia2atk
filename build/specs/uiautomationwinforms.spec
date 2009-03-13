@@ -12,7 +12,7 @@
 
 
 Name:           uiautomationwinforms
-Version:	122486
+Version:	1.0
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
@@ -20,10 +20,10 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7 
-Requires:	mono-uia mono-winfxcore uiaatkbridge glib-sharp2 >= 2.12.7 
-BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
-BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
+Requires:	mono-core >= 2.4 mono-data gtk-sharp2 >= 2.12.8 
+Requires:	mono-uia mono-winfxcore uiaatkbridge glib-sharp2 >= 2.12.8
+BuildRequires:	mono-devel >= 2.4 mono-data gtk-sharp2 >= 2.12.8 glib-sharp2 
+BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool >= 0.35
 
 Summary:        Implementation of UIA providers
 

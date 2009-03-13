@@ -1,3 +1,9 @@
+2009-03-13  Stephen Shaw  <stshaw@decriptor.com>
+
+	* specs/uiaatkbridge.spec: Change the required versions and release version
+	* specs/uiautomation.spec: Change the required versions and release version
+	* specs/uiautomationwinforms.spec: Change the required versions and release version
+
 2009-01-28  Brad Taylor  <brad@getcoded.net>
 
 	* specs/uiautomationwinforms-unittests.spec: Change the nunit
