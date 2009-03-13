@@ -204,8 +204,8 @@ namespace UiaAtkBridge
 				else
 					states.RemoveState (Atk.StateType.Focused);
 
-				bool is_offscreen = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
-				if (Parent != null && !is_offscreen) {
+				bool is_offscreen = Parent != null && (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+				if (!is_offscreen) {
 					states.AddState (Atk.StateType.Showing);
 					states.AddState (Atk.StateType.Visible);
 				} else {
