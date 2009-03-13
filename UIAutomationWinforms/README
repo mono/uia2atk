@@ -30,11 +30,11 @@ provides the following assemblies:
 		To build UIAutomationWinforms, you will need the following components:
 
 			* pkg-config
-			* mono >= 2.2
+			* mono >= 2.4
 			* mono-data >= 2.2
 			* gtk-sharp2
 			* glib-sharp2
-			* mono-uia >= 0.9 (provided by UIAutomation package)
+			* mono-uia >= 1.0 (provided by UIAutomation package)
 			* Tests require nunit >= 2.4.7
 
 	b. Building the Software

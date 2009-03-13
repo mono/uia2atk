@@ -1,3 +1,8 @@
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* NEWS:
+	* configure.ac: Bump version to 1.0, update dependencies.
+
 2009-02-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* WindowsBase/System.Windows/Rect.cs: For Rect.Empty, return

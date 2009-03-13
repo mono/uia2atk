@@ -1,3 +1,9 @@
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* NEWS:
+	* README:
+	* configure.ac: Bump version to 1.0, update dependencies.
+
 2009-01-30  Stephen Shaw  <sshaw@decriptor.com>
 	
 	* configure.ac: Now that mono is shipping a more recent version of
