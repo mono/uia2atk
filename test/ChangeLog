@@ -1,3 +1,9 @@
+2009-03-13  Calen Chen <cachen@novell.com>
+
+	* testers/scrollbar/scrollbarframe.py,
+	* testers/scrollbar_basic_ops.py: correct some test error: replace 
+	'Down' to 'PageDown', replace num 7/8 to maximumValue/maximumValue+1
+
 2009-03-13  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenustrip_basic_ops.py: Added "showing" state for sub
