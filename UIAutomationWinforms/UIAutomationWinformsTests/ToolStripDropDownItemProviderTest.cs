@@ -457,6 +457,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count);
 		}
 
+		[Test]
+		public void StripAmpersands ()
+		{
+			ToolStripSplitButton split_button = GetNewToolStripDropDownItem ();
+			ToolStripMenuItem item = new ToolStripMenuItem ();
+			ToolStrip tool_strip = new ToolStrip ();
+
+			tool_strip.Items.AddRange (new ToolStripItem[] { split_button });
+			split_button.DropDownItems.AddRange (new ToolStripItem[] { item });
+			Form.Controls.Add (tool_strip);
+
+			tool_strip.Show ();
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (item);
+
+			item.Text = "&testing";
+			TestProperty (provider,
+			              AEIds.NameProperty,
+			              "testing");
+
+			item.Text = "&&testing";
+			TestProperty (provider,
+			              AEIds.NameProperty,
+			              "&testing");
+		}
 		protected override void TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (IRawElementProviderSimple provider)
 		{
 			// TODO: For some reason this test is failing but 

@@ -59,9 +59,10 @@ FILES =  \
 	ComponentParentAdapter.cs \
 	Container.cs \
 	ContextMenu.cs \
+	ContextMenuWindow.cs \
 	DataGrid.cs \
 	DataGridGroup.cs \
-	EditableTextImplementor.cs \
+	EditableTextImplementorHelper.cs \
 	ExpandCollapseButton.cs \
 	HeaderItem.cs \
 	Hyperlink.cs \
@@ -101,12 +102,14 @@ FILES =  \
 	TextLabel.cs \
 	TextProviderTextImplementor.cs \
 	ToggleButton.cs \
+	ToolBar.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Tree.cs \
 	TreeItem.cs \
 	ValueProviderTextImplementor.cs \
-	Window.cs 
+	Window.cs \
+	WrapperPanel.cs
 
 DATA_FILES = 
 

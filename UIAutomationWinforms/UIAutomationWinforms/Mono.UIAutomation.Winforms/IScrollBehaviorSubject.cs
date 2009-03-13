@@ -31,8 +31,8 @@ namespace Mono.UIAutomation.Winforms
 	{
 		IScrollBehaviorObserver ScrollBehaviorObserver { get; }
 		
-		void AddChildProvider (bool raiseEvent, FragmentControlProvider provider);
-		void RemoveChildProvider (bool raiseEvent, FragmentControlProvider provider);
+		void AddChildProvider (FragmentControlProvider provider);
+		void RemoveChildProvider (FragmentControlProvider provider);
 		FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar);
 	}
 }

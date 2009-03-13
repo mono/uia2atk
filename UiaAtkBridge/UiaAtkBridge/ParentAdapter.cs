@@ -51,6 +51,8 @@ namespace UiaAtkBridge
 		
 		protected List<Atk.Object> children = new List<Atk.Object> ();
 		
+		// StructureChanged events are handled entirely in
+		// AutomationBridge.cs, so this currently is unused.
 		public abstract void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
 
 		// Here, unmanaged => children with ManagesRemoval = true

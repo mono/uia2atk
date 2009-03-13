@@ -96,8 +96,6 @@ nudFrame.editable_numericupdown.mouseClick()
 nudFrame.valueNumericUpDown(nudFrame.editable_numericupdown, 0)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 0)
-# the text wont change until enter a "Return" 
-# the behavior is similar to gtk sample
 nudFrame.assertText(nudFrame.editable_numericupdown, "0")
 
 ############################
@@ -128,7 +126,7 @@ nudFrame.editable_numericupdown.mouseClick()
 nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue + 1)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.maximumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue + 1)))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue)))
 
 ############################
 # set value to min
@@ -146,7 +144,7 @@ nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumVal
 nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue - 1)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue - 1)))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 
 ############################
 # press Up/Down on editab_numericupdown

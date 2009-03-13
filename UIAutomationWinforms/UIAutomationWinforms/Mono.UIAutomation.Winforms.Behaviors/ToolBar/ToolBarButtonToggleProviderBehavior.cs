@@ -105,8 +105,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 				return;
 			}
 
-			toolBarButton.Pushed = !toolBarButton.Pushed;
+			toolBar.UIAPerformClick (toolBarButton);
 		}
+		
 		#endregion
 
 		#region Private Fields

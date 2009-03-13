@@ -25,6 +25,9 @@ System.Windows.Automation.Provider/ProviderOptions.cs
 System.Windows.Automation.Provider/ITextRangeProvider.cs
 System.Windows.Automation.Provider/IRangeValueProvider.cs
 System.Windows.Automation.Provider/IGridProvider.cs
+System.Windows.Automation.Provider/IClipboardProvider.cs
+System.Windows.Automation.Provider/IEditableRangeProvider.cs
+System.Windows.Automation.Provider/ICaretProvider.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs

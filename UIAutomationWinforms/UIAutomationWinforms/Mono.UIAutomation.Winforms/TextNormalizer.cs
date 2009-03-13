@@ -28,6 +28,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Windows.Automation.Text;
 using System.Windows.Forms;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -37,8 +38,11 @@ namespace Mono.UIAutomation.Winforms
 	{
 #region Constructor
 		public TextNormalizer (TextBoxBase textboxbase) 
-			: this (textboxbase, 0, textboxbase.Text.Length)
 		{
+			this.textboxbase = textboxbase;
+			
+			start_point = 0;
+			end_point = Text.Length;
 		}
 		
 		public TextNormalizer (TextBoxBase textboxbase, int startPoint, int endPoint)
@@ -64,6 +68,17 @@ namespace Mono.UIAutomation.Winforms
 		public int EndPoint {
 			get { return end_point; }
 			set { end_point = value; }
+		}
+
+		public string Text {
+			get {
+				// TODO: Refactor this so it isn't so hacky
+				MaskedTextBox mtb = textboxbase as MaskedTextBox;
+				if (mtb != null && mtb.MaskedTextProvider != null)
+					return mtb.MaskedTextProvider.ToDisplayString ();
+				else
+					return textboxbase.Text;
+			}
 		}
 #endregion
 		
@@ -93,7 +108,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			int moved = 0;
-			int length = textboxbase.Text.Length;
+			int length = Text.Length;
 			int proposed_point = point + count;
 
 			if (proposed_point < 0) {
@@ -117,13 +132,15 @@ namespace Mono.UIAutomation.Winforms
 		public int FormatMoveEndPoint (int count)
 		{
 			//TODO: Doesn't work with non-RichTextBox controls
-			throw new NotImplementedException ();
+			Log.Warn ("TextNormalizer:FormatMoveEndPoint not implemented");
+			return -1;
 		}
 		
 		public int FormatMoveStartPoint (int count)
 		{
 			//TODO: Doesn't work with non-RichTextBox controls
-			throw new NotImplementedException ();
+			Log.Warn ("TextNormalizer:FormatMoveStartPoint not implemented");
+			return -1;
 		}
 #endregion
 		
@@ -138,12 +155,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (textboxbase.Multiline == false) {
 				start_point = 0;
-				end_point = textboxbase.Text.Length;
+				end_point = Text.Length;
 				return;
 			} 
 			
 			int n_chars = 0;
-			string text = textboxbase.Text;
+			string text = Text;
 
 			// First, fix up the start point
 			int new_start = 0;
@@ -244,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 				return 0;
 			}
 
-			string text = textboxbase.Text;
+			string text = Text;
 
 			ParserState[] state = new ParserState[2];
 			state[0] = state[1] = ParserState.Normal;
@@ -366,7 +383,7 @@ namespace Mono.UIAutomation.Winforms
 				return 0;
 			}
 
-			string text = textboxbase.Text;
+			string text = Text;
 
 			int c = 0, index = 0, n_chars = 0;
 			if (count > 0) {
@@ -458,7 +475,7 @@ namespace Mono.UIAutomation.Winforms
 			// is:
 			//      "Hello my baby, hello     {my darling}"
 
-			string text = textboxbase.Text;
+			string text = Text;
 			if (IsWordSeparator (text[start_point])) {
 				// Walk backwards until you hit a non separator
 				for (index = start_point; index >= 0; index--) {
@@ -533,7 +550,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			int index = 0, c = 0;
-			string text = textboxbase.Text;
+			string text = Text;
 			if (count > 0) {
 				bool last_was_sep = true;
 				for (int i = point; i < text.Length; i++) {
@@ -611,7 +628,7 @@ namespace Mono.UIAutomation.Winforms
 #region Page methods
 		public int DocumentMoveStartPoint (int count)
 		{
-			int length = textboxbase.Text.Length;
+			int length = Text.Length;
 			if (count > 0 && start_point < length) {
 				start_point = length;
 				return 1;
@@ -624,7 +641,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public int DocumentMoveEndPoint (int count)
 		{
-			int length = textboxbase.Text.Length;
+			int length = Text.Length;
 			if (count > 0 && end_point < length) {
 				end_point = length;
 				return 1;
@@ -639,7 +656,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			// Expand range to the document range
 			start_point = 0;
-			end_point = textboxbase.Text.Length;
+			end_point = Text.Length;
 		}
 #endregion
 		

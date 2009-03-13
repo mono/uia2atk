@@ -1,3 +1,25 @@
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* GailTester.cs: Note the bad hack, fix whitespace.
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* GailTester.cs: Note that bug #574674 isn't addressed yet.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTest.mdp: Fix refs.
+
+	* GailTester.cs: Rename MaskedTextBoxEntry enum to
+	PasswordCharTextBoxEntry. (A new separate test for
+	MaskedTextBox will come.)
+
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* GailTester.cs: Add TextBoxHasScrollBar.
+
+	* GailTester.cs: Reinstate CanFocus for splitter.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* GailTester.cs: SetReadOnly updated to match API.

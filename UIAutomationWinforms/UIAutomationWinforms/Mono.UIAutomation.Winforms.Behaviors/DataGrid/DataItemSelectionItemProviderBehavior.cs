@@ -47,7 +47,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		public override void Connect ()
 		{
 			// FIXME: You may think SelectionItem.SelectionContainer can change,
-			// becase of the DataSource property, however the values shown on the
+			// because of the DataSource property, however the values shown on the
 			// DataGrid are not the real values those are re-drawn and the datagrid
 			// doesn't keep a reference but the datasource.
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,

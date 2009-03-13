@@ -344,6 +344,8 @@ namespace System.Windows {
 		
 		public Size Size { 
 			get { 
+				if (IsEmpty)
+					return Size.Empty; 
 				return new Size (width, height);
 			}
 			set {

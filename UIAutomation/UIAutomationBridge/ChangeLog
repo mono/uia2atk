@@ -3,6 +3,27 @@
 	* Mono.UIAutomation.Bridge/IAutomationBridge.cs: First draft
 	of the new mechanism for loading the bridge on Moonlight.
 
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Services/Log.cs: Fix typo in string
+	formatting.
+
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Services/Log.cs: Add log methods that allow
+	Exceptions to be dumped.
+
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationBridge.mdp: IClipboardSupport, IEditableRange and IText
+	moved to UIAutomationProvider.
+
+	* Mono.UIAutomation.Bridge/IText.cs:
+	* Mono.UIAutomation.Bridge/IEditableRange.cs:
+	* Mono.UIAutomation.Bridge/IClipboardSupport.cs: Moved to
+	UIAutomationProvider.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationBridge.mdp: Point projects at Makefile.am, not

@@ -2,6 +2,10 @@
 
 	* UIAutomationMoonlight: Folder added.
 
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Uia2Atk.mds: Added project for QA files.
+
 2009-02-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Uia2Atk.mds: Add more MonoDevelop policy information.

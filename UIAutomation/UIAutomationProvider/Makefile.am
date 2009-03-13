@@ -29,11 +29,15 @@ FILES =  \
         AssemblyInfo.cs \
         ../build/common/*.cs \
 	System.Windows.Automation.Provider/AutomationInteropProvider.cs \
+	System.Windows.Automation.Provider/ICaretProvider.cs \
+	System.Windows.Automation.Provider/IClipboardProvider.cs \
 	System.Windows.Automation.Provider/IDockProvider.cs \
+	System.Windows.Automation.Provider/IEditableRangeProvider.cs \
 	System.Windows.Automation.Provider/IEmbeddedImageProvider.cs \
 	System.Windows.Automation.Provider/IExpandCollapseProvider.cs \
 	System.Windows.Automation.Provider/IGridItemProvider.cs \
 	System.Windows.Automation.Provider/IGridProvider.cs \
+	System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs \
 	System.Windows.Automation.Provider/IInvokeProvider.cs \
 	System.Windows.Automation.Provider/IMultipleViewProvider.cs \
 	System.Windows.Automation.Provider/IRangeValueProvider.cs \

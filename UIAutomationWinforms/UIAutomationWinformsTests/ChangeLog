@@ -3,6 +3,74 @@
 	* MockBridge.cs: First draft of the new mechanism for loading
 	the bridge on Moonlight.
 
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolBarButtonProviderTest.cs: Test provider pattern support
+	when acting as SplitButton. Also added an Ignored test for
+	working with the DropDownMenu (it currently has threading
+	issues).
+
+2009-03-13  Matt Guo  <matt@mattguo.com>
+
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	Set the NameProperty of the items of ListBox and ComboBox to their displaying text, [bug #482686]
+
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* FormProviderTest.cs:
+	* BaseProviderTest.cs:
+	* StatusBarProviderTest.cs:
+	* ScrollBarProviderTest.cs:
+	* TextBoxBaseProviderTest.cs:
+	* MonthCalendarProviderTest.cs:
+	* NumericUpDownProviderTest.cs:
+	* DateTimePickerProviderTest.cs: Test added AmpersandsAndNameTest.
+
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+	
+	Patch from Matt Guo <matt@mattguo.com>
+
+	* MonthCalendarProviderTest.cs: Test that MonthCalendar's name is
+	correct, and that it changes when the Month changes.
+
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* FormProviderTest.cs: The window needs to be shown to have vaild
+	bounding rectangle values.
+
+2009-03-11  Mike Gorse <mgorse@novell.com>
+
+	* MenuItemProviderTest.cs, ToolStripDropDownItemProviderTest.cs:
+	Test that ampersands are stripped from names [bug #484375].
+
+2009-03-09  Mike Gorse <mgorse@novell.com>
+
+	* TextBoxBaseProviderTest.cs: Test ReadOnly when disabled.
+
+2009-03-06  Neville Gao  <nevillegao@gmail.com>
+
+	* ToolBarButtonProviderTest.cs: Tested ToggleEvent.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarProviderTest.cs:
+	* ToolBarButtonProviderTest.cs: Mimic (in the provider) and
+	workaround (in the bridge) bug in UIA about not returning
+	KeyboardFocusable for ToolBarButtons. Reenable state tests for
+	ToolStripButton. Fixes #478838.
+
+2009-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseProviderTest.cs: Tests added.
+
+	* DataGridProviderTest.cs:
+	* DataGridViewProviderTest.cs: Test updated  [For Bug #478840]
+
+2009-03-04  Mario Carrion <mcarrion@novell.com>
+
+	* providertest.sh.in: Added -noshadow to NUNIT_FLAGS.
+
 2009-02-18  Mike Gorse <mgorse@novell.com>
 
 	* BaseProviderTest.cs: Test LabelledBy when the label is added first.

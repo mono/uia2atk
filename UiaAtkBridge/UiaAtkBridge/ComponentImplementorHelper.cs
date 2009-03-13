@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Windows.Automation;
 
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -66,7 +67,8 @@ namespace UiaAtkBridge
 
 		public virtual Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coordType)
 		{
-			//TODO: check for children at this point?
+			//TODO: check for children at this point? (maybe use ElementProviderFromPoint ? )
+			Log.Warn (this.resource.GetType ().Name + ":RefAccessibleAtPoint not implemented");
 			return this.resource;
 		}
 
@@ -119,8 +121,17 @@ namespace UiaAtkBridge
 			if ((transformProvider != null) && 
 			    (transformProvider.CanResize) && 
 			    (transformProvider.CanMove)) {
-				transformProvider.Move (x, y);
-				transformProvider.Resize (width, height);
+				try {
+					transformProvider.Move (x, y);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
+
+				try {
+					transformProvider.Resize (width, height);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;
@@ -132,7 +143,11 @@ namespace UiaAtkBridge
 				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			
 			if ((transformProvider != null) && (transformProvider.CanMove)) {
-				transformProvider.Move (x, y);
+				try {
+					transformProvider.Move (x, y);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;
@@ -144,7 +159,11 @@ namespace UiaAtkBridge
 				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			
 			if ((transformProvider != null) && (transformProvider.CanResize)) {
-				transformProvider.Resize (width, height);
+				try {
+					transformProvider.Resize (width, height);
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+				}
 				return true;
 			}
 			return false;

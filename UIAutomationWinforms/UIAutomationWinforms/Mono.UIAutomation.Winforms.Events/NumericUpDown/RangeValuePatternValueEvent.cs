@@ -20,18 +20,51 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.Winforms.Events.NumericUpDown
 {
-	public interface IText
+	internal class RangeValuePatternValueEvent : BaseAutomationPropertyEvent
 	{
-		int CaretOffset { get; }
-		bool SetCaretOffset (int offset);
-		string GetSelection (int selectionNum, out int startOffset, out int endOffset);
+		#region Constructor
+
+		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
+		{
+		}
+		
+		#endregion
+		
+		#region IConnectable Overrides
+
+		public override void Connect ()
+		{
+			((SWF.NumericUpDown) Provider.Control).ValueChanged +=
+				new EventHandler (OnValueChanged);
+		}
+
+		public override void Disconnect ()
+		{
+			((SWF.NumericUpDown) Provider.Control).ValueChanged -=
+				new EventHandler (OnValueChanged);
+		}
+		
+		#endregion 
+		
+		#region Private Methods
+		
+		private void OnValueChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		#endregion
 	}
 }

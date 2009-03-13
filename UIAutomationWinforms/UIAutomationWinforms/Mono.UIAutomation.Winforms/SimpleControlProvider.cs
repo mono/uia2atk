@@ -209,16 +209,12 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual System.Drawing.Rectangle ScreenBounds
 		{
 			get {
-				if (control == null)
+				if (Control == null || !Control.Visible)
 					return System.Drawing.Rectangle.Empty;
-				if (control.Parent == null || control.TopLevelControl == null)
-					return Control.Bounds;
-				else {
-					if (Control.FindForm () == Control.Parent)
-						return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
-					else
-						return Control.Parent.RectangleToScreen (Control.Bounds);
-				}
+
+				return Helper.RectToRectangle (
+					Helper.GetControlScreenBounds (Control.Bounds, Control)
+				);
 			}
 		}
 
@@ -300,7 +296,7 @@ namespace Mono.UIAutomation.Winforms
 					if (controlType == ControlType.Edit.Id || controlType == ControlType.Document.Id)
 						return string.Empty;
 					else
-						return Control.Text;
+						return Helper.StripAmpersands (Control.Text);
 				} else
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {

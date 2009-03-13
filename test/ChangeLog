@@ -1,3 +1,459 @@
+2009-03-13  Calen Chen <cachen@novell.com>
+
+	* testers/scrollbar/scrollbarframe.py,
+	* testers/scrollbar_basic_ops.py: correct some test error: replace 
+	'Down' to 'PageDown', replace num 7/8 to maximumValue/maximumValue+1
+
+2009-03-13  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenustrip_basic_ops.py: Added "showing" state for sub
+	menu items.
+
+2009-03-13  Ray Wang <rawang@novell.com>
+
+	* testers/toolstripcombobox_basic_ops.py: regression tests.
+	* testers/textbox/textboxframe.py: add assertScrollBars method to 
+	assert scroll bars of multi-line textbox.
+	* testers/textbox_basic_ops.py: update tests for scroll bars.
+	* testers/mainmenu/mainmenuframe.py: add find new children statements.
+	* testers/mainmenu_basic_ops.py: add new actions check, and menu items
+	check.
+
+2009-03-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/combobox_stylechanges.py: Renamed from
+	combobox_style_changes.py for consistency.
+	* testers/combobox_stylechanges_basic_ops.py, 
+	* testers/combobox_stylechanges/comboboxstylechangesframe.py,
+	* testers/combobox_stylechanges/__init__.py: Getting started on this
+	test.
+
+2009-03-12  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog_basic_ops.py: add test cases due to bug474611
+
+2009-03-12  Ray Wang <rawang@novell.com>
+
+	* samples/mainmenu.py: refactor the sample, add 1-3 levels sub-items.
+	* samples/menustrip.py: refactor the sample, add 1-3 levels sub-items.
+
+2009-03-11 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/combobox_style_changes.py: A ComboBox sample application that
+	has buttons that can change the style of the ComboBox at runtime.  This
+	needs to be tested asap!
+
+2009-03-10  Ray Wang <rawang@novell.com>
+
+	* testers/trackbar_basic_ops.py: comment some tests for BUG484189
+	and BUG484195.
+	* samples/containercontrol.py: change controls dock style from top to
+	bottom.
+	* testers/containercontrol/containercontrolframe.py: reorder controls.
+	* testers/containercontrol_basic_ops.py: update for regression test.
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py:
+	add some tests since BUG474254 has been fixed.
+	* testers/threadexceptiondialog_basic_ops.py: add some tests since 
+	BUG474254 has been fixed.
+	* testers/textbox_basic_ops.py: regression tests for BUG480266.
+
+2009-03-11  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu_basic_ops.py: Added MenuItem default states.
+	* testers/contextmenustrip_basic_ops.py: Enable ContextMenuStrip states
+	check.
+
+2009-03-11  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog_basic_ops.py: add BUG484217 reference
+	* testers/checkedlistbox_basic_ops.py: modify some states test due to 
+	BUG480218, add BUG476065 reference
+
+2009-03-11  Calen Chen <cachen@novell.com>
+
+	* testers/fontdialog/fontdialogframe.py: modify test and add a comment 
+	that both Menu and default selected MenuItem are focused and selected 
+	due to ComboBox's issue relate to BUG483300
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtktoolbar_combobox.py: add another widget (button) for testing
+	focus losses.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkcombobox.py: add another widget (button) for testing
+	focus losses.
+
+2009-03-10  Ray Wang <rawang@novell.com>
+
+	* testers/datetimepicker_showupdown_ops.py: update for regression 
+	test
+	* testers/datetimepicker_dropdown_ops.py: update for regression test.
+
+2009-03-09  Ray Wang <rawang@novell.com>
+
+	* testers/toolstripcombobox/toolstripcomboboxframe.py: add inputText
+	method to test items' "Text(Editable)".
+	* testers/toolstripcombobox_basic_ops.py: regression updates.
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: add
+	inputText method to test items' "Text(Editable)".
+	* testers/toolstripsplitbutton_basic_ops.py: regression updates.
+
+2009-03-06  Ray Wang <rawang@novell.com>
+
+	* testers/toolstriplabel_basic_ops.py: add comments to remind, it 
+	should add some test after the bug fixed.
+	* testers/listview_list/listviewframe.py: change assertTable's 
+	default value of parameter.
+	* testers/combobox_simple/comboboxsimpleframe.py,
+	* testers/combobox_simple/__init__.py,
+	* testers/combobox_simple_ops.py: update ComboBox simple style test
+	and add bug comments for future regression test.
+
+2009-03-06  Calen Chen <cachen@novell.com>
+
+	* testers/numericupdown/numericupdownframe.py: rewrite enterTextValue 
+	to using insertText method	
+	* testers/numericupdown_basic_ops.py: correct some errors
+
+2009-03-06  Calen Chen <cachen@novell.com>
+
+	* testers/toolstripdropdownbutton_basic_ops.py,
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: update test
+	* testers/printpreviewcontrol_basic_ops.py: remove BUG reference
+
+2009-03-05  Ray Wang <rawang@novell.com>
+
+	* testers/states.py: add MANAGES_DESCENDANTS state for DomainUpDown.
+	* testers/domainupdown/domainupdownframe.py: add selectChild method
+	to select the spin button's children.
+	* testers/domainupdown_basic_ops.py: update script due to regression
+	test.
+	* testers/numericupdown_basic_ops.py: remove useless comments.
+	* testers/listview_list_ops.py: add some GUI test statements.
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/toolbarbutton.py: Make this test crossplatform.
+
+2009-03-03  Ray Wang <rawang@novell.com>
+
+	* testers/listbox/listboxframe.py,
+	* testers/listbox_basic_ops.py: update script due to some children 
+	change their mapping role.
+	* testers/listview_list/listviewframe.py,
+	* testers/listview_list_ops.py: update script due to some children 
+	change their mapping role, and add BUGxxxxxx comments for future 
+	regression test.
+
+2009-03-03  Calen Chen <cachen@novell.com>
+
+	* samples/toolbarbutton.py: toggle to set label unable
+	* testers/states.py: add focusable to ToggleButton
+	* testers/toolbarbutton_basic_ops.py,
+	* testers/toolbar_basic_ops.py,
+	* testers/toolbarbutton/toolbarbuttonframe.py: correct some typo, give 
+	some update
+
+2009-03-03  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: move 'selectable' from Text
+	* testers/tabpage/tabpageframe.py: modify assertTabChange, correct typo
+	* testers/tabpage_basic_ops.py: update test
+
+2009-03-03  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown_ops.py,
+	* testers/fontdialog/fontdialogframe.py,
+	* testers/printpreviewdialog_basic_ops.py: update test scripts
+
+2009-03-02  Calen Chen <cachen@novell.com>
+
+	* testers/datagridcomboboxcolumn_basic_ops.py: add new strongwind test
+	* testers/datagrid/datagridframe.py: modify enterTextValue again
+
+2009-03-02  Calen Chen <cachen@novell.com>
+
+	* testers/datagridtextboxcolumn_basic_ops.py: add new strongwind test
+	* testers/datagridboolcolumn_basic_ops.py: add state test
+	* testers/datagrid_basic_ops.py: update expected states
+	* testers/datagrid/datagridframe.py: : update enterTextValue to test 
+	editable textbox, search for menuitems under combobox
+
+2009-03-02  Calen Chen <cachen@novell.com>
+
+	* samples/textbox.py: add AccessibleName for label(Edit and Document 
+	type should leave Name to empty, so AccessibleName for TextBox is 
+	unusefull)
+	* testers/datagridboolcolumn_basic_ops.py: add test for boolcolumn
+
+2009-02-27  Ray Wang <rawang@novell.com>
+
+	* samples/textbox.py: add a non-editable textbox
+	* testers/textbox/textboxframe.py: add assertStreamableContent method
+	* testers/textbox_basic_ops.py: update many test for each textbox
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
+	* samples/textbox.py: add AccessibleName for textbox1
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
+	* samples/gtktextview.py: replace the old sample to add 
+	get_accessible().set_name
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
+	* testers/richtextbox/richtextboxframe.py: add sleep after append/
+	delete/insert
+
+2009-02-27  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: update sample to delete button
+	* testers/datagrid_basic_ops.py,
+	* testers/datagrid/datagridframe.py,
+	* testers/datagrid/__init__.py,
+	* testers/datagrid: add new test to test AtkText AtkAction AtkTable 
+	AtkSelection AtkAccessible for columnheader, treetable and tablecell
+
+2009-02-26 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/richtextbox/richtextboxframe.py,
+	* testers/richtextbox_basic_ops.py: Yay! added a bunch of tests and
+	this one is finished for now.
+
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* tools/hierarchy.py:
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	* testers/propertygrid/propertygridframe.py:
+	Cleaned up (correct identation, removed dead code,
+	removed unused namespaces).
+
+2009-02-26  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: update sample to add ReadOnly TextBox, rename 
+	column
+	* samples/datagridboolcolumn.py: remain BoolColumn
+
+2009-02-25 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/combobox_simple.py: Explicitly specify height of application
+	frame and the combobox.
+
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* test.mdp: Removed some autogenerated files.
+
+2009-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* testers/monthcalendar_basic_ops.py: Add another TODO note.
+
+2009-02-25  Ray Wang <rawang@novell.com>
+
+	* testers/eventlistener.py: add a module name ahead of class which is
+	missing
+	* testers/textbox/textboxframe.py: remove useless inputText method
+	which is a duplicate method to enterText
+	* testers/textbox_basic_ops.py: update some new test
+
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu/contextmenuframe.py: Added Menu layer.
+	* testers/contextmenu_basic_ops.py: Tested AtkSelection.
+	* testers/contextmenustrip_basic_ops.py: Modified test order.
+
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* test.mdp: Added project for QA files.
+
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/propertygrid_basic_ops.py:
+	* testers/propertygrid/propertygridframe.py:
+	Fixed some problems.
+
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/propertygrid_basic_ops.py:
+	* testers/propertygrid/__init__.py:
+	* testers/propertygrid/propertygridframe.py:
+	New propertygrid QA test.
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: Labels added to keep track when CellClick or
+	CurrentCellChanged.
+	* testers/datagridview_detail_ops.py: Button and Link cells test.
+	* testers/datagridview/datagridviewframe.py: New method
+	assertCellClickValue.
+
+2009-02-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* testers/monthcalendar:
+	* testers/monthcalendar/__init__.py:
+	* testers/monthcalendar_basic_ops.py:
+	* testers/monthcalendar/monthcalendarframe.py: Add initial
+	strongwind tests for MonthCalendar. Note TODOs for testing
+	multiple selection and top-level accessible name.
+
+	* samples/monthcalendar.py: Initialize date selection to
+	1/23/2008 for strongwind testing purposes.
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
+	* datagridview_detail_ops.py: Testing headers, selection tests.
+	Failing asserts commented.
+	* datagridview/datagridviewframe.py: assertEditsText updated to change
+	text when "editable".
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: Button and Link columns added.
+
+2009-02-24  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: ComboBox column added.
+
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* tools/hierarchy.py: Print states.
+
+2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton_basic_ops.py:
+	Finished toolstripbutton test (image testing).
+
+2009-02-24  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/states.py: Added ContextMenuStrip class.
+
+	* testers/pagesetupdialog/__init__.py,
+	* testers/contextmenu/__init__.py,
+	* testers/contextmenustrip/__init__.py: Removed comments.
+
+	* testers/pagesetupdialog/pagesetupdialogframe.py,
+	* testers/contextmenu/contextmenuframe.py,
+	* testers/contextmenustrip/contextmenustripframe.py: Revamped logs.
+	
+	* testers/contextmenustrip_basic_ops.py: Tested AtkSelection.
+
+2009-02-24  Calen Chen <cachen@novell.com>
+
+	* samples/datagridboolcolumn.py: add new sample
+
+2009-02-24  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog,
+	* testers/colordialog/colordialogframe.py,
+	* testers/colordialog/__init__.py,
+	* testers/colordialog_basic_ops.py: add new strongwind test
+
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
+	* testers/datagridview/datagridviewframe.py: Methods added.
+	* testers/datagridview_detail_ops.py: Failing bugs added and code commented.
+
+2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/richtextbox/richtextboxframe.py: Find accessibles, implement
+	assertion method to compare text, and stub out some other assert
+	methods.
+	* testers/states.py: Add RichTextBox
+	* testers/richtextbox_basic_ops.py: Start by testing the states.
+
+2009-02-23  Brad Taylor  <brad@getcoded.net>
+
+	* testers/eventlistener.py: Add a helper class to allow the testing of
+	events.
+
+	* testers/datagridview_detail_ops.py: Test the check column.
+
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* samples/contextmenustrip.py: Add a sub-menu.
+
+	* testers/contextmenustrip/__init__.py,
+	  testers/contextmenustrip/contextmenustripframe.py,
+	  testers/contextmenustrip_basic_ops.py: Various fixes.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/toolstripdropdown_toolstripbutton.py:
+	Adapted behaviours to new testing.
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected tests and filed notes about bugs. Still lacking image testing.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/toolstripbuttonframe.py:
+	Corrected info about a bug (it only applies to the 2nd button).
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected a test and remove some commented out stuff.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Corrected some tests and added some info about bugs logged.
+
+2009-02-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/richtextbox_text.txt: update text with many different
+	non-letter characters.
+	* samples/richtextbox.py: add a second RichTextBox
+
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
+	* testers/datagridview_detail_ops.py,
+	  testers/datagridview/__init__.py, 
+	  testers/datagridview/datagridviewframe.py: Test updated: testing
+	  Text values.
+	* samples/datagridview.py: Test updated to set rows readonly.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Correct a semantic error that a statically-typed-language-compiler would have been warned.
+	Also, python doesn't like accents in my name.
+
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: Updated to work with tests.
+	* testers/datagridview_detail_ops.py,
+	  testers/datagridview/__init__.py,
+	  testers/datagridview/datagridviewframe.py: Added.
+
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* testers/contextmenustrip_basic_ops.py,
+	  testers/contextmenustrip/__init.py,
+	  testers/contextmenustrip/contextmenustripframe.py: Added.
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* testers/toolstripbutton/__init__.py
+	* testers/toolstripbutton/toolstripbuttonframe.py
+	* testers/toolstripbutton_basic_ops.py:
+	Added toolstripbutton strongwind tests (untested yet)
+
+2009-02-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/toolstripdropdown_toolstripbutton.py: Enable one image in a toolstripbutton.
+
+2009-02-23  Mario Carrion <mcarrion@novell.com>
+
+	* samples/datagridview.py: DataGridView test added.
+
+2009-02-23  Mike Gorse <mgorse@novell.com>
+
+	* tools: Add hierarchy.py.
+
 2009-02-23  Ray Wang <rawang@novell.com>
 
 	* samples/monthcalendar.py: add show week number
@@ -12,7 +468,8 @@
 
 2009-02-23  Calen Chen <cachen@novell.com>
 
-	* samples/colordialog.py: modify example to show help button(BUG
+	* samples/colordialog.py: modify example to show help button(winform 
+	BUG478555)
 	* testers/savefiledialog_basic_ops.py,
 	* testers/fontdialog_basic_ops.py: correct comment error
 
@@ -331,6 +788,14 @@
 	* testers/printpreviewcontrol_basic_ops.py: add BUG465945 and BUG473757 
 	as referance for regression test, add add sleep time after click button
 
+2009-02-09  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: more experiments with menus+selection.
+
+2009-02-09  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkcontextmenu.py: committed some interesting experiments.
+
 2009-02-09  Ray Wang <rawang@novell.com>
 
 	* samples/trackbar.py: change the Scroll event to ValueChanged event
@@ -501,6 +966,30 @@
 	* samples/splitter_vertical.py: Add new sample for Splitter that has
 	a vertical splitter (other Splitter sample has a horizontal splitter)
 	* testers/states.py: Add default states for Splitter and SplitContainer
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolbar.py: add nop subbutton.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: drop commented code..
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: Add subchilds in toolstripmenuitem test.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/toolstripmenuitem.py: Add subchilds in toolstripmenuitem test.
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: tabs to spaces..
+
+2009-01-29  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkmenubar.py: Add subchilds in gtkmenubar test.
 
 2009-01-28 Brian G. Merrell <bgmerrell@gmail.com>
 
@@ -1738,6 +2227,10 @@
 	* testers/scrollbar_basic_ops.py: modify the value to test the out of 
 	running situation
 
+2008-11-12  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* test/samples/samples/gtkentry.py: prevent exception.
+
 2008-11-12  Ray Wang <rawang@novell.com>
 
 	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the
@@ -2211,6 +2704,11 @@
 
 	* samples/gtkmenubar.py: add gtk.MenuBar widget sample
 
+2008-10-21  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* test/samples/combobox_dropdown(default_style).py:
+	* test/samples/combobox.py: Renamed to make this clearer.
+
 2008-10-21  Calen Chen <cachen@novell.com>
 
 	* samples/panel.py: add example for panel
@@ -2247,6 +2745,15 @@
 	* tools/dashboard/dashboard.xsl: Show summary and status images
 	* tools/dashboard/reports: text reports for each control linked to by
 	the dashboard will go here.
+
+2008-10-20  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtktextview.py: Added a gtktextview example.
+	* samples/gtkentry.py: Corrected the title.
+
+2008-10-20  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* samples/gtkentry.py: New entry test.
 
 2008-10-20  Calen Chen <cachen@novell.com>
 
@@ -3020,6 +3527,10 @@
 	harness.
 	* keystrokes/gtktutorial.py/gtktutorial_example_1.py:  Orca test
 	example for Gtk sample application gtktutorial.py
+
+2008-09-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkfontchooser.py: Added another sample.
 
 2008-09-05  Brad Taylor  <brad@getcoded.net>
 	

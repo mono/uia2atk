@@ -172,14 +172,6 @@ AtkObject,
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.ManagesDescendants);
-			states.AddState (Atk.StateType.Focusable);
-
-			bool focused = (bool) Provider.GetPropertyValue (
-			  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-			if (focused)
-				states.AddState (Atk.StateType.Focused);
-			else
-				states.RemoveState (Atk.StateType.Focused);
 
 			return states;
 		}
@@ -287,42 +279,26 @@ AtkObject,
 		: List, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		private ITextImplementor text_helper;
-		private IText iText = null;
-		private ITextProvider textProvider;
-		private IClipboardSupport clipboardSupport;
-		private string oldText;
+		private EditableTextImplementorHelper editableTextExpert;
 
 		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
 			: base (provider)
 		{
-			textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
 			IValueProvider value_prov
-				= (IValueProvider) provider.GetPatternProvider (
-					ValuePatternIdentifiers.Pattern.Id);
+				= provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
 			if (value_prov == null) {
 				throw new ArgumentException ("Provider does not implement IValue");
 			}
 
-			iText = textProvider as IText;
-			if (iText == null)
-				iText = value_prov as IText;
-			clipboardSupport = textProvider as IClipboardSupport;
-
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 			text_helper = TextImplementorFactory.GetImplementor (this, provider);
-			caretOffset = (iText != null? iText.CaretOffset: text_helper.Length);
-
-			oldText = text_helper.Text;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			bool readOnly = (bool) Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id);
-			if (!readOnly)
-				states.AddState (Atk.StateType.Editable);
-			else
-				states.RemoveState (Atk.StateType.Editable);
+			editableTextExpert.UpdateStates (states);
 
 			states.AddState (Atk.StateType.SingleLine);
 			return states;
@@ -330,41 +306,18 @@ AtkObject,
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				if (text_helper.HandleSimpleChange (ref oldText, ref caretOffset))
-					return;
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+				return;
 
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-				string newText = text_helper.Text;
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
-
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-							 newText == null ? 0 : newText.Length);
-				// TODO: The below line isn't quite right
-				GLib.Signal.Emit (this, "text_caret_moved", newText.Length);
-				EmitVisibleDataChanged ();
-
-				oldText = newText;
-			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
-				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
-			} else
-				base.RaiseAutomationPropertyChangedEvent (e);
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
-				int newCaretOffset = iText.CaretOffset;
-				if (newCaretOffset != caretOffset) {
-					caretOffset = newCaretOffset;
-					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
-				}
-			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
-				GLib.Signal.Emit (this, "text_selection_changed");
-			} else
-				base.RaiseAutomationEvent (eventId, e);
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e))
+				return;
+			
+			base.RaiseAutomationEvent (eventId, e);
 		}
 
 #region TextImplementor Implementation 
@@ -409,7 +362,7 @@ AtkObject,
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return text_helper.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -432,13 +385,9 @@ AtkObject,
 			return text_helper.SetSelection (selectionNum, startOffset, endOffset);
 		}
 
-		int caretOffset = -1;
-		
 		public bool SetCaretOffset (int offset)
 		{
-			//TODO: internal interface
-			caretOffset = offset;
-			return true;
+			return text_helper.SetCaretOffSet (offset);
 		}
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
@@ -448,11 +397,11 @@ AtkObject,
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return text_helper.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
-			get { return caretOffset; }
+			get { return text_helper.CaretOffset; }
 		}
 		
 		public int CharacterCount {
@@ -467,72 +416,40 @@ AtkObject,
 #region EditableTextImplementor implementation 
 		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
 		{
-			return false;
+			return editableTextExpert.SetRunAttributes (attrib_set, start_offset, end_offset);
 		}
 		
 		public void InsertText (string str, ref int position)
 		{
-			if (position < 0 || position > text_helper.Length)
-				position = text_helper.Length;	// gail
-			TextContents = text_helper.Text.Substring (0, position)
-				+ str
-				+ text_helper.Text.Substring (position);
+			editableTextExpert.InsertText (str, ref position);
 		}
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Copy (start_pos, end_pos);
+			editableTextExpert.CopyText (start_pos, end_pos);
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Copy (start_pos, end_pos);
-			DeleteText (start_pos, end_pos);
+			editableTextExpert.CutText (start_pos, end_pos);
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
 		{
-			if (start_pos < 0)
-				start_pos = 0;
-			if (end_pos < 0 || end_pos > text_helper.Length)
-				end_pos = text_helper.Length;
-			if (start_pos > end_pos)
-				start_pos = end_pos;
-
-			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
+			editableTextExpert.DeleteText (start_pos, end_pos);
 		}
 		
 		public void PasteText (int position)
 		{
-			if (clipboardSupport == null) {
-				return;
-			}
-
-			clipboardSupport.Paste (position);
+			editableTextExpert.PasteText (position);
 		}
 		
 		public string TextContents {
 			get {
-				IValueProvider value_prov
-					= (IValueProvider) Provider.GetPatternProvider (
-						ValuePatternIdentifiers.Pattern.Id);
-				return value_prov.Value.ToString ();
+				return editableTextExpert.TextContents;
 			}
 			set {
-				IValueProvider value_prov
-					= (IValueProvider) Provider.GetPatternProvider (
-						ValuePatternIdentifiers.Pattern.Id);
-				try {
-					value_prov.SetValue (value);
-				} catch (ElementNotEnabledException){}
+				editableTextExpert.TextContents = value;
 			}
 		}
 #endregion 
@@ -568,6 +485,7 @@ AtkObject,
 		}
 
 		public int NColumns { get { return tableExpert.NColumns; } }
+
 		public int NRows { get { return tableExpert.NRows; } }
 			
 		public int GetColumnExtentAt (int row, int column)
@@ -587,29 +505,28 @@ AtkObject,
 
 		public string GetColumnDescription (int column)
 		{
-			return string.Empty;
+			return tableExpert.GetColumnDescription (column);
 		}
 
 		public Atk.Object GetColumnHeader (int column)
 		{
-			return null;
+			return tableExpert.GetColumnHeader (column);
 		}
 
 		public string GetRowDescription (int row)
 		{
-			return String.Empty;
+			return tableExpert.GetRowDescription (row);
 		}
 
 		public Atk.Object GetRowHeader (int row)
 		{
-			return null;
+			return tableExpert.GetRowHeader (row);
 		}
 
 		public Atk.Object Summary
 		{
 			get { return tableExpert.Summary; } set { tableExpert.Summary = value; }
 		}
-
 
 		public void SetColumnDescription (int column, string description)
 		{

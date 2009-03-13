@@ -17,58 +17,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace System.Windows.Automation.Provider
 {
-	internal class RangeValuePatternSmallChangeEvent : BaseAutomationPropertyEvent
+	internal interface IClipboardProvider
 	{
-		#region Constructor
-
-		public RangeValuePatternSmallChangeEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.SmallChangeProperty)
-		{
-		}
-		
-		#endregion
-		
-		#region IConnectable Overrides
-
-		public override void Connect ()
-		{
-			((SWF.NumericUpDown) Provider.Control).UIASmallChangeChanged
-				+= new EventHandler (OnSmallChangeChanged);
-		}
-
-		public override void Disconnect ()
-		{
-			((SWF.NumericUpDown) Provider.Control).UIASmallChangeChanged
-				-= new EventHandler (OnSmallChangeChanged);
-		}
-		
-		#endregion 
-		
-		#region Private Methods
-		
-		#pragma warning disable 169
-		
-		private void OnSmallChangeChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-		
-		#pragma warning restore 169
-		
-		#endregion
+		void Copy (int start, int end);
+		void Paste (int position);
 	}
 }

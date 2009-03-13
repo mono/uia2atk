@@ -69,8 +69,6 @@ namespace UiaAtkBridgeTest
 
 		public abstract void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly);
 
-		public abstract void ExpandTreeView (BasicWidgetType type);
-		public abstract void CollapseTreeView (BasicWidgetType type);
 		public abstract object ActivateAdditionalForm (string name);
 		public abstract void RemoveAdditionalForm (object obj);
 
@@ -79,6 +77,8 @@ namespace UiaAtkBridgeTest
 		public abstract bool IsBGO561414Addressed ();
 
 		public abstract bool IsBGO567991Addressed ();
+
+		public abstract bool IsBGO574674Addressed ();
 		
 		public abstract void CloseContextMenu (Atk.Object accessible);
 
@@ -160,7 +160,8 @@ namespace UiaAtkBridgeTest
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
 		protected abstract bool AllowsSelectingChildMenus { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
-		
+		protected abstract bool TextBoxHasScrollBar { get; }
+
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                                Atk.Action actionable2, Atk.Object accessible2,
 		                                                Atk.Action actionable3, Atk.Object accessible3)
@@ -248,6 +249,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ListItem || 
 			    type == BasicWidgetType.ParentMenu ||
 			    type == BasicWidgetType.ChildMenu ||
+			    type == BasicWidgetType.HeaderItem ||
 			    type == BasicWidgetType.Spinner)
 				validNumberOfActions = 1;
 			else if (type == BasicWidgetType.CheckedListItem)
@@ -311,7 +313,7 @@ namespace UiaAtkBridgeTest
 				});
 			}
 
-			if (type == BasicWidgetType.ParentMenu)
+			if (type == BasicWidgetType.ParentMenu && !IsBGO574674Addressed ())
 				Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.Selected),
 				               "should contain Selected after DoAction");
 
@@ -324,7 +326,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
-				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, false, false);
+				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, type, false);
 
 				Atk.Object menu = accessible.RefAccessibleChild (0);
 				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
@@ -418,7 +420,9 @@ namespace UiaAtkBridgeTest
 
 			//sub-items cannot be disabled, mainly because they are not widgets
 			if ((type != BasicWidgetType.ListItem) &&
+			    (type != BasicWidgetType.HeaderItem) &&
 			    (type != BasicWidgetType.CheckedListItem) &&
+			    (type != BasicWidgetType.TableCell) &&
 			    (type != BasicWidgetType.ComboBoxItem)) { //disable a combobox item? let's not try weird things
 				DisableWidget (accessible);
 				for (int i = 0; i < validNumberOfActions; i++) 
@@ -528,7 +532,9 @@ namespace UiaAtkBridgeTest
 					shouldSuccess = AllowsSelectingChildMenus;
 				Assert.AreEqual (selected.Value, shouldSuccess, "AddSelection(" + i + "), we got:" + selected.Value);
 				
-				CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
+				if (!IsBGO574674Addressed ())
+					CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
+
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (val), "accessible.RefAccessibleChild (" + i + ") != null");
 				if (shouldSuccess)
@@ -755,7 +761,12 @@ namespace UiaAtkBridgeTest
 				    type != BasicWidgetType.ContextMenu &&
 				    type != BasicWidgetType.ComboBoxSimpleMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
-				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
+				
+				if (!(IsBGO574674Addressed ()
+				      && (type == BasicWidgetType.ContextMenu
+				          || type == BasicWidgetType.MainMenuBar
+				          || type == BasicWidgetType.ParentMenu)))
+					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
 		}
 		
@@ -835,16 +846,47 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
 
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, BasicWidgetType comboType)
 		{
-			CheckComboBoxMenuChild (menuChild, items, simpleLayout, true);
+			CheckComboBoxMenuChild (menuChild, items, comboType, true);
 		}
 		
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout, bool checkStates)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, BasicWidgetType comboType, bool defaultState)
 		{
+			if (comboType != BasicWidgetType.ComboBoxDropDownEntry &&
+			    comboType != BasicWidgetType.ComboBoxDropDownList &&
+			    comboType != BasicWidgetType.ComboBoxSimple)
+				throw new ArgumentException ("comboType", "The comboType should be a comboBox");
+
+			if (defaultState)
+				States (menuChild,
+				        Atk.StateType.Enabled,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Sensitive);
+			else {
+				if (comboType == BasicWidgetType.ComboBoxSimple)
+					States (menuChild,
+					        Atk.StateType.Enabled,
+					        Atk.StateType.Sensitive,
+					        Atk.StateType.Showing,
+					        Atk.StateType.Visible,
+					        Atk.StateType.Focusable,
+					        Atk.StateType.ManagesDescendants);
+				else
+					States (menuChild,
+					        Atk.StateType.Enabled,
+					        Atk.StateType.Selectable,
+					        Atk.StateType.Sensitive,
+					        Atk.StateType.Selected,
+					        Atk.StateType.Showing,
+					        Atk.StateType.Visible,
+					        comboType == BasicWidgetType.ComboBoxDropDownEntry ? 
+					        Atk.StateType.Focused : Atk.StateType.Enabled);
+			}
+			
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
-			if (simpleLayout)
+			if (comboType == BasicWidgetType.ComboBoxSimple)
 				Assert.AreEqual (menuChild.Role, Atk.Role.TreeTable, "ComboBox child#0 should be a table");
 			else
 				Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
@@ -853,7 +895,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.Action");
 
 			//HACK: no way to hide the column header!
-			int childrenCorrection = (simpleLayout && !HasComboBoxSimpleLayout)? 1 : 0;
+			int childrenCorrection = (comboType == BasicWidgetType.ComboBoxSimple && !HasComboBoxSimpleLayout)? 1 : 0;
 			
 			Assert.AreEqual (items.Length + childrenCorrection, 
 			                 menuChild.NAccessibleChildren, 
@@ -864,7 +906,7 @@ namespace UiaAtkBridgeTest
 				int nth = i + childrenCorrection;
 				Atk.Object menuItemChild = menuChild.RefAccessibleChild (nth);
 				Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#" + nth + " should not be null");
-				if (simpleLayout)
+				if (comboType == BasicWidgetType.ComboBoxSimple)
 					Assert.AreEqual (menuItemChild.Role, Atk.Role.TableCell, "ComboBox child#0 child#0 should be a tableCell");
 				else
 					Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
@@ -873,7 +915,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 				Assert.IsNull (CastToAtkInterface <Atk.Selection> (menuItemChild), "a comboboxitem should not implement Atk.Selection");
 
-				if (checkStates)//&& (!simpleLayout) <- enable this as soon as we have this bool param
+				if (defaultState)
 					States (menuItemChild,
 				            Atk.StateType.Enabled,
 				            Atk.StateType.Selectable,
@@ -884,7 +926,8 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (menuChild);
 			Assert.IsNotNull (atkSelection, "the Menu child of a combobox should implement Atk.Selection");
 			InterfaceSelection (atkSelection, items, menuChild, 
-			                    simpleLayout ? BasicWidgetType.ComboBoxSimpleMenu : BasicWidgetType.ComboBoxMenu);
+			                    comboType == BasicWidgetType.ComboBoxSimple ? 
+			                      BasicWidgetType.ComboBoxSimpleMenu : BasicWidgetType.ComboBoxMenu);
 		}
 		
 		protected void StatesComboBox (Atk.Object accessible)
@@ -921,6 +964,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripLabel:
 				return Atk.Role.Label;
 			case BasicWidgetType.ToolbarButton:
+			case BasicWidgetType.ToolStripButton:
 			case BasicWidgetType.NormalButton:
 				return Atk.Role.PushButton;
 			case BasicWidgetType.Window:
@@ -938,7 +982,7 @@ namespace UiaAtkBridgeTest
 				       Atk.Role.ComboBox : Atk.Role.TreeTable;
 			case BasicWidgetType.RadioButton:
 				return Atk.Role.RadioButton;
-			case BasicWidgetType.MaskedTextBoxEntry:
+			case BasicWidgetType.PasswordCharTextBoxEntry:
 			case BasicWidgetType.TextBoxEntry:
 			case BasicWidgetType.TextBoxView:
 			case BasicWidgetType.RichTextBox:
@@ -1045,6 +1089,10 @@ namespace UiaAtkBridgeTest
 			InterfaceText (accessible, "dAnd your head is made of clouds, but your feet are made of ground.");
 
 			EditReadOnly (type, accessible);
+			// Enabling/disabling doesn't currently work in the
+			// test for ListView items
+			if (type != BasicWidgetType.ListView)
+				EditDisable (accessible);
 		}
 
 		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
@@ -1088,6 +1136,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (2, pos, "InsertText pos");
 
 			EditReadOnly (type, accessible);
+			EditDisable (accessible);
 		}
 
 		protected void EditReadOnly (BasicWidgetType type, Atk.Object accessible)
@@ -1098,12 +1147,29 @@ namespace UiaAtkBridgeTest
 			SetReadOnly (type, accessible, false);
 			atkEditableText.TextContents = "0";
 			SetReadOnly (type, accessible, true);
+			Assert.IsFalse (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "ReadOnly element should not have Editable state");
 			atkEditableText.TextContents = "5";
 			int pos = 0;
 			atkEditableText.InsertText ("6", ref pos);
 			atkEditableText.DeleteText (0, 2);
 			Assert.AreEqual ("0", atkText.GetText (0, -1), "AtkEditableText should not change text if ReadOnly");
 			SetReadOnly (type, accessible, false);
+			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly element should have Editable state");
+		}
+
+		protected void EditDisable (Atk.Object accessible)
+		{
+			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+
+			EnableWidget (accessible);
+			atkEditableText.TextContents = "0";
+			DisableWidget (accessible);
+			atkEditableText.TextContents = "5";
+			bool editableExpected = (atkText.GetText (0, -1) == "5");
+			Assert.AreEqual (editableExpected, accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Editable state when disabled");
+			EnableWidget (accessible);
+			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly element should have Editable state");
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)
@@ -1155,7 +1221,7 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (caret, atkText.CaretOffset, "CaretOffset SL");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
-			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry) {
 				Assert.AreEqual (String.Empty + name [0], String.Empty + atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
 				Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
 			} else {
@@ -1166,7 +1232,7 @@ namespace UiaAtkBridgeTest
 
 			int highCaretOffset = 15;
 			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
-			bool expectTrue = (type == BasicWidgetType.MaskedTextBoxEntry
+			bool expectTrue = (type == BasicWidgetType.PasswordCharTextBoxEntry
 			                   || type == BasicWidgetType.RichTextBox);
 			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue, 
 			                 atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
@@ -1186,14 +1252,14 @@ namespace UiaAtkBridgeTest
 			    (type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.TextBoxView) ||
 			    (type == BasicWidgetType.RichTextBox) ||
-			    (type == BasicWidgetType.MaskedTextBoxEntry))
+			    (type == BasicWidgetType.PasswordCharTextBoxEntry))
 				nSelections = 0;
 			
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 
 			int caretOffset = 0;
 			if (!Misc.HasReadOnlyText (type)
-			    || type == BasicWidgetType.MaskedTextBoxEntry
+			    || type == BasicWidgetType.PasswordCharTextBoxEntry
 			    || type == BasicWidgetType.RichTextBox)
 				caretOffset = highCaretOffset;
 			
@@ -1243,7 +1309,7 @@ namespace UiaAtkBridgeTest
 
 			int startCaretOffset = name.IndexOf (expected);
 			int endCaretOffset = name.IndexOf (expected) + expected.Length;
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString;
 				startCaretOffset = 0;
 				endCaretOffset = name.Length;
@@ -1289,7 +1355,7 @@ namespace UiaAtkBridgeTest
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
 
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString.Substring (0, 12);
 				startCaretOffset = 12;
 				endCaretOffset = passwordString.Length;
@@ -1304,7 +1370,7 @@ namespace UiaAtkBridgeTest
 			expected = simpleTestText;
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = passwordString;
 				startCaretOffset = 0;
 			}
@@ -1334,7 +1400,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,SentenceStart,eo SL");
 
 			expected = "t";
-			if (type == BasicWidgetType.MaskedTextBoxEntry)
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = String.Empty + passwordChar;
 			
 			Assert.AreEqual (expected,
@@ -1342,7 +1408,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so SL");
 			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo SL");
 
-			if (type != BasicWidgetType.MaskedTextBoxEntry)
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = ".";
 			
 			Assert.AreEqual (expected,
@@ -1356,7 +1422,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo SL");
 			
 			
-			if (type != BasicWidgetType.MaskedTextBoxEntry)
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry)
 				expected = "e";
 			
 			Assert.AreEqual (expected,
@@ -1381,7 +1447,7 @@ namespace UiaAtkBridgeTest
 			startCaretOffset = name.IndexOf (expected);
 			endCaretOffset = name.IndexOf (expected) + expected.Length;
 			
-			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (type == BasicWidgetType.PasswordCharTextBoxEntry) {
 				startCaretOffset = name.Length;
 				endCaretOffset = startCaretOffset;
 				expected = String.Empty;
@@ -1393,7 +1459,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordEnd,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordEnd,eo SL");
 			
-			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+			if (type != BasicWidgetType.PasswordCharTextBoxEntry) {
 				expected = "sentence.";
 				startCaretOffset = name.IndexOf (expected);
 				endCaretOffset = name.IndexOf (expected) + expected.Length;
@@ -1747,7 +1813,7 @@ namespace UiaAtkBridgeTest
 				// event, but that would be hard with
 				// the current design, so allowing 2
 				int min = 1, max = 2;
-				if (!supportsSelection || type == BasicWidgetType.MaskedTextBoxEntry) {
+				if (!supportsSelection || type == BasicWidgetType.PasswordCharTextBoxEntry) {
 					min = 0;
 					max = 0;
 				}
@@ -1842,8 +1908,20 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue ((missingTypes.Count == 0) && (superfluousTypes.Count == 0),
 				missingTypesMsg + " .. " + superfluousTypesMsg);
 		}
-		
-		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
+
+		protected void PrintStates (Atk.Object accessible)
+		{
+			string res = String.Empty;
+			Atk.StateSet stateSet = accessible.RefStateSet ();
+			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType))) {
+				if (stateSet.ContainsState (state))
+					res += state.ToString () + ",";
+			}
+			Console.WriteLine ("Object of type " + accessible.Role.ToString () + 
+			                   " contains the following states: " + res);
+		}
+			
+		public static void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
 			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);
 			List <Atk.StateType> missingStates = new List <Atk.StateType> ();
@@ -2146,6 +2224,50 @@ namespace UiaAtkBridgeTest
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.IsTrue (evs.Count >= min && evs.Count <= max, "Expected " + min +"-" + max +" " + evType + " events but got " + evs.Count +": " + eventsInXml);
+		}
+
+		protected bool DoActionByName (Atk.Object accessible, string name)
+		{
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			Assert.IsNotNull (atkAction,
+			                  String.Format ("Accessible with Name = {0} and Role = {1} does not implement AtkAction.",
+			                                 accessible.Name, accessible.Role));
+
+			int nActions = atkAction.NActions;
+			for (int i = 0; i < nActions; i++) {
+				string actionName = atkAction.GetName (i);
+				if (actionName == name)
+					return atkAction.DoAction (i);
+			}
+
+			Assert.Fail (String.Format ("Couldn't find action {0} on {1}.  Type is {2}",
+			                            name, accessible.Name, accessible.GetType ()));
+
+			return false;	// keep the compiler happy
+		}
+
+		protected virtual void ExpandTreeView (Atk.Object accessible)
+		{
+			int nChildren = accessible.NAccessibleChildren;
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = accessible.RefAccessibleChild (i);
+				if (child.Role == Atk.Role.TableCell
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expandable)
+				    && !child.RefStateSet().ContainsState (Atk.StateType.Expanded))
+					DoActionByName (child, "expand or contract");
+			}
+		}
+
+		protected virtual void CollapseTreeView (Atk.Object accessible)
+		{
+			int nChildren = accessible.NAccessibleChildren;
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = accessible.RefAccessibleChild (i);
+				if (child.Role == Atk.Role.TableCell
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expandable)
+				    && child.RefStateSet().ContainsState (Atk.StateType.Expanded)) 
+					DoActionByName (child, "expand or contract");
+			}
 		}
 
 		public abstract void RunInGuiThread (System.Action d);

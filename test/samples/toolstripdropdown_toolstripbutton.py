@@ -16,14 +16,20 @@ clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
+from System.IO import Path
 from System.Drawing import *
 import System.Drawing.Text
 
+from sys import path
+
+harness_dir = path[0]
+i = harness_dir.rfind(Path.DirectorySeparatorChar)
+uiaqa_path = harness_dir[:i]
 
 class RunApp(Form):
 
     def __init__(self):
-        self.Text = "Simple ToolStrip Example"
+        self.Text = "ToolStripButton Example"
         self.Width = 800
         self.Height = 500
         self.FormBorderStyle = FormBorderStyle.Fixed3D
@@ -47,14 +53,19 @@ class RunApp(Form):
         #self.tb1.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
         self.tb1.DisplayStyle = ToolStripItemDisplayStyle.Text
         self.tb1.Text = "&New"
+        self.tb1.CheckOnClick = True
         self.tb1.Click += self.New_Document_Clicked
         self.ts.Items.Add(self.tb1)
 
         self.count_o = 0
         self.tb2 = ToolStripButton()
-        #self.tb2.Image = Bitmap.FromFile("images/document-open.png")
-        #self.tb2.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-        self.tb2.DisplayStyle = ToolStripItemDisplayStyle.Text
+        self.tb2.Image = Bitmap.FromFile(uiaqa_path + 
+                                       Path.DirectorySeparatorChar + "samples" + 
+                                       Path.DirectorySeparatorChar + "listview-items-icons" + 
+                                       Path.DirectorySeparatorChar + "32x32" +
+                                       Path.DirectorySeparatorChar + "evolution.png")
+        self.tb2.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+        #self.tb2.DisplayStyle = ToolStripItemDisplayStyle.Text
         self.tb2.Text = "&Open"
         self.tb2.Click += self.Open_Document_Clicked
         self.ts.Items.Add(self.tb2)
@@ -220,16 +231,17 @@ class RunApp(Form):
 
     def New_Document_Clicked(self, sender, event):
         self.rtb.Clear()
-        self.count_n += 1
+        self.tsl.Enabled = not self.tsl.Enabled
         print "Clicked \"New\" ToolStripButton %s times" % self.count_n
 
     def Open_Document_Clicked(self, sender, event):
-        self.ofd = OpenFileDialog()
-        if(self.ofd.ShowDialog() == DialogResult.OK):
-            self.sr = System.IO.StreamReader(self.ofd.OpenFile())
-            self.rtb.Text = self.sr.ReadToEnd()
-            self.sr.Close()
+        #self.ofd = OpenFileDialog()
+        #if(self.ofd.ShowDialog() == DialogResult.OK):
+        #   self.sr = System.IO.StreamReader(self.ofd.OpenFile())
+        #   self.rtb.Text = self.sr.ReadToEnd()
+        #    self.sr.Close()
         self.count_o += 1
+        self.tsl.Text = "You clicked PushButton %s times" % self.count_o
         print "Clicked \"Open\" ToolStripButton %s times" % self.count_o
 
     def tscb_SelectedIndexChanged(self, sender, event):

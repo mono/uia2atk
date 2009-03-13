@@ -91,6 +91,7 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
+			UpdateBehaviors (false);
 		}
 		
 		public override void Terminate ()
@@ -112,7 +113,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			throw new NotImplementedException ();
+			//TODO
+			Log.Warn ("ListBoxProvider:ElementProviderFromPoint not implemented");
+			return null;
 		}
 
 		#endregion
@@ -122,24 +125,24 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			listboxProvider.Initialize ();
-			OnNavigationChildAdded (false, listboxProvider);
-			UpdateBehaviors (false);
+			AddChildProvider (listboxProvider);
+			UpdateBehaviors (true);
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			if (buttonProvider != null) {
-				OnNavigationChildRemoved (false, buttonProvider);
+				RemoveChildProvider (buttonProvider);
 				buttonProvider.Terminate ();
 				buttonProvider = null;
 			}
 			if (listboxProvider != null) {
-				OnNavigationChildRemoved (false, listboxProvider);
+				RemoveChildProvider (listboxProvider);
 				listboxProvider.Terminate ();
 				listboxProvider = null;
 			}
 			if (textboxProvider != null) {
-				OnNavigationChildRemoved (false, textboxProvider);
+				RemoveChildProvider (textboxProvider);
 				textboxProvider.Terminate ();
 				textboxProvider = null;
 			}
@@ -154,77 +157,87 @@ namespace Mono.UIAutomation.Winforms
 			UpdateBehaviors (true);
 		}
 		
-		private void UpdateBehaviors (bool generateEvent) 
+		private void UpdateBehaviors (bool updateAssociatedChildren) 
 		{
 			if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ValueProviderBehavior (this));
+				if (!IsBehaviorEnabled (ValuePatternIdentifiers.Pattern))
+					SetBehavior (ValuePatternIdentifiers.Pattern,
+					             new ValueProviderBehavior (this));
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
 					  new AutomationHasKeyboardFocusPropertyEvent (this));
-				
-				TerminateButtonProvider (generateEvent);
-				InitializeEditProvider (generateEvent);
+
+				if (updateAssociatedChildren) {
+					TerminateButtonProvider ();
+					InitializeEditProvider ();
+				}
 			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown) {
-				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				             new ExpandCollapseProviderBehavior (this));
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ValueProviderBehavior (this));
+				if (!IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern))
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+					             new ExpandCollapseProviderBehavior (this));
+				if (!IsBehaviorEnabled (ValuePatternIdentifiers.Pattern))
+					SetBehavior (ValuePatternIdentifiers.Pattern,
+					             new ValueProviderBehavior (this));
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
 					  null);
-				
-				InitializeButtonProvider (generateEvent);
-				InitializeEditProvider (generateEvent);
+
+				if (updateAssociatedChildren) {
+					InitializeButtonProvider ();
+					InitializeEditProvider ();
+				}
 			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDownList) {
-				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				             new ExpandCollapseProviderBehavior (this));
+				if (!IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern))
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+					             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
 					  new AutomationHasKeyboardFocusPropertyEvent (this));
-				
-				InitializeButtonProvider (generateEvent);
-				TerminateEditProvider (generateEvent);
+
+				if (updateAssociatedChildren) {
+					InitializeButtonProvider ();
+					TerminateEditProvider ();
+				}
 			} 
 		}
 		
-		private void InitializeEditProvider (bool generateEvent)
+		private void InitializeEditProvider ()
 		{
 			if (textboxProvider == null) {
 				textboxProvider = new ComboBoxTextBoxProvider (comboboxControl.UIATextBox, this);
 				textboxProvider.Initialize ();
 
-				OnNavigationChildAdded (generateEvent, textboxProvider);
+				AddChildProvider (textboxProvider);
 			}
 		}
 
-		private void TerminateEditProvider (bool generateEvent)
+		private void TerminateEditProvider ()
 		{
 			if (textboxProvider != null) {
-				OnNavigationChildRemoved (generateEvent, textboxProvider);
+				RemoveChildProvider (textboxProvider);
 				textboxProvider.Terminate ();
 				textboxProvider = null;
 			}
 		}
 		
-		private void InitializeButtonProvider (bool generateEvent)
+		private void InitializeButtonProvider ()
 		{
 			if (buttonProvider == null) {
 				buttonProvider = new ComboBoxProvider.ComboBoxButtonProvider (comboboxControl,
 				                                                              this);
 				buttonProvider.Initialize ();
-				OnNavigationChildAdded (generateEvent, buttonProvider);
+				AddChildProvider (buttonProvider);
 			}
 		}
 		
-		private void TerminateButtonProvider (bool generateEvent)
+		private void TerminateButtonProvider ()
 		{
 			if (buttonProvider != null) {
-				OnNavigationChildRemoved (generateEvent, buttonProvider);
+				RemoveChildProvider (buttonProvider);
 				buttonProvider.Terminate ();
 				buttonProvider = null;
 			}
@@ -309,13 +322,13 @@ namespace Mono.UIAutomation.Winforms
 				return comboboxControl.Items.IndexOf (objectItem);
 			}	
 
-			public override ListItemProvider[] GetSelectedItems ()
+			public override IRawElementProviderSimple[] GetSelectedItems ()
 			{
 				if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
-					return new ListItemProvider [0];
+					return new IRawElementProviderSimple [0];
 				else
-					return new ListItemProvider [] { GetItemProviderFrom (this,
-					                                                      comboboxControl.SelectedItem) };
+					return new IRawElementProviderSimple [] { GetItemProviderFrom (this,
+					                                                               comboboxControl.SelectedItem) };
 			}
 
 			public override void SelectItem (ListItemProvider item)
@@ -361,7 +374,7 @@ namespace Mono.UIAutomation.Winforms
 
 				foreach (object objectItem in comboboxControl.Items) {
 					ListItemProvider item = GetItemProviderFrom (this, objectItem);
-					OnNavigationChildAdded (false, item);
+					AddChildProvider (item);
 				}
 			}
 
@@ -375,14 +388,14 @@ namespace Mono.UIAutomation.Winforms
 			public override void ScrollItemIntoView (ListItemProvider item) 
 			{ 
 				//FIXME: Implement
-				throw new NotImplementedException ();
+				Log.Warn ("ComboBoxListBoxProvider not implemented");
 			}
 
 			public override object GetItemPropertyValue (ListItemProvider item,
 			                                             int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return item.ObjectItem.ToString ();
+					return comboboxControl.GetItemText (item.ObjectItem);
 
 				int topItem = -1;
 				if (ListBoxControl != null)
@@ -492,7 +505,7 @@ namespace Mono.UIAutomation.Winforms
 					if (ListBoxControl != null) {
 						observer = new ScrollBehaviorObserver (this, null, VerticalScrollBar);
 						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-						observer.Initialize (true);
+						observer.Initialize ();
 						UpdateScrollBehavior (observer);
 						ListBoxControl.Disposed += delegate (object obj, EventArgs args) {
 							observer.Terminate ();

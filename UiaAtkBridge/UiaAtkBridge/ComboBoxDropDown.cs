@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -38,7 +39,8 @@ namespace UiaAtkBridge
 		private string actionName = "press";
 		
 		private IRawElementProviderFragmentRoot 	provider;
-		private IExpandCollapseProvider				expandColapseProvider;
+		private IExpandCollapseProvider			expandColapseProvider;
+		
 		private ComboBoxOptions InnerMenu {
 			get { return (ComboBoxOptions)RefAccessibleChild (MENU_ELEMENT_POS_INSIDE_COMBOBOX); }
 		}
@@ -50,6 +52,11 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("Provider should be IRawElementProviderFragmentRoot");
 			
 			expandColapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+		}
+
+		public bool IsEditable {
+			//if we have 1 child, we're a ComboBoxDropDown, if we have 2, we're a ComboBoxDropDownEntry
+			get { return NAccessibleChildren == 2; }
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -73,10 +80,20 @@ namespace UiaAtkBridge
 			try {
 				switch (expandColapseProvider.ExpandCollapseState) {
 				case ExpandCollapseState.Collapsed:
-					expandColapseProvider.Expand ();
+					try {
+						expandColapseProvider.Expand ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
 					break;
 				case ExpandCollapseState.Expanded:
-					expandColapseProvider.Collapse ();
+					try {
+						expandColapseProvider.Collapse ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
 					break;
 				default:
 					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");
@@ -84,6 +101,10 @@ namespace UiaAtkBridge
 				return true;
 			} catch (ElementNotEnabledException) { }
 			return false;
+		}
+
+		internal ExpandCollapseState ExpandCollapseState {
+			get { return expandColapseProvider.ExpandCollapseState; }
 		}
 
 		public string GetDescription (int i)

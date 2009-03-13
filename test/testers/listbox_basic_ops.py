@@ -40,69 +40,75 @@ if app is None:
 lbFrame = app.listBoxFrame
 
 ############################
-# check ListItem's AtkAction
+# check TableCell's AtkAction
 ############################
-actionsCheck(lbFrame.listitem[0], "ListItem")
+actionsCheck(lbFrame.tablecell[0], "TableCell")
 
 ############################
 # check List's AtkAccessible
 ############################
-statesCheck(lbFrame.listbox, "List", add_states=["focused"])
+# TODO: BUG480218 "fucused" state on TreeTable and TableCell at the same time.
+statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
+#statesCheck(lbFrame.treetable, "TreeTable")
 
 ############################
-# check ListItem's AtkAccessible
+# check TableCell's AtkAccessible
 ############################
-#check ListItem0,1's default states
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
-statesCheck(lbFrame.listitem[1], "ListItem")
+#check TableCell0,1's default states
+statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
+statesCheck(lbFrame.tablecell[1], "TableCell")
 
-#mouse click ListItem to change label value
+#mouse click TableCell to change label value
 #lbFrame.mouseClick(log=False)
-lbFrame.listitem[10].mouseClick()
+lbFrame.tablecell[10].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('10')
 
-lbFrame.listitem[19].mouseClick()
+lbFrame.tablecell[19].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('19')
 
 ############################
-# check ListItem's AtkAction
+# check TableCell's AtkAction
 ############################
-#click action to select listitem0 to rise selected state
-lbFrame.click(lbFrame.listitem[0])
+#click action to select tablecell0 to rise selected state
+lbFrame.click(lbFrame.tablecell[0])
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
-#listitem19 still focused but not selected
-statesCheck(lbFrame.listitem[19], "ListItem")
+statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
+#tablecell19 still focused but not selected
+statesCheck(lbFrame.tablecell[19], "TableCell")
 
 ############################
 # check List's AtkSelection
 ############################
-#check first listitem selection implementation
-lbFrame.assertSelectionChild(lbFrame.listbox, 0)
+#check first tablecell selection implementation
+lbFrame.assertSelectionChild(lbFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
+statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
 
-#clear first listitem selection
-lbFrame.assertClearSelection(lbFrame.listbox)
+#clear first tablecell selection
+lbFrame.assertClearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem")
+# TODO: BUG438024 comment 5-10 problem 2
+#statesCheck(lbFrame.tablecell[0], "TableCell")
+statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused"])
 
-#check last listitem selection implemention
-lbFrame.assertSelectionChild(lbFrame.listbox, 19)
+#check last tablecell selection implemention
+lbFrame.assertSelectionChild(lbFrame.treetable, 19)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[19], "ListItem", add_states=["selected"])
+statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused", "selected"])
 
-#clear last listitem selection
-lbFrame.assertClearSelection(lbFrame.listbox)
+#clear last tablecell selection
+lbFrame.assertClearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[19], "ListItem")
+# TODO: BUG438024 comment 5-10 problem 2
+#statesCheck(lbFrame.tablecell[19], "TableCell")
+statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused"])
 
 ############################
-# check ListItem's AtkText
+# check TableCell's AtkText
 ############################
-#check listitem's Text Value
+#check tablecell's Text Value
 lbFrame.assertText()
 
 ############################

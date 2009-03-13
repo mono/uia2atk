@@ -17,54 +17,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using System.Windows;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace System.Windows.Automation.Provider
 {
-	internal class RangeValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal interface IInsertDeleteTextProvider
 	{
-		#region Constructor
+		void InsertText (string str, ref int position);
 
-		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
-		{
-		}
-		
-		#endregion
-		
-		#region IConnectable Overrides
-
-		public override void Connect ()
-		{
-			((NumericUpDown) Provider.Control).ValueChanged +=
-				new EventHandler (OnValueChanged);
-		}
-
-		public override void Disconnect ()
-		{
-			((NumericUpDown) Provider.Control).ValueChanged -=
-				new EventHandler (OnValueChanged);
-		}
-		
-		#endregion 
-		
-		#region Private Methods
-		
-		private void OnValueChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-		
-		#endregion
+		void DeleteText (int start, int end);
 	}
 }

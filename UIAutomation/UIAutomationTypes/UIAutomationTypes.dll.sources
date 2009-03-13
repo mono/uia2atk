@@ -1,5 +1,7 @@
 System.Windows.Automation/AutomationTextAttribute.cs
 System.Windows.Automation/AsyncContentLoadedEventArgs.cs
+System.Windows.Automation/CaretPatternIdentifiers.cs
+System.Windows.Automation/ClipboardPatternIdentifiers.cs
 System.Windows.Automation/RowOrColumnMajor.cs
 System.Windows.Automation/WindowVisualState.cs
 System.Windows.Automation/StructureChangedEventArgs.cs
@@ -11,6 +13,7 @@ System.Windows.Automation/AutomationEvent.cs
 System.Windows.Automation/AutomationIdentifier.cs
 System.Windows.Automation/ControlType.cs
 System.Windows.Automation/DockPatternIdentifiers.cs
+System.Windows.Automation/EditableRangePatternIdentifiers.cs
 System.Windows.Automation/ElementNotEnabledException.cs
 System.Windows.Automation/ElementNotAvailableException.cs
 System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs

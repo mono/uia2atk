@@ -32,10 +32,10 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	internal class EditableTextImplementor
+	internal class EditableTextImplementorHelper
 	{
 		
-		public EditableTextImplementor (Adapter adapter, Atk.TextImplementor textImplementor)
+		public EditableTextImplementorHelper (Adapter adapter, Atk.TextImplementor textImplementor)
 		{
 			this.adapter = adapter;
 			this.textImplementor = textImplementor;
@@ -43,45 +43,35 @@ namespace UiaAtkBridge
 			valueProvider 
 				= adapter.Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id)
 					as IValueProvider;
-			textProvider
-				= adapter.Provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id)
-					as ITextProvider;
+
 			textExpert = TextImplementorFactory.GetImplementor (adapter, adapter.Provider);
 
-			valueProvider = adapter.Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id)
-				as IValueProvider;
 			if (valueProvider != null)
 				editable = !valueProvider.IsReadOnly;
 
-			oldText = textExpert.Text;
-			
-			// FIXME:
-			// The following lines must be refactored, so our internal Bridge 
-			// interfaces (IText and IClipboardSupport) will be called by using
-			// GetPatternProvider instead of doing explicit casting.
-			CaretProvider = textProvider as IText;
-			if (CaretProvider == null)
-				CaretProvider = valueProvider as IText;
-			CaretOffset = (CaretProvider != null ? CaretProvider.CaretOffset : textExpert.Length);
+			insertDeleteProvider
+				= adapter.Provider.GetPatternProvider (InsertDeleteTextPatternIdentifiers.Pattern.Id)
+					as IInsertDeleteTextProvider;
 
-			ClipboardProvider = textProvider as IClipboardSupport;
-			if (ClipboardProvider == null)
-				ClipboardProvider = valueProvider as IClipboardSupport;
+			oldText = textExpert.Text;
+
+			ClipboardProvider
+				= adapter.Provider.GetPatternProvider (ClipboardPatternIdentifiers.Pattern.Id)
+					as IClipboardProvider;
+
+			// We are keeping a private caret reference to validate the change
+			// of value
+			caretProvider
+				= adapter.Provider.GetPatternProvider (CaretPatternIdentifiers.Pattern.Id)
+					as ICaretProvider;
+			caretOffset = (caretProvider != null ? caretProvider.CaretOffset : textExpert.Length);
+
+			RefreshEditable ();
 		}
 
 		#region Public Properties
 
-		public IText CaretProvider {
-			get;
-			private set;
-		}
-
-		public int CaretOffset {
-			get { return caretOffset; }
-			set { caretOffset = value; }
-		}
-
-		public IClipboardSupport ClipboardProvider {
+		public IClipboardProvider ClipboardProvider {
 			get;
 			private set;
 		}
@@ -108,12 +98,26 @@ namespace UiaAtkBridge
 		
 		public void InsertText (string str, ref int position)
 		{
+			if (!Editable)
+				return;
+
 			if (position < 0 || position > textExpert.Length)
 				position = textExpert.Length;	// gail
 
+			// This provider allows us to avoid string manip when
+			// the control itself supports manipulation directly.
+			if (insertDeleteProvider != null) {
+				try {
+					insertDeleteProvider.InsertText (str, ref position);
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
+
+				return;
+			}
+
 			TextContents = textExpert.Text.Substring (0, position)
-				+ str
-				+ textExpert.Text.Substring (position);
+				+ str + textExpert.Text.Substring (position);
 		}
 		
 		public void CopyText (int startPos, int endPos)
@@ -126,7 +130,7 @@ namespace UiaAtkBridge
 		
 		public void CutText (int startPos, int endPos)
 		{
-			if (ClipboardProvider == null)
+			if (ClipboardProvider == null || !Editable)
 				return;
 
 			ClipboardProvider.Copy (startPos, endPos);
@@ -135,6 +139,9 @@ namespace UiaAtkBridge
 		
 		public void DeleteText (int startPos, int endPos)
 		{
+			if (!Editable)
+				return;
+
 			if (startPos < 0)
 				startPos = 0;
 			if (endPos < 0 || endPos > textExpert.Length)
@@ -145,15 +152,30 @@ namespace UiaAtkBridge
 			if (TextContents == null)
 				return;
 
+			// This provider allows us to avoid string manip when
+			// the control itself supports manipulation directly.
+			if (insertDeleteProvider != null) {
+				try {
+					insertDeleteProvider.DeleteText (startPos, endPos);
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
+				return;
+			}
+
 			TextContents = TextContents.Remove (startPos, endPos - startPos);
 		}
 		
 		public void PasteText (int position)
 		{
-			if (ClipboardProvider == null)
+			if (ClipboardProvider == null || !Editable)
 				return;
 
-			ClipboardProvider.Paste (position);
+			try {
+				ClipboardProvider.Paste (position);
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
+			}
 		}
 		
 		public string TextContents {
@@ -164,6 +186,13 @@ namespace UiaAtkBridge
 				return valueProvider.Value; 
 			}
 			set {
+				if (!Editable) {
+					Log.Warn (string.Format ("Cannot set text on an '{0}' Provider {1} is not Editable.",
+					                         adapter.GetType (),
+					                         adapter.Provider.GetType ()));
+					return;
+				}
+
 				if (valueProvider == null) {
 					Log.Warn (string.Format ("Cannot set text on an '{0}' Provider {1} Does not implement IValueProvider.",
 					                         adapter.GetType (),
@@ -174,11 +203,19 @@ namespace UiaAtkBridge
 				if (!valueProvider.IsReadOnly) {
 					try {
 						valueProvider.SetValue (value);
-					} catch (Exception e) {
-						Log.Error ("EditableTextImplementor: Caught exception while trying to set value:\n{0}", e);
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
 					}
 				}
 			}
+		}
+
+		public void UpdateStates (Atk.StateSet states)
+		{
+			if (Editable)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
 		}
 		
 		#endregion
@@ -186,7 +223,7 @@ namespace UiaAtkBridge
 		#region Events Methods
 
 		public bool RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
+		{			
 			if (e.Property.Id == AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id) {
 				bool isAvailable = (bool) e.NewValue;
 				if (!isAvailable) {
@@ -196,21 +233,22 @@ namespace UiaAtkBridge
 				} else {
 					valueProvider = adapter.Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id)
 						as IValueProvider;
-					if (valueProvider != null) {
+					if (valueProvider != null)
 						Editable = !valueProvider.IsReadOnly;
-	
-						// The following lines must be replaced after refactoring
-						if (ClipboardProvider == null)
-							ClipboardProvider = valueProvider as IClipboardSupport;
-					}
+
+					if (ClipboardProvider == null)
+						ClipboardProvider = adapter.Provider.GetPatternProvider (ClipboardPatternIdentifiers.Pattern.Id) 
+							as IClipboardProvider;
 				}
+
+				RefreshEditable ();
 				
 				return true;
 			} else if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
 				// Don't fire spurious events if the text hasn't changed
 				if (textExpert.HandleSimpleChange (ref oldText, 
-				                                   ref caretOffset, 
-				                                   CaretProvider == null))
+				                                   ref caretOffset,
+				                                   false))
 					return true;
 
 				Atk.TextAdapter textAdapter = new Atk.TextAdapter (textImplementor);
@@ -225,7 +263,7 @@ namespace UiaAtkBridge
 				                             0,
 				                             newText == null ? 0 : newText.Length);
 
-				if (CaretProvider == null)
+				if (caretProvider == null)
 					caretOffset = textExpert.Length;
 
 				oldText = newText;
@@ -234,25 +272,25 @@ namespace UiaAtkBridge
 
 				return true;
 			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
-				bool? isReadOnlyVal = e.NewValue as bool?;
-				if (isReadOnlyVal == null && valueProvider != null)
-					isReadOnlyVal = valueProvider.IsReadOnly;
-				Editable = isReadOnlyVal ?? false;
-
+				RefreshEditable ();
 				return true;
-			}
-			
+			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+				RefreshEditable ();
+				return false; // We are explicitly doing this 
+			} 
+
 			return false;
 		}
 		
 		public bool RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
-				int newCaretOffset = CaretProvider.CaretOffset;
-				if (newCaretOffset != caretOffset) {
+				// We are keeping a private caretOffset copy to validate if
+				// text changed
+				int newCaretOffset = caretProvider.CaretOffset;
+				if (newCaretOffset != caretOffset)
 					caretOffset = newCaretOffset;
-					GLib.Signal.Emit (adapter, "text_caret_moved", caretOffset);
-				}
+
 				return true;
 			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
 				GLib.Signal.Emit (adapter, "text_selection_changed");
@@ -266,15 +304,27 @@ namespace UiaAtkBridge
 
 		#region Private Fields
 
+		private void RefreshEditable ()
+		{
+			if (valueProvider == null)
+				Editable = false;
+			else
+				Editable 
+					= (!(bool) adapter.Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id)) 
+					&& (bool) adapter.Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+		}
+
 		private Adapter adapter;
+		private ICaretProvider caretProvider;
 		private int caretOffset = -1;
 		private bool editable;
 		private string oldText;
 		private ITextImplementor textExpert;		
 		private Atk.TextImplementor textImplementor;
-		private ITextProvider textProvider;
 		private IValueProvider valueProvider;
+		private IInsertDeleteTextProvider insertDeleteProvider;
 
 		#endregion
 	}
 }
+

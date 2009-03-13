@@ -40,9 +40,10 @@ namespace Mono.UIAutomation.Winforms
 	[MapsComponent (typeof (MonthCalendar))]
 	internal class MonthCalendarProvider : FragmentRootControlProvider
 	{
-		public MonthCalendarProvider (MonthCalendar control)
-			: base (control)
+		public MonthCalendarProvider (MonthCalendar monthCalendar)
+			: base (monthCalendar)
 		{
+			this.monthCalendar = monthCalendar; 
 		}
 
 		static MonthCalendarProvider ()
@@ -55,13 +56,22 @@ namespace Mono.UIAutomation.Winforms
 			numDaysInWeek = (cal.AddWeeks (fixedDate, 1) - fixedDate).Days;
 		}
 
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetEvent (Events.ProviderEventType.AutomationElementNameProperty,
+				  new Events.MonthCalendar.AutomationNamePropertyEvent (
+					this));
+		}
+
 		public override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
 			childDataGrid = new MonthCalendarDataGridProvider (this);
 			childDataGrid.Initialize ();
-			AddChildProvider (true, childDataGrid);
+			AddChildProvider (childDataGrid);
 			
 			// Don't ask me why, but Calendar needs to implement
 			// Grid as well as the DataGrid child...
@@ -84,7 +94,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Calendar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("calendar");
-
+			else if (propertyId == AEIds.NameProperty.Id)
+				return monthCalendar.SelectionStart.ToShortDateString ();
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
@@ -93,6 +104,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		private MonthCalendarDataGridProvider childDataGrid;
+		private MonthCalendar monthCalendar;
 
 		private static int numDaysInWeek = 0;
 		private static DateTime fixedDate = new DateTime (2001, 01, 01);

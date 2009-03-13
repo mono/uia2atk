@@ -20,18 +20,54 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
-using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.Winforms.Events.NumericUpDown
 {
-	public interface IEditableRange
+	internal class RangeValuePatternIsReadOnlyEvent : BaseAutomationPropertyEvent
 	{
-		void BeginEdit (string text);
-		void CommitEdit ();
+		#region Constructor
+
+		public RangeValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
+		{
+		}
+		
+		#endregion
+		
+		#region IConnectable Overrides
+
+		public override void Connect ()
+		{
+			UpDownBase.txtView.ReadOnlyChanged +=
+				new EventHandler (OnIsReadOnlyChanged);
+		}
+
+		public override void Disconnect ()
+		{
+			UpDownBase.txtView.ReadOnlyChanged -=
+				new EventHandler (OnIsReadOnlyChanged);
+		}
+		
+		#endregion 
+		
+		#region Private Methods
+		
+		private void OnIsReadOnlyChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		SWF.UpDownBase UpDownBase {
+			get { return (SWF.UpDownBase)Provider.Control; }
+		}
+		#endregion
 	}
 }

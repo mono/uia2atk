@@ -29,14 +29,13 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.UpDownBase;
+using Mono.UIAutomation.Winforms.Events.NumericUpDown;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
+namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
 {
-	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider, IEditableRange
+	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider
 	{
 		#region Constructor
 		
@@ -140,33 +139,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 
 		#endregion
 		
-		#region IEditableRange Members
-		public void BeginEdit (String text)
-		{
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
-			if (numericUpDown.InvokeRequired == true) {
-				numericUpDown.BeginInvoke (new NumericUpDownBeginEditDelegate (BeginEdit),
-				                           new object [] { text });
-				return;
-			}
-			numericUpDown.txtView.Text = text;
-		}
 
-		public void CommitEdit ()
-		{
-			if (numericUpDown.InvokeRequired) {
-				numericUpDown.BeginInvoke (new NumericUpDownCommitEditDelegate (CommitEdit));
-				return;
-			}
-			decimal value = decimal.Parse (numericUpDown.Text);
-			if (value < numericUpDown.Minimum)
-				value = numericUpDown.Minimum;
-			if (value > numericUpDown.Maximum)
-				value = numericUpDown.Maximum;
-			numericUpDown.Value = value;
-		}
-		#endregion
 		#region Private Methods
 		
 		private void PerformSetValue (decimal value) 
@@ -189,6 +162,4 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 	}
 	
 	delegate void NumericUpDownSetValueDelegate (decimal value);
-	delegate void NumericUpDownBeginEditDelegate (string value);
-	delegate void NumericUpDownCommitEditDelegate ();
 }

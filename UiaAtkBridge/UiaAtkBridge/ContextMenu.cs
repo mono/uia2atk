@@ -60,8 +60,5 @@ namespace UiaAtkBridge
 			AutomationBridge.HandleTotalElementRemoval (this.Provider);
 		}
 
-		internal Adapter VirtualParent {
-			get { return AutomationBridge.GetParentAdapter (Provider); }
-		}
 	}
 }

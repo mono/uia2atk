@@ -45,7 +45,8 @@ namespace UiaAtkBridge
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{
-			if (Parent == null)
+			Adapter parent = Parent as Adapter;
+			if (parent == null)
 				return null;
 			// We pretend to be a sub-window, not a splitter
 			Atk.StateSet states = Parent.RefStateSet ();
@@ -55,6 +56,8 @@ namespace UiaAtkBridge
 				states.AddState (Atk.StateType.Horizontal);
 			else
 				states.AddState (Atk.StateType.Vertical);
+			if ((bool)parent.Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id))
+				states.AddState (Atk.StateType.Focusable);
 			return states;
 		}
 	}

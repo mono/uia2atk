@@ -90,7 +90,17 @@ namespace UiaAtkBridge
 					return false;
 				if (v < rangeValueProvider.Minimum)
 					v = rangeValueProvider.Minimum;
-				rangeValueProvider.SetValue (v);
+
+				try {
+					rangeValueProvider.SetValue (v);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			
@@ -102,10 +112,22 @@ namespace UiaAtkBridge
 			//ScrollBar is not ScrollBar is Pane!!
 			if (parentScrollProvider == null)
 				return false;
-			else if (orientation == OrientationType.Vertical)
-				parentScrollProvider.SetScrollPercent (parentScrollProvider.HorizontalScrollPercent, v);
-			else
-				parentScrollProvider.SetScrollPercent (v, parentScrollProvider.VerticalScrollPercent);
+
+			if (orientation == OrientationType.Vertical) {
+				try {
+					parentScrollProvider.SetScrollPercent (parentScrollProvider.HorizontalScrollPercent, v);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				}
+			} else {
+				try {
+					parentScrollProvider.SetScrollPercent (v, parentScrollProvider.VerticalScrollPercent);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				}
+			}
 			return true;
 		}
 

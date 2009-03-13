@@ -57,8 +57,9 @@ namespace UiaAtkBridge
 
 		private bool Selected {
 			get {
-				return (bool)Provider.GetPropertyValue (
+				object isSelectedVal = Provider.GetPropertyValue (
 				  SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+				return isSelectedVal is bool && (bool) isSelectedVal;
 			}
 		}
 
@@ -87,7 +88,7 @@ namespace UiaAtkBridge
 				states.RemoveState (Atk.StateType.Showing);
 			}
 
-			if ((Parent.Parent is ComboBoxDropDown) &&
+			if (Parent != null && (Parent.Parent is ComboBoxDropDown) &&
 			    (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)))
 				states.AddState (Atk.StateType.Visible);
 			
@@ -146,9 +147,10 @@ namespace UiaAtkBridge
 			if (i == 0) {
 				try {
 					selectionItemProvider.Select ();
-					
 					return true;
-				} catch (ElementNotEnabledException) { }
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
 			}
 			return false;
 		}
@@ -228,12 +230,12 @@ namespace UiaAtkBridge
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -268,7 +270,7 @@ namespace UiaAtkBridge
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
@@ -276,9 +278,7 @@ namespace UiaAtkBridge
 		}
 		
 		public Atk.Attribute [] DefaultAttributes {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return textExpert.DefaultAttributes; }
 		}
 		
 		public int CharacterCount {

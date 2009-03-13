@@ -52,12 +52,14 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			itemProvider.ItemProvider.DataGridProvider.DataGrid.CurrentCellChanged += OnHasKeyboardFocusEvent;
 			itemProvider.ItemProvider.DataGridProvider.DataGrid.GotFocus += OnHasKeyboardFocusEvent;
+			itemProvider.ItemProvider.DataGridProvider.DataGrid.LostFocus += OnHasKeyboardFocusEvent;
 		}
 
 		public override void Disconnect ()
 		{
 			itemProvider.ItemProvider.DataGridProvider.DataGrid.CurrentCellChanged -= OnHasKeyboardFocusEvent;
 			itemProvider.ItemProvider.DataGridProvider.DataGrid.GotFocus -= OnHasKeyboardFocusEvent;
+			itemProvider.ItemProvider.DataGridProvider.DataGrid.LostFocus -= OnHasKeyboardFocusEvent;
 		}
 		
 		#endregion
@@ -66,11 +68,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		
 		private void OnHasKeyboardFocusEvent (object sender, EventArgs args)
 		{
-			SWF.DataGridCell currentCell = itemProvider.ItemProvider.DataGridProvider.DataGrid.CurrentCell;
-			if (currentCell.ColumnNumber == itemProvider.ItemProvider.GetColumnIndexOf (itemProvider)
-			    && currentCell.RowNumber == itemProvider.ItemProvider.Index
-			    && itemProvider.ItemProvider.DataGridProvider.DataGrid.Focused)
-				RaiseAutomationPropertyChangedEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

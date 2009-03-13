@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Bridge;
@@ -57,12 +58,6 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.MultiLine);
-
-			bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-			if (canFocus)
-				states.AddState (Atk.StateType.Focusable);
-			else
-				states.RemoveState (Atk.StateType.Focusable);
 
 			return states;
 		}
@@ -149,7 +144,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -189,11 +184,12 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public Atk.Hyperlink GetLink (int link_index)
 		{
+			AdjustLinkObjects ();
 			if (link_index < 0 || link_index >= links.Count)
 				return null;
 			return links [link_index];
@@ -224,6 +220,7 @@ namespace UiaAtkBridge
 
 		public int GetLinkIndex (int char_index)
 		{
+			AdjustLinkObjects ();
 			for (int i = 0; i < links.Count; i++)
 				if (hypertext.Start (i) <= char_index && (hypertext.Start (i) + hypertext.Length (i)) > char_index)
 					return i;
@@ -383,7 +380,8 @@ namespace UiaAtkBridge
 				return false;
 			try {
 				hyperlink.hypertext.Invoke (index);
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;

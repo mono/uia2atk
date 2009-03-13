@@ -111,7 +111,6 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 #click menuitem under dir_menu to check its AtkAction, move focus and selection
 #to recentlyused_menuitem, there is no "ANewFolder" folder on listview
-##click menuitem doesn't change dir BUG475529
 ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("ANewFolder")
@@ -126,7 +125,6 @@ statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing
 
 #use mouseClick move focus and selection to mycomputer_menuitem, there is no 
 #"My Computer" folder on listview
-##mouse click menuitem under dir_combobox crash app BUG474611
 ofdFrame.dir_menu.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.mycomputer_menuitem.mouseClick()
@@ -134,6 +132,17 @@ sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("My Computer")
 statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
+
+#regression test to click first and last dir menuitem doesn't crash app due to bug474611
+ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
+sleep(config.SHORT_DELAY)
+ofdFrame.click(ofdFrame)
+sleep(config.SHORT_DELAY)
+assert not ofdFrame.opendialog.assertClosed()
+
+ofdFrame.itemClick(ofdFrame.mynetwork_menuitem)
+sleep(config.SHORT_DELAY)
+assert not ofdFrame.opendialog.assertClosed()
 
 #############################################################
 ##popUpButtonPanel and popUpButton test

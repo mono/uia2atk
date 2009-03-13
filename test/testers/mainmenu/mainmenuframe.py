@@ -17,7 +17,18 @@ class MainMenuFrame(accessibles.Frame):
         super(MainMenuFrame, self).__init__(accessible)
         self.mainmenu = self.findMenuBar(None)
         self.menuitem_file = self.findMenuItem("&File")
+        self.menuitem_file_new = self.findMenuItem("&New")
+        self.menuitem_file_new_doc = self.findMenuItem("&Document")
+        self.menuitem_file_open = self.findMenuItem("&Open")
+        self.menuitem_file_exit = self.findMenuItem("E&xit")
+
         self.menuitem_edit = self.findMenuItem("&Edit")
+        self.menuitem_edit_undo = self.findMenuItem("&Undo")
+        self.menuitem_edit_redo = self.findMenuItem("&Redo")
+
+        self.menuitem_help = self.findMenuItem("&Help")
+        self.menuitem_help_about = self.findMenuItem("&About")
+
         self.label = self.findLabel(None)
 
     def assertText(self, accessible, text=None):

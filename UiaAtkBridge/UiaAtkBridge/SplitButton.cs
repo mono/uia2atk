@@ -39,13 +39,17 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.Filler;
 
-			button = new Button (provider);
-			button.ManagesRemoval = true;
-			base.AddOneChild (button);
+			button = AutomationBridge.CreateAdapter<Button> (provider);
+			if (button != null) {
+				button.ManagesRemoval = true;
+				base.AddOneChild (button);
+			}
 
-			ec_button = new ExpandCollapseButton (provider);
-			ec_button.ManagesRemoval = true;
-			base.AddOneChild (ec_button);
+			ec_button = AutomationBridge.CreateAdapter<ExpandCollapseButton> (provider);
+			if (ec_button != null) {
+				ec_button.ManagesRemoval = true;
+				base.AddOneChild (ec_button);
+			}
 		}
 
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
@@ -62,20 +66,24 @@ namespace UiaAtkBridge
 
 		protected override void RemoveUnmanagedChildren ()
 		{
-			base.RemoveChild (button);
-			base.RemoveChild (ec_button);
+			if (button != null)
+				base.RemoveChild (button);
+			if (ec_button != null)
+				base.RemoveChild (ec_button);
 		}
 #endregion
 
 #region Internal Methods
 		internal override void AddOneChild (Atk.Object child)
 		{
-			ec_button.AddOneChild (child);
+			if (ec_button != null)
+				ec_button.AddOneChild (child);
 		}
 		
 		internal override void RemoveChild (Atk.Object child)
 		{
-			ec_button.RemoveChild (child);
+			if (ec_button != null)
+				ec_button.RemoveChild (child);
 		}
 #endregion
 

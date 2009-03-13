@@ -52,8 +52,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Data
 		
-		internal IDictionary<Component, FragmentControlProvider>
-			componentProviders;  // TODO: Fix this...
+		protected IDictionary<Component, FragmentControlProvider>
+			componentProviders;
 		
 		#endregion
 
@@ -95,7 +95,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			FragmentControlProvider contextMenuStripProvider = (FragmentControlProvider)
 				ProviderFactory.GetProvider (contextMenuStrip);
-			OnNavigationChildAdded (true, contextMenuStripProvider);
+			AddChildProvider (contextMenuStripProvider);
 		}
 
 		void HandleContextMenuStripClosed (object sender, EventArgs e)
@@ -105,7 +105,7 @@ namespace Mono.UIAutomation.Winforms
 			if (contextMenuStripProvider == null)
 				return;
 			contextMenuStripProvider.Terminate ();
-			OnNavigationChildRemoved (true, contextMenuStripProvider);
+			RemoveChildProvider (contextMenuStripProvider);
 			ProviderFactory.ReleaseProvider (contextMenuStrip);
 			// TODO: Need to handle disposal of some parent without close happening?
 		}
@@ -128,7 +128,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			FragmentControlProvider contextMenuProvider = (FragmentControlProvider)
 				ProviderFactory.GetProvider (contextMenu);
-			OnNavigationChildAdded (true, contextMenuProvider);
+			AddChildProvider (contextMenuProvider);
 		}
 
 		void HandleContextMenuCollapse (object sender, EventArgs e)
@@ -138,7 +138,7 @@ namespace Mono.UIAutomation.Winforms
 			if (contextMenuProvider == null)
 				return;
 			contextMenuProvider.Terminate ();
-			OnNavigationChildRemoved (true, contextMenuProvider);
+			RemoveChildProvider (contextMenuProvider);
 			ProviderFactory.ReleaseProvider (contextMenu);
 			// TODO: Need to handle disposal of some parent without close happening?
 		}
@@ -199,16 +199,65 @@ namespace Mono.UIAutomation.Winforms
 				return children [index];
 		}
 		
-		public void AddChildProvider (bool raiseEvent, 
-		                              FragmentControlProvider provider) 
+		public void AddChildProvider (bool raiseEvent,
+		                              FragmentControlProvider childProvider)
 		{
-			OnNavigationChildAdded (raiseEvent, provider);
+			InsertChildProvider (raiseEvent, childProvider, -1);
+		}
+		
+		public virtual void InsertChildProvider (bool raiseEvent,
+		                                         FragmentControlProvider childProvider,
+		                                         int index)
+		{
+			if (children.Contains (childProvider) == true)
+				return;
+			
+			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
+			childProvider.Navigation.Initialize ();
+
+			if (index < 0 || index >= children.Count) {
+				children.Add (childProvider);
+			} else {
+				children.Insert (index, childProvider);
+			}
+
+			childProvider.InitializeChildControlStructure ();
+
+			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
+			                                              StructureChangeType.ChildAdded, 
+			                                              childProvider, index));
 		}
 
-		public void RemoveChildProvider (bool raiseEvent, 
-		                                 FragmentControlProvider provider) 
+		public virtual void RemoveChildProvider (bool raiseEvent,
+		                                         FragmentControlProvider childProvider)
 		{
-			OnNavigationChildRemoved (raiseEvent, provider);
+			if (children.Contains (childProvider) == false)
+				return;
+			
+			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
+			                                              StructureChangeType.ChildRemoved, 
+			                                              childProvider));
+
+			childProvider.Navigation.Terminate ();
+			childProvider.Navigation = null;
+			
+			children.Remove (childProvider);
+		}
+		
+		public void AddChildProvider (FragmentControlProvider childProvider) 
+		{
+			AddChildProvider (true, childProvider);
+		}
+		
+		public void InsertChildProvider (FragmentControlProvider childProvider,
+		                                 int index)
+		{
+			InsertChildProvider (true, childProvider, index);
+		}
+
+		public void RemoveChildProvider (FragmentControlProvider childProvider) 
+		{
+			RemoveChildProvider (true, childProvider);
 		}
 
 		public override void Terminate ()
@@ -223,16 +272,12 @@ namespace Mono.UIAutomation.Winforms
 		//See: SimpleControlProvider.InitializeEvents
 		public virtual void InitializeChildControlStructure ()
 		{
-			// HACK: This is just to make sure control providers
-			//       aren't sent to bridge until the parent's already
-			//       there.  There are about 100 ways to do this
-			//       better.
 			if (Control != null) {				
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
 				
 				foreach (SWF.Control childControl in Control.Controls)
-					HandleComponentAdded (childControl, true);
+					HandleComponentAdded (childControl);
 
 				Control.VisibleChanged += OnControlVisibleChanged;
 			}
@@ -247,7 +292,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			for (; componentChildren.Count > 0; ) {
-				HandleComponentRemoved (componentChildren [0], true);
+				HandleComponentRemoved (componentChildren [0]);
 			}
 
 			children.Clear ();
@@ -263,55 +308,10 @@ namespace Mono.UIAutomation.Winforms
 			if (NavigationUpdated != null)
 				NavigationUpdated (this, args);
 		}
-
-		protected virtual void OnNavigationChildAdded (bool raiseEvent,
-		                                               FragmentControlProvider childProvider)
-		{
-			OnNavigationChildAdded (raiseEvent, childProvider, -1);
-		}
-		
-		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
-		                                               FragmentControlProvider childProvider,
-		                                               int index)
-		{
-			if (children.Contains (childProvider) == true)
-				return;
 			
-			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
-			childProvider.Navigation.Initialize ();
-
-			if (index < 0) {
-				children.Add (childProvider);
-			} else {
-				children.Insert (index, childProvider);
-			}
-
-			childProvider.InitializeChildControlStructure ();
-
-			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
-			                                              StructureChangeType.ChildAdded, 
-			                                              childProvider, index));
-		}
-		
-		protected virtual void OnNavigationChildRemoved (bool raiseEvent, 
-		                                                 FragmentControlProvider childProvider)
+		protected virtual void OnNavigationChildrenCleared ()
 		{
-			if (children.Contains (childProvider) == false)
-				return;
-			
-			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
-			                                              StructureChangeType.ChildRemoved, 
-			                                              childProvider));
-
-			childProvider.Navigation.Terminate ();
-			childProvider.Navigation = null;
-			
-			children.Remove (childProvider);
-		}
-			
-		protected virtual void OnNavigationChildrenCleared (bool raiseEvent)
-		{
-			OnNavigationUpdated (new NavigationEventArgs (raiseEvent,
+			OnNavigationUpdated (new NavigationEventArgs (true,
 			                                              StructureChangeType.ChildrenReordered, 
 			                                              null));
 		}
@@ -322,12 +322,12 @@ namespace Mono.UIAutomation.Winforms
 	
 		private void OnControlAdded (object sender, SWF.ControlEventArgs args)
 		{
-			HandleComponentAdded (args.Control, true);
+			HandleComponentAdded (args.Control);
 		}
 	
 		private void OnControlRemoved (object sender, SWF.ControlEventArgs args)
 		{
-			HandleComponentRemoved (args.Control, true);
+			HandleComponentRemoved (args.Control);
 		}
 
 		private bool visible = false;
@@ -352,10 +352,10 @@ namespace Mono.UIAutomation.Winforms
 			bool controlExists = componentProviders.ContainsKey (control);
 			if (IsComponentVisible (control)) {
 				if (!controlExists)
-					InitializeComponentProvider (control, true);
+					InitializeComponentProvider (control);
 			} else {
 				if (controlExists)
-					TerminateComponentProvider (control, true);
+					TerminateComponentProvider (control);
 			}
 		}
 
@@ -389,8 +389,7 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-		protected void InitializeComponentProvider (Component childComponent,
-		                                            bool raiseEvent)
+		protected void InitializeComponentProvider (Component childComponent)
 		{
 			SWF.Control control = null;
 			FragmentControlProvider childProvider = null;
@@ -405,14 +404,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (childProvider == null)
 				return;
-			// TODO: Null check, compound, etc?
 
 			componentProviders [childComponent] = childProvider;
-			OnNavigationChildAdded (raiseEvent, childProvider);
+			AddChildProvider (childProvider);
 		}
 
-		protected void TerminateComponentProvider (Component childComponent,
-		                                           bool raiseEvent)
+		protected void TerminateComponentProvider (Component childComponent)
 		{			
 			FragmentControlProvider removedProvider;
 			
@@ -422,7 +419,7 @@ namespace Mono.UIAutomation.Winforms
 				// Event source:
 				//       Parent of removed child runtimeId: The child that was
 				//       removed. (pg 6 of fxref_uiautomationtypes_p2.pdf)
-				OnNavigationChildRemoved (raiseEvent, removedProvider);
+				RemoveChildProvider (removedProvider);
 				DestroyProvider (childComponent);
 			}
 		}
@@ -470,7 +467,7 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 		}
 
-		protected void HandleComponentAdded (Component component, bool raiseEvent)
+		protected void HandleComponentAdded (Component component)
 		{
 			AddChildComponent (component);
 
@@ -479,12 +476,12 @@ namespace Mono.UIAutomation.Winforms
 			if (!IsComponentVisible (component))
 				return;
 
-			InitializeComponentProvider (component, raiseEvent);
+			InitializeComponentProvider (component);
 		}
 
-		protected void HandleComponentRemoved (Component component, bool raiseEvent)
+		protected void HandleComponentRemoved (Component component)
 		{
-			TerminateComponentProvider (component, raiseEvent);
+			TerminateComponentProvider (component);
 
 			RemoveChildComponent (component);
 		}

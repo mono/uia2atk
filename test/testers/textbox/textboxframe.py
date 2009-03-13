@@ -14,63 +14,55 @@ import time
 class TextBoxFrame(accessibles.Frame):
     """the profile of the textbox sample"""
 
-    LABEL_NORMAL = "Normal TextBox"
+    LABEL_NORMAL = "explicitly set name for label"
     LABEL_MLINE = "Multi-Line TextBox"
     LABEL_PASSWD = "Password TextBox"
+    LABEL_NONEDIT = "non-Editable TextBox"
 
     def __init__(self, accessible):
         super(TextBoxFrame, self).__init__(accessible)
         self.label_normal = self.findLabel(self.LABEL_NORMAL)
         self.label_mline = self.findLabel(self.LABEL_MLINE)
         self.label_passwd = self.findLabel(self.LABEL_PASSWD)
+        self.label_nonedit = self.findLabel(self.LABEL_NONEDIT)
 
         self.textboxes = self.findAllTexts(None)
-        assert len(self.textboxes) == 3, "the number of textboxes is incorrect"
+        assert len(self.textboxes) == 4, "the number of textboxes is incorrect"
 
         self.textbox_normal = self.textboxes[0]
         self.textbox_mline = self.textboxes[1]
         self.textbox_passwd = self.textboxes[2]
+        self.textbox_nonedit = self.textboxes[3]
 
-    def click(self, button):
-        procedurelogger.action("click %s" % button)
-        button.click()
-
-    def assertText(self, accessible, text=None):
+    def assertEditableText(self, accessible, expected_text=None):
         """assert text is equal to the input"""
 
         procedurelogger.action('Assert the text of %s' % accessible)
         procedurelogger.expectedResult('%s text is "%s"' % \
                                                 (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
 
-    def assertOffset(self, accessible, offset=None):
-        """assert text's offset is equal to the input"""
+        eti = accessible._accessible.queryEditableText()
+        actual_text = eti.getText(0, eti.characterCount)
 
-        procedurelogger.expectedResult('check the offset of "%s"' % accessible)
+        assert actual_text == expected_text, \
+            'Actual text "%s" does not match expected text "%s"' % \
+            (actual_text, expected_text)
 
-        assert accessible.caretOffset == offset, '%s is not match with "%s"' % \
-                                                (accessible.caretOffset, offset)
+    def assertStreamableContent(self, accessible):
+        procedurelogger.action("Verify Streamable Content for %s" % accessible)
 
-    def inputText(self, accessible, text):
-        procedurelogger.action('set %s text to "%s"' % (accessible, text))
-        try:
-            accessible.text = text
-        except NotImplementedError:
-            pass
+        expect = ['text/plain']
+        result = accessible._accessible.queryStreamableContent().getContentTypes()
 
-    def inputValue(self, accessible, value):
-        procedurelogger.action('set %s value to "%s"' % (accessible, value))
-        try:
-            accessible.value = value
-        except NotImplementedError:
-            pass
+        procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
+        assert expect == result, "Contents %s not match the expected" % result
 
-    def assertSelectChild(self, accessible, index):
-        """assert Selection implementation"""
-        procedurelogger.action('select index %s in "%s"' % \
-                                        (index, accessible))
-        accessible.selectChild(index)    
+    def assertScrollBars(self, accessible):
+        procedurelogger.action("Assert the scroll bars of multiline textbox" % \
+                                                                accessible)
+        self.scrollbars = accessible.findAllScrollBars(None)
+        assert len(self.scrollbars) == 2, \
+                                    "the number of Scroll Bars is not correct."
 
     def quit(self):
         self.altF4()

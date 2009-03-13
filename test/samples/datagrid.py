@@ -37,110 +37,116 @@ class DataGridApp(Form):
         base.Dispose(bool(disposing))
 
     def InitializeComponent(self):
-        self.dgdFunctionArea = DataGrid()
+        self.datagrid = DataGrid()
         self.buttonFocus = Button()
-        self.dgdFunctionArea.BeginInit()
+        self.datagrid.BeginInit()
         self.SuspendLayout()
 
-        self.dgdFunctionArea.DataMember = ""
-        self.dgdFunctionArea.HeaderForeColor = SystemColors.ControlText
+        self.datagrid.DataMember = ""
+        self.datagrid.HeaderForeColor = SystemColors.ControlText
 
-        self.dgdFunctionArea.Location = Point(4, 8)
-        self.dgdFunctionArea.Name = "dgdFunctionArea"
-        self.dgdFunctionArea.Size = Size(500, 280)
-        self.dgdFunctionArea.TabIndex = 0
+        self.datagrid.Location = Point(10, 50)
+        self.datagrid.Name = "datagrid"
+        self.datagrid.Size = Size(550, 230)
+        self.datagrid.TabIndex = 0
 
-    
-        self.buttonFocus.Location = Point(420, 310)
-        self.buttonFocus.Name = "buttonFocus"
-        self.buttonFocus.Size = Size(84, 23)
-        self.buttonFocus.TabIndex = 1
-        self.buttonFocus.Text = "GetFocus"
-        self.buttonFocus.Click += self.buttonFocus_Click
+        self.label = Label()
+        self.label.Text = "CurrentCell:"
+        self.label.Location = Point(10, 10)
+        self.label.AutoSize = True
 
-        self.Controls.Add(self.buttonFocus)
-        self.Controls.Add(self.dgdFunctionArea)
+        self.Controls.Add(self.datagrid)
+        self.Controls.Add(self.label)
 
-        self.dgdFunctionArea.EndInit()
+        self.datagrid.EndInit()
         self.ResumeLayout(False)
 
 
     def PopulateGrid(self):
-        #####add four line
-        self.dtblFunctionalArea = DataTable("FunctionArea")
-        arrstrFunctionalArea = ["Area", "Min", "Max"]
-        self.dtCol = DataColumn()
-        for i in arrstrFunctionalArea:
-            self.dtCol = DataColumn(i)
-            self.dtCol.DataType = System.String
-            self.dtCol.DefaultValue = ""
-            self.dtblFunctionalArea.Columns.Add(self.dtCol)
 
-        #####add boolean line.
-        self.dtcCheck = DataColumn("IsMandatory")
-        self.dtcCheck.DataType = System.Boolean
-        self.dtcCheck.DefaultValue = False
-        self.dtblFunctionalArea.Columns.Add(self.dtcCheck)
+        self.datatable = DataTable("DataTable")
+
+        #####add boolean column.
+        self.boolcolumn = DataColumn("BoolColumn")
+        self.boolcolumn.DataType = System.Boolean
+        self.boolcolumn.DefaultValue = None
+        self.datatable.Columns.Add(self.boolcolumn)
+
+        #####add 2 textbox column and 1 combobox column
+        columns = ["TextBox_Edit", "TextBox_Read", "ComboBox"]
+        self.textcolumn = DataColumn()
+        for i in columns:
+            self.textcolumn = DataColumn(i)
+            self.textcolumn.DataType = System.String
+            self.textcolumn.DefaultValue = ""
+            self.datatable.Columns.Add(self.textcolumn)
 
         #####bound to datagrid
-        self.dgdFunctionArea.DataSource = self.dtblFunctionalArea
+        self.datagrid.DataSource = self.datatable
 
         #####add new rows
-        for i in range(0,6):
-            self.newRow1 = self.dtblFunctionalArea.NewRow()
-            self.dtblFunctionalArea.Rows.Add(self.newRow1)
-        self.dtblFunctionalArea.Rows[0]["Min"] = "0"
-        self.dtblFunctionalArea.Rows[1]["Min"] = "1"
-        self.dtblFunctionalArea.Rows[2]["Min"] = "2"
-        self.dtblFunctionalArea.Rows[3]["Min"] = "3"
-        self.dtblFunctionalArea.Rows[4]["Min"] = "4"
-        self.dtblFunctionalArea.Rows[5]["Min"] = "5"
+        for i in range(0,3):
+            self.newRow1 = self.datatable.NewRow()
+            self.datatable.Rows.Add(self.newRow1)
+        self.datatable.Rows[0]["TextBox_Edit"] = "Edit0"
+        self.datatable.Rows[1]["TextBox_Edit"] = "Edit1"
+        self.datatable.Rows[2]["TextBox_Edit"] = "Edit2"
 
-        #####add style for datagrid
-        if self.dgdFunctionArea.TableStyles.Contains("") != "FunctionArea":
-            self.dgdtblStyle = DataGridTableStyle()
-            self.dgdtblStyle.MappingName = self.dtblFunctionalArea.TableName
-            self.dgdFunctionArea.TableStyles.Add(self.dgdtblStyle)
-            self.dgdtblStyle.RowHeadersVisible = True
-            self.dgdtblStyle.HeaderBackColor = Color.LightSteelBlue
-            self.dgdtblStyle.AllowSorting = False
-            self.dgdtblStyle.HeaderBackColor =Color.FromArgb(8, 36, 107)
-            self.dgdtblStyle.HeaderForeColor = Color.White
-            self.dgdtblStyle.GridLineColor = Color.DarkGray
-            self.dgdtblStyle.PreferredRowHeight = 25
-            self.dgdFunctionArea.BackgroundColor = Color.White
+        self.datatable.Rows[0]["TextBox_Read"] = "Read0"
+        self.datatable.Rows[1]["TextBox_Read"] = "Read1"
+        self.datatable.Rows[2]["TextBox_Read"] = "Read2"
 
-            self.colStyle = self.dgdFunctionArea.TableStyles[0].GridColumnStyles
-            self.colStyle[0].Width = 80
-            self.colStyle[1].Width = 80
-            self.colStyle[2].Width = 80
-            self.colStyle[3].Width = 80
+        self.datatable.Rows[0]["ComboBox"] = "Box0"
+        self.datatable.Rows[1]["ComboBox"] = "Box1"
+        self.datatable.Rows[2]["ComboBox"] = "Box2"
 
-            self.dgtb = self.dgdFunctionArea.TableStyles[0].GridColumnStyles[0]
+        self.datatable.Rows[1]["BoolColumn"] = True
+        self.datatable.Rows[2]["BoolColumn"] = False
 
-            self.cmbFunctionArea = ComboBox()
-            self.cmbFunctionArea.Items.AddRange(("Item1", "Item2", "Item3"))
-            self.cmbFunctionArea.Cursor = Cursors.Arrow
-            self.cmbFunctionArea.DropDownStyle = ComboBoxStyle.DropDownList
-            self.cmbFunctionArea.Dock = DockStyle.Fill
-            self.cmbFunctionArea.SelectionChangeCommitted += self.cmbFunctionArea_SelectionChangeCommitted
-            self.dgtb.TextBox.Controls.Add(self.cmbFunctionArea)
+        #add style for datagrid
+        self.tablestyle = DataGridTableStyle()
+        self.tablestyle.MappingName = "DataTable"
 
-    def GetFocus(self, row, col):
-        self.dgdFunctionArea.Focus()
-        self.dgc = DataGridCell(int(row), int(col))
-        self.dgdFunctionArea.CurrentCell = self.dgc
-        self.dgtb = self.dgdFunctionArea.TableStyles[0].GridColumnStyles[col]
+        self.boolcolumnstyle = DataGridBoolColumn()
+        self.boolcolumnstyle.MappingName = "BoolColumn"
+        self.boolcolumnstyle.HeaderText = "BoolColumn"
+        self.boolcolumnstyle.Width = 120
+        self.tablestyle.GridColumnStyles.Add(self.boolcolumnstyle)
 
-        self.dgtb.TextBox.Focus()
+        self.textcolumnstyle = DataGridTextBoxColumn()
+        self.textcolumnstyle.MappingName = "TextBox_Edit"
+        self.textcolumnstyle.HeaderText = "TextBox_Edit"
+        self.textcolumnstyle.Width = 120
+        self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle)
 
-    def cmbFunctionArea_SelectionChangeCommitted(self, sender, event):
-        self.dgdFunctionArea[self.dgdFunctionArea.CurrentCell] = self.cmbFunctionArea.SelectedItem.ToString()
+        self.textcolumnstyle1 = DataGridTextBoxColumn()
+        self.textcolumnstyle1.MappingName = "TextBox_Read"
+        self.textcolumnstyle1.HeaderText = "TextBox_Read"
+        self.textcolumnstyle1.Width = 120
+        self.textcolumnstyle1.ReadOnly = True
+        self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle1)
 
-    def buttonFocus_Click(self, sender, event):
-        self.GetFocus(1, 0)
+        self.datagrid.TableStyles.Add(self.tablestyle)
 
+        self.dgtb = self.datagrid.TableStyles[0].GridColumnStyles[3]
+        self.comboboxstyle = ComboBox()
+        self.comboboxstyle.Items.AddRange(("Item1", "Item2", "Item3"))
+        self.comboboxstyle.Cursor = Cursors.Arrow
+        self.comboboxstyle.DropDownStyle = ComboBoxStyle.DropDownList
+        self.comboboxstyle.Dock = DockStyle.Fill
+        self.comboboxstyle.SelectionChangeCommitted += self.comboboxstyle_SelectionChangeCommitted
+        self.dgtb.TextBox.Controls.Add(self.comboboxstyle)
 
+        self.datagrid.CurrentCellChanged += self.datagrid_currencellchanged
+
+    def datagrid_currencellchanged(self, sender, event):
+        cell = self.datagrid.CurrentCell
+        bool_value = self.datatable.Rows[cell.RowNumber][cell.ColumnNumber]
+
+        self.label.Text = "row:%s col:%s Value:%s" % (cell.RowNumber, cell.ColumnNumber, bool_value)
+
+    def comboboxstyle_SelectionChangeCommitted(self, sender, event):
+        self.datagrid[self.datagrid.CurrentCell] = self.comboboxstyle.SelectedItem.ToString()
 
 form = DataGridApp()
 Application.Run(form)

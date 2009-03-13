@@ -42,7 +42,7 @@ libraries:
 			* libgmodule
 			* libglib
 			* atk
-			* mono-uia >= 0.9 (provided by UIAutomation package)
+			* mono-uia >= 1.0 (provided by UIAutomation package)
 			* Tests require nunit >= 2.4.7
 
 	b. Building the Software

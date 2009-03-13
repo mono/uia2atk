@@ -93,7 +93,7 @@ namespace Mono.UIAutomation.Winforms
 				= new MonthCalendarHeaderProvider (
 					this, calendarProvider, Control);
 			headerProvider.Initialize ();
-			AddChildProvider (true, headerProvider);
+			AddChildProvider (headerProvider);
 
 			AddChildren ();
 		}
@@ -102,7 +102,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.FinalizeChildControlStructure ();
 
-			RemoveChildProvider (true, headerProvider);
+			RemoveChildProvider (headerProvider);
 			headerProvider.Terminate ();
 			
 			RemoveChildren ();
@@ -269,32 +269,32 @@ namespace Mono.UIAutomation.Winforms
 					this, calendarProvider, Control, d, r, c);
 				item.Initialize ();
 
-				AddChildProvider (true, item);
+				AddChildProvider (item);
 				gridChildren.Add (d, item);
 			}
 
 			backButton = new MonthCalendarButtonProvider (
 				this, MonthCalendarButtonProvider.ButtonDirection.Back);
 			backButton.Initialize ();
-			AddChildProvider (true, backButton);
+			AddChildProvider (backButton);
 
 			forwardButton = new MonthCalendarButtonProvider (
 				this, MonthCalendarButtonProvider.ButtonDirection.Forward);
 			forwardButton.Initialize ();
-			AddChildProvider (true, forwardButton);
+			AddChildProvider (forwardButton);
 		}
 
 		private void RemoveChildren ()
 		{
-			RemoveChildProvider (true, backButton);
+			RemoveChildProvider (backButton);
 			backButton.Terminate ();
 
-			RemoveChildProvider (true, forwardButton);
+			RemoveChildProvider (forwardButton);
 			forwardButton.Terminate ();
 
 			foreach (MonthCalendarListItemProvider item
 			         in gridChildren.Values) {
-				RemoveChildProvider (true, item);
+				RemoveChildProvider (item);
 				item.Terminate ();
 			}
 
@@ -352,7 +352,7 @@ namespace Mono.UIAutomation.Winforms
 					days[i].ToString (HEADER_ITEM_DAY_FORMAT), i);
 
 				itemProvider.Initialize ();
-				AddChildProvider (true, itemProvider);
+				AddChildProvider (itemProvider);
 				headerItems.Add (itemProvider);
 			}
 		}
@@ -362,7 +362,7 @@ namespace Mono.UIAutomation.Winforms
 			base.FinalizeChildControlStructure ();
 			
 			foreach (MonthCalendarHeaderItemProvider item in headerItems) {
-				RemoveChildProvider (true, item);
+				RemoveChildProvider (item);
 				item.Terminate ();
 			}
 

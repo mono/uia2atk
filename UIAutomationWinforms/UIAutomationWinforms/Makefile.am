@@ -58,6 +58,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs \
@@ -66,12 +67,14 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/HeaderItemInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildEmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs \
@@ -84,6 +87,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/HeaderItemInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/TableProviderBehavior.cs \
@@ -99,6 +103,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Generic/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs \
@@ -112,6 +117,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemCheckBoxToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemClipboardProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs \
@@ -125,6 +131,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox/InsertDeleteTextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/ExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MenuItem/SelectionItemProviderBehavior.cs \
@@ -138,6 +145,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/EditableRangeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PictureBox/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
@@ -170,10 +179,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/CaretProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/ClipboardProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs \
@@ -190,7 +202,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationControlTypePropertyEvent.cs \
@@ -228,6 +239,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs \
@@ -237,6 +249,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/HeaderItemInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -248,7 +261,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs \
@@ -269,6 +287,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/HeaderItemInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \
@@ -369,6 +388,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MenuItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementSelectedEvent.cs \
@@ -376,6 +396,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternSmallChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -434,6 +459,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonExpandCollapsePatternExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs \
@@ -468,11 +494,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
@@ -510,6 +531,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/IListProvider.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
+	Mono.UIAutomation.Winforms/ISelectableItem.cs \
 	Mono.UIAutomation.Winforms/KeyFilter.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \

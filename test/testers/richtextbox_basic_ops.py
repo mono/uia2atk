@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf8 -*-
 
 ##############################################################################
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
@@ -45,6 +46,39 @@ if app is None:
 # just an alias to make things shorter
 rtbFrame = app.richTextBoxFrame
 
-sleep(config.SHORT_DELAY)
+# BUG478886 - RichTextBox text accessible does not receive "focused" state
+# statesCheck(rtbFrame.richtextbox_top, "RichTextBox")
+# statesCheck(rtbFrame.richtextbox_bottom, "RichTextBox")
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# at the end of the loaded text
+# rtbFrame.assertEditableText(rtbFrame.richtextbox_top, rtbFrame.TEXT_TOP)
+rtbFrame.assertEditableText(rtbFrame.richtextbox_bottom, rtbFrame.TEXT_BOTTOM)
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.appendTextTest(rtbFrame.richtextbox_top, "Mono")
+rtbFrame.appendTextTest(rtbFrame.richtextbox_bottom, "Mono")
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.appendTextTest(rtbFrame.richtextbox_top, "Mono")
+rtbFrame.prefixTextTest(rtbFrame.richtextbox_bottom, "Mono")
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.deleteFromEndTest(rtbFrame.richtextbox_top, 20)
+rtbFrame.deleteFromEndTest(rtbFrame.richtextbox_bottom, 5)
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.deleteFromBeginningTest(rtbFrame.richtextbox_top, 15)
+rtbFrame.deleteFromBeginningTest(rtbFrame.richtextbox_bottom, 3)
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.deleteFromMiddleTest(rtbFrame.richtextbox_top, 5, 20)
+rtbFrame.deleteFromMiddleTest(rtbFrame.richtextbox_bottom, 3, 7)
+
+# Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
+# rtbFrame.insertTextTest(rtbFrame.richtextbox_top, "A!@#$%^&*Z", 7)
+rtbFrame.insertTextTest(rtbFrame.richtextbox_bottom, "USD$1,000.00", 7)
+
+sleep(10)
 
 rtbFrame.quit()

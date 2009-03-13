@@ -105,20 +105,21 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
-		public override void ExpandTreeView (BasicWidgetType type)
+		// This is a hack.  For some reason, our Tree Cell instances in
+		// our Gtk.TreeView don't support AtkAction.  I suspect this
+		// has something to do with the way the TreeView is
+		// initialized, but I don't have the time to research this any
+		// further.
+		protected override void ExpandTreeView (Atk.Object obj)
 		{
-			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
-				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
 			RunInGuiThread (delegate {
-			Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+				Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
 				widget.ExpandAll ();
 			});
 		}
 
-		public override void CollapseTreeView (BasicWidgetType type)
+		protected override void CollapseTreeView (Atk.Object obj)
 		{
-			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
-				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
 			RunInGuiThread (delegate {
 				Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
 				widget.CollapseAll ();
@@ -161,6 +162,11 @@ namespace UiaAtkBridgeTest
 			return false;
 		}
 
+		public override bool IsBGO574674Addressed ()
+		{
+			return false;
+		}
+
 		public override void CloseContextMenu (Atk.Object accessible) {
 			RunInGuiThread (delegate () {
 				((Gtk.Menu)mappings [accessible]).Popdown ();
@@ -181,6 +187,10 @@ namespace UiaAtkBridgeTest
 		
 		protected override bool TextBoxCaretInitiallyAtEnd { 
 			get { return true; }
+		}
+
+		protected override bool TextBoxHasScrollBar { 
+			get { return false; }
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type)
@@ -503,7 +513,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.TextView)widget).Buffer.Text = text;
 				});
 				break;
-			case BasicWidgetType.MaskedTextBoxEntry:
+			case BasicWidgetType.PasswordCharTextBoxEntry:
 				if (!real)
 					throw new NotSupportedException ();
 				
@@ -596,7 +606,6 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.HPaned ();
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealHPaned ();
-				((Gtk.HPaned)widget).CanFocus = false;
 				break;
 			case BasicWidgetType.VTrackBar:
 				widget = new Gtk.VScale (adj);

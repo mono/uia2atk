@@ -41,6 +41,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.BaseColorControl
 		public SmallColorControlInvokeProviderBehavior (BaseColorControlProvider.SmallColorControlProvider provider)
 			: base (provider)
 		{
+			this.smallColorControl = (ColorDialog.BaseColorControl.SmallColorControl) Provider.Control;
+			this.baseColorControl = (ColorDialog.BaseColorControl) smallColorControl.Parent;
 		}
 		
 		#endregion
@@ -85,10 +87,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors.BaseColorControl
 				Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
 				return;
 			}
-			
-			((ColorDialog.BaseColorControl.SmallColorControl) Provider.Control).IsSelected = true;
+
+			// TODO: Use internal property when backport
+//			ColorDialog.BaseColorControl.SmallColorControl selected =
+//				((ColorDialog.BaseColorControl) baseColorControl).UIASelectedSmallColorControl;
+			try {
+				ColorDialog.BaseColorControl.SmallColorControl selected =
+					Helper.GetPrivateProperty<ColorDialog.BaseColorControl, ColorDialog.BaseColorControl.SmallColorControl>
+						((ColorDialog.BaseColorControl) baseColorControl, "UIASelectedSmallColorControl");
+				if (selected != null)
+					selected.IsSelected = false;
+			} catch (NotSupportedException) { }
+			smallColorControl.IsSelected = true;
 		}
 		
+		#endregion
+
+		#region Private Field
+
+		ColorDialog.BaseColorControl.SmallColorControl smallColorControl;
+		ColorDialog.BaseColorControl baseColorControl;
+
 		#endregion
 	}
 }

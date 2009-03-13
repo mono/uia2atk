@@ -344,6 +344,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			mainMenuCollapseEventRaised = false;
 		}
 
+		[Test]
+		public void StripAmpersands ()
+		{
+			MenuItem menuItem = new MenuItem ("&testing");
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+			
+			TestProperty (provider,
+			              AEIds.NameProperty,
+			              "testing");
+
+			menuItem.Text = "&&testing";
+			TestProperty (provider,
+			              AEIds.NameProperty,
+			              "&testing");
+		}
+		
 		void SetupItemExpandCollapseEvents (MenuItem item)
 		{
 			clickedItems [item] = false;

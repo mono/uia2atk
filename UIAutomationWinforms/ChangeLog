@@ -1,3 +1,13 @@
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* NEWS:
+	* README:
+	* configure.ac: Bump version to 1.0, update dependencies.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* configure.ac: Bump Mono requirement to 2.4.
+
 2009-01-28  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Now that mono is shipping a more recent version of

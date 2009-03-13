@@ -357,6 +357,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              control.CanFocus);
 		}
+
+		[Test]
+		public virtual void AmpersandsAndNameTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			if (provider == null) {
+				// This can be triggered by controls which
+				// don't actually register themselves with
+				// ProviderFactory (typically when they're
+				// "fake" controls, e.g., they don't map to a
+				// widget)
+				return;
+			}
+
+			control.Text = "I like &ampersands";
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "I like ampersands");
+
+			control.Text = "I like double &&ampersands";
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "I like double &ampersands");
+		}
 		
 		[Test]
 		public virtual void FragmentRootAsParentTest ()
@@ -1038,7 +1065,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms742153.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
 			               || (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
-			               "Button ControlType must support IInvokeProvider or IToggleProvider");
+			               string.Format ("Button ControlType must support IInvokeProvider or IToggleProvider. Provider: {0}",
+			                              provider.GetType ()));
 			
 			Assert.AreEqual (Catalog.GetString ("button"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
@@ -1067,8 +1095,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 
 			TestSelectionPattern_GetSelectionMethod (provider);
-			TestTable_GetColumnHeaderItemsMethod (provider);
-			TestTable_GetRowHeaderItems (provider);
+			TestTablePattern_All (provider);
 		}
 
 		protected virtual void TestCheckBoxPatterns (IRawElementProviderSimple provider) 
@@ -1123,8 +1150,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 
 			TestSelectionPattern_GetSelectionMethod (provider);
-			TestTable_GetColumnHeaderItemsMethod (provider);
-			TestTable_GetRowHeaderItems (provider);
+			TestTablePattern_All (provider);
 		}
 
 		protected virtual void TestDataItemPatterns (IRawElementProviderSimple provider) 
@@ -1180,8 +1206,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected virtual void TestEditPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms748367.aspx
+			
+			// LAMESPEC: Edit must always support ITextProvider, but this *is not true* in Edit Cells
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id),
-			               "Edit ControlType must support ITextProvider");
+			               "Edit ControlType must support ITextProvider (this is usually LAMESPEC)");
 			
 			// DEPENDS: IValueProvider
 			// DEPENDS: IRangeValueProvider
@@ -1189,6 +1217,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("edit"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			if (provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) != null)
+				TestValuePattern_All (provider);
 		}
 
 		protected virtual void TestGroupPatterns (IRawElementProviderSimple provider) 
@@ -1220,6 +1251,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("header item"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			if (provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id) != null)
+				TestInvokePattern_InvokedEvent (provider);
 		}
 
 		protected virtual void TestHyperlinkPatterns (IRawElementProviderSimple provider) 
@@ -1485,8 +1519,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
 
-			TestTable_GetColumnHeaderItemsMethod (provider);
-			TestTable_GetRowHeaderItems (provider);
+			TestTableItemPattern_All (provider);
 		}
 
 		protected virtual void TestTextPatterns (IRawElementProviderSimple provider) 
@@ -1751,6 +1784,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragment provider = root.Navigate (NavigateDirection.FirstChild);
 			while (provider != null) {
 				TestPatterns (provider);
+//				TestChildPatterns (provider);
 				provider = provider.Navigate (NavigateDirection.NextSibling);
 			}
 		}
@@ -1812,6 +1846,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				if (!enabled)
 					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
 			}			
+		}
+
+		protected virtual void TestValuePattern_All (IRawElementProviderSimple provider)
+		{
+			// FIXME: We need to enable this again.			
+//			TestValuePattern_ValuePropertyEvent (provider);
+//			TestValuePattern_IsReadOnlyPropertyEvent (provider);
 		}
 
 		protected virtual void TestValuePattern_ValuePropertyEvent (IRawElementProviderSimple provider)
@@ -1962,6 +2003,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				TestSelectionPatternChild (child);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
+		}
+
+		protected virtual void TestSelectionItemPattern_All (IRawElementProviderSimple provider)
+		{
+			TestSelectionItemPattern_AddToSelectionMethod (provider);
+			TestSelectionItemPattern_RemoveFromSelectionMethod (provider);
+			TestSelectionItemPattern_SelectMethod (provider);
+			TestSelectionItemPattern_IsSelectedPropertyEvent (provider);
 		}
 
 		protected virtual void TestSelectionItemPattern_AddToSelectionMethod (IRawElementProviderSimple provider)
@@ -2169,7 +2218,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "Selection must be greater that old selectedItems");
 		}
 
-		protected virtual void TestTable_GetColumnHeaderItemsMethod (IRawElementProviderSimple provider)
+		protected virtual void TestTablePattern_All (IRawElementProviderSimple provider)
+		{
+			TestTablePattern_GetColumnHeaderItemsMethod (provider);
+			TestTablePattern_GetRowHeaderItems (provider);
+		}
+
+		protected virtual void TestTablePattern_GetColumnHeaderItemsMethod (IRawElementProviderSimple provider)
 		{
 			ITableProvider tableProvider
 				= provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id) as ITableProvider;
@@ -2194,7 +2249,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected virtual void TestTable_GetRowHeaderItems (IRawElementProviderSimple provider)
+		protected virtual void TestTablePattern_GetRowHeaderItems (IRawElementProviderSimple provider)
 		{
 			ITableProvider tableProvider
 				= provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id) as ITableProvider;
@@ -2217,6 +2272,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				TestTablePatternChild (child);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
+		}
+
+		protected virtual void TestTableItemPattern_All (IRawElementProviderSimple provider)
+		{
+			TestTableItemPattern_GetColumnHeaderItems (provider);
+			TestTableItemPattern_GetRowHeaderItems (provider);
 		}
 
 		protected virtual void TestTableItemPattern_GetColumnHeaderItems (IRawElementProviderSimple provider)
@@ -2265,7 +2326,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "GetRowHeaderItems must return an empty array instead of returning null");
 		}
 
-		protected virtual void  TestGridItemPattern_ColumnPropertyEvent (IRawElementProviderSimple provider)
+		protected virtual void TestGridItemPattern_All (IRawElementProviderSimple provider)
+		{
+			TestGridItemPattern_ColumnPropertyEvent (provider);
+			TestGridItemPattern_RowPropertyEvent (provider);
+		}
+
+		protected virtual void TestGridItemPattern_ColumnPropertyEvent (IRawElementProviderSimple provider)
 		{
 			IGridItemProvider gridItemProvider
 				= provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id) as IGridItemProvider;

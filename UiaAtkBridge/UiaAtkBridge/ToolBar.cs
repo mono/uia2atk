@@ -17,58 +17,29 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
-// 
+//      Andrés G. Aragoneses <aaragoneses@novell.com>
+//
 
 using System;
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace UiaAtkBridge
 {
-	internal class RangeValuePatternMaximumEvent : BaseAutomationPropertyEvent
+	public class ToolBar : Container
 	{
-		#region Constructor
-
-		public RangeValuePatternMaximumEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.MaximumProperty)
+		public ToolBar (IRawElementProviderSimple provider): base (provider)
 		{
-		}
-		
-		#endregion
-		
-		#region IConnectable Overrides
-
-		public override void Connect ()
-		{
-			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
-				+= new EventHandler (OnMaximumChanged);
+			Role = Atk.Role.ToolBar;
 		}
 
-		public override void Disconnect ()
+		internal bool HasFocusableElements ()
 		{
-			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
-				-= new EventHandler (OnMaximumChanged);
+			object isContentElement = Provider.GetPropertyValue (AEIds.IsContentElementProperty.Id);
+			return (isContentElement is bool && ((bool)isContentElement) == false);
 		}
-		
-		#endregion 
-		
-		#region Private Methods
-		
-		#pragma warning disable 169
-		
-		private void OnMaximumChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-		
-		#pragma warning restore 169
-		
-		#endregion
 	}
 }

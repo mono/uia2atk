@@ -1,3 +1,71 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs:
+	* BasicWidgetType.cs: TableCell added. [For Bug #479787].
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AtkTester.cs: Make States method public static so it can be
+	used in DialogTester, etc.
+
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: States rework of the Menu child of a combobox.
+	Should fix major part of bug#483300, if not all.
+
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: 
+	* AtkTester.cs: Test for the existance of the new "expand or collapse"
+	action for bug #475882.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTest.mdp: Fix project file.
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTester.cs: Work around bug #574674 in AtkTester.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs: InterfaceAction test updated. [For bug #479142]
+
+	* AtkTests.cs: ListView test updated. [For bug #479142]
+
+	* BasicWidgetType.cs: HeaderItem value added. [For bug #479142]
+
+2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Test Editable state when ReadOnly and disabled.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Rename MaskedTextBoxEntry enum to
+	PasswordCharTextBoxEntry. (A new separate test for
+	MaskedTextBox will come.)
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Wrap ToolStripButton as a bridge Button.
+	Fixes #478932.
+
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs: Test ScrollBar in TextBox.
+
+	* AtkTests.cs: Allow testing a focusable pane.
+
+	* AtkTests.cs: Expect Focusable for a Splitter.
+
+2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTest.mdp: Corrected location of atspimon.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTests.cs:

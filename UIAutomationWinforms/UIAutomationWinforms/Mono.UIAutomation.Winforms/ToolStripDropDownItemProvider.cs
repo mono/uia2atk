@@ -53,6 +53,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return Helper.StripAmpersands (dropDrownItem.Text);
+			else
+				return base.GetProviderPropertyValue (propertyId);
+		}
+
 		public override void Initialize()
 		{
 			base.Initialize ();
@@ -69,7 +77,7 @@ namespace Mono.UIAutomation.Winforms
 			foreach (ToolStripItem item in dropDrownItem.DropDownItems) {
 				FragmentControlProvider itemProvider = GetItemProvider (item);
 				if (itemProvider != null)
-					OnNavigationChildAdded (false, itemProvider);
+					AddChildProvider (itemProvider);
 			}
 		}
 		
@@ -79,8 +87,8 @@ namespace Mono.UIAutomation.Winforms
 			dropDrownItem.DropDown.ItemRemoved -= OnItemRemoved;
 			
 			foreach (FragmentControlProvider itemProvider in itemProviders.Values)
-				OnNavigationChildRemoved (false, itemProvider);
-			OnNavigationChildrenCleared (false);
+				RemoveChildProvider (itemProvider);
+			OnNavigationChildrenCleared ();
 		}
 
 		#endregion
@@ -92,7 +100,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			if (itemProvider != null)
-				OnNavigationChildAdded (true, itemProvider);
+				AddChildProvider (itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
@@ -101,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			if (itemProvider != null) {
 				itemProviders.Remove (e.Item);
 				itemProvider.Terminate ();
-				OnNavigationChildRemoved (true, itemProvider);
+				RemoveChildProvider (itemProvider);
 			}
 		}
 

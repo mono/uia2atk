@@ -28,17 +28,21 @@
 using System;
 using System.Windows;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
+
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
 	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
 	{
-		private static string default_invoke_name = "click";
+		//TODO: use ActionImplementorHelper
+		private static readonly string	default_invoke_name = "click";
 
-		private IInvokeProvider				invokeProvider;
-		private string						actionDescription = null;
-		protected string					actionName = null;
+		private IInvokeProvider		invokeProvider;
+		private string			actionDescription = null;
+		protected string		actionName = null;
 		
 		private ITextImplementor textExpert = null;
 		
@@ -72,10 +76,21 @@ namespace UiaAtkBridge
 		protected virtual void InitializeAdditionalProviders ()
 		{
 		}
-
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (!states.ContainsState (Atk.StateType.Focusable) && Parent != null) {
+				if (Parent is ToolBar &&
+				    ((ToolBar)Parent).HasFocusableElements ())
+					states.AddState (Atk.StateType.Focusable);
+
+				if (Parent.Parent != null && Parent.Parent is ToolBar &&
+				    ((ToolBar)Parent.Parent).HasFocusableElements ())
+					states.AddState (Atk.StateType.Focusable);
+			}
+			
 			return states;
 		}
 
@@ -150,7 +165,8 @@ namespace UiaAtkBridge
 				OnPressed ();
 				try {
 					invokeProvider.Invoke ();
-				} catch (ElementNotEnabledException) {
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
 					return false;
 				}
 				OnReleased ();
@@ -273,7 +289,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -308,7 +324,7 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 
 

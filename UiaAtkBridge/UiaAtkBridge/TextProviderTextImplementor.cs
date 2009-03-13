@@ -27,6 +27,7 @@ using System;
 using System.Drawing;
 using Mono.UIAutomation.Bridge;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Text;
 using CG = System.Collections.Generic;
 using System.Windows.Automation.Provider;
@@ -47,11 +48,11 @@ namespace UiaAtkBridge
 #endregion
 
 #region Public Methods
-		public TextProviderTextImplementor (Adapter resource, ITextProvider textProvider)
+		public TextProviderTextImplementor (Adapter resource, 
+		                                    ITextProvider textProvider)
 			: base (resource)
 		{
 			this.textProvider = textProvider;
-			this.iText = textProvider as IText;
 		}
 
 		public override Atk.Attribute [] GetRunAttributes (int offset,
@@ -84,7 +85,8 @@ namespace UiaAtkBridge
 				try {
 					ITextRangeProvider [] selection = textProvider.GetSelection ();
 					return selection.Length;
-				} catch (System.NotSupportedException) {
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
 					return 0;
 				}
 			}
@@ -92,8 +94,8 @@ namespace UiaAtkBridge
 
 		public override string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			if (iText != null)
-				return iText.GetSelection (selectionNum, out startOffset, out endOffset);
+			if (CaretProvider != null) 
+				return CaretProvider.GetSelection (selectionNum, out startOffset, out endOffset);
 			return base.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 
@@ -104,10 +106,11 @@ namespace UiaAtkBridge
 				textRange.Select ();
 				return true;
 			}
+
 			try {
-			textRange.AddToSelection ();
-	
-			} catch (System.InvalidOperationException) {
+				textRange.AddToSelection ();
+			} catch (InvalidOperationException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -118,7 +121,7 @@ namespace UiaAtkBridge
 			if (textProvider.SupportedTextSelection == SupportedTextSelection.Single || selectionNum == 0) {
 				if (selectionNum < 0 || selectionNum >= NSelections)
 					return false;
-				int offset = (iText != null? iText.CaretOffset: 0);
+				int offset = (CaretProvider != null ? CaretProvider.CaretOffset : 0);
 				ITextRangeProvider textRange = GetTextRange (offset, offset);
 				textRange.Select ();
 				return true;
@@ -127,7 +130,13 @@ namespace UiaAtkBridge
 			string selection = GetSelection (selectionNum, out startOffset, out endOffset);
 			if (selection != null && selection != String.Empty) {
 				ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
-				textRange.RemoveFromSelection ();
+				try {
+					textRange.RemoveFromSelection ();
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			return false;
@@ -307,9 +316,8 @@ namespace UiaAtkBridge
 		}
 #endregion
 
-#region Public Fields
+#region Private Fields
 		private ITextProvider textProvider;
-		private IText iText;
 
 		// TODO: put these somewhere shared with provider
 		// Font weights

@@ -26,20 +26,26 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripDropDownButtonFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
-        self.menu1 = self.findMenu(self.DROPDOWN1)
-        self.menu2 = self.findMenu(self.DROPDOWN2)
+        self.toolbar = self.findToolBar(None)
+        self.menu1 = self.findMenu(self.DROPDOWN1, checkShowing=False)
+        self.menu2 = self.findMenu(self.DROPDOWN2, checkShowing=False)
 
     #give 'click' action
     def click(self, button):
         procedurelogger.action("click %s" % button)
         button.click()
-        #search menu items in ToolStripDropDownButton1
-        self.red = self.menu1.findMenuItem("Red")
-        self.blue = self.menu1.findMenuItem("Blue")
-        self.green = self.menu1.findMenuItem("Green")
-        #search menu items in ToolStripDropDownButton2
-        items = ["Item1", "Item2", "Item3"]
-        self.item = dict([(x, self.menu2.findMenuItem(y)) for x in range(3) for y in items])
+
+        if button == self.menu1:
+            #search menu items in ToolStripDropDownButton1
+            self.red = self.menu1.findMenuItem("Red")
+            self.blue = self.menu1.findMenuItem("Blue")
+            self.green = self.menu1.findMenuItem("Green")
+        elif button == self.menu2:
+            #search menu items in ToolStripDropDownButton2
+            items = ["Item1", "Item2", "Item3"]
+            self.item = dict([(x, self.menu2.findMenuItem(y)) for x in range(3) for y in items])
+        else:
+            pass
 
     #assert the toolstripprogress's percent after click button
     def assertLabel(self, newlabel):

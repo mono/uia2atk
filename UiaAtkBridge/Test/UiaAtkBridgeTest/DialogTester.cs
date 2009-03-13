@@ -38,25 +38,49 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void OpenFileDialog ()
 		{
-			TestDialog (new SWF.OpenFileDialog ());
+			using (var runner = new DialogRunner (new SWF.OpenFileDialog ())) {
+				VerifyBasicProperties (runner.Dialog);
+
+				UiaAtkBridge.Window dialogAdapter =
+					BridgeTester.GetAdapterForWidget (runner.Dialog) as UiaAtkBridge.Window;
+
+				Atk.Object popupButtonPanelAdapter = dialogAdapter.RefAccessibleChild (10);
+				Assert.AreEqual (6, popupButtonPanelAdapter.NAccessibleChildren, "PopupButtonPanel (toolbar) should have 6 children");
+
+				Atk.Object popupButtonAdapter1 = popupButtonPanelAdapter.RefAccessibleChild (0).RefAccessibleChild (0);
+				AtkTester.States (popupButtonAdapter1,
+				                  Atk.StateType.Enabled,
+				                  Atk.StateType.Selectable,
+				                  Atk.StateType.Focusable,
+				                  Atk.StateType.Sensitive,
+				                  Atk.StateType.Showing,
+				                  Atk.StateType.Visible);
+				// TODO: Simulate selecting so we can teset Selected/Focused
+			}
 		}
 
 		[Test]
 		public void SaveFileDialog ()
 		{
-			TestDialog (new SWF.SaveFileDialog ());
+			using (var runner = new DialogRunner (new SWF.SaveFileDialog ())) {
+				VerifyBasicProperties (runner.Dialog);
+			}
 		}
 
 		[Test]
 		public void ColorDialog ()
 		{
-			TestDialog (new SWF.ColorDialog ());
+			using (var runner = new DialogRunner (new SWF.ColorDialog ())) {
+				VerifyBasicProperties (runner.Dialog);
+			}
 		}
 
 		[Test]
 		public void FontDialog ()
 		{
-			TestDialog (new SWF.FontDialog ());
+			using (var runner = new DialogRunner (new SWF.FontDialog ())) {
+				VerifyBasicProperties (runner.Dialog);
+			}
 		}
 
 		[Test]
@@ -70,54 +94,71 @@ namespace UiaAtkBridgeTest
 			} catch (System.Exception e) {
 				exception = e;
 			}
-			TestDialog (new SWF.ThreadExceptionDialog (exception));
+
+			using (var runner = new DialogRunner (new SWF.ThreadExceptionDialog (exception))) {
+				VerifyBasicProperties (runner.Dialog);
+			}
 		}
 
 		
-		static void TestDialog (System.ComponentModel.Component dialog)
+		private void VerifyBasicProperties (System.ComponentModel.Component dialog)
 		{
-			new DialogTesterInner (dialog).Test ();
-		}
-
-		private class DialogTesterInner {
-			System.ComponentModel.Component dialog;
-			Thread th;
-	
-			internal DialogTesterInner (System.ComponentModel.Component dialog)
-			{
-				this.dialog = dialog;
-			}
-			
-			internal void Test ()
-			{
-				th = new Thread (new ThreadStart (Show));
-				th.SetApartmentState (ApartmentState.STA);
-				try {
-					th.Start ();
-					Thread.Sleep (10000);
-					UiaAtkBridge.Window dialogAdapter = BridgeTester.GetAdapterForWidget (dialog) as UiaAtkBridge.Window;
-					Assert.IsNotNull (dialogAdapter, "dialogAdapter has a different type than Window");
-					Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
-					Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
-				}
-				finally {
-					dialog.Dispose ();
-					th.Abort ();
-				}
-			}
-	
-			private void Show ()
-			{
-				if (dialog is SWF.CommonDialog)
-					((SWF.CommonDialog)dialog).ShowDialog ();
-				else if (dialog is SWF.ThreadExceptionDialog)
-					((SWF.ThreadExceptionDialog)dialog).ShowDialog ();
-				else
-					throw new NotSupportedException ("Unsupported dialog type: " + dialog);
-			}
+			UiaAtkBridge.Window dialogAdapter = BridgeTester.GetAdapterForWidget (dialog) as UiaAtkBridge.Window;
+			Assert.IsNotNull (dialogAdapter, "dialogAdapter has a different type than Window");
+			Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
+			Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
 		}
 	}
 	
-	
+	public class DialogRunner : IDisposable
+	{
+		private SWF.CommonDialog commonDialog;
+		private SWF.ThreadExceptionDialog threadExceptionDialog;
+		private Thread dialogThread;
+		
+		public DialogRunner (System.ComponentModel.Component dialog)
+		{
+			commonDialog = dialog as SWF.CommonDialog;
+			if (commonDialog == null)
+				threadExceptionDialog = dialog as SWF.ThreadExceptionDialog;
+			if (commonDialog == null && threadExceptionDialog == null)
+				throw new ArgumentException ("Unsupported dialog type: " + dialog);
+			
+			dialogThread = new Thread (new ThreadStart (Show));
+			dialogThread.Start ();
+			Thread.Sleep (10000);
+		}
 
+		public void Dispose ()
+		{
+			if (commonDialog != null)
+				commonDialog.Dispose ();
+			else if (threadExceptionDialog != null) {
+				if (threadExceptionDialog.InvokeRequired) {
+					threadExceptionDialog.BeginInvoke (new SWF.MethodInvoker (Dispose));
+					return;
+				}
+				threadExceptionDialog.Close ();
+				threadExceptionDialog.Dispose ();
+			}
+
+			if (dialogThread != null)
+				dialogThread.Abort ();
+		}
+
+		private void Show ()
+		{
+			if (commonDialog != null)
+				commonDialog.ShowDialog ();
+			else if (threadExceptionDialog != null)
+				threadExceptionDialog.ShowDialog ();
+		}
+
+		public System.ComponentModel.Component Dialog {
+			get {
+				return (System.ComponentModel.Component) commonDialog ??
+					(System.ComponentModel.Component) threadExceptionDialog;
+			}
+		}
+	}
 }

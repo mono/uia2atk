@@ -60,7 +60,7 @@ statesCheck(tbbFrame.dropdown_button, "Button")
 statesCheck(tbbFrame.dropdown_toggle, "ToggleButton")
 
 ##missing armed and checked states when this button is pushed BUG474649
-statesCheck(tbbFrame.toggle_style, "Button")
+statesCheck(tbbFrame.toggle_style, "ToggleButton")
 
 #nop toolbarbutton is enabled and sensitive by default
 statesCheck(tbbFrame.nop_unable, "Button")

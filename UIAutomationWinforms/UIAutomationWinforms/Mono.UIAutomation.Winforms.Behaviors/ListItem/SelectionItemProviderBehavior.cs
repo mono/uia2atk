@@ -17,24 +17,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors.Generic;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
-	//NOTE: 
-	//     About exceptions thrown: http://msdn.microsoft.com/en-us/library/ms749016.aspx
-	internal abstract class SelectionItemProviderBehavior 
-		: ProviderBehavior, ISelectionItemProvider
+	internal abstract class SelectionItemProviderBehavior
+		: SelectionItemProviderBehavior<ListItemProvider>
 	{
 		
 		#region Constructors
@@ -42,116 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 		protected SelectionItemProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
-			itemProvider = provider;
 		}
-		
-		#endregion
-		
-		#region IProviderBehavior Interface
-
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionItemPatternIdentifiers.Pattern; }
-		}		
-
-		public override void Disconnect ()
-		{
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
-			                   null);
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
-			                   null);
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
-			                   null);
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   null);
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternSelectionContainerProperty,
-			                   null);
-		}
-
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == SelectionItemPatternIdentifiers.IsSelectedProperty.Id)
-				return IsSelected;
-			else if (propertyId == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id)
-				return SelectionContainer;
-			else
-				return null;
-		}
-		
-		#endregion
-
-		#region ISelectionItemProvider Interface
-		
-		public void AddToSelection ()
-		{
-			if (IsSelected == true)
-				return;
-			
-			bool multipleSelection = 
-				(bool) itemProvider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
-			
-			if (multipleSelection == false) {
-				if (itemProvider.ListProvider.SelectedItemsCount > 0)
-					throw new InvalidOperationException ();
-				else
-					Select ();
-			} else
-				Select ();
-		}
-
-		public void RemoveFromSelection ()
-		{
-			if (IsSelected == false)
-				return;
-			
-			bool multipleSelection = 
-				(bool) itemProvider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
-			bool selectionRequired =
-				(bool) itemProvider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
-
-			if (multipleSelection == false && selectionRequired == true 
-			    && itemProvider.ListProvider.SelectedItemsCount > 0) 
-				throw new InvalidOperationException ();	
-			else if (multipleSelection == true && selectionRequired == true 
-			         && itemProvider.ListProvider.SelectedItemsCount == 1)
-				throw new InvalidOperationException ();	
-			else
-				PerformUnselect ();
-		}
-
-		private void PerformUnselect ()
-		{
-			if (itemProvider.ListProvider.Control.InvokeRequired == true) {
-				itemProvider.ListProvider.Control.BeginInvoke (new MethodInvoker (PerformUnselect));
-				return;
-			}
-			itemProvider.ListProvider.UnselectItem (itemProvider);
-		}
-
-		public void Select ()
-		{
-			if (IsSelected == true)
-				return;
-			
-			if (itemProvider.ListProvider.Control.InvokeRequired == true) {
-				itemProvider.ListProvider.Control.BeginInvoke (new MethodInvoker (Select));
-				return;
-			}
-			itemProvider.ListProvider.SelectItem (itemProvider);
-		}
-
-		public bool IsSelected {
-			get { return itemProvider.ListProvider.IsItemSelected (itemProvider); }
-		}
-
-		public IRawElementProviderSimple SelectionContainer {
-			get { return itemProvider.ListProvider; }
-		}
-
-		#endregion
-		
-		#region Private Fields
-		
-		private ListItemProvider itemProvider;
 		
 		#endregion
 		

@@ -72,6 +72,11 @@ namespace Mono.UIAutomation.Services
 			Debug (message, null);
 		}
 
+		public static void Debug (Exception e)
+		{
+			Debug ("Exception was caught:\n{0}", e);
+		}
+
 		public static void Debug (string message, params object[] args)
 		{
 			PrintMessage (LogLevel.Debug, message, args);
@@ -90,6 +95,11 @@ namespace Mono.UIAutomation.Services
 		public static void Error (string message)
 		{
 			Error (message, null);
+		}
+
+		public static void Error (Exception e)
+		{
+			Error ("Exception was caught:\n{0}", e);
 		}
 
 		public static void Error (string message, params object[] args)

@@ -47,8 +47,10 @@ namespace UiaAtkBridgeTest
 		ToolBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)
 		TextBoxView,        // textbox multi-line (gtk: textview)
-		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
+		PasswordCharTextBoxEntry, // textbox with PasswordChar set (gtk: entry with visibility:false)
 		RichTextBox, // RichTextBox (gtk: textview)
+		HeaderItem, // part of widget: GTK: treeview, and MWF: listview.details, datagrid and datagridview
+		TableCell, // part of widget: GTK: treeview, and MWF: listview.details, datagrid and datagridview
 		
 		MainMenuBar,
 		ParentMenu,
@@ -83,6 +85,7 @@ namespace UiaAtkBridgeTest
 		StatusStrip,
 		ToolStripDropDownButton,
 		ToolStripSplitButton,
+		ToolStripButton,
 		StatusBarPanel,
 		TreeView,
 		DateTimePicker,
@@ -131,7 +134,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.TextBoxEntry ||
 			    type == BasicWidgetType.TextBoxView ||
 			    type == BasicWidgetType.RichTextBox ||
-			    type == BasicWidgetType.MaskedTextBoxEntry)
+			    type == BasicWidgetType.PasswordCharTextBoxEntry)
 				return false;
 			return true;
 		}
@@ -144,7 +147,7 @@ namespace UiaAtkBridgeTest
 
 		public static string LookForParentDir (string pattern) {
 			//FIXME: it seems we should use this when bnc#450433 is fixed:
-			//string imgDir =  System.IO.Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().CodeBase);
+			//string imgDir = System.IO.Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().CodeBase));
 			string imgDir = System.IO.Directory.GetCurrentDirectory ();
 			
 			while (imgDir != "/"){

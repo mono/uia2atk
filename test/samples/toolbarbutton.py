@@ -26,9 +26,10 @@ clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
 from System.Drawing import *
+from System.IO import *
 
 harness_dir = path[0]
-i = harness_dir.rfind("/")
+i = harness_dir.rfind(Path.DirectorySeparatorChar)
 uiaqa_path = harness_dir[:i]
 
 class ToolBarSample(Form):
@@ -126,7 +127,7 @@ class ToolBarSample(Form):
                 self.label.Enabled = False
                 self.toolbar_btn4.Enabled = False
             else:
-                self.label.Enabled = False
+                self.label.Enabled = True
                 self.toolbar_btn4.Enabled = True
         elif btn == 3:
             self.label.Text = "You clicked nop button"

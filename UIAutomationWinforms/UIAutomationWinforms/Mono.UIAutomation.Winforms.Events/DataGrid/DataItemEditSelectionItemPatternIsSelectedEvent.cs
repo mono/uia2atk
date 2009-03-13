@@ -17,57 +17,64 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class RangeValuePatternIsReadOnlyEvent : BaseAutomationPropertyEvent
+	internal class DataItemEditSelectionItemPatternIsSelectedEvent
+		: BaseAutomationPropertyEvent
 	{
-		#region Constructor
+		
+		#region Constructors
 
-		public RangeValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
+		public DataItemEditSelectionItemPatternIsSelectedEvent (DataGridProvider.DataGridDataItemEditProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
+		#region ProviderEvent Methods
 
 		public override void Connect ()
 		{
-			UpDownBase.txtView.ReadOnlyChanged +=
-				new EventHandler (OnIsReadOnlyChanged);
+			provider.ItemProvider.DataGridProvider.DataGrid.UIASelectionChanged += OnIsSelectedChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			UpDownBase.txtView.ReadOnlyChanged -=
-				new EventHandler (OnIsReadOnlyChanged);
+			provider.ItemProvider.DataGridProvider.DataGrid.UIASelectionChanged -= OnIsSelectedChanged;
 		}
 		
 		#endregion 
 		
-		#region Private Methods
+		#region Private methods
 		
-		private void OnIsReadOnlyChanged (object sender, EventArgs e)
+		private void OnIsSelectedChanged (object sender, CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private DataGridProvider.DataGridDataItemEditProvider provider;
 		
-		SWF.UpDownBase UpDownBase {
-			get { return (SWF.UpDownBase)Provider.Control; }
-		}
 		#endregion
 	}
 }
+

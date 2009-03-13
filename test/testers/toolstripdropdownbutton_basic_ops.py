@@ -48,41 +48,41 @@ actionsCheck(tsddbFrame.menu1, "Menu")
 actionsCheck(tsddbFrame.menu2, "Menu")
 
 #check states list for menu without click
-statesCheck(tsddbFrame.menu1, "Menu")
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
+statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
 #move mouse to menu1 to rise focused and selected
-tsddbFrame.menu1.mouseMove()
+panels = tsddbFrame.toolbar.findAllPanels(None)
+panels[0].mouseMove()
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
 #move mouse to menu2 to rise focused and selected
-tsddbFrame.menu2.mouseMove()
+panels[1].mouseMove()
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
 
-#click menu1 to rise focused and selected
-#click action doesn't rise focused unless mouseClick menu BUG457990
+#click menu1 to rise selected
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
 #click menu1 again
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
 
-#click menu2 to move selection and focused to menu2
+#click menu2 to move selection to menu2
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
 #click menu2 again
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
 
 ##############menu items test##################
 #check states list for menuitems

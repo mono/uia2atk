@@ -20,13 +20,13 @@ class ListViewFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ListViewFrame, self).__init__(accessible)
         self.checkbox = self.findCheckBox(self.CHECKBOX)
-        self.list = self.findList(None)
-        self.listitem = dict([(x, self.findListItem("Item " + str(x))) for x in range(5)]) 
+        self.treetable = self.findTreeTable(None)
+        self.tablecell = dict([(x, self.findTableCell("Item " + str(x))) for x in range(5)]) 
 
-    def click(self, listitem):
+    def click(self, tablecell):
         """'click' action"""
-        procedurelogger.action('Do click action on %s' % listitem)
-        listitem.click()
+        procedurelogger.action('Do click action on %s' % tablecell)
+        tablecell.click()
 
     def assertText(self, accessible, text):
         """assert Text implementation for ListItem role"""
@@ -46,7 +46,7 @@ class ListViewFrame(accessibles.Frame):
         procedurelogger.action('clear selection in "%s"' % (accessible))
         accessible.clearSelection()
 
-    def assertTable(self, accessible, row=4, col=2):
+    def assertTable(self, accessible, row=None, col=None):
         """assert Table implementation"""
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()

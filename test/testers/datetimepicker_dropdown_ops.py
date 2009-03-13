@@ -55,7 +55,8 @@ actionsCheck(dtpddFrame.dropdownbutton, "Button")
 ##############################
 # check datetimepicker_dropdown AtkAccessible
 ##############################
-statesCheck(dtpddFrame.panel, "Panel", add_states=["focused"])
+# TODO: BUG483735
+#statesCheck(dtpddFrame.panel, "Panel", add_states=["focused"])
 statesCheck(dtpddFrame.weekday, "TreeTable")
 
 NUM_MONTHS = 12

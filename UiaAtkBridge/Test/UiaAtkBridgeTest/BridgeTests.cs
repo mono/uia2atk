@@ -74,6 +74,7 @@ namespace UiaAtkBridgeTest
 			
 			States (listItemChild, 
 			  Atk.StateType.Enabled,
+				(listView? Atk.StateType.Editable: Atk.StateType.Enabled),
 			  Atk.StateType.Focusable,
 			  Atk.StateType.Selectable,
 			  Atk.StateType.Sensitive,
@@ -128,6 +129,7 @@ namespace UiaAtkBridgeTest
 			
 			States (listItemChild,
 				Atk.StateType.Enabled,
+				(listView? Atk.StateType.Editable: Atk.StateType.Enabled),
 				Atk.StateType.Focusable,
 				Atk.StateType.Selectable,
 				Atk.StateType.Sensitive,
@@ -189,7 +191,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (link1.GetObject (1), "GetObject OOR #1");
 			Assert.IsNull (link1.GetObject (-1), "GetObject OOR #2");
 			Atk.Hyperlink link2 = hypertext.GetLink (1);
-			Assert.AreEqual ("gmail.novell.com", link2.GetUri (0), "Link 1 uri");
+			Assert.AreEqual ("gmail.novell.com", link2.GetUri (0), "Link 2 uri");
 			Assert.AreEqual (35, link2.StartIndex, "Link 1 StartIndex");
 			Assert.AreEqual (51, link2.EndIndex, "Link 1 EndIndex");
 			Atk.Object obj2 = link2.GetObject (0);
@@ -203,6 +205,19 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
 			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
+
+			// Add another link to test that GetLink can be accessed before NLinks
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com \n\n webmail:qmail.novell.com";
+			linklab1.Links.Add (61, 16, "qmail.novell.com");
+			Atk.Hyperlink link3 = hypertext.GetLink (2);
+			Assert.AreEqual ("qmail.novell.com", link3.GetUri (0), "Link 3 uri");
+			Assert.AreEqual (3, hypertext.NLinks, "Updated LinkLabel NLinks");
+
+			// Add another link to test that GetLinkIndex can be accessed before NLinks
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com \n\n webmail:qmail.novell.com \n\n webmail:ymail.novell.com";
+			linklab1.Links.Add (87, 16, "ymail.novell.com");
+			Assert.AreEqual (3, hypertext.GetLinkIndex (88), "GetLinkIndex after update");
+			Assert.AreEqual (4, hypertext.NLinks, "Updated LinkLabel NLinks");
 		}
 
 		[Test]
@@ -442,6 +457,7 @@ namespace UiaAtkBridgeTest
 			// Link tests
 			Atk.Object link = FindObjectByName (accessible, "http://www.microsoft.com/");
 			States (link,
+			    Atk.StateType.Focusable, // Cells are focusable
 				Atk.StateType.Enabled,
 				Atk.StateType.MultiLine,
 				Atk.StateType.Sensitive,
@@ -472,7 +488,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("Website", atkTable.RefAt (0, 3).Name, "Cell (0, 3)");
 			Assert.AreEqual ("Year", atkTable.RefAt (0, 4).Name, "Cell (0, 4)");
 			Assert.AreEqual ("Request Header", atkTable.RefAt (0, 5).Name, "Cell (0, 5)");
+
+			Atk.Object tableCell = FindObjectByName (accessible, "Programming Windows");
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (tableCell);
+			InterfaceAction (BasicWidgetType.TableCell, atkAction, tableCell);
 		}
+		
 
 		[Test]
 		public void DomainUpDown ()
@@ -716,9 +737,7 @@ namespace UiaAtkBridgeTest
 			States (secondItem,
 				Atk.StateType.Enabled,
 				Atk.StateType.Selectable,
-				Atk.StateType.Selected,
 				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 			
 			Atk.Object firstItem = accessible.RefAccessibleChild (0);
@@ -760,7 +779,6 @@ namespace UiaAtkBridgeTest
 				States (accessible,
 					Atk.StateType.Enabled,
 					Atk.StateType.Selectable,
-					Atk.StateType.Selected,
 					Atk.StateType.Sensitive,
 					Atk.StateType.Showing,
 					Atk.StateType.Visible);
@@ -852,10 +870,117 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		[Ignore ("Not ready yet. For 1.0.")]
-		public override void MaskedTextBoxEntry ()
+		[Ignore ("Not ready yet.")]
+		public override void PasswordCharTextBoxEntry ()
 		{
-			base.MaskedTextBoxEntry ();
+			base.PasswordCharTextBoxEntry ();
+		}
+
+		[Test]
+		public void MaskedTextBox ()
+		{
+			maskedTextBox.Mask = "(000)000-0000";
+
+			Atk.Object accessible = GetAdapterForWidget (maskedTextBox);
+			
+			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.EditableText editableText = CastToAtkInterface<Atk.EditableText> (accessible);
+
+			string baseMask = "(___)___-____";
+			Assert.AreEqual (baseMask, text.GetText (0, -1));
+
+			string[] testMasks = new string[] {
+				"(1__)___-____",
+				"(1__)___-____",
+				"(_1_)___-____",
+				"(__1)___-____",
+				"(___)1__-____",
+				"(___)1__-____",
+				"(___)_1_-____",
+				"(___)__1-____",
+				"(___)___-1___",
+				"(___)___-1___",
+				"(___)___-_1__",
+				"(___)___-__1_",
+				"(___)___-___1",
+			};
+
+			int[] testMaskPositions = new int[] {
+				1, 1, 2, 3, 5, 5, 6, 7, 9, 9, 10, 11, 12
+			};
+
+			int position = 0;
+
+			for (int i = 0; i < testMasks.Length; i++) {
+				position = i;
+				editableText.InsertText ("1", ref position);
+
+				Assert.AreEqual (testMasks[i], text.GetText (0, -1),
+				                 String.Format ("Masks are not equal at position {0}", i));
+				Assert.AreEqual (testMaskPositions[i], position,
+				                 String.Format ("Returned position is incorrect at position {0}", i));
+
+				maskedTextBox.Text = String.Empty;
+			}
+
+			// Insert multiple characters spanning a placeholder
+			maskedTextBox.Text = String.Empty;
+			
+			position = 0;
+			editableText.InsertText ("4019924027", ref position);
+			
+			Assert.AreEqual ("(401)992-4027", text.GetText (0, -1));
+			Assert.AreEqual (1, position);
+
+			// Overwriting
+			maskedTextBox.Text = String.Empty;
+
+			position = 2;
+			editableText.InsertText ("1", ref position);
+			Assert.AreEqual ("(_1_)___-____", text.GetText (0, -1));
+			Assert.AreEqual (2, position);
+
+			// XXX: This is different than what would happen in the
+			// gui, namely because we can't handle all the edge
+			// cases it does.  In the GUI, this would be (231)...
+			position = 1;
+			editableText.InsertText ("23", ref position);
+			Assert.AreEqual ("(21_)___-____", text.GetText (0, -1));
+			Assert.AreEqual (1, position);
+
+			// Extra text
+			maskedTextBox.Text = String.Empty;
+
+			position = 2;
+			editableText.InsertText ("1234567890", ref position);
+			Assert.AreEqual ("(_12)345-6789", text.GetText (0, -1));
+			Assert.AreEqual (2, position);
+
+			// Invalid removal
+			editableText.DeleteText (0, 1);
+			Assert.AreEqual ("(_12)345-6789", text.GetText (0, -1));
+
+			// Valid removal
+			editableText.DeleteText (2, 3);
+			Assert.AreEqual ("(__2)345-6789", text.GetText (0, -1));
+
+			editableText.DeleteText (2, 6);
+			Assert.AreEqual ("(___)_45-6789", text.GetText (0, -1));
+
+			editableText.DeleteText (11, 12);
+			Assert.AreEqual ("(___)_45-67_9", text.GetText (0, -1));
+
+			editableText.DeleteText (0, 100);
+			Assert.AreEqual ("(___)___-____", text.GetText (0, -1));
+			
+			States (accessible,
+			  Atk.StateType.Editable, 
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Focusable,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible,
+			  Atk.StateType.SingleLine);
 		}
 
 		[Test]
@@ -877,7 +1002,7 @@ namespace UiaAtkBridgeTest
 			TextBoxView (BasicWidgetType.TextBoxView, toolStripTextBox2, false);
 		}
 
-		[Test] //TODO: move to AtkTests.cs
+		[Test] //TODO: move to AtkTests.cs (along with ToolStripButton) and call it from here
 		public void ToolBarButton ()
 		{
 			BasicWidgetType type = BasicWidgetType.ToolbarButton;
@@ -927,6 +1052,57 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+		}
+
+		[Test] //TODO: move to AtkTests.cs (along with ToolBarButton) and call it from here
+		public void ToolStripButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolStripButton;
+
+			string name = "test-caption";
+			Atk.Object accessible = GetAccessible (type, name);
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (Atk.Role.Panel, accessible.Parent.Role);
+
+			Assert.IsNull (accessible.Parent.Name);
+			Assert.AreEqual (0, accessible.NAccessibleChildren);
+
+			Interfaces (accessible.Parent,
+			            typeof (Atk.Component));
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible.Parent);
+			InterfaceComponent (type, atkComponent);
+			
+			States (accessible.Parent,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+
+			//from here, like Button test
+			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
+
+			InterfaceText (type);
+
+			//TODO: test with an image
+//			Atk.Image atkWithOutImage, atkWithImage;
+//			accessible = GetAccessible (type, name, true);
+//			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+//			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+//			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+//			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+//			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
 		[Test]
@@ -1132,7 +1308,7 @@ namespace UiaAtkBridgeTest
 		public void ContainerControl ()
 		{
 			Atk.Object accessible = GetAdapterForWidget (containerControl);
-			Pane (accessible);
+			Pane (accessible, true);
 			PaneChildren (containerControl);
 		}
 
@@ -1196,12 +1372,46 @@ namespace UiaAtkBridgeTest
 			                 "text/plain stream differs from original text");
 		}
 
+ 		[Test]
+		public void PropertyGrid ()
+		{
+			Atk.Object accessible =  GetAdapterForWidget (pgrid);
+
+			Assert.AreEqual (accessible.Role, Atk.Role.Panel);
+			Assert.AreEqual (accessible.NAccessibleChildren, 4);
+
+			Assert.AreEqual (accessible.RefAccessibleChild (0).Role, Atk.Role.Panel);
+			Assert.IsTrue (accessible.RefAccessibleChild (0).NAccessibleChildren > 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (1).Role, Atk.Role.ToolBar);
+			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (2).Role, Atk.Role.SplitPane);
+			Assert.AreEqual (accessible.RefAccessibleChild (2).NAccessibleChildren, 0);
+			
+			Assert.AreEqual (accessible.RefAccessibleChild (3).Role, Atk.Role.Panel);
+			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
+
+			accessible = FindObjectByRole (accessible.RefAccessibleChild (0), Atk.Role.ScrollBar, true);
+			Assert.IsNotNull (accessible);
+
+			//BNC#480829
+			Atk.Value val = CastToAtkInterface <Atk.Value> (accessible);
+			GLib.Value value = new GLib.Value ();
+			val.GetCurrentValue (ref value);
+			Assert.AreEqual (value.Val, 0);
+			val.SetCurrentValue (new GLib.Value (2.0));
+			val.GetCurrentValue (ref value);
+			Assert.AreEqual (value.Val, 2.0);
+		}
+		
 		[Test]
 		public void MonthCalendar ()
 		{
 			BasicWidgetType type = BasicWidgetType.MonthCalendar;
 			
 			Atk.Object accessible = GetAccessible (type, String.Empty);
+					
 			Assert.AreEqual (1, accessible.NAccessibleChildren,
 			                 "Too many or too few children under Calendar");
 			
@@ -1210,6 +1420,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (table);
 
 			InterfaceTable (table, 6, 7, 0, 0, true);
+
+			StartEventMonitor ();
+			DateTime newDate = new DateTime (1999, 12, 31);
+			monthCalendar.SelectionStart = newDate;
+			ExpectEvents (1, Atk.Role.Filler, "object:property-change:accessible-name");
+			Assert.AreEqual (newDate.ToShortDateString (), accessible.Name,
+			                 "Calendar's name is its selected date");
 		}
 		
 		// This test tries to simulate inserting and deleting a single

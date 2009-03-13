@@ -43,6 +43,10 @@ namespace UiaAtkBridge
 
 		public void Add (String name, String localizedName, string description, ActionDelegate doAction)
 		{
+			foreach (ActionDescription ad in actions)
+				if (ad.name == name)
+					return;
+
 			actions.Add (new ActionDescription (name, localizedName, description, doAction));
 		}
 

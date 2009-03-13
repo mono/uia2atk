@@ -121,23 +121,16 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 
-		public void Initialize (bool raise)
+		public void Initialize ()
 		{
 			if (HasHorizontalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref hscrollbarProvider,
-				                      HorizontalScrollBar,
-				                      raise);
+				                      HorizontalScrollBar);
 			if (HasVerticalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref vscrollbarProvider,
-				                      VerticalScrollBar,
-				                      raise);
-		}
-		
-		public void Initialize ()
-		{
-			Initialize (false);
+				                      VerticalScrollBar);
 		}
 
 		public void Terminate ()
@@ -146,13 +139,13 @@ namespace Mono.UIAutomation.Winforms
 			VerticalScrollBar = null;
 
 			if (hscrollbarProvider != null) {
-				subject.RemoveChildProvider (true, hscrollbarProvider);
+				subject.RemoveChildProvider (hscrollbarProvider);
 				hscrollbarProvider.Terminate ();
 				hscrollbarProvider = null;
 			}
 
 			if (vscrollbarProvider != null) {
-				subject.RemoveChildProvider (true, vscrollbarProvider);
+				subject.RemoveChildProvider (vscrollbarProvider);
 				vscrollbarProvider.Terminate ();
 				vscrollbarProvider = null;
 			}
@@ -222,38 +215,33 @@ namespace Mono.UIAutomation.Winforms
 	           if (navigable == false && vscrollbarProvider != null)
 					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
 					                      ref vscrollbarProvider,
-					                      vscrollbar,
-					                      true);
+					                      vscrollbar);
 	           else if (navigable == true && vscrollbarProvider == null)
 					RaiseNavigationEvent (StructureChangeType.ChildAdded,
 					                      ref vscrollbarProvider,
-					                      vscrollbar,
-					                      true);
+					                      vscrollbar);
 			} else if (scrollbar == hscrollbar) {
 	           if (navigable == false && hscrollbarProvider != null)
 					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
 					                      ref hscrollbarProvider,
-					                      hscrollbar,
-					                      true);
+					                      hscrollbar);
 	           else if (navigable == true && hscrollbarProvider == null)
 					RaiseNavigationEvent (StructureChangeType.ChildAdded,
 					                      ref hscrollbarProvider,
-					                      hscrollbar,
-					                      true);
+					                      hscrollbar);
 			}
 		}
 		
 		private void RaiseNavigationEvent (StructureChangeType type,
 		                                   ref FragmentControlProvider provider,
-		                                   SWF.ScrollBar scrollbar,
-		                                   bool generateEvent)
+		                                   SWF.ScrollBar scrollbar)
 		{
 			if (type == StructureChangeType.ChildAdded) {
 				provider = subject.GetScrollbarProvider (scrollbar);
 				provider.Initialize ();
-				subject.AddChildProvider (generateEvent, provider);
+				subject.AddChildProvider (provider);
 			} else {
-				subject.RemoveChildProvider (generateEvent, provider);
+				subject.RemoveChildProvider (provider);
 				provider.Terminate ();
 				provider = null;
 			}

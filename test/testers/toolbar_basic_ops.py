@@ -55,16 +55,16 @@ statesCheck(tbFrame.toolbar, "ToolBar")
 ##has extraneous focused state BUG472279
 tbFrame.toolbar.mouseClick()
 sleep(config.SHORT_DELAY)
-##statesCheck(tbFrame.toolbar, "ToolBar")
+statesCheck(tbFrame.toolbar, "ToolBar")
 
 #check how many children of toolbar is accessible, in this example there are 4 
 #toolstripbuttons are added by toolbar.Buttons.Add, 1 separator 1 label and 1 
 #combobox are added by toolbar.Controls.add
-tbFrame.searchforItems("push button", 5)
+tbFrame.searchItems("push button", 4)
 
-tbFrame.searforchItems("separator", 1)
+tbFrame.searchItems("separator", 1)
 
-tbFrame.searchforItems("label", 1)
+tbFrame.searchItems("label", 1)
 
 tbFrame.searchItems("combo box", 1)
 

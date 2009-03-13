@@ -42,6 +42,5 @@ def launchPageSetupDialog(exe=None):
 # class to represent the application
 class PageSetupDialog(accessibles.Application):
     def __init__(self, accessible, subproc=None):
-        'Get a reference to the label window'
         super(PageSetupDialog, self).__init__(accessible, subproc)
         self.findFrame('PageSetupDialog control', logName='Page Setup Dialog')

@@ -129,7 +129,7 @@ namespace Mono.UIAutomation.Winforms
 			foreach (SWF.MenuItem item in Menu.MenuItems) {
 				MenuItemProvider itemProvider = GetItemProvider (item);
 				if (itemProvider != null)
-					OnNavigationChildAdded (false, itemProvider);
+					AddChildProvider (itemProvider);
 			}
 		}
 		
@@ -139,10 +139,10 @@ namespace Mono.UIAutomation.Winforms
 				Menu.MenuChanged -= OnMenuChanged;
 			
 			foreach (MenuItemProvider itemProvider in itemProviders.Values) {
-				OnNavigationChildRemoved (false, itemProvider);
+				RemoveChildProvider (itemProvider);
 				ProviderFactory.ReleaseProvider (itemProvider.Component);
 			}
-			OnNavigationChildrenCleared (false);
+			OnNavigationChildrenCleared ();
 		}
 
 		#endregion
@@ -164,7 +164,7 @@ namespace Mono.UIAutomation.Winforms
 				if (!itemProviders.TryGetValue (item, out itemProvider)) {
 					itemProvider = GetItemProvider (item);
 					if (itemProvider != null)
-						OnNavigationChildAdded (true, itemProvider);
+						AddChildProvider (itemProvider);
 				} else
 					itemsToDelete.Remove (item);
 			}
@@ -174,7 +174,7 @@ namespace Mono.UIAutomation.Winforms
 				if (itemProviders.TryGetValue (item, out itemProvider)) {
 					itemProviders.Remove (item);
 					itemProvider.Terminate ();
-					OnNavigationChildRemoved (true, itemProvider);
+					RemoveChildProvider (itemProvider);
 					ProviderFactory.ReleaseProvider (itemProvider.Component);
 				}
 			}

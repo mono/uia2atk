@@ -20,18 +20,45 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor
+//	Matt Guo <matt@mattguo.net>
 // 
 
 using System;
-using System.Windows;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using MUWE = Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.Winforms.Events.MonthCalendar
 {
-	public interface IClipboardSupport
+	internal class AutomationNamePropertyEvent : MUWE.AutomationNamePropertyEvent
 	{
-		void Copy (int start, int end);
-		void Paste (int position);
+#region Constructors
+		public AutomationNamePropertyEvent (MonthCalendarProvider monthCalendarProvider) 
+			: base (monthCalendarProvider)
+		{
+		}
+#endregion
+
+#region IConnectable Overrides
+		public override void Connect ()
+		{
+			((SWF.MonthCalendar) Provider.Control)
+				.DateChanged += new SWF.DateRangeEventHandler (OnDateChanged);
+		}
+
+		public override void Disconnect ()
+		{
+			((SWF.MonthCalendar) Provider.Control)
+				.DateChanged -= new SWF.DateRangeEventHandler (OnDateChanged);
+		}
+#endregion
+		
+#region Private Methods
+		private void OnDateChanged (object sender, SWF.DateRangeEventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+#endregion
 	}
 }

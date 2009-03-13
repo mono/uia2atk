@@ -567,6 +567,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BoundingRectangleTest ()
 		{
 			using (Form f = new Form ()) {
+				f.Show ();
+
 				// XXX: Weird behaviors happen when the window
 				// is resized less than 110x110.  Investigate
 				// this.
@@ -1023,6 +1025,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return new Form ();
+		}
+
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// Form uses Control.Text when returning NameProperty but it returns the & anyway
 		}
 		
 #endregion

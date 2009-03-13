@@ -529,6 +529,40 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (selectionChangeCommitted, "SelectionChangeCommitted event expected");
 		}
 
+		[Test]
+		// https://bugzilla.novell.com/show_bug.cgi?id=482686
+		public void DisplayMemberTest ()
+		{
+			ComboBox combobox = GetComboBox ();
+			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			for (int i = 0; i < 5; i++)
+				combobox.Items.Add (new DateTime (2000 + i, 12, 26));
+			combobox.DisplayMember = "Year";
+			
+			var cbProvider = GetProviderFromControl (combobox);
+			IRawElementProviderFragment listProvider = null;
+			var childProvider = cbProvider.Navigate (NavigateDirection.FirstChild);
+
+			while (childProvider != null) {
+				if (ControlType.List.Id.Equals (childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id))) {
+					listProvider = childProvider;
+					break;
+				}
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			}
+
+			childProvider = listProvider.Navigate (NavigateDirection.FirstChild);
+
+			int startYear = 2000;
+			while (childProvider != null) {
+				Assert.AreEqual (startYear.ToString(),
+				                 childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+				                 "Item's name");
+				startYear++;
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
 		#endregion
 
 		#region Protected Methods

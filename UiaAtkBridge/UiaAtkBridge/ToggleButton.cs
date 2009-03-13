@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -79,8 +80,8 @@ namespace UiaAtkBridge
 						return false;
 					toggleProvider.Toggle ();
 					return true;
-				} catch (ElementNotEnabledException) {
-					// TODO: handle this exception? maybe returning false is good enough
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
 				}
 			}
 			return false;

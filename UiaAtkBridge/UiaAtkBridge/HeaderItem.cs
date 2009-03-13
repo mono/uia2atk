@@ -24,6 +24,7 @@
 // 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -52,20 +53,7 @@ namespace UiaAtkBridge
 		
 		public bool DoAction (int i)
 		{
-			if (invokeProvider == null || i == 0)
-				return false;
-
-			bool rtn = true;
-
-			NotifyStateChange (Atk.StateType.Armed, true);
-			try {
-				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
-				rtn = false;
-			}
-			NotifyStateChange (Atk.StateType.Armed, false);
-			
-			return rtn;
+			return actionExpert.DoAction (i);
 		}
 		
 		public string GetDescription (int i)
@@ -140,11 +128,14 @@ namespace UiaAtkBridge
 
 		private bool DoClick ()
 		{
+			NotifyStateChange (Atk.StateType.Armed, true);
 			try {
 				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
+			NotifyStateChange (Atk.StateType.Armed, false);
 
 			return true;
 		}

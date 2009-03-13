@@ -102,16 +102,16 @@ namespace Mono.UIAutomation.Winforms
 			if (largeBackButton == null) {
 				largeBackButton = new TrackBarButtonProvider (trackbar,
 				                                               TrackBarButtonOrientation.LargeBack);
-				OnNavigationChildAdded (false, largeBackButton);
+				AddChildProvider (largeBackButton);
 			}
 			if (thumb == null) {
 				thumb = new TrackBarThumbProvider (trackbar);
-				OnNavigationChildAdded (false, thumb);
+				AddChildProvider (thumb);
 			}
 			if (largeForwardButton == null) {
 				largeForwardButton = new TrackBarButtonProvider (trackbar,
 				                                                  TrackBarButtonOrientation.LargeForward);
-				OnNavigationChildAdded (false, largeForwardButton);
+				AddChildProvider (largeForwardButton);
 			}
 		}
 		

@@ -1,3 +1,149 @@
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: Test updated for Bug #479787.
+
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: Fixes BridgeTests: cells in datagrid are focusable.
+
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	Patch from Matt Guo <matt@mattguo.net>
+
+	* BridgeTests.cs: Test that the accessible name is changed and events
+	are sent when the MonthCalendar's Month is changed.
+
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Reapplying fix for #480829. We now know it
+	was not regressing.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* BridgeTests.cs: Test that GetLink and GetLinkIndex work
+	correctly when called before NLinks property.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* DialogTester.cs: Expand OpenFileDialog test to include
+	states test for PopupButton. Refactor DialogTesterInner into
+	DialogRunner class that makes it easier to write varied tests.
+
+2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* BridgeTester.cs: Use the correct GetProvider overload for
+	the common case.
+
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTester.cs: Fall back on the parent's expand/collapse support.
+	This will use the "expand or collapse" Atk.Action.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Sandy keeps getting failures so revert
+	completely the PropertyGrid stuff.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Reenable PropertyGrid test.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Don't add the PropertyGrid to the form
+	(this is the fix what I was supposed to do in r129007).
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Revert main bits of r128916, it's causing
+	regessions.
+
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Remove debug spew.
+
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Added general test for PropertyGrid and
+	some bits that cover bug #480829.
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: 
+	* BridgeTester.cs: Work around #574674.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Mimic (in the provider) and workaround (in
+	the bridge) bug in UIA about not returning KeyboardFocusable
+	for ToolBarButtons. Reenable state tests for ToolStripButton.
+	Fixes #478838.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* bridgetest.sh.in: Move labels to NUNIT_FLAGS.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* bridgetest.sh.in: Using -noshadow in NUNIT_FLAGS.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* bridgetest.sh.in: Added -noshadow to NUNIT_FLAGS.
+
+2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Expect Editable in ListView items.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: 
+	* BridgeTester.cs: Fix build due to silly merge conflict.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Add an entry in GetAccessible () for
+	MaskedTextBoxEntry.
+
+	* BridgeTester.cs: Add a test for MaskedTextBox's EditableText
+	interface.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Fix build, oops.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Better a bug number with full info than a
+	spirous comment.
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Wrap ToolStripButton as a bridge Button.
+	Fixes #478932.
+
+	* BridgeTester.cs: Wrap ToolStripButton as a bridge Button and
+	use a wrapper panel for ToolBarButton toggle-style. Fixes
+	#478932.
+
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Add TextBoxHasScrollBar.
+
+	* BridgeTests.cs: Expect focus for ContainerControl.
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Better a verbose exception than an NRE.
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* bridgetest.sh.in: Use -noshadow to launch NUnit.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTests.cs: Testing EditableText in ListView children. [For Bug

@@ -46,8 +46,11 @@ namespace UiaAtkBridge
 
 		public bool ContainsKey (K key)
 		{
-			lock (locking)
+			lock (locking) {
+				if (key == null)
+					return false;
 				return normalDict.ContainsKey (key);
+			}
 		}
 
 		public V this [K key] {

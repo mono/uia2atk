@@ -59,7 +59,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.NameProperty.Id)
-				return strip.Text;
+				return Helper.StripAmpersands (strip.Text);
+			else if (propertyId == AEIds.IsContentElementProperty.Id)
+				return true;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -76,7 +78,7 @@ namespace Mono.UIAutomation.Winforms
 			foreach (ToolStripItem item in strip.Items) {
 				FragmentControlProvider itemProvider = GetItemProvider (item);
 				if (itemProvider != null)
-					OnNavigationChildAdded (false, itemProvider);
+					AddChildProvider (itemProvider);
 			}
 		}
 		
@@ -88,8 +90,8 @@ namespace Mono.UIAutomation.Winforms
 			strip.ItemRemoved -= OnItemRemoved;
 			
 			foreach (FragmentControlProvider itemProvider in itemProviders.Values)
-				OnNavigationChildRemoved (false, itemProvider);
-			OnNavigationChildrenCleared (false);
+				RemoveChildProvider (itemProvider);
+			OnNavigationChildrenCleared ();
 		}
 
 		#endregion
@@ -100,7 +102,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			if (itemProvider != null)
-				OnNavigationChildAdded (true, itemProvider);
+				AddChildProvider (itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
@@ -109,7 +111,7 @@ namespace Mono.UIAutomation.Winforms
 			if (itemProvider != null) {
 				itemProviders.Remove (e.Item);
 				itemProvider.Terminate ();
-				OnNavigationChildRemoved (true, itemProvider);
+				RemoveChildProvider (itemProvider);
 			}
 		}
 

@@ -3,7 +3,7 @@
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        11/10/2008
 # Description: Application wrapper for combobox_simple.py
-#              be called by ../combobox_simple_basic_ops.py
+#              be called by ../combobox_simple_ops.py
 ##############################################################################$
 
 """Application wrapper for combobox_simple"""
@@ -44,5 +44,6 @@ class ComboBox(accessibles.Application):
 
     def __init__(self, accessible, subproc=None): 
         """Get a reference to the combobox window"""
+
         super(ComboBox, self).__init__(accessible, subproc)
         self.findFrame(re.compile('^ComboBox'), logName='Combo Box Simple')

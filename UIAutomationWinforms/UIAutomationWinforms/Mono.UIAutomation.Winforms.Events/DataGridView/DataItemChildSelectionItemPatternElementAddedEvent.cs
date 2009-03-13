@@ -17,57 +17,70 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.UpDownBase
+namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
-	internal class RangeValuePatternMinimumEvent : BaseAutomationPropertyEvent
+	internal class DataItemChildSelectionItemPatternElementAddedEvent
+		: BaseAutomationEvent
 	{
-		#region Constructor
+		#region Constructors
 
-		public RangeValuePatternMinimumEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.MinimumProperty)
+		public DataItemChildSelectionItemPatternElementAddedEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
+			: base (provider,
+			        SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
 		{
+			this.provider = provider;
+			wasSelected = provider.Cell.Selected;
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
+		#region ProviderEvent Methods
 
 		public override void Connect ()
 		{
-			((SWF.NumericUpDown) Provider.Control).UIAMinimumChanged
-				+= new EventHandler (OnMinimumChanged);
+			provider.DataGridViewProvider.DataGridView.CellStateChanged += OnCellStateChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.NumericUpDown) Provider.Control).UIAMinimumChanged
-				-= new EventHandler (OnMinimumChanged);
+			provider.DataGridViewProvider.DataGridView.CellStateChanged -= OnCellStateChanged;
 		}
 		
 		#endregion 
 		
-		#region Private Methods
+		#region Private Fields
 		
-		#pragma warning disable 169
-		
-		private void OnMinimumChanged (object sender, EventArgs e)
+		private void OnCellStateChanged (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			bool isSelected = provider.Cell.Selected;
+
+			if (args.Cell.RowIndex == provider.Cell.RowIndex) {
+				if (wasSelected != isSelected
+				    && isSelected
+				    && provider.DataGridViewProvider.DataGridView.SelectedCells.Count > 1) {
+					RaiseAutomationEvent ();
+				}
+
+				wasSelected = isSelected;
+			}
 		}
 		
-		#pragma warning restore 169
+		private bool wasSelected;
+		private DataGridViewProvider.DataGridViewDataItemChildProvider provider;
 		
 		#endregion
 	}

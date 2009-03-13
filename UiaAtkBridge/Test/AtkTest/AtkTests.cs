@@ -508,12 +508,18 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Visible);
 
 			InterfaceEditableText (type, accessible);
+
+			if (type == BasicWidgetType.TextBoxView && widget == null) {
+				accessible = GetAccessible (type, "a\rb\rc\rd\re\rf\rg\rh\ri\rj\rk\rl\rm\rn\ro\rp\rq\rr\rs\rt\r");
+				int nAccessibleChildren = (TextBoxHasScrollBar? 1: 0);
+				Assert.AreEqual (nAccessibleChildren, accessible.NAccessibleChildren, "TextBoxView NAccessibleChildren");
+			}
 		}
 
 		[Test]
-		public virtual void MaskedTextBoxEntry ()
+		public virtual void PasswordCharTextBoxEntry ()
 		{
-			BasicWidgetType type = BasicWidgetType.MaskedTextBoxEntry;
+			BasicWidgetType type = BasicWidgetType.PasswordCharTextBoxEntry;
 			Atk.Object accessible = null;
 			
 			accessible = InterfaceText (type, true);
@@ -795,7 +801,7 @@ namespace UiaAtkBridgeTest
 			                 "numChildren; children roles:" + DescribeChildren (accessible));
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names, false);
+			CheckComboBoxMenuChild (menuChild, names, type);
 
 			TestInnerTextBoxInComboBox (accessible);
 
@@ -849,7 +855,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names, false);
+			CheckComboBoxMenuChild (menuChild, names, type);
 
 			//we get the accessible again because the MWF toolkit doesn't support clearing the selection
 			names = new string [] { "1st item", "Second Item", "Third Item", "Last Item" };
@@ -947,14 +953,15 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
-		//[Test]
+		[Test]
 		public void ListView ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListView;
 			Atk.Object accessible;
 
 			accessible = GetAccessible (type, simpleTable, true);
-			ExpandTreeView (type);
+			ExpandTreeView (accessible);
+
 			// A group cannot be selected, so exclude names of
 			// groups from selection test
 			string[] names = NamesFromTableXml (simpleTable, 1);
@@ -978,7 +985,6 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Focusable,
-			  Atk.StateType.Focused, // from InterfaceSelection
 			  Atk.StateType.ManagesDescendants,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
@@ -991,10 +997,13 @@ namespace UiaAtkBridgeTest
 			Atk.Object header = FindObjectByRole (accessible, Atk.Role.TableColumnHeader);
 			Assert.IsNotNull (header, "Header not null");
 			States (header,
+			    Atk.StateType.Selectable,
 				Atk.StateType.Enabled,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
+			Atk.Action action = CastToAtkInterface<Atk.Action> (header);
+			InterfaceAction (BasicWidgetType.HeaderItem, action, header);
 
 			Atk.Object child1 = FindObjectByName (accessible, "Programming Windows with C#");
 			int child1Index = child1.IndexInParent;
@@ -1009,14 +1018,9 @@ namespace UiaAtkBridgeTest
 
 			InterfaceText (group, "C#");
 
-			// For some reason, the next line would cause crashes
-			// in later tests.
-			//Relation (Atk.RelationType.NodeChildOf, child1, group);
+			Relation (Atk.RelationType.NodeChildOf, child1, group);
 
 			Assert.AreEqual (3, atkTable.NColumns, "Table NumColumns");
-			Assert.AreEqual (1, atkTable.GetRowAtIndex (groupIndex), "GetRowAtIndex");
-			Assert.AreEqual (0, atkTable.GetColumnAtIndex (groupIndex), "GetColumnAtIndex");
-			Assert.AreEqual (group, atkTable.RefAt (1, 0), "ListView RefAt");
 		}
 
 		protected string simpleTable = "<table>"+
@@ -1072,7 +1076,7 @@ namespace UiaAtkBridgeTest
 			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (subcomboChild);
 			InterfaceTable (atkTable, names.Length, 1, 0, 0, false);
 
-			CheckComboBoxMenuChild (subcomboChild, names, true, false);
+			CheckComboBoxMenuChild (subcomboChild, names, type, false);
 
 			Interfaces (subcomboChild,
 			            typeof (Atk.Component),
@@ -1145,7 +1149,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 
 			StartEventMonitor ();
-			ExpandTreeView (type);
+			ExpandTreeView (accessible);
 
 			// I'd expect 2 events, but gail only gives us 1. A bug?
 			ExpectEvents (1, 2, Atk.Role.TableCell, "object:state-changed:expanded");
@@ -1172,7 +1176,7 @@ namespace UiaAtkBridgeTest
 			//Relation (Atk.RelationType.NodeChildOf, item4, group2);
 
 			item4 = null;
-			CollapseTreeView (type);
+			CollapseTreeView (accessible);
 			Assert.AreEqual (2, atkTable.NRows, "TreeView NRows after collapse");
 			item4 = FindObjectByName (accessible, "Item4");
 			if (item4 != null) {
@@ -1217,6 +1221,11 @@ namespace UiaAtkBridgeTest
 
 		public void Pane (Atk.Object accessible)
 		{
+			Pane (accessible, false);
+		}
+
+		public void Pane (Atk.Object accessible, bool expectFocusable)
+		{
 			BasicWidgetType type = BasicWidgetType.ContainerPanel;
 			
 			string name = "test";
@@ -1232,6 +1241,7 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
+			  expectFocusable? Atk.StateType.Focusable: Atk.StateType.Enabled,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
@@ -1401,6 +1411,7 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
+			Atk.StateType.Focusable,
 			  Atk.StateType.Horizontal,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,

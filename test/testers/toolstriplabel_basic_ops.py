@@ -54,6 +54,11 @@ tslFrame.assertText(tslFrame.toolstriplabel_image, "ToolStripLabel with image")
 sleep(config.SHORT_DELAY)
 
 ##############################
+# check toolstriplabel's AtkImage
+##############################
+# TODO: BUG482714, should assert the label's icon information
+
+##############################
 # End
 ##############################
 # close application frame window

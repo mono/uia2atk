@@ -94,7 +94,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeChildControlStructure ();
 
 			form.UIAMenuChanged += OnUIAMenuChanged;
-			SetupMainMenuProvider (false);
+			SetupMainMenuProvider ();
 		}
 
 		public override void FinalizeChildControlStructure ()
@@ -118,9 +118,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (mainMenuProvider != null) {
 				mainMenuProvider.Terminate ();
-				OnNavigationChildRemoved (true, mainMenuProvider);
+				RemoveChildProvider (mainMenuProvider);
 			}
-			SetupMainMenuProvider (true);
+			SetupMainMenuProvider ();
 		}
 		
 #endregion
@@ -210,19 +210,20 @@ namespace Mono.UIAutomation.Winforms
 					                                   this);
 				else {
 					FormProvider ownerProvider 
-						= (FormProvider) ProviderFactory.FindProvider (owner);
-					ownerProvider.RemoveChildProvider (true, this);
+						= ProviderFactory.FindProvider (owner) as FormProvider;
+					if (ownerProvider != null)
+						ownerProvider.RemoveChildProvider (this);
 				}
 			}
 		}
 
-		private void SetupMainMenuProvider (bool raiseEvents)
+		private void SetupMainMenuProvider ()
 		{
 			if (form.Menu != null) {
 				mainMenuProvider = (MainMenuProvider)
 					ProviderFactory.GetProvider (form.Menu);
 				if (mainMenuProvider != null)
-					OnNavigationChildAdded (raiseEvents, mainMenuProvider);
+					AddChildProvider (mainMenuProvider);
 			}
 		}
 

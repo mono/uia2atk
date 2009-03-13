@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 
@@ -33,7 +34,7 @@ namespace UiaAtkBridge
 	internal class SelectionProviderUserHelper
 	{
 		private IRawElementProviderFragment		provider;
-		private ISelectionProvider				selectionProvider;
+		private ISelectionProvider			selectionProvider;
 		private IRawElementProviderFragment		childrenHolder;
 
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
@@ -65,10 +66,21 @@ namespace UiaAtkBridge
 			if (childItem == null)
 				return false;
 			
-			if (selectionProvider.CanSelectMultiple)
-				childItem.AddToSelection();
-			else
-				childItem.Select();
+			if (selectionProvider.CanSelectMultiple) {
+				try { 
+					childItem.AddToSelection ();
+				} catch (InvalidOperationException e) {
+					Log.Debug (e);
+					return false;
+				}
+			} else {
+				try {
+					childItem.Select ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			}
 			return true;
 		}
 
@@ -87,7 +99,8 @@ namespace UiaAtkBridge
 				if (selectionItemProvider != null) {
 					try {
 						selectionItemProvider.RemoveFromSelection ();
-					} catch (System.InvalidOperationException) {
+					} catch (InvalidOperationException e) {
+						Log.Debug (e);
 						result = false;
 					}
 				}
@@ -123,11 +136,12 @@ namespace UiaAtkBridge
 			ISelectionItemProvider childItem;
 			childItem = ChildItemAtIndex (i);
 
-			if(childItem != null) {
+			if (childItem != null) {
 				try {
-					childItem.RemoveFromSelection();
-				} catch (System.InvalidOperationException) {
+					childItem.RemoveFromSelection ();
+				} catch (InvalidOperationException e) {
 					// May happen, ie, if a ComboBox requires a selection
+					Log.Debug (e);
 					return false;
 				}
 				return true;
@@ -147,7 +161,12 @@ namespace UiaAtkBridge
 					  SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null) {
-					selectionItemProvider.AddToSelection();
+					try {
+						selectionItemProvider.AddToSelection ();
+					} catch (InvalidOperationException e) {
+						Log.Debug (e);
+						return false;
+					}
 				} else
 					return false;
 				child = child.Navigate (NavigateDirection.NextSibling);

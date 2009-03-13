@@ -49,13 +49,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 	
 		public override void Connect ()
 		{
-			viewItem.ListView.ItemChecked += OnItemChecked;
+			if (viewItem.ListView != null)
+				viewItem.ListView.ItemChecked += OnItemChecked;
 		}
 
 		public override void Disconnect ()
 		{
 			if (viewItem.ListView != null)
-			viewItem.ListView.ItemChecked -= OnItemChecked;
+				viewItem.ListView.ItemChecked -= OnItemChecked;
 		}
 		
 		#endregion

@@ -41,11 +41,6 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         self.ignore_button = self.dialog.findPushButton("&Ignore")
         self.abort_button = self.dialog.findPushButton("&Abort")
 
-        # BUG474254     
-        #self.scrollbars = self.dialog.findAllScrollBars(None)
-        #self.scrollbar_ver = self.scrollbars[0]
-        #self.scrollbar_hor = self.scrollbars[1]
-
     def show_textbox(self, accessible):
         """click detain_button in order to show its textbox"""
         procedurelogger.action("click %s" % accessible)
@@ -55,6 +50,10 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
             ERROR_TITLE = "Exception details"
             self.textbox = self.dialog.findText(None)
             self.errortitle_label = self.dialog.findLabel(ERROR_TITLE)
+
+            self.scrollbars = self.dialog.findAllScrollBars(None)
+            self.scrollbar_hor = self.scrollbars[0]
+            self.scrollbar_ver = self.scrollbars[1]
 
     def hide_textbox(self, accessible):
         """click detain_button in order to hide its textbox"""

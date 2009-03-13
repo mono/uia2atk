@@ -48,6 +48,7 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-index</property>
+        <property name="Tooltip" translatable="yes">tooltipText</property>
       </action>
       <action id="cdromAction">
         <property name="Type">Action</property>
@@ -139,7 +140,6 @@
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="ShowScrollbars">True</property>
-                        <property name="HeadersClickable">True</property>
                       </widget>
                     </child>
                   </widget>
@@ -635,7 +635,6 @@ in a label</property>
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="ShowScrollbars">True</property>
-                        <property name="HeadersClickable">True</property>
                       </widget>
                     </child>
                   </widget>

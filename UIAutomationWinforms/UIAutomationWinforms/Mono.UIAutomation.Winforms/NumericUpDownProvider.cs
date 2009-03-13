@@ -28,7 +28,7 @@ using System.Windows.Forms;
 
 using System.Windows.Automation;
 
-using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
+using Mono.UIAutomation.Winforms.Behaviors.NumericUpDown;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -45,6 +45,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
 			             new RangeValueProviderBehavior (this));
+			SetBehavior (EditableRangePatternIdentifiers.Pattern,
+			             new EditableRangeProviderBehavior (this));
+			
 		}
 
 	}

@@ -33,7 +33,7 @@ using Mono.UIAutomation.Winforms.Events.ListView;
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
 	internal class ListItemValueProviderBehavior
-		: ProviderBehavior, IValueProvider, IClipboardSupport
+		: ProviderBehavior, IValueProvider
 	{
 		#region Constructors
 		
@@ -99,28 +99,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#endregion
 
-		#region IClipboardSupport Implementation	
-
-		public void Copy (int start, int end)
-		{
-			string text = Value;
-			start = (int) System.Math.Max (start, 0);
-			end = (int) System.Math.Min (end, text.Length);
-			SWF.Clipboard.SetText (text.Substring (start, end - start));
-		}
-		
-		public void Paste (int position)
-		{
-			string text = Value;
-			position = (int) System.Math.Max (position, 0);
-			position = (int) System.Math.Min (position, text.Length);
-
-			string newValue = Value.Insert (position, SWF.Clipboard.GetText ());
-			PerformSetValue (newValue);
-		}
-
-		#endregion
-
 		#region Private Methods
 
 		private void PerformSetValue (string value)
@@ -142,6 +120,4 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#endregion
 	}
-
-	delegate void ListItemSetValueDelegate (string value);
 }

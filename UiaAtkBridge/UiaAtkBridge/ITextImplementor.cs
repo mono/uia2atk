@@ -25,6 +25,8 @@
 
 using Atk;
 using System;
+using System.Windows.Automation;
+
 
 namespace UiaAtkBridge
 {
@@ -62,6 +64,11 @@ namespace UiaAtkBridge
 		void GetCharacterExtents (int offset, out int x, out int y,
 		                          out int width, out int height, CoordType coords);
 
+		Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType,
+		                                Atk.TextClipType xClipType, Atk.TextClipType yClipType);
+
+		int GetOffsetAtPoint (int x, int y, Atk.CoordType coords);
+
 		Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset);
 		Atk.Attribute [] DefaultAttributes {
 			get;
@@ -69,5 +76,11 @@ namespace UiaAtkBridge
 
 		bool HandleSimpleChange (ref string oldText, ref int caretOffset);
 		bool HandleSimpleChange (ref string oldText, ref int caretOffset, bool updateCaret);
+
+		bool SetCaretOffSet (int offset);
+		int CaretOffset { get; }
+
+		bool RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
+		bool RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
 	}
 }

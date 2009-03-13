@@ -122,22 +122,6 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			if (Provider != null) {
-				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (canFocus)
-					states.AddState (Atk.StateType.Focusable);
-				else
-					states.RemoveState (Atk.StateType.Focusable);
-
-				bool focused = canFocus && (bool) Provider.GetPropertyValue (
-				  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-				if (focused)
-					states.AddState (Atk.StateType.Focused);
-				else
-					states.RemoveState (Atk.StateType.Focused);
-
-			}
-			
 			if (componentExpert != null && componentExpert.CanResize)
 				states.AddState (Atk.StateType.Resizable);
 			else

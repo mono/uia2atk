@@ -68,11 +68,14 @@ namespace Mono.UIAutomation.Winforms
 
 		internal static Rect GetControlScreenBounds (Rectangle bounds, SWF.Control control, bool controlIsParent)
 		{
-			if (controlIsParent)
+			if (control == null || !control.Visible)
+				return Rect.Empty;
+			else if (controlIsParent)
 				return Helper.RectangleToRect (control.RectangleToScreen (bounds));
-			if (control.Parent == null || control.TopLevelControl == null)
+			else if (control.Parent == null || control.TopLevelControl == null)
 				return Helper.RectangleToRect (bounds);
 			else {
+
 				if (control.FindForm () == control.Parent)
 					return Helper.RectangleToRect (control.TopLevelControl.RectangleToScreen (bounds));
 				else
@@ -430,6 +433,18 @@ namespace Mono.UIAutomation.Winforms
 					return SWF.DockStyle.None;
 		}
 
+		internal static string StripAmpersands (string s)
+		{
+			if (s == null)
+				return null;
+			// Remove &, except the second in a pair
+			// Will not remove an & at the end of a string, but
+			// having one there wouldn't make much sense anyhow.
+			for (int i = 0; i < s.Length - 1; i++)
+				if (s [i] == '&')
+					s = s.Remove (i, 1);
+			return s;
+		}
 		#endregion
 		
 		#region Private Static Methods

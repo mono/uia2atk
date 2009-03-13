@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -33,20 +34,22 @@ namespace UiaAtkBridge
 	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
 		Atk.ImageImplementor, Atk.EditableTextImplementor
 	{
-		private IInvokeProvider				invokeProvider;
+		private IInvokeProvider			invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
+		private IExpandCollapseProvider expandCollapseProvider;
 
 		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
-		private EditableTextImplementor editableTextExpert = null;
+		private EditableTextImplementorHelper editableTextExpert = null;
 
 		public TreeItem (IRawElementProviderSimple provider) : base (provider)
 		{
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
-			if (selectionItemProvider == null)
-				throw new ArgumentException ("TreeItem should always implement ISelectionItemProvider");
+
+			expandCollapseProvider = provider.GetPatternProvider (
+				ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			actionExpert = new ActionImplementorHelper ();
@@ -57,10 +60,15 @@ namespace UiaAtkBridge
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
+
+			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
+			if (fragment != null && fragment.Navigate (NavigateDirection.FirstChild) != null)
+				AddExpandContractAction ();
+
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 
 			imageExpert = new ImageImplementorHelper (this);
-			editableTextExpert = new EditableTextImplementor (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 		}
 		
 		protected IToggleProvider ToggleProvider {
@@ -70,9 +78,7 @@ namespace UiaAtkBridge
 		}
 
 		protected IExpandCollapseProvider ExpandCollapseProvider {
-			get {
-				return (IExpandCollapseProvider) Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			}
+			get { return expandCollapseProvider; }
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -81,10 +87,12 @@ namespace UiaAtkBridge
 
 			states.AddState (Atk.StateType.Transient);
 			states.AddState (Atk.StateType.SingleLine);
-			
-			states.AddState (Atk.StateType.Selectable);
-			if (selectionItemProvider.IsSelected)
-				states.AddState (Atk.StateType.Selected);
+
+			if (selectionItemProvider != null) {
+				states.AddState (Atk.StateType.Selectable);
+				if (selectionItemProvider.IsSelected)
+					states.AddState (Atk.StateType.Selected);
+			}
 
 			IToggleProvider toggleProvider = ToggleProvider;
 			if (toggleProvider != null) {
@@ -96,29 +104,19 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Checked);
 			}
 
-			IExpandCollapseProvider expandCollapseProvider = ExpandCollapseProvider;
 			if (expandCollapseProvider != null) {
-				ExpandCollapseState expandCollapseState = (ExpandCollapseState)Provider.GetPropertyValue (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+				ExpandCollapseState expandCollapseState
+					= (ExpandCollapseState) Provider.GetPropertyValue (
+					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
 				if (expandCollapseState != ExpandCollapseState.LeafNode)
 					states.AddState (Atk.StateType.Expandable);
 				if (expandCollapseState == ExpandCollapseState.Expanded)
 					states.AddState (Atk.StateType.Expanded);
 			}
 
-			return states;
-		}
+			editableTextExpert.UpdateStates (states);
 
-		protected override Atk.RelationSet OnRefRelationSet ()
-		{
-			Atk.RelationSet relSet = base.OnRefRelationSet ();
-			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
-			IRawElementProviderFragment parentProvider = fragment.Navigate (NavigateDirection.Parent);
-			if (parentProvider != null) {
-				Atk.Object parent = AutomationBridge.GetAdapterForProviderLazy (parentProvider);
-				if (parent != null)
-					relSet.AddRelationByType (Atk.RelationType.NodeChildOf, parent);
-			}
-			return relSet;
+			return states;
 		}
 
 		public string GetText (int startOffset, int endOffset)
@@ -157,7 +155,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -197,11 +195,15 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e)
+				|| textExpert.RaiseAutomationEvent (eventId, e))
+				return;
+			
 			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				Tree list = Parent as Tree;
 				if (list != null)
@@ -277,18 +279,24 @@ namespace UiaAtkBridge
 
 		internal virtual bool DoClick ()
 		{
-			Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
-			if (sel == null)
+			if (selectionItemProvider == null) 
 				return false;
-			return sel.AddSelection (IndexInParent);
+
+			try {
+				selectionItemProvider.Select ();
+				return true;
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
+				return false;
+			}
 		}
 
 		internal bool DoToggle ()
 		{
 			try {
-				ToggleProvider.Toggle();
-			} catch (ElementNotEnabledException) {
-				// TODO: handle this exception?
+				ToggleProvider.Toggle ();
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
@@ -298,11 +306,63 @@ namespace UiaAtkBridge
 		{
 			try {
 				invokeProvider.Invoke ();
-			} catch (ElementNotEnabledException) {
+			} catch (ElementNotEnabledException e) {
+				Log.Debug (e);
 				return false;
 			}
 			return true;
 		}
+
+		internal bool DoExpandCollapse ()
+		{
+			if (expandCollapseProvider == null)
+				return false;
+
+			ExpandCollapseState expandCollapseState
+				= (ExpandCollapseState) Provider.GetPropertyValue (
+					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+			if (expandCollapseState == ExpandCollapseState.Expanded) {
+				try {
+					expandCollapseProvider.Collapse ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			} else {
+				try {
+					expandCollapseProvider.Expand ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		internal void AddExpandContractAction ()
+		{
+			if (expandCollapseProvider == null) 
+				return;
+
+			actionExpert.Add ("expand or contract",
+					  "expand or contract",
+					  "expands or contracts the row in the tree view containing this cell",
+					  DoExpandCollapse);
+		}
+
+		internal void NotifyChildAdded (Atk.Object child)
+		{
+			AddExpandContractAction ();
+		}
+
+		internal void NotifyChildRemoved (Atk.Object child)
+		{
+			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
+			if (fragment != null && fragment.Navigate (NavigateDirection.FirstChild) != null)
+				actionExpert.Remove ("expand or contract");
+		}
+
 		public int NSelections {
 			get {
 				return -1;
@@ -311,7 +371,8 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e)
+				|| textExpert.RaiseAutomationPropertyChangedEvent (e))
 				return;
 			
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {

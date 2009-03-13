@@ -76,36 +76,24 @@ namespace UiaAtkBridge
 			
 			states.AddState (Atk.StateType.Selectable);
 
-			if (selected)
-				states.AddState (Atk.StateType.Showing);
-			else
-				states.RemoveState (Atk.StateType.Showing);
-
 			if (Parent != null) {
-				if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
+				Atk.StateSet parentsStates = Parent.RefStateSet ();
+				if (parentsStates.ContainsState (Atk.StateType.Visible))
 					states.AddState (Atk.StateType.Visible);
-				if ((Parent is MenuBar && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))
-				    || Parent.RefStateSet ().ContainsState (Atk.StateType.Selected))
+
+				if ((Parent is MenuBar && parentsStates.ContainsState (Atk.StateType.Visible))
+				    || parentsStates.ContainsState (Atk.StateType.Selected))
 					states.AddState (Atk.StateType.Showing);
 			}
 
-			bool canFocus = (bool) Provider.GetPropertyValue (
-			     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-			if (canFocus)
-				states.AddState (Atk.StateType.Focusable);
-
-			if (selected || SelectionItemSelected) {
+			if (states.ContainsState (Atk.StateType.Showing)
+			    && states.ContainsState (Atk.StateType.Focused)) {
 				states.AddState (Atk.StateType.Selected);
-
-				if (selected && canFocus) {
-					states.AddState (Atk.StateType.Focused);
-				}
 			} else {
 				states.RemoveState (Atk.StateType.Selected);
-				states.RemoveState (Atk.StateType.Focused);
 			}
 
-			if (Checked)
+			if (Checked || SelectionItemSelected)
 				states.AddState (Atk.StateType.Checked);
 			else
 				states.RemoveState (Atk.StateType.Checked);
@@ -153,11 +141,12 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
-				selected = (bool)e.NewValue;
-				NotifyStateChange (Atk.StateType.Selected, selected);
-			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+			if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				selected = (bool) e.NewValue ? false : selected;
 				NotifyStateChange (Atk.StateType.Showing);
+			} else if (e.Property.Id == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
+				NotifyStateChange (Atk.StateType.Selected, (bool) e.NewValue);
+				base.RaiseAutomationPropertyChangedEvent (e);
 			} else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
 				toggleProvider = (IToggleProvider)
 					Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
@@ -199,21 +188,31 @@ namespace UiaAtkBridge
 				try {
 					invokeProvider.Invoke ();
 					return true;
-				} catch (ElementNotEnabledException) {}
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+				}
 			} else if (expandCollapseProvider != null) {
-				try {
-					switch (expandCollapseProvider.ExpandCollapseState) {
-					case ExpandCollapseState.Collapsed:
+				switch (expandCollapseProvider.ExpandCollapseState) {
+				case ExpandCollapseState.Collapsed:
+					try {
 						expandCollapseProvider.Expand ();
-						return true;
-					case ExpandCollapseState.Expanded:
-						expandCollapseProvider.Collapse ();
-						return true;
-					default:
-						// Should never happen
-						break;
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
 					}
-				} catch (ElementNotEnabledException) { }
+					return true;
+				case ExpandCollapseState.Expanded:
+					try {
+						expandCollapseProvider.Collapse ();
+					} catch (ElementNotEnabledException e) {
+						Log.Debug (e);
+						return false;
+					}
+					return true;
+				default:
+					// Should never happen
+					break;
+				}
 			}
 
 			return false;
@@ -295,12 +294,12 @@ namespace UiaAtkBridge
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -335,7 +334,7 @@ namespace UiaAtkBridge
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
@@ -357,7 +356,15 @@ namespace UiaAtkBridge
 		//       remove this transformation (although it may be useful for the case in which menus are added/removed)
 		internal override void AddOneChild (Atk.Object child)
 		{
-			AutomationBridge.PerformTransformation <ParentMenu> (this, new ParentMenu (Provider)).AddOneChild (child);
+			if (NAccessibleChildren > 0) {
+				Log.Error ("MenuItem adapter should not have any children.");
+				return;
+			}
+			var parentMenu =
+				AutomationBridge.CreateAdapter<ParentMenu> (Provider);
+			if (parentMenu == null)
+				return;
+			AutomationBridge.PerformTransformation <ParentMenu> (this, parentMenu).AddOneChild (child);
 		}
 		
 		protected virtual void AddChildToParent (Atk.Object child)

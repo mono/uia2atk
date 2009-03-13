@@ -62,6 +62,8 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("tool bar");
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return false;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -77,7 +79,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			for (int i = 0; i < toolBar.Buttons.Count; ++i) {
 				var button = ProviderFactory.GetProvider (toolBar.Buttons [i]);
-				OnNavigationChildAdded (false, (FragmentControlProvider)button);
+				AddChildProvider ((FragmentControlProvider)button);
 			}
 		}
 		
@@ -89,9 +91,9 @@ namespace Mono.UIAutomation.Winforms
 			for (int index = 0; index < toolBar.Buttons.Count; index++) {
 				ToolBarButtonProvider buttonProvider 
 					= (ToolBarButtonProvider) ProviderFactory.FindProvider (toolBar.Buttons [index]);
-				OnNavigationChildRemoved (false, buttonProvider);
+				RemoveChildProvider (buttonProvider);
 			}
-			OnNavigationChildrenCleared (false);
+			OnNavigationChildrenCleared ();
 		}
 		
 		#endregion
@@ -129,13 +131,13 @@ namespace Mono.UIAutomation.Winforms
 			if (e.Action == CollectionChangeAction.Add) {
 				ToolBarButtonProvider button = (ToolBarButtonProvider)
 					ProviderFactory.GetProvider (toolBar.Buttons [(int) e.Element]);
-				OnNavigationChildAdded (true, button);
+				AddChildProvider (button);
 			} else if (e.Action == CollectionChangeAction.Remove) {
 				ToolBarButtonProvider button = RemoveButtonAt ((int) e.Element);
-				OnNavigationChildRemoved (true, button);
+				RemoveChildProvider (button);
 			} else if (e.Action == CollectionChangeAction.Refresh) {
 				ClearButtonsCollection ();
-				OnNavigationChildrenCleared (true);
+				OnNavigationChildrenCleared ();
 			}
 		}
 		
@@ -184,9 +186,15 @@ namespace Mono.UIAutomation.Winforms
 				          new ETB.AutomationNamePropertyEvent (this));
 				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 				          new ETB.AutomationIsEnabledPropertyEvent (this));
+
+				// TODO: Handle style changes (requires MWF patch)
 				
-				if (style == ToolBarButtonStyle.DropDownButton || 
-				    style == ToolBarButtonStyle.PushButton)
+				if (style == ToolBarButtonStyle.DropDownButton) {
+					SetBehavior (InvokePatternIdentifiers.Pattern,
+					             new ToolBarButtonInvokeProviderBehavior (this));
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+					             new ToolBarButtonExpandCollapseProviderBehavior (this));
+				} else if (style == ToolBarButtonStyle.PushButton)
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
 				else if (style == ToolBarButtonStyle.ToggleButton)
@@ -197,27 +205,73 @@ namespace Mono.UIAutomation.Winforms
 			#endregion
 			
 			#region Public Methods
+		
+			public override void InitializeChildControlStructure ()
+			{
+				if (style == ToolBarButtonStyle.DropDownButton &&
+				    toolBarButton.DropDownMenu != null) {
+					ContextMenu menu = toolBarButton.DropDownMenu as ContextMenu;
+					if (menu != null) {
+						menu.Popup += OnMenuPopup;
+						menu.Collapse += OnMenuCollapse;
+					}
+					// TODO: Handle DropDownMenu being set (requires MWF patch)
+				}
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				if (style == ToolBarButtonStyle.DropDownButton &&
+				    toolBarButton.DropDownMenu != null) {
+					ContextMenu menu = toolBarButton.DropDownMenu as ContextMenu;
+					if (menu != null) {
+						menu.Popup -= OnMenuPopup;
+						menu.Collapse -= OnMenuCollapse;
+					}
+				}
+			}
+
+			private void OnMenuPopup (object sender, EventArgs args)
+			{
+				var menuProvider =
+					ProviderFactory.GetProvider (toolBarButton.DropDownMenu) as FragmentControlProvider;
+				if (menuProvider != null)
+					AddChildProvider (menuProvider);
+			}
+
+			private void OnMenuCollapse (object sender, EventArgs args)
+			{
+				var menuProvider =
+					ProviderFactory.GetProvider (toolBarButton.DropDownMenu) as FragmentControlProvider;
+				if (menuProvider != null) {
+					menuProvider.Terminate ();
+					RemoveChildProvider (menuProvider);
+					OnNavigationChildrenCleared ();
+				}
+			}
+
+			#endregion
+
+			#region Protected Methods
 			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
 					if (style == ToolBarButtonStyle.DropDownButton)
 						return ControlType.SplitButton.Id;
-					else if (style == ToolBarButtonStyle.PushButton)
-						return ControlType.MenuItem.Id;
-					else if (style == ToolBarButtonStyle.ToggleButton)
+					else if (style == ToolBarButtonStyle.PushButton ||
+					         style == ToolBarButtonStyle.ToggleButton)
 						return ControlType.Button.Id;
 					else
 						return ControlType.Separator.Id;
 				}
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return style == ToolBarButtonStyle.PushButton ? true : false;
+					return false;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
 					if (style == ToolBarButtonStyle.DropDownButton)
 						return Catalog.GetString ("split button");
-					else if (style == ToolBarButtonStyle.PushButton)
-						return Catalog.GetString ("menu item");
-					else if (style == ToolBarButtonStyle.ToggleButton)
+					else if (style == ToolBarButtonStyle.ToggleButton ||
+					         style == ToolBarButtonStyle.PushButton)
 						return Catalog.GetString ("button");
 					else
 						return Catalog.GetString ("separator");
@@ -248,7 +302,7 @@ namespace Mono.UIAutomation.Winforms
 					return toolBarButton.Parent.RectangleToScreen (area);
 				}
 			}
-		
+
 			#endregion
 
 			#region Private Fields 	 

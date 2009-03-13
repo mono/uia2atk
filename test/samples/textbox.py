@@ -21,9 +21,11 @@ class TextBoxApp(Form):
 
     def __init__(self):
         self.Text = "TextBox Control"
+        self.Height = 335
 
         self.label1 = Label()
         self.label1.Text = "Normal TextBox"
+        self.label1.AccessibleName = "explicitly set name for label"
         self.label1.Dock = DockStyle.Bottom
     
         self.textbox1 = TextBox()
@@ -31,6 +33,7 @@ class TextBoxApp(Form):
         self.textbox1.AcceptsReturn = True
         self.textbox1.Dock = DockStyle.Bottom
         self.textbox1.Name = "self.textbox1"
+        self.textbox1.AccessibleName = "explicitly set name for textbox"
         self.textbox1.TextChanged += self.textbox1_enter
 
         # create a password entry textbox to display asterisks 
@@ -59,12 +62,22 @@ class TextBoxApp(Form):
         self.textbox3.UseSystemPasswordChar = True
         self.textbox3.TextChanged += self.textbox3_enter
 
+        self.label4 = Label()
+        self.label4.Text = "non-Editable TextBox"
+        self.label4.Dock = DockStyle.Bottom
+
+        self.textbox4 = TextBox()
+        self.textbox4.Enabled = False
+        self.textbox4.Dock = DockStyle.Bottom
+
         self.Controls.Add(self.label1)
         self.Controls.Add(self.textbox1)
         self.Controls.Add(self.label2)
         self.Controls.Add(self.textbox2)
         self.Controls.Add(self.label3)
         self.Controls.Add(self.textbox3)
+        self.Controls.Add(self.label4)
+        self.Controls.Add(self.textbox4)
 
     def textbox1_enter(self, sender, event):
         self.label1.Text = self.textbox1.Text

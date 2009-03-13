@@ -68,6 +68,10 @@ namespace Mono.UIAutomation.Winforms
 			//Text pattern is supported by both Control Types: Document and Edit
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextProviderBehavior (this));
+			SetBehavior (ClipboardPatternIdentifiers.Pattern,
+			             new ClipboardProviderBehavior (this));
+			SetBehavior (CaretPatternIdentifiers.Pattern,
+			             new CaretProviderBehavior (this));
 
 			observer = new ScrollBehaviorObserver (this, textboxbase.UIAHScrollBar,
 			                                       textboxbase.UIAVScrollBar);
@@ -147,6 +151,28 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			UpdateScrollBehavior ();
+		}
+
+		#endregion
+
+		#region Internal Properties
+		
+		internal int MaxLength {
+			get {
+				if (textboxbase is TextBox) {
+					return ((TextBox) textboxbase).MaxLength;
+				} else if (textboxbase is RichTextBox) {
+					return ((RichTextBox) textboxbase).MaxLength;
+				} else if (textboxbase is MaskedTextBox) {
+					// Length of the mask, removing mask modifiers
+					MaskedTextBox mtb = (MaskedTextBox) textboxbase;
+					if (mtb.MaskedTextProvider != null)
+						return mtb.MaskedTextProvider.Length;
+					else
+						return mtb.Mask.Length;
+				}
+				return 0;
+			}
 		}
 
 		#endregion

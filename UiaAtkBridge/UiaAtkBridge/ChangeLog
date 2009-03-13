@@ -4,6 +4,295 @@
 	* AutomationBridge.cs: First draft of the new mechanism for
 	loading the bridge on Moonlight.
 
+2009-03-13  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs: Avoid querying IsOffscreenProperty if the Parent is null,
+	since this currently causes deadlock [bug 484746]
+
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* TreeItem.cs:
+	* AutomationBridge.cs: Using TreeItem instead of default TextBox
+	implementation [Fixes Bug #479787].
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Tree.cs: Encapsulate Adapter creation in new
+	AutomationBridge.CreateAdapter<T> method, which returns null
+	in the case of an ArgumentException. Use this everywhere, and
+	check for null. Check inputs to prevent known exceptions, and
+	remove a few inappropriate throws. Part of bug #446915.
+
+	* Window.cs:
+	* Adapter.cs:
+	* MenuItem.cs:
+	* SplitButton.cs:
+	* AutomationBridge.cs: Encapsulate Adapter creation in new
+	AutomationBridge.CreateAdapter<T> method, which returns null
+	in the case of an ArgumentException. Use this everywhere, and
+	check for null. Check inputs to prevent known exceptions, and
+	remove a few inappropriate throws.
+
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+
+	* Button.cs: 
+	* Slider.cs: 
+	* Spinner.cs: 
+	* TreeItem.cs: 
+	* ListItem.cs: 
+	* MenuItem.cs: 
+	* ScrollBar.cs: 
+	* Hyperlink.cs: 
+	* HeaderItem.cs: 
+	* RadioButton.cs: 
+	* ToggleButton.cs: 
+	* ComboBoxItem.cs: 
+	* CheckBoxButton.cs: 
+	* SplitContainer.cs: 
+	* ComboBoxDropDown.cs: 
+	* ExpandCollapseButton.cs: 
+	* TableImplementorHelper.cs: 
+	* ComponentImplementorHelper.cs: 
+	* TextProviderTextImplementor.cs: 
+	* SelectionProviderUserHelper.cs: 
+	* EditableTextImplementorHelper.cs: Be more defensive about exception
+	handling.  Providers do throw exceptions (it's part of the UIA spec)
+	and we need to catch them when it is reasonable to do so to avoid our
+	host app dying.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Hyperlink.cs: Call AdjustLinkObjects at start of GetLink and
+	GetLinkIndex, just like with NLinks property. Fixes bug
+	#459640.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Hyperlink.cs: Fix typo in GetOffsetAtPoint so it doesn't
+	call itself.
+
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBoxOptions.cs:
+	* ComboBoxDropDown.cs:
+	* ComboBoxOptionsTable.cs: States rework of the Menu child of
+	a combobox. Should fix major part of bug#483300, if not all.
+
+2009-03-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* List.cs:
+	* Slider.cs:
+	* Button.cs:
+	* Spinner.cs:
+	* ListItem.cs:
+	* MenuItem.cs:
+	* TreeItem.cs:
+	* Hyperlink.cs:
+	* ListGroup.cs:
+	* TextLabel.cs:
+	* ComboBoxItem.cs:
+	* TextContainer.cs:
+	* TextBoxEntryView.cs:
+	* ITextImplementor.cs:
+	* BaseTextImplementor.cs:
+	* ComboBoxOptionsTable.cs:
+	* ComponentImplementorHelper.cs: Replace NIE's with Log.Warns.
+	Use *experts when needed in order to centralize calls to
+	unimplemented stuff. Fixes the majority of bug#446915.
+
+	* TableImplementorHelper.cs: Use SemiLazy instead of Lazy to
+	prevent NRE's.
+
+2009-03-11  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs, MenuItem.cs: Pass on Focus events for MenuItems.
+
+2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ComboBoxItem.cs: Add some null checks that get rid of the
+	crashes described in bug #474611, though it hides the real
+	problem.
+
+	* AmbiDictionary.cs: Avoid ArgumentNullException in
+	ContainsKey by checking for null and returning false.
+
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: Fix regression when MenuItem is being used to represent
+	ToolStripDropDownButton.  In this case, we don't want to set focusable.
+
+2009-03-10  Brad Taylor  <brad@getcoded.net>
+	
+	Committing Mike Gorse's fixes with some minor tweaks.
+	
+	* TreeItem.cs: If the provider has at least 1 child, and exports
+	IExpandCollapseProvider, add "expand or collapse" to our Actions list.
+	[Fixes #475882]
+
+	* ActionImplementorHelper.cs: Check for duplicate Action items.
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* AutomationBridge.cs: 
+	* ContextMenuWindow.cs: Add a new Window subclass to properly export
+	the correct states for ContextMenu.  [Fixes #477657]
+
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DataGrid.cs: Cosmetic.
+
+	* ToolBar.cs: Correct year.
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: Intentionally ignore focusable as MenuItems should
+	always report IsKeyboardFocusable = False in the provider.
+	[Really fixes #471405]
+
+2009-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: Reconfigure the way Focus and Selection are done.  When
+	invoked, no longer select/focus as it doesn't correctly reflect the
+	state of the widget which is currently invisible.  Additionally, don't
+	report focused or selected if we're offscreen.  [Fixes #471405]
+
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseTextImplementor.cs: Handling Caret: property added: CaretOffset,
+	method added: SetCaretOffSet, event-related methods:
+	RaiseAutomationPropertyChangedEvent, RaiseAutomationEvent. Protected
+	CaretProvider property added.
+
+	* EditableTextImplementor.cs: File renamed to
+	EditableTextImplementorHelper.
+
+	* EditableTextImplementorHelper.cs: Renamed from
+	EditableTextImplementor. No need to use ITextProvider. Clipboard
+	handling by using provider.GetPatternProvider. Handling Editable
+	state.
+
+	* ITextImplementor.cs: Handling Caret: property added: CaretOffset,
+	method added: SetCaretOffSet, event-related methods:
+	RaiseAutomationPropertyChangedEvent, RaiseAutomationEvent.
+
+	* List.cs: Using EditableTextImplementorHelper to handle
+	Atk.EditableTextImplementor methods, events and editable state. Using
+	TableExpert in GetColumnDescription, GetColumnHeader,
+	GetRowDescription and GetRowHeader.
+
+	* TreeItem.cs:
+	* ListItem.cs: Using EditableTextImplementorHelper to handle
+	Atk.EditableTextImplementor methods, events and editable state.
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: EditableTextImplementor.cs renamted to
+	EditableTextImplementorHelper.cs.
+
+	* Spinner.cs: Using provider.GetPatternProvider instead of explicit
+	casting.
+
+	* TextBoxEntryView.cs: Using EditableTextImplementorHelper to handle
+	Atk.EditableTextImplementor methods, events and editable state.
+	TextImplementorHelper handles Caret events.
+
+	* TextProviderTextImplementor.cs: IText field removed, using base
+	protected property CaretProvider instead.
+
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs:
+	* AutomationBridge.cs: Some protection against NRE's found
+	when trying to reproduce #479404.
+
+2009-03-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs:
+	* ToolBar.cs:
+	* Makefile.am:
+	* Container.cs:
+	* UiaAtkBridge.mdp:
+	* AutomationBridge.cs: Refactoring.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs:
+	* AutomationBridge.cs: Mimic (in the provider) and workaround
+	(in the bridge) bug in UIA about not returning
+	KeyboardFocusable for ToolBarButtons. Reenable state tests for
+	ToolStripButton. Fixes #478838.
+
+	* TreeItem.cs: Cosmetic.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs: Remove unneeded cast since previous commit.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Adapter.cs: Handling NodeChildOf when Parent is DataGrid, Table,
+	Group, ListItem or DataItem. New internal property VirtualParent
+	[Fixes Bug #479142]
+
+	* ContextMenu.cs: VirtualParent moved to Adapter. [For Bug #479142]
+
+	* TreeItem.cs: OnRefRelationSet handled on Adapter. [Fixes Bug #479142]
+
+2009-03-05  Mike Gorse  <mgorse@novell.com>
+
+	* EditableTextImplementor.cs: Fix Editable when readOnly changes.
+
+	* List.cs: Do not set Editable when a DomainUpDown is disabled.
+
+	* TreeItem.cs: Set Editable when appropriate.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* EditableTextImplementor.cs: Use the new IInsertDeleteTextProvider
+	interface so that MaskedTextBox can be properly supported.
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs:
+	* Makefile.am:
+	* AutomationBridge.cs: Cosmetic.
+
+2009-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* HeaderItem.cs: Using actionExpert instead of local handling. [Fixes
+	Bug #478840]
+
+2009-03-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Container.cs:
+	* WrapperPanel.cs:
+	* AutomationBridge.cs: Wrap ToolStripButton as a bridge
+	Button and use a wrapper panel for ToolBarButton 
+	toggle-style. Fixes #478932.
+
+2009-03-04  Mike Gorse  <mgorse@novell.com>
+
+	* TextBoxEntryView.cs: Derive from ParentAdapter [bug 478005]
+
+	* ParentAdapter.cs, Tree.cs, Splitter.cs, List.cs, Table.cs,
+	  Hyperlink.cs, Window.cs, ComboBox.cs, ComponentParentAdapter.cs,
+	  Adapter.cs, MenuItem.cs, ComponentAdapter.cs: Refactor to set Focusable
+	  and Focused in Adapter.RefStateSet.
+
+	* AutomationBridge.cs, WrapperPanel.cs, Makefile.am, UiaAtkBridge.mdp:
+	  Subclass WrapperPanel from Container; remove Focused state.
+
+2009-02-23  Brad Taylor  <brad@getcoded.net>
+
+	* TreeItem.cs: 
+	* ListItem.cs: Using AddSelection didn't really make sense here, as the
+	default action of most controls is to change the selection, not to add
+	to the selection (with shift).
+
+	* SelectionProviderUserHelper.cs: Be safer about calling AddToSelection
+	and Select when it may throw an InvalidOperationException when it can't
+	accept any more selections.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* TreeItem.cs: Atk.EditableTextImplementor implementation, uses
@@ -18,7 +307,7 @@
 	* EditableTextImplementor.cs: File added, implements
 	Atk.EditableTextImplementor.
 
-	2009-02-18  Mike Gorse  <mgorse@novell.com>
+2009-02-18  Mike Gorse  <mgorse@novell.com>
 
 	* Tree.cs, TreeItem.cs, List.cs, Tab.cs,, Slider.cs:
 	  TextBoxEntryView.cs: Various Name fixes.
@@ -892,7 +1181,7 @@
 
 	* Tree.cs: Cosmetic.
 
-2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Tab.cs:
 	* List.cs:
@@ -2561,8 +2850,6 @@
 
 	* ScrollBar.cs: Not using Parent in constructor, instead calling it
 	  when needed in GetCurrentValue and SetCurrentValue.
-	
-	  
 	
 	  [Fixes Bug #414937]
 

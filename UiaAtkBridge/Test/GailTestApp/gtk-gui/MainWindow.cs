@@ -143,7 +143,7 @@ public partial class MainWindow {
         w1.Add(this.NewAction, null);
         this.Action1 = new Gtk.Action("Action1", null, null, null);
         w1.Add(this.Action1, null);
-        this.indexAction = new Gtk.Action("indexAction", null, null, "gtk-index");
+        this.indexAction = new Gtk.Action("indexAction", null, Mono.Unix.Catalog.GetString("tooltipText"), "gtk-index");
         w1.Add(this.indexAction, null);
         this.cdromAction = new Gtk.Action("cdromAction", null, null, "gtk-cdrom");
         w1.Add(this.cdromAction, null);
@@ -314,7 +314,6 @@ public partial class MainWindow {
         this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton1"));
         this.radiobutton1.CanFocus = true;
         this.radiobutton1.Name = "radiobutton1";
-        this.radiobutton1.Active = true;
         this.radiobutton1.DrawIndicator = true;
         this.radiobutton1.UseUnderline = true;
         this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);
@@ -345,7 +344,6 @@ public partial class MainWindow {
         this.radTest1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 0"));
         this.radTest1.CanFocus = true;
         this.radTest1.Name = "radTest1";
-        this.radTest1.Active = true;
         this.radTest1.DrawIndicator = true;
         this.radTest1.UseUnderline = true;
         this.radTest1.Group = new GLib.SList(System.IntPtr.Zero);

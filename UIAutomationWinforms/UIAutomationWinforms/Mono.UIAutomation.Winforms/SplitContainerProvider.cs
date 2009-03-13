@@ -54,12 +54,12 @@ namespace Mono.UIAutomation.Winforms
 			if (!splitContainer.Panel1Collapsed) {
 				panel1 = new SplitterPanelProvider (splitContainer.Panel1);
 				panel1.Initialize ();
-				OnNavigationChildAdded (true, panel1);
+				AddChildProvider (panel1);
 			}
 			if (!splitContainer.Panel2Collapsed) {
 				panel2 = new SplitterPanelProvider (splitContainer.Panel2);
 				panel2.Initialize ();
-				OnNavigationChildAdded (true, panel2);
+				AddChildProvider (panel2);
 			}
 		}
 		

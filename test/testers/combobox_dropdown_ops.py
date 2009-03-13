@@ -171,11 +171,6 @@ statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"
 #item3 get rid of focused and selected states
 statesCheck(cbddFrame.menuitem[3], "MenuItem")
 
-#clear selection
-cbddFrame.assertClearSelection(cbddFrame.menu)
-sleep(config.SHORT_DELAY)
-statesCheck(cbddFrame.menuitem[5], "MenuItem")
-
 ##############################################
 ## test AtkStreamableContent for text
 ##############################################

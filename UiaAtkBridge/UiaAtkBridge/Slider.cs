@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -77,7 +78,17 @@ namespace UiaAtkBridge
 					return false;
 				if (v < rangeValueProvider.Minimum)
 					v = rangeValueProvider.Minimum;
-				rangeValueProvider.SetValue (v);
+
+				try {
+					rangeValueProvider.SetValue (v);
+				} catch (ArgumentOutOfRangeException e) {
+					Log.Debug (e);
+					return false;
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+
 				return true;
 			}
 			
@@ -168,7 +179,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -210,7 +221,7 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		#endregion
 

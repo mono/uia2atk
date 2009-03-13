@@ -35,6 +35,8 @@ class ContextMenuStripSample(Form):
         # set up menu items
         self.toolstrip_menuitem1 = ToolStripMenuItem("Apple")
         self.toolstrip_menuitem1.Click += self.cms_click
+        self.toolstrip_menuitem1a = ToolStripMenuItem("Macintosh")
+        self.toolstrip_menuitem1b = ToolStripMenuItem("Delicious")
         self.toolstrip_menuitem2 = ToolStripMenuItem("Banana")
         self.toolstrip_menuitem2.Click += self.cms_click
         self.toolstrip_menuitem3 = ToolStripMenuItem("Watermelon")
@@ -46,6 +48,8 @@ class ContextMenuStripSample(Form):
 
         # set up context_menu_strip
         self.context_menu_strip = ContextMenuStrip()
+        self.toolstrip_menuitem1.DropDownItems.Add(self.toolstrip_menuitem1a)
+        self.toolstrip_menuitem1.DropDownItems.Add(self.toolstrip_menuitem1b)
         self.context_menu_strip.Items.Add(self.toolstrip_menuitem1)
         self.context_menu_strip.Items.Add(self.toolstrip_menuitem2)
         self.context_menu_strip.Items.Add(self.toolstrip_menuitem3)

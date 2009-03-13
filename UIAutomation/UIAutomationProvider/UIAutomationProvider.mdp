@@ -43,13 +43,16 @@
     <File name="System.Windows.Automation.Provider/ProviderOptions.cs" subtype="Code" buildaction="Compile" />
     <File name="UIAutomationProvider.dll.sources" subtype="Code" buildaction="Nothing" />
     <File name="System.Windows.Automation.Provider/IEmbeddedImageProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IEditableRangeProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IClipboardProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ICaretProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationBridge" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
-  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am">
     <BuildFilesVar />
     <DeployFilesVar />

@@ -24,8 +24,9 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using System.Windows.Automation;
+using System.Collections.Generic;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -82,8 +83,14 @@ namespace UiaAtkBridge
 			if (!enabled)
 				return false;
 
-			if (!selProvider.IsSelected)
-				selProvider.Select ();
+			if (!selProvider.IsSelected) {
+				try {
+					selProvider.Select ();
+				} catch (ElementNotEnabledException e) {
+					Log.Debug (e);
+					return false;
+				}
+			}
 			
 			return true;
 		}

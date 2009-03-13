@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -70,8 +71,10 @@ namespace UiaAtkBridge
 
 			Atk.Object parent = this; //in case this.GetType () == typeof(UiaAtkBridge.Window) 
 			while (!(parent is UiaAtkBridge.Window)) {
-				if (parent == null)
-					throw new Exception ("Parent of an object should not be null");
+				if (parent == null) {
+					Log.Error ("Parent of an object should not be null");
+					return;
+				}
 				parent = parent.Parent;
 			}
 			TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)parent);
@@ -82,7 +85,9 @@ namespace UiaAtkBridge
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool canFocus = (bool) Provider.GetPropertyValue (
 				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (!canFocus) {
+				// Menus do not report Focusable even though they are, as in gtk.
+				// TODO: Report a gail bug?
+				if (!canFocus && !(this is Menu)) {
 					return;
 				}
 
@@ -186,8 +191,21 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Enabled);
 				}
 				
-				bool is_offscreen = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
-				if (Parent != null && !is_offscreen) {
+				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+				if (canFocus)
+					states.AddState (Atk.StateType.Focusable);
+				else
+					states.RemoveState (Atk.StateType.Focusable);
+
+				bool focused = canFocus && (bool) Provider.GetPropertyValue (
+				  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+				if (focused)
+					states.AddState (Atk.StateType.Focused);
+				else
+					states.RemoveState (Atk.StateType.Focused);
+
+				bool is_offscreen = Parent != null && (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+				if (!is_offscreen) {
 					states.AddState (Atk.StateType.Showing);
 					states.AddState (Atk.StateType.Visible);
 				} else {
@@ -197,6 +215,39 @@ namespace UiaAtkBridge
 			}
 			
 			return states;
+		}
+
+		protected override Atk.RelationSet OnRefRelationSet ()
+		{
+			Atk.RelationSet relationSet = base.OnRefRelationSet ();
+
+			if (Role == Atk.Role.ScrollBar 
+			    || Role == Atk.Role.RadioButton)
+				return relationSet;
+			
+			Adapter parentAdapter = VirtualParent;
+			if (parentAdapter != null) {
+				// To support NodeChildOf parent must be either
+				// - DataGrid, Table or Group, or
+				// - ListItem or DataItem, in this case the parent of parent is used,
+				//   because we are ignoring this parent (either ListItem or DataItem).
+				int controlType 
+					= (int) parentAdapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+
+				if (controlType == ControlType.ListItem.Id
+				    || controlType == ControlType.DataItem.Id)
+					parentAdapter = parentAdapter.VirtualParent;
+				else if (controlType != ControlType.DataGrid.Id
+				         && controlType != ControlType.Table.Id
+				         && controlType != ControlType.Group.Id)
+					return relationSet;
+				
+				if (parentAdapter != null)
+					relationSet.AddRelationByType (Atk.RelationType.NodeChildOf, 
+					                               parentAdapter);
+			}
+
+			return relationSet;
 		}
 
 		protected override int OnGetIndexInParent()
@@ -232,7 +283,7 @@ namespace UiaAtkBridge
 			for (;;) {
 				Adapter parent = adapter.Parent as Adapter;
 				if (this is ContextMenu)
-					parent = ((ContextMenu)this).VirtualParent;
+					parent = VirtualParent;
 				if (parent == null || parent is TopLevelRootItem) {
 					if (adapter is Window) {
 						System.Windows.Rect rect = adapter.BoundingRectangle;
@@ -243,6 +294,10 @@ namespace UiaAtkBridge
 				}
 				adapter = parent;
 			}
+		}
+
+		internal Adapter VirtualParent {
+			get { return (Provider == null) ? null : AutomationBridge.GetParentAdapter (Provider); }
 		}
 
 		private void EmitBoundsChanged (System.Windows.Rect rect)

@@ -206,7 +206,7 @@ class Button(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class ToggleButton(object):
-    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class RadioButton(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
@@ -259,7 +259,7 @@ class NumericUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
 class DomainUpDown(object):
-    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE, MANAGES_DESCENDANTS)
 
 class DateTimePicker_Spin(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
@@ -285,6 +285,9 @@ class MenuItem(object):
 class ComboBox(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class RichTextBox(object):
+    states = (EDITABLE, ENABLED, FOCUSABLE, MULTI_LINE, SENSITIVE, SHOWING, VISIBLE)
+
 class Splitter(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
@@ -292,7 +295,7 @@ class SplitContainer(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class Text(object):
-    states = (EDITABLE, ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
 class ToolTip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
@@ -349,4 +352,7 @@ class Alert(object):
     states = (ENABLED, MODAL, SENSITIVE, SHOWING, VISIBLE)
 
 class ContextMenu(MenuStrip):
+	pass
+
+class ContextMenuStrip(ContextMenu):
 	pass

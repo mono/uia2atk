@@ -1,3 +1,34 @@
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationTypes.mdp:
+	* UIAutomationTypes.dll.sources: Internal classes added:
+	ClipboardPatternIdentifiers, EditableRangePatternIdentifiers and
+	CaretPatternIdentifiers.
+
+	* System.Windows.Automation/CaretPatternIdentifiers.cs: Class added,
+	used by ICaretProvider.
+
+	* System.Windows.Automation/ClipboardPatternIdentifiers.cs: Class added,
+	used by IClipboardProvider.
+
+	* System.Windows.Automation/EditableRangePatternIdentifiers.cs: Class
+	added, used by IEditableRangeProvider.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationTypes.mdp: Removing GtkDesignInfo.
+	InsertDeleteTextPatternIdentifiers.cs file added to project.
+
+	* UIAutomationTypesTests.mdp: Removing GtkDesignInfo.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation/InsertDeleteTextPatternIdentifiers.cs: 
+	Add a new internal InsertDeleteTextPatternIdentifiers to support the
+	new IInsertDeleteTextProvider.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationTypes.mdp:

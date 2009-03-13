@@ -20,6 +20,7 @@
     <File name="Tree.cs" subtype="Code" buildaction="Compile" />
     <File name="TreeItem.cs" subtype="Code" buildaction="Compile" />
     <File name="Window.cs" subtype="Code" buildaction="Compile" />
+    <File name="WrapperPanel.cs" subtype="Code" buildaction="Compile" />
     <File name="AutomationBridge.cs" subtype="Code" buildaction="Compile" />
     <File name="Button.cs" subtype="Code" buildaction="Compile" />
     <File name="ActionImplementorHelper.cs" subtype="Code" buildaction="Compile" />
@@ -81,7 +82,8 @@
     <File name="TextProviderTextImplementor.cs" subtype="Code" buildaction="Compile" />
     <File name="ValueProviderTextImplementor.cs" subtype="Code" buildaction="Compile" />
     <File name="ToggleButton.cs" subtype="Code" buildaction="Compile" />
-    <File name="EditableTextImplementor.cs" subtype="Code" buildaction="Compile" />
+    <File name="EditableTextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolBar.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

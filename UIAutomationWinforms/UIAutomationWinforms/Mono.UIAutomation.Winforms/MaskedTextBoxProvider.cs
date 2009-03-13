@@ -25,17 +25,28 @@
 
 using System;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Behaviors.MaskedTextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (MaskedTextBox))]
 	internal class MaskedTextBoxProvider : TextBoxProvider
 	{
+#region Public Methods
 		public MaskedTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
 		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			SetBehavior (InsertDeleteTextPatternIdentifiers.Pattern,
+			             new InsertDeleteTextProviderBehavior (this));
+		}
+#endregion
 	}
 }

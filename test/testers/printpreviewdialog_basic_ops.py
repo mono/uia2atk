@@ -48,7 +48,7 @@ ppdFrame = app.printPreviewDialogFrame
 ppdFrame.click(ppdFrame.button)
 
 #check Dialog's states
-statesCheck(ppdFrame.dialog, "Dialog")
+statesCheck(ppdFrame.dialog, "Dialog", add_states=["modal"])
 
 #check ToolBar's states
 statesCheck(ppdFrame.toolbar, "ToolBar")

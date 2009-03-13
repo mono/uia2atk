@@ -442,6 +442,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              false);
 		}
 
+		[Test]
+		public override void AmpersandsAndNameTest ()
+		{
+			// StatusBar doesn't use & as mnemonic
+		}
+
 		#endregion
 	}
 }

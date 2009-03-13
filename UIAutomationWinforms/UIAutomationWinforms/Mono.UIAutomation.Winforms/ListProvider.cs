@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract int SelectedItemsCount { get; }
 				
-		public abstract ListItemProvider[] GetSelectedItems ();
+		public abstract IRawElementProviderSimple[] GetSelectedItems ();
 		
 		public abstract bool IsItemSelected (ListItemProvider item);
 		
@@ -219,7 +219,7 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			foreach (ListItemProvider item in Items)
-				OnNavigationChildRemoved (false, item);
+				RemoveChildProvider (item);
 
 			ClearItemsList ();
 		}
@@ -279,12 +279,12 @@ namespace Mono.UIAutomation.Winforms
 
 		private void UpdateScrollBehavior ()
 		{
-			UpdateScrollBehavior (observer);
+			UpdateScrollBehavior (ScrollBehaviorObserver);
 		}
 
 		protected void UpdateScrollBehavior (IScrollBehaviorObserver observer)
 		{
-			if (observer.SupportsScrollPattern)
+			if (observer != null && observer.SupportsScrollPattern)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
 			else
@@ -299,13 +299,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (args.Action == CollectionChangeAction.Add) {
 				ListItemProvider item = GetItemProviderFrom (this, args.Element);
-				OnNavigationChildAdded (true, item);
+				AddChildProvider (item);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				ListItemProvider item = RemoveItemFrom (args.Element);
-				OnNavigationChildRemoved (true, item);
+				RemoveChildProvider (item);
 			} else if (args.Action == CollectionChangeAction.Refresh) {
 				ClearItemsList ();
-				OnNavigationChildrenCleared (true);
+				OnNavigationChildrenCleared ();
 			}
 		}
 		

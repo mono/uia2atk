@@ -150,26 +150,26 @@ namespace Mono.UIAutomation.Winforms
 			if (smallBackButton == null) {
 				smallBackButton = new ScrollBarButtonProvider (scrollbar,
 				                                               ScrollBarButtonOrientation.SmallBack);
-				OnNavigationChildAdded (false, smallBackButton);
+				AddChildProvider (smallBackButton);
 			}
 			if (smallForwardButton == null) {
 				smallForwardButton = new ScrollBarButtonProvider (scrollbar,
 				                                                  ScrollBarButtonOrientation.SmallForward);
-				OnNavigationChildAdded (false, smallForwardButton);
+				AddChildProvider (smallForwardButton);
 			}
 			if (thumb == null) {
 				thumb = new ScrollBarThumbProvider (scrollbar);
-				OnNavigationChildAdded (false, thumb);
+				AddChildProvider (thumb);
 			}
 			if (largeBackButton == null) {
 				largeBackButton = new ScrollBarButtonProvider (scrollbar,
 				                                               ScrollBarButtonOrientation.LargeBack);
-				OnNavigationChildAdded (false, largeBackButton);
+				AddChildProvider (largeBackButton);
 			}
 			if (largeForwardButton == null) {
 				largeForwardButton = new ScrollBarButtonProvider (scrollbar,
 				                                                  ScrollBarButtonOrientation.LargeForward);
-				OnNavigationChildAdded (false, largeForwardButton);
+				AddChildProvider (largeForwardButton);
 			}
 		}
 		

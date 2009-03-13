@@ -26,6 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -164,14 +165,6 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.ManagesDescendants);
-			states.AddState (Atk.StateType.Focusable);
-
-			bool focused = (bool) Provider.GetPropertyValue (
-			  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-			if (focused)
-				states.AddState (Atk.StateType.Focused);
-			else
-				states.RemoveState (Atk.StateType.Focused);
 
 			return states;
 		}
@@ -258,7 +251,7 @@ namespace UiaAtkBridge
 				                                                      args);
 			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
-				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
+				Log.Error ("Tree: Toggle events should not land here (should not be reached)");
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}

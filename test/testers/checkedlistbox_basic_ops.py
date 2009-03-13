@@ -73,9 +73,12 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #use keySpace to check listitem20
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked", "focused"])
+##both listitem[20] and listbox2 are focused due to BUG480218
+statesCheck(clbFrame.listbox2, "List")
 #press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listbox1, "List")
 
 #do click for listitem 1 to rise selected state
 clbFrame.click(clbFrame.listitem[1])
@@ -110,18 +113,18 @@ clbFrame.mouseClick(log=False)
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected", "checked"])
-statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox1, "List")
 #mouse click listitem 3 again to uncheck it, but listbox1 still with focused
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused","selected"])
-statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox1, "List")
 
 #mouse click listitem 23 to selected, focus to listbox2
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
-statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox2, "List")
 #mouse click listitem 23 again to checked
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
@@ -130,13 +133,14 @@ statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
-statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox2, "List")
 
 ###############################################
 ##check list selection implementation
 ###############################################
 
 #select item by childIndex to rise selected state
+##select wrong item due to BUG476065
 clbFrame.assertSelectionChild(clbFrame.listbox1, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[0], "ListItem", add_states=["selected"])

@@ -47,6 +47,12 @@ class DomainUpDownFrame(accessibles.Frame):
         assert accessible.text == text, '%s text is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
+    def selectChild(self, accessible, index):
+        """assert Selection implementation"""
+        
+        procedurelogger.action('select index %s in "%s"' % (index, accessible))
+        accessible.selectChild(index)
+
     #close application window
     def quit(self):
         self.altF4()

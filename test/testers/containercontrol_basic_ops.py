@@ -44,8 +44,6 @@ ccFrame = app.containerControlFrame
 ##############################
 # check ContainerControl and its children's AtkAccessible
 ##############################
-# BUG473780, BUG473781, BUG473782
-ccFrame.keyCombo("Tab", grabFocus=False)
 statesCheck(ccFrame.panel_top, "ContainerControl", add_states=["focused"])
 statesCheck(ccFrame.panel_bottom, "ContainerControl")
 statesCheck(ccFrame.label_top, "Label")
@@ -66,6 +64,8 @@ ccFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(ccFrame.panel_top, "ContainerControl", add_states=["focused"])
 statesCheck(ccFrame.panel_bottom, "ContainerControl")
+statesCheck(ccFrame.label_top, "Label")
+statesCheck(ccFrame.label_bottom, "Label")
 ccFrame.assertText(ccFrame.label_top, "I got it")
 ccFrame.assertText(ccFrame.label_bottom, "I lose focus")
 

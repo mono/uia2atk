@@ -35,6 +35,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ListBox;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListBox;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -88,7 +89,7 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("list");
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 				if (string.IsNullOrEmpty (listboxControl.AccessibleName))
-					return listboxControl.Text;
+					return Helper.StripAmpersands (listboxControl.Text);
 				else
 					return listboxControl.AccessibleName;
 			} else
@@ -101,7 +102,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			throw new NotImplementedException ();
+			//TODO
+			Log.Warn ("ListBoxProvider:ElementProviderFromPoint not implemented");
+			return null;
 		}
 		
 		#endregion
@@ -126,7 +129,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (object objectItem in listboxControl.Items) {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
-				OnNavigationChildAdded (false, item);
+				AddChildProvider (item);
 			}
 		}
 		
@@ -145,7 +148,7 @@ namespace Mono.UIAutomation.Winforms
 		                                             int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return item.ObjectItem.ToString ();
+				return listboxControl.GetItemText (item.ObjectItem);
 			
 			if (ContainsItem (item) == false)
 				return null;
@@ -193,7 +196,7 @@ namespace Mono.UIAutomation.Winforms
 			return listboxControl.Items.IndexOf (objectItem);
 		}
 		
-		public override ListItemProvider[] GetSelectedItems ()
+		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
 			ListItemProvider []items;
 

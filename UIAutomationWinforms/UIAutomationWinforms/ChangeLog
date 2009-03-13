@@ -3,6 +3,438 @@
 	* Mono.UIAutomation.Winforms/Global.cs: First draft of the new
 	mechanism for loading the bridge on Moonlight.
 
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Add support
+	for ToolBarButton drop down menu, which is really a context
+	menu (fixes bug #481357). Also, restore required Invoke
+	support when acting as a SplitButton.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonExpandCollapseProviderBehavior.cs:
+	Check DropDownMenu for null before performing Expand/Collapse.
+
+2009-03-13  Matt Guo  <matt@mattguo.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	Set the NameProperty of the items of ListBox and ComboBox to their
+	displaying text, [bug #482686]
+
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs:
+	Check InvokeRequired to call a toolstripbutton's PerformClick.
+	Fixes #478872.
+
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Returns valid
+	NameProperty, no ampersands.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs:
+	Null validation. [Fixes Bug #484929]
+
+2009-03-12  Brad Taylor  <brad@getcoded.net>
+	
+	Patch from Matt Guo <matt@mattguo.com>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/AutomationNamePropertyEvent.cs: 
+	Set MonthCalendar's NameProperty according to the specification.  Also
+	make sure events are sent when the Name changes. [Fixes #479130]
+
+2009-03-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Reapplying fix for #480829. We now know it was not regressing.
+
+2009-03-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Files added to handle: SelectionItem
+	behavior in DataGrid and DataGridView, and HasKeyboardFocus event in
+	DataGrid and DataGridView.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs:
+	Fixed typo
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditSelectionItemProviderBehavior.cs:
+	DataGrid Selection Item behavior. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildSelectionItemProviderBehavior.cs:
+	DataGridView SelectionItem behavior. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs:
+	Returns empty selection when provider is nul..
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs:
+	Updated to default SelectionItem implementation in ListItem. [Fixes
+	Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/SelectionItemProviderBehavior.cs:
+	Generic SelectionItem implementation. [Fixes Bug #479126]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs:
+	Always calling RaiseAutomationPropertyChangedEvent. [Fixes Bug
+	#478856]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditSelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternIsSelectedEvent.cs:
+	DataGrid Provider: Raises IsSelectedProperty. [Fixes Bug #478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildHasKeyboardFocusPropertyEvent.cs:
+	DataGridView Provider: Raises HasKeyboardFocus. [Fixes Bug #478856]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementAddedEvent.cs:
+	DataGridView Provider: Raises ElementAdded event. [Fixes Bug #478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementRemovedEvent.cs:
+	DataGridView Provider: Raises ElementRemoved event. [Fixes Bug
+	#478891]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildSelectionItemPatternElementSelectedEvent.cs:
+	DataGridView Provider: Raises ElementSelected event. [Fixes Bug
+	#478891]
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Updated to API
+	changes: GetSelectedItems returns IRawElementProviderSimple[] instead
+	of ListItemProvider[]
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	DataGridDataItemEditProvider: ISelectableItem implemented. [Fixes Bug
+	#479126] Returning valid HasKeyboardFocusProperty [Fixes: Bug #478891
+	and Bug #478856] Returning valid BoundingRectangle [Fixes Bug
+	#479382]
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	DataGridViewDataItemChildProvider: ISelectableItem implemented.
+	[Fixes Bug #479126] Returning valid HasKeyboardFocusProperty [Fixes:
+	Bug #478891 and Bug #478856] Returning valid BoundingRectangle [Fixes
+	Bug #479382]. DataBinding support in ComboBox Column/Cell. [Fixes Bug
+	#482834]
+
+	* Mono.UIAutomation.Winforms/ISelectableItem.cs: Interface added to
+	support Generic SelectionItem provider.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: ISelectableItem
+	interface realization, implementation using default methods:
+	ListProvider.SelectItem, ListProvider.UnselectedItem and
+	ListProvider.IsItemSelected
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs: Override
+	IsKeyboardFocusableProperty, as base class implementation
+	doesn't work because PopupButton.CanSelect is always false.
+
+2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Initialize
+	provider before calling AddChildProvider, because that will
+	trigger InitializeChildControlStructure, which should always
+	happen *after* Initialize is called. This makes sure patterns
+	are set up when the bridge receives the provider, and fixes
+	the crash from bug #484646.
+
+2009-03-12  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:
+	Use toolBar instead of toolBarButton.Parent.
+
+2009-03-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Replace
+	NIE's with Log.Warns. Use *experts when needed in order to
+	centralize calls to unimplemented stuff. Fixes the majority of
+	bug#446915.
+
+2009-03-11  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/Helper.cs: If the control is visible,
+	return Rect.Empty.  This allows us to avoid #478598 which is caused by
+	us asking for the bounds of a control which has recently become
+	unmapped. [Fixes #478598]
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Refactor to use
+	Helper.GetControlScreenBounds ()
+
+2009-03-11  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs,
+	Mono.UIAutomation.Winforms/MenuItemProvider.cs,
+	Mono.UIAutomation.Winforms/Helper.cs: Strip ampersands from names
+	of menu items [bug #484375]
+
+2009-03-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FormListener.cs:
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/FormProvider.cs:
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms/MainMenuProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms/TrackBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs:
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs:
+	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs:
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs:
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:
+	Update according to FragmentControlProvider refactoring.
+	Always raise events. Mostly affects child initialization, as
+	this is now handled properly by the bridge.
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Update
+	according to FragmentControlProvider refactoring. Always raise
+	events. Mostly affects child initialization, as this is now
+	handled properly by the bridge. Update ComboBoxProvider to set
+	up behaviors during Initialize, as the ComboBox adapter on the
+	bridge is currently unable to handle dynamic pattern support
+	changes.
+
+	* Mono.UIAutomation.Winforms/MenuItemProvider.cs: Update
+	according to FragmentControlProvider refactoring. Always raise
+	events. Mostly affects child initialization, as this is now
+	handled properly by the bridge. Fix FragmentRoot override to
+	return provider for parentMenu, not menuItem.Parent (which
+	could be a MenuItem, and therefore not a fragment root).
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
+	Remove OnNavigationChild(Added|Removed), and move their
+	contents to (Add|Remove|Insert)ChildProvider, which now have
+	overrides that either take a raiseEvents bool, or default to
+	raising events.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Sandy keeps getting failures so revert completely the
+	PropertyGrid stuff.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Reapply fix for 480829 without breaking tests.
+
+2009-03-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	Revert main bits of r128916, it's causing regessions.
+
+2009-03-10  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomationWinforms.Behaviors/TextBox/ValueProviderBehavior.cs,
+	  Mono.UIAutomationWinforms.Events/TextBox/ValuePatternValueIsreadOnlyEvent.cs:
+	  Set ReadOnly when disabled [bug 480266]
+
+2009-03-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Pass
+	null to the base ctor or else we'll end holding the same
+	children providers in multiple providers. Fixes #480829.
+
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: UpDownBase Events/Behaviors moved to
+	NumericUpDown. Added behaviors to match UIAutomationTypes added:
+	CaretProvider, ClipboardProvider and EditableRangeProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemClipboardProviderBehavior.cs:
+	Behavior that implements IClipboardProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEmbeddedImageProviderBehavior.cs:
+	Class renamed: EmbeddedImageProviderBehavior ->
+	ListItemEmbeddedImageProviderBehavior
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:
+	IClipboardProvider implementation moved to
+	ListItemClipboardProviderBehavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown: NumericUpDown
+	Behaviors.
+
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/EditableRangeProviderBehavior.cs:
+	Implements IEditableRangeProvider in NumericUpDown.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/CaretProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ClipboardProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMinimumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMaximumEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternIsReadOnlyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternSmallChangeEvent.cs:
+	Moved from UpDownBase.
+
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs:
+	Moved to NumericUpDown.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	IText implementation moved to CaretProviderBehavior, IClipboard
+	implementation moved to ClipboardProviderBehavior.
+
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown: NumericUpDown Events.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Setting behaviors:
+	Clipboard and Caret.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Setting default
+	internal Clipboard behavior.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Setting Clipboard
+	behavior. Class EmbeddedImageProviderBehavior renamed to
+	ListItemEmbeddedImageProviderBehavior.
+
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Setting behavior:
+	EditableRange.
+
+2009-03-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Use
+	ScrollBehaviorObserver property instead of private observer
+	field, as the former can be overridden. Add null check to
+	UpdateScrollBehavior. Fixes crash in bug #474611.
+
+2009-03-06  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Account for the fact
+	that the MaskedTextProvider can sometimes be null.  Fixes failing unit
+	test.
+
+2009-03-06  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonExpandCollapseProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonExpandCollapsePatternExpandCollapseStateEvent.cs:
+	Implemented IExpandCollapseProvider for ToolBarDropDownButton.
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs:
+	Used internal method to perform click event.
+	[Fixes Bug #481360]
+
+2009-03-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Mimic (in
+	the provider) and workaround (in the bridge) bug in UIA about
+	not returning KeyboardFocusable for ToolBarButtons. Reenable
+	state tests for ToolStripButton. Fixes #478838.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	Fixes #465467, #465018, #465091, #466598 and #465095.
+
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: 
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Special case
+	MaskedTextBox so that we return .ToDisplayString () not .Text, as the
+	former is what is actually displayed.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Move MaxLength here so
+	that it can be used by other providers.
+
+	* Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs: Add a new
+	InsertDeleteTextProvider to the list of behaviors.  This is necessary
+	as simply manipulating the ValuePattern in the bridge won't work.
+	The semantics of Atk.Editable's InsertText are better mapped to a
+	character by character replace when the insertion is happening on a
+	blank (represented by the '_' character) cell.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	When dealing with the MaskedTextBox control, return .ToDisplayString ()
+	instead of .Text.
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox: 
+	* Mono.UIAutomation.Winforms.Behaviors/MaskedTextBox/InsertDeleteTextProviderBehavior.cs: 
+	Implement the new behavior so that Atk.EditableText's methods can be
+	proxied directly to the actual control.  This will allow us to handle
+	these methods as the user expects.
+
+2009-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid & DataGridView.
+	HeaderItem.Invoke behaviors and events added. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/HeaderItemInvokePatternInvokedEvent.cs:
+	DataGridView.HeaderItem: InvokePattern.Invoked event. [Fixes Bug
+	#478840]
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/HeaderItemInvokePatternInvokedEvent.cs:
+	DataGrid.HeaderItem: InvokePattern.Invoked event. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/HeaderItemInvokeProviderBehavior.cs:
+	DataGridView.HeaderItem: Invoke behavior. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/HeaderItemInvokeProviderBehavior.cs:
+	DataGrid.HeaderItem: Invoke behavior. [Fixes Bug #478840]
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Properties added
+	to handle HeaderItem.Invoke. [Fixes Bug #478840]
+
+2009-03-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Mark
+	componentProviders protected instead of internal, and remove
+	ancient TODO associated with this.
+
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:
+	Use reflection instead of internal property.
+
+2009-02-25  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/BaseColorControlProvider.cs:
+	LabeledByProperty returns string.Empty.
+	[Fixes Bug #478911]
+	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:
+	SmallColorControls can only be single selected.
+	[Fixes Bug #478541]
+
+2009-02-24  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ContextMenuProvider.cs: Check for null
+	  window.
+
 2009-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:

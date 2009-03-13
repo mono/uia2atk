@@ -64,13 +64,13 @@ namespace Mono.UIAutomation.Winforms
 				forwardButton = new UpDownBaseButtonProvider (upDownBase,
 				                                              UpDownBaseButtonOrientation.Forward);
 				forwardButton.Initialize ();
-				OnNavigationChildAdded (true, forwardButton);
+				AddChildProvider (forwardButton);
 			}
 			if (backwardButton == null) {
 				backwardButton = new UpDownBaseButtonProvider (upDownBase,
 				                                               UpDownBaseButtonOrientation.Backward);
 				backwardButton.Initialize ();
-				OnNavigationChildAdded (true, backwardButton);
+				AddChildProvider (backwardButton);
 			}
 		}
 		

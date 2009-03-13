@@ -4,6 +4,31 @@
 	First draft of the new mechanism for loading the bridge on
 	Moonlight.
 
+2009-03-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* UIAutomationProvider.mdp:
+	* UIAutomationProvider.dll.sources: IClipboardSupport, IEditableRange
+	and IText moved from UIAutomationBridge.
+
+	* System.Windows.Automation.Provider/ICaretProvider.cs:
+	* System.Windows.Automation.Provider/IClipboardProvider.cs:
+	* System.Windows.Automation.Provider/IEditableRangeProvider.cs: Moved
+	from UIAutomationBridge.
+
+2009-03-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationProvider.mdp: Removing GtkDesignInfo.
+	IInsertDeleteTextProvider.cs file added.
+
+	* UIAutomationProviderTests.mdp: Removing GtkDesignInfo.
+
+2009-03-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs: Add
+	a new internal IInsertDeleteTextProvider class for MaskedTextBox.
+
 2009-02-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationProvider.mdp:

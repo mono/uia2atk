@@ -37,12 +37,12 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class TextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
+	public class TextBoxEntryView : ComponentParentAdapter, Atk.TextImplementor, 
 	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private ITextImplementor textExpert = null;
 		private bool multiLine = false;
-		private EditableTextImplementor editableTextExpert;
+		private EditableTextImplementorHelper editableTextExpert;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 			else
 				Role = Atk.Role.Text;
 
-			editableTextExpert = new EditableTextImplementor (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this);
 
 			if (provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id) == null
 			    && provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) == null)
@@ -84,16 +84,19 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
-			if (editableTextExpert.Editable)
-				states.AddState (Atk.StateType.Editable);
-			else
-				states.RemoveState (Atk.StateType.Editable);
+			editableTextExpert.UpdateStates (states);
 			
 			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);
 			states.RemoveState (multiLine ? Atk.StateType.SingleLine : Atk.StateType.MultiLine);
+
 			return states;
 		}
 		
+		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
+		{
+			// TODO
+		}
+
 		#region TextImplementor implementation 
 		
 		public string GetText (int startOffset, int endOffset)
@@ -137,7 +140,7 @@ namespace UiaAtkBridge
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetOffsetAtPoint (x, y, coords);
 		}
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -162,14 +165,7 @@ namespace UiaAtkBridge
 		
 		public bool SetCaretOffset (int offset)
 		{
-			if (editableTextExpert.CaretProvider != null) {
-				if (editableTextExpert.CaretProvider.SetCaretOffset (offset))
-					editableTextExpert.CaretOffset = offset;
-				// gail always returns true; tracking it
-				// because of tests
-			} else
-				editableTextExpert.CaretOffset = offset;
-			return true;
+			return textExpert.SetCaretOffSet (offset);
 		}
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
@@ -179,13 +175,11 @@ namespace UiaAtkBridge
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetBoundedRanges (rect, coordType, xClipType, yClipType);
 		}
 		
 		public int CaretOffset {
-			get {
-				return editableTextExpert.CaretOffset;
-			}
+			get { return textExpert.CaretOffset; }
 		}
 		
 		public int CharacterCount {
@@ -243,7 +237,8 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e))
+			if (editableTextExpert.RaiseAutomationPropertyChangedEvent (e)
+			    || textExpert.RaiseAutomationPropertyChangedEvent (e))
 				return;
 
 			base.RaiseAutomationPropertyChangedEvent (e);
@@ -251,7 +246,8 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			if (editableTextExpert.RaiseAutomationEvent (eventId, e))
+			if (editableTextExpert.RaiseAutomationEvent (eventId, e)
+			    || textExpert.RaiseAutomationEvent (eventId, e))
 				return;
 
 			base.RaiseAutomationEvent (eventId, e);

@@ -78,6 +78,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TextBox tbx1 = new SWF.TextBox ();
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
 		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
+		protected SWF.ToolStripButton toolStripButton = new SWF.ToolStripButton ("TestTSB");
 		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDDL = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDD = new SWF.ToolStripComboBox ();
@@ -102,6 +103,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.MonthCalendar monthCalendar = new SWF.MonthCalendar ();
 		protected SWF.ContainerControl containerControl = new SWF.ContainerControl ();
 		protected SWF.DataGridView datagridView = new SWF.DataGridView ();
+		protected SWF.MaskedTextBox maskedTextBox = new SWF.MaskedTextBox ();
+		protected SWF.PropertyGrid pgrid = new SWF.PropertyGrid ();
 
 		protected int lastClickedLink = -1;
 
@@ -119,6 +122,8 @@ namespace UiaAtkBridgeTest
 			form.Show ();
 
 			string uiaQaPath = Misc.LookForParentDir ("*.gif");
+			if (uiaQaPath == null)
+				throw new Exception ("Path for images not found");
 			string imgPath = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 
 			SWF.ImageList imageList = new SWF.ImageList ();
@@ -149,7 +154,8 @@ namespace UiaAtkBridgeTest
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-			
+
+			toolStrip.Items.Add (toolStripButton);
 			toolStrip.Items.Add (toolStripComboBoxSim);
 			toolStrip.Items.Add (toolStripComboBoxDDL);
 			toolStrip.Items.Add (toolStripComboBoxDD);
@@ -164,6 +170,13 @@ namespace UiaAtkBridgeTest
 			toolBar.Buttons.Add (toolBarButtonWithImage);
 			toolBarButtonWithImage.ImageIndex = 0;
 			form.Controls.Add (toolBar);
+
+			pgrid.CommandsVisibleIfAvailable = true;
+			pgrid.Dock = SWF.DockStyle.Top;
+			pgrid.Text = "PGrid TestText";
+			pgrid.SelectedObject = lab1;
+			form.Size = new Size (800, 600);
+			form.Controls.Add (pgrid);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
@@ -212,6 +225,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (richTextBox);
 			form.Controls.Add (trackBar);
 			form.Controls.Add (monthCalendar);
+			form.Controls.Add (maskedTextBox);
 			// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
@@ -266,6 +280,11 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
+		public override bool IsBGO574674Addressed ()
+		{
+			return true;
+		}
+
 		public override void CloseContextMenu (Atk.Object accessible)
 		{
 			var comp = mappings [accessible];
@@ -289,6 +308,10 @@ namespace UiaAtkBridgeTest
 		
 		protected override bool TextBoxCaretInitiallyAtEnd { 
 			get { return false; }
+		}
+
+		protected override bool TextBoxHasScrollBar { 
+			get { return true; }
 		}
 
 		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = 
@@ -344,24 +367,6 @@ namespace UiaAtkBridgeTest
 				else
 					throw new NotSupportedException ();
 			}
-		}
-
-		public override void ExpandTreeView (BasicWidgetType type)
-		{
-			if (type == BasicWidgetType.ListView)
-				return;
-			if (type != BasicWidgetType.TreeView)
-				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
-			treeView.ExpandAll ();
-		}
-
-		public override void CollapseTreeView (BasicWidgetType type)
-		{
-			if (type == BasicWidgetType.ListView)
-				return;
-			if (type != BasicWidgetType.TreeView)
-				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
-			treeView.CollapseAll ();
 		}
 
 		public override object ActivateAdditionalForm (string name)
@@ -470,7 +475,7 @@ namespace UiaAtkBridgeTest
 //		}
 //		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
 //		{
-			var provider = ProviderFactory.GetProvider (widget, true, true);
+			var provider = ProviderFactory.GetProvider (widget);
 			Assert.IsNotNull (provider, "ProviderFactory returned null for this widget");
 			Atk.Object acc = GetAdapterForProvider (provider);
 			mappings [acc] = widget;
@@ -621,6 +626,7 @@ namespace UiaAtkBridgeTest
 				}
 				accessible = GetAdapterForWidget (tssb);
 				break;
+				
 			case BasicWidgetType.ToolStripDropDownButton:
 				while (tsddb.DropDownItems.Count > 0)
 					tsddb.DropDownItems.Remove (tsddb.DropDownItems [0]);
@@ -686,11 +692,19 @@ namespace UiaAtkBridgeTest
 				
 			case BasicWidgetType.ToolbarButton:
 				if (!real)
-					throw new NotSupportedException ("Not unreal support for ToolbarButton");
+					throw new NotSupportedException ("No unreal support for ToolbarButton");
 
 				SWF.ToolBarButton theButton = (embeddedImage) ? toolBarButtonWithImage : toolBarButton;
 				theButton.Text = name;
 				accessible = GetAdapterForWidget (theButton);
+				break;
+				
+			case BasicWidgetType.ToolStripButton:
+				if (!real)
+					throw new NotSupportedException ("No unreal support for ToolbarButton");
+
+				toolStripButton.Text = name;
+				accessible = GetAdapterForWidget (toolStripButton);
 				break;
 				
 			case BasicWidgetType.Window:
@@ -824,6 +838,7 @@ namespace UiaAtkBridgeTest
 				} else {
 					accessible = GetAdapterForWidget (tbxView);
 					tbx2.Text = name;
+					tbx2.ScrollBars = SWF.ScrollBars.Both;
 				}
 				break;
 
