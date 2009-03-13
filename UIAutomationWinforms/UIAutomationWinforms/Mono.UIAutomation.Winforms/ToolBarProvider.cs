@@ -186,11 +186,15 @@ namespace Mono.UIAutomation.Winforms
 				          new ETB.AutomationNamePropertyEvent (this));
 				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 				          new ETB.AutomationIsEnabledPropertyEvent (this));
+
+				// TODO: Handle style changes (requires MWF patch)
 				
-				if (style == ToolBarButtonStyle.DropDownButton)
+				if (style == ToolBarButtonStyle.DropDownButton) {
+					SetBehavior (InvokePatternIdentifiers.Pattern,
+					             new ToolBarButtonInvokeProviderBehavior (this));
 					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 					             new ToolBarButtonExpandCollapseProviderBehavior (this));
-				else if (style == ToolBarButtonStyle.PushButton)
+				} else if (style == ToolBarButtonStyle.PushButton)
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
 				else if (style == ToolBarButtonStyle.ToggleButton)
@@ -201,6 +205,54 @@ namespace Mono.UIAutomation.Winforms
 			#endregion
 			
 			#region Public Methods
+		
+			public override void InitializeChildControlStructure ()
+			{
+				if (style == ToolBarButtonStyle.DropDownButton &&
+				    toolBarButton.DropDownMenu != null) {
+					ContextMenu menu = toolBarButton.DropDownMenu as ContextMenu;
+					if (menu != null) {
+						menu.Popup += OnMenuPopup;
+						menu.Collapse += OnMenuCollapse;
+					}
+					// TODO: Handle DropDownMenu being set (requires MWF patch)
+				}
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				if (style == ToolBarButtonStyle.DropDownButton &&
+				    toolBarButton.DropDownMenu != null) {
+					ContextMenu menu = toolBarButton.DropDownMenu as ContextMenu;
+					if (menu != null) {
+						menu.Popup -= OnMenuPopup;
+						menu.Collapse -= OnMenuCollapse;
+					}
+				}
+			}
+
+			private void OnMenuPopup (object sender, EventArgs args)
+			{
+				var menuProvider =
+					ProviderFactory.GetProvider (toolBarButton.DropDownMenu) as FragmentControlProvider;
+				if (menuProvider != null)
+					AddChildProvider (menuProvider);
+			}
+
+			private void OnMenuCollapse (object sender, EventArgs args)
+			{
+				var menuProvider =
+					ProviderFactory.GetProvider (toolBarButton.DropDownMenu) as FragmentControlProvider;
+				if (menuProvider != null) {
+					menuProvider.Terminate ();
+					RemoveChildProvider (menuProvider);
+					OnNavigationChildrenCleared ();
+				}
+			}
+
+			#endregion
+
+			#region Protected Methods
 			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
@@ -250,7 +302,7 @@ namespace Mono.UIAutomation.Winforms
 					return toolBarButton.Parent.RectangleToScreen (area);
 				}
 			}
-		
+
 			#endregion
 
 			#region Private Fields 	 

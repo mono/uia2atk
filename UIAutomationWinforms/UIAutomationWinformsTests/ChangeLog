@@ -1,3 +1,10 @@
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolBarButtonProviderTest.cs: Test provider pattern support
+	when acting as SplitButton. Also added an Ignored test for
+	working with the DropDownMenu (it currently has threading
+	issues).
+
 2009-03-13  Matt Guo  <matt@mattguo.com>
 
 	* ListBoxProviderTest.cs:

@@ -1,3 +1,13 @@
+2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Add support
+	for ToolBarButton drop down menu, which is really a context
+	menu (fixes bug #481357). Also, restore required Invoke
+	support when acting as a SplitButton.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonExpandCollapseProviderBehavior.cs:
+	Check DropDownMenu for null before performing Expand/Collapse.
+
 2009-03-13  Matt Guo  <matt@mattguo.com>
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:

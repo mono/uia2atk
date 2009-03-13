@@ -25,10 +25,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.ComponentModel;
+
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms;
 
@@ -45,6 +48,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			base.SetUp ();
 
+			menuButton = null;
 			toolBar = new ToolBar ();
 			toolBarButton = new ToolBarButton ("Button");
 			toolBar.Buttons.Add (toolBarButton);
@@ -87,6 +91,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DropDownButton style
 			ToolBarButton dropDownButton = new ToolBarButton ();
 			dropDownButton.Style = ToolBarButtonStyle.DropDownButton;
+			dropDownButton.DropDownMenu = new ContextMenu ();
+			dropDownButton.DropDownMenu.MenuItems.Add ("item 1");
 			toolBar.Buttons.Add (dropDownButton);
 			IRawElementProviderSimple dropDownProvider =
 				ProviderFactory.GetProvider (dropDownButton);
@@ -96,6 +102,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (dropDownProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "split button");
+			// Use this instead when expanding ContextMenu doesn't
+			// cause test to hang:
+			//TestSplitButtonPatterns (dropDownProvider);
+			Assert.IsTrue ((bool) dropDownProvider.GetPropertyValue (AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id),
+			                "SplitButton ControlType must support IExpandCollapseProvider");
+			Assert.IsTrue ((bool) dropDownProvider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
+			                "SplitButton ControlType must support IInvokeProvider");
 
 			// ToggleButton style
 			ToolBarButton toggleButton = new ToolBarButton ();
@@ -350,6 +363,99 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// Terminate Provider
 			((FragmentControlProvider) parentProvider).Terminate ();
+		}
+
+		// TODO: When we have the events patched into MWF, need to test
+		//       dynamically changing style and replacing drop down menu.
+		[Test]
+		[Ignore ("ContextMenu threading not working")]
+		public void DropDownMenuItemsNavigationTest ()
+		{
+			menuButton = new ToolBarButton ();
+			menuButton.Style = ToolBarButtonStyle.DropDownButton;
+			menuButton.DropDownMenu = new ContextMenu ();
+			menuButton.DropDownMenu.MenuItems.Add ("menu item 1");
+			menuButton.DropDownMenu.MenuItems.Add ("menu item 2");
+
+			toolBar.Buttons.Add (menuButton);
+
+			var menuButtonProvider = ProviderFactory.GetProvider (menuButton);
+
+			var contextMenuProvider = menuButtonProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (contextMenuProvider,
+			               "No provider for context menu unless shown");
+			
+			Thread showThread = new Thread (new ThreadStart (ShowMenuButtonMenu));
+			showThread.IsBackground = true;
+			showThread.Start ();
+
+			Thread.Sleep (1000);
+
+			contextMenuProvider = menuButtonProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (contextMenuProvider,
+			                  "There should be a menu child");
+			Assert.AreEqual (ControlType.Menu.Id,
+			                 contextMenuProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id),
+			                 "Drop down menu control type");
+
+			var menuItem1Provider = contextMenuProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (menuItem1Provider,
+			                  "There should be a menu item child");
+			Assert.AreEqual (ControlType.MenuItem.Id,
+			                 menuItem1Provider.GetPropertyValue (AEIds.ControlTypeProperty.Id),
+			                 "Drop down menu item 1 control type");
+			Assert.AreEqual ("menu item 1",
+			                 menuItem1Provider.GetPropertyValue (AEIds.NameProperty.Id),
+			                 "Drop down menu item 1 name");
+
+			var menuItem2Provider = menuItem1Provider.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (menuItem2Provider,
+			                  "There should be a menu item child");
+			Assert.AreEqual (ControlType.MenuItem.Id,
+			                 menuItem2Provider.GetPropertyValue (AEIds.ControlTypeProperty.Id),
+			                 "Drop down menu item 2 control type");
+			Assert.AreEqual ("menu item 2",
+			                 menuItem2Provider.GetPropertyValue (AEIds.NameProperty.Id),
+			                 "Drop down menu item 2 name");
+
+			bridge.ResetEventLists ();
+			
+			menuButton.DropDownMenu.MenuItems.Add ("menu item 3");
+
+			var structureEventTuple =
+				bridge.GetStructureChangedEventFrom (StructureChangeType.ChildAdded);
+
+			var menuItem3Provider = menuItem2Provider.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (menuItem3Provider,
+			                  "There should be a menu item child");
+			Assert.AreEqual (menuItem3Provider,
+			                 structureEventTuple.provider,
+			                 "Expected structre changed event for menu item 3 addition");
+			Assert.AreEqual (ControlType.MenuItem.Id,
+			                 menuItem3Provider.GetPropertyValue (AEIds.ControlTypeProperty.Id),
+			                 "Drop down menu item 3 control type");
+			Assert.AreEqual ("menu item 3",
+			                 menuItem3Provider.GetPropertyValue (AEIds.NameProperty.Id),
+			                 "Drop down menu item 3 name");
+
+			((ContextMenu)menuButton.DropDownMenu).Dispose ();
+			contextMenuProvider = menuButtonProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (contextMenuProvider,
+			               "No provider for context menu unless shown");
+
+			
+			showThread.Abort ();
+		}
+
+		private ToolBarButton menuButton;
+
+		private void ShowMenuButtonMenu ()
+		{
+			if (toolBar.InvokeRequired) {
+				toolBar.BeginInvoke (new MethodInvoker (ShowMenuButtonMenu));
+				return;
+			}
+			((ContextMenu) menuButton.DropDownMenu).Show (toolBar, new System.Drawing.Point (0,0));
 		}
 
 		#endregion

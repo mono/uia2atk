@@ -116,8 +116,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 				return;
 			}
 
-			((SWF.ContextMenu) toolBarButton.DropDownMenu).Show (toolBar,
-			                                                     new Point (toolBarButton.Rectangle.X, toolBar.Height));
+			SWF.ContextMenu menu = toolBarButton.DropDownMenu as SWF.ContextMenu;
+			if (menu == null)
+				return;
+			menu.Show (toolBar,
+			           new Point (toolBarButton.Rectangle.X, toolBar.Height));
 		}
 		
 		#endregion
