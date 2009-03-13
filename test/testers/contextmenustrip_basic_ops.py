@@ -47,14 +47,14 @@ cmsFrame.assertWidgets()
 ##############################################################################
 # STATES: CONTEXT MENU STRIP
 ##############################################################################
-statesCheck(cmsFrame.context_menu_strip, 'ContextMenuStrip')
+#statesCheck(cmsFrame.context_menu_strip, 'ContextMenuStrip')
 
 ##############################################################################
 # STATES: DEFAULT
 ##############################################################################
 statesCheck(cmsFrame.item1, 'Menu')
-statesCheck(cmsFrame.item1a, 'MenuItem', invalid_states = ["showing"])
-statesCheck(cmsFrame.item1b, 'MenuItem', invalid_states = ["showing"])
+statesCheck(cmsFrame.item1a, 'MenuItem', add_states = ['showing'])
+statesCheck(cmsFrame.item1b, 'MenuItem', add_states = ['showing'])
 statesCheck(cmsFrame.item2, 'MenuItem')
 statesCheck(cmsFrame.item3, 'MenuItem')
 statesCheck(cmsFrame.item4, 'MenuItem')

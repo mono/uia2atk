@@ -1,3 +1,8 @@
+2009-03-13  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenustrip_basic_ops.py: Added "showing" state for sub
+	menu items.
+
 2009-03-13  Ray Wang <rawang@novell.com>
 
 	* testers/toolstripcombobox_basic_ops.py: regression tests.
