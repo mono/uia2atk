@@ -115,18 +115,21 @@ namespace UiaAtkBridge
 
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
+			int nChildren = 0;
 			lock (syncRoot) {
-				for (int i = 0; i < NAccessibleChildren; i++) {
-					Atk.Object child = RefAccessibleChild (i);
+				nChildren = NAccessibleChildren;
+			}
 
-					if (child == null || ((Adapter)child) == keepSelected)  {
-						continue;
-					}
-					
-					ComboBoxItem item = child as ComboBoxItem;
-					if (item != null)
-						item.Deselect ();
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = RefAccessibleChild (i);
+
+				if (child == null || ((Adapter)child) == keepSelected) {
+					continue;
 				}
+				
+				ComboBoxItem item = child as ComboBoxItem;
+				if (item != null)
+					item.Deselect ();
 			}
 
 			if (Parent is ComboBoxOptions)
