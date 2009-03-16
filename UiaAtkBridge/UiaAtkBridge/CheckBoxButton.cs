@@ -57,6 +57,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			if (toggleProvider != null) {
 				ToggleState state = toggleProvider.ToggleState;
 				

@@ -106,6 +106,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			// Selectable added by atk if parent has Atk.Selection
 			states.RemoveState (Atk.StateType.Selectable);
 			// A horizontal line splits the pane vertically and vice versa

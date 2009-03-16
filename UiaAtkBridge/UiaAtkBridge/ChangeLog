@@ -1,3 +1,16 @@
+2009-03-16  Mike Gorse  <mgorse@novell.com>
+
+	* Button.cs, ToggleButton.cs, Spinner.cs, ScrollBar.cs,
+	ComboBoxItem.cs, ParentAdapter.cs, Tree.cs, Splitter.cs, List.cs,
+	CheckBoxButton.cs, TextLabel.cs, TextContainer.cs, Table.cs,
+	MenuBar.cs, ComboBoxOptionsTable.cs, Separator.cs, TreeItem.cs,
+	Slider.cs, ComboBoxOptions.cs, ListItem.cs, RadioButton.cs,
+	WrapperPanel.cs, ContextMenuWindow.cs, Hyperlink.cs, Window.cs,
+	ComboBox.cs, ContextMenu.cs, TextBoxEntryView.cs, Adapter.cs,
+	ComponentParentAdapter.cs, Pane.cs, MenuItem.cs, ComboBoxDropDown.cs,
+	SplitContainer.cs: Check for defunct providers in OnRefStateSet
+	[bug 485731, backport from R129502]
+
 2009-03-16  Brad Taylor  <brad@getcoded.net>
 
 	* Adapter.cs: Return true to IsOffscreenProperty if we have no parent.

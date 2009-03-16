@@ -159,6 +159,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			if (active)
 				states.AddState (Atk.StateType.Active);
 			else
@@ -198,7 +202,7 @@ namespace UiaAtkBridge
 						i++;
 						continue;
 					}
-					RemoveChild (obj);
+					RemoveChild (obj, false);
 					obj.Parent = child;
 					splitter.AddOneChild (obj);
 					count--;
@@ -216,7 +220,7 @@ namespace UiaAtkBridge
 				int count = parentAdapter.NAccessibleChildren;
 				while (count > 0) {
 					Atk.Object obj = parentAdapter.RefAccessibleChild (0);
-					parentAdapter.RemoveChild (obj);
+					parentAdapter.RemoveChild (obj, false);
 					obj.Parent = this;
 					AddOneChild (obj);
 					count--;

@@ -99,6 +99,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			if (selProvider.IsSelected)
 				states.AddState (Atk.StateType.Checked);
 			else
