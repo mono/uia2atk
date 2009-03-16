@@ -1,5 +1,10 @@
 2009-03-16  Brad Taylor  <brad@getcoded.net>
 
+	* Adapter.cs: Return true to IsOffscreenProperty if we have no parent.
+	Fixes a test regression in form_basic_ops.py.
+
+2009-03-16  Brad Taylor  <brad@getcoded.net>
+
 	* ComboBoxOptions.cs: Move the majority of the function out of the
 	lock.  Neither Mike nor I see any reason for the entire loop to be
 	inside of the lock, and since it's causing a deadlock due to OnRefChild
