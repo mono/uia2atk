@@ -1,3 +1,10 @@
+2009-03-16  Brad Taylor  <brad@getcoded.net>
+
+	* ComboBoxOptions.cs: Move the majority of the function out of the
+	lock.  Neither Mike nor I see any reason for the entire loop to be
+	inside of the lock, and since it's causing a deadlock due to OnRefChild
+	grabbing the lock also, this seems to be the clear fix. [Fixes #485529]
+
 2009-03-13  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs: Avoid querying IsOffscreenProperty if the Parent is null,
