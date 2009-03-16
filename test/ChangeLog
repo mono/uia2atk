@@ -1,4 +1,8 @@
-2009-03-12 Brian G. Merrell <bgmerrell@gmail.com>
+2009-03-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/tests.py: Missing comma to separate list values.  Fixed.
+
+2009-03-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/combobox_stylechanges_basic_ops.py, 
 	* testers/combobox_stylechanges/comboboxstylechangesframe.py: Add
