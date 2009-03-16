@@ -30,11 +30,11 @@ class DataGridApp(Form):
         self.InitializeComponent()
         self.PopulateGrid()
 
-    def Dispose(self, disposing):
-        if bool(disposing):
-            if components != null:
-                components.Dispose()
-        base.Dispose(bool(disposing))
+    #def Dispose(self, disposing):
+    #    if bool(disposing):
+    #        if components != null:
+    #            components.Dispose()
+    #    base.Dispose(bool(disposing))
 
     def InitializeComponent(self):
         self.datagrid = DataGrid()

@@ -1,3 +1,7 @@
+2009-03-16  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: delete some unuseful line
+
 2009-03-13  Calen Chen <cachen@novell.com>
 
 	* testers/scrollbar/scrollbarframe.py,
