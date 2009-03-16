@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-##
+###########################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        3/2/2008
 # Description: Test accessibility of datagridtextboxcolumn widget 
 #              Use the datagridframe.py wrapper script
 #              Test the samples/datagrid.py script
-##
+###########################################################################
 
 # The docstring below  is used in the generated log file
 """
@@ -47,9 +47,9 @@ dgFrame = app.dataGridFrame
 ##states test 
 #################
 
-statesCheck(dgFrame.edit_cells[0], "TabelCell", add_states=["editable"])
+statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["editable"])
 
-statesCheck(dgFrame.read_cells[0], "TabelCell")
+statesCheck(dgFrame.read_cells[0], "TableCell")
 
 #####################################################################################
 ##AtkAction test, mouse click, key navigate to change label and text
