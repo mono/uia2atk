@@ -1,3 +1,10 @@
+2009-03-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/combobox_stylechanges_basic_ops.py, 
+	* testers/combobox_stylechanges/comboboxstylechangesframe.py: Add
+	methods to change the style and find the relevant accessibles when the
+	style changes.
+
 2009-03-16  Ray Wang <rawang@novell.com>
 
 	* testers/mainmenu_basic_ops.py: update some test statements.
