@@ -1,5 +1,9 @@
 2009-03-16  Calen Chen <cachen@novell.com>
 
+	* testers/checkedlistbox_basic_ops.py: add focused state for treetable
+
+2009-03-16  Calen Chen <cachen@novell.com>
+
 	* testers/datagrid/datagridframe.py,
 	* testers/datagridtextboxcolumn_basic_ops.py,
 	* testers/datagridcomboboxcolumn_basic_ops.py: correct some typo
