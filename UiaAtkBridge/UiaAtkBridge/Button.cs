@@ -81,6 +81,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			if (!states.ContainsState (Atk.StateType.Focusable) && Parent != null) {
 				if (Parent is ToolBar &&
 				    ((ToolBar)Parent).HasFocusableElements ())

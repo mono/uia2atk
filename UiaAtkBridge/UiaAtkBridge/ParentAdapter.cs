@@ -107,6 +107,11 @@ namespace UiaAtkBridge
 		
 		internal virtual void RemoveChild (Atk.Object childToRemove)
 		{
+			RemoveChild (childToRemove, true);
+		}
+
+		internal virtual void RemoveChild (Atk.Object childToRemove, bool terminate)
+		{
 			if (childToRemove == null) {
 				//FIXME: better throw an ArgumentNullException
 				return;
@@ -120,7 +125,7 @@ namespace UiaAtkBridge
 
 			Adapter adapter = childToRemove as Adapter;
 			if (adapter != null)
-				adapter.RemoveFromParent (this);
+				adapter.RemoveFromParent (this, terminate);
 
 			int childIndex;
 			lock (syncRoot) {

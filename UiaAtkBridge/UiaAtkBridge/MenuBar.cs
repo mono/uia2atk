@@ -41,6 +41,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			//FIXME: figure out why MenuItem elements in Gail don't like this state
 			states.RemoveState (Atk.StateType.Focusable);
 			return states;

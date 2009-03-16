@@ -45,6 +45,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId != ControlType.HeaderItem.Id)
 				states.AddState (Atk.StateType.MultiLine);

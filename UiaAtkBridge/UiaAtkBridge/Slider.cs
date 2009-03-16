@@ -98,6 +98,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			states.AddState (Orientation == OrientationType.Vertical? Atk.StateType.Vertical: Atk.StateType.Horizontal);
 			return states;
 		}

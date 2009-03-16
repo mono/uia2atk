@@ -50,6 +50,10 @@ namespace UiaAtkBridge
 				return null;
 			// We pretend to be a sub-window, not a splitter
 			Atk.StateSet states = Parent.RefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			states.RemoveState (Atk.StateType.Active);
 			states.RemoveState (Atk.StateType.Resizable);
 			if (base.OnRefStateSet().ContainsState (Atk.StateType.Horizontal))

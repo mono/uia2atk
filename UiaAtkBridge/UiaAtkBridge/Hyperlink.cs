@@ -57,6 +57,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			states.AddState (Atk.StateType.MultiLine);
 
 			return states;
@@ -308,6 +312,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			bool enabled = hyperlink.hypertext.Enabled (index);
 			if (enabled) {
 				states.AddState (Atk.StateType.Sensitive);

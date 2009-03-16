@@ -55,6 +55,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			ComboBoxDropDown dropdown = Parent as ComboBoxDropDown;
 			if (dropdown != null) {
 				states.RemoveState (Atk.StateType.Focusable);
