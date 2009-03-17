@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>moonlight-a11y@novell.com</em:id>
+    <em:name>Novell Moonlight-UiaAtkBridge</em:name>
+    <em:version>0.1</em:version>
+    <em:description>Open source accessibility support for Moonlight between UIA and ATK technologies</em:description>
+    <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
+    <!-- TODO:
+    em:updateURL>http://go-mono.com/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
+    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi8rEWjKukJk4igOKjOU3RLj3vri9pff1znkb12M4N6
+                  irBv4vbTSBjjrDOzOOB+g6C/fAP8LsFCDHgqmXmRbsCxAycED/TKzbevpTkX0ywlUL6nfVwegwQMclzP5
+                  rjxQ1fXagEg2+6S4SlGVZnj8jXCybdz+giz53M5QeoaacuFwIDAQAB
+    </em:updateKey
+    -->
+
+    <em:homepageURL>http://mono-project.com/Moonlight</em:homepageURL>
+    <em:creator>Mono-A11y Team</em:creator>
+    <em:contributor>Andrés G. Aragoneses</em:contributor>
+    <em:contributor>Brad Taylor</em:contributor>
+    <em:contributor>Mario Carrión</em:contributor>
+
+    <em:targetPlatform>Linux_x86-gcc3</em:targetPlatform>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>2.9.*</em:minVersion>
+        <em:maxVersion>3.5.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <em:requires>
+      <Description>
+        <em:id>moonlight@novell.com</em:id>
+        <em:minVersion>1.9</em:minVersion>
+        <em:maxVersion>2.0</em:maxVersion>
+      </Description>
+    </em:requires>
+
+  </Description>
+</RDF>

@@ -1,3 +1,12 @@
+2009-03-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonUiaAtkBridge:
+	* MoonUiaAtkBridge/install.rdf:
+	* MoonUiaAtkBridge/create-xpi.sh:
+	* MoonUiaAtkBridge/AssemblyInfo.cs:
+	* MoonUiaAtkBridge/AutomationBridge.cs:
+	* MoonUiaAtkBridge/MoonUiaAtkBridge.mdp: Proof of concept.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* NEWS:
