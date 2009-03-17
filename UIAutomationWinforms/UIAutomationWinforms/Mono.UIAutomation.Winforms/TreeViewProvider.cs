@@ -274,11 +274,11 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
 				return !node.IsVisible;
 			} else if (propertyId == AEIds.IsEnabledProperty.Id)
-				return node.TreeView.Enabled;
+				return treeView.Enabled;
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-				return node.IsSelected && node.TreeView.Focused;
+				return node.IsSelected && treeView.Focused;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
-				return node.TreeView.CanFocus && AreAllParentsExpanded ();
+				return treeView.CanFocus && AreAllParentsExpanded ();
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (node.Bounds);
 			return base.GetProviderPropertyValue (propertyId);
@@ -290,7 +290,7 @@ namespace Mono.UIAutomation.Winforms
 
 			UpdateBehaviors (parentTreeKnownToSupportScroll);
 
-			node.TreeView.EnabledChanged += HandleEnabledChanged;
+			treeView.EnabledChanged += HandleEnabledChanged;
 			
 			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 			          new ETVTN.AutomationIsOffscreenPropertyEvent (this));
@@ -356,19 +356,19 @@ namespace Mono.UIAutomation.Winforms
 		{
 			parentTreeKnownToSupportScroll = treeSupportsScroll;
 			
-			if (node.TreeView.CheckBoxes &&
+			if (treeView.CheckBoxes &&
 			    GetBehavior (TogglePatternIdentifiers.Pattern) == null)
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             new ToggleProviderBehavior (this));
-			else if (!node.TreeView.CheckBoxes)
+			else if (!treeView.CheckBoxes)
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             null);
 
-			if (treeSupportsScroll && node.TreeView.Enabled &&
+			if (treeSupportsScroll && treeView.Enabled &&
 			    GetBehavior (ScrollItemPatternIdentifiers.Pattern) == null)
 				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 				             new ScrollItemProviderBehavior (this));
-			else if (!treeSupportsScroll || !node.TreeView.Enabled)
+			else if (!treeSupportsScroll || !treeView.Enabled)
 				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 				             null);
 
@@ -376,11 +376,11 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ExpandCollapeProviderBehavior (this));
 			
-			if (node.TreeView.LabelEdit &&
+			if (treeView.LabelEdit &&
 			    GetBehavior (ValuePatternIdentifiers.Pattern) == null)
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
-			else if (!node.TreeView.LabelEdit)
+			else if (!treeView.LabelEdit)
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             null);
 
