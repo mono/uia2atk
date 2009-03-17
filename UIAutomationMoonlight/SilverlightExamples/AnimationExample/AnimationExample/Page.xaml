@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="AnimationExample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="200" Height="100">
+    <UserControl.Resources>
+        <Storyboard x:Name="storyBoard">
+            <DoubleAnimation Storyboard.TargetName="button" 
+                             Storyboard.TargetProperty="Width"
+                             To="130"
+                             Duration="0:0:5">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <Button x:Name="button" 
+                Canvas.Left="10" 
+                Canvas.Top="10" 
+                Content="Animated button"
+                AutomationProperties.HelpText="AnimatedButton"/>
+        <Button x:Name="initializeButton" 
+                Canvas.Left="10" 
+                Canvas.Top="45" 
+                Content="Initialize event" 
+                Click="initializeButton_Click" 
+                AutomationProperties.HelpText="InitializeButton" />
+        <Button x:Name="changeWidthButton" 
+                Canvas.Left="10" 
+                Canvas.Top="70" 
+                Content="Change width" 
+                Click="changeWidthButton_Click"
+                AutomationProperties.HelpText="WidthButton" />
+    </Canvas>
+</UserControl>
