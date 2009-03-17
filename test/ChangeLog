@@ -1,3 +1,7 @@
+2009-03-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/form_basic_ops.py: Typo fix in comment
+
 2009-03-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: Missing comma to separate list values.  Fixed.
