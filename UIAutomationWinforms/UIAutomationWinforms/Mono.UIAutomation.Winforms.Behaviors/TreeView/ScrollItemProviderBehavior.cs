@@ -29,6 +29,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
@@ -77,6 +78,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		public void ScrollIntoView ()
 		{
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+			if (treeView == null) {
+				Log.Error ("TreeView.ScrollItem.ScrollIntoView: Parent TreeView is not set");
+				return;
+			}
 			if (treeView.InvokeRequired)
 				treeView.BeginInvoke (new SWF.MethodInvoker (ScrollIntoView));
 

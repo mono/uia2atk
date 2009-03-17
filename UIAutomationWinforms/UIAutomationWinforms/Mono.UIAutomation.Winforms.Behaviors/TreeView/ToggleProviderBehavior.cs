@@ -29,6 +29,7 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.TreeView;
 
@@ -57,6 +58,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		public void Toggle ()
 		{
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+			if (treeView == null) {
+				Log.Error ("TreeView.Toggle.Invoke: Parent TreeView is not set");
+				return;
+			}
 			if (!treeView.Enabled)
 				throw new ElementNotEnabledException ();
 			if (treeView.InvokeRequired)

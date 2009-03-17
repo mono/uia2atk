@@ -29,6 +29,7 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.TreeView;
 
@@ -56,7 +57,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public void AddToSelection ()
 		{
-			if (!nodeProvider.TreeNode.TreeView.Enabled)
+			if (nodeProvider.TreeNode.TreeView != null &&
+			    !nodeProvider.TreeNode.TreeView.Enabled)
 				throw new ElementNotEnabledException ();
 			IRawElementProviderSimple treeProvider =
 				ProviderFactory.FindProvider (nodeProvider.TreeNode.TreeView);
@@ -76,7 +78,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public void RemoveFromSelection ()
 		{
-			if (!nodeProvider.TreeNode.TreeView.Enabled)
+			if (nodeProvider.TreeNode.TreeView != null &&
+			    !nodeProvider.TreeNode.TreeView.Enabled)
 				throw new ElementNotEnabledException ();
 			if (!IsSelected)
 				return;
@@ -86,6 +89,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		public void Select ()
 		{
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+			if (treeView == null) {
+				Log.Error ("TreeView.SelectionItem.Select: Parent TreeView is not set");
+				return;
+			}
 			if (!treeView.Enabled)
 				throw new ElementNotEnabledException ();
 			if (treeView.InvokeRequired) {
