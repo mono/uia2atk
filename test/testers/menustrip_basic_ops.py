@@ -42,40 +42,126 @@ if app is None:
 msFrame = app.menuStripFrame
 
 ##############################
+# check menu item's action
+##############################
+actionsCheck(msFrame.menuitem_file, "Menu")
+actionsCheck(msFrame.menuitem_file_new, "Menu")
+actionsCheck(msFrame.menuitem_file_new_doc, "MenuItem")
+actionsCheck(msFrame.menuitem_file_open, "MenuItem")
+actionsCheck(msFrame.menuitem_edit, "Menu")
+actionsCheck(msFrame.menuitem_edit_copy, "MenuItem")
+actionsCheck(msFrame.menuitem_edit_paste, "MenuItem")
+
+##############################
+# check menu item's Text
+##############################
+msFrame.inputText(msFrame.menuitem_file, "test")
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.menuitem_file, "File")
+
+msFrame.inputText(msFrame.menuitem_file_new, "test")
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.menuitem_file_new, "New")
+
+msFrame.inputText(msFrame.menuitem_file_new_doc, "test")
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.menuitem_file_new_doc, "Document")
+
+##############################
 # check MenuStrip and its children's AtkAccessible
 ##############################
 # check states of menustrip
 statesCheck(msFrame.menustrip, "MenuStrip")
-statesCheck(msFrame.menuitem_file, "MenuItem")
-statesCheck(msFrame.menuitem_edit, "MenuItem")
+statesCheck(msFrame.menuitem_file, "Menu")
+statesCheck(msFrame.menuitem_file_new, "Menu", invalid_states=["showing"])
+statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", invalid_states=["showing"])
+statesCheck(msFrame.menuitem_file_open, "MenuItem", invalid_states=["showing"])
+statesCheck(msFrame.menuitem_edit, "Menu")
+statesCheck(msFrame.menuitem_edit_copy, "MenuItem", invalid_states=["showing"])
+statesCheck(msFrame.menuitem_edit_paste, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check MenuStrip's AtkSelection
 ##############################
-msFrame.assertSelectChild(msFrame.menustrip, 0)
-# BUG476362
-#statesCheck(msFrame.menuitem_file, "MenuItem", add_states=["selected"])
-statesCheck(msFrame.menuitem_edit, "MenuItem")
+msFrame.selectChild(msFrame.menustrip, 0)
+sleep(config.SHORT_DELAY)
+# BUG476362, 485524
+#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+statesCheck(msFrame.menuitem_edit, "Menu")
 
-msFrame.assertSelectChild(msFrame.menustrip, 1)
-statesCheck(msFrame.menuitem_file, "MenuItem")
-# BUG476362
-#statesCheck(msFrame.menuitem_edit, "MenuItem", add_states=["selected"])
+msFrame.selectChild(msFrame.menustrip, 1)
+sleep(config.SHORT_DELAY)
+# BUG476362, 485524
+statesCheck(msFrame.menuitem_file, "Menu")
+#statesCheck(msFrame.menuitem_edit, "Menu", add_states=["selected", "focused"])
 
 ##############################
 # check MenuStrip and its children's AtkComponent
 ##############################
+# TODO: BUG476878
 msFrame.menustrip.mouseClick()
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.label, "You are clicking ")
 
+# check menu Selection
+msFrame.selectChild(msFrame.menuitem_file, 0)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_file_new, "MenuItem", add_states=["selected"])
+msFrame.clearSelection(msFrame.menuitem_file_new)
+sleep(config.SHORT_DELAY)
+
+msFrame.selectChild(msFrame.menuitem_edit, 1)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_edit_paste, "MenuItem", add_states=["selected"])
+msFrame.clearSelection(msFrame.menuitem_file_new)
+sleep(config.SHORT_DELAY)
+
+msFrame.selectChild(msFrame.menuitem_file_new, 0)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+msFrame.clearSelection(msFrame.menuitem_file_new)
+sleep(config.SHORT_DELAY)
+
 msFrame.menuitem_file.mouseClick()
 sleep(config.SHORT_DELAY)
-msFrame.assertText(msFrame.label, "You are clicking File")
+#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
 
 msFrame.menuitem_edit.mouseClick()
 sleep(config.SHORT_DELAY)
-msFrame.assertText(msFrame.label, "You are clicking Edit")
+#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+
+# check menu item
+msFrame.click(msFrame.menuitem_file)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+
+msFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_file_new, "Menu", add_states=["selected", "focused"])
+
+msFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected", "focused"])
+#statesCheck(msFrame.menuitem_file_new, "Menu")
+
+msFrame.menuitem_file_new_doc.mouseClick()
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.label, "You are clicking Document")
+# focused state is remove when you have clicked on a menu item
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+
+msFrame.click(msFrame.menuitem_edit)
+sleep(config.SHORT_DELAY)
+msFrame.menuitem_edit_copy.mouseClick()
+sleep(config.SHORT_DELAY)
+msFrame.assertText(msFrame.label, "You are clicking Copy")
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+
+##############################
+# check menu item's Image
+##############################
+# TODO: BUG486290
+#msFrame.assertImage(msFrame.menuitem_file_new_doc, 16, 16)
 
 ##############################
 # End

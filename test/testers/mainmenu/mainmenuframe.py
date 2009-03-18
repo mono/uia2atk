@@ -17,17 +17,17 @@ class MainMenuFrame(accessibles.Frame):
         super(MainMenuFrame, self).__init__(accessible)
         self.mainmenu = self.findMenuBar(None)
         self.menuitem_file = self.findMenu("File")
-        self.menuitem_file_new = self.findMenu("New")
-        self.menuitem_file_new_doc = self.findMenuItem("Document")
-        self.menuitem_file_open = self.findMenuItem("Open")
-        self.menuitem_file_exit = self.findMenuItem("Exit")
+        self.menuitem_file_new = self.findMenu("New", checkShowing=False)
+        self.menuitem_file_new_doc = self.findMenuItem("Document", checkShowing=False)
+        self.menuitem_file_open = self.findMenuItem("Open", checkShowing=False)
+        self.menuitem_file_exit = self.findMenuItem("Exit"), checkShowing=False
 
         self.menuitem_edit = self.findMenu("Edit")
-        self.menuitem_edit_undo = self.findMenuItem("Undo")
-        self.menuitem_edit_redo = self.findMenuItem("Redo")
+        self.menuitem_edit_undo = self.findMenuItem("Undo", checkShowing=False)
+        self.menuitem_edit_redo = self.findMenuItem("Redo", checkShowing=False)
 
         self.menuitem_help = self.findMenu("Help")
-        self.menuitem_help_about = self.findMenuItem("About")
+        self.menuitem_help_about = self.findMenuItem("About", checkShowing=False)
 
         self.label = self.findLabel(None)
 
