@@ -4,6 +4,31 @@
 	* AutomationBridge.cs: First draft of the new mechanism for
 	loading the bridge on Moonlight.
 
+2009-03-16  Mike Gorse  <mgorse@novell.com>
+
+	* Button.cs, ToggleButton.cs, Spinner.cs, ScrollBar.cs,
+	ComboBoxItem.cs, ParentAdapter.cs, Tree.cs, Splitter.cs, List.cs,
+	CheckBoxButton.cs, TextLabel.cs, TextContainer.cs, Table.cs,
+	MenuBar.cs, ComboBoxOptionsTable.cs, Separator.cs, TreeItem.cs,
+	Slider.cs, ComboBoxOptions.cs, ListItem.cs, RadioButton.cs,
+	WrapperPanel.cs, ContextMenuWindow.cs, Hyperlink.cs, Window.cs,
+	ComboBox.cs, ContextMenu.cs, TextBoxEntryView.cs, Adapter.cs,
+	ComponentParentAdapter.cs, Pane.cs, MenuItem.cs, ComboBoxDropDown.cs,
+	SplitContainer.cs: Check for defunct providers in OnRefStateSet
+	[bug 485731]
+
+2009-03-16  Brad Taylor  <brad@getcoded.net>
+
+	* Adapter.cs: Return true to IsOffscreenProperty if we have no parent.
+	Fixes a test regression in form_basic_ops.py.
+
+2009-03-16  Brad Taylor  <brad@getcoded.net>
+
+	* ComboBoxOptions.cs: Move the majority of the function out of the
+	lock.  Neither Mike nor I see any reason for the entire loop to be
+	inside of the lock, and since it's causing a deadlock due to OnRefChild
+	grabbing the lock also, this seems to be the clear fix. [Fixes #485529]
+
 2009-03-13  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs: Avoid querying IsOffscreenProperty if the Parent is null,

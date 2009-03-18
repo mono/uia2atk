@@ -152,7 +152,7 @@ class DataGridFrame(accessibles.Frame):
         procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
 
         if entertext == "editable":
-            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext)
+            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext))
             assert accessible.text == entertext
         else:
             try:

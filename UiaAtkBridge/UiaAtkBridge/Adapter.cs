@@ -137,12 +137,20 @@ namespace UiaAtkBridge
 
 		public void RemoveFromParent (ParentAdapter parent)
 		{
+			RemoveFromParent (parent, true);
+		}
+
+		public void RemoveFromParent (ParentAdapter parent, bool terminate)
+		{
 			NotifyStateChange (Atk.StateType.Showing, false);
 			NotifyStateChange (Atk.StateType.Visible, false);
 
 			//don't remove the parent if this was not the first parent
 			if (parent == Parent)
 				Parent = null;
+
+			if (terminate)
+				defunct = true;
 		}
 		
 		internal virtual void PostInit ()
@@ -180,6 +188,11 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			if (defunct) {
+				states.AddState (Atk.StateType.Defunct);
+				return states;
+			}
+
 			if (Provider != null) {
 				bool enabled = 
 				  (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
@@ -204,7 +217,7 @@ namespace UiaAtkBridge
 				else
 					states.RemoveState (Atk.StateType.Focused);
 
-				bool is_offscreen = Parent != null && (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+				bool is_offscreen = (Parent == null || (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
 				if (!is_offscreen) {
 					states.AddState (Atk.StateType.Showing);
 					states.AddState (Atk.StateType.Visible);
@@ -213,7 +226,7 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Visible);
 				}
 			}
-			
+
 			return states;
 		}
 
@@ -263,6 +276,10 @@ namespace UiaAtkBridge
 			}
 			return -1;
 		}
+#endregion
+
+#region Private Fields
+		private bool defunct = false;
 #endregion
 
 		internal System.Windows.Rect BoundingRectangle

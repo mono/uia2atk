@@ -1,3 +1,50 @@
+2009-03-18  Ray Wang <rawang@novell.com>
+
+	* testers/listview_list_ops.py: regression update for bnc481456.
+	* testers/mainmenu/mainmenuframe.py: add parameter checkShowing is 
+	False when find the menu items which is not showing, bnc486335.
+	* testers/mainmenu_basic_ops.py: regression update for bnc486335.
+	* testers/menustrip/menustripframe.py: add click, inputText, 
+	assertImage, clearSelection methods.
+	* testers/menustrip_basic_ops.py: recap the test statements.
+
+2009-03-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/form_basic_ops.py: Typo fix in comment
+
+2009-03-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/tests.py: Missing comma to separate list values.  Fixed.
+
+2009-03-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/combobox_stylechanges_basic_ops.py, 
+	* testers/combobox_stylechanges/comboboxstylechangesframe.py: Add
+	methods to change the style and find the relevant accessibles when the
+	style changes.
+
+2009-03-16  Ray Wang <rawang@novell.com>
+
+	* testers/mainmenu_basic_ops.py: update some test statements.
+	* testers/mainmenu/mainmenuframe.py: add click, inputText method, 
+	rename assertSelectChild to selectChild.
+
+2009-03-16  Calen Chen <cachen@novell.com>
+
+	* testers/checkedlistbox_basic_ops.py: add focused state for treetable
+
+2009-03-16  Calen Chen <cachen@novell.com>
+
+	* testers/datagrid/datagridframe.py,
+	* testers/datagridtextboxcolumn_basic_ops.py,
+	* testers/datagridcomboboxcolumn_basic_ops.py: correct some typo
+	* testers/datagrid_basic_ops.py: update test due to BUG480244 that 
+	TreeTable and TableCell should have focused state
+
+2009-03-16  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: delete some unuseful line
+
 2009-03-13  Calen Chen <cachen@novell.com>
 
 	* testers/scrollbar/scrollbarframe.py,

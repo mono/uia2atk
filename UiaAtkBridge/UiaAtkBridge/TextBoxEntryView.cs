@@ -84,6 +84,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			editableTextExpert.UpdateStates (states);
 			
 			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);

@@ -72,7 +72,7 @@ statesCheck(fFrame, "Form")
 statesCheck(extra_form_1, "Form", add_states=["active", "modal"], invalid_states=["resizable"])
 
 #close message form widget, main form rise 'active' state again
-extra_form_1.altF4()
+extra_form_1.altF4(assertClosed=False)
 statesCheck(fFrame, "Form", add_states=["active"])
 
 ###########################
@@ -102,7 +102,7 @@ statesCheck(fFrame, "Form", add_states=["active"])
 ###########################
 # check ExtraForm(Dialog)'s AtkAccessible
 ###########################
-#click button2 to appear extra empty form widget
+#click button3 to appear extra empty form widget
 fFrame.click(fFrame.button3)
 sleep(config.SHORT_DELAY)
 extra_form_3 = fFrame.app.findDialog("Extra Form")

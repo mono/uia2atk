@@ -72,11 +72,11 @@ actionsCheck(dgFrame.combobox_column, "TableColumnHeader")
 
 #check DataGridBoolColumn TableCell actions list
 actionsCheck(dgFrame.nullbool_cell, "TableCell")
-actionsCheck(dgFrame.truebool_cell, "TableCell")
-actionsCheck(dgFrame.falsebool_cell, "TableCell")
+actionsCheck(dgFrame.edit_cells[0], "TableCell")
+actionsCheck(dgFrame.read_cells[0], "TableCell")
 
 #check TreeTable 's states
-statesCheck(dgFrame.treetable, "TreeTable")
+statesCheck(dgFrame.treetable, "TreeTable", add_states=['focused'])
 
 #check TableColumnHeader's states
 statesCheck(dgFrame.bool_column, "TableColumnHeader")
@@ -107,7 +107,7 @@ dgFrame.assertLabel("row:0 col:1 Value:Edit0")
 dgFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.read_cells[0], "TableCell", add_states=["focused"])
-statesCheck(dgFrame.edit_cells[0], "TableCell", "editable")
+statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["editable"])
 dgFrame.assertLabel("row:0 col:2 Value:Read0")
 
 #keyDown move focus to 'Read1'

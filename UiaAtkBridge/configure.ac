@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([UiaAtkBridge], [1.0])
+AC_INIT([UiaAtkBridge], [1.9.0])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
@@ -87,8 +87,8 @@ fi
 
 
 # package checks, common for all configs
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.6])
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.6])
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.0])
 
 #Bridge-glue checks

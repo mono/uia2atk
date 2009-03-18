@@ -171,6 +171,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			if (Role == Atk.Role.PageTab) 
 				states.AddState (Atk.StateType.MultiLine);
 

@@ -40,6 +40,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			states.RemoveState (Atk.StateType.Focusable);
 			states.RemoveState (Atk.StateType.Focused);
 			return states;

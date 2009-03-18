@@ -171,6 +171,10 @@ AtkObject,
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			states.AddState (Atk.StateType.ManagesDescendants);
 
 			return states;

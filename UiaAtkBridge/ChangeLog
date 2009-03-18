@@ -7,6 +7,21 @@
 	* MoonUiaAtkBridge/AutomationBridge.cs:
 	* MoonUiaAtkBridge/MoonUiaAtkBridge.mdp: Proof of concept.
 
+2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* configure.ac: Bump version to 1.9.0. UIAutomationWinforms
+	will require mono-uia >= 1.9.0. Not sure yet about
+	UiaAtkBridge.
+
+2009-03-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: We require gtk-sharp 2.12.8 because it's the one 
+	bundled with Mono 2.4 (API changes). Related to #473592.
+
+2009-03-17  Brad Taylor  <brad@getcoded.net>
+
+	* NEWS: Update codename for 1.0.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* NEWS:

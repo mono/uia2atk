@@ -3,6 +3,21 @@
 	* Mono.UIAutomation.Winforms/Global.cs: First draft of the new
 	mechanism for loading the bridge on Moonlight.
 
+2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Use treeView
+	member instead of node.TreeView to guard against circumstances
+	where the latter has been set to null and the provider has not
+	been terminated. Fixes crashers in bug #485903 and bug
+	#485400.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs:
+	Log errors and return in the case of a null TreeView when
+	performing actions.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Add support

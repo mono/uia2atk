@@ -55,6 +55,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			if (states.ContainsState (Atk.StateType.Defunct))
+				return states;
+
 			ComboBoxDropDown dropdown = Parent as ComboBoxDropDown;
 			if (dropdown != null) {
 				states.RemoveState (Atk.StateType.Focusable);
@@ -115,18 +119,21 @@ namespace UiaAtkBridge
 
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
+			int nChildren = 0;
 			lock (syncRoot) {
-				for (int i = 0; i < NAccessibleChildren; i++) {
-					Atk.Object child = RefAccessibleChild (i);
+				nChildren = NAccessibleChildren;
+			}
 
-					if (child == null || ((Adapter)child) == keepSelected)  {
-						continue;
-					}
-					
-					ComboBoxItem item = child as ComboBoxItem;
-					if (item != null)
-						item.Deselect ();
+			for (int i = 0; i < nChildren; i++) {
+				Atk.Object child = RefAccessibleChild (i);
+
+				if (child == null || ((Adapter)child) == keepSelected) {
+					continue;
 				}
+				
+				ComboBoxItem item = child as ComboBoxItem;
+				if (item != null)
+					item.Deselect ();
 			}
 
 			if (Parent is ComboBoxOptions)

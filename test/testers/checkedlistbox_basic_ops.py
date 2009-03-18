@@ -74,7 +74,7 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked", "focused"])
 ##both listitem[20] and listbox2 are focused due to BUG480218
-statesCheck(clbFrame.listbox2, "List")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
@@ -113,18 +113,18 @@ clbFrame.mouseClick(log=False)
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected", "checked"])
-statesCheck(clbFrame.listbox1, "List")
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 #mouse click listitem 3 again to uncheck it, but listbox1 still with focused
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused","selected"])
-statesCheck(clbFrame.listbox1, "List")
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 
 #mouse click listitem 23 to selected, focus to listbox2
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
-statesCheck(clbFrame.listbox2, "List")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #mouse click listitem 23 again to checked
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
@@ -133,7 +133,7 @@ statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
-statesCheck(clbFrame.listbox2, "List")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
 ###############################################
 ##check list selection implementation

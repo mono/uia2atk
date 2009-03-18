@@ -38,5 +38,8 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.comboBoxStyleChangesFrame
 
+cbFrame.startSimpleStyle()
+cbFrame.startDropDownListStyle()
+
 # close application frame window
 cbFrame.quit()

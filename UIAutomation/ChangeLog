@@ -3,6 +3,16 @@
 	* UIAutomation.mds: Add UIAutomationClient to MonoDevelop
 	projects/solutions.
 
+2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* configure.ac: Bump version to 1.9.0. UIAutomationWinforms
+	will require mono-uia >= 1.9.0. Not sure yet about
+	UiaAtkBridge.
+
+2009-03-17  Brad Taylor  <brad@getcoded.net>
+
+	* NEWS: Update codename for 1.0.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* NEWS:

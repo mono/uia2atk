@@ -42,9 +42,8 @@ if app is None:
 mmFrame = app.mainMenuFrame
 
 ##############################
-# check MainMenu and its children's AtkAccessible
+# check menu item's action
 ##############################
-actionsCheck(mmFrame.mainmenu, "Menu")
 actionsCheck(mmFrame.menuitem_file, "Menu")
 actionsCheck(mmFrame.menuitem_file_new, "Menu")
 actionsCheck(mmFrame.menuitem_file_new_doc, "MenuItem")
@@ -57,45 +56,105 @@ actionsCheck(mmFrame.menuitem_help, "Menu")
 actionsCheck(mmFrame.menuitem_help_about, "MenuItem")
 
 ##############################
+# check menu item's Text
+##############################
+mmFrame.inputText(mmFrame.menuitem_file, "test")
+sleep(config.SHORT_DELAY)
+mmFrame.assertText(mmFrame.menuitem_file, "File")
+
+mmFrame.inputText(mmFrame.menuitem_file_new, "test")
+sleep(config.SHORT_DELAY)
+mmFrame.assertText(mmFrame.menuitem_file_new, "New")
+
+mmFrame.inputText(mmFrame.menuitem_file_new_doc, "test")
+sleep(config.SHORT_DELAY)
+mmFrame.assertText(mmFrame.menuitem_file_new_doc, "Document")
+
+##############################
 # check MainMenu and its children's AtkAccessible
 ##############################
 # check states of mainmenu
-statesCheck(mmFrame.mainmenu, "MainMenu")
-statesCheck(mmFrame.menuitem_file, "Menu", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_file_new, "Menu", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_file_open, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_file_exit, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_edit_undo, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_edit_redo, "MenuItem", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_help, "Menu", add_states=["focusable"])
-statesCheck(mmFrame.menuitem_help_about, "MenuItem", add_states=["focusable"])
+# TODO: BUG485515, 486335
+#statesCheck(mmFrame.mainmenu, "MainMenu")
+#statesCheck(mmFrame.menuitem_file, "Menu", invalid_states=["focusable"])
+#statesCheck(mmFrame.menuitem_file_new, "Menu", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_file_open, "MenuItem", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_file_exit, "MenuItem", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_edit, "Menu", invalid_states=["focusable"])
+#statesCheck(mmFrame.menuitem_edit_undo, "MenuItem", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_edit_redo, "MenuItem", invalid_states=["showing", "focusable"])
+#statesCheck(mmFrame.menuitem_help, "Menu", invalid_states=["focusable"])
+#statesCheck(mmFrame.menuitem_help_about, "MenuItem", invalid_states=["showing", "focusable"])
 
 ##############################
-# check MainMenu's AtkSelection
+# check MainMenu(menu bar)'s AtkSelection
 ##############################
-mmFrame.assertSelectChild(mmFrame.mainmenu, 0)
-# BUG476362
-statesCheck(mmFrame.menuitem_file, "MenuItem", add_states=["focusable", "selected"])
-statesCheck(mmFrame.menuitem_edit, "MenuItem", add_states=["focusable"])
+mmFrame.selectChild(mmFrame.mainmenu, 0)
+sleep(config.SHORT_DELAY)
+# TODO: BUG476362, BUG485515, BUG485524
+#statesCheck(mmFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+#statesCheck(mmFrame.menuitem_edit, "Menu")
 
-mmFrame.assertSelectChild(mmFrame.mainmenu, 1)
-statesCheck(mmFrame.menuitem_file, "MenuItem", add_states=["focusable"])
-# BUG476362
-statesCheck(mmFrame.menuitem_edit, "MenuItem", add_states=["focusable", "selected"])
+mmFrame.selectChild(mmFrame.mainmenu, 1)
+sleep(config.SHORT_DELAY)
+# TODO: BUG476362, BUG485515, BUG485524
+#statesCheck(mmFrame.menuitem_file, "Menu")
+#statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["selected", "focusable"])
 
 ##############################
-# check MainMenu and its children's AtkComponent
+# check menu and menu item's AtkComponent
 ##############################
-# BUG476878
+# check menu
+# TODO: BUG485515, BUG485524, BUG476878
 mmFrame.menuitem_file.mouseClick()
 sleep(config.SHORT_DELAY)
-mmFrame.assertText(mmFrame.label, "You are clicking &File")
+#statesCheck(mmFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
 
 mmFrame.menuitem_edit.mouseClick()
 sleep(config.SHORT_DELAY)
-mmFrame.assertText(mmFrame.label, "You are clicking &Edit")
+#statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["selected", "focusable"])
+
+# TODO: BUG476362, BUG485515, BUG485524
+# check menu Selection
+mmFrame.selectChild(mmFrame.menuitem_file, 0)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_file_new, "Menu", add_states=["selected"])
+
+mmFrame.selectChild(mmFrame.menuitem_edit, 1)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_edit_redo, "MenuItem", add_states=["selected"])
+
+mmFrame.selectChild(mmFrame.menuitem_file_new, 0)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+
+# check menu item
+mmFrame.click(mmFrame.menuitem_file)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+
+mmFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_file_new, "Menu", add_states=["selected", "focused"])
+
+mmFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
+#statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected", "focused"])
+#statesCheck(mmFrame.menuitem_file_new, "Menu")
+
+mmFrame.menuitem_file_new_doc.mouseClick()
+sleep(config.SHORT_DELAY)
+# TODO: BUG476362
+#mmFrame.assertText(mmFrame.label, "You are clicking Document")
+# focused state is remove when you have clicked on a menu item
+#statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+
+mmFrame.menuitem_edit_undo.mouseClick()
+sleep(config.SHORT_DELAY)
+# TODO: BUG476362
+#mmFrame.assertText(mmFrame.label, "You are clicking Undo")
+#statesCheck(mmFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
 
 ##############################
 # End
