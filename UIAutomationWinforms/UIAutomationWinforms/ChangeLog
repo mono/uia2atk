@@ -1,3 +1,10 @@
+2009-03-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/Global.cs: Reverting changes from
+	r128152, as the Moonlight bridge architecture makes these
+	changes unnecessary. This restores bridge mechanics to work
+	the same as in 1.0.
+
 2009-02-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/Global.cs: First draft of the new

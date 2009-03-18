@@ -61,14 +61,6 @@ namespace UiaAtkBridge
 			RegisterSignal (typeof (Atk.Object), "resize");
 			RegisterSignal (typeof (Atk.Object), "restore");
 		}
-
-		public Monitor (IntPtr parentObject)
-		{
-			this.parentObject = parentObject;
-			hook_accessible_children (parentObject, TopLevelRootItem.Instance.Handle);
-		}
-
-		IntPtr parentObject;
 		
 		private Monitor ()
 		{
@@ -127,9 +119,6 @@ namespace UiaAtkBridge
 		
 		public void ApplicationStarts ()
 		{
-			if (parentObject != IntPtr.Zero)
-				return;
-			
 			if (mainLoop != null && mainLoop.IsRunning) {
 				Log.Warn ("AutomationBridge: Received init event, but already running;  ignoring.");
 				return;
@@ -317,9 +306,6 @@ namespace UiaAtkBridge
 		static extern void override_global_event_listener ();
 		[DllImport("libgobject-2.0-0.dll")]
 		static extern void g_signal_new (IntPtr signal_name, IntPtr itype, int signal_flags, uint class_offset, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params);
-		
-		[DllImport("lib-atk-xul-bridge")]
-		static extern void hook_accessible_children (IntPtr parentObject, IntPtr childObject);
 	}
 	
 	/// <summary>

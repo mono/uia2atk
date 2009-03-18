@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Bridge
 		void RaiseStructureChangedEvent (object provider,
 		                                 StructureChangedEventArgs e);
 
-		void Initialize (IntPtr parentObject);
+		void Initialize ();
 		
 		void Terminate ();
 	}

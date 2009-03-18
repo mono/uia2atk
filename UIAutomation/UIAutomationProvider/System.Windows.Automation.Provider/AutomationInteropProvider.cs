@@ -45,7 +45,7 @@ namespace System.Windows.Automation.Provider
 		
 		static AutomationInteropProvider ()
 		{
-			
+			bridge = BridgeManager.GetAutomationBridge ();
 		}
 
 		public static bool ClientsAreListening {
@@ -58,10 +58,8 @@ namespace System.Windows.Automation.Provider
 
 		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd)
 		{
-			if (bridge == null) {
-				bridge = BridgeManager.GetAutomationBridge (hwnd);
+			if (bridge == null)
 				return null;
-			}
 			return (IRawElementProviderSimple) bridge.HostProviderFromHandle (hwnd);
 		}
 
@@ -120,7 +118,7 @@ namespace System.Windows.Automation.Provider
 		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		
-		public static IAutomationBridge GetAutomationBridge (IntPtr parentObject)
+		public static IAutomationBridge GetAutomationBridge ()
 		{
 			// Let MONO_UIA_BRIDGE env var override default bridge
 			string bridgeAssemblyName =
@@ -160,7 +158,7 @@ namespace System.Windows.Automation.Provider
 				if (!bridge.IsAccessibilityEnabled)
 					return null;
 
-				bridge.Initialize (parentObject);
+				bridge.Initialize ();
 				return bridge;
 			} catch (Exception e) {
 				Console.WriteLine ("Failed to load UIA bridge: " + e);
