@@ -10,10 +10,10 @@
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of statusstrip widget which can include toolstriplabel,
+Test accessibility of statusstrip widget which include toolstriplabel,
 toolstripdropdownbutton, toolstripsplitbutton and toolstripprogressbar.
-we just give general test for label and progressbar which under statusstrip,
-the complete test of each of them will be running for each single control test
+we just give general test for label and progressbar which on statusstrip,
+the complete test for each of them will be running for each single control test
 """
 
 # imports
@@ -51,11 +51,12 @@ ssFrame = app.statusStripFrame
 #check statusbar's states
 statesCheck(ssFrame.statusstrip, "StatusBar")
 
-#########################################################################################
-#test states and value of ToolStripProgressBar and 
-#ToolStripStatusLabel to make sure StatusStrip with "status bar" role
-#have children which also with correct states and event changed
-#########################################################################################
+###########################################################################
+#test states and value for ToolStripProgressBar and ToolStripStatusLabel to 
+#make sure StatusStrip with "status bar" role have children which also with
+#correct states and event changed
+###########################################################################
+
 statesCheck(ssFrame.ProgressBar, "ProgressBar")
 statesCheck(ssFrame.StripLabel, "Label")
 

@@ -23,4 +23,14 @@ tests_list = [
     "picturebox_basic_ops.py",
     "linklabel_basic_ops.py",
     "progressbar_basic_ops.py"
+    "helpprovider_basic_ops.py",
+    "pagesetupdialog_basic_ops.py",
+    "panel_basic_ops.py",
+    "printpreviewcontrol_basic_ops.py",
+    "richtextbox_basic_ops.py",
+    "statusstrip_basic_ops.py",
+    "toolstrip_basic_ops.py",
+    "toolstripprogressbar_basic_ops.py",
+    "toolstripseparator_basic_ops.py",
+    "toolstriptextbox_basic_ops.py",
 ]

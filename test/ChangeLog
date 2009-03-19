@@ -1,3 +1,15 @@
+2009-03-19  Calen Chen <cachen@novell.com>
+
+	* testers/numericupdown/numericupdownframe.py: move deleteText up on 
+	the action log
+	* testers/pagesetupdialog/pagesetupdialogframe.py: delete '&'
+	* testers/statusstrip_basic_ops.py: modify some typo in comments
+	* samples/toolstripseparator.py: set separator[0] with enable to false
+	* testers/toolstripseparator_basic_ops.py: set invalid_states for 
+	separator[0]
+	* testers/toolstriptextbox_basic_ops.py: add MWFbug486716 reference 
+	that is fail in moving to next line
+
 2009-03-18  Ray Wang <rawang@novell.com>
 
 	* testers/listview_list_ops.py: regression update for bnc481456.
@@ -28,6 +40,10 @@
 	* testers/mainmenu_basic_ops.py: update some test statements.
 	* testers/mainmenu/mainmenuframe.py: add click, inputText method, 
 	rename assertSelectChild to selectChild.
+
+2009-03-16  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown_ops.py: 
 
 2009-03-16  Calen Chen <cachen@novell.com>
 

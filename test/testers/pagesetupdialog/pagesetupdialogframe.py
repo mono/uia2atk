@@ -28,27 +28,27 @@ class PageSetupDialogFrame(accessibles.Frame):
         # Buttons
         self.main_ok_button = self.main_dialog.findPushButton('OK')
         self.main_cancel_button = self.main_dialog.findPushButton('Cancel')
-        self.printer_button = self.main_dialog.findPushButton('&Printer...')
+        self.printer_button = self.main_dialog.findPushButton('Printer...')
         # Margins panel
         self.margins_panel = self.main_dialog.findPanel(re.compile('^Margins'))
         self.bottom_text = self.margins_panel.findAllTexts(None)[0]
         self.right_text = self.margins_panel.findAllTexts(None)[1]
         self.top_text = self.margins_panel.findAllTexts(None)[2]
         self.left_text = self.margins_panel.findAllTexts(None)[3]
-        self.bottom_label = self.margins_panel.findLabel('&Bottom:')
-        self.right_label = self.margins_panel.findLabel('&Right:')
-        self.top_label = self.margins_panel.findLabel('&Top:')
-        self.left_label = self.margins_panel.findLabel('&Left:')
+        self.bottom_label = self.margins_panel.findLabel('Bottom:')
+        self.right_label = self.margins_panel.findLabel('Right:')
+        self.top_label = self.margins_panel.findLabel('Top:')
+        self.left_label = self.margins_panel.findLabel('Left:')
         # Orientation panel
         self.orientation_panel = self.main_dialog.findPanel('Orientation')
-        self.landscape_radio = self.orientation_panel.findRadioButton('L&andscape')
-        self.portrait_radio = self.orientation_panel.findRadioButton('P&ortrait')
+        self.landscape_radio = self.orientation_panel.findRadioButton('Landscape')
+        self.portrait_radio = self.orientation_panel.findRadioButton('Portrait')
         # Paper panel
         self.paper_panel = self.main_dialog.findPanel('Paper')
         self.source_combobox = self.paper_panel.findAllComboBoxs(None)[0]
         self.size_combobox = self.paper_panel.findAllComboBoxs(None)[1]
-        self.source_label = self.paper_panel.findLabel('&Source:')
-        self.size_label = self.paper_panel.findLabel('Si&ze:')
+        self.source_label = self.paper_panel.findLabel('Source:')
+        self.size_label = self.paper_panel.findLabel('Size:')
 
     def assertConfigrePageDialog(self, button=None):
         procedurelogger.action('Searching for all widgets in ConfigurePageDialog')

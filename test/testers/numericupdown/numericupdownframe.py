@@ -30,8 +30,9 @@ class NumericUpDownFrame(accessibles.Frame):
 
     # enter Text Value for EditableText
     def enterTextValue(self, accessible, text):
-        procedurelogger.action('set %s text to "%s"' % (accessible, text))
         accessible.deleteText()
+        procedurelogger.action('set %s text to "%s"' % (accessible, text))
+
         if accessible == self.editable_numericupdown:
             accessible.insertText(text)
         elif accessible == self.uneditable_numericupdown:

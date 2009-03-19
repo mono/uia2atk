@@ -49,7 +49,7 @@ tssFrame = app.toolStripSeparatorFrame
 tssFrame.assertSeparator(num=3)
 
 #check separators' states
-statesCheck(tssFrame.separators[0], "ToolStripSeparator")
+statesCheck(tssFrame.separators[0], "ToolStripSeparator", invalid_states=["enabled", "sensitive"])
 
 statesCheck(tssFrame.separators[1], "ToolStripSeparator")
 

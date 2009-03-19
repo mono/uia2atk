@@ -37,6 +37,7 @@ class RunApp(Form):
 
 ##ToolStripSeparator1
         self.toolstripseparator1 = ToolStripSeparator()
+        self.toolstripseparator1.Enabled = False
         self.ts.Items.Add(self.toolstripseparator1)
 
 ##ToolStripLabel1
