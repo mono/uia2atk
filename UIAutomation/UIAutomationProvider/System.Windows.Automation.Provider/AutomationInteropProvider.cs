@@ -77,9 +77,9 @@ namespace System.Windows.Automation.Provider
 			bridge.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
-		//TODO: IMO these Raise* methods should be only accessible by the Provider (internal with InternalsVisibleTo?), not by the bridge
-		//      (their usage in the bridge is causing bugs; and the need for it should yield the creation
-		//      of a helper function here, that checks if the provider is not present already in the ecosystem)
+		//TODO: these Raise* methods are being called by the bridge itself and it's a useless roundtrip
+		//      that we should fix in the bridge, with a helper function (that also checks if the provider
+		//      is not present already in the ecosystem)
 		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
 			if (bridge == null)
