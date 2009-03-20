@@ -1,3 +1,10 @@
+2009-03-20  Ray Wang <rawang@novell.com>
+
+	* testers/listbox_basic_ops.py: add some test for table cells.
+	* testers/listview_list_ops.py: regression test for bnc487118.
+	* testers/listview_list/listviewframe.py: change assertSelectionChild
+	to selectChild.
+
 2009-03-19  Ray Wang <rawang@novell.com>
 
 	* testers/listbox/listboxframe.py: change assertSelectionChild method

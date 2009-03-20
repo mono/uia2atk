@@ -80,6 +80,7 @@ statesCheck(lbFrame.tablecell[19], "TableCell")
 lbFrame.click(lbFrame.tablecell[9])
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[9], "TableCell", add_states=["focused", "selected"])
+statesCheck(lbFrame.tablecell[0], "TableCell")
 
 ############################
 # check List's AtkSelection
@@ -88,6 +89,7 @@ statesCheck(lbFrame.tablecell[9], "TableCell", add_states=["focused", "selected"
 lbFrame.selectChild(lbFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
+statesCheck(lbFrame.tablecell[1], "TableCell")
 
 #clear first tablecell selection
 lbFrame.assertClearSelection(lbFrame.treetable)
@@ -99,6 +101,7 @@ statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused"])
 lbFrame.selectChild(lbFrame.treetable, 19)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused", "selected"])
+statesCheck(lbFrame.tablecell[0], "TableCell")
 
 #clear last tablecell selection
 lbFrame.assertClearSelection(lbFrame.treetable)
