@@ -1,3 +1,13 @@
+2009-03-20  Stephen G. Shaw  <stshaw@novell.com>
+
+	* specs/uiautomation.spec: Updated to match 1.0
+	* specs/uiaatkbridge.spec: Updated to match 1.0 and add at-spi to requires
+	* specs/uiautomationwinforms.spec: Updated to match 1.0
+
+2009-02-05  Stephen G. Shaw  <stshaw@novell.com>
+
+	* specs/uiautomationwinforms.spec: Added glib-sharp2 to requires
+
 2009-01-28  Brad Taylor  <brad@getcoded.net>
 
 	* specs/uiautomationwinforms-unittests.spec: Change the nunit

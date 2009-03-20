@@ -12,7 +12,7 @@
 
 
 Name:           mono-uia
-Version:        0.9.1
+Version:        1.0
 Release:        0
 License:        MIT/X11
 Group:          System/Libraries
@@ -20,8 +20,8 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-Requires:	mono-core >= 2.2
-BuildRequires:	mono-core >= 2.2 mono-devel mono-nunit
+Requires:	mono-core >= 2.4
+BuildRequires:	mono-core >= 2.4 mono-devel mono-nunit
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 License:	MIT/X11
 Summary:	Parts of winfx
 Group:		Development/Languages/Mono
-Requires:	mono-core >= 2.2
+Requires:	mono-core >= 2.4
 
 %description -n mono-winfxcore
 The Mono Project is an open development initiative that is working to
