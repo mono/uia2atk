@@ -67,6 +67,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutomationControlTypeTest.cs" />
+    <Compile Include="AutomationEventsTest.cs" />
+    <Compile Include="AutomationOrientationTest.cs" />
+    <Compile Include="PatternInterfaceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
