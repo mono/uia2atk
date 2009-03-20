@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Windows.Automation.Peers", "System.Windows.Automation.Peers\System.Windows.Automation.Peers.csproj", "{7434B263-9CA0-4856-8048-0D0986452A95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Windows", "System.Windows\System.Windows.csproj", "{7434B263-9CA0-4856-8048-0D0986452A95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

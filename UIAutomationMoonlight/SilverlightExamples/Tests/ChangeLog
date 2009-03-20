@@ -1,5 +1,11 @@
 2009-04-20  Mario Carrion  <mcarrion@novell.com>
 
+	* System.Windows.Automation.Peers/ moved to 
+	System.Windows/System.Windows.Automation.Peers.
+	* System.Window.Automation: Tests added.
+
+2009-04-20  Mario Carrion  <mcarrion@novell.com>
+
 	* System.Windows.Automation.Peers/AutomationEventsTest.cs,
 	System.Windows.Automation.Peers/AutomationOrientationTest.cs,
 	System.Windows.Automation.Peers/PatternInterfaceTest.cs: Added

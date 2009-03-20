@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining 
+// Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the 
 // "Software"), to deal in the Software without restriction, including 
 // without limitation the rights to use, copy, modify, merge, publish, 
@@ -25,21 +25,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Automation.Peers;
+using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Windows.Automation.Peers.Tests
+namespace Moonlight.System.Windows.Automation 
 {
 	[TestClass]
-	public class AutomationOrientationTest
+	public class WindowVisualStateTest
 	{
 		[TestMethod]
-		[Description ("Tests AutomationOrientation values")]
+		[Description ("Tests WindowVisualState values")]
 		public void EnumerationValuesTest ()
 		{
-			Assert.AreEqual ((int) AutomationOrientation.Horizontal, 1, "AutomationOrientation.Horizontal");
-			Assert.AreEqual ((int) AutomationOrientation.None, 0, "AutomationOrientation.None");
-			Assert.AreEqual ((int) AutomationOrientation.Vertical, 2, "AutomationOrientation.Vertical");
+			Assert.AreEqual (0, (int) WindowVisualState.Normal, "WindowVisualState.Normal");
+			Assert.AreEqual (1, (int) WindowVisualState.Maximized, "WindowVisualState.Maximized");
+			Assert.AreEqual (2, (int) WindowVisualState.Minimized, "WindowVisualState.Minimized");
 		}
 	}
 }

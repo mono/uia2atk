@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Windows.Automation.Peers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Windows.Automation.Peers.Tests
+namespace Moonlight.System.Windows.Automation.Peers
 {
 	[TestClass]
 	public class PatternInterfaceTest
@@ -37,23 +37,23 @@ namespace System.Windows.Automation.Peers.Tests
 		[Description("Tests PatternInterface values")]
 		public void EnumerationValuesTest()
 		{
-			Assert.AreEqual ((int)PatternInterface.Dock, 12, "PatternInterface.Dock");
-			Assert.AreEqual ((int)PatternInterface.ExpandCollapse, 6, "PatternInterface.ExpandCollapse");
-			Assert.AreEqual ((int)PatternInterface.Grid, 7, "PatternInterface.Grid");
-			Assert.AreEqual ((int)PatternInterface.GridItem, 8, "PatternInterface.GridItem");
-			Assert.AreEqual ((int)PatternInterface.Invoke, 0, "PatternInterface.Invoke");
-			Assert.AreEqual ((int)PatternInterface.MultipleView, 9, "PatternInterface.MultipleView");
-			Assert.AreEqual ((int)PatternInterface.RangeValue, 3, "PatternInterface.RangeValue");
-			Assert.AreEqual ((int)PatternInterface.Scroll, 4, "PatternInterface.Scroll");
-			Assert.AreEqual ((int)PatternInterface.ScrollItem, 5, "PatternInterface.ScrollItem");
-			Assert.AreEqual ((int)PatternInterface.Selection, 1, "PatternInterface.Selection");
-			Assert.AreEqual ((int)PatternInterface.SelectionItem, 11, "PatternInterface.SelectionItem");
-			Assert.AreEqual ((int)PatternInterface.Table, 13, "PatternInterface.Table");
-			Assert.AreEqual ((int)PatternInterface.TableItem, 14, "PatternInterface.TableItem");
-			Assert.AreEqual ((int)PatternInterface.Toggle, 15, "PatternInterface.Toggle");
-			Assert.AreEqual ((int)PatternInterface.Transform, 16, "PatternInterface.Transform");
-			Assert.AreEqual ((int)PatternInterface.Value, 2, "PatternInterface.Value");
-			Assert.AreEqual ((int)PatternInterface.Window, 10, "PatternInterface.Window");
+			Assert.AreEqual (12, (int) PatternInterface.Dock, "PatternInterface.Dock");
+			Assert.AreEqual (6,  (int) PatternInterface.ExpandCollapse, "PatternInterface.ExpandCollapse");
+			Assert.AreEqual (7,  (int) PatternInterface.Grid, "PatternInterface.Grid");
+			Assert.AreEqual (8,  (int) PatternInterface.GridItem, "PatternInterface.GridItem");
+			Assert.AreEqual (0,  (int) PatternInterface.Invoke, "PatternInterface.Invoke");
+			Assert.AreEqual (9,  (int) PatternInterface.MultipleView, "PatternInterface.MultipleView");
+			Assert.AreEqual (3,  (int) PatternInterface.RangeValue, "PatternInterface.RangeValue");
+			Assert.AreEqual (4,  (int) PatternInterface.Scroll, "PatternInterface.Scroll");
+			Assert.AreEqual (5,  (int) PatternInterface.ScrollItem, "PatternInterface.ScrollItem");
+			Assert.AreEqual (1,  (int) PatternInterface.Selection, "PatternInterface.Selection");
+			Assert.AreEqual (11, (int) PatternInterface.SelectionItem, "PatternInterface.SelectionItem");
+			Assert.AreEqual (13, (int) PatternInterface.Table, "PatternInterface.Table");
+			Assert.AreEqual (14, (int) PatternInterface.TableItem, "PatternInterface.TableItem");
+			Assert.AreEqual (15, (int) PatternInterface.Toggle, "PatternInterface.Toggle");
+			Assert.AreEqual (16, (int) PatternInterface.Transform, "PatternInterface.Transform");
+			Assert.AreEqual (2,  (int) PatternInterface.Value, "PatternInterface.Value");
+			Assert.AreEqual (10, (int) PatternInterface.Window, "PatternInterface.Window");
 		}
 	}
 }
