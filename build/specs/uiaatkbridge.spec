@@ -20,6 +20,7 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 Requires:	mono-core >= 2.4 gtk-sharp2 >= 2.12.8 mono-uia mono-winfxcore 
+Requires:	mono-uia mono-winfxcore at-spi >= 1.22 
 BuildRequires:	mono-devel >= 2.4 gtk-sharp2 >= 2.12.8 
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel
 

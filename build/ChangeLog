@@ -1,3 +1,7 @@
+2009-03-20  Stephen Shaw  <stshaw@decriptor.com>
+
+	* specs/uiaatkbridge.spec: Added at-spi to the requires
+
 2009-03-13  Stephen Shaw  <stshaw@decriptor.com>
 
 	* specs/uiaatkbridge.spec: Change the required versions and release version
