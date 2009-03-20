@@ -43,13 +43,13 @@ lbFrame = app.listBoxFrame
 # check TableCell's AtkAction
 ############################
 actionsCheck(lbFrame.tablecell[0], "TableCell")
+actionsCheck(lbFrame.tablecell[1], "TableCell")
+actionsCheck(lbFrame.tablecell[19], "TableCell")
 
 ############################
 # check List's AtkAccessible
 ############################
-# TODO: BUG480218 "fucused" state on TreeTable and TableCell at the same time.
 statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
-#statesCheck(lbFrame.treetable, "TreeTable")
 
 ############################
 # check TableCell's AtkAccessible
@@ -57,52 +57,53 @@ statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 #check TableCell0,1's default states
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
 statesCheck(lbFrame.tablecell[1], "TableCell")
+statesCheck(lbFrame.tablecell[19], "TableCell")
 
-#mouse click TableCell to change label value
-#lbFrame.mouseClick(log=False)
 lbFrame.tablecell[10].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('10')
+statesCheck(lbFrame.tablecell[10], "TableCell", add_states=["focused", "selected"])
 
 lbFrame.tablecell[19].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('19')
+statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused", "selected"])
 
 ############################
 # check TableCell's AtkAction
 ############################
-#click action to select tablecell0 to rise selected state
 lbFrame.click(lbFrame.tablecell[0])
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
-#tablecell19 still focused but not selected
 statesCheck(lbFrame.tablecell[19], "TableCell")
+
+lbFrame.click(lbFrame.tablecell[9])
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.tablecell[9], "TableCell", add_states=["focused", "selected"])
 
 ############################
 # check List's AtkSelection
 ############################
 #check first tablecell selection implementation
-lbFrame.assertSelectionChild(lbFrame.treetable, 0)
+lbFrame.selectChild(lbFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
 
 #clear first tablecell selection
 lbFrame.assertClearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
-# TODO: BUG438024 comment 5-10 problem 2
-#statesCheck(lbFrame.tablecell[0], "TableCell")
+statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused"])
 
 #check last tablecell selection implemention
-lbFrame.assertSelectionChild(lbFrame.treetable, 19)
+lbFrame.selectChild(lbFrame.treetable, 19)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused", "selected"])
 
 #clear last tablecell selection
 lbFrame.assertClearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
-# TODO: BUG438024 comment 5-10 problem 2
-#statesCheck(lbFrame.tablecell[19], "TableCell")
+statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused"])
 
 ############################

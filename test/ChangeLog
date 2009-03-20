@@ -1,3 +1,9 @@
+2009-03-19  Ray Wang <rawang@novell.com>
+
+	* testers/listbox/listboxframe.py: change assertSelectionChild method
+	name to selectChild.
+	* testers/listbox_basic_ops.py: regression test for bnc438024.
+
 2009-03-19  Calen Chen <cachen@novell.com>
 
 	* testers/numericupdown/numericupdownframe.py: move deleteText up on 
