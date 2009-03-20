@@ -71,6 +71,13 @@
     <Compile Include="System.Windows.Automation.Peers\AutomationEventsTest.cs" />
     <Compile Include="System.Windows.Automation.Peers\AutomationOrientationTest.cs" />
     <Compile Include="System.Windows.Automation.Peers\PatternInterfaceTest.cs" />
+    <Compile Include="System.Windows.Automation\DockPositionTest.cs" />
+    <Compile Include="System.Windows.Automation\ExpandCollapseStateTest.cs" />
+    <Compile Include="System.Windows.Automation\RowOrColumnMajorTest.cs" />
+    <Compile Include="System.Windows.Automation\ScrollAmountTest.cs" />
+    <Compile Include="System.Windows.Automation\ToggleStateTest.cs" />
+    <Compile Include="System.Windows.Automation\WindowInteractionStateTest.cs" />
+    <Compile Include="System.Windows.Automation\WindowVisualStateTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -80,11 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="System.Windows.Automation.Peers\Bin\Debug\" />
-    <Folder Include="System.Windows.Automation.Peers\obj\Debug\TempPE\" />
-    <Folder Include="System.Windows.Automation.Peers\Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

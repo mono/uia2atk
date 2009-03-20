@@ -1,5 +1,11 @@
 2009-04-20  Mario Carrion  <mcarrion@novell.com>
 
+	* System.Windows.Automation.Peers,
+	System.Windows.Automation.Peers/Properties: Deleted.
+	* System.Windows/System.Windows.csproj: Updated.
+
+2009-04-20  Mario Carrion  <mcarrion@novell.com>
+
 	* System.Windows.Automation.Peers/ moved to 
 	System.Windows/System.Windows.Automation.Peers.
 	* System.Window.Automation: Tests added.
