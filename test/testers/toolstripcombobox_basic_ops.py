@@ -55,7 +55,6 @@ actionsCheck(tscbFrame.menuitem_14, "MenuItem")
 # check toolstripcombobox's AtkAccessible
 ##############################
 statesCheck(tscbFrame.toolbar, "ToolBar")
-# TODO: BUG483300, confused "focusable" and "focused" states
 statesCheck(tscbFrame.toolstripcombobox, "ComboBox")
 statesCheck(tscbFrame.menu, "Menu")
 statesCheck(tscbFrame.menuitem_6, "MenuItem")

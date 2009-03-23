@@ -20,7 +20,7 @@ class MainMenuFrame(accessibles.Frame):
         self.menuitem_file_new = self.findMenu("New", checkShowing=False)
         self.menuitem_file_new_doc = self.findMenuItem("Document", checkShowing=False)
         self.menuitem_file_open = self.findMenuItem("Open", checkShowing=False)
-        self.menuitem_file_exit = self.findMenuItem("Exit"), checkShowing=False
+        self.menuitem_file_exit = self.findMenuItem("Exit", checkShowing=False)
 
         self.menuitem_edit = self.findMenu("Edit")
         self.menuitem_edit_undo = self.findMenuItem("Undo", checkShowing=False)

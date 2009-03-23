@@ -1,3 +1,21 @@
+2009-03-23  Ray Wang <rawang@novell.com>
+
+	* samples/numericupdown.py: make form as default size.
+	* testers/numericupdown_basic_ops.py: regression update.
+	* testers/numericupdown/numericupdownframe.py: sleep a bit to avoid
+	running next statement to fast.
+	* testers/domainupdown_basic_ops.py: add comment, BUG458607 
+	for regression test.
+	* testers/toolstripcombobox_basic_ops.py: regression update.
+	* testers/toolstripsplitbutton_basic_ops.py: add bug487657 and 487654
+	comment for regression test.
+	* testers/trackbar_basic_ops.py: regression update.
+	* testers/mainmenu/mainmenuframe.py: correct a typo which makes
+	the tests can not be launched.
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py:
+	regression update, remove ampersands of shortcuts, since we don't need
+	it.
+
 2009-03-20  Ray Wang <rawang@novell.com>
 
 	* testers/listbox_basic_ops.py: add some test for table cells.
