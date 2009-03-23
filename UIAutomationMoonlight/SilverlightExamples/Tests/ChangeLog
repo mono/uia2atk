@@ -1,3 +1,11 @@
+2009-04-23  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows/App.xaml.cs,
+	System.Windows/App.xaml: TestExample -> Moonlight.System.Window.
+	* System.Windows/System.Windows.Automation.Peers/AutomationEventsTest.cs:
+	Moonlight.Windows.Automation.Peers -> 
+	Moonlight.System.Windows.Automation.Peers.
+
 2009-04-20  Mario Carrion  <mcarrion@novell.com>
 
 	* System.Windows.Automation.Peers,

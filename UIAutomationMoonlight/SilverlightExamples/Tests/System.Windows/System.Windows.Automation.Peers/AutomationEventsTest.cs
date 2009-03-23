@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Windows.Automation.Peers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Moonlight.Windows.Automation.Peers
+namespace Moonlight.System.Windows.Automation.Peers
 {
 	[TestClass]
 	public class AutomationEventsTest

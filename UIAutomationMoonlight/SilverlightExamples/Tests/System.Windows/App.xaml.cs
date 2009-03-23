@@ -26,21 +26,18 @@ using System;
 using System.Windows;
 using Microsoft.Silverlight.Testing;
 
-namespace TestExample
+namespace Moonlight.System.Windows
 {
 	public partial class App : Application
 	{
 
 		public App()
 		{
-			Startup += Application_Startup;
+			Startup += delegate (object sender, StartupEventArgs e) {
+				RootVisual = UnitTestSystem.CreateTestPage();
+			};
 
 			InitializeComponent();
-		}
-
-		void Application_Startup(object sender, StartupEventArgs e)
-		{
-			this.RootVisual = UnitTestSystem.CreateTestPage();
 		}
 	}
 }
