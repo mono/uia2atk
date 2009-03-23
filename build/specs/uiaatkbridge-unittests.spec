@@ -53,10 +53,6 @@ cd uiaatkbridge*
 make
 svn export svn://151.155.5.148/source/trunk/uia2atk/UiaAtkBridge/atspimon.py
 cd Test/UiaAtkBridgeTest
-chmod +x bridgetest.sh
-./bridgetest.sh
-
-%install
 export DISPLAY=%{X_display}
 #Xvfb -ac -screen 0 1280x1024x16 -br :1 &
 Xvfb %{X_display} >& Xvfb.log &
@@ -64,9 +60,13 @@ trap "kill $! || true" EXIT
 sleep 10
 #metacity &
 gconftool-2 --type bool --set /desktop/gnome/interface/accessibility true
-rm -rf %{buildroot}/*
+chmod +x bridgetest.sh
+./bridgetest.sh
+
+%install
 
 %clean
+rm -rf %{buildroot}/*
 
 %files
 %defattr(-,root,root)
