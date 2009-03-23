@@ -79,26 +79,36 @@ namespace Moonlight.AnimationExample
 			if (enabledButton == null)
 				throw new NullReferenceException("Missing Enabled Button in Silverlight.");
 
-			// Suscribing to Property changed event
+			// Suscribing to Property changed event: 
+			// - IsEnabled
+			// - NameProperty
+			// - BoundingRectangle
 			Automation.AddAutomationPropertyChangedEventHandler(animationButton.AutomationElement,
 				 TreeScope.Element,
-				 /*propChangeHandler = new AutomationPropertyChangedEventHandler(*/OnPropertyChange/*)*/,
+				 OnPropertyChange,
 				 AutomationElement.IsEnabledProperty);
+			Automation.AddAutomationPropertyChangedEventHandler(animationButton.AutomationElement,
+				 TreeScope.Element,
+				 OnPropertyChange,
+				 AutomationElement.NameProperty);
+			Automation.AddAutomationPropertyChangedEventHandler(animationButton.AutomationElement,
+				 TreeScope.Element,
+				 OnPropertyChange,
+				 AutomationElement.BoundingRectangleProperty);
 
-			//// Suscribing to Invoke event
-			//Automation.AddAutomationEventHandler (InvokePattern.InvokedEvent,
-			//    invokeButton.AutomationElement, TreeScope.Element,
-			//    invokeEventHandler = new AutomationEventHandler (OnUIAutomationEvent));
-
+			Console.WriteLine ("Clicking WidthButton, expected event: BoundingRectangle");
 			widthButton.InvokePattern.Invoke ();
 			System.Threading.Thread.Sleep(10000);
 
+			Console.WriteLine("Clicking NameButton, expected event: NameProperty");
 			nameButton.InvokePattern.Invoke ();
 			System.Threading.Thread.Sleep(10000);
 
+			Console.WriteLine("Clicking EnabledButton, expected event: IsEnabled");
 			enabledButton.InvokePattern.Invoke ();
 			System.Threading.Thread.Sleep(10000);
 
+			Console.WriteLine("Clicking AnimationButton, expected event: BoundingRectangle");
 			invokeButton.InvokePattern.Invoke ();
 
 			System.Threading.Thread.Sleep (10000);
@@ -110,44 +120,12 @@ namespace Moonlight.AnimationExample
 			Automation.RemoveAllEventHandlers ();
         }
 
-		//static AutomationPropertyChangedEventHandler propChangeHandler;
-		//static AutomationEventHandler invokeEventHandler;
-
-		//static void OnUIAutomationEvent (object src, AutomationEventArgs e)
-		//{
-		//    // Make sure the element still exists. Elements such as tooltips
-		//    // can disappear before the event is processed.
-		//    AutomationElement sourceElement;
-		//    try
-		//    {
-		//        sourceElement = src as AutomationElement;
-		//    } catch (ElementNotAvailableException)
-		//    {
-		//        return;
-		//    }
-		//    Console.WriteLine ("event is: {0}", e.EventId.ProgrammaticName);
-		//    //if (e.EventId == InvokePattern.InvokedEvent)
-		//    //{
-		//    //    // TODO Add handling code.
-		//    //} else
-		//    //{
-		//    //    // TODO Handle any other events that have been subscribed to.
-		//    //}
-		//}
-
 		static void OnPropertyChange(object src, AutomationPropertyChangedEventArgs e)
 		{
 			AutomationElement sourceElement = src as AutomationElement;
-			Console.WriteLine ("source: {0} - {1}", e.EventId.ProgrammaticName, e.Property.ProgrammaticName);
-			//if (e.Property == AutomationElement.IsEnabledProperty)
-			//{
-			//    bool enabled = (bool)e.NewValue;
-			//    // TODO: Do something with the new value. 
-			//    // The element that raised the event can be identified by its runtime ID property.
-			//} else
-			//{
-			//    // TODO: Handle other property-changed events.
-			//}
+			Console.WriteLine ("SourceElement -> EventId: {0} Property: {1}", 
+				e.EventId.ProgrammaticName, 
+				e.Property.ProgrammaticName);
 		}
 
 		// Gets "Silverlight Control"
@@ -209,7 +187,6 @@ namespace Moonlight.AnimationExample
 		}
 
 		static readonly string SilverlightControl = "Silverlight Control";
-
     }
 
 	class ButtonElement
