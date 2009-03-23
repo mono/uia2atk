@@ -21,7 +21,7 @@ AutoReqProv:    on
 Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel mono-nunit  intltool >= 0.35
-BuildRequires:  mono-nunit at-spi xorg-x11-Xvfb subversion uiaatkbridge 
+BuildRequires:  mono-nunit at-spi xorg-x11-Xvfb subversion uiaatkbridge bc gconf2 
 #xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
 #BuildRequires:  3ddiag cabextract xterm ghostscript-x11 at-spi subversion uiaatkbridge
 #BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
