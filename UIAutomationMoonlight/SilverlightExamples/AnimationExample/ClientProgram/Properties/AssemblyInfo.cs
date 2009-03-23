@@ -29,13 +29,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AnimationExample")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Animation Example")]
+[assembly: AssemblyDescription("Animation Example")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AnimationExample")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Novell Inc")]
+[assembly: AssemblyProduct("Moonlight.AnimationExample")]
+[assembly: AssemblyCopyright("Copyright (C) 2009, Novell Inc")]
+[assembly: AssemblyTrademark("Copyright (C) 2009, Novell Inc")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -44,7 +44,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3bbd2a4a-3146-4b2e-8049-55875918aa56")]
+[assembly: Guid("f7c86463-0d4b-4f79-ae85-118c22de609c")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -53,7 +53,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
