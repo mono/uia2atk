@@ -1,3 +1,9 @@
+2009-03-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/helpprovider_basic_ops.py, 
+	* testers/helpprovider/helpproviderframe.py: Uncomment some tests that
+	now work.  Generally clean up and finish test.
+
 2009-03-23  Ray Wang <rawang@novell.com>
 
 	* samples/numericupdown.py: make form as default size.
