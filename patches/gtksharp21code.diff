@@ -1,0 +1,305 @@
+Index: glib/PtrArray.cs
+===================================================================
+--- glib/PtrArray.cs	(revision 122401)
++++ glib/PtrArray.cs	(working copy)
+@@ -25,7 +25,11 @@
+ 	using System.Collections;
+ 	using System.Runtime.InteropServices;
+ 
+-	public class PtrArray : IDisposable, ICollection, ICloneable, IWrapper {
++	public class PtrArray : IDisposable, ICollection, IWrapper
++#if !NET_2_1
++		, ICloneable
++#endif
++	{
+ 
+ 		private IntPtr handle = IntPtr.Zero;
+ 		private bool managed = false;
+@@ -268,5 +272,6 @@
+ 		{
+ 			return new PtrArray (g_ptr_array_copy (Handle), element_type, false, false);
+ 		}
++
+ 	}
+ }
+Index: glib/Object.cs
+===================================================================
+--- glib/Object.cs	(revision 122401)
++++ glib/Object.cs	(working copy)
+@@ -31,11 +31,19 @@
+ 
+ 	public class Object : IWrapper, IDisposable {
+ 
++		internal class ObjectsHashtable : 
++	#if !NET_2_1
++			Hashtable
++	#else
++			HashDictionary <IntPtr, ToggleRef>
++	#endif
++		{}
++		
+ 		IntPtr handle;
+ 		ToggleRef tref;
+ 		bool disposed = false;
+ 		Hashtable data;
+-		static Hashtable Objects = new Hashtable();
++		static ObjectsHashtable Objects = new ObjectsHashtable ();
+ 		static ArrayList PendingDestroys = new ArrayList ();
+ 		static bool idle_queued;
+ 
+@@ -449,6 +457,7 @@
+ 			}
+ 		}
+ 
++#if !NET_2_1
+ 		EventHandlerList before_handlers;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+ 		protected EventHandlerList BeforeHandlers {
+@@ -468,6 +477,7 @@
+ 				return after_handlers;
+ 			}
+ 		}
++#endif
+ 
+ 		[CDeclCallback]
+ 		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
+@@ -617,8 +627,10 @@
+ 
+ 		static Object ()
+ 		{
++#if !NET_2_1
+ 			if (Environment.GetEnvironmentVariable ("GTK_SHARP_DEBUG") != null)
+ 				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, new GLib.LogFunc (GLib.Log.PrintTraceLogFunction));
++#endif
+ 		}
+ 	}
+ }
+Index: glib/ListBase.cs
+===================================================================
+--- glib/ListBase.cs	(revision 122401)
++++ glib/ListBase.cs	(working copy)
+@@ -26,8 +26,11 @@
+ 	using System.Collections;
+ 	using System.Runtime.InteropServices;
+ 
+-	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper, ICloneable {
+-
++	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper
++#if !NET_2_1
++	, ICloneable
++#endif
++	{
+ 		private IntPtr list_ptr = IntPtr.Zero;
+ 		private int length = -1;
+ 		private bool managed = false;
+@@ -272,7 +275,7 @@
+ 			list_ptr = IntPtr.Zero;
+ 			length = -1;
+ 		}
+-
++		
+ 		// ICloneable
+ 		abstract public object Clone ();
+ 	}
+Index: glib/Argv.cs
+===================================================================
+--- glib/Argv.cs	(revision 122401)
++++ glib/Argv.cs	(working copy)
+@@ -43,15 +43,21 @@
+ 
+ 			g_free (handle);
+ 		}
+-				
++
++#if !NET_2_1
+ 		public Argv (string[] args) : this (args, false) {}
+-		
++
+ 		public Argv (string[] args, bool add_program_name)
+ 		{
+ 			add_progname = add_program_name;
+ 			if (add_progname) {
+ 				string[] full = new string [args.Length + 1];
+-				full [0] = System.Environment.GetCommandLineArgs ()[0];
++				full [0] = 
++//#if !NET_2_1
++					System.Environment.GetCommandLineArgs ()[0];
++//#else
++//					null; //TODO
++//#endif
+ 				args.CopyTo (full, 1);
+ 				args = full;
+ 			}
+@@ -67,12 +73,6 @@
+ 				Marshal.WriteIntPtr (handle, i * IntPtr.Size, arg_ptrs [i]);
+ 		}
+ 
+-		public IntPtr Handle {
+-			get {
+-				return handle;
+-			}
+-		}
+-
+ 		public string[] GetArgs (int argc)
+ 		{
+ 			int count = add_progname ? argc - 1 : argc;
+@@ -84,6 +84,13 @@
+ 
+ 			return result;
+ 		}
++#endif
++		
++		public IntPtr Handle {
++			get {
++				return handle;
++			}
++		}
+ 	}
+ }
+ 
+Index: glib/Global.cs
+===================================================================
+--- glib/Global.cs	(revision 122401)
++++ glib/Global.cs	(working copy)
+@@ -25,6 +25,18 @@
+ 	using System.Text;
+ 	using System.Runtime.InteropServices;
+ 
++#if NET_2_1
++	public class ArrayList : System.Collections.Generic.List <object> { }
++	public class Hashtable : System.Collections.Generic.Dictionary <object, object> { }
++	internal class HashDictionary <K, V> : System.Collections.Generic.Dictionary <K, V>
++	{
++		public bool Contains (K k)
++		{
++			return ContainsKey (k);
++		}
++	}
++#endif
++	
+ 	public class Global
+ 	{
+ 
+Index: glib/ExceptionManager.cs
+===================================================================
+--- glib/ExceptionManager.cs	(revision 122401)
++++ glib/ExceptionManager.cs	(working copy)
+@@ -49,6 +49,13 @@
+ 
+ 		public static event UnhandledExceptionHandler UnhandledException;
+ 
++		public static void ExitWithError ()
++		{
++#if !NET_2_1
++				Environment.Exit (1);
++#endif //TODO: #else
++		}
++		
+ 		public static void RaiseUnhandledException (Exception e, bool is_terminal)
+ 		{
+ 			if (UnhandledException == null) {
+@@ -56,7 +63,7 @@
+ 				Console.Error.WriteLine ("  Note: Applications can use GLib.ExceptionManager.UnhandledException to handle the exception.");
+ 				Console.Error.WriteLine (e);
+ 				Console.Error.WriteLine (new System.Diagnostics.StackTrace (true));
+-				Environment.Exit (1);
++				ExitWithError ();
+ 			}
+ 
+ 			UnhandledExceptionArgs args = new UnhandledExceptionArgs (e, is_terminal);
+@@ -64,11 +71,11 @@
+ 				UnhandledException (args);
+ 			} catch (Exception ex) {
+ 				Console.Error.WriteLine (ex);
+-				Environment.Exit (1);
++				ExitWithError ();
+ 			}
+ 
+ 			if (is_terminal || args.ExitApplication)
+-				Environment.Exit (1);
++				ExitWithError ();
+ 		}
+ 	}
+ }
+Index: glib/SignalAttribute.cs
+===================================================================
+--- glib/SignalAttribute.cs	(revision 122401)
++++ glib/SignalAttribute.cs	(working copy)
+@@ -24,7 +24,9 @@
+ 
+ 	using System;
+ 
++#if !NET_2_1
+ 	[Serializable]
++#endif
+ 	[AttributeUsage (AttributeTargets.Event, Inherited=false)]
+ 	public sealed class SignalAttribute : Attribute 
+ 	{
+Index: glib/ValueArray.cs
+===================================================================
+--- glib/ValueArray.cs	(revision 122401)
++++ glib/ValueArray.cs	(working copy)
+@@ -25,11 +25,22 @@
+ 	using System.Collections;
+ 	using System.Runtime.InteropServices;
+ 
+-	public class ValueArray : IDisposable, ICollection, ICloneable, IWrapper {
+-
++	public class ValueArray : IDisposable, ICollection, IWrapper
++#if !NET_2_1
++		, ICloneable
++#endif
++	{
++		internal class PendingFreesList : 
++#if !NET_2_1
++			ArrayList
++#else
++			System.Collections.Generic.List <IntPtr>
++#endif
++		{}
++		
+ 		private IntPtr handle = IntPtr.Zero;
+ 
+-		static private ArrayList PendingFrees = new ArrayList ();
++		static private PendingFreesList PendingFrees = new PendingFreesList ();
+ 		static private bool idle_queued = false;
+ 
+ 		[DllImport("libgobject-2.0-0.dll")]
+Index: glib/GType.cs
+===================================================================
+--- glib/GType.cs	(revision 122401)
++++ glib/GType.cs	(working copy)
+@@ -29,6 +29,22 @@
+ 	using System.Runtime.InteropServices;
+ 	using System.Text;
+ 
++	internal class GTypeHashtable : 
++#if !NET_2_1
++		Hashtable
++#else
++		HashDictionary <Type, GType>
++#endif
++	{}
++	
++	internal class TypeHashtable : 
++#if !NET_2_1
++		Hashtable
++#else
++		HashDictionary <IntPtr, Type>
++#endif
++	{}
++	
+ 	[StructLayout(LayoutKind.Sequential)]
+ 	public struct GType {
+ 
+@@ -86,8 +102,8 @@
+ 		public static readonly GType Param = new GType ((IntPtr) TypeFundamentals.TypeParam);
+ 		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
+ 
+-		static Hashtable types = new Hashtable ();
+-		static Hashtable gtypes = new Hashtable ();
++		static TypeHashtable types = new TypeHashtable ();
++		static GTypeHashtable gtypes = new GTypeHashtable ();
+ 
+ 		public static void Register (GType native_type, System.Type type)
+ 		{
