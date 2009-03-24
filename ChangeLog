@@ -1,3 +1,9 @@
+2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* gtksharp21code.diff:
+	* gtksharp21autotools.diff: they now build with 'make moonlight',
+	hoorray!
+
 2009-03-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Uia2Atk.mds: 

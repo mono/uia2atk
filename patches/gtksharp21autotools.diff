@@ -22,7 +22,7 @@ Index: glib/Makefile.am
 ===================================================================
 --- glib/Makefile.am	(revision 122401)
 +++ glib/Makefile.am	(working copy)
-@@ -97,11 +97,20 @@
+@@ -97,11 +97,21 @@
  GAPI_CDECL_INSERT=
  endif
  
@@ -37,6 +37,7 @@ Index: glib/Makefile.am
 +MOON_BIN_PATH=../moonbin/
 +
 +moonlight: $(ASSEMBLY)
++	rm -rf $(MOON_BIN_PATH)
 +	mkdir $(MOON_BIN_PATH)
 +	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$(MOON_BIN_PATH)$(ASSEMBLY)
 +	$(GAPI_CDECL_INSERT)
