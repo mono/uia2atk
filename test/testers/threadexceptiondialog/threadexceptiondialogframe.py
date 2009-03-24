@@ -37,9 +37,9 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         self.description_label = self.dialog.findLabel(DESCRIPTION)
         self.errortype_label = self.dialog.findLabel(ERROR_TYPE)
 
-        self.detail_button = self.dialog.findPushButton("Show &Details")
-        self.ignore_button = self.dialog.findPushButton("&Ignore")
-        self.abort_button = self.dialog.findPushButton("&Abort")
+        self.detail_button = self.dialog.findPushButton("Show Details")
+        self.ignore_button = self.dialog.findPushButton("Ignore")
+        self.abort_button = self.dialog.findPushButton("Abort")
 
     def show_textbox(self, accessible):
         """click detain_button in order to show its textbox"""

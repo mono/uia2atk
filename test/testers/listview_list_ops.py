@@ -45,6 +45,7 @@ lvFrame = app.listViewFrame
 # check tablecell's AtkAction
 ##############################
 actionsCheck(lvFrame.tablecell[0], "TableCell")
+actionsCheck(lvFrame.tablecell[4], "TableCell")
 
 ##############################
 # check treetable's AtkAccessible
@@ -55,6 +56,7 @@ statesCheck(lvFrame.treetable, "TreeTable", add_states=["focused"])
 # check tablecell's AtkAccessible
 ##############################
 statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["focused", "editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
 statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 
 ##############################
@@ -69,11 +71,8 @@ statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 
 lvFrame.click(lvFrame.tablecell[4])
 sleep(config.SHORT_DELAY)
-# FIXME: multi-click error
-# TODO: BUG
-#statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["selected", "focused"])
-statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused", "editable"])
 statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["selected", "editable"])
+statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused", "editable"])
 
 ##############################
 # check tablecell's AtkAccessible while single-item selected
@@ -84,16 +83,14 @@ sleep(config.SHORT_DELAY)
 
 lvFrame.click(lvFrame.tablecell[1])
 sleep(config.SHORT_DELAY)
-# TODO: BUG, when multiselect is enabled, both tablecells should have "selected" state 
-#statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "focused"])
-statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "editable"])
+# TODO: BUG487118 focused is missing when you perform click from accerciser
+#statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "focused", "editable"])
 statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
 
 lvFrame.click(lvFrame.tablecell[2])
 sleep(config.SHORT_DELAY)
-# TODO: BUG, when multiselect is enabled, both tablecells should have "selected" state 
-#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused"])
-statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "editable"])
+# TODO: BUG487118 focused is missing when you perform click from accerciser
+#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused", "editable"])
 statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["editable"])
 
 ##############################
@@ -116,28 +113,26 @@ statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["editable"])
 ##############################
 lvFrame.keyCombo("Up", grabFocus=False)
 statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["focused", "selected", "editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
 
 lvFrame.keyCombo("Down", grabFocus=False)
 statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["focused", "selected", "editable"])
+statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
 
 ##############################
 # check tablecell's AtkSelection
 ##############################
 #check treetable selection implementation
-lvFrame.assertSelectionChild(lvFrame.treetable, 2)
+lvFrame.selectChild(lvFrame.treetable, 2)
 sleep(config.SHORT_DELAY)
-# TODO: BUG476065
-#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected"])
+# TODO: BUG487118 focused is missing when you perform selection from accerciser
+#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused", "editable"])
 
 #clear selection
 lvFrame.assertClearSelection(lvFrame.treetable)
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
-#tablecell3 still focused
-statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["focused", "editable"])
-#check treetable state after clear selection
-# TODO: BUG480218
-#statesCheck(lvFrame.treetable, "TreeTable")
+statesCheck(lvFrame.treetable, "TreeTable", add_states=["focused"])
 
 ##############################
 # check tablecell's AtkText

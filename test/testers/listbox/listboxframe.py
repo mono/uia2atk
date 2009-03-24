@@ -45,7 +45,7 @@ class ListBoxFrame(accessibles.Frame):
                                         (self.tablecell[textValue], textValue))
             assert self.tablecell[textValue].text == str(textValue)
 
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, childIndex):
         """assert Selection implementation"""
 
         procedurelogger.action('select childIndex %s in "%s"' % \

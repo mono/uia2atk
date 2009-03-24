@@ -21,12 +21,15 @@ AutoReqProv:    on
 Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel mono-nunit  intltool >= 0.35
-BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
-BuildRequires:  3ddiag cabextract xterm ghostscript-x11 at-spi subversion uiaatkbridge
-BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
-BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
-BuildRequires:  xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
-BuildRequires:  fvwm-themes gv mmv pmidi xine-ui xosview xpp xosd desktop-data-openSUSE-extra
+BuildRequires:  mono-nunit at-spi xorg-x11-Xvfb subversion uiaatkbridge bc gconf2 
+BuildRequires:  metacity gtk2-engines x11-input-synaptics xorg-x11 
+#xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
+#BuildRequires:  3ddiag cabextract xterm ghostscript-x11 at-spi subversion uiaatkbridge
+#BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
+#BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
+#BuildRequires:  xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
+#BuildRequires:  fvwm-themes gv mmv pmidi xine-ui xosview xpp xosd desktop-data-openSUSE-extra
+%define         X_display       ":98"
 
 Summary:        UiaAtkBridge unit tests
 
@@ -49,23 +52,25 @@ mv uiautomationwinforms-* UIAutomationWinforms
 cd uiaatkbridge*
 ./configure --prefix=/usr
 make
-export DISPLAY=:1
-Xvfb -ac -screen 0 1280x1024x16 -br :1 &
-metacity &
-gconftool-2 --type bool --set /desktop/gnome/interface/accessibility true
 svn export svn://151.155.5.148/source/trunk/uia2atk/UiaAtkBridge/atspimon.py
 cd Test/UiaAtkBridgeTest
+export DISPLAY=%{X_display}
+#Xvfb -ac -screen 0 1280x1024x16 -br :1 &
+Xvfb %{X_display} >& Xvfb.log &
+trap "kill $! || true" EXIT
+sleep 10
+metacity &
+gconftool-2 --type bool --set /desktop/gnome/interface/accessibility true
 chmod +x bridgetest.sh
 ./bridgetest.sh
 
 %install
-rm -rf %{buildroot}/*
-touch DUMMY
 
 %clean
+rm -rf %{buildroot}/*
 
 %files
 %defattr(-,root,root)
-%doc DUMMY
+%doc Xvfb.log
 
 %changelog

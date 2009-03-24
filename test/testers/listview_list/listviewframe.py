@@ -35,7 +35,7 @@ class ListViewFrame(accessibles.Frame):
         assert accessible.text == text, '%s text is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, childIndex):
         """assert Selection implementation"""
         procedurelogger.action("Select childIndex %s from %s" % \
                                                     (childIndex, accessible))

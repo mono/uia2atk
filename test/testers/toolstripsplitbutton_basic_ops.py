@@ -61,30 +61,32 @@ statesCheck(tssbFrame.menuitem_14, "MenuItem", invalid_states=["showing"])
 
 # TODO: BUG473810
 tssbFrame.click(tssbFrame.toggle_button)
-#statesCheck(tssbFrame.menuitem_10, "MenuItem")
-#statesCheck(tssbFrame.menuitem_12, "MenuItem")
-#statesCheck(tssbFrame.menuitem_14, "MenuItem")
-#sleep(config.SHORT_DELAY)
+statesCheck(tssbFrame.menuitem_10, "MenuItem")
+statesCheck(tssbFrame.menuitem_12, "MenuItem")
+statesCheck(tssbFrame.menuitem_14, "MenuItem")
+sleep(config.SHORT_DELAY)
 
-# TODO: BUG473795, BUG473810
+# TODO: BUG473795, BUG487654
 # press Up/Down
 #tssbFrame.toggle_button.mouseClick()
 sleep(config.SHORT_DELAY)
 tssbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 #statesCheck(tssbFrame.menuitem_10, "MenuItem", add_states=["selected", "focused"])
-#statesCheck(tssbFrame.menuitem_14, "MenuItem")
+statesCheck(tssbFrame.menuitem_14, "MenuItem")
 
 tssbFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
 #statesCheck(tssbFrame.menuitem_14, "MenuItem", add_states=["selected", "focused"])
-#statesCheck(tssbFrame.menuitem_10, "MenuItem")
+statesCheck(tssbFrame.menuitem_10, "MenuItem")
 
 # mouseClick
 tssbFrame.menuitem_10.mouseClick()
 sleep(config.SHORT_DELAY)
 tssbFrame.assertText(tssbFrame.label, "The current font size is 10")
-#statesCheck(tssbFrame.menuitem_10, "MenuItem", add_states=["selected", "focused"])
+# TODO: BUG487654
+#statesCheck(tssbFrame.menuitem_10, "MenuItem", add_states=["selected"])
+# BUG487657
 #statesCheck(tssbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
 
 
@@ -92,15 +94,19 @@ tssbFrame.assertText(tssbFrame.label, "The current font size is 10")
 tssbFrame.click(tssbFrame.menuitem_12)
 sleep(config.SHORT_DELAY)
 tssbFrame.assertText(tssbFrame.label, "The current font size is 12")
-statesCheck(tssbFrame.menuitem_12, "MenuItem", add_states=["selected"])
-statesCheck(tssbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
+# TODO: BUG487654
+#statesCheck(tssbFrame.menuitem_12, "MenuItem", add_states=["selected"])
+# BUG487657
+#statesCheck(tssbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 
 # select the last item from splitbutton
 tssbFrame.click(tssbFrame.menuitem_14)
 sleep(config.SHORT_DELAY)
 tssbFrame.assertText(tssbFrame.label, "The current font size is 14")
-statesCheck(tssbFrame.menuitem_14, "MenuItem", add_states=["selected"])
-statesCheck(tssbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
+# TODO: BUG487654
+#statesCheck(tssbFrame.menuitem_14, "MenuItem", add_states=["selected"])
+# BUG487657
+#statesCheck(tssbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check toolstripsplitbutton's AtkSelection

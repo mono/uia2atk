@@ -11,7 +11,7 @@
 # 
 
 Name:           uiaatkbridge
-Version:	121166
+Version:	1.0
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
@@ -19,8 +19,9 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
-Requires:	mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore 
-BuildRequires:	mono-devel >= 2.2 gtk-sharp2 >= 2.12.7 
+Requires:	mono-core >= 2.4 gtk-sharp2 >= 2.12.8
+Requires:	mono-uia mono-winfxcore at-spi 
+BuildRequires:	mono-devel >= 2.4 gtk-sharp2 >= 2.12.8 
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel
 
 Summary:        Bridge between UIA providers and ATK

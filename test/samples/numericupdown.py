@@ -19,39 +19,41 @@ from System.Windows.Forms import *
 class NumericUpDownApp(Form):
 
     def __init__(self):
+
+        # form
         self.Text = "NumericUpDown Example"
 
-        self.Width = 400
-        self.Height = 400
-
+        # label
         self.mainLabel1 = Label()
         self.mainLabel1.Text = "Examples for: NumericUpDown"
         self.mainLabel1.Location = Point(10,10)
         self.mainLabel1.AutoSize = True
         self.Controls.Add(self.mainLabel1)
 
-        self.numercupdown1 = NumericUpDown()
-        self.numercupdown1.Name = "NumercUpDown1"
-        self.numercupdown1.Location = Point(10,50)
-        self.numercupdown1.Value = 10
-        self.numercupdown1.Maximum = 2500
-        self.numercupdown1.Minimum = -100
-        self.numercupdown1.Increment  = 20
-        self.numercupdown1.ReadOnly = False
-        self.numercupdown1.UserEdit = True
+        # editable NumericUpDown
+        self.numericupdown1 = NumericUpDown()
+        self.numericupdown1.Name = "NumercUpDown1"
+        self.numericupdown1.Location = Point(10,50)
+        self.numericupdown1.Value = 10
+        self.numericupdown1.Maximum = 2500
+        self.numericupdown1.Minimum = -100
+        self.numericupdown1.Increment  = 20
+        self.numericupdown1.ReadOnly = False
+        self.numericupdown1.UserEdit = True
 
-        self.Controls.Add(self.numercupdown1)
+        # uneditable NumericUpDown
+        self.numericupdown2 = NumericUpDown()
+        self.numericupdown2.Name = "NumercUpDown2"
+        self.numericupdown2.Location = Point(10,100)
+        self.numericupdown2.Value = 10
+        self.numericupdown2.Maximum = 2500
+        self.numericupdown2.Minimum = -100
+        self.numericupdown2.ReadOnly = True
+        self.numericupdown2.UserEdit = True
 
-        self.numercupdown2 = NumericUpDown()
-        self.numercupdown2.Name = "NumercUpDown2"
-        self.numercupdown2.Location = Point(10,100)
-        self.numercupdown2.Value = 10
-        self.numercupdown2.Maximum = 2500
-        self.numercupdown2.Minimum = -100
-        self.numercupdown2.ReadOnly = True
-        self.numercupdown2.UserEdit = True
-
-        self.Controls.Add(self.numercupdown2)
+        # add controls to form
+        self.Controls.Add(self.numericupdown1)
+        self.Controls.Add(self.numericupdown2)
 
 
 form = NumericUpDownApp()
