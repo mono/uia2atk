@@ -1,3 +1,8 @@
+2009-03-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Uia2Atk.mds: 
+	* UiaDbusCoreBridge: Added new DbusCore bridge to solution.
+
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* gtksharp21autotools.diff: Add an incomplete patch for the

@@ -1,0 +1,5 @@
+2009-03-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbusCoreBridge.mds, etc: Add new solution and autotools setup.
+	* UiaDbusCoreBridge/AutomationBridge.cs: Initial work for DbusCore's
+	IAutomationBridge implementation.

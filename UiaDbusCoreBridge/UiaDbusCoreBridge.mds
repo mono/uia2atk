@@ -1,0 +1,16 @@
+<Combine name="UiaDbusCoreBridge" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaDbusCoreBridge" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaDbusCoreBridge" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UiaDbusCoreBridge" single="True">
+    <Execute type="None" entry="UiaDbusCoreBridge" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UiaDbusCoreBridge/UiaDbusCoreBridge.mdp" />
+  </Entries>
+</Combine>
