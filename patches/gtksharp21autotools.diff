@@ -1,245 +1,63 @@
-Index: sample/Makefile.am
+Index: atk/Makefile.am
 ===================================================================
---- sample/Makefile.am	(revision 129831)
-+++ sample/Makefile.am	(working copy)
-@@ -1,5 +1,11 @@
- SUBDIRS = test GtkDemo pixmaps valtest opaquetest gio gtk-gio
+--- atk/Makefile.am	(revision 122401)
++++ atk/Makefile.am	(working copy)
+@@ -22,4 +22,17 @@
  
-+if ENABLE_SAMPLE
-+pkg = sample
-+else
-+pkg = 
-+endif
+ add_dist =
+ 
++	$(CSC) $(build_references) $(BUILD_PARAMS)
 +
- if ENABLE_MONO_CAIRO
- cairo_ref=-r:$(top_builddir)/cairo/Mono.Cairo.dll
- else
-Index: gtk/Makefile.am
-===================================================================
---- gtk/Makefile.am	(revision 129831)
-+++ gtk/Makefile.am	(working copy)
-@@ -1,15 +1,19 @@
- SUBDIRS = . glue
- 
-+if ENABLE_GTK
-+pkg = gtk
-+pkgconfigdir=$(libdir)/pkgconfig
-+pkgconfig_DATA=gtk-sharp-2.0.pc
-+else
-+pkg = 
-+endif
++MOON_BIN_PATH=../moonbin/
 +
- if ENABLE_MONO_CAIRO
- local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
- else
- local_mono_cairo=
- endif
- 
--pkg = gtk
--pkgconfigdir=$(libdir)/pkgconfig
--pkgconfig_DATA=gtk-sharp-2.0.pc
--
- SYMBOLS = gtk-symbols.xml
- INCLUDE_API = $(srcdir)/../glib/glib-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml $(top_builddir)/atk/atk-api.xml $(top_builddir)/gdk/gdk-api.xml
- METADATA = Gtk.metadata
-Index: pango/Makefile.am
-===================================================================
---- pango/Makefile.am	(revision 129831)
-+++ pango/Makefile.am	(working copy)
-@@ -1,12 +1,17 @@
- SUBDIRS = . glue
- 
-+if ENABLE_PANGO
-+pkg = pango
-+else
-+pkg = 
-+endif
++references_moon = $(MOON_BIN_PATH)glib-sharp.dll
++build_references_moon = $(addprefix /r:, $(references_moon))
 +
- if ENABLE_MONO_CAIRO
- local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
- else
- local_mono_cairo=
- endif
- 
--pkg = pango
- METADATA = Pango.metadata
- SYMBOLS = pango-symbols.xml
- references = ../glib/glib-sharp.dll $(local_mono_cairo)
++moonlight: $(ASSEMBLY)
++	smcs -define:NET_2_1 $(build_references_moon) $(BUILD_PARAMS) -out:$(MOON_BIN_PATH)$(ASSEMBLY)
++	$(GAPI_CDECL_INSERT)
++
+ include ../Makefile.include
 Index: glib/Makefile.am
 ===================================================================
---- glib/Makefile.am	(revision 129831)
+--- glib/Makefile.am	(revision 122401)
 +++ glib/Makefile.am	(working copy)
-@@ -99,7 +99,7 @@
+@@ -97,11 +97,20 @@
+ GAPI_CDECL_INSERT=
+ endif
  
++BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
++
  $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
  	@rm -f $(ASSEMBLY).mdb
 -	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
-+	$(SCSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
++	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
  	$(GAPI_CDECL_INSERT)
  
- policy.%.config: $(top_builddir)/policy.config
-Index: gio/Makefile.am
-===================================================================
---- gio/Makefile.am	(revision 129831)
-+++ gio/Makefile.am	(working copy)
-@@ -1,8 +1,13 @@
- SUBDIRS = . glue
- 
-+if ENABLE_GIO
- pkg = gio
- pkgconfigdir = $(libdir)/pkgconfig
- pkgconfig_DATA = gio-sharp-2.0.pc
-+else
-+pkg = 
-+endif
++MOON_BIN_PATH=../moonbin/
 +
- METADATA = Gio.metadata
- SYMBOLS = 
- references = ../glib/glib-sharp.dll
-Index: configure.in.in
-===================================================================
---- configure.in.in	(revision 129831)
-+++ configure.in.in	(working copy)
-@@ -83,8 +83,6 @@
- fi
- 
- CSDEFINES='@VERSIONCSDEFINES@'
--CSFLAGS="$DEBUG_FLAGS $CSDEFINES $WIN64DEFINES"
--AC_SUBST(CSFLAGS)
- 
- GTK_SHARP_VERSION_CFLAGS='@VERSIONCFLAGS@'
- AC_SUBST(GTK_SHARP_VERSION_CFLAGS)
-@@ -128,6 +126,28 @@
- fi
- 
- AC_PATH_PROG(CSC, mcs, no)
++moonlight: $(ASSEMBLY)
++	mkdir $(MOON_BIN_PATH)
++	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$(MOON_BIN_PATH)$(ASSEMBLY)
++	$(GAPI_CDECL_INSERT)
 +
-+enable_moonlight=no
-+AC_ARG_ENABLE(moonlight-support,[  --enable-moonlight-support    Moonlight to be the build target],
-+              [moonlight_support=yes
-+               if test "x$RUNTIME" != "xmono" ; then
-+                   AC_MSG_ERROR([Moonlight cannot be enabled without Mono])
-+               fi
-+               AC_PATH_PROG(SCSC, smcs, no)
-+               if test x$SCSC = "xno"; then
-+                   AC_MSG_ERROR([No smcs compiler found.])
-+               fi
-+               SCSDEFINES="$CSDEFINES -define:NET_2_1"
-+               enable_moonlight=yes
-+              ],
-+              [moonlight_support=no
-+               SCSC="$CSC"
-+               SCSDEFINES="$CSDEFINES"
-+              ])
-+
-+CSFLAGS="$DEBUG_FLAGS $SCSDEFINES $WIN64DEFINES"
-+AC_SUBST(CSFLAGS)
-+
- if test `uname -s` = "Darwin"; then
- 	LIB_PREFIX=
- 	LIB_SUFFIX=.dylib
-@@ -163,6 +183,7 @@
- 
- AC_SUBST(RUNTIME)
- AC_SUBST(CSC)
-+AC_SUBST(SCSC)
- AC_SUBST(GACUTIL)
- AC_SUBST(GACUTIL_FLAGS)
- AC_SUBST(LIB_PREFIX)
-@@ -214,12 +235,39 @@
- fi
- AC_SUBST(MDOC)
- 
-+enable_gdk=yes
-+enable_pango=yes
-+enable_gtk=yes
-+enable_sample=yes
-+enable_gio=yes
-+
-+if test "x$enable_moonlight" = "xyes"; then
-+  enable_glade=no
-+  enable_dotnet=no
-+  enable_mono_cairo=no
-+
-+  enable_gdk=no
-+  enable_pango=no
-+  enable_gtk=no
-+  enable_sample=no
-+  enable_gio=no
-+fi
-+
-+AM_CONDITIONAL(ENABLE_MOONLIGHT, test "x$enable_moonlight" = "xyes")
- AM_CONDITIONAL(ENABLE_MONO_CAIRO, test "x$enable_mono_cairo" = "xyes")
- AM_CONDITIONAL(ENABLE_GLADE, test "x$enable_glade" = "xyes")
- AM_CONDITIONAL(ENABLE_DOTNET, test "x$enable_dotnet" = "xyes")
- AM_CONDITIONAL(ENABLE_MONODOC, test "x$enable_monodoc" = "xyes")
- AM_CONDITIONAL(ENABLE_MONOGETOPTIONS, test "x$has_mono" = "xtrue")
- 
-+AM_CONDITIONAL(ENABLE_GDK, test "x$enable_gdk" = "xyes")
-+AM_CONDITIONAL(ENABLE_PANGO, test "x$enable_pango" = "xyes")
-+AM_CONDITIONAL(ENABLE_GTK, test "x$enable_gtk" = "xyes")
-+AM_CONDITIONAL(ENABLE_SAMPLE, test "x$enable_sample" = "xyes")
-+AM_CONDITIONAL(ENABLE_GIO, test "x$enable_gio" = "xyes")
-+
-+
-+
- AC_SUBST(CFLAGS)
- 
- AC_OUTPUT([
-@@ -288,6 +336,11 @@
- echo ""
- echo "   * Installation prefix = $prefix"
- echo "   * $CS compiler: $CSC $CSFLAGS"
-+
-+if test "x$enable_moonlight" = "xyes"; then
-+echo "   * Moonlight support: enabled"
-+echo "   * Moonlight compiler: $SCSC"
-+else
- echo ""
- echo "   Optional assemblies included in the build:"
- echo ""
-@@ -303,6 +356,8 @@
- echo "            corresponding development packages for them, rerun"
- echo "            autogen.sh to include them in the build."
- echo ""
-+fi
-+
- echo "   * Documentation build enabled: $enable_monodoc "
- if test "x$enable_monodoc" = "xyes" -a "x$doc_sources_dir" != "x$prefix/lib/monodoc/sources"; then
-   echo "      WARNING: The install prefix is different than the monodoc prefix."
+ $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
+ 	@for i in $(POLICY_VERSIONS); do	\
+ 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
 Index: Makefile.include
 ===================================================================
---- Makefile.include	(revision 129831)
+--- Makefile.include	(revision 122401)
 +++ Makefile.include	(working copy)
-@@ -63,7 +63,7 @@
+@@ -62,9 +62,11 @@
+ GAPI_CDECL_INSERT=
+ endif
  
++BUILD_PARAMS=$(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -target:library $(GENERATED_SOURCES) $(build_sources)
++
  $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
  	@rm -f $(ASSEMBLY).mdb
 -	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
-+	$(SCSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
++	$(CSC) $(build_references) $(BUILD_PARAMS) -out:$(ASSEMBLY)
  	$(GAPI_CDECL_INSERT)
  
  install-data-local:
-Index: gdk/Makefile.am
-===================================================================
---- gdk/Makefile.am	(revision 129831)
-+++ gdk/Makefile.am	(working copy)
-@@ -1,12 +1,17 @@
- SUBDIRS = . glue
- 
-+if ENABLE_GDK
-+pkg = gdk
-+else
-+pkg = 
-+endif
-+
- if ENABLE_MONO_CAIRO
- local_mono_cairo=$(top_builddir)/cairo/Mono.Cairo.dll
- else
- local_mono_cairo=
- endif
- 
--pkg = gdk
- SYMBOLS = gdk-symbols.xml
- INCLUDE_API = $(srcdir)/../glib/glib-api.xml $(top_builddir)/gio/gio-api.xml $(top_builddir)/pango/pango-api.xml
- METADATA = Gdk.metadata

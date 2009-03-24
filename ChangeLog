@@ -5,6 +5,11 @@
 
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
+	* gtksharp21autotools.diff: No longer use --enable-moonlight-support
+	but rather use new make targets.
+
+2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
+
 	* gtksharp21autotools.diff: Add an incomplete patch for the
 	build scripts of glib-sharp in the 2.1 profile.
 
