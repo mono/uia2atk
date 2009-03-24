@@ -1,4 +1,10 @@
-2009-03-17 Brian G. Merrell <bgmerrell@gmail.com>
+2009-03-24 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/combobox_stylechanges_basic_ops.py: Add some comments.
+	* testers/combobox_dropdown_ops.py: Clean up test now that some bugs
+	have been fixed, add bug reference to a newly encountered bug.
+
+2009-03-23 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/helpprovider_basic_ops.py, 
 	* testers/helpprovider/helpproviderframe.py: Uncomment some tests that

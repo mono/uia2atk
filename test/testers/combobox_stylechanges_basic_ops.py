@@ -38,7 +38,13 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.comboBoxStyleChangesFrame
 
+# test the drop down style, which is the style when the app starts
+
+
+# switch to the simple style and test it
 cbFrame.startSimpleStyle()
+
+# switch to the drop down list style and test it
 cbFrame.startDropDownListStyle()
 
 # close application frame window

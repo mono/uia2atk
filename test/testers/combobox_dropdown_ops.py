@@ -54,11 +54,12 @@ actionsCheck(cbddFrame.menuitem[0], "MenuItem")
 
 #check default states of ComboBox, menu and text
 statesCheck(cbddFrame.combobox, "ComboBox")
-statesCheck(cbddFrame.menu, "Menu")
-statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
+statesCheck(cbddFrame.menu, "Menu",
+            add_states=["focused", "showing", "visible"])
+statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selectable"])
 
 #check menuitem0,1's default states
-statesCheck(cbddFrame.menuitem[0], "MenuItem")
+statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["showing"])
 statesCheck(cbddFrame.menuitem[1], "MenuItem", \
                                 add_states=["focused", "selected"])
 
@@ -118,7 +119,7 @@ cbddFrame.assertText(cbddFrame.textbox, 9)
 #menuitem9 up selected state
 statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["focused", "selected"])
 #menuitem0 get rid of selected, showing states
-statesCheck(cbddFrame.menuitem[0], "MenuItem")
+statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["showing"])
 
 #enter value to textbox
 #inter '6' to text box to check the text value
@@ -145,6 +146,8 @@ statesCheck(cbddFrame.menuitem[8], "MenuItem")
 #select menu to rise selected
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 0)
 sleep(config.SHORT_DELAY)
+#BUG488474, assertSelectionChild called the selection interface's selectChild
+#method, which is not working.
 statesCheck(cbddFrame.menu, "Menu", add_states=["selected"])
 statesCheck(cbddFrame.textbox, "Text", add_states=["focused"])
 #select text to rise selected
