@@ -1,5 +1,10 @@
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
+	* gtksharp21autotools.diff: Add an incomplete patch for the
+	build scripts of glib-sharp in the 2.1 profile.
+
+2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
+
 	* gtksharp21-mcs.diff: Add mcs patch to make glib-sharp build
 	on the 2.1 profile (there is some marshalling API that is
 	not public, so we need InternalsVisibleTo).
