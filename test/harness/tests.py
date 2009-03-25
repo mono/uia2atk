@@ -33,4 +33,12 @@ tests_list = [
     "toolstripprogressbar_basic_ops.py",
     "toolstripseparator_basic_ops.py",
     "toolstriptextbox_basic_ops.py",
+    "listbox_basic_ops.py", 
+    "numericupdown_basic_ops.py",
+    "toolstriplabel_basic_ops.py",
+    "toolstripcombobox_basic_ops.py",
+    "flowlayoutpanel_basic_ops.py",
+    "tablelayoutpanel_basic_ops.py",
+    "containercontrol_basic_ops.py",
+    "textbox_basic_ops.py",
 ]

@@ -1,3 +1,9 @@
+2009-03-25  Ray Wang <rawang@novell.com>
+
+	* harness/tests.py: add listbox, numericupdown, toolstriplabel, 
+	toolstripcombobox, flowlayoutpanel, tablelayoutpanel, 
+	containercontrol, textbox to tests.py
+
 2009-03-24 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/combobox_stylechanges_basic_ops.py: Add some comments.
