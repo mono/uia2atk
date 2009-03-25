@@ -38,8 +38,14 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.comboBoxStyleChangesFrame
 
-# test the drop down style, which is the style when the app starts
+# test the drop down style
+cbFrame.startDropDownStyle()
 
+# first make sure we can only find one combo box accessible
+cbFrame.assertOnlyOneComboBoxExists()
+
+# make sure the label has the text we expect
+cbFrame.assertLabelText(cbFrame.label1, "You select 1")
 
 # switch to the simple style and test it
 cbFrame.startSimpleStyle()

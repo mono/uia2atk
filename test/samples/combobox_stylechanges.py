@@ -50,10 +50,16 @@ class ComboBoxSample(Form):
         self.simplebutton.Location = Point(265, 5)
         self.simplebutton.Click += self.change_to_simple
 
+        self.xtenbutton = Button()
+        self.xtenbutton.Text = "x10"
+        self.xtenbutton.Width = 110
+        self.xtenbutton.Location = Point(5, 55)
+        self.xtenbutton.Click += self.multiply_by_ten
+
         # setup label
         self.label = Label()
         self.label.Text = "You select " 
-        self.label.Location = Point (5, 50)
+        self.label.Location = Point (5, 100)
 
         # setup combobox
         self.combobox = ComboBox()
@@ -61,7 +67,7 @@ class ComboBoxSample(Form):
         self.combobox.SelectionChangeCommitted += self.select
         self.combobox.TextChanged += self.select
         self.combobox.Width = 390
-        self.combobox.Location = Point(0, 80)
+        self.combobox.Location = Point(0, 130)
 
         # add items in ComboBox
         for i in range(10):
@@ -74,6 +80,7 @@ class ComboBoxSample(Form):
         self.Controls.Add(self.dropdownlistbutton)
         self.Controls.Add(self.dropdownbutton)
         self.Controls.Add(self.simplebutton)
+        self.Controls.Add(self.xtenbutton)
 
     # ComboBox click event
     def select(self, sender, event):
@@ -97,6 +104,11 @@ class ComboBoxSample(Form):
     def change_to_simple(self, sender, event):
         self.combobox.DropDownStyle = ComboBoxStyle.Simple
         self.change_back_color(sender)
+
+    def multiply_by_ten(self, sender, event):
+        self.combobox.Text = ""
+        for i in range(10):
+            self.combobox.Items[i] = i * 10
 
 # run application
 form = ComboBoxSample()
