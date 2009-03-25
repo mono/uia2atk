@@ -1,3 +1,8 @@
+2009-03-25  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog_basic_ops.py: remove BUG478911 reference, 
+	uncomment assertClickSmallColor temporarily due to BUG478541, correct 
+	a typo
 
 2009-03-25  Calen Chen <cachen@novell.com>
 

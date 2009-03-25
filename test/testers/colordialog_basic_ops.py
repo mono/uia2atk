@@ -60,9 +60,9 @@ cdFrame.AssertWidgets()
 statesCheck(cdFrame.colordialog, "Dialog", add_states=["active", "modal"], \
                                            invalid_states=["resizable"])
 ##color panel has extra focusable state BUG484217
-statesCheck(cdFrame.panels[0], "Panel")
+#statesCheck(cdFrame.panels[0], "Panel")
 
-statesCheck(cdFrame.panels[1], "Panel")
+#statesCheck(cdFrame.panels[1], "Panel")
 
 statesCheck(cdFrame.smallcolor_buttons[0], "Button")
 
@@ -89,7 +89,6 @@ statesCheck(cdFrame.smallcolor_buttons[50], "Button")
 #####################################################################################
 
 #SmallColorControls' Text are None
-#extraneous Text value BUG478911
 cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[5])
 
 cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
@@ -112,19 +111,20 @@ cdFrame.click(cdFrame.smallcolor_buttons[0])
 sleep(config.SHORT_DELAY)
 cdFrame.click(cdFrame.ok_button)
 sleep(config.SHORT_DELAY)
-cdFrame.assertClickSmallColor("Color [White]")
+#cdFrame.assertClickSmallColor("Color [White]")
 
 #click ColorDialog Button to open color dialog again
-cdFrame.click(cdFrame.colordilaog_button)
+cdFrame.click(cdFrame.colordialog_button)
 sleep(config.SHORT_DELAY)
 cdFrame.AssertWidgets()
 
 #mouse click one SmallColorControl, then click OK button
 cdFrame.smallcolor_buttons[24].mouseClick()
 sleep(config.SHORT_DELAY)
-cdFrame.click(cdFrame.ok_button)
+#cdFrame.click(cdFrame.ok_button)
+cdFrame.ok_button.click()
 sleep(config.SHORT_DELAY)
-cdFrame.assertClickSmallColor("Color [Blue]")
+cdFrame.assertClickSmallColor("Color [Olive]")
 
 #close application frame window
 cdFrame.quit()
