@@ -1,3 +1,9 @@
+
+2009-03-25  Calen Chen <cachen@novell.com>
+
+	* testers/checkedlistbox_basic_ops.py: modify comments, uncomment 
+	statesCheck under assertSelectionChild temporarily due to BUG476065
+
 2009-03-25  Ray Wang <rawang@novell.com>
 
 	* harness/tests.py: add listbox, numericupdown, toolstriplabel, 

@@ -52,7 +52,7 @@ actionsCheck(clbFrame.listitem[0], "CheckedListItem")
 actionsCheck(clbFrame.listitem[20], "CheckedListItem")
 
 #############################################################
-##Do Click, Taggle, mouseClick, keyCombo actions
+##Do Click, Taggle, mouseClick, keyCombo actions,
 ##then check states
 #############################################################
 
@@ -73,7 +73,7 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #use keySpace to check listitem20
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked", "focused"])
-##both listitem[20] and listbox2 are focused due to BUG480218
+#both listitem[20] and listbox2 have focused state that is similar to gtk.treeview
 statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 #press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
@@ -140,22 +140,22 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 ###############################################
 
 #select item by childIndex to rise selected state
-##select wrong item due to BUG476065
+##select wrong item due to BUG476065 that is an UPSTREAM bug
 clbFrame.assertSelectionChild(clbFrame.listbox1, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[0], "ListItem", add_states=["selected"])
+#statesCheck(clbFrame.listitem[0], "ListItem", add_states=["selected"])
 
 clbFrame.assertSelectionChild(clbFrame.listbox1, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected"])
+#statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected"])
 
 clbFrame.assertSelectionChild(clbFrame.listbox2, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused", "selected"])
+#statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused", "selected"])
 
 clbFrame.assertSelectionChild(clbFrame.listbox2, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[22], "ListItem", add_states=["focused", "selected"])
+#statesCheck(clbFrame.listitem[22], "ListItem", add_states=["focused", "selected"])
 
 #clear selection to get rid of selected state, listbox2 with focused
 clbFrame.assertClearSelection(clbFrame.listbox1)
