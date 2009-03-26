@@ -2,9 +2,43 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:custom="clr-namespace:CustomControl"
-    Width="210" Height="120">
+    Width="350" Height="345">
     <Canvas x:Name="LayoutRoot" Background="White">
         <custom:MyCustomControl x:Name="myCustomControl" Canvas.Left="10" Canvas.Top="10"></custom:MyCustomControl>
-        <Button Content="Add new item" Canvas.Left="120" Canvas.Top="10" Click="Button_Click"></Button>
-    </Canvas>
+        <Button Content="Add new item" Canvas.Left="120" Canvas.Top="10" Click="Button_Click">
+			<ToolTipService.ToolTip>
+				<ToolTip>
+					<Button Content="Hello world"></Button>
+				</ToolTip>
+			</ToolTipService.ToolTip>
+		</Button>
+		<TextBlock Text="Examples using ScrollViewer" Canvas.Left="120" Canvas.Top="35" />
+		<ListBox Canvas.Left="120" Canvas.Top="55">
+			<Button Content="Item 1"></Button>
+			<Button Content="Item 2"></Button>
+			<Button Content="Item 3"></Button>
+		</ListBox>
+		<ScrollViewer Canvas.Left="180" Canvas.Top="55" Height="90">
+			<ListBox>
+				<Button Content="Item 1" />
+				<Button Content="Item 2" />
+				<Button Content="Item 3" />
+				<Button Content="Item 4" />
+				<Button Content="Item 5" />
+				<Button Content="Item 6" />
+			</ListBox>
+		</ScrollViewer>
+		<ScrollViewer Canvas.Left="270" Canvas.Top="55" Height="90">
+			<StackPanel>
+				<Button Content="Item 1" />
+				<Button Content="Item 2" />
+				<Button Content="Item 3" />
+				<Button Content="Item 4" />
+				<Button Content="Item 5" />
+				<Button Content="Item 6" />
+			</StackPanel>
+		</ScrollViewer>
+		<TextBlock Text="Examples using ScrollViewer" Canvas.Left="10" Canvas.Top="155" />
+		<custom:UselessControl x:Name="uselessControl" Canvas.Left="10" Canvas.Top="175"></custom:UselessControl>
+	</Canvas>
 </UserControl>

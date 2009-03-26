@@ -21,16 +21,23 @@ namespace CustomControl
             InitializeComponent();
         }
 
-        public StackPanel StackPanel
-        {
-            get { return stackPanel; }
-        }
+		//public StackPanel StackPanel
+		//{
+		//    get { return stackPanel; }
+		//}
+
+		public ListBox StackPanel
+		{
+			get { return stackPanel; }
+		}
 
         public void AddNewItem()
         {
             TextBox newItem = new TextBox ();
-            newItem.Text = string.Format ("Item #{0}", stackPanel.Children.Count + 1);
-            stackPanel.Children.Add(newItem);
+            newItem.Text = string.Format ("Item #{0}", stackPanel.Items.Count + 1);
+			stackPanel.Items.Add(newItem);
+			//newItem.Text = string.Format("Item #{0}", stackPanel.Children.Count + 1);
+			//stackPanel.Children.Add(newItem);
 
             AutomationPeer peer;
             if ((peer = FrameworkElementAutomationPeer.FromElement(this)) != null)
@@ -54,7 +61,8 @@ namespace CustomControl
         protected override List<AutomationPeer> GetChildrenCore()
         {
             List<AutomationPeer> list = new List<AutomationPeer>();
-            foreach (UIElement element in myCustomControl.stackPanel.Children)
+            foreach (UIElement element in myCustomControl.stackPanel.Items)
+			//foreach (UIElement element in myCustomControl.stackPanel.Children)
                 list.Add(FrameworkElementAutomationPeer.CreatePeerForElement(element));
             return list;
         }

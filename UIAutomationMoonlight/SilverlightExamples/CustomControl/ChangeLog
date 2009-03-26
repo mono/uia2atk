@@ -1,0 +1,5 @@
+2009-03-26  Mario Carrion  <mcarrion@novell.com>
+
+	* CustomControl/UselessControl.xaml, 
+	CustomControl/UselessControl.xaml.cs,
+	CustomControl/UselessControlPeer.cs: Files added.

@@ -10,8 +10,11 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <ScrollViewer>
-            <StackPanel x:Name="stackPanel" Grid.Column="0" Grid.Row="1" Background="Pink" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            </StackPanel>
+			<ListBox x:Name="stackPanel" Grid.Column="0" Grid.Row="1" Background="Pink" ScrollViewer.VerticalScrollBarVisibility="Auto">
+				
+			</ListBox>
+            <!--<StackPanel x:Name="stackPanel" Grid.Column="0" Grid.Row="1" Background="Pink" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            </StackPanel>-->
         </ScrollViewer>
     </Grid>
 </UserControl>
