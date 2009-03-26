@@ -1,3 +1,10 @@
+2009-03-26  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog/colordialogframe.py: add assertSmallColorName to 
+	test the Name of SmallColorControls
+	* testers/colordialog_basic_ops.py: add name test for SmallColorControl
+	due to BUG488998
+
 2009-03-25 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/combobox_stylechanges.py: Add a button to change the combo

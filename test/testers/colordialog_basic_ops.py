@@ -84,14 +84,24 @@ cdFrame.click(cdFrame.smallcolor_buttons[50])
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.smallcolor_buttons[50], "Button")
 
-#####################################################################################
+####################################################################
 ##Text test for SmallColorControls under Base Colors and User Colors
-#####################################################################################
+####################################################################
 
 #SmallColorControls' Text are None
 cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[5])
 
 cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
+
+
+####################################################################
+##Name test for SmallColorControls under Base Colors and User Colors
+####################################################################
+
+##SmallColorControls are missing names for orca to announce due to BUG488998
+#cdFrame.assertSmallColorName()
+
+#cdFrame.assertSmallColorName(cdFrame.smallcolor_buttons[0], "White")
 
 ################################################
 ##AtkImage test for SmallColorControls
