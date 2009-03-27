@@ -1,3 +1,10 @@
+2009-03-27  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py: modify comments
+	* testers/combobox_dropdown_ops.py: add assertText test after doing 
+	selectChild to verify bug488474. add bug456341 reference that Menu and 
+	Text are missing 'selected' after doing selectChild
+
 2009-03-26 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/combobox_stylechanges.py: Enhanced the x10 button to be a
@@ -7,6 +14,10 @@
 	* testers/combobox_stylechanges/comboboxstylechangesframe.py: Continue
 	adding test cases.  Almost finished, just need to add some cases to
 	actually change the combo box selections after changing styles.
+
+2009-03-26  Calen Chen <cachen@novell.com>
+
+	* testers/columnheader_basic_ops.py: add more "#" on the top
 
 2009-03-26  Calen Chen <cachen@novell.com>
 

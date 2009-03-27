@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-##
+##########################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        01/04/2009
 # Description: Test accessibility of columnheader widget 
 #              Use the columnheaderframe.py wrapper script
 #              Test the samples/columnheader.py script
-##
+##########################################################
 
 # The docstring below  is used in the generated log file
 """

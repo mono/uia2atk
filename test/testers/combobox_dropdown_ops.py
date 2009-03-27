@@ -143,36 +143,45 @@ cbddFrame.assertText(cbddFrame.textbox, 8)
 statesCheck(cbddFrame.menuitem[8], "MenuItem")
 
 #check combo box selection is implemented
-#select menu to rise selected
+#set index 0 to select MenuItem 0
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 0)
 sleep(config.SHORT_DELAY)
-#BUG488474, assertSelectionChild called the selection interface's selectChild
+##BUG488474, assertSelectionChild called the selection interface's selectChild
 #method, which is not working.
+cbddFrame.assertText(cbddFrame.textbox, 0)
+##doesn't rise 'selected' state for Menu and Text due to BUG456341
 statesCheck(cbddFrame.menu, "Menu", add_states=["selected"])
-statesCheck(cbddFrame.textbox, "Text", add_states=["focused"])
-#select text to rise selected
+
+#set index 1 to select MenuItem 1
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 1)
 sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, 1)
 statesCheck(cbddFrame.menu, "Menu")
 statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
-#clear selection to get rid of selected
-##clearSelection doesn't get rid of selected BUG468456
-cbddFrame.assertClearSelection(cbddFrame.combobox)
+
+#set index 3 to select MenuItem 3
+cbddFrame.assertSelectionChild(cbddFrame.combobox, 3)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddFrame.menu, "Menu")
-statesCheck(cbddFrame.textbox, "Text")
+cbddFrame.assertText(cbddFrame.textbox, 3)
 
 #check menu selection is implemented
 #select item3 to rise focused and selected states
 cbddFrame.assertSelectionChild(cbddFrame.menu, 3)
 sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, 3)
 statesCheck(cbddFrame.menuitem[3], "MenuItem", add_states=["focused", "selected"])
 #select item5 to rise focused and selected states
 cbddFrame.assertSelectionChild(cbddFrame.menu, 5)
 sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, 5)
 statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
 #item3 get rid of focused and selected states
-statesCheck(cbddFrame.menuitem[3], "MenuItem")
+statesCheck(cbddFrame.menuitem[3], "MenuItem", invalid_states=["showing"])
+
+#clearSelection may not get rid of selected, see bug468456
+cbddFrame.assertClearSelection(cbddFrame.menu)
+sleep(config.SHORT_DELAY)
+statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
 
 ##############################################
 ## test AtkStreamableContent for text

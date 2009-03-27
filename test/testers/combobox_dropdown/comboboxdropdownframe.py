@@ -52,7 +52,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         self.menu = self.findMenu(None)
         self.menuitem = dict([(x, self.findMenuItem(str(x), checkShowing=False)) for x in range(10)])
 
-    #check the label after click listitem
+    #assert label change after select menu item
     def assertLabel(self, newlabel):
         procedurelogger.expectedResult('Label change to "%s"' % newlabel)
 
@@ -73,7 +73,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         procedurelogger.expectedResult('the text of %s is %s' % (accessible,values))
         assert accessible.text == str(values)
 
-    #assert Selection implementation for Menu
+    #assert Selection implementation for ComboBox and Menu
     def assertSelectionChild(self, accessible, childIndex):
         procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
 
@@ -88,7 +88,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     def inputText(self, textbox, values):
         textbox.typeText(values)
 
-    #enter Text Value for EditableText
+    #set Text Value for EditableText
     def enterTextValue(self, textbox, values):
         procedurelogger.action('in %s enter %s' % (textbox, values))
         textbox.text = values
@@ -101,7 +101,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         result = accessible._accessible.queryStreamableContent().getContentTypes()
 
         procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
-        assert result == expect, "Contents %s not match the expected" % result
+        assert result == expect, "Contents %s not match the expected %s" % (result, expect)
     
     #close application main window after running test
     def quit(self):
