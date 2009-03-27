@@ -17,6 +17,7 @@ from helpers import *
 from actions import *
 from states import *
 from sys import argv
+import time
 
 app_path = None 
 try:
@@ -41,8 +42,15 @@ cbFrame = app.comboBoxStyleChangesFrame
 # test the drop down style
 cbFrame.startDropDownStyle()
 
-# first make sure we can only find one combo box accessible
-cbFrame.assertOnlyOneComboBoxExists()
+# press 'Toggle x10' button check states, then toggle back and check states
+# again
+cbFrame.assertComboBoxItems()
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems(is_x10=True)
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems()
 
 # make sure the label has the text we expect
 cbFrame.assertLabelText(cbFrame.label1, "You select 1")
@@ -50,8 +58,28 @@ cbFrame.assertLabelText(cbFrame.label1, "You select 1")
 # switch to the simple style and test it
 cbFrame.startSimpleStyle()
 
+# press 'Toggle x10' button check states, then toggle back and check states
+# again
+cbFrame.assertComboBoxItems(is_simple_style=True)
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems(is_x10=True, is_simple_style=True)
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems(is_simple_style=True)
+
 # switch to the drop down list style and test it
 cbFrame.startDropDownListStyle()
+
+# press 'Toggle x10' button check states, then toggle back and check states
+# again
+cbFrame.assertComboBoxItems()
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems(is_x10=True)
+cbFrame.x10button.click()
+time.sleep(config.SHORT_DELAY)
+cbFrame.assertComboBoxItems()
 
 # close application frame window
 cbFrame.quit()

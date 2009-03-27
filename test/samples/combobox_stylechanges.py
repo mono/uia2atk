@@ -29,6 +29,7 @@ class ComboBoxSample(Form):
         self.Text = "ComboBox Style Changes"
         self.Width = 400
         self.Height = 500
+        self.is_x10 = False
 
         # setup buttons
         self.dropdownlistbutton = Button()
@@ -51,10 +52,10 @@ class ComboBoxSample(Form):
         self.simplebutton.Click += self.change_to_simple
 
         self.xtenbutton = Button()
-        self.xtenbutton.Text = "x10"
+        self.xtenbutton.Text = "Toggle x10"
         self.xtenbutton.Width = 110
         self.xtenbutton.Location = Point(5, 55)
-        self.xtenbutton.Click += self.multiply_by_ten
+        self.xtenbutton.Click += self.toggle_x10
 
         # setup label
         self.label = Label()
@@ -105,10 +106,16 @@ class ComboBoxSample(Form):
         self.combobox.DropDownStyle = ComboBoxStyle.Simple
         self.change_back_color(sender)
 
-    def multiply_by_ten(self, sender, event):
+    def toggle_x10(self, sender, event):
         self.combobox.Text = ""
-        for i in range(10):
-            self.combobox.Items[i] = i * 10
+        if self.is_x10:
+            for i in range(10):
+                self.combobox.Items[i] = i
+        else:
+            for i in range(10):
+                self.combobox.Items[i] = i * 10
+        # toggle the boolean
+        self.is_x10 = not self.is_x10 
 
 # run application
 form = ComboBoxSample()

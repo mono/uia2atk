@@ -18,12 +18,14 @@ class ComboBoxStyleChangesFrame(accessibles.Frame):
     DROPDOWNBUTTON = "DropDown"
     DROPDOWNLISTBUTTON = "DropDownList"
     SIMPLEBUTTON = "Simple"
+    X10BUTTON = "Toggle x10"
 
     def __init__(self, accessible):
         super(ComboBoxStyleChangesFrame, self).__init__(accessible)
         self.dropdownbutton = self.findPushButton(self.DROPDOWNBUTTON)
         self.dropdownlistbutton = self.findPushButton(self.DROPDOWNLISTBUTTON)
         self.simplebutton = self.findPushButton(self.SIMPLEBUTTON)
+        self.x10button = self.findPushButton(self.X10BUTTON)
 
     # create some find<style> methods.  the test writer must call the
     # respective find<style> method before testing that style and after
@@ -32,45 +34,73 @@ class ComboBoxStyleChangesFrame(accessibles.Frame):
         self.dropdownbutton.click()
         sleep(config.SHORT_DELAY)
         self.label1 = self.findLabel(self.LABEL1)
-        self.combobox = self.findComboBox(None)
-        self.textbox = self.findText(None)
+        self.findSingleComboBox()
+        self.findSingleMenuChild()
+        self.findSingleTextChild()
 
     def startDropDownListStyle(self):
         self.dropdownlistbutton.click()
         sleep(config.SHORT_DELAY)
+        self.combobox = self.findSingleComboBox()
         self.label1 = self.findLabel(self.LABEL1)
-        self.combobox = self.findComboBox(None)
-        self.menu = self.findMenu("", checkShowing=False)
+        self.findSingleComboBox()
+        self.findSingleMenuChild()
+        self.assertNoTextChild()
 
     def startSimpleStyle(self):
         self.simplebutton.click()
         sleep(config.SHORT_DELAY)
-        self.combobox = self.findComboBox(None)
-        self.textbox = self.findText(None)
-        self.menu = self.findMenu("", checkShowing=False)
+        self.findSingleComboBox()
+        self.findSingleMenuChild()
+        self.findSingleTextChild()
 
-    def assertOnlyOneComboBoxExists(self):
+    def findSingleComboBox(self):
+        '''
+        Return the combo box accessible, raise an error is more than one
+        combo box accessible exists
+        '''
         procedurelogger.action('Make sure only one combo box accessible exists')
         procedurelogger.expectedResult('Only one combo box accessible exists')
-        n_comboboxes = self.findAllComboBoxes(None)
-        assert len(n_comboboxes) == 1,\
+        comboboxes = self.findAllComboBoxes(None)
+        assert len(comboboxes) == 1,\
                "Only one combo box accessible should exist at a time"
+        self.combobox = comboboxes[0]
 
-    def findDropDownComboBoxChildren():
+    def findSingleMenuChild(self):
         '''
-        Find only the immediate children of the combo box and assert that
-        they are what we expect for the DropDown style
+        Find a menu that is a child of the combo box accessible and make
+        sure there is only one menu.
         '''
         procedurelogger.action('Make sure only one menu accessible exists')
         procedurelogger.expectedResult('Only one menu accessible exists')
-        menus = self.combobox.findAllMenus(None)
+        menus = self.combobox.findAllMenus(None, checkShowing=False)
         assert len(menus) == 1,\
                "Only one menu accessible should exist for the combo box"
+        self.menu = menus[0]
+
+    def findSingleTextChild(self):
+        '''
+        Find a "text" accessible that is a child of the combo box accessible
+        and make sure there is only one "text" accessible.
+        '''
         procedurelogger.action('Make sure only one text accessible exists')
         procedurelogger.expectedResult('Only one text accessible exists')
         texts = self.combobox.findAllTexts(None)
         assert len(texts) == 1,\
                "Only one text accessible should exist for the combo box"
+        self.text_accessible = texts[0]
+
+    def assertNoTextChild(self):
+        '''
+        Ensure that the combo box accessible has no child that is a "text"
+        accessible
+        '''
+        procedurelogger.action('Check to see if %s has a child that is a "text" accessible' % self.combobox)
+        procedurelogger.expectedResult('No such accessible exists')
+        text = self.combobox.findAllTexts(None, checkShowing=False)
+        assert len(text) == 0, \
+               '%s should not have a "text" accessible' % self.combobox
+        
         
     def assertLabelText(self, acc, expected_text):
         procedurelogger.action('Ensure %s contains the expected text' % acc)
@@ -79,6 +109,29 @@ class ComboBoxStyleChangesFrame(accessibles.Frame):
         assert actual_text == expected_text,\
                'Actual text "%s" does not match the expected text "%s"' % \
                (actual_text, expected_text)
+
+    def assertComboBoxItems(self, is_x10=False):
+        '''
+        Ensure that only the correct combo box items are present and that they
+        are the only such items in existence
+        '''
+        procedurelogger.action('Ensure only the correct combo box items exist')
+        procedurelogger.expectedResult('Only the %s items exist' %\
+                                    ("0-9 x10" if is_x10 else "default (0-9)"))
+        if 
+        items = self.menu.findAllMenuItems(None, checkShowing=False)
+        item_names = [item.name for item in items]
+        n_items = len(items)
+        assert n_items == 10,\
+               "Exactly 10 items should exist, not %d" % n_items
+        if is_x10:
+            default_item_names = \
+                                     [str(n*10) for n in [0,1,2,3,4,5,6,7,8,9]]
+        else:
+            default_item_names = [str(n) for n in [0,1,2,3,4,5,6,7,8,9]]
+        assert item_names == default_item_names,\
+               "Actual items %s, differs from default items %s" %\
+               (item_names, default_item_names)
 
     def quit(self):
         self.altF4()

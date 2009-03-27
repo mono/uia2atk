@@ -1,3 +1,13 @@
+2009-03-26 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/combobox_stylechanges.py: Enhanced the x10 button to be a
+	toggle button (so it can be clicked multiple times to toggle back
+	and forth from 0-9 to 0-9 x10)
+	* testers/combobox_stylechanges_basic_ops.py,
+	* testers/combobox_stylechanges/comboboxstylechangesframe.py: Continue
+	adding test cases.  Almost finished, just need to add some cases to
+	actually change the combo box selections after changing styles.
+
 2009-03-26  Calen Chen <cachen@novell.com>
 
 	* testers/colordialog/colordialogframe.py: add assertSmallColorName to 
