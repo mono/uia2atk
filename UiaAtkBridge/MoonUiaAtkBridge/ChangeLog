@@ -1,3 +1,7 @@
+2009-03-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonUiaAtkBridge.mdp: Not compile the ChangeLog.
+
 2009-03-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Some bits on initialization.
