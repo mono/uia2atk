@@ -1,8 +1,9 @@
-<Project name="MoonUiaAtkBridge" fileversion="2.0" language="C#" targetFramework="3.5" ctype="DotNetProject">
+<Project name="MoonUiaAtkBridge" fileversion="2.0" language="C#" targetFramework="2.1" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
         <Command type="AfterBuild" command="create-xpi.sh" workingdir="${TargetDir}" />
+        <Command type="BeforeBuild" command="build-glib21.sh" workingdir="${ProjectDir}" />
       </CustomCommands>
       <Output directory="bin/Debug" assembly="MoonUiaAtkBridge" />
       <Build debugmode="True" target="Library" />
@@ -23,10 +24,12 @@
     <File name="install.rdf" subtype="Code" buildaction="Nothing" copyToOutputDirectory="PreserveNewest" />
     <File name="create-xpi.sh" subtype="Code" buildaction="Nothing" copyToOutputDirectory="PreserveNewest" />
     <File name="ChangeLog" subtype="Code" buildaction="Nothing" />
+    <File name="build-glib21.sh" subtype="Code" buildaction="Nothing" />
+    <File name="lib" subtype="Directory" buildaction="Compile" />
   </Contents>
   <References>
-    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <ProjectReference type="Gac" localcopy="True" refto="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <ProjectReference type="Gac" localcopy="True" refto="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="lib/atk-sharp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="lib/glib-sharp.dll" />
   </References>
 </Project>

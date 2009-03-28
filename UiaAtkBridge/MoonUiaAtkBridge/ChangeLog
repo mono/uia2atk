@@ -1,5 +1,18 @@
 2009-03-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MoonUiaAtkBridge.mdp: Change to 2.1 profile. Add new script
+	and folder. Fix refs.
+
+	* build-glib21.sh: New script for building glib-sharp against
+	smcs.
+
+	* lib: Add new folder for refs.
+
+	* create-xpi.sh: Now -sharp libs get on the Debug bin because
+	the come from the lib folder.
+
+2009-03-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MoonUiaAtkBridge.mdp: Not compile the ChangeLog.
 
 2009-03-18  Andrés G. Aragoneses  <aaragoneses@novell.com>

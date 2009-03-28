@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#FIXME: encapsulate pkg-config result in a var
-find `pkg-config --variable=libdir gtk-sharp` -name atk-sharp.dll | grep 2\.0 | grep gac | xargs -r cp -v -p --target-directory=.
-find `pkg-config --variable=libdir gtk-sharp` -name glib-sharp.dll | grep 2\.0 | grep gac | xargs -r cp -v -p --target-directory=.
-
 #FIXME: don't distribute .dll.config files, they should be generated on the fly
 find `pkg-config --variable=libdir gtk-sharp` -name atk-sharp.dll.config | grep 2\.0 | grep gac | xargs -r cp -v -p --target-directory=.
 find `pkg-config --variable=libdir gtk-sharp` -name glib-sharp.dll.config | grep 2\.0 | grep gac | xargs -r cp -v -p --target-directory=.
