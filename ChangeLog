@@ -1,3 +1,8 @@
+2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* tools/: Added directory with various useful scripts.
+	* .gitignore: Added svn:ignore equivalent for git-svn users.
+
 2009-02-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Uia2Atk.mds: Added project for QA files.

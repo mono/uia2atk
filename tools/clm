@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+from commands import getoutput
+from datetime import date
+from os import path, environ
+import sys
+
+import re
+import fileinput
+
+#TODO: Make the Date/Name/Email line optional
+#cl_name = environ.get('CHANGE_LOG_NAME')
+#cl_email = environ.get('CHANGE_LOG_EMAIL_ADDRESS')
+
+diff_cmd = ""
+is_git = False
+is_svn = False
+
+def print_message_line(l):
+    global is_git
+    if is_git:
+        print "#%s" % l
+    else:
+        print l
+
+if path.isdir('./.svn'):
+    diff_cmd = "svn diff"
+    is_svn = True
+elif path.isdir('./.git'):
+    # Require pwd to be root of git repo, since diff is *not* relative, to avoid confusion.
+    # Since this is done just before a commit, only capture staged changes.
+    # Use --no-prefix to look more like an svn diff.
+    diff_cmd = "git diff --staged --no-prefix"
+    is_git = True
+else:
+    print "ERROR: Called from outside a Subversion checkout or root of git repository"
+    sys.exit(-1)
+
+first_line = True;
+if is_svn:
+    print "--This line, and those below, will be ignored--"
+#print_message_line("%s  %s  <%s>" % (date.today().strftime('%Y-%m-%d'), cl_name, cl_email))
+#print_message_line("")
+
+df = getoutput("%s | filterdiff -i'*ChangeLog' | grep ^+" % diff_cmd)
+for line in df.split('\n'):
+    line = line.strip('+')
+
+    if line == "":
+        continue
+
+    # Example: +++ UIAutomationWinforms/ChangeLog   (working copy)
+    m = re.match('^ (.*)/ChangeLog', line)
+    if not m == None:
+        if first_line: first_line = False
+        else: print_message_line("")
+
+        print_message_line('In %s/:' % m.group(1))
+        continue
+
+    m = re.match('^\d{4}-\d{2}-\d{2}', line)
+    if not m == None:
+        continue
+
+    print_message_line(line)

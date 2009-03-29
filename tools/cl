@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+
+from commands import getoutput
+from os import path, environ
+import sys
+from datetime import date
+import re
+
+cl_name = environ.get('CHANGE_LOG_NAME')
+cl_email = environ.get('CHANGE_LOG_EMAIL_ADDRESS')
+
+#TODO: Make showing unstaged and untracked file changes optional
+
+def inGitRepo():
+    global st
+    st = getoutput('git status')
+    return st[:5] != "fatal"
+
+output = []
+
+if path.isdir('./.svn'):
+    st = getoutput('svn status')
+
+    for line in st.split('\n'):
+        tokens = line.split()
+        if not len(tokens) == 2:
+            continue
+
+        warning = ""
+        if tokens[0] == '?':
+            warning = "WARNING: %s has not been added to subversion archive.\n" % tokens[1]
+
+        if tokens[1] == '.':
+            continue
+
+        output.append("%s	* %s: \n" % (warning,tokens[1]))
+
+elif inGitRepo():
+    # File paths starting with ".." are not useful here
+    fname_exp = '(?P<fname>[^.\s]([^.]|\Z).*)'
+    # "#	modified:  my/modified/file/name"
+    modified_line_exp = '#(\s\S+)+:\s+%s\Z' % fname_exp
+    # "#	my/untracked/file/name"
+    untracked_line_exp = '#\s%s\Z' % fname_exp
+
+    past_added = False
+    past_changed = False
+    past_untracked = False
+    
+    #NOTE: Already got output of "git status" while checking if we were in a git repo
+    for line in st.split('\n'):
+        if line == '# Changes to be committed:':
+            past_added = True
+            continue
+        elif line == '# Changed but not updated:':
+            past_changed = True
+            continue
+        elif line == '# Untracked files:':
+            past_untracked = True
+            continue
+        elif '(use "git add <file>..."' in line:
+            continue
+
+        if not past_untracked:
+            m = re.search(modified_line_exp, line)
+        else:
+            m = re.search(untracked_line_exp, line)
+        if m is None:
+            continue
+
+        fname = m.group('fname')
+
+        warning = ""
+        if past_untracked:
+            warning = "WARNING: %s is not being tracked.\n" % fname
+        elif past_changed:
+            warning = "WARNING: %s has not been staged for commit.\n" % fname
+
+        if past_added or past_changed or past_untracked:
+            output.append("%s	* %s: \n" % (warning,fname))
+
+else:
+    print "ERROR: Called from outside a Subversion checkout or git repository"
+    sys.exit(-1)
+
+
+output.sort(lambda x, y: cmp(len(x.split('\n')[-2]), len(y.split('\n')[-2])))
+
+print "%s  %s  <%s>" % (date.today().strftime('%Y-%m-%d'), cl_name, cl_email)
+print
+sys.stdout.writelines(output)
+print
