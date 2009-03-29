@@ -1679,12 +1679,12 @@ class GitClient(SCMClient):
         Performs a diff across all modified files in the branch, taking into
         account a parent branch.
         """
-        parent_branch = options.parent_branch or "master"
+        parent_branch = options.parent_branch or options.gitsvn_parent_branch or "master"
 
         diff_lines = self.make_diff(parent_branch)
 
-        if parent_branch != "master":
-            parent_diff_lines = self.make_diff("master", parent_branch)
+        if options.parent_branch:
+            parent_diff_lines = self.make_diff("master", options.parent_branch)
         else:
             parent_diff_lines = None
 
@@ -2084,6 +2084,11 @@ def parse_options(args):
                       help="the parent branch this diff should be against "
                            "(only available if your repository supports "
                            "parent diffs)")
+    parser.add_option("--gitsvnparent",
+                      dest="gitsvn_parent_branch", default=None,
+                      help="the parent branch this diff should be against "
+                           "(parent branch should be a git branch representing "
+                           "an existing SVN branch)")
     parser.add_option("--p4-client",
                       dest="p4_client", default=None,
                       help="the Perforce client name that the review is in")
