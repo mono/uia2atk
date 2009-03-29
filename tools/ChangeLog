@@ -1,5 +1,9 @@
 2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* post-review: Sync GitClient with upstream.
+
+2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* cl: ChangeLog generation tool for svn and git.
 	* clm: Create commit messages for svn/git by merging ChangeLogs.
 	* post-review: Slightly modified post-review for Reviewboard.
