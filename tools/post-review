@@ -82,7 +82,7 @@ else:
 #   $ cat .reviewboardrc
 #   REVIEWBOARD_URL = "http://reviewboard.example.com"
 #
-REVIEWBOARD_URL = "http://reviews.mono-a11y.org"
+REVIEWBOARD_URL = None
 
 # Default submission arguments.  These are all optional; run this
 # script with --help for descriptions of each argument.

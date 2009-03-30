@@ -1,3 +1,8 @@
+
+2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* post-review: Stop hard-coding REVIEWBOARD_URL.
+
 2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* post-review: Sync with upstream.
