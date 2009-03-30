@@ -1,3 +1,14 @@
+2009-03-30  Mario Carrion  <mcarrion@novell.com>
+
+	* CustomControl/CustomControl.csproj: Updated, files added.
+	* CustomControl/UselessChildControl.cs,
+	CustomControl/UselessChildControlPeer.cs: Files added.
+	* CustomControl/UselessControl.xaml.cs,
+	CustomControl/UselessControl.xaml: Using custom controls
+	* CustomControl/UselessControlPeer.cs: SelectionProvider implementation.
+	* CustomControl/UselessEllipseControl.cs,
+	CustomControl/UselessRectangleControl.cs: Added.
+
 2009-03-26  Mario Carrion  <mcarrion@novell.com>
 
 	* CustomControl/UselessControl.xaml, 

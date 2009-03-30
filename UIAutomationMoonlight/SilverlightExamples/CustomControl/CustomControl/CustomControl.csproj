@@ -65,10 +65,15 @@
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UselessChildControl.cs" />
+    <Compile Include="UselessChildControlPeer.cs" />
+    <Compile Include="UselessEllipseControl.cs" />
     <Compile Include="UselessControl.xaml.cs">
       <DependentUpon>UselessControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="UselessControlPeer.cs" />
+    <Compile Include="UselessRectangleControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -84,7 +89,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UselessControl.xaml">
-      <SubType>Page</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>
   </ItemGroup>

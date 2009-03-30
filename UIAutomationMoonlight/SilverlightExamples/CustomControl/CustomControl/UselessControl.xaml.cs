@@ -17,29 +17,33 @@ namespace CustomControl
 	{
 		public UselessControl ()
 		{
-			InitializeComponent();
-			MouseLeftButtonUp += delegate (object sender, MouseButtonEventArgs e) {
-				e.Handled = true;
-				Click ();
-			};
+			InitializeComponent ();
 		}
 
-		public event EventHandler<EventArgs> Clicked;
-
-		public int Clicks {
-			get { return clicks; }
-		}
-
-		public void Click ()
+		public void RemoveUselessChildControl (UselessChildControl control)
 		{
-			clicks++;
-			if (Clicked != null)
-				Clicked (this, EventArgs.Empty);
+			Grid content = (Grid) Content;
+			if (content.Children.Contains (control)) {
+				content.Children.Remove (control);
+				AutomationPeer peer = FrameworkElementAutomationPeer.FromElement (control);
+				if (peer != null)
+					peer.RaiseAutomationEvent (AutomationEvents.StructureChanged);
+			}
 		}
 
 		protected override AutomationPeer OnCreateAutomationPeer ()
 		{
 			return new UselessControlPeer (this);
+		}
+
+		public List<UselessChildControl> UselessChildrenControls {
+			get {
+				Grid content = (Grid) Content;
+				List<UselessChildControl> children = new List<UselessChildControl> ();
+				foreach (UselessChildControl child in content.Children)
+					children.Add (child);
+				return children;
+			}
 		}
 
 		int clicks = 0;

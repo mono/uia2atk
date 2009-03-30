@@ -16,43 +16,33 @@ using System.Windows.Automation.Provider;
 
 namespace CustomControl
 {
-	public class UselessControlPeer : FrameworkElementAutomationPeer, IInvokeProvider
+	public class UselessControlPeer : FrameworkElementAutomationPeer, ISelectionProvider
 	{
 		public UselessControlPeer (UselessControl control)
 			: base (control)
 		{
-			uselessControl = control;
-			uselessControl.Clicked += delegate (object sender, EventArgs e) {
-				RaiseAutomationEvent (AutomationEvents.InvokePatternOnInvoked);
-
-				// Event is not raised
-				RaisePropertyChangedEvent (AutomationElementIdentifiers.NameProperty,
-					GetFormatedName (uselessControl.Clicks - 1), 
-					GetFormatedName (uselessControl.Clicks));
-
-				//AcceleratorKeyProperty
-				//AccessKeyProperty
-				//AutomationIdProperty
-				//BoundingRectangleProperty
-				//ClassNameProperty
-				//ClickablePointProperty
-				//ControlTypeProperty
-				//HasKeyboardFocusProperty
-				//HelpTextProperty
-				//IsContentElementProperty
-				//IsControlElementProperty
-				//IsEnabledProperty
-				//IsKeyboardFocusableProperty
-				//IsOffscreenProperty
-				//IsPasswordProperty
-				//IsRequiredForFormProperty
-				//ItemStatusProperty
-				//ItemTypeProperty
-				//LabeledByProperty
-				//LocalizedControlTypeProperty
-				//NameProperty
-				//OrientationProperty
-			};
+			//AcceleratorKeyProperty
+			//AccessKeyProperty
+			//AutomationIdProperty
+			//BoundingRectangleProperty
+			//ClassNameProperty
+			//ClickablePointProperty
+			//ControlTypeProperty
+			//HasKeyboardFocusProperty
+			//HelpTextProperty
+			//IsContentElementProperty
+			//IsControlElementProperty
+			//IsEnabledProperty
+			//IsKeyboardFocusableProperty
+			//IsOffscreenProperty
+			//IsPasswordProperty
+			//IsRequiredForFormProperty
+			//ItemStatusProperty
+			//ItemTypeProperty
+			//LabeledByProperty
+			//LocalizedControlTypeProperty
+			//NameProperty
+			//OrientationProperty
 		}
 
 		#region Overridden methods
@@ -77,9 +67,12 @@ namespace CustomControl
 			return base.GetBoundingRectangleCore ();
 		}
 
-		protected override List<AutomationPeer> GetChildrenCore()
+		protected override List<AutomationPeer> GetChildrenCore ()
 		{
-			return null;
+			List<AutomationPeer> peers = new List<AutomationPeer> ();
+			foreach (UIElement element in uselessControl.UselessChildrenControls)
+				peers.Add (FrameworkElementAutomationPeer.CreatePeerForElement (element));
+			return peers;
 		}
 
 		protected override string GetClassNameCore()
@@ -89,7 +82,7 @@ namespace CustomControl
 
 		protected override string GetNameCore()
 		{
-			return GetFormatedName (uselessControl.Clicks);
+			return "I'm an useless control. 2 ellipses and 2 rectangles.";
 		}
 
 		protected override bool IsEnabledCore()
@@ -127,9 +120,9 @@ namespace CustomControl
 			return false;
 		}
 
-		public override object GetPattern (PatternInterface patternInterface)
+		public override object GetPattern(PatternInterface patternInterface)
 		{
-			if (patternInterface == PatternInterface.Invoke)
+			if (patternInterface == PatternInterface.Selection)
 				return this;
 
 			return null;
@@ -137,25 +130,29 @@ namespace CustomControl
 
 		#endregion
 
-		#region IInvokeProvider Members
-
-		void IInvokeProvider.Invoke ()
-		{
-			uselessControl.Click ();
-		}
-
-		#endregion
-
-		#region Private members
-
-		string GetFormatedName (int clicks)
-		{
-			return string.Format("I'm an useless control clicked: {0} times", clicks);
-		}
-
-		#endregion
-
 		UselessControl uselessControl;
 
+		#region ISelectionProvider Members
+
+		bool ISelectionProvider.CanSelectMultiple {
+			get { return true; }
+		}
+
+		IRawElementProviderSimple[] ISelectionProvider.GetSelection ()
+		{
+			List<IRawElementProviderSimple> selection = new List<IRawElementProviderSimple> ();
+			foreach (AutomationPeer child in GetChildrenCore ()) {
+				ISelectionItemProvider provider = child.GetPattern (PatternInterface.SelectionItem) as ISelectionItemProvider;
+				if (provider != null && provider.IsSelected)
+					selection.Add (ProviderFromPeer (child));
+			}
+			return selection.ToArray ();
+		}
+
+		bool ISelectionProvider.IsSelectionRequired {
+			get { return false; }
+		}
+
+		#endregion
 	}
 }
