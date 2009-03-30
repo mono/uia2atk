@@ -52,11 +52,16 @@ ofdFrame = app.openFileDialogFrame
 #HelpButon and ReadOnlyCheckBox are showing up
 ofdFrame.click(ofdFrame.enable_button)
 sleep(config.MEDIUM_DELAY)
+##BUG481357:ToggleButton in small button ToolBar is missing menuitems, but appears
+##a Window that shows them as children after click ToggleButton
+##BUG490105:accessible position and size of ToggleButton is incorrect 
 ofdFrame.assertWidgets()
 ofdFrame.assertVisibleWidget()
 
 #close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
+sleep(config.MEDIUM_DELAY)
+ofdFrame.opendialog.assertClosed()
 
 ###################################################
 ##search for all widgets from open dialog
@@ -82,6 +87,7 @@ ofdFrame.creatFolder(ofdFrame.newfolder_cancel)
 #click newdirtoolbarbutton to creat new folder, then check subwidgets
 ofdFrame.itemClick(ofdFrame.newdirtoolbarbutton)
 sleep(config.SHORT_DELAY)
+ofdFrame.newFolderCheck()
 #enter new folder name, then click OK button will create it
 ofdFrame.creatFolder(ofdFrame.newfolder_ok)
 
@@ -114,22 +120,23 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("ANewFolder")
+##MenuItems disappeared when select the first path from dirComboBox due to BUG484615
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(samples_menuitem, "MenuItem")
 
 #use keyDown move focus and selection to desktop_menuitem
-ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=True)
+ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
 
-#use mouseClick move focus and selection to mycomputer_menuitem, there is no 
-#"My Computer" folder on listview
-ofdFrame.dir_menu.mouseClick()
+#move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
+ofdFrame.dir_combobox.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.mycomputer_menuitem.mouseClick()
+ofdFrame.mycomputer_menuitem.click()
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("My Computer")
+#menuitems in dirComboBox is missing focused BUG490126
 statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
 

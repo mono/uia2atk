@@ -35,9 +35,6 @@ class OpenFileDialogFrame(accessibles.Frame):
     def click(self, button):
         button.click()
 
-        #click OpenDialog to invoke dialog page
-        self.opendialog = self.app.findDialog("Open")
-
     #do click action and give action log
     def itemClick(self, itemname):
         procedurelogger.action("click %s" % itemname)
@@ -50,6 +47,9 @@ class OpenFileDialogFrame(accessibles.Frame):
 
     #assert if all widgets on Open dialog are showing
     def assertWidgets(self, button=None):
+        #click OpenDialog to invoke dialog page
+        self.opendialog = self.app.findDialog("Open")
+
         procedurelogger.action("search for all widgets from OpenDialog windows")
 
         #there are 3 labels in dialog
@@ -80,12 +80,19 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.menutoolbarbutton = self.toolbarbuttons[3]
         self.menutogglebutton = self.smalltoolbar.findToggleButton(None)
         #there are 5 menuitems under menutogglebutton
-        procedurelogger.expectedResult("5 MenuItem under menutogglebutton are showing up")
-        self.smallicon_menuitem = self.menutogglebutton.findMenuItem("Small Icon", checkShowing=False)
-        self.tiles_menuitem = self.menutogglebutton.findMenuItem("Tiles", checkShowing=False)
-        self.largeicon_menuitem = self.menutogglebutton.findMenuItem("Large Icon", checkShowing=False)
-        self.list_menuitem = self.menutogglebutton.findMenuItem("List", checkShowing=False)
-        self.details_menuitem = self.menutogglebutton.findMenuItem("Details", checkShowing=False)
+        '''
+        self.menutogglebutton.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+        self.window = self.app.findWindow(None, checkShowing=False)
+        procedurelogger.expectedResult("5 MenuItem are showing up after click menutogglebutton")
+        self.smallicon_menuitem = self.window.findMenuItem("Small Icon", checkShowing=False)
+        self.tiles_menuitem = self.window.findMenuItem("Tiles", checkShowing=False)
+        self.largeicon_menuitem = self.window.findMenuItem("Large Icon", checkShowing=False)
+        self.list_menuitem = self.window.findMenuItem("List", checkShowing=False)
+        self.details_menuitem = self.window.findMenuItem("Details", checkShowing=False)
+        self.menutogglebutton.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+        '''
         #there are 2 normal combobox on bottom and 1 dirComboBox on top
         procedurelogger.expectedResult("2 normal combobox on bottom and 1 dirComboBox on top are showing up")
         self.comboboxs = self.opendialog.findAllComboBoxs(None)
@@ -102,14 +109,14 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.mynetwork_menuitem = self.dir_menu.findMenuItem("My Network", checkShowing=False)
         #a listview to show files
         procedurelogger.expectedResult("1 TreeTable with many TableCells are showing up")
-        self.listview = self.opendialog.findList(None)
-        self.listitems = self.listview.findAllListItems(None)
+        self.listview = self.opendialog.findTreeTable(None)
+        self.listitems = self.listview.findAllTableCells(None)
 
         assert len(self.listitems) != 0, "no list items under listview"
 
     #assert if help button and readonly checkbox are showing
     def assertVisibleWidget(self):
-        procedurelogger.expectedResult('"Help" button and "Open Readonly" checkbox  widgets is showing up')
+        procedurelogger.expectedResult('"Help" button and "Open Readonly" checkbox widgets are showing up')
         self.help_button = self.opendialog.findPushButton("Help")
         self.readonly_checkbox = self.opendialog.findCheckBox("Open Readonly")
 
@@ -135,19 +142,19 @@ class OpenFileDialogFrame(accessibles.Frame):
         if button == self.newfolder_cancel:
             procedurelogger.expectedResult("never create new folder")
             try:
-                new_menuitem = self.listview.findListItem("ANewFolder")
+                new_menuitem = self.listview.findTableCell("ANewFolder")
                 if new_menuitem:
                     raise SearchFolderError
             except SearchError:
                 pass
         elif button == self.newfolder_ok:
             procedurelogger.expectedResult("create new folder")
-            self.listview.findListItem("ANewFolder")
+            self.listview.findTableCell("ANewFolder")
 
-    #assert the foldername isn't been showing after click dir menuitem
+    #assert the foldername doesn't in the current dir after click dir menuitem
     def assertMenuItemClick(self, foldername):
 
-        procedurelogger.expectedResult("Directory is changed, you can't find aa folder again")
+        procedurelogger.expectedResult("Directory is changed, you can't find %s folder" % foldername)
         try:
             foldername_menuitem = self.listview.findTableCell(foldername)
             if foldername_menuitem:
@@ -155,7 +162,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         except SearchError:
             pass
 
-    #assert activate table cell to enter folder or open file
+    #assert activate table cell to open folder or open file
     def assertActivate(self, cellname):
         tablecell = self.listview.findTableCell(cellname)
         tablecell.activate()
@@ -163,7 +170,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
 
         if cellname == "ANewFolder":
-            procedurelogger.expectedResult('Enter to "%s" folder' % cellname)
+            procedurelogger.expectedResult('Enter "%s" folder' % cellname)
             try:
                 table_cell = self.listview.findTableCell(None)
                 if len(table_cell) > 0:

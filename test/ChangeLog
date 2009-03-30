@@ -1,5 +1,12 @@
 2009-03-30  Calen Chen <cachen@novell.com>
 
+	* testers/openfiledialog/openfiledialogframe.py: update assertWidgets, 
+	correct some typo
+	* testers/openfiledialog_basic_ops.py: update some tests, add some 
+	comments and bug refrences
+
+2009-03-30  Calen Chen <cachen@novell.com>
+
 	* testers/listview_detail/listviewframe.py: init alltablecell
 	* testers/listview_detail_ops.py: add test to verify BUG459054
 
