@@ -26,10 +26,14 @@
     <File name="ChangeLog" subtype="Code" buildaction="Nothing" />
     <File name="build-glib21.sh" subtype="Code" buildaction="Nothing" />
     <File name="lib" subtype="Directory" buildaction="Compile" />
+    <File name="AtkTextImplementor.cs" subtype="Code" buildaction="Compile" />
+    <File name="Adapter.cs" subtype="Code" buildaction="Compile" />
+    <File name="AdapterFactory.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
-    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" />
     <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="lib/atk-sharp.dll" />
     <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="lib/glib-sharp.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="../../../../../../../../opt/monotrunk/lib/mono/2.1/System.Windows.dll" />
   </References>
 </Project>
