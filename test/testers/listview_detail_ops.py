@@ -62,10 +62,15 @@ statesCheck(lvFrame.column_b, "TableColumnHeader")
 for index in range(6):
     statesCheck(lvFrame.checkbox[index], "ListViewCheckBox")
 
-#check table cell's states, focus on Item0 default
 ##"tree table" has extraneous "table cell" BUG459054
-#statesCheck(lvFrame.tablecells[0], "ListViewTableCell", add_states=["focused"])
-
+if lvFrame.alltablecell[0].name != "Default Group":
+    print "Expected Results: There is no 'Default Group' to be showing"
+    pass
+else:
+    print "TreeTable still has 'Default Group' TableCell"
+    exit(4)
+    
+#check table cell's states, focus on Item0 default
 statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell", add_states=["focused"])
 statesCheck(lvFrame.tablecells['0'], "ListViewTableCell")
 
@@ -99,7 +104,7 @@ statesCheck(lvFrame.checkbox[1], "ListViewCheckBox")
 
 #mouse click items under Column A, both items in the same row be selected, 
 #because FullRowSelect is True, items under Column A should rise focused
-##items under Column A don't rise focused BUG468271
+##items under Column A can rise focused but accerciser doesn't shows it BUG468271 Comment#6
 lvFrame.tablecells['Item0'].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell", add_states=["selected", "focused"])

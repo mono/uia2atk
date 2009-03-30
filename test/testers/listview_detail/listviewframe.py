@@ -33,7 +33,7 @@ class ListViewFrame(accessibles.Frame):
         self.checkbox = dict([(x, self.findCheckBox("Item" + str(x))) for x in range(6)])
         tablecell_list = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3", "3", "Item4", "4", "Item5", "5"]
         self.tablecells = dict([(x, self.findTableCell(x)) for x in tablecell_list])
-        #self.tablecells = self.findAllTableCells(None)
+        self.alltablecell = self.findAllTableCells(None)
         #search for initial position for assert order test
         self.item0_position = self.tablecells['Item0']._getAccessibleCenter()
         self.num0_position = self.tablecells['0']._getAccessibleCenter()
