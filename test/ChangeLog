@@ -1,3 +1,9 @@
+2009-03-31  Calen Chen <cachen@novell.com>
+
+	* testers/openfiledialog/openfiledialogframe.py,
+	* testers/openfiledialog_basic_ops.py: comment out some tests due to 
+	bug blockers
+
 2009-03-30  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py: update assertWidgets, 

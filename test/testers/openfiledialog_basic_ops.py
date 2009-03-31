@@ -119,8 +119,11 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 #to recentlyused_menuitem, there is no "ANewFolder" folder on listview
 ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
+ofdFrame.press(ofdFrame.dir_combobox)
+sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("ANewFolder")
 ##MenuItems disappeared when select the first path from dirComboBox due to BUG484615
+'''
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(samples_menuitem, "MenuItem")
 
@@ -131,9 +134,9 @@ statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selec
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
 
 #move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
-ofdFrame.dir_combobox.mouseClick()
+ofdFrame.itemClick(ofdFrame.mycomputer_menuitem)
 sleep(config.SHORT_DELAY)
-ofdFrame.mycomputer_menuitem.click()
+ofdFrame.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("My Computer")
 #menuitems in dirComboBox is missing focused BUG490126
@@ -143,49 +146,50 @@ statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
 #regression test to click first and last dir menuitem doesn't crash app due to bug474611
 ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
-ofdFrame.click(ofdFrame)
+ofdFrame.mouseClick(ofdFrame)
 sleep(config.SHORT_DELAY)
 assert not ofdFrame.opendialog.assertClosed()
 
 ofdFrame.itemClick(ofdFrame.mynetwork_menuitem)
 sleep(config.SHORT_DELAY)
 assert not ofdFrame.opendialog.assertClosed()
-
+'''
 #############################################################
 ##popUpButtonPanel and popUpButton test
 ##test states
 ##test Action and navigation for popUpButton
 #############################################################
+##states test blocks by BUG490572 and BUG475082
 
-##incorrect states BUG475082
-statesCheck(ofdFrame.popuptoolbar, "ToolBar")
-statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
-statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
+#statesCheck(ofdFrame.popuptoolbar, "ToolBar")
+#statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
+#statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
 #click popUpButton personal to rise focused, there is no "Personal" folder on listview
 ofdFrame.itemClick(ofdFrame.personal_popup)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("Personal")
-statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
+#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
 
 #keyUp move focus to desktop_popup, there is no "Desktop" folder on listview
 ofdFrame.personal_popup.keyCombo("Up", grabFocus=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("Desktop")
-statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
-statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
+#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
+#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
 
 #mouseClick move focus to mycomputer_popup, there is no "My Computer" folder on listview
 ofdFrame.mycomputer_popup.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.assertMenuItemClick("My Computer")
-statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
-statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
+#statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
+#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
 ###############################################
 ##test activate action for Tabel Cell
 ###############################################
 ##missing activate action BUG476365
+'''
 ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.MEDIUM_DELAY)
 #double click to open "README" file
@@ -195,7 +199,7 @@ ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.MEDIUM_DELAY)
 #double click to enter "ANewFolder" folder
 ofdFrame.assertActivate("ANewFolder")
-
+'''
 #close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
 

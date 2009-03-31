@@ -81,6 +81,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.menutogglebutton = self.smalltoolbar.findToggleButton(None)
         #there are 5 menuitems under menutogglebutton
         '''
+        #this should be used if BUG481357 is invalid, but BUG490105 should be fixed first
         self.menutogglebutton.mouseClick(log=False)
         sleep(config.SHORT_DELAY)
         self.window = self.app.findWindow(None, checkShowing=False)
@@ -93,6 +94,16 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.menutogglebutton.mouseClick(log=False)
         sleep(config.SHORT_DELAY)
         '''
+        '''
+        #this should be used if BUG481357 is fixed 
+        procedurelogger.expectedResult("5 MenuItem under menutogglebutton are showing up")
+        self.smallicon_menuitem = self.menutogglebutton.findMenuItem("Small Icon", checkShowing=False)
+        self.tiles_menuitem = self.menutogglebutton.findMenuItem("Tiles", checkShowing=False)
+        self.largeicon_menuitem = self.menutogglebutton.findMenuItem("Large Icon", checkShowing=False)
+        self.list_menuitem = self.menutogglebutton.findMenuItem("List", checkShowing=False)
+        self.details_menuitem = self.menutogglebutton.findMenuItem("Details", checkShowing=False)
+        '''
+
         #there are 2 normal combobox on bottom and 1 dirComboBox on top
         procedurelogger.expectedResult("2 normal combobox on bottom and 1 dirComboBox on top are showing up")
         self.comboboxs = self.opendialog.findAllComboBoxs(None)
