@@ -15,12 +15,22 @@ namespace MoonUiaAtkBridge
 	public class AdapterFactory
 	{
 		internal const char TYPE_SEPARATOR = '_';
+		const string dynamicTypesName = "DynamicAtkTypes";
 
-		internal static PatternInterface [] allPatterns;
+		private static PatternInterface [] allPatterns;
+		private static ModuleBuilder modBuilder;
 
 		static AdapterFactory ()
 		{
 			allPatterns = EnumHelper.GetValues <PatternInterface> ();
+
+			AssemblyName an = new AssemblyName ();
+			an.Version = new Version (0, 0, 0, 1);
+			an.Name = dynamicTypesName;
+			
+			// Define a dynamic assembly
+			AssemblyBuilder ab = System.AppDomain.CurrentDomain.DefineDynamicAssembly (an, AssemblyBuilderAccess.Run);
+			modBuilder = ab.DefineDynamicModule (dynamicTypesName);
 		}
 		
 		static List<Type> GetAtkInterfacesForPeer (AutomationPeer peer) {
@@ -43,15 +53,6 @@ namespace MoonUiaAtkBridge
 		internal Type GetDynamicType (AutomationPeer thePeer)
 		{
 			List<Type> atkInterfaces = GetAtkInterfacesForPeer (thePeer);
-			
-			const string dynamicTypesName = "DynamicAtkTypes";
-			AssemblyName an = new AssemblyName ();
-			an.Version = new Version (1, 0, 0, 0);
-			an.Name = dynamicTypesName;
-			
-			// Define a dynamic assembly
-			AssemblyBuilder ab = System.AppDomain.CurrentDomain.DefineDynamicAssembly (an, AssemblyBuilderAccess.Run);
-			ModuleBuilder modBuilder = ab.DefineDynamicModule (dynamicTypesName);
 
 			string typeName = String.Empty;
 			foreach (Type t in atkInterfaces)
@@ -95,12 +96,25 @@ namespace MoonUiaAtkBridge
 					ilgen = mb.GetILGenerator ();
 					
 					// Load "this"
-					ilgen.Emit(OpCodes.Ldarg_0);
+					ilgen.Emit (OpCodes.Ldarg_0);
 					
 					// Load field
 					ilgen.Emit (OpCodes.Ldfld, fields [i]);
 
-					//TODO: call the method "method" on this field, with the same params
+					for (int j = 0; j < paramTypes.Count; j++) {
+						if (j == 0)
+							ilgen.Emit (OpCodes.Ldarg_1);
+						else if (j == 1)
+							ilgen.Emit (OpCodes.Ldarg_2);
+						else if (j == 2)
+							ilgen.Emit (OpCodes.Ldarg_3);
+						else
+							ilgen.Emit (OpCodes.Ldarg_S, j + 1);
+					}
+
+					ilgen.Emit (OpCodes.Callvirt, method);
+
+					//TODO: methods with return-type
 
 				}
 				//TODO: properties
