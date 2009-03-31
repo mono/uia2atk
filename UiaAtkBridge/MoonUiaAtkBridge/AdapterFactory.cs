@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 
 namespace MoonUiaAtkBridge
 {
@@ -39,7 +40,9 @@ namespace MoonUiaAtkBridge
 			List<PatternInterface> patterns = new List<PatternInterface> ();
 			
 			foreach (PatternInterface pattern in allPatterns) {
-				if (peer.GetPattern (pattern) != null)
+				object patternImplementor = peer.GetPattern (pattern);
+				if (patternImplementor != null &&
+				    GetProviderInterfaceForPattern (pattern).IsInstanceOfType (patternImplementor))
 					patterns.Add (pattern);
 			}
 			
@@ -50,7 +53,16 @@ namespace MoonUiaAtkBridge
 			return atkTypes;
 		}
 
-		internal Type GetDynamicType (AutomationPeer thePeer)
+		private static Type GetProviderInterfaceForPattern (PatternInterface pattern)
+		{
+			switch (pattern) {
+			case PatternInterface.Value: return typeof (IValueProvider);
+			//TODO: check if there's already a function for this; if not, finish this switch...
+			}
+			return null;
+		}
+
+		internal static Type GetDynamicType (AutomationPeer thePeer)
 		{
 			List<Type> atkInterfaces = GetAtkInterfacesForPeer (thePeer);
 
