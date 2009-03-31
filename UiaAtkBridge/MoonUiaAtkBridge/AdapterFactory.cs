@@ -84,9 +84,15 @@ namespace MoonUiaAtkBridge
 
 			foreach (Type i in atkInterfaces) {
 				foreach (MethodInfo method in i.GetMethods ()) {
+
+					//FIXME: ignore events for now
+					if (method.Name.StartsWith ("add_") || method.Name.StartsWith ("remove_"))
+						continue;
+					
 					List<Type> paramTypes = new List<Type> ();
 					foreach (ParameterInfo param in method.GetParameters ())
 						paramTypes.Add (param.ParameterType);
+
 					MethodBuilder mb = tb.DefineMethod (method.Name, 
 					                                    MethodAttributes.Public, 
 					                                    CallingConventions.Standard,
@@ -114,7 +120,10 @@ namespace MoonUiaAtkBridge
 
 					ilgen.Emit (OpCodes.Callvirt, method);
 
-					//TODO: methods with return-type
+					// Emit return opcode (valid for void or notvoid methods)
+					ilgen.Emit (OpCodes.Ret);
+					
+					//TODO: out/ref params
 
 				}
 				//TODO: properties

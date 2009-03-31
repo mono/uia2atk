@@ -1,5 +1,9 @@
 2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AdapterFactory.cs: Emit ret and ignore events.
+
+2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AdapterFactory.cs: Using callvirt.
 
 2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
