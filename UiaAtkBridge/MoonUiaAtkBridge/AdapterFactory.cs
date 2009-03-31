@@ -81,7 +81,7 @@ namespace MoonUiaAtkBridge
 				fields.Add (i, tb.DefineField (i.Name.ToLower (), i, FieldAttributes.Private));
 
 			ConstructorBuilder cb = tb.DefineConstructor (MethodAttributes.Public, CallingConventions.Standard, 
-			                                              new Type [] { typeof (Adapter), typeof (AutomationPeer) } );
+			                                              new Type [] { typeof (AutomationPeer) } );
 
 			ILGenerator ilgen = cb.GetILGenerator ();
 			

@@ -1,5 +1,13 @@
 2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTextImplementor.cs: It's implementors who receive the
+	adapter in the ctor.
+
+	* AdapterFactory.cs: Custom types only receive a peer in the
+	ctor.
+
+2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AdapterFactory.cs: We still need to check the type besides
 	checking != null.
 

@@ -7,7 +7,7 @@ namespace MoonUiaAtkBridge
 	
 	public class AtkTextImplementor : Atk.Text {
 
-		public AtkTextImplementor (Atk.Object plain, AutomationPeer val)
+		public AtkTextImplementor (Adapter plain, AutomationPeer val)
 		{
 			
 		}
