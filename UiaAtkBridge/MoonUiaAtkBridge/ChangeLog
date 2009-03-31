@@ -1,5 +1,9 @@
 2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AdapterFactory.cs: Style.
+
+2009-03-31  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AdapterFactory.cs:
 	* MoonUiaAtkBridge.mdp: Alternative for Enum.GetValues()
 	borrowed from

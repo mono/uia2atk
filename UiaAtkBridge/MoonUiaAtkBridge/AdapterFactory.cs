@@ -45,8 +45,8 @@ namespace MoonUiaAtkBridge
 			List<Type> atkInterfaces = GetAtkInterfacesForPeer (thePeer);
 			
 			const string dynamicTypesName = "DynamicAtkTypes";
-			AssemblyName an = new AssemblyName();
-			an.Version = new Version(1, 0, 0, 0);
+			AssemblyName an = new AssemblyName ();
+			an.Version = new Version (1, 0, 0, 0);
 			an.Name = dynamicTypesName;
 			
 			// Define a dynamic assembly
@@ -64,12 +64,11 @@ namespace MoonUiaAtkBridge
 				                       typeof (Adapter), atkInterfaces.ToArray());
 
 			Dictionary <Type, FieldBuilder> fields = new Dictionary<Type, FieldBuilder> ();
-			foreach (Type i in atkInterfaces) {
+			foreach (Type i in atkInterfaces)
 				fields.Add (i, tb.DefineField (i.Name.ToLower (), i, FieldAttributes.Private));
-			}
 
 			ConstructorBuilder cb = tb.DefineConstructor (MethodAttributes.Public, CallingConventions.Standard, 
-			                                              new Type[] { typeof (Adapter), typeof (AutomationPeer) } );
+			                                              new Type [] { typeof (Adapter), typeof (AutomationPeer) } );
 
 			ILGenerator ilgen = cb.GetILGenerator ();
 			
@@ -80,7 +79,7 @@ namespace MoonUiaAtkBridge
 			ilgen.Emit (OpCodes.Call, typeof (Adapter).GetConstructor (new Type [] { typeof (AutomationPeer) }));
 			
 			// Emit return opcode
-			ilgen.Emit(OpCodes.Ret);
+			ilgen.Emit (OpCodes.Ret);
 
 			foreach (Type i in atkInterfaces) {
 				foreach (MethodInfo method in i.GetMethods ()) {
@@ -93,12 +92,12 @@ namespace MoonUiaAtkBridge
 					                                    method.ReturnType, paramTypes.ToArray ());
 					
 					// Get the IL generator for the method
-					ilgen = mb.GetILGenerator();
+					ilgen = mb.GetILGenerator ();
 					
 					// Load "this"
 					ilgen.Emit(OpCodes.Ldarg_0);
 					
-					// Load field "m_Quotes"
+					// Load field
 					ilgen.Emit (OpCodes.Ldfld, fields [i]);
 
 					//TODO: call the method "method" on this field, with the same params
@@ -113,15 +112,14 @@ namespace MoonUiaAtkBridge
 
 		internal class EnumHelper {
 			
-			public static T[] GetValues <T>()
+			public static T [] GetValues <T> ()
 			{
 				Type enumType = typeof (T);
 	
 				if (!enumType.IsEnum)
 					throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
-				
 	
-				List<T> values = new List<T>();
+				List <T> values = new List <T> ();
 	
 				var fields = from field in enumType.GetFields ()
 				  where field.IsLiteral
@@ -129,11 +127,11 @@ namespace MoonUiaAtkBridge
 	
 				foreach (FieldInfo field in fields)
 				{
-					object value = field.GetValue(enumType);
-					values.Add((T)value);
+					object value = field.GetValue (enumType);
+					values.Add ((T)value);
 				}
 				
-				return values.ToArray();
+				return values.ToArray ();
 			}
 		}
 	}
