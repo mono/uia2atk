@@ -3,6 +3,8 @@ using System;
 
 using System.Collections.Generic;
 
+using System.Linq;
+
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -12,18 +14,17 @@ namespace MoonUiaAtkBridge
 {
 	public class AdapterFactory
 	{
-		public const char TYPE_SEPARATOR = '_';
+		internal const char TYPE_SEPARATOR = '_';
 
+		internal static PatternInterface [] allPatterns;
+
+		static AdapterFactory ()
+		{
+			allPatterns = EnumHelper.GetValues <PatternInterface> ();
+		}
+		
 		static List<Type> GetAtkInterfacesForPeer (AutomationPeer peer) {
 			List<Type> atkTypes = new List<Type> ();
-
-			//yeah, because Enum.GetValues (typeof (PatternInterface)) is not present in SL!
-			List<PatternInterface> allPatterns = new List<PatternInterface> ();
-			//FIXME: change this to be static and initialized just once
-			allPatterns.Add (PatternInterface.Dock);
-			allPatterns.Add (PatternInterface.ExpandCollapse);
-			allPatterns.Add (PatternInterface.Value);
-			//TODO: I'm lazy, finish this list tomorrow...
 			
 			List<PatternInterface> patterns = new List<PatternInterface> ();
 			
@@ -110,5 +111,31 @@ namespace MoonUiaAtkBridge
 
 		}
 
+		internal class EnumHelper {
+			
+			public static T[] GetValues <T>()
+			{
+				Type enumType = typeof (T);
+	
+				if (!enumType.IsEnum)
+					throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
+				
+	
+				List<T> values = new List<T>();
+	
+				var fields = from field in enumType.GetFields ()
+				  where field.IsLiteral
+				  select field;
+	
+				foreach (FieldInfo field in fields)
+				{
+					object value = field.GetValue(enumType);
+					values.Add((T)value);
+				}
+				
+				return values.ToArray();
+			}
+		}
 	}
+
 }
