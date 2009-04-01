@@ -180,7 +180,7 @@ statesCheck(cbddFrame.menuitem[3], "MenuItem", invalid_states=["showing"])
 #clearSelection may not get rid of selected, see bug468456
 cbddFrame.assertClearSelection(cbddFrame.menu)
 sleep(config.SHORT_DELAY)
-#statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
 
 ##############################################
 ## test AtkStreamableContent for text
