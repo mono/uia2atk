@@ -1,5 +1,9 @@
 2009-04-01  Calen Chen <cachen@novell.com>
 
+	* testers/listview_detail_ops.py: modify comments
+
+2009-04-01  Calen Chen <cachen@novell.com>
+
 	* testers/columnheader_basic_ops.py,
 	* testers/combobox_dropdown_ops.py, 
 	* testers/listview_detail_ops.py: comment out some failing tests

@@ -90,6 +90,7 @@ lvFrame.checkbox[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.checkbox[0], "ListViewCheckBox", add_states=["checked"])
 
+#mouse click again to uncheck
 lvFrame.checkbox[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.checkbox[0], "ListViewCheckBox")
@@ -99,6 +100,7 @@ lvFrame.click(lvFrame.checkbox[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.checkbox[1], "ListViewCheckBox", add_states=["checked"])
 
+#do click action again to uncheck
 lvFrame.click(lvFrame.checkbox[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.checkbox[1], "ListViewCheckBox")
