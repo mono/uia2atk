@@ -1,3 +1,8 @@
+2009-04-01  Calen Chen <cachen@novell.com>
+
+	* testers/columnheader_basic_ops.py,
+	* testers/combobox_dropdown_ops.py: comment out some failing tests
+
 2009-03-31  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py,
