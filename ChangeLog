@@ -1,8 +1,13 @@
+2009-04-01  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/moon-security.diff: ongoing work to sync a11y
+	initialization with the CoreCLR in trunk.
+
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
-	* gtksharp21code.diff:
-	* gtksharp21autotools.diff: they now build with 'make moonlight',
-	hoorray!
+	* patches/gtksharp21code.diff:
+	* patches/gtksharp21autotools.diff: they now build with 'make 
+	moonlight', hoorray!
 
 2009-03-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
@@ -11,24 +16,24 @@
 
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
-	* gtksharp21autotools.diff: No longer use --enable-moonlight-support
-	but rather use new make targets.
+	* patches/gtksharp21autotools.diff: No longer use 
+	--enable-moonlight-support but rather use new make targets.
 
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
-	* gtksharp21autotools.diff: Add an incomplete patch for the
-	build scripts of glib-sharp in the 2.1 profile.
+	* patches/gtksharp21autotools.diff: Add an incomplete patch 
+	for the build scripts of glib-sharp in the 2.1 profile.
 
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
-	* gtksharp21-mcs.diff: Add mcs patch to make glib-sharp build
-	on the 2.1 profile (there is some marshalling API that is
+	* patches/gtksharp21-mcs.diff: Add mcs patch to make glib-sharp 
+	build on the 2.1 profile (there is some marshalling API that is
 	not public, so we need InternalsVisibleTo).
 
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
-	* gtksharp21code.diff: Add incomplete patch to make glib-sharp
-	build on the 2.1 profile.
+	* pacthes/gtksharp21code.diff: Add incomplete patch to make 
+	glib-sharp build on the 2.1 profile.
 
 2009-03-02  Mario Carrion  <mcarrion@novell.com>
 

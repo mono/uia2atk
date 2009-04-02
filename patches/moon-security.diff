@@ -1,0 +1,2119 @@
+Index: class/tuning/SecurityAttributes/PlatformCode.cs
+===================================================================
+--- class/tuning/SecurityAttributes/PlatformCode.cs	(revision 130816)
++++ class/tuning/SecurityAttributes/PlatformCode.cs	(working copy)
+@@ -29,14 +29,18 @@
+ 
+ 		// [1] does not contain any [SecurityCritical] or [SecuritySafeCritical] attribute
+ 		// [2] has a different public key than the other assemblies
++		// [3] needed for accessibility support
+ 
+ 		// Both [1] and [2] may be considered platform code - but since they don't 
+ 		// (but, I guess, eventually could) use [SecurityCritical] nor [SecuritySafeCritical]
+ 		// they are in effect totally transparent (like application code).
+ 
+ 		static string [] platform_code_assemblies = {
++			"atk-sharp",			// [3]
++			"glib-sharp",			// [3]
+ 			"mscorlib",
+ 			"Microsoft.VisualBasic",	// [1][2]
++			"MoonUiaAtkBridge",		// [3]
+ 			"System",
+ 			"System.Core",
+ 			"System.Net",
+Index: class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.ssc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.ssc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.ssc	(revision 0)
+@@ -0,0 +1,3 @@
++# [SecuritySafeCritical] needed inside MoonUiaAtkBridge to call all [SecurityCritical] methods
++# 0 methods
++
+Index: class/tuning/SecurityAttributes/automatic/glib-sharp.auto.ssc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/glib-sharp.auto.ssc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/glib-sharp.auto.ssc	(revision 0)
+@@ -0,0 +1,63 @@
++# [SecuritySafeCritical] needed inside glib-sharp to call all [SecurityCritical] methods
++# 60 methods
++
+++SSC-M: System.Void GLib.DestroyHelper::ReleaseGCHandle(System.IntPtr)
+++SSC-M: System.Void GLib.ExceptionManager::RaiseUnhandledException(System.Exception,System.Boolean)
+++SSC-M: System.String GLib.GException::get_Message()
+++SSC-M: System.Void GLib.GInterfaceAdapter::.ctor()
+++SSC-M: System.Void GLib.GInterfaceAdapter::Finalize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void GLib.Global::FreeHGlobal(System.IntPtr)
+++SSC-M: System.IntPtr GLib.Global::AllocHGlobal(System.IntPtr)
+++SSC-M: System.IntPtr GLib.Global::ReAllocHGlobal(System.IntPtr,System.IntPtr)
+++SSC-M: System.IntPtr GLib.Global::AllocHGlobal(System.Int32)
+++SSC-M: System.Type GLib.GType::LookupType(System.IntPtr)
+++SSC-M: System.IntPtr GLib.GType::ValFromInstancePtr(System.IntPtr)
+++SSC-M: System.UInt32 GLib.IOChannel::AddWatch(System.Int32,GLib.IOCondition,GLib.IOFunc)
+++SSC-M: GLib.IOStatus GLib.IOChannel::ReadToEnd(System.String&)
+++SSC-M: System.IntPtr GLib.ListBase::AllocNativeElement(System.Object)
+++SSC-M: System.Object GLib.ListBase::DataMarshal(System.IntPtr)
+++SSC-M: System.IntPtr GLib.ListBase::GetData(System.IntPtr)
+++SSC-M: System.IntPtr GLib.ListBase::Next(System.IntPtr)
+++SSC-M: System.Void GLib.ManagedValue::.ctor(System.Object)
+++SSC-M: System.Void GLib.ManagedValue::Unref()
+++SSC-M: GLib.ManagedValue GLib.ManagedValue::FromHandle(System.IntPtr)
+++SSC-M: System.String GLib.Marshaller::Utf8PtrToString(System.IntPtr)
+++SSC-M: System.IntPtr GLib.Marshaller::StringToPtrGStrdup(System.String)
+++SSC-M: System.String[] GLib.Marshaller::NullTermPtrToStringArray(System.IntPtr,System.Boolean)
+++SSC-M: System.String[] GLib.Marshaller::PtrToStringArrayGFree(System.IntPtr)
+++SSC-M: System.Boolean GLib.Marshaller::check_sixtyfour()
+++SSC-M: System.IntPtr GLib.Marshaller::make_buf_32(System.String[])
+++SSC-M: System.IntPtr GLib.Marshaller::make_buf_64(System.String[])
+++SSC-M: System.String[] GLib.Marshaller::unmarshal_32(System.IntPtr,System.Int32)
+++SSC-M: System.String[] GLib.Marshaller::unmarshal_64(System.IntPtr,System.Int32)
+++SSC-M: System.UInt32 GLib.Marshaller::CharToGUnichar(System.Char)
+++SSC-M: System.IntPtr GLib.Marshaller::StructureToPtrAlloc(System.Object)
+++SSC-M: System.Void GLib.Object::OverridePropertyHandlers(GLib.GType,GLib.Object/GetPropertyDelegate,GLib.Object/SetPropertyDelegate)
+++SSC-M: System.Void GLib.Object::NotifyCallback(System.IntPtr,System.IntPtr,System.IntPtr)
+++SSC-M: System.Int32 GLib.Object::get_RefCount()
+++SSC-M: GLib.GType GLib.ParamSpec::get_ValueType()
+++SSC-M: System.IntPtr GLib.PtrArray::get_ArrayPtr()
+++SSC-M: System.Int32 GLib.PtrArray::get_Count()
+++SSC-M: System.Object GLib.PtrArray::DataMarshal(System.IntPtr)
+++SSC-M: System.IntPtr GLib.PtrArray::NthData(System.UInt32)
+++SSC-M: System.Delegate GLib.Signal::get_Handler()
+++SSC-M: System.Void GLib.Signal/EmissionHookMarshaler::.ctor(GLib.Signal/EmissionHook)
+++SSC-M: System.Boolean GLib.Signal/EmissionHookMarshaler::NativeCallback(GLib.Signal/InvocationHint&,System.UInt32,System.IntPtr,System.IntPtr)
+++SSC-M: System.Boolean GLib.Signal/EmissionHookMarshaler::NativeInvoker(GLib.Signal/InvocationHint,System.Object[])
+++SSC-M: System.Void GLib.SignalClosure::.ctor(System.IntPtr,System.String,System.Type)
+++SSC-M: System.Void GLib.SignalClosure::.ctor(System.IntPtr,System.String,System.Delegate,GLib.Signal)
+++SSC-M: System.Void GLib.SignalClosure::Dispose()
+++SSC-M: System.Void GLib.SignalClosure::MarshalCallback(System.IntPtr,System.IntPtr,System.UInt32,System.IntPtr,System.IntPtr,System.IntPtr)
+++SSC-M: System.Void GLib.SpawnChildSetupWrapper::.ctor(GLib.SpawnChildSetupFunc)
+++SSC-M: System.Void GLib.SpawnChildSetupWrapper::InvokeHandler(System.IntPtr)
+++SSC-M: System.Boolean GLib.Process::SpawnAsyncWithPipes(System.String,System.String[],System.String[],GLib.SpawnFlags,GLib.SpawnChildSetupFunc,GLib.Process&,System.Int32&,System.Int32&,System.Int32&)
+++SSC-M: System.Void GLib.ToggleRef::.ctor(GLib.Object)
+++SSC-M: System.Void GLib.ToggleRef::Free()
+++SSC-M: System.Void GLib.ToggleRef::RefToggled(System.IntPtr,System.IntPtr,System.Boolean)
+++SSC-M: GLib.ValueArray/NativeStruct GLib.ValueArray::get_Native()
+++SSC-M: System.Object GLib.ValueArray::get_Item(System.Int32)
+++SSC-M: System.Void GLib.Value::.ctor(System.String[])
+++SSC-M: System.Object GLib.Value::ToBoxed()
+++SSC-M: System.Void GLib.Value::set_Val(System.Object)
+++SSC-M: System.Void GLib.Value::Update(System.Object)
+++SSC-M: System.String[] GLib.Value::op_Explicit(GLib.Value)
+Index: class/tuning/SecurityAttributes/automatic/atk-sharp.auto.ssc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/atk-sharp.auto.ssc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/atk-sharp.auto.ssc	(revision 0)
+@@ -0,0 +1,55 @@
++# [SecuritySafeCritical] needed inside atk-sharp to call all [SecurityCritical] methods
++# 52 methods
++
+++SSC-M: System.Void Atk.ActionAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void AtkSharp.EventListenerInitWrapper::NativeCallback()
+++SSC-M: System.Void AtkSharp.EventListenerInitWrapper::PersistUntilCalled()
+++SSC-M: System.Void AtkSharp.EventListenerWrapper::NativeCallback(System.IntPtr)
+++SSC-M: System.Void AtkSharp.EventListenerWrapper::PersistUntilCalled()
+++SSC-M: System.Void AtkSharp.FocusHandlerWrapper::NativeCallback(System.IntPtr,System.Boolean)
+++SSC-M: System.Void AtkSharp.FocusHandlerWrapper::PersistUntilCalled()
+++SSC-M: System.Boolean AtkSharp.FunctionWrapper::NativeCallback(System.IntPtr)
+++SSC-M: System.Void AtkSharp.FunctionWrapper::PersistUntilCalled()
+++SSC-M: System.Int32 AtkSharp.KeySnoopFuncWrapper::NativeCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void AtkSharp.KeySnoopFuncWrapper::PersistUntilCalled()
+++SSC-M: System.Void AtkSharp.PropertyChangeHandlerWrapper::NativeCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void AtkSharp.PropertyChangeHandlerWrapper::PersistUntilCalled()
+++SSC-M: Atk.Attribute Atk.Attribute::New(System.IntPtr)
+++SSC-M: System.Void Atk.ComponentAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.DocumentAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.EditableTextAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.HyperlinkImplAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.HypertextAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ImageAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ImplementorAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: Atk.KeyEventStruct Atk.KeyEventStruct::New(System.IntPtr)
+++SSC-M: Atk.TextRectangle Atk.NoOpObject::GetRangeExtents(System.Int32,System.Int32,Atk.CoordType)
+++SSC-M: System.Void Atk.NoOpObject::GetCurrentValue(GLib.Value&)
+++SSC-M: System.Void Atk.NoOpObject::GetMaximumValue(GLib.Value&)
+++SSC-M: System.Void Atk.NoOpObject::GetMinimumValue(GLib.Value&)
+++SSC-M: System.Boolean Atk.NoOpObject::SetCurrentValue(GLib.Value)
+++SSC-M: System.Void Atk.NoOpObject::GetMinimumIncrement(GLib.Value&)
+++SSC-M: System.Void Atk.Object::ActiveDescendantChangedSignalCallback(System.IntPtr,System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.Object::ChildrenChangedSignalCallback(System.IntPtr,System.UInt32,System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.Object::PropertyChangeSignalCallback(System.IntPtr,System.IntPtr,System.IntPtr)
+++SSC-M: Atk.PropertyValues Atk.PropertyValues::New(System.IntPtr)
+++SSC-M: Atk.Rectangle Atk.Rectangle::New(System.IntPtr)
+++SSC-M: System.Void Atk.SelectionAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.StreamableContentAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.TableAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.TextAdapter::GetRangeExtentsCallback(System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr)
+++SSC-M: System.Void Atk.TextAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: Atk.TextRectangle Atk.TextAdapter::GetRangeExtents(System.Int32,System.Int32,Atk.CoordType)
+++SSC-M: Atk.TextRange Atk.TextRange::New(System.IntPtr)
+++SSC-M: Atk.TextRectangle Atk.TextRectangle::New(System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::GetCurrentValueCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::GetMaximumValueCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::GetMinimumValueCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Boolean Atk.ValueAdapter::SetCurrentValueCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::GetMinimumIncrementCallback(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::Initialize(System.IntPtr,System.IntPtr)
+++SSC-M: System.Void Atk.ValueAdapter::GetCurrentValue(GLib.Value&)
+++SSC-M: System.Void Atk.ValueAdapter::GetMaximumValue(GLib.Value&)
+++SSC-M: System.Void Atk.ValueAdapter::GetMinimumValue(GLib.Value&)
+++SSC-M: System.Boolean Atk.ValueAdapter::SetCurrentValue(GLib.Value)
+++SSC-M: System.Void Atk.ValueAdapter::GetMinimumIncrement(GLib.Value&)
+Index: class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.sc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.sc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/MoonUiaAtkBridge.auto.sc	(revision 0)
+@@ -0,0 +1,3 @@
++# [SecurityCritical] needed to execute code inside 'MoonUiaAtkBridge, Version=1.0.3378.32569, Culture=neutral, PublicKeyToken=null'.
++# 0 methods needs to be decorated.
++
+Index: class/tuning/SecurityAttributes/automatic/glib-sharp.auto.sc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/glib-sharp.auto.sc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/glib-sharp.auto.sc	(revision 0)
+@@ -0,0 +1,639 @@
++# [SecurityCritical] needed to execute code inside 'glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f'.
++# 212 methods needs to be decorated.
++
++# p/invoke declaration
+++SC-M: GLib.LogLevelFlags GLib.Log::g_log_set_always_fatal(GLib.LogLevelFlags)
++
++# p/invoke declaration
+++SC-M: GLib.LogLevelFlags GLib.Log::g_log_set_fatal_mask(System.IntPtr,GLib.LogLevelFlags)
++
++# p/invoke declaration
+++SC-M: GLib.PrintFunc GLib.Log::g_set_print_handler(GLib.PrintFunc)
++
++# p/invoke declaration
+++SC-M: GLib.PrintFunc GLib.Log::g_set_printerr_handler(GLib.PrintFunc)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.FileUtils::g_file_get_contents(System.IntPtr,System.IntPtr&,System.Int32&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.GType::g_type_is_a(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Idle::g_source_remove_by_funcs_user_data(System.Delegate,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.IOChannel::g_io_channel_get_buffered(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.IOChannel::g_io_channel_get_close_on_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.MainContext::g_main_context_iteration(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.MainContext::g_main_context_pending(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.MainLoop::g_main_loop_is_running(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Object::g_type_check_instance_is_a(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.ParamSpec::g_type_is_a(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Process::g_spawn_async(System.IntPtr,System.IntPtr[],System.IntPtr[],System.Int32,GLib.SpawnChildSetupFuncNative,System.IntPtr,System.Int32&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Process::g_spawn_async_with_pipes(System.IntPtr,System.IntPtr[],System.IntPtr[],System.Int32,GLib.SpawnChildSetupFuncNative,System.IntPtr,System.Int32&,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Process::g_spawn_command_line_async(System.IntPtr,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Process::g_spawn_command_line_sync(System.IntPtr,System.IntPtr&,System.IntPtr&,System.Int32&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Process::g_spawn_sync(System.IntPtr,System.IntPtr[],System.IntPtr[],System.Int32,GLib.SpawnChildSetupFuncNative,System.IntPtr,System.IntPtr&,System.IntPtr&,System.Int32&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.SignalCallback::g_signal_handler_is_connected(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.SignalClosure::g_signal_handler_is_connected(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Source::g_source_remove(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Thread::glibsharp_g_thread_supported()
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Value::g_type_check_value_holds(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean GLib.Value::g_value_get_boolean(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Byte GLib.Value::g_value_get_uchar(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Double GLib.Value::g_value_get_double(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_error_from_errno(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_error_quark()
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_flush(System.IntPtr,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_get_buffer_condition(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_get_flags(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_read_chars(System.IntPtr,System.Byte[],System.UIntPtr,System.UIntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_read_line(System.IntPtr,System.IntPtr&,System.IntPtr,System.UIntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_read_to_end(System.IntPtr,System.IntPtr&,System.UIntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_read_unichar(System.IntPtr,System.UInt32&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_seek_position(System.IntPtr,System.Int64,System.Int32,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_set_encoding(System.IntPtr,System.IntPtr,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_set_flags(System.IntPtr,System.Int32,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_shutdown(System.IntPtr,System.Boolean,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_unix_get_fd(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_write_chars(System.IntPtr,System.Byte[],System.IntPtr,System.UIntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.IOChannel::g_io_channel_write_unichar(System.IntPtr,System.UInt32,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.List::g_list_length(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.MainContext::g_main_depth()
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.Marshaller::g_unichar_to_utf8(System.UInt32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.SList::g_slist_length(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.Value::g_value_get_enum(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Int32 GLib.Value::g_value_get_int(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Int64 GLib.Value::g_value_get_int64(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Argv::g_malloc(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Global::g_get_application_name()
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Global::g_get_prgname()
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GString::g_string_free(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GString::g_string_new(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GType::g_type_class_peek(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GType::g_type_class_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GType::g_type_from_name(System.String)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GType::g_type_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.GType::g_type_register_static(System.IntPtr,System.IntPtr,GLib.GType/GTypeInfo&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_channel_get_encoding(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_channel_get_line_term(System.IntPtr,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_channel_new_file(System.IntPtr,System.IntPtr,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_channel_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_channel_unix_new(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.IOChannel::g_io_create_watch(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.List::g_list_append(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.List::g_list_copy(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.List::g_list_nth_data(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.List::g_list_prepend(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.MainLoop::g_main_loop_new(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ManagedValue::g_boxed_type_register_static(System.IntPtr,GLib.ManagedValue/CopyFunc,GLib.ManagedValue/FreeFunc)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Markup::g_markup_escape_text(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Marshaller::g_filename_from_utf8(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Marshaller::g_filename_to_utf8(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr&,System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Marshaller::g_malloc(System.UIntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Marshaller::g_malloc0(System.UIntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Marshaller::g_utf16_to_ucs4(System.UInt16&,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.NotifyArgs::g_param_spec_get_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Object::g_object_new(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Object::g_object_newv(System.IntPtr,System.Int32,GLib.Object/GParameter[])
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Object::g_object_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ObjectManager::g_type_parent(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_gtype_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_boolean(System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_boxed(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_char(System.IntPtr,System.IntPtr,System.IntPtr,System.SByte,System.SByte,System.SByte,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_double(System.IntPtr,System.IntPtr,System.IntPtr,System.Double,System.Double,System.Double,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_float(System.IntPtr,System.IntPtr,System.IntPtr,System.Single,System.Single,System.Single,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_gtype(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_int(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_int64(System.IntPtr,System.IntPtr,System.IntPtr,System.Int64,System.Int64,System.Int64,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_long(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_object(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_pointer(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_string(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_uchar(System.IntPtr,System.IntPtr,System.IntPtr,System.Byte,System.Byte,System.Byte,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_uint(System.IntPtr,System.IntPtr,System.IntPtr,System.UInt32,System.UInt32,System.UInt32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_uint64(System.IntPtr,System.IntPtr,System.IntPtr,System.UInt64,System.UInt64,System.UInt64,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ParamSpec::g_param_spec_ulong(System.IntPtr,System.IntPtr,System.IntPtr,System.UIntPtr,System.UIntPtr,System.UIntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.PtrArray::g_ptr_array_copy(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.PtrArray::g_ptr_array_new()
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.PtrArray::g_ptr_array_sized_new(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Signal::g_cclosure_new(System.Delegate,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Signal::g_signal_get_invocation_hint(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SignalClosure::g_cclosure_new(System.Delegate,System.IntPtr,GLib.SignalClosure/ClosureNotify)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SignalClosure::g_closure_new_simple(System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SList::g_slist_append(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SList::g_slist_copy(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SList::g_slist_nth_data(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.SList::g_slist_prepend(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ToggleRef::g_object_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_object_class_find_property(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_strv_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_value_get_boxed(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_value_get_object(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_value_get_param(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_value_get_pointer(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.Value::g_value_get_string(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ValueArray::g_value_array_copy(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ValueArray::g_value_array_get_nth(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr GLib.ValueArray::g_value_array_new(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.SByte GLib.Value::g_value_get_char(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Single GLib.Value::g_value_get_float(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Idle::g_idle_add(GLib.Idle/IdleHandlerInternal,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.IOChannel::g_io_add_watch_full(System.IntPtr,System.Int32,System.Int32,GLibSharp.IOFuncNative,System.IntPtr,GLib.DestroyNotify)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Log::g_log_remove_handler(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Log::g_log_set_handler(System.IntPtr,GLib.LogLevelFlags,GLib.LogFunc,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Signal::g_quark_from_string(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Signal::g_signal_lookup(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.SignalCallback::g_signal_connect_data(System.IntPtr,System.IntPtr,System.Delegate,System.Int32,System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.SignalClosure::g_signal_connect_closure(System.IntPtr,System.IntPtr,System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Timeout::g_timeout_add(System.UInt32,GLib.Timeout/TimeoutHandlerInternal,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Timeout::g_timeout_add_seconds(System.UInt32,GLib.Timeout/TimeoutHandlerInternal,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Value::g_value_get_flags(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.UInt32 GLib.Value::g_value_get_uint(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.UInt64 GLib.Signal::g_signal_add_emission_hook(System.UInt32,System.UInt32,GLib.Signal/EmissionHookNative,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt64 GLib.Value::g_value_get_uint64(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.UIntPtr GLib.IOChannel::g_io_channel_get_buffer_size(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Argv::g_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.DelegateWrapper::g_object_set_data_full(System.IntPtr,System.IntPtr,System.IntPtr,GLib.DelegateWrapper/DestroyNotify)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.GException::g_clear_error(System.IntPtr&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Global::g_set_application_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Global::g_set_prgname(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.GType::g_type_init()
++
++# p/invoke declaration
+++SC-M: System.Void GLib.GType::g_type_query(System.IntPtr,GLib.GType/GTypeQuery&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_init(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_set_buffer_size(System.IntPtr,System.UIntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_set_buffered(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_set_close_on_unref(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_set_line_term(System.IntPtr,System.Byte[],System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.IOChannel::g_io_channel_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.List::g_list_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ListBase::g_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ListBase::g_object_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Log::g_log_default_handler(System.IntPtr,GLib.LogLevelFlags,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Log::g_logv(System.IntPtr,GLib.LogLevelFlags,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.MainLoop::g_main_loop_quit(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.MainLoop::g_main_loop_run(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.MainLoop::g_main_loop_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Marshaller::g_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Marshaller::g_strfreev(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_object_class_install_property(System.IntPtr,System.UInt32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_object_get_property(System.IntPtr,System.IntPtr,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_object_notify(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_object_set_property(System.IntPtr,System.IntPtr,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_object_unref(System.IntPtr)
++
++# [VISIBLE] p/invoke declaration
+++SC-M: System.Void GLib.Object::g_signal_chain_from_overridden(System.IntPtr,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Object::g_type_add_interface_static(System.IntPtr,System.IntPtr,GLib.GInterfaceInfo&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Process::g_spawn_close_pid(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_object_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_ptr_array_add(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_ptr_array_free(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_ptr_array_remove(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.PtrArray::g_ptr_array_remove_range(System.IntPtr,System.UInt32,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Signal::g_signal_emitv(System.IntPtr,System.UInt32,System.UInt32,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Signal::g_signal_emitv(System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Signal::g_signal_override_class_closure(System.UInt32,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Signal::g_signal_query(System.UInt32,GLib.Signal/Query&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.SignalCallback::g_signal_handler_disconnect(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.SignalClosure::g_closure_add_finalize_notifier(System.IntPtr,System.IntPtr,GLib.SignalClosure/ClosureNotify)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.SignalClosure::g_closure_set_marshal(System.IntPtr,GLib.SignalClosure/ClosureMarshal)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.SignalClosure::g_signal_handler_disconnect(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.SList::g_slist_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Thread::g_thread_init(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ToggleRef::g_object_add_toggle_ref(System.IntPtr,GLib.ToggleRef/ToggleNotifyHandler,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ToggleRef::g_object_remove_toggle_ref(System.IntPtr,GLib.ToggleRef/ToggleNotifyHandler,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ToggleRef::g_object_unref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_init(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_boolean(GLib.Value&,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_boxed(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_char(GLib.Value&,System.SByte)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_double(GLib.Value&,System.Double)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_enum(GLib.Value&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_flags(GLib.Value&,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_float(GLib.Value&,System.Single)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_int(GLib.Value&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_int64(GLib.Value&,System.Int64)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_object(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_param(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_pointer(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_string(GLib.Value&,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_uchar(GLib.Value&,System.Byte)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_uint(GLib.Value&,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_set_uint64(GLib.Value&,System.UInt64)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.Value::g_value_unset(GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ValueArray::g_value_array_append(System.IntPtr,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ValueArray::g_value_array_free(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ValueArray::g_value_array_insert(System.IntPtr,System.UInt32,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ValueArray::g_value_array_prepend(System.IntPtr,GLib.Value&)
++
++# p/invoke declaration
+++SC-M: System.Void GLib.ValueArray::g_value_array_remove(System.IntPtr,System.UInt32)
++
+Index: class/tuning/SecurityAttributes/automatic/atk-sharp.auto.sc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/atk-sharp.auto.sc	(revision 0)
++++ class/tuning/SecurityAttributes/automatic/atk-sharp.auto.sc	(revision 0)
+@@ -0,0 +1,1179 @@
++# [SecurityCritical] needed to execute code inside 'atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f'.
++# 392 methods needs to be decorated.
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ActionAdapter::atk_action_do_action(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ActionAdapter::atk_action_set_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ComponentAdapter::atk_component_contains(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ComponentAdapter::atk_component_grab_focus(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ComponentAdapter::atk_component_set_extents(System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ComponentAdapter::atk_component_set_position(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ComponentAdapter::atk_component_set_size(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.DocumentAdapter::atk_document_set_attribute_value(System.IntPtr,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.EditableTextAdapter::atk_editable_text_set_run_attributes(System.IntPtr,System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Hyperlink::atk_action_do_action(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Hyperlink::atk_action_set_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Hyperlink::atk_hyperlink_is_inline(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Hyperlink::atk_hyperlink_is_selected_link(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Hyperlink::atk_hyperlink_is_valid(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ImageAdapter::atk_image_set_image_description(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_action_do_action(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_action_set_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_component_contains(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_component_grab_focus(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_component_set_extents(System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_component_set_position(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_component_set_size(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_document_set_attribute_value(System.IntPtr,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_editable_text_set_run_attributes(System.IntPtr,System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_image_set_image_description(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_selection_add_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_selection_clear_selection(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_selection_is_child_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_selection_remove_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_selection_select_all_selection(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_add_column_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_add_row_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_is_column_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_is_row_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_is_selected(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_remove_column_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_table_remove_row_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_text_add_selection(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_text_remove_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_text_set_caret_offset(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_text_set_selection(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.NoOpObject::atk_value_set_current_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Object::atk_object_add_relationship(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.Object::atk_object_remove_relationship(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.RelationSet::atk_relation_set_contains(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.SelectionAdapter::atk_selection_add_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.SelectionAdapter::atk_selection_clear_selection(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.SelectionAdapter::atk_selection_is_child_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.SelectionAdapter::atk_selection_remove_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.SelectionAdapter::atk_selection_select_all_selection(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.StateSet::atk_state_set_add_state(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.StateSet::atk_state_set_contains_state(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.StateSet::atk_state_set_contains_states(System.IntPtr,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.StateSet::atk_state_set_is_empty(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.StateSet::atk_state_set_remove_state(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_add_column_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_add_row_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_is_column_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_is_row_selected(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_is_selected(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_remove_column_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TableAdapter::atk_table_remove_row_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TextAdapter::atk_text_add_selection(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TextAdapter::atk_text_remove_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TextAdapter::atk_text_set_caret_offset(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.TextAdapter::atk_text_set_selection(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Boolean Atk.ValueAdapter::atk_value_set_current_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Double Atk.ComponentAdapter::atk_component_get_alpha(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Double Atk.NoOpObject::atk_component_get_alpha(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.ActionAdapter::atk_action_get_n_actions(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.ComponentAdapter::atk_component_get_layer(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.ComponentAdapter::atk_component_get_mdi_zorder(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Global::atk_role_for_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Global::atk_role_register(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Hyperlink::atk_action_get_n_actions(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Hyperlink::atk_hyperlink_get_end_index(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Hyperlink::atk_hyperlink_get_n_anchors(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Hyperlink::atk_hyperlink_get_start_index(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.HypertextAdapter::atk_hypertext_get_link_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.HypertextAdapter::atk_hypertext_get_n_links(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Misc::atksharp_misc_override_threads_enter(System.IntPtr,Atk.Misc/ThreadDelegate)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Misc::atksharp_misc_override_threads_leave(System.IntPtr,Atk.Misc/ThreadDelegate)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_action_get_n_actions(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_component_get_layer(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_component_get_mdi_zorder(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_hypertext_get_link_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_hypertext_get_n_links(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_selection_get_selection_count(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_column_at_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_column_extent_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_index_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_n_columns(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_n_rows(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_row_at_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_row_extent_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_selected_columns(System.IntPtr,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_table_get_selected_rows(System.IntPtr,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_text_get_caret_offset(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_text_get_character_count(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_text_get_n_selections(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.NoOpObject::atk_text_get_offset_at_point(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Object::atk_object_get_index_in_parent(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Object::atk_object_get_layer(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Object::atk_object_get_mdi_zorder(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Object::atk_object_get_n_accessible_children(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Object::atk_object_get_role(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Relation::atk_relation_get_relation_type(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Relation::atk_relation_type_for_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.Relation::atk_relation_type_register(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.RelationSet::atk_relation_set_get_n_relations(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.SelectionAdapter::atk_selection_get_selection_count(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.StateManager::atk_state_type_for_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.StateManager::atk_state_type_register(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.StreamableContentAdapter::atk_streamable_content_get_n_mime_types(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_column_at_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_column_extent_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_index_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_n_columns(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_n_rows(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_row_at_index(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_row_extent_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_selected_columns(System.IntPtr,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TableAdapter::atk_table_get_selected_rows(System.IntPtr,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_attribute_for_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_attribute_register(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_get_caret_offset(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_get_character_count(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_get_n_selections(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Int32 Atk.TextAdapter::atk_text_get_offset_at_point(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ActionAdapter::atk_action_get_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ActionAdapter::atk_action_get_keybinding(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ActionAdapter::atk_action_get_localized_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ActionAdapter::atk_action_get_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ActionAdapter::atk_action_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ComponentAdapter::atk_component_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ComponentAdapter::atk_component_ref_accessible_at_point(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.CoordTypeGType::atk_coord_type_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_attribute_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_attributes(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_document(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_document_type(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_locale(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.DocumentAdapter::atk_document_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.EditableTextAdapter::atk_editable_text_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_default_registry()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_focus_object()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_root()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_toolkit_name()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_toolkit_version()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_get_version()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_role_get_localized_name(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Global::atk_role_get_name(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.GObjectAccessible::atk_gobject_accessible_for_object(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.GObjectAccessible::atk_gobject_accessible_get_object(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.GObjectAccessible::atk_gobject_accessible_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_action_get_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_action_get_keybinding(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_action_get_localized_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_action_get_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_hyperlink_get_object(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_hyperlink_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Hyperlink::atk_hyperlink_get_uri(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.HyperlinkImplAdapter::atk_hyperlink_impl_get_hyperlink(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.HyperlinkImplAdapter::atk_hyperlink_impl_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.HyperlinkStateFlagsGType::atk_hyperlink_state_flags_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.HypertextAdapter::atk_hypertext_get_link(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.HypertextAdapter::atk_hypertext_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ImageAdapter::atk_image_get_image_description(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ImageAdapter::atk_image_get_image_locale(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ImageAdapter::atk_image_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ImplementorAdapter::atk_implementor_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ImplementorAdapter::atk_implementor_ref_accessible(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.KeyEventTypeGType::atk_key_event_type_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.LayerGType::atk_layer_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Misc::atk_misc_get_instance()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Misc::atk_misc_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_action_get_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_action_get_keybinding(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_action_get_localized_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_action_get_name(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_component_ref_accessible_at_point(System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_document_get_attribute_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_document_get_attributes(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_document_get_document(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_document_get_document_type(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_document_get_locale(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_hypertext_get_link(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_image_get_image_description(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_image_get_image_locale(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_no_op_object_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_no_op_object_new(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_selection_ref_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_caption(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_column_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_column_header(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_row_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_row_header(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_get_summary(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_table_ref_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_bounded_ranges(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_default_attributes(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_run_attributes(System.IntPtr,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_selection(System.IntPtr,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_text_after_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_text_at_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObject::atk_text_get_text_before_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObjectFactory::atk_no_op_object_factory_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.NoOpObjectFactory::atk_no_op_object_factory_new()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_get_attributes(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_get_description(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_get_name(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_get_parent(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_ref_accessible_child(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_ref_relation_set(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atk_object_ref_state_set(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atksharp_object_base_ref_relation_set(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::atksharp_object_base_ref_state_set(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Object::g_object_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ObjectFactory::atk_object_factory_create_accessible(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ObjectFactory::atk_object_factory_get_accessible_type(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ObjectFactory::atk_object_factory_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ObjectFactory::g_object_ref(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Rectangle::atk_rectangle_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Registry::atk_registry_get_factory(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Registry::atk_registry_get_factory_type(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Registry::atk_registry_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Relation::atk_relation_get_target(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Relation::atk_relation_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Relation::atk_relation_new(System.IntPtr[],System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Relation::atk_relation_type_get_name(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RelationSet::atk_relation_set_get_relation(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RelationSet::atk_relation_set_get_relation_by_type(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RelationSet::atk_relation_set_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RelationSet::atk_relation_set_new()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RelationTypeGType::atk_relation_type_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.RoleGType::atk_role_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.SelectionAdapter::atk_selection_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.SelectionAdapter::atk_selection_ref_selection(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateManager::atk_state_type_get_name(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateSet::atk_state_set_and_sets(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateSet::atk_state_set_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateSet::atk_state_set_new()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateSet::atk_state_set_or_sets(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateSet::atk_state_set_xor_sets(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StateTypeGType::atk_state_type_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StreamableContentAdapter::atk_streamable_content_get_mime_type(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StreamableContentAdapter::atk_streamable_content_get_stream(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StreamableContentAdapter::atk_streamable_content_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.StreamableContentAdapter::atk_streamable_content_get_uri(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_caption(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_column_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_column_header(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_row_description(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_row_header(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_summary(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TableAdapter::atk_table_ref_at(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_attribute_get_name(System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_attribute_get_value(System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_bounded_ranges(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_default_attributes(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_run_attributes(System.IntPtr,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_selection(System.IntPtr,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_text_after_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_text_at_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_text_before_offset(System.IntPtr,System.Int32,System.Int32,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAdapter::atk_text_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextAttributeGType::atk_text_attribute_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextBoundaryGType::atk_text_boundary_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.TextClipTypeGType::atk_text_clip_type_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.Util::atk_util_get_type()
++
++# p/invoke declaration
+++SC-M: System.IntPtr Atk.ValueAdapter::atk_value_get_type()
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.ComponentAdapter::atk_component_add_focus_handler(System.IntPtr,AtkSharp.FocusHandlerNative)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.Global::atk_add_focus_tracker(AtkSharp.EventListenerNative)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.Global::atk_add_global_event_listener(GLib.Signal/EmissionHookNative,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.Global::atk_add_key_event_listener(AtkSharp.KeySnoopFuncNative,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.NoOpObject::atk_component_add_focus_handler(System.IntPtr,AtkSharp.FocusHandlerNative)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.NoOpObject::atk_text_get_character_at_offset(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.Object::atk_object_connect_property_change_handler(System.IntPtr,AtkSharp.PropertyChangeHandlerNative)
++
++# p/invoke declaration
+++SC-M: System.UInt32 Atk.TextAdapter::atk_text_get_character_at_offset(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ComponentAdapter::atk_component_get_extents(System.IntPtr,System.Int32&,System.Int32&,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ComponentAdapter::atk_component_get_position(System.IntPtr,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ComponentAdapter::atk_component_get_size(System.IntPtr,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ComponentAdapter::atk_component_remove_focus_handler(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_copy_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_cut_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_delete_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_insert_text(System.IntPtr,System.IntPtr,System.Int32,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_paste_text(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.EditableTextAdapter::atk_editable_text_set_text_contents(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Focus::atk_focus_tracker_init(AtkSharp.EventListenerInitNative)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Focus::atk_focus_tracker_notify(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Global::atk_remove_focus_tracker(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Global::atk_remove_global_event_listener(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Global::atk_remove_key_event_listener(System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_base_link_activated(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_get_end_index(System.IntPtr,Atk.Hyperlink/GetEndIndexDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_get_n_anchors(System.IntPtr,Atk.Hyperlink/GetNAnchorsDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_get_object(System.IntPtr,Atk.Hyperlink/GetObjectDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_get_start_index(System.IntPtr,Atk.Hyperlink/GetStartIndexDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_get_uri(System.IntPtr,Atk.Hyperlink/GetUriDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_is_selected_link(System.IntPtr,Atk.Hyperlink/IsSelectedLinkDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_is_valid(System.IntPtr,Atk.Hyperlink/IsValidDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_link_activated(System.IntPtr,Atk.Hyperlink/LinkActivatedVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Hyperlink::atksharp_hyperlink_override_link_state(System.IntPtr,Atk.Hyperlink/LinkStateDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ImageAdapter::atk_image_get_image_position(System.IntPtr,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ImageAdapter::atk_image_get_image_size(System.IntPtr,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Misc::atk_misc_threads_enter(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Misc::atk_misc_threads_leave(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Misc::atksharp_misc_set_singleton_instance(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_component_get_extents(System.IntPtr,System.Int32&,System.Int32&,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_component_get_position(System.IntPtr,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_component_get_size(System.IntPtr,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_component_remove_focus_handler(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_copy_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_cut_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_delete_text(System.IntPtr,System.Int32,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_insert_text(System.IntPtr,System.IntPtr,System.Int32,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_paste_text(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_editable_text_set_text_contents(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_image_get_image_position(System.IntPtr,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_image_get_image_size(System.IntPtr,System.Int32&,System.Int32&)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_caption(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_column_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_column_header(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_row_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_row_header(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_table_set_summary(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_text_get_character_extents(System.IntPtr,System.Int32,System.Int32&,System.Int32&,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_text_get_range_extents(System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_value_get_current_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_value_get_maximum_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_value_get_minimum_increment(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.NoOpObject::atk_value_get_minimum_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_initialize(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_notify_state_change(System.IntPtr,System.UInt64,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_remove_property_change_handler(System.IntPtr,System.UInt32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_set_description(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_set_name(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_set_parent(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atk_object_set_role(System.IntPtr,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_active_descendant_changed(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_children_changed(System.IntPtr,System.UInt32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_focus_event(System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_property_change(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_state_change(System.IntPtr,System.IntPtr,System.Boolean)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_base_visible_data_changed(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_active_descendant_changed(System.IntPtr,Atk.Object/ActiveDescendantChangedVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_children_changed(System.IntPtr,Atk.Object/ChildrenChangedVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_focus_event(System.IntPtr,Atk.Object/FocusEventVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_get_index_in_parent(System.IntPtr,Atk.Object/IndexInParentDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_get_n_children(System.IntPtr,Atk.Object/NChildrenDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_property_change(System.IntPtr,Atk.Object/PropertyChangeVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_ref_child(System.IntPtr,Atk.Object/RefChildDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_ref_relation_set(System.IntPtr,Atk.Object/RefRelationSetDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_ref_state_set(System.IntPtr,Atk.Object/RefStateSetDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_state_change(System.IntPtr,Atk.Object/StateChangeVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Object::atksharp_object_override_visible_data_changed(System.IntPtr,Atk.Object/VisibleDataChangedVMDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ObjectFactory::atk_object_factory_invalidate(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ObjectFactory::atksharp_object_factory_override_create_accessible(System.IntPtr,Atk.ObjectFactory/CreateAccessibleDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ObjectFactory::atksharp_object_factory_override_get_accessible_type(System.IntPtr,Atk.ObjectFactory/GetAccessibleTypeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ObjectFactory::atksharp_object_factory_override_invalidate(System.IntPtr,Atk.ObjectFactory/InvalidateDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Registry::atk_registry_set_factory_type(System.IntPtr,System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Relation::atk_relation_add_target(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.RelationSet::atk_relation_set_add(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.RelationSet::atk_relation_set_add_relation_by_type(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.RelationSet::atk_relation_set_remove(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.StateSet::atk_state_set_add_states(System.IntPtr,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.StateSet::atk_state_set_clear_states(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_caption(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_column_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_column_header(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_row_description(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_row_header(System.IntPtr,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TableAdapter::atk_table_set_summary(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TextAdapter::atk_text_free_ranges(System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TextAdapter::atk_text_get_character_extents(System.IntPtr,System.Int32,System.Int32&,System.Int32&,System.Int32&,System.Int32&,System.Int32)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.TextAdapter::atk_text_get_range_extents(System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_add_global_event_listener(Atk.Util/AddGlobalEventListenerNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_add_key_event_listener(Atk.Util/AddKeyEventListenerNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_get_root(Atk.Util/GetRootNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_get_toolkit_name(Atk.Util/GetToolkitNameNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_get_toolkit_version(Atk.Util/GetToolkitVersionNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_remove_global_event_listener(Atk.Util/RemoveListenerNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.Util::atksharp_util_override_remove_key_event_listener(Atk.Util/RemoveListenerNativeDelegate)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ValueAdapter::atk_value_get_current_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ValueAdapter::atk_value_get_maximum_value(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ValueAdapter::atk_value_get_minimum_increment(System.IntPtr,System.IntPtr)
++
++# p/invoke declaration
+++SC-M: System.Void Atk.ValueAdapter::atk_value_get_minimum_value(System.IntPtr,System.IntPtr)
++
+Index: class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(revision 130816)
++++ class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(working copy)
+@@ -1,7 +1,9 @@
+ # [SecuritySafeCritical] needed inside System.Windows to call all [SecurityCritical] methods
+-# 422 methods
++# 424 methods
+ 
+ +SSC-M: System.Void Microsoft.Internal.TextBoxView::.ctor()
+++SSC-M: System.Void Mono.A11yHelper::Initialize()
+++SSC-M: System.Void Mono.A11yHelper::Launch(System.String)
+ +SSC-M: Mono.Xaml.ManagedXamlLoader Mono.ApplicationLauncher::CreateXamlLoader(System.IntPtr,System.IntPtr,System.IntPtr,System.String,System.String)
+ +SSC-M: System.Void Mono.DispatcherTimer::.ctor()
+ +SSC-M: System.Void Mono.Events::InitSurface(System.IntPtr)
+Index: class/System.Windows/System.Windows.mdp
+===================================================================
+--- class/System.Windows/System.Windows.mdp	(revision 130794)
++++ class/System.Windows/System.Windows.mdp	(working copy)
+@@ -429,6 +429,7 @@
+     <File name="Mono/MoonlightValueConverter.cs" subtype="Code" buildaction="Compile" />
+     <File name="Mono/ToggleRef.cs" subtype="Code" buildaction="Compile" />
+     <File name="System.Windows.Controls.Primitives/IScrollInfo.cs" subtype="Code" buildaction="Compile" />
++    <File name="Mono/A11yHelper.cs" subtype="Code" buildaction="Compile" />
+   </Contents>
+   <References>
+     <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="../lib/2.1/System.Windows.Browser.dll" />
+Index: class/System.Windows/Mono/A11yHelper.cs
+===================================================================
+--- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
++++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
+@@ -0,0 +1,64 @@
++
++using System;
++using System.IO;
++using System.Reflection;
++
++namespace Mono
++{
++	internal static class A11yHelper
++	{
++		const string @namespace = "MoonUiaAtkBridge";
++		
++		internal static void Initialize ()
++		{
++			const string assembly_name = @namespace + ".dll";
++			
++			string current_assembly_location = System.Reflection.Assembly.GetExecutingAssembly ().Location;
++			string load_location = Path.Combine (Path.GetDirectoryName (current_assembly_location), assembly_name);
++			if (File.Exists (load_location))
++				Launch (load_location);
++
++			int pos = current_assembly_location.IndexOf ("moonlight@novell");
++			if (pos > 0) {
++				load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
++				if (Directory.Exists (load_location)) {
++					load_location = Path.Combine (Path.Combine (load_location, "components"), assembly_name);
++					Launch (load_location);
++				}
++			}
++		}
++		
++		internal static void Launch (string location)
++		{
++			//Console.WriteLine ("____location to load:" + Path.GetDirectoryName (location));
++			try{
++				bridge = Assembly.LoadFrom (location);
++				Console.WriteLine ("perfect!");
++				
++				//DELETEME:
++				GetAccessible ();
++
++			} catch (System.Exception ex){
++				//Console.WriteLine ("________________ ex happened:" + ex);
++			}
++		}
++		
++		static Assembly bridge;
++		
++		public static IntPtr GetAccessible ()
++		{
++			IntPtr a11y_obj_handle = IntPtr.Zero;
++			if (bridge != null) {
++				Type automationbridge = bridge.GetType (@namespace + ".AutomationBridge");
++				
++				a11y_obj_handle = (IntPtr)
++				  automationbridge.InvokeMember ("Initialize", 
++				                                 BindingFlags.InvokeMethod |
++				                                 BindingFlags.Static | 
++				                                 BindingFlags.Public, null, null, null);
++				//Console.WriteLine ("perfect2!!!" + (a11y_obj_handle == IntPtr.Zero) + (a11y_obj_handle == null));
++			}
++			return a11y_obj_handle;
++		}
++	}
++}
+Index: class/System.Windows/Mono/ApplicationLauncher.cs
+===================================================================
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 130794)
++++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
+@@ -44,6 +44,11 @@
+ 	/// </summary>	
+ 	class ApplicationLauncher {
+ 
++		static ApplicationLauncher ()
++		{
++			A11yHelper.Initialize ();
++		}
++		
+ 		/// <summary>
+ 		///   Creates a new Loader for a XAML file.
+ 		/// </summary>
+Index: class/System.Windows/Makefile.am
+===================================================================
+--- class/System.Windows/Makefile.am	(revision 130794)
++++ class/System.Windows/Makefile.am	(working copy)
+@@ -38,6 +38,7 @@
+ 	$(srcdir)/MS.Internal/Dummy.cs	\
+ 	$(srcdir)/System.Windows.Hosting/Dummy.cs	\
+ 	$(srcdir)/System.IO/SimpleUnmanagedMemoryStream.cs			\
++	$(srcdir)/Mono/A11yHelper.cs					\
+ 	$(srcdir)/Mono/ApplicationLauncher.cs					\
+ 	$(srcdir)/Mono/DispatcherTimer.cs					\
+ 	$(srcdir)/Mono/EventHandlerList.cs					\
