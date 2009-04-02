@@ -1,5 +1,11 @@
 2009-04-02  Calen Chen <cachen@novell.com>
 
+	* testers/columnheader/columnheaderframe.py, 
+	* testers/columnheader_basic_ops.py: modify comments and add space 
+	behind #
+
+2009-04-02  Calen Chen <cachen@novell.com>
+
 	* testers/colordialog/colordialogframe.py: modify assertSmallColorText 
 	to test all SmallColorButton's Text. modify assertClickSmallColor to 
 	use smallcolorbutton.name as its Color name base on BUG488998

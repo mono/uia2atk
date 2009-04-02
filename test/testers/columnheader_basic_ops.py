@@ -43,52 +43,58 @@ if app is None:
 # just an alias to make things shorter
 chFrame = app.columnHeaderFrame
 
-#check TableColumnHeader's actions list
+# check TableColumnHeader's actions list
 actionsCheck(chFrame.column_a, "TableColumnHeader")
 actionsCheck(chFrame.column_b, "TableColumnHeader")
 
-#check TableColumnHeader's states list
+# check TableColumnHeader's states list
 statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
-#check text implementation
+# check text implementation
 chFrame.assertText(chFrame.column_a, "Column A")
 
 chFrame.assertText(chFrame.column_b, "Num")
 
-#check item's order after click column header
+# check item's order after click column header
 ##click action doesn't work BUG476304
 chFrame.click(chFrame.column_a)
 sleep(config.LONG_DELAY)
-#chFrame.assertOrder(itemone="Item5")
+#chFrame.assertOrder(firstitem="Item5")
+
+# check column_a's states after click it
+statesCheck(chFrame.column_a, "TableColumnHeader")
 
 chFrame.click(chFrame.column_b)
 sleep(config.LONG_DELAY)
-#chFrame.assertOrder(itemone="Item0")
+#chFrame.assertOrder(firstitem="Item0")
 
-#check item's order after mouse click column header, also the test can check 
+# check column_b's states after click it
+statesCheck(chFrame.column_b, "TableColumnHeader")
+
+# check item's order after mouse click column header, also the test can check 
 #column header's position
 chFrame.column_a.mouseClick()
 sleep(config.SHORT_DELAY)
-chFrame.assertOrder(itemone="Item5")
+chFrame.assertOrder(firstitem="Item5")
 
 statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
 chFrame.column_b.mouseClick()
 sleep(config.SHORT_DELAY)
-chFrame.assertOrder(itemone="Item0")
+chFrame.assertOrder(firstitem="Item0")
 
 statesCheck(chFrame.column_b, "TableColumnHeader")
 statesCheck(chFrame.column_a, "TableColumnHeader")
 
-#check ColumnHeader AtkImage implementation
+# check ColumnHeader AtkImage implementation
 ##incorrect imageSize BUG477563
 #chFrame.assertImageSize(chFrame.column_a)
 
 #chFrame.assertImageSize(chFrame.column_b)
 
-#close application frame window
+# close application frame window
 chFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
