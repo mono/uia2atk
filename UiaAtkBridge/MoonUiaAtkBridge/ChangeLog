@@ -1,5 +1,10 @@
 2009-04-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* build-glib21.sh: Now the security attribs are injected to
+	glib/atk-sharp.
+
+2009-04-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* build-glib21.sh: Add moon as a build req as well.
 
 2009-04-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
