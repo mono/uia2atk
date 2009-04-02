@@ -21,7 +21,7 @@ namespace CustomControl
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            myCustomControl.AddNewItem();
+			//myCustomControl.AddNewItem();
         }
     }
 }

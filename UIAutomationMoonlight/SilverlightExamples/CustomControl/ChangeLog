@@ -1,3 +1,9 @@
+2009-04-02  Mario Carrion  <mcarrion@novell.com>
+
+	* CustomControl/Page.xaml,
+	CustomControl/Page.xaml.cs,
+	CustomControl/UselessControlPeer.cs: Fixed NRE when requesting children.
+
 2009-03-30  Mario Carrion  <mcarrion@novell.com>
 
 	* CustomControl/CustomControl.csproj: Updated, files added.

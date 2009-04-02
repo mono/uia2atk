@@ -21,6 +21,7 @@ namespace CustomControl
 		public UselessControlPeer (UselessControl control)
 			: base (control)
 		{
+			this.uselessControl = control;
 			//AcceleratorKeyProperty
 			//AccessKeyProperty
 			//AutomationIdProperty

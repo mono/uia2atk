@@ -4,7 +4,7 @@
     xmlns:custom="clr-namespace:CustomControl"
     Width="350" Height="345">
     <Canvas x:Name="LayoutRoot" Background="White">
-        <custom:MyCustomControl x:Name="myCustomControl" Canvas.Left="10" Canvas.Top="10"></custom:MyCustomControl>
+        <!-- <custom:MyCustomControl x:Name="myCustomControl" Canvas.Left="10" Canvas.Top="10"></custom:MyCustomControl> -->
         <Button Content="Add new item" Canvas.Left="120" Canvas.Top="10" Click="Button_Click">
 			<ToolTipService.ToolTip>
 				<ToolTip>
