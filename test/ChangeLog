@@ -1,5 +1,12 @@
 2009-04-02  Calen Chen <cachen@novell.com>
 
+	* testers/combobox_dropdown/comboboxdropdownframe.py: rewrite 
+	typeMenuItem and insertMenuItem
+	* testers/combobox_dropdown_ops.py: update and conflat some comments, 
+	modify tests due to frame wraper's changed
+
+2009-04-02  Calen Chen <cachen@novell.com>
+
 	* testers/columnheader/columnheaderframe.py, 
 	* testers/columnheader_basic_ops.py: modify comments and add space 
 	behind #
