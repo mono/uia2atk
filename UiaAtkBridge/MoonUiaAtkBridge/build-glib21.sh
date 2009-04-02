@@ -7,4 +7,9 @@ GTK_SHARP_PATH=../../../gtksharp21
 #(cd $GTK_SHARP_PATH; \
 #	./bootstrap-2.12 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
 
+#FIXME: move this to a pre-install target:
+#cp *.dll $(MCS_PATH)/class/lib/net_2_1_raw
+#FIXME: now call the tuner in moon/class/tuning
+
+#FIXME: cp from $MONO_PREFIX/lib/moon/plugin to get the no-raw assemblies
 cp -rfvp $GTK_SHARP_PATH/moonbin/*.dll lib
