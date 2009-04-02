@@ -30,35 +30,35 @@ class ColorDialogFrame(accessibles.Frame):
         self.main_label= self.findLabel(self.LABEL)
         self.main_text = self.findText(None)
 
-    #do click action
+    # do click action
     def click(self, button):
         button.click()
 
-        #click button will invoke dialog page
+        # click button will invoke dialog page
         self.colordialog = self.app.findDialog("Color")
 
-    #assert if all widgets on Font dialog are showing
+    # assert if all widgets on Font dialog are showing
     def AssertWidgets(self):
         procedurelogger.action("search for all widgets from ColorDialog windows")
 
-        #there are 4 push buttons in dialog
+        # there are 4 push buttons in dialog
         procedurelogger.expectedResult("4 PushButtons are showing up")
         self.ok_button = self.colordialog.findPushButton("OK")
         self.cancel_button = self.colordialog.findPushButton("Cancel")
         self.definecolor_button = self.colordialog.findPushButton("Define Custom Colors >>")
         self.addcolor_button = self.colordialog.findPushButton("Add To Custom Colors", checkShowing=False)
-        #click definecolor_button
+        # click definecolor_button
         self.click(self.definecolor_button)
         sleep(config.SHORT_DELAY)
-        #there are 1 panel for SmallColorControls and 4 panels for custom colors
+        # there are 1 panel for SmallColorControls and 4 panels for custom colors
         procedurelogger.expectedResult("5 Panels are showing up")      
         self.panels = self.colordialog.findAllPanels(None)
         assert len(self.panels) == 5, "%s not match 4" % len(self.panels)
-        #there are 64 SmallColorControls showing as PushButton
+        # there are 64 SmallColorControls showing as PushButton
         procedurelogger.expectedResult("64 SmallColorControls are showing up as PushButton")
         self.smallcolor_buttons = self.panels[0].findAllPushButtons(None)
         assert len(self.smallcolor_buttons) == 64, "%s not match 64" % len(self.smallcolor_buttons)
-        #there are 9 Labels in dialog
+        # there are 9 Labels in dialog
         procedurelogger.expectedResult("9 Labels are showing up")
         self.base_label = self.colordialog.findLabel("Base Colors:")
         self.user_label = self.colordialog.findLabel("User Colors:")
@@ -69,7 +69,7 @@ class ColorDialogFrame(accessibles.Frame):
         self.Red_label = self.colordialog.findLabel("Red:")
         self.Green_label = self.colordialog.findLabel("Green:")
         self.Blue_label = self.colordialog.findLabel("Blue:")
-        #there are 6 TextBoxs in dialog
+        # there are 6 TextBoxs in dialog
         procedurelogger.expectedResult("6 TextBoxs are showing up")
         self.texts = self.colordialog.findAllTexts(None)
         self.hue_text = self.texts[0]
@@ -79,14 +79,16 @@ class ColorDialogFrame(accessibles.Frame):
         self.breen_text = self.texts[4]
         self.blue_text = self.texts[5]
 
-    #Text test for SmallColorControls under Base Colors and User Colors
-    def assertSmallColorText(self, accessible):
+    # Text test for SmallColorControls under Base Colors and User Colors
+    def assertSmallColorText(self):
         procedurelogger.action("test the text of SmallColorControls")
 
-        procedurelogger.expectedResult("the text of SmallColorControls are None")
-        assert accessible.text == "", "%s not match None" % accessible.text
+        for i in range(64):
+            procedurelogger.expectedResult("the text of %s are None" % self.smallcolor_buttons[i])
+            assert self.smallcolor_buttons[i].text == "", "%s not match None" \
+                                         % self.smallcolor_buttons[i].text
 
-    #Name test for SmallColorControls under Base Colors and User Colors
+    # Name test for SmallColorControls under Base Colors and User Colors
     def assertSmallColorName(self, accessible=None, colorname=None):
         procedurelogger.action("test the name of SmallColorControls")
 
@@ -100,14 +102,13 @@ class ColorDialogFrame(accessibles.Frame):
             assert accessible.name == colorname, "%s is not match %s" % \
                                                   (accessible.name, colorname)
 
-    #Assert main label is changed to check AtkAction test for SmallColorControls
-    def assertClickSmallColor(self, newlabel):
+    # Assert click SmallColorControls to change main label 
+    def assertClickSmallColor(self, smallcolorbutton):
+        # expect lable is changed
+        procedurelogger.expectedResult('lable shows "%s" being selected' % smallcolorbutton.name)
 
-        procedurelogger.expectedResult('label on form window change to "%s"' % newlabel)
-        #assert self.main_label.text == "Color [%s]" % str(self.main_text.color)
-
-        assert self.main_label.text == newlabel, "%s not match %s" %\
-                                       (self.main_label.text, newlabel)
+        assert self.main_label.text == "Color [%s]" % smallcolorbutton.name, \
+                                         "%s not match %s" % (self.main_label.text, smallcolorbutton.name)
 
     # assert the size of an image in the button
     def assertImageSize(self, button, width=-1, height=-1):
@@ -130,6 +131,6 @@ class ColorDialogFrame(accessibles.Frame):
 
 
 
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

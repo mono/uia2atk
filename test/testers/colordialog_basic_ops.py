@@ -45,16 +45,16 @@ if app is None:
 cdFrame = app.colorDialogFrame
 
 #####################################################
-##search for all widgets from color dialog
+# search for all widgets from color dialog
 #####################################################
 
-#click button to show colordialog page, then check subwidgets
+# click button to show colordialog page, then check subwidgets
 cdFrame.click(cdFrame.colordialog_button)
 sleep(config.SHORT_DELAY)
 cdFrame.AssertWidgets()
 
 #####################################################################
-##States test for dialog, SmallColorControls and Panels 
+# States test for dialog, SmallColorControls and Panels 
 #####################################################################
 
 statesCheck(cdFrame.colordialog, "Dialog", add_states=["active", "modal"], \
@@ -68,34 +68,32 @@ statesCheck(cdFrame.smallcolor_buttons[0], "Button")
 
 statesCheck(cdFrame.smallcolor_buttons[63], "Button")
 
-#mouse click may raise focused state
+# mouse click may raise focused state
 cdFrame.smallcolor_buttons[53].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.smallcolor_buttons[53], "Button", add_states=["focused"])
 
-#keyTab move focused to the next SmallColorControl
+# keyTab move focused to the next SmallColorControl
 cdFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.smallcolor_buttons[52], "Button", add_states=["focused"])
 statesCheck(cdFrame.smallcolor_buttons[53], "Button")
 
-#AtkAction doesn't raise focused state
+# AtkAction doesn't raise focused state
 cdFrame.click(cdFrame.smallcolor_buttons[50])
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.smallcolor_buttons[50], "Button")
 
 ####################################################################
-##Text test for SmallColorControls under Base Colors and User Colors
+# Text test for SmallColorControls under Base Colors and User Colors
 ####################################################################
 
-#SmallColorControls' Text are None
-cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[5])
-
-cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
+# SmallColorControls' Text are None
+cdFrame.assertSmallColorText()
 
 
 ####################################################################
-##Name test for SmallColorControls under Base Colors and User Colors
+# Name test for SmallColorControls under Base Colors and User Colors
 ####################################################################
 
 ##SmallColorControls are missing names for orca to announce due to BUG488998
@@ -104,7 +102,7 @@ cdFrame.assertSmallColorText(cdFrame.smallcolor_buttons[55])
 #cdFrame.assertSmallColorName(cdFrame.smallcolor_buttons[0], "White")
 
 ################################################
-##AtkImage test for SmallColorControls
+# AtkImage test for SmallColorControls
 ################################################
 
 cdFrame.assertImageSize(cdFrame.smallcolor_buttons[10])
@@ -112,31 +110,27 @@ cdFrame.assertImageSize(cdFrame.smallcolor_buttons[10])
 cdFrame.assertImageSize(cdFrame.smallcolor_buttons[40])
 
 ###########################################################################
-##AtkAction test for SmallColorControls to change main label
+# AtkAction test for SmallColorControls to change main label
 ###########################################################################
 
-#do click action for SmallColorControl, then click OK button
-#do click action may multi select SmallColorControl BUG478541
-cdFrame.click(cdFrame.smallcolor_buttons[0])
+# click SmallColorControl, then click OK button to select one color
+##do click action may multi select SmallColorControl BUG478541
+cdFrame.smallcolor_buttons[0].click()
 sleep(config.SHORT_DELAY)
-cdFrame.click(cdFrame.ok_button)
+cdFrame.ok_button.click()
 sleep(config.SHORT_DELAY)
-#cdFrame.assertClickSmallColor("Color [White]")
+# main label shows which color to be selected
+#cdFrame.assertClickSmallColor(cdFrame.smallcolor_buttons[0])
 
-#click ColorDialog Button to open color dialog again
+# click ColorDialog Button to open color dialog again
 cdFrame.click(cdFrame.colordialog_button)
 sleep(config.SHORT_DELAY)
 cdFrame.AssertWidgets()
 
-#mouse click one SmallColorControl, then click OK button
-cdFrame.smallcolor_buttons[24].mouseClick()
-sleep(config.SHORT_DELAY)
-#cdFrame.click(cdFrame.ok_button)
-cdFrame.ok_button.click()
-sleep(config.SHORT_DELAY)
-cdFrame.assertClickSmallColor("Color [Olive]")
+# close dialog
+cdFrame.cancel_button.click()
 
-#close application frame window
+# close application frame window
 cdFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

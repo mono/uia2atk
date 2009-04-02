@@ -1,3 +1,11 @@
+2009-04-02  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog/colordialogframe.py: modify assertSmallColorText 
+	to test all SmallColorButton's Text. modify assertClickSmallColor to 
+	use smallcolorbutton.name as its Color name base on BUG488998
+	* testers/colordialog_basic_ops.py: add space behind #. correct errors 
+	in comment. update some tests due to frame wraper is changed
+
 2009-04-01  Calen Chen <cachen@novell.com>
 
 	* testers/notifyicon_basic_ops.py: modify commetns, uncomment some 
