@@ -1,3 +1,7 @@
+2009-04-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* build-glib21.sh: Add moon as a build req as well.
+
 2009-04-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MoonUiaAtkBridge.mdp: Fix temp refs for moon trunk.

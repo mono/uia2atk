@@ -1,7 +1,10 @@
 #!/bin/sh
 
-GTK_SHARP_PATH=../../../gtksharp21
+GTK_SHARP_PATH=../../../gtk-sharp
+MOONLIGHT_PATH=../../../moon
 [ -a  $GTK_SHARP_PATH ] || (echo "$GTK_SHARP_PATH does not exist" && exit 1)
+
+[ -a  $MOONLIGHT_PATH ] || (echo "$MOONLIGHT_PATH does not exist" && exit 1)
 
 #this doesn't work on the parallel env because of BNC#489961
 #(cd $GTK_SHARP_PATH; \
