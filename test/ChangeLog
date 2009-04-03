@@ -1,3 +1,11 @@
+2009-04-03 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/tests.py: Add comma to broken list
+	* gtktextview_large.py: (forgot to add this earlier) Add a bigger
+	Gtk TextView sample application
+	* gtktextview_large_text.txt: Plaintex that is loaded by the
+	gtktextview_large.py application
+
 2009-04-03  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: docstring 
