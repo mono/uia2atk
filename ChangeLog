@@ -1,3 +1,7 @@
+2009-04-03  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/moon-security.diff: update ssc, and prevent 2 launches.
+
 2009-04-01  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/moon-security.diff: ongoing work to sync a11y
