@@ -110,17 +110,12 @@ cdFrame.assertImageSize(cdFrame.smallcolor_buttons[10])
 cdFrame.assertImageSize(cdFrame.smallcolor_buttons[40])
 
 ###########################################################################
-# AtkAction test for SmallColorControls to change main label
+# AtkAction test for SmallColorControls to select color, Label shows which 
+# color is selected
 ###########################################################################
 
-# click SmallColorControl, then click OK button to select one color
 ##do click action may multi select SmallColorControl BUG478541
-cdFrame.smallcolor_buttons[0].click()
-sleep(config.SHORT_DELAY)
-cdFrame.ok_button.click()
-sleep(config.SHORT_DELAY)
-# main label shows which color to be selected
-#cdFrame.assertClickSmallColor(cdFrame.smallcolor_buttons[0])
+#cdFrame.clickSmallColorToChangeLabel(cdFrame.smallcolor_buttons[0])
 
 # click ColorDialog Button to open color dialog again
 cdFrame.click(cdFrame.colordialog_button)

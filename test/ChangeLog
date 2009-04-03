@@ -1,3 +1,11 @@
+2009-04-03  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog/colordialogframe.py: add help comments to replace
+	normal comments, rename clickSmallColorToChangeLabel and rewrite the 
+	test frame
+	* testers/colordialog_basic_ops.py: rewrite test to using 
+	clickSmallColorToChangeLabel method
+
 2009-04-02  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: rewrite 
