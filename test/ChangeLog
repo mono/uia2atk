@@ -1,5 +1,12 @@
 2009-04-03  Calen Chen <cachen@novell.com>
 
+	* testers/combobox_dropdown/comboboxdropdownframe.py: docstring 
+	instead comments, rewrit and rename some tests
+	* testers/combobox_dropdown_ops.py: rewrite tests to due to frame 
+	wraper is changed
+
+2009-04-03  Calen Chen <cachen@novell.com>
+
 	* testers/columnheader/columnheaderframe.py: docstring instead 
 	normal comments, rewrite and rename clickColumnHeaderToSortOrder
 	* testers/columnheader_basic_ops.py: rewrite test to using 

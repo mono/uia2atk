@@ -53,7 +53,7 @@ actionsCheck(cbddFrame.combobox, "ComboBox")
 cbddFrame.press(cbddFrame.combobox)
 
 # Menu without action, MenuItems have click action
-cbddFrame.menuAction(cbddFrame.menu)
+cbddFrame.assertMenuAction(cbddFrame.menu)
 actionsCheck(cbddFrame.menuitem[0], "MenuItem")
 
 #######################
@@ -122,11 +122,11 @@ statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["focused", "selected"
 statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["showing"])
 
 # close menu, then type '6' into text box to change text and label
-cbddFrame.typeMenuItem("6")
+cbddFrame.typeMenuItemTest("6")
 
 # colse menu, then test editable Text by insert '8' 
 ##BUG491409: insert menuitem's name doesn't rise focused and selected
-#cbddFrame.insertMenuItem("8")
+#cbddFrame.insertMenuItemTest("8")
 
 ##############################
 # Selection test
@@ -134,36 +134,36 @@ cbddFrame.typeMenuItem("6")
 
 # check combo box selection is implemented
 # set index 0 to select MenuItem 0
-#cbddFrame.assertSelectionChild(cbddFrame.combobox, 0)
+#cbddFrame.assertSelectChild(cbddFrame.combobox, 0)
 #sleep(config.SHORT_DELAY)
-##BUG488474, assertSelectionChild called the selection interface's selectChild
+##BUG488474, assertSelectChild called the selection interface's selectChild
 #method, which is not working.
 #cbddFrame.assertTextChanged(cbddFrame.textbox, "0")
 ##doesn't rise 'selected' state for Menu and Text due to BUG456341
 #statesCheck(cbddFrame.menu, "Menu", add_states=["focused", "selected"])
 
 # set index 1 to select MenuItem 1
-#cbddFrame.assertSelectionChild(cbddFrame.combobox, 1)
+#cbddFrame.assertSelectChild(cbddFrame.combobox, 1)
 #sleep(config.SHORT_DELAY)
 #cbddFrame.assertTextChanged(cbddFrame.textbox, 1)
 #statesCheck(cbddFrame.menu, "Menu", add_states=["focused"])
 #statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
 
 # set index 3 to select MenuItem 3
-#cbddFrame.assertSelectionChild(cbddFrame.combobox, 3)
+#cbddFrame.assertSelectChild(cbddFrame.combobox, 3)
 #sleep(config.SHORT_DELAY)
 #cbddFrame.assertTextChanged(cbddFrame.textbox, "3")
 
 # check menu selection is implemented
 # select item3 to rise focused and selected states
-cbddFrame.assertSelectionChild(cbddFrame.menu, 3)
+cbddFrame.assertSelectChild(cbddFrame.menu, 3)
 sleep(config.SHORT_DELAY)
 cbddFrame.assertTextChanged(cbddFrame.textbox, "3")
 statesCheck(cbddFrame.menuitem[3], "MenuItem", add_states=["focused", "selected"])
 
 # select item5 to rise focused and selected states, 
 # item3 get rid of focused and selected states
-cbddFrame.assertSelectionChild(cbddFrame.menu, 5)
+cbddFrame.assertSelectChild(cbddFrame.menu, 5)
 sleep(config.SHORT_DELAY)
 cbddFrame.assertTextChanged(cbddFrame.textbox, "5")
 statesCheck(cbddFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])

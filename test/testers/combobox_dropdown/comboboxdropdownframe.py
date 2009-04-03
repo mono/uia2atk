@@ -29,8 +29,10 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
 
-    # check menu action is not implemented
-    def menuAction(self, accessible):
+    def assertMenuAction(self, accessible):
+        """
+        Check Menu Action is unimplemented
+        """
 
         procedurelogger.action('check %s Action' % accessible)
         try:
@@ -38,13 +40,21 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         except NotImplementedError:
             procedurelogger.expectedResult("Action is unimplemented")
 
-    # give 'click' action
     def click(self,accessible):
+        """
+        Wrap strongwind click action to add log
+
+        """
         procedurelogger.action('click %s' % accessible)
         accessible.click()
 
     # give 'press' action
     def press(self,accessible):
+        """
+        Wrap stronging press action for ComboBox, then search for subchildren 
+	as expected result
+
+        """
         procedurelogger.action('press %s' % accessible)
         accessible.press()
         sleep(config.SHORT_DELAY)
@@ -54,16 +64,23 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         self.menuitem = dict([(x, self.findMenuItem(str(x), checkShowing=False)) \
                                                         for x in range(10)])
 
-    # assert label change after select menu item
     def assertLabel(self, newlabel):
+        """
+        Make sure Label is changed; in this test, Label is showing which 
+        MenuItem is selected
+
+        """
         procedurelogger.expectedResult('Label change to "%s"' % newlabel)
 
         def resultMatches():
             return self.findLabel(newlabel)
 	assert retryUntilTrue(resultMatches)
 
-    # assert Text implementation for MenuItem
     def assertItemText(self, textValue=None):
+        """
+        Check MenuItems have correct Text implementation
+
+        """
         procedurelogger.action('check MenuItem\'s Text')
 
         for textValue in range(10):
@@ -77,26 +94,34 @@ class ComboBoxDropDownFrame(accessibles.Frame):
                                                       (accessible, textvalue))
         assert accessible.text == textvalue
 
-    # assert Selection implementation for ComboBox and Menu
-    def assertSelectionChild(self, accessible, childIndex):
-        procedurelogger.action('selecte childIndex %s in "%s"' % \
-                                                      (childIndex, accessible))
+    def assertSelectChild(self, parent, childIndex):
+        """
+        Select childIndex to test its parent's AtkSelection
 
-        accessible.selectChild(childIndex)
+        """
+        procedurelogger.action('selecte %s childIndex %s' % (parent, childIndex))
+
+        parent.selectChild(childIndex)
 
     def assertClearSelection(self, accessible):
         procedurelogger.action('clear selection in "%s"' % (accessible))
 
         accessible.clearSelection()
 
-    # type MenuItem's name into text box to change label and Text, expand 
-    # combobox may raise focused and selected for the MenuItem
-    def typeMenuItem(self, textvalue):
+    def typeMenuItemTest(self, textvalue):
+        """
+        Imitate key press motion to input MenuItem's name into ComboBox 
+	TextBox to change label and Text, expand ComboBox may raise focused 
+	and selected for the MenuItem
+
+        """
+        # Action
         self.combobox.press()
         sleep(config.SHORT_DELAY)
         self.textbox.typeText(textvalue)
         sleep(config.SHORT_DELAY)
 
+        # Expected result
         # label's text is changed
         self.assertLabel("You select %s" % textvalue)
         # the text of textbox is changed
@@ -107,15 +132,21 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         statesCheck(self.menuitem[int(textvalue)], "MenuItem", \
                                    add_states=["focused", "selected"])
 
-    # insert MenuItem's name into text box to change label and Text, expand 
-    # combobox may raise focused and selected for the MenuItem
-    def insertMenuItem(self, textvalue):
+    def insertMenuItemTest(self, textvalue):
+        """
+        Use strongwind insertText method to input MenuItem's name into ComboBox 
+	TextBox to change label and Text, expand ComboBox may raise focused 
+	and selected for the MenuItem
+
+        """
+        # Action
         self.combobox.press()
         sleep(config.SHORT_DELAY)
         self.textbox.deleteText()
         sleep(config.SHORT_DELAY)
         self.textbox.insertText(textvalue)
 
+        # Expected result
         # label's text is changed
         self.assertLabel("You select %s" % textvalue)
         # the text of textbox is changed
@@ -126,9 +157,12 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         statesCheck(self.menuitem[int(textvalue)], "MenuItem", \
                                    add_states=["focused", "selected"])
 
-    # assert Streamable Content implementation
     def assertContent(self, accessible):
-        procedurelogger.action("Verify Streamable Content for %s" % accessible)
+        """
+        Check AtkStreamable Content implementation
+
+        """
+        procedurelogger.action("Check Streamable Content for %s" % accessible)
         expect = ['text/plain',]
         result = accessible._accessible.queryStreamableContent().getContentTypes()
 
