@@ -42,21 +42,40 @@ class ColumnHeaderFrame(accessibles.Frame):
         self.item5_position = self.item5._getAccessibleCenter()
         self.num5_position = self.num5._getAccessibleCenter()
 
-    # give 'click' action
     def click(self,accessible):
+        """
+        Wrap strongwing click action to provide action log
+
+        """
         procedurelogger.action("click %s" % accessible)
         accessible.click()
 
-    # assert Text implementation for ColumnHeader
     def assertText(self, accessible, textvelue):
+        """
+        Check TableColumnHeader's Text value is match up to textvelue
+
+        """
         procedurelogger.action("check ColumnHeader Text Value")
 
         procedurelogger.expectedResult('text of %s is %s' \
                                     % (accessible,textvelue))
         assert accessible.text == textvelue
 
-    # assert item's order is changed after click TableColumnHeader
-    def assertOrder(self, firstitem=None):        
+    def clickColumnHeaderToSortOrder(self, accessible, actionway, firstitem=None):  
+        """
+        Click TableColumnHeader to sort column's order, then check if the 
+        order is changed
+
+        """
+        # Action
+        if actionway is "click":
+            accessible.click()
+            sleep(config.SHORT_DELAY)
+        elif actionway is "mouseClick":
+            accessible.mouseClick()
+            sleep(config.SHORT_DELAY)
+
+        # Expected result
         if firstitem == "Item5":
             procedurelogger.expectedResult('Item5 and Num5 change position to \
                         %s and %s' % (self.item0_position, self.num0_position))
@@ -74,8 +93,11 @@ class ColumnHeaderFrame(accessibles.Frame):
             assert item0_new_position == self.item0_position and \
                    num0_new_position == self.num0_position
 
-    # assert TableColumnHeaders image
     def assertImageSize(self, accessible, width=16, height=16):
+        """
+        This method be used to check Image implementation for TableColumnHeader
+
+        """
         procedurelogger.action("assert %s's image size" % accessible)
         size = accessible._accessible.queryImage().getImageSize()
 

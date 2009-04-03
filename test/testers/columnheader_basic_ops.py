@@ -56,37 +56,22 @@ chFrame.assertText(chFrame.column_a, "Column A")
 
 chFrame.assertText(chFrame.column_b, "Num")
 
+
 # check item's order after click column header
 ##click action doesn't work BUG476304
-chFrame.click(chFrame.column_a)
-sleep(config.LONG_DELAY)
-#chFrame.assertOrder(firstitem="Item5")
+#chFrame.clickColumnHeaderToSortOrder(chFrame.column_a, "click", firstitem="Item5")
+#statesCheck(chFrame.column_a, "TableColumnHeader")
 
-# check column_a's states after click it
-statesCheck(chFrame.column_a, "TableColumnHeader")
+#chFrame.clickColumnHeaderToSortOrder(chFrame.column_b, "click", firstitem="Item0")
+#statesCheck(chFrame.column_b, "TableColumnHeader")
 
-chFrame.click(chFrame.column_b)
-sleep(config.LONG_DELAY)
-#chFrame.assertOrder(firstitem="Item0")
-
-# check column_b's states after click it
-statesCheck(chFrame.column_b, "TableColumnHeader")
-
-# check item's order after mouse click column header, also the test can check 
-#column header's position
-chFrame.column_a.mouseClick()
-sleep(config.SHORT_DELAY)
-chFrame.assertOrder(firstitem="Item5")
-
+chFrame.clickColumnHeaderToSortOrder(chFrame.column_a, "mouseClick", firstitem="Item5")
 statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
-chFrame.column_b.mouseClick()
-sleep(config.SHORT_DELAY)
-chFrame.assertOrder(firstitem="Item0")
-
-statesCheck(chFrame.column_b, "TableColumnHeader")
+chFrame.clickColumnHeaderToSortOrder(chFrame.column_b, "mouseClick", firstitem="Item0")
 statesCheck(chFrame.column_a, "TableColumnHeader")
+statesCheck(chFrame.column_b, "TableColumnHeader")
 
 # check ColumnHeader AtkImage implementation
 ##incorrect imageSize BUG477563

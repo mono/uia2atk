@@ -1,6 +1,13 @@
 2009-04-03  Calen Chen <cachen@novell.com>
 
-	* testers/colordialog/colordialogframe.py: add help comments to replace
+	* testers/columnheader/columnheaderframe.py: docstring instead 
+	normal comments, rewrite and rename clickColumnHeaderToSortOrder
+	* testers/columnheader_basic_ops.py: rewrite test to using 
+	clickColumnHeaderToSortOrder
+
+2009-04-03  Calen Chen <cachen@novell.com>
+
+	* testers/colordialog/colordialogframe.py: docstring replace
 	normal comments, rename clickSmallColorToChangeLabel and rewrite the 
 	test frame
 	* testers/colordialog_basic_ops.py: rewrite test to using 
