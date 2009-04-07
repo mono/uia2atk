@@ -1,3 +1,14 @@
+2009-04-07  Calen Chen <cachen@novell.com>
+
+	* testers/notifyicon/notifyiconframe.py,
+	* testers/listview_detail/listviewframe.py,
+	* testers/openfiledialog/openfiledialogframe.py: update frame wraper to 
+	add docstrings, rewrite and rename test methods clearly and readable
+	* testers/notifyicon_basic_ops.py,
+	* testers/listview_detail_ops.py,
+	* testers/openfiledialog_basic_ops.py: modify test comments, and update
+	tests due to frame changed
+
 2009-04-03 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: Add comma to broken list

@@ -28,16 +28,22 @@ class NotifyIconFrame(accessibles.Frame):
         self.notifyicon_button = self.findPushButton(self.BUTTON_ONE)
         self.balloon_button = self.findPushButton(self.BUTTON_TWO)
 
-    #give 'click' action
     def click(self, button):
+        """
+        Wrap strongwind click action
+
+        """
         button.click()
 
-    #find all widgets from alert windows
     def balloonWidgets(self):
+        """
+        Find all widgets from balloon alert
+
+        """
         self.balloon_alert = self.app.findAlert("Hello")
         self.label = self.balloon_alert.findLabel("I'm NotifyIcon")
         self.icon = self.balloon_alert.findIcon(None)
  
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

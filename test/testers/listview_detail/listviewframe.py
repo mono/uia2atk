@@ -40,21 +40,33 @@ class ListViewFrame(accessibles.Frame):
         self.item5_position = self.tablecells['Item5']._getAccessibleCenter()
         self.num5_position = self.tablecells['5']._getAccessibleCenter()
 
-        print "item0:%s, item5:%s, num0:%s, num5:%s" % (self.item0_position,self.item5_position, self.num0_position,self.num5_position)
+        print "item0:%s, item5:%s, num0:%s, num5:%s" % (self.item0_position, \
+			self.item5_position, self.num0_position,self.num5_position)
 
-    #give 'click' action
     def click(self,accessible):
+        """
+        Wrap strongwind click action to add log if the accessible is 
+	ColumnHeader
+
+        """
         if accessible == self.column_a or accessible == self.column_b:
             procedurelogger.action("click %s" % accessible)
             accessible.click()
         else:
             accessible.click()
 
-    #assert Text implementation for ListView Items
     def assertText(self, accessible):
+        """
+        Check Text implementation for TableCells and CheckBoxs
+
+        """
         procedurelogger.action("check ListView Items Text Value")
 
-        items = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3", "3", "Item4", "4", "Item5", "5"]
+        items = [
+                 "Item0", "0", "Item1", "1", 
+                 "Item2", "2", "Item3", "3", 
+                 "Item4", "4", "Item5", "5"
+                ]
         if accessible == self.tablecells:
             for index in items:
                 procedurelogger.expectedResult('%s text is %s' \
@@ -67,8 +79,11 @@ class ListViewFrame(accessibles.Frame):
                                     % (index,"Item" + str(index)))
                 assert accessible[index].text == "Item" + str(index)
 
-    #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):
+        """
+        Check Selection implementation
+
+        """
         procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
 
         accessible.selectChild(childIndex)
@@ -78,17 +93,25 @@ class ListViewFrame(accessibles.Frame):
 
         accessible.clearSelection()
 
-    #assert Table implementation for TreeTable to check row and column number
     def assertTable(self, accessible, row=0, col=0):
+        """
+        Check Table implementation for TreeTable to check row and column
+        
+        """
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
 
-        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
-        assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" \
-                                                                  % (itable.nRows, itable.nColumns)
+        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' \
+				% (accessible, row, col))
+        assert itable.nRows == row and itable.nColumns == col, \
+				"Not match Rows %s and Columns %s" \ 
+				% (itable.nRows, itable.nColumns)
 
-    #assert item's order after click TableColumnHeader
-    def assertOrder(self, itemone=None):        
+    def assertOrder(self, itemone=None): 
+        """
+        Check TableCells' order after click TableColumnHeader, itemone means the first TableCell
+
+        """       
         if itemone == "Item5":
             procedurelogger.expectedResult('Item5 and Num5 change position to %s and %s' % (self.item0_position, self.num0_position))
             item5_new_position = self.tablecells['Item5']._getAccessibleCenter()
@@ -104,8 +127,12 @@ class ListViewFrame(accessibles.Frame):
             assert item0_new_position == self.item0_position and \
                    num0_new_position == self.num0_position
 
-    #enter Text Value to make sure the text is uneditable
     def enterTextValue(self, accessible, entertext, oldtext=None):
+        """
+        Change text with some character to make sure EditableText isn't implemented, 
+	text doesn't being changed
+
+        """
         procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
 
         try:

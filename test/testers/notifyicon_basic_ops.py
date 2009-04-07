@@ -43,13 +43,13 @@ if app is None:
 # just an alias to make things shorter
 niFrame = app.notifyIconFrame
 
-#click button to raise balloon alert
+# click button to raise balloon alert
 niFrame.click(niFrame.balloon_button)
 sleep(config.SHORT_DELAY)
 ##Alert with wrong name BUG476859
 #niFrame.balloonWidgets()
 
-#check states
+# check states
 ##missing "mobal" and has extra "resizable" BUG476862
 #statesCheck(niFrame.balloon_alert, "Alert")
 ##incorrect states BUG476906
@@ -57,13 +57,13 @@ sleep(config.SHORT_DELAY)
 ##incorrect states BUG476871
 #statesCheck(niFrame.icon, "Icon")
 
-#balloon alert disappeared after mouse click it
+# balloon alert disappeared after mouse click it
 balloon = niFrame.app.findAlert(None)
 balloon.mouseClick()
 sleep(config.SHORT_DELAY)
 balloon.assertClosed()
 
-#close application frame window
+# close application frame window
 niFrame.quit()
 
 
