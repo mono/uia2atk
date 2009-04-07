@@ -1,3 +1,7 @@
+2009-04-07  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/contextmenu_basic_ops.py: Regression test.
+
 2009-04-07  Calen Chen <cachen@novell.com>
 
 	* testers/notifyicon/notifyiconframe.py,

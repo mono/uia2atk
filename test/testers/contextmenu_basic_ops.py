@@ -48,7 +48,7 @@ cmFrame.assertWidgets()
 ##############################################################################
 # STATES: CONTEXT MENU
 ##############################################################################
-#statesCheck(cmFrame.context_menu, 'ContextMenu')
+statesCheck(cmFrame.context_menu, 'ContextMenu', add_states=['active'])
 
 ##############################################################################
 # STATES: DEFAULT
@@ -61,8 +61,9 @@ statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focusable'])
 ##############################################################################
 # CHECK ATKSELECTION
 ##############################################################################
-cmFrame.menu.selectChild(0)
-statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'selected'])
+# BUG 492784
+#cmFrame.menu.selectChild(0)
+#statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable', 'selected'])
 
 # close context_menu and make it show up again
 cmFrame.mouseClick()
@@ -70,36 +71,49 @@ sleep(config.SHORT_DELAY)
 cmFrame.label.mouseClick(button=3)
 sleep(config.SHORT_DELAY)
 cmFrame.assertWidgets()
+sleep(config.SHORT_DELAY)
 
 ##############################################################################
 # STATES: WHEN CONTEXTMENU SHOW UP
 ##############################################################################
+# BUG
 cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused'])
+statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable'])
 
 cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'checked'])
+statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
 
 cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focused', 'checked'])
+statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
 
 cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focused'])
+statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focused', 'focusable'])
 
 ##############################################################################
 # STATES: CHECKED ITEMS
 ##############################################################################
-statesCheck(cmFrame.radio_item, 'MenuItem')
+# BUG 492770
+#statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable', 'checked'])
 #cmFrame.radio_item.mouseClick()
-#sleep(config.MEDIUM_DELAY)
-#statesCheck(cmFrame.radio_item, 'MenuItem')
+#sleep(config.SHORT_DELAY)
+#cmFrame.label.mouseClick(button=3)
+#sleep(config.SHORT_DELAY)
+#cmFrame.assertWidgets()
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable'])
 
-# click exit_item to close application frame window
-#cmFrame.exit_item.click()
+#statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focusable', 'checked'])
+#cmFrame.check_item.mouseClick()
+#sleep(config.SHORT_DELAY)
+#cmFrame.label.mouseClick(button=3)
+#sleep(config.SHORT_DELAY)
+#cmFrame.assertWidgets()
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focusable'])
 
 # close application frame window
 cmFrame.quit()
