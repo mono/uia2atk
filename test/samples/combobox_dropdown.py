@@ -15,7 +15,9 @@ Test accessibility of "ComboBox" control
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, Form, ComboBox, Label, DockStyle, ComboBoxStyle
+clr.AddReference('System.Drawing')
+from System.Windows.Forms import *
+from System.Drawing import *
 
 class ComboBoxSample(Form):
     """ComboBox control class"""
@@ -34,10 +36,12 @@ class ComboBoxSample(Form):
 
         # setup combobox
         self.combobox = ComboBox()
+
         self.combobox.Dock = DockStyle.Top
         self.combobox.DropDownStyle = ComboBoxStyle.DropDown
         self.combobox.SelectionChangeCommitted += self.select
         self.combobox.TextChanged += self.select
+        self.combobox.ItemHeight = 20
 
         # add items in ComboBox
         for i in range(10):

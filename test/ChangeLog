@@ -1,3 +1,7 @@
+2009-04-08  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/combobox_dropdown.py: add ItemHeight property for combobox
+
 2009-04-07  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenu_basic_ops.py: Regression test.
