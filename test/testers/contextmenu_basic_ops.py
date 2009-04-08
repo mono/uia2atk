@@ -76,22 +76,22 @@ sleep(config.SHORT_DELAY)
 ##############################################################################
 # STATES: WHEN CONTEXTMENU SHOW UP
 ##############################################################################
-# BUG
-cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
-sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable'])
+# BUG 471405
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable'])
 
-cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
-sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
 
-cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
-sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
 
-cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
-sleep(config.SHORT_DELAY)
-statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focused', 'focusable'])
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focused', 'focusable'])
 
 ##############################################################################
 # STATES: CHECKED ITEMS
