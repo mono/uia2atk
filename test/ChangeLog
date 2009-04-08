@@ -1,3 +1,11 @@
+
+2009-04-08  Calen Chen <cachen@novell.com>
+
+	* testers/datagrid/datagridframe.py: add docstring, update some tests
+	wraper, delete assertName
+	* testers/datagrid_basic_ops.py: add bug reference, update tests due 
+	to bugs
+
 2009-04-08  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/contextmenu_basic_ops.py:
