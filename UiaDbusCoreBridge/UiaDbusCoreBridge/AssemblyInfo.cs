@@ -17,37 +17,33 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
-using System;
-using System.Windows.Automation;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace Mono.UIAutomation.Bridge
-{
-	public interface IAutomationBridge
-	{
-		bool IsAccessibilityEnabled { get; }
-		
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
-		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
+[assembly: AssemblyTitle("UiaDbusCoreBridge")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Novell, Inc.")]
+[assembly: AssemblyProduct("UiaDbusCoreBridge")]
+[assembly: AssemblyCopyright("Copyright © 2009 Novell, Inc")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		void Initialize ();
-		
-		void Terminate ();
-	}
-}
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// If the build and revision are set to '*' they will be updated automatically.
+
+[assembly: AssemblyVersion("1.0.0.0")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+[assembly: AssemblyDelaySign(false)]

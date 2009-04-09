@@ -1,0 +1,5 @@
+
+Name: DbusCore Types and Interfaces
+Description: Types and interfaces used to expose Winforms and Moonlight apps to UIAutomationClient.
+Version: @VERSION@
+Libs: -r:@a11ydir@/DbusCore.dll -r:@a11ydir@/UIAutomationTypes.dll

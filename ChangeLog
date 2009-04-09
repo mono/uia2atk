@@ -1,3 +1,9 @@
+2009-04-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Uia2Atk.mds:
+	* UiaDbusCoreBridge/: Added UiaDbusCoreBridge sub-project.
+	* .gitignore: Update.
+
 2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* tools/: Added directory with various useful scripts.

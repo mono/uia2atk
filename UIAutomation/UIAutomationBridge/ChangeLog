@@ -1,3 +1,7 @@
+2009-04-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Bridge/IAutomationBridge.cs: Whitespace fix.
+
 2009-03-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Services/Log.cs: Fix typo in string

@@ -17,37 +17,22 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.DbusCore
 {
-	public interface IAutomationBridge
+	public static class Constants
 	{
-		bool IsAccessibilityEnabled { get; }
-		
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
-
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
-		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
-
-		void Initialize ();
-		
-		void Terminate ();
+		public const string ApplicationPath = "/org/mono/UIAutomation/Application";
+		public const string Namespace = "org.mono.UIAutomation";
+		public const string AutomationElementInterfaceName = Namespace + ".AutomationElement";
+		public const string ApplicationInterfaceName = Namespace + ".Application";
+		public const string AutomationElementBasePath = "/org/mono/UIAutomation/Element/";
 	}
 }

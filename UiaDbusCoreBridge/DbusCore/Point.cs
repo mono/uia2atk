@@ -17,37 +17,31 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.DbusCore
 {
-	public interface IAutomationBridge
+	public struct Point
 	{
-		bool IsAccessibilityEnabled { get; }
-		
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
+		public double x;
+		public double y;
 
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
-		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
+		public Point (System.Windows.Point point)
+		{
+			x = point.X;
+			y = point.Y;
+		}
 
-		void Initialize ();
-		
-		void Terminate ();
+		public override string ToString ()
+		{
+			return string.Format("{0},{1}",
+			                     x, y);
+		}
 	}
 }

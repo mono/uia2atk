@@ -17,37 +17,47 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Bridge
+namespace Mono.UIAutomation.DbusCore
 {
-	public interface IAutomationBridge
+	public struct Rect
 	{
-		bool IsAccessibilityEnabled { get; }
-		
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
+		public double x;
+		public double y;
+		public double width;
+		public double height;
 
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
-		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
+		public Rect (System.Windows.Rect rect)
+		{
+			x = rect.X;
+			y = rect.Y;
+			width = rect.Width;
+			height = rect.Height;
+		}
 
-		void Initialize ();
+		public override string ToString ()
+		{
+			if (IsEmpty)
+				return "Empty";
+
+			return String.Format ("{0},{1},{2},{3}",
+					      x, y, width, height);
+		}
 		
-		void Terminate ();
+		public bool IsEmpty { 
+			get {
+				return (x == Double.PositiveInfinity &&
+					y == Double.PositiveInfinity &&
+					width == Double.NegativeInfinity &&
+					height == Double.NegativeInfinity);
+			}
+		}
 	}
 }

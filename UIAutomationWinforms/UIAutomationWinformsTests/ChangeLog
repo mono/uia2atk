@@ -1,3 +1,8 @@
+2009-04-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TestHelper.cs: Update reflection into AutomationInteropProvider.
+	* TextRangeProviderTest.cs: Use TestHelper for SetUp/TearDown.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolBarButtonProviderTest.cs: Test provider pattern support

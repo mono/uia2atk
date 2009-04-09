@@ -39,52 +39,56 @@ namespace System.Windows.Automation.Provider
 		public const int InvalidateLimit = 20;
 		public const int RootObjectId = -25;
 		
-		private static IAutomationBridge bridge = null;
+		private static IList<IAutomationBridge> bridges;
 		private static Dictionary<IntPtr, WeakReference> providerMapping
 			= new Dictionary<IntPtr, WeakReference> ();
 		
 		static AutomationInteropProvider ()
 		{
-			bridge = BridgeManager.GetAutomationBridge ();
+			bridges = BridgeManager.GetAutomationBridges ();
+			if (bridges == null)
+				bridges = new List<IAutomationBridge> ();
 		}
 
 		public static bool ClientsAreListening {
 			get {
-				if (bridge == null)
-					return false;
-				return bridge.ClientsAreListening;
+				// Important to forward to all bridges,
+				// even after one has returned true.
+				bool listening = false;
+				foreach (var bridge in bridges)
+					if (bridge.ClientsAreListening)
+						listening = true;
+				return listening;
 			}
 		}
 
 		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd)
 		{
-			if (bridge == null)
-				return null;
-			return (IRawElementProviderSimple) bridge.HostProviderFromHandle (hwnd);
+			foreach (var bridge in bridges) {
+				var provider =
+					bridge.HostProviderFromHandle (hwnd) as IRawElementProviderSimple;
+				if (provider != null)
+					return provider;
+			}
+			return null;
 		}
 
 		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
-			if (bridge == null)
-				return;
-			bridge.RaiseAutomationEvent (eventId, provider, e);
+			foreach (var bridge in bridges)
+				bridge.RaiseAutomationEvent (eventId, provider, e);
 		}
 
 		public static void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple element, AutomationPropertyChangedEventArgs e) 
 		{
-			if (bridge == null)
-				return;
-			bridge.RaiseAutomationPropertyChangedEvent (element, e);
+			foreach (var bridge in bridges)
+				bridge.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
-		//TODO: these Raise* methods are being called by the bridge itself and it's a useless roundtrip
-		//      that we should fix in the bridge, with a helper function (that also checks if the provider
-		//      is not present already in the ecosystem)
 		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
-			if (bridge == null)
-				return;
-			bridge.RaiseStructureChangedEvent (provider, e);
+			foreach (var bridge in bridges)
+				bridge.RaiseStructureChangedEvent (provider, e);
 		}
 
 		public static IntPtr ReturnRawElementProvider (IntPtr hwnd, IntPtr wParam, IntPtr lParam, IRawElementProviderSimple el) 
@@ -93,7 +97,7 @@ namespace System.Windows.Automation.Provider
 			// enough.  I am concerned about being called multiple
 			// times for the same hwnd before the value is
 			// retrieved though.
-			providerMapping[hwnd] = new WeakReference (el);
+			providerMapping [hwnd] = new WeakReference (el);
 			return hwnd;
 		}
 
@@ -103,7 +107,7 @@ namespace System.Windows.Automation.Provider
 				return null;
 			}
 
-			WeakReference weakRef = providerMapping[result];
+			WeakReference weakRef = providerMapping [result];
 			if (!weakRef.IsAlive) {
 				return null;
 			}
@@ -117,15 +121,34 @@ namespace System.Windows.Automation.Provider
 	{
 		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		
-		public static IAutomationBridge GetAutomationBridge ()
+		private static string UiaDbusCoreBridgeAssembly =
+			"UiaDbusCoreBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+
+		public static IList<IAutomationBridge> GetAutomationBridges ()
 		{
-			// Let MONO_UIA_BRIDGE env var override default bridge
-			string bridgeAssemblyName =
-				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
-			if (string.IsNullOrEmpty (bridgeAssemblyName))
-				bridgeAssemblyName = UiaAtkBridgeAssembly;
+			List<IAutomationBridge> bridges = new List<IAutomationBridge> ();
 			
+			// Let MONO_UIA_BRIDGE env var override default bridge
+			string bridgeAssemblyNames =
+				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
+
+			if (string.IsNullOrEmpty (bridgeAssemblyNames))
+				bridgeAssemblyNames =
+					UiaAtkBridgeAssembly + ";" + UiaDbusCoreBridgeAssembly;
+			
+			foreach (string bridgeAssembly in bridgeAssemblyNames.Split (';')) {
+				if (string.IsNullOrEmpty (bridgeAssembly))
+					continue;
+				IAutomationBridge bridge = GetAutomationBridge (bridgeAssembly);
+				if (bridge != null)
+					bridges.Add (bridge);
+			}
+
+			return bridges;
+		}
+		
+		private static IAutomationBridge GetAutomationBridge (string bridgeAssemblyName)
+		{
 			Assembly bridgeAssembly = null;
 			try {
 				bridgeAssembly = Assembly.Load (bridgeAssemblyName);

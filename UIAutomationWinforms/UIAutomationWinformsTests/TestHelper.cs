@@ -48,28 +48,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// fail when the static constructor attempts to load it.
 			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",
 			                                    "Ignore this intentional error");
-
-			/*
-			// HACK: Clear the string referencing the UiaAtkBridge
-			//       assembly so that when AutomationInteropProvider's
-			//       static constructor attempts to load a bridge,
-			//       it will fail.
-			Type bridgeManagerType =
-				interopProviderType.Assembly.GetType ("System.Windows.Automation.Provider.BridgeManager");
-			FieldInfo assemblyField =
-				bridgeManagerType.GetField ("UiaAtkBridgeAssembly",
-				                            BindingFlags.NonPublic | BindingFlags.Static);
-			assemblyField.SetValue (null, string.Empty);
-			*/
 			
 			// Inject a mock automation bridge into the
 			// AutomationInteropProvider, so that we don't try
 			// to load the UiaAtkBridge.
 			MockBridge bridge = new MockBridge ();
 			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic
+				interopProviderType.GetField ("bridges", BindingFlags.NonPublic
 				                                        | BindingFlags.Static);
-			bridgeField.SetValue (null, bridge);
+			
+			List<IAutomationBridge> bridges = new List<IAutomationBridge> ();
+			bridges.Add (bridge);
+				
+			bridgeField.SetValue (null, bridges);
 			
 			bridge.ClientsAreListening = true;
 
@@ -80,8 +71,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			Type interopProviderType = typeof (AutomationInteropProvider);
 			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, null);
+				interopProviderType.GetField ("bridges", BindingFlags.NonPublic | BindingFlags.Static);
+			bridgeField.SetValue (null, new List<IAutomationBridge> ());
 
 			
 			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",

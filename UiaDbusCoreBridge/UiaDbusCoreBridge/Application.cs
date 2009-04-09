@@ -17,37 +17,47 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Windows.Automation;
+using System.Collections.Generic;
 
-namespace Mono.UIAutomation.Bridge
+using Mono.UIAutomation.DbusCore.Interfaces;
+using Mono.UIAutomation.UiaDbusCoreBridge.Wrappers;
+
+namespace Mono.UIAutomation.UiaDbusCoreBridge
 {
-	public interface IAutomationBridge
+	internal class Application : IApplication
 	{
-		bool IsAccessibilityEnabled { get; }
-		
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
+		private List<ProviderElementWrapper> rootElements;
 
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
+		public Application ()
+		{
+			rootElements = new List<ProviderElementWrapper> ();
+		}
 		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
+		public string [] GetRootElementPaths ()
+		{
+			string [] paths = new string [rootElements.Count];
+			for (int i = 0; i < paths.Length; i++)
+				paths [i] = rootElements [i].Path;
+			return paths;
+		}
 
-		void Initialize ();
-		
-		void Terminate ();
+		public void AddRootElement (ProviderElementWrapper element)
+		{
+			if (element != null && !rootElements.Contains (element))
+				rootElements.Add (element);
+		}
+
+		public void RemoveRootElement (ProviderElementWrapper element)
+		{
+			if (element != null && rootElements.Contains (element))
+				rootElements.Remove (element);
+		}
 	}
 }

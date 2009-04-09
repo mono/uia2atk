@@ -41,23 +41,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[SetUp]
 		public void Setup()
 		{
-			// Copy and paste from BaseProviderTest, as this is not
-			// a widget, and as such we don't need the default
-			// tests
-			// %-<------------------------------------------------
-
-			// Inject a mock automation bridge into the
-			// AutomationInteropProvider, so that we don't try
-			// to load the UiaAtkBridge.
-			MockBridge bridge = new MockBridge ();
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, bridge);
-			
-			bridge.ClientsAreListening = true;
-
-			// ------------------------------------------------>-%
+			TestHelper.SetUpEnvironment ();
 
 			textbox = new TextBox ();
 			textbox.Size = new Size (800, 30);
@@ -70,14 +54,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[TearDown]
 		public void TearDown()
 		{
-			// %-<------------------------------------------------
-
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, null);
-
-			// ------------------------------------------------>-%
+			TestHelper.TearDownEnvironment ();
 
 			if (textbox != null)
 				textbox.Dispose ();

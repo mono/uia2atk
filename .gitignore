@@ -1,3 +1,5 @@
+# Global ignores
+*~
 
 # /
 /*.userprefs
@@ -37,6 +39,14 @@
 /UIAutomation/UIAutomationClient/*.pidb
 /UIAutomation/UIAutomationClient/*.usertasks
 /UIAutomation/UIAutomationClient/*.userprefs
+
+# /UIAutomation/UIAutomationSource/
+/UIAutomation/UIAutomationSource/Makefile
+/UIAutomation/UIAutomationSource/Makefile.in
+/UIAutomation/UIAutomationSource/AssemblyInfo.cs
+/UIAutomation/UIAutomationSource/*.pidb
+/UIAutomation/UIAutomationSource/*.usertasks
+/UIAutomation/UIAutomationSource/*.userprefs
 
 # /UIAutomation/UIAutomationProvider/
 /UIAutomation/UIAutomationProvider/Makefile
@@ -260,12 +270,55 @@
 /UiaDbusCoreBridge/libtool
 /UiaDbusCoreBridge/ltmain.sh
 
+# /UiaDbusCoreBridge/data/
+/UiaDbusCoreBridge/data/Makefile
+/UiaDbusCoreBridge/data/Makefile.in
+/UiaDbusCoreBridge/data/mono-uia-dbuscore.pc
+/UiaDbusCoreBridge/data/mono-uia-dbuscore.pc.in
+
 # /UiaDbusCoreBridge/UiaDbusCoreBridge/
 /UiaDbusCoreBridge/UiaDbusCoreBridge/bin
 /UiaDbusCoreBridge/UiaDbusCoreBridge/*.pidb
 /UiaDbusCoreBridge/UiaDbusCoreBridge/*.pc
 /UiaDbusCoreBridge/UiaDbusCoreBridge/Makefile
 /UiaDbusCoreBridge/UiaDbusCoreBridge/Makefile.in
+
+# /UiaDbusCoreBridge/DbusCore/
+/UiaDbusCoreBridge/DbusCore/bin
+/UiaDbusCoreBridge/DbusCore/*.pidb
+/UiaDbusCoreBridge/DbusCore/*.pc
+/UiaDbusCoreBridge/DbusCore/Makefile
+/UiaDbusCoreBridge/DbusCore/Makefile.in
+
+# /UiaDbusCoreBridge/UiaDbusCoreBridgeTests/
+/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/bin
+/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/*.pidb
+/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/Makefile
+/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/Makefile.in
+/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/dbuscorebridgetest.sh
+
+# /DbusCoreUiaSource/
+/DbusCoreUiaSource/bin
+/DbusCoreUiaSource/*.pidb
+/DbusCoreUiaSource/*.userprefs
+/DbusCoreUiaSource/Makefile
+/DbusCoreUiaSource/Makefile.in
+/DbusCoreUiaSource/configure
+/DbusCoreUiaSource/config.*
+/DbusCoreUiaSource/autom4te.cache
+/DbusCoreUiaSource/missing
+/DbusCoreUiaSource/aclocal.m4
+/DbusCoreUiaSource/install-sh
+/DbusCoreUiaSource/depcomp
+/DbusCoreUiaSource/libtool
+/DbusCoreUiaSource/ltmain.sh
+
+# /DbusCoreUiaSource/DbusCoreUiaSource/
+/DbusCoreUiaSource/DbusCoreUiaSource/bin
+/DbusCoreUiaSource/DbusCoreUiaSource/*.pidb
+/DbusCoreUiaSource/DbusCoreUiaSource/*.pc
+/DbusCoreUiaSource/DbusCoreUiaSource/Makefile
+/DbusCoreUiaSource/DbusCoreUiaSource/Makefile.in
 
 # /build/hudson/scripts/
 /build/hudson/scripts/.mktarball.py.swp
