@@ -1,3 +1,7 @@
+2009-04-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* clm: Use --cached instead of --staged for git diff for better
+	compatibility with older versions of git.
 
 2009-03-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 

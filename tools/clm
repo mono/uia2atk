@@ -30,7 +30,7 @@ elif path.isdir('./.git'):
     # Require pwd to be root of git repo, since diff is *not* relative, to avoid confusion.
     # Since this is done just before a commit, only capture staged changes.
     # Use --no-prefix to look more like an svn diff.
-    diff_cmd = "git diff --staged --no-prefix"
+    diff_cmd = "git diff --cached --no-prefix"
     is_git = True
 else:
     print "ERROR: Called from outside a Subversion checkout or root of git repository"
