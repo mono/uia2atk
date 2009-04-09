@@ -4,23 +4,24 @@ import gobject
 
 COLUMN_NUMBER = 0
 COLUMN_STRING = 1
+COLUMN_BOOL = 2
 
 data = [
-    [ 1, 'first row' ],
-    [ 2, 'second row' ],
-    [ 3, 'third row' ],
-    [ 4, 'fourth row' ],
-    [ 5, 'fifth row' ],
-    [ 6, 'sixth row' ],
-    [ 7, 'seventh row' ],
-    [ 8, 'eigth row' ],
-    [ 9, 'ninth row' ],
-    [ 10, 'tenth row' ],
-    [ 1, 'first row' ],
-    [ 2, 'second row' ],
-    [ 3, 'third row' ],
-    [ 4, 'fourth row' ],
-    [ 5, 'fifth row' ]
+    [ 1, 'first row', True ],
+    [ 2, 'second row', True ],
+    [ 3, 'third row', True ],
+    [ 4, 'fourth row', True ],
+    [ 5, 'fifth row', True ],
+    [ 6, 'sixth row', True ],
+    [ 7, 'seventh row', None ],
+    [ 8, 'eigth row', None],
+    [ 9, 'ninth row', None ],
+    [ 10, 'tenth row', None ],
+    [ 1, 'first row', False ],
+    [ 2, 'second row', False ],
+    [ 3, 'third row', False],
+    [ 4, 'fourth row', False ],
+    [ 5, 'fifth row', False ]
     ]
 
 def list_selections(param):
@@ -48,17 +49,13 @@ def main():
     sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
     vbox.pack_start(sw, expand = True)
 
-    ls = gtk.ListStore(gobject.TYPE_UINT, gobject.TYPE_STRING)
+    ls = gtk.ListStore(gobject.TYPE_UINT, gobject.TYPE_STRING, gobject.TYPE_BOOLEAN)
     for item in data:
         iter = ls.append()
         ls.set(iter, COLUMN_NUMBER, item[0],
-                 COLUMN_STRING, item[1])
+                 COLUMN_STRING, item[1], COLUMN_BOOL, item[2])
     tv = gtk.TreeView(ls)
     tv.set_rules_hint(True)
-    tv.set_search_column(COLUMN_STRING)
-    selection = tv.get_selection()
-    selection.set_mode(gtk.SELECTION_MULTIPLE)
-    selection.connect("changed", selection_cb)
     sw.add(tv)
     tv.show()
 
@@ -67,15 +64,31 @@ def main():
     col.set_sort_column_id(COLUMN_NUMBER)
     tv.append_column(col)
     
-    renderer = gtk.CellRendererText()
-    col = gtk.TreeViewColumn('String', renderer, text=COLUMN_STRING)
+    renderer1 = gtk.CellRendererText()
+    renderer1.set_property('editable', True)
+    renderer1.connect('edited', col_edited, ls)
+    col = gtk.TreeViewColumn('String', renderer1, text=COLUMN_STRING)
     col.set_sort_column_id(COLUMN_STRING)
+    tv.append_column(col)
+
+    renderer2 = gtk.CellRendererToggle()
+    renderer2.set_property('activatable', True)
+    renderer2.connect('toggled', col_toggled, ls)
+    col  = gtk.TreeViewColumn('Boolean', renderer2)
+    col.add_attribute(renderer2, 'active', 2)
+    col.set_sort_column_id(COLUMN_BOOL)
     tv.append_column(col)
     
     win.set_default_size (200,300)
     sw.show()
     win.show_all()
     gtk.main()
+
+def col_edited(cell, path, new_text, ls):
+    ls[path][1] = new_text
+
+def col_toggled(cell, path, ls):
+    ls[path][2] = not ls[path][2]
     
 if __name__ == '__main__':
     main()

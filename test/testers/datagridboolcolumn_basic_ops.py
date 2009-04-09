@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-##
+##############################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        3/2/2008
 # Description: Test accessibility of datagridboolcolumn widget 
 #              Use the datagridframe.py wrapper script
 #              Test the samples/datagrid.py script
-##
+##############################################################
 
 # The docstring below  is used in the generated log file
 """
@@ -43,61 +43,57 @@ if app is None:
 # just an alias to make things shorter
 dgFrame = app.dataGridFrame
 
-#####################################################################################
-##AtkAction test, mouse click, key navigate to change label and text
-#####################################################################################
+###################################################################
+# press key Space to change focused cell's text, key Return move to 
+# next row, Label is changed
+###################################################################
 
-#do click action for BoolColumn cells to check its Text
-dgFrame.click(dgFrame.false_cell)
+dgFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
-dgFrame.assertText(dgFrame.false_cell, "True")
-
-dgFrame.click(dgFrame.true_cell)
-sleep(config.SHORT_DELAY)
-dgFrame.assertText(dgFrame.true_cell, "(null)")
-
-dgFrame.click(dgFrame.null_cell)
+dgFrame.keyCombo("Return", grabFocus=False)
 sleep(config.SHORT_DELAY)
 dgFrame.assertText(dgFrame.null_cell, "False")
+dgFrame.assertLabel("row:1 col:0 Value:True")
 
-#mouse click and key press
+dgFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dgFrame.keyCombo("Return", grabFocus=False)
+sleep(config.SHORT_DELAY)
+dgFrame.assertText(dgFrame.true_cell, "(null)")
+dgFrame.assertLabel("row:2 col:0 Value:False")
+
+dgFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
+##BUG485466: navigate to last line cause crash
+#dgFrame.keyCombo("Return", grabFocus=False)
+dgFrame.null_cell.mouseClick()
+sleep(config.SHORT_DELAY)
+dgFrame.assertText(dgFrame.false_cell, "True")
+dgFrame.assertLabel("row:0 col:0 Value:False")
+
+###################################
+# mouseClick to test cells position
+###################################
+dgFrame.true_cell.mouseClick()
+sleep(config.SHORT_DELAY)
+dgFrame.assertLabel("row:1 col:0 Value:")
+
 dgFrame.false_cell.mouseClick()
 sleep(config.SHORT_DELAY)
 dgFrame.assertLabel("row:2 col:0 Value:True")
 
-dgFrame.keyCombo("Space", grabFocus=False)
-sleep(config.SHORT_DELAY)
-dgFrame.assertText(dgFrame.false_cell, "(null)")
-
-#key up and press
-dgFrame.keyCombo("Up", grabFocus=False)
-sleep(config.SHORT_DELAY)
-dgFrame.assertLabel("row:1 col:0 Value:")
-
-dgFrame.keyCombo("Space", grabFocus=False)
-sleep(config.SHORT_DELAY)
-dgFrame.assertText(dgFrame.true_cell, "False")
-
-#key up and press
-dgFrame.keyCombo("Up", grabFocus=False)
-sleep(config.SHORT_DELAY)
-dgFrame.assertLabel("row:0 col:0 Value:False")
-
-dgFrame.keyCombo("Space", grabFocus=False)
-sleep(config.SHORT_DELAY)
-dgFrame.assertText(dgFrame.null_cell, "True")
-
 ##########################
-##Text is uneditable
+# Text is uneditable
 ##########################
+##BUG480831:cells under BoolColumn should not implement Atk.EditableText, 
+##it doesn't blocks test but throw exception
+dgFrame.assertTextEditableOrUnEditable(dgFrame.true_cell, "uneditable", oldtext="(null)")
 
-dgFrame.enterTextValue(dgFrame.true_cell, "True", oldtext="False")
+dgFrame.assertTextEditableOrUnEditable(dgFrame.null_cell, "uneditable", oldtext="False")
 
-dgFrame.enterTextValue(dgFrame.null_cell, "(null)", oldtext="True")
+dgFrame.assertTextEditableOrUnEditable(dgFrame.false_cell, "uneditable", oldtext="True")
 
-dgFrame.enterTextValue(dgFrame.false_cell, "False", oldtext="(null)")
-
-#close application frame window
+# close application frame window
 dgFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

@@ -112,7 +112,8 @@ class DataGridFrame(accessibles.Frame):
         Ensure accessible's Text is changed to newtext
 
         """
-        procedurelogger.action("check %s Text Value" % accessible)
+        procedurelogger.expectedResult("%s\' Text is changed to %s" % \
+						(accessible, newtext))
 
         assert accessible.text == newtext, "%s not match %s" % (accessible, newtext)
 
@@ -175,24 +176,24 @@ class DataGridFrame(accessibles.Frame):
             assert Read0_new_position == self.Read0_position and \
                    Edit0_new_position == self.Edit0_position
 
-    def changeText(self, accessible, newtext, oldtext=None):
+    def assertTextEditableOrUnEditable(self, accessible, newtext, oldtext=None):
         """
         Check EditableText for accessibles which under TextBox_Edit column;
-	Check Text for accessibles which under TextBox_Read column by change 
-	oldtext to newtext. 
+	Check UnEditableText for accessibles which under TextBox_Read, 
+	BoolColumn, ComboBox columns by change oldtext to newtext. 
 
         If accessible is editable that text is changed, 
 	otherwise, if accessible is not editable that oldtext is remained 
 
         """
-        procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
+        procedurelogger.action('try input %s in %s which is uneditable' % (newtext, accessible))
 
-        if entertext == "editable":
-            procedurelogger.expectedResult("%s text is %s" % (accessible,entertext))
-            assert accessible.text == entertext
-        elif entertext == "uneditable":
+        if newtext == "editable":
+            procedurelogger.expectedResult("%s text is %s" % (accessible,newtext))
+            assert accessible.text == newtext
+        elif newtext == "uneditable":
             try:
-                accessible.text = entertext
+                accessible.text = newtext
             except NotImplementedError:
                 pass
 

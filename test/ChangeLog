@@ -1,3 +1,13 @@
+2009-04-09  Calen Chen <cachen@novell.com>
+
+	* samples/gtkliststore.py: add boolean column with 
+	gtk.CellRendererToggle
+
+2009-04-09  Calen Chen <cachen@novell.com>
+
+	* testers/datagrid/datagridframe.py: rename method
+	* testers/datagridboolcolumn_basic_ops.py: add bug reference, rewrite  
+	some tests
 
 2009-04-08  Calen Chen <cachen@novell.com>
 
