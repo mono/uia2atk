@@ -20,10 +20,10 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-Requires:	mono-core >= 2.4 mono-data gtk-sharp2 >= 2.12.8 
-Requires:	mono-uia mono-winfxcore uiaatkbridge glib-sharp2 >= 2.12.8
-BuildRequires:	mono-devel >= 2.4 mono-data gtk-sharp2 >= 2.12.8 glib-sharp2 
-BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool >= 0.35
+Requires:	mono-core mono-data gtk-sharp2 
+Requires:	mono-uia mono-winfxcore uiaatkbridge glib-sharp2
+BuildRequires:	mono-devel mono-data gtk-sharp2 glib-sharp2 
+BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool
 
 Summary:        Implementation of UIA providers
 

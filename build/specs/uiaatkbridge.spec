@@ -19,9 +19,9 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
-Requires:	mono-core >= 2.4 gtk-sharp2 >= 2.12.8
+Requires:	mono-core gtk-sharp2
 Requires:	mono-uia mono-winfxcore at-spi 
-BuildRequires:	mono-devel >= 2.4 gtk-sharp2 >= 2.12.8 
+BuildRequires:	mono-devel gtk-sharp2
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel
 
 Summary:        Bridge between UIA providers and ATK

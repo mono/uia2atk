@@ -20,8 +20,8 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-Requires:	mono-core >= 2.4
-BuildRequires:	mono-core >= 2.4 mono-devel mono-nunit
+Requires:	mono-core
+BuildRequires:	mono-core mono-devel mono-nunit
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
