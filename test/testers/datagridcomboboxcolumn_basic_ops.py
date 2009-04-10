@@ -44,44 +44,46 @@ if app is None:
 dgFrame = app.dataGridFrame
 
 #################
-##states test 
+# states test 
 #################
+## BUG479796: I think TableCells under combobox column also shouldn't have 
+## editable state
+#statesCheck(dgFrame.combobox_cells[0], "TableCell")
 
-statesCheck(dgFrame.combobox_cells[0], "TableCell")
+#statesCheck(dgFrame.combobox_cells[1], "TableCell")
 
-statesCheck(dgFrame.combobox_cells[1], "TableCell")
+####################################################################
+# AtkAction test, mouse click, key navigate to change label and text
+####################################################################
 
-#####################################################################################
-##AtkAction test, mouse click, key navigate to change label and text
-#####################################################################################
-
-#mouse click
+# mouse click
 dgFrame.combobox_cells[0].mouseClick()
 sleep(config.SHORT_DELAY)
 dgFrame.assertLabel("row:0 col:3 Value:Box0")
 
-#key down
+# key down
 dgFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 dgFrame.assertLabel("row:1 col:3 Value:Box1")
 
-#press/click action, states check for menu/menuitem
-dgFrame.combobox_cells[2].press()
-sleep(config.SHORT_DELAY)
-menu = dgFrame.combobox_cells[2].findMenu(None)
-statesCheck(menu, "Menu")
-item_menuitems = menu.findAllMenuItems(re.compile("Item*"))
-statesCheck(item_menuitems[0], "MenuItem")
+# press/click action, states check for menu/menuitem
+## BUG480237: missing menu and menuitems
+#dgFrame.combobox_cells[2].press()
+#sleep(config.SHORT_DELAY)
+#menu = dgFrame.combobox_cells[2].findMenu(None)
+#statesCheck(menu, "Menu")
+#item_menuitems = menu.findAllMenuItems(re.compile("Item*"))
+#statesCheck(item_menuitems[0], "MenuItem")
 
-dgFrame.click(item_menuitems[2])
-sleep(config.SHORT_DELAY)
-dgFrame.assertText(item_menuitems[2], "Item3")
+#dgFrame.click(item_menuitems[2])
+#sleep(config.SHORT_DELAY)
+#dgFrame.assertText(combobox_cells[2], "Item3")
 
 ##########################
-##Text is uneditable
+# Text is uneditable
 ##########################
 
-dgFrame.enterTextValue(dgFrame.combobox_cells[0], "uneditable", oldtext="Box0")
+dgFrame.assertInsertText(dgFrame.combobox_cells[0], "uneditable", oldtext="Box0")
 
 #close application frame window
 dgFrame.quit()

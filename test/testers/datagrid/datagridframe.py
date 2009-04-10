@@ -80,7 +80,7 @@ class DataGridFrame(accessibles.Frame):
 
         # test boolean type
         elif testtype == "BoolColumn":
-            actual = [self.nullbool_cell.text, self.true_cell.text, self.false_cell.text]
+            actual = [self.null_cell.text, self.true_cell.text, self.false_cell.text]
             expected = ["(null)", "True", "False"]
 
         # test edit text box type
@@ -176,31 +176,58 @@ class DataGridFrame(accessibles.Frame):
             assert Read0_new_position == self.Read0_position and \
                    Edit0_new_position == self.Edit0_position
 
-    def assertTextEditableOrUnEditable(self, accessible, newtext, oldtext=None):
+    def assertInsertText(self, accessible, newtext, oldtext=None):
         """
         Check EditableText for accessibles which under TextBox_Edit column;
 	Check UnEditableText for accessibles which under TextBox_Read, 
-	BoolColumn, ComboBox columns by change oldtext to newtext. 
+	BoolColumn, ComboBox columns by insert newtext. 
 
         If accessible is editable that text is changed, 
 	otherwise, if accessible is not editable that oldtext is remained 
 
         """
-        procedurelogger.action('try input %s in %s which is uneditable' % (newtext, accessible))
-
         if newtext == "editable":
+            accessible.deleteText()
+            sleep(config.SHORT_DELAY)
+            accessible.insertText(newtext)
+            sleep(config.SHORT_DELAY)
             procedurelogger.expectedResult("%s text is %s" % (accessible,newtext))
-            assert accessible.text == newtext
+            assert accessible.text == newtext, "%s not match %s" % \
+						(accessible.text, newtext)
         elif newtext == "uneditable":
             try:
-                accessible.text = newtext
+                accessible.deleteText()
+                sleep(config.SHORT_DELAY)
+                accessible.insertText(newtext)
+                sleep(config.SHORT_DELAY)
             except NotImplementedError:
                 pass
 
             sleep(config.SHORT_DELAY)
 
             procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
-            assert accessible.text == oldtext
+            assert accessible.text == oldtext, "%s not match %s" % \
+						(accessible.text, oldtext)
+
+    def assertTypeText(self, accessible, text, expectedtext=None):
+        """
+        Wrap strongwind typeText to assert if accessible's text is changed.
+
+        If accessible is editable that text is changed, otherwise, if 
+	accessible is not editable that oldtext is remained 
+
+        """
+        accessible.typeText(text)
+        sleep(config.SHORT_DELAY)
+
+        if text == "editable":
+            procedurelogger.expectedResult("%s text is %s" % (accessible,expectedtext))
+            assert accessible.text == expectedtext, \
+				"%s not match %s" % (accessible.text, expectedtext)
+        elif text == "uneditable":
+            procedurelogger.expectedResult("%s text still is %s" % (accessible, expectedtext))
+            assert accessible.text == expectedtext, "%s not match %s" % \
+						(accessible.text, expectedtext)
 
     
     # close application main window after running test

@@ -132,7 +132,7 @@ statesCheck(dgFrame.edit_cells[2], "TableCell", add_states=["selected", "editabl
 #statesCheck(dgFrame.read_cells[1], "TableCell", add_states=["focused"])
 dgFrame.assertLabel("row:1 col:2 Value:Read1")
 
-# do click move focus to 'Box1' 
+# click 'Box1' to raise "selected" for cells which in the same row
 dgFrame.click(dgFrame.combobox_cells[1])
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.edit_cells[1], "TableCell", add_states=["selected", "editable"])
