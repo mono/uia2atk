@@ -17,11 +17,28 @@ class SpinButton:
         self.window.connect("delete_event", self.delete_event)
         self.window.set_border_width(12)
 
-        spinbutton = gtk.SpinButton(gtk.Adjustment(0, 0, 119, 10, 20, 50))
-        self.window.add(spinbutton)
+        self.vbox = gtk.VBox(False, 0)
 
-        spinbutton.show()
-        self.window.show()
+        spinbutton_editable = \
+                       gtk.SpinButton(gtk.Adjustment(0, -100, 119, 10, 20, 50))
+        editable_label = gtk.Label("Editable:")
+        editable_label.set_alignment(0, 0)
+        spinbutton_uneditable = \
+                         gtk.SpinButton(gtk.Adjustment(0, -100, 119, 1, 1, 50))
+        spinbutton_uneditable.set_editable(False)
+        uneditable_label = gtk.Label("Not Editable:")
+        uneditable_label.set_alignment(0, 0)
+
+        # put the spin buttons in the vbox
+        self.vbox.pack_start(editable_label, False, False, 0)
+        self.vbox.pack_start(spinbutton_editable, True, True, 10)
+        self.vbox.pack_start(gtk.VBox(), True, True, 10)
+        self.vbox.pack_start(uneditable_label, False, False, 0)
+        self.vbox.pack_start(spinbutton_uneditable, True, True, 10)
+
+        self.window.add(self.vbox)
+
+        self.window.show_all()
 
 def main():
     gtk.main()
