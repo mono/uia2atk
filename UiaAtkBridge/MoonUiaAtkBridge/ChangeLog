@@ -1,3 +1,7 @@
+2009-04-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* build-glib21.sh: Workaround for bug #493702.
+
 2009-04-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* build-glib21.sh: Now the security attribs are injected to
