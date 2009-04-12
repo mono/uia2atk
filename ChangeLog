@@ -1,3 +1,8 @@
+2009-04-11  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/tunerbridgestep.diff: add ongoing work for the new step,
+	lacking yet internalization of API.
+
 2009-04-03  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/moon-security.diff: update ssc, and prevent 2 launches.

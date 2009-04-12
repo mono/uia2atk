@@ -1,0 +1,188 @@
+Index: Mono.Tuner.csproj
+===================================================================
+--- Mono.Tuner.csproj	(revision 131352)
++++ Mono.Tuner.csproj	(working copy)
+@@ -35,12 +35,12 @@
+   <ItemGroup>
+     <Compile Include="Mono.Tuner\AdjustVisibility.cs" />
+     <Compile Include="Mono.Tuner\CheckVisibility.cs" />
+-    <Compile Include="Mono.Tuner\InjectAttributes.cs" />
+     <Compile Include="Mono.Tuner\PrintStatus.cs" />
+     <Compile Include="Mono.Tuner\RemoveSerialization.cs" />
+     <Compile Include="Mono.Tuner\TunerAnnotations.cs" />
+     <Compile Include="Mono.Tuner\InjectSecurityAttributes.cs" />
+     <Compile Include="Mono.Tuner\MoonlightAssemblyStep.cs" />
++    <Compile Include="Mono.Tuner\AddFullSecurity.cs" />
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\linker\Mono.Linker.csproj">
+Index: Mono.Tuner/InjectSecurityAttributes.cs
+===================================================================
+--- Mono.Tuner/InjectSecurityAttributes.cs	(revision 131333)
++++ Mono.Tuner/InjectSecurityAttributes.cs	(working copy)
+@@ -54,7 +54,7 @@
+ 
+ 		const string sec_attr_folder = "secattrs";
+ 
+-		AssemblyDefinition _assembly;
++		protected AssemblyDefinition _assembly;
+ 
+ 		MethodDefinition _safe_critical_ctor;
+ 		MethodDefinition _critical_ctor;
+@@ -63,24 +63,29 @@
+ 
+ 		protected override bool ConditionToProcess ()
+ 		{
+-			if (!Context.HasParameter (sec_attr_folder))
++			if (!Context.HasParameter (sec_attr_folder)) {
++				Console.Error.WriteLine ("Warning: no secattrs folder specified.");
+ 				return false;
++			}
+ 
+ 			data_folder = Context.GetParameter (sec_attr_folder);
++Console.WriteLine ("_____data_folder vale:" + data_folder);
+ 			return true;
+ 		}
+ 
+ 		protected override void ProcessAssembly (AssemblyDefinition assembly)
+ 		{
+-			if (Annotations.GetAction (assembly) != AssemblyAction.Link)
++			if (Annotations.GetAction (assembly) != AssemblyAction.Link) {
++				Console.WriteLine ("_________ProcessAssembly going to skip because AssemblyAction is not Link");
+ 				return;
++			}
+ 
+ 			string secattr_file = Path.Combine (
+ 				data_folder,
+ 				assembly.Name.Name + ".secattr");
+ 
+ 			if (!File.Exists (secattr_file)) {
+-				Console.Error.WriteLine ("Warning: file '{0}' not found, skipping.", secattr_file);
++				Console.Error.WriteLine ("Warning: file '{0}' not found, skipping.", secattr_file);
+ 				return;
+ 			}
+ 
+@@ -93,7 +98,7 @@
+ 			ProcessSecurityAttributeFile (secattr_file);
+ 		}
+ 
+-		void RemoveSecurityAttributes ()
++		protected void RemoveSecurityAttributes ()
+ 		{
+ 			foreach (TypeDefinition type in _assembly.MainModule.Types) {
+ 				RemoveSecurityAttributes (type);
+@@ -354,7 +359,7 @@
+ 			return new CustomAttribute (Import (GetSafeCriticalCtor ()));
+ 		}
+ 
+-		CustomAttribute CreateCriticalAttribute ()
++		protected CustomAttribute CreateCriticalAttribute ()
+ 		{
+ 			return new CustomAttribute (Import (GetCriticalCtor ()));
+ 		}
+Index: Mono.Tuner/AddFullSecurity.cs
+===================================================================
+--- Mono.Tuner/AddFullSecurity.cs	(revision 0)
++++ Mono.Tuner/AddFullSecurity.cs	(revision 0)
+@@ -0,0 +1,101 @@
++//
++// AddFullSecurity.cs
++//
++// Author:
++//   Andrés G. Aragoneses (aaragoneses@novell.com)
++//
++// (C) 2009 Novell, Inc.
++//
++// Permission is hereby granted, free of charge, to any person obtaining
++// a copy of this software and associated documentation files (the
++// "Software"), to deal in the Software without restriction, including
++// without limitation the rights to use, copy, modify, merge, publish,
++// distribute, sublicense, and/or sell copies of the Software, and to
++// permit persons to whom the Software is furnished to do so, subject to
++// the following conditions:
++//
++// The above copyright notice and this permission notice shall be
++// included in all copies or substantial portions of the Software.
++//
++// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++//
++
++
++using System;
++
++using Mono.Cecil;
++
++using Mono.Linker;
++
++namespace Mono.Tuner
++{
++	
++	public class AddFullSecurity : InjectSecurityAttributes
++	{
++		protected override bool ConditionToProcess ()
++		{
++			return true;
++		}
++		
++		protected override void ProcessAssembly (AssemblyDefinition assembly)
++		{
++			if (Annotations.GetAction (assembly) != AssemblyAction.Link) {
++				Console.WriteLine ("_________ProcessAssembly going to skip because AssemblyAction is not Link");
++				return;
++			}
++
++			_assembly = assembly;
++
++			// remove existing [SecurityCritical] and [SecuritySafeCritical]
++			RemoveSecurityAttributes ();
++
++			// add [SecurityCritical]
++			AddSecurityAttributes ();
++			
++			MakeApiInternal ();
++		}
++		
++		void MakeApiInternal ()
++		{
++			foreach (TypeDefinition type in _assembly.MainModule.Types) {
++				if (type.IsPublic)
++					
++
++				if (type.HasConstructors)
++					foreach (MethodDefinition ctor in type.Constructors)
++						AddSecurityAttributes (ctor);
++
++				if (type.HasMethods)
++					foreach (MethodDefinition method in type.Methods)
++						AddSecurityAttributes (method);
++			}
++		}
++		
++		void AddSecurityAttributes ()
++		{
++			foreach (TypeDefinition type in _assembly.MainModule.Types) {
++				AddSecurityAttributes (type);
++
++				if (type.HasConstructors)
++					foreach (MethodDefinition ctor in type.Constructors)
++						AddSecurityAttributes (ctor);
++
++				if (type.HasMethods)
++					foreach (MethodDefinition method in type.Methods)
++						AddSecurityAttributes (method);
++			}
++		}
++		
++		void AddSecurityAttributes (ICustomAttributeProvider provider)
++		{
++			provider.CustomAttributes.Add (CreateCriticalAttribute ());
++		}
++
++	}
++}
