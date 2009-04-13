@@ -1,3 +1,10 @@
+2009-04-13  Calen Chen <cachen@novell.com>
+
+	* testers/fontdialog/fontdialogframe.py: rename and rewrite 
+	clickMenuItem wraper; add click test and states test for all color 
+	menuitems; update text test for color menuitems
+	* testers/fontdialog_basic_ops.py: add bug reference
+
 2009-04-10 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkspinbutton.py: Enhanced the gtk.SpinButton sample to

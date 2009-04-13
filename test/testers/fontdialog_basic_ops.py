@@ -45,27 +45,29 @@ if app is None:
 fdFrame = app.fontDialogFrame
 
 ###################################################
-##search for all widgets from font dialog
+# search for all widgets from font dialog
 ###################################################
 
 #click "Click me" button to show fontdialog page, then check subwidgets
-fdFrame.click(fdFrame.fontdialog_button)
+fdFrame.fontdialog_button.click()
 sleep(config.MEDIUM_DELAY)
 fdFrame.AssertWidgets()
 
 ################################################################################
-##search for color ComboBox and sub children in Effects GroupBox
-##Text test 
-##color ComboBox Press action test
-##color MenuItem Click action test
+# search for color ComboBox and its sub children in Effects GroupBox;
+# check States;
+# check AtkText for MenuItems;
+# color ComboBox Press action test;
+# color MenuItem Click action test
 ################################################################################
-
+## BUG478526 that MenuItems have wrong texts, remember to return test case in 
+## frame wraper line123-125
 fdFrame.colorComboBoxTest()
 
-#close font dialog
+# close font dialog
 fdFrame.click(fdFrame.ok_button)
 
-#close application frame window
+# close application frame window
 fdFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
