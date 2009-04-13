@@ -1,3 +1,15 @@
+Index: Mono.Tuner.dll.sources
+===================================================================
+--- Mono.Tuner.dll.sources	(revision 131333)
++++ Mono.Tuner.dll.sources	(working copy)
+@@ -1,6 +1,7 @@
+ Mono.Tuner/TunerAnnotations.cs
+ Mono.Tuner/PrintStatus.cs
+ Mono.Tuner/RemoveSerialization.cs
++Mono.Tuner/AddFullSecurity.cs
+ Mono.Tuner/AdjustVisibility.cs
+ Mono.Tuner/CheckVisibility.cs
+ Mono.Tuner/InjectSecurityAttributes.cs
 Index: Mono.Tuner.csproj
 ===================================================================
 --- Mono.Tuner.csproj	(revision 131352)
@@ -84,7 +96,7 @@ Index: Mono.Tuner/AddFullSecurity.cs
 ===================================================================
 --- Mono.Tuner/AddFullSecurity.cs	(revision 0)
 +++ Mono.Tuner/AddFullSecurity.cs	(revision 0)
-@@ -0,0 +1,101 @@
+@@ -0,0 +1,114 @@
 +//
 +// AddFullSecurity.cs
 +//
@@ -145,6 +157,7 @@ Index: Mono.Tuner/AddFullSecurity.cs
 +			// add [SecurityCritical]
 +			AddSecurityAttributes ();
 +			
++			// convert all public members into internal
 +			MakeApiInternal ();
 +		}
 +		
@@ -152,15 +165,27 @@ Index: Mono.Tuner/AddFullSecurity.cs
 +		{
 +			foreach (TypeDefinition type in _assembly.MainModule.Types) {
 +				if (type.IsPublic)
-+					
++					type.IsPublic = false;
 +
 +				if (type.HasConstructors)
 +					foreach (MethodDefinition ctor in type.Constructors)
-+						AddSecurityAttributes (ctor);
++						if (ctor.IsPublic)
++							ctor.IsAssembly = true;
 +
 +				if (type.HasMethods)
 +					foreach (MethodDefinition method in type.Methods)
-+						AddSecurityAttributes (method);
++						if (method.IsPublic)
++							method.IsAssembly = true;
++
++				//TODO: are methods of properties included in HasMethods?
++				if (type.HasProperties) {
++					foreach (PropertyDefinition prop in type.Properties) {
++						if (prop.SetMethod.IsPublic)
++							prop.SetMethod.IsAssembly = true;
++						if (prop.GetMethod.IsPublic)
++							prop.GetMethod.IsAssembly = true;
++					}
++				}
 +			}
 +		}
 +		
