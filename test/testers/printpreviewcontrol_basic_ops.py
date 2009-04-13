@@ -43,32 +43,33 @@ if app is None:
 # just an alias to make things shorter
 ppcFrame = app.printPreviewControlFrame
 
-#click button to show PrintPreviewControl page
+# click button to show PrintPreviewControl page
 ppcFrame.click(ppcFrame.button)
 sleep(config.MEDIUM_DELAY)
 
-#in this example panel should have "focusable" state that is different from #Panel control due to IsKeyboardFocusable is True
+# in this example panel should have "focusable" state that is different from 
+# Panel control due to IsKeyboardFocusable is True
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable"])
 sleep(config.SHORT_DELAY)
 
-#panel role may rise "focused" state by press Tab
+# panel role may rise "focused" state by press Tab
 ppcFrame.keyCombo("Tab", grabFocus=True)
 sleep(config.SHORT_DELAY)
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable", "focused"])
 
-#move foused from panel to button by press Tab again
+# move foused from panel to button by press Tab again
 ppcFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable"])
 
 statesCheck(ppcFrame.button, "Button", add_states=["focused"])
 
-#check if AtkValue is implemented for scrollbar
+# simply check if AtkValue is implemented for scrollbar
 ppcFrame.valueScrollBar(ppcFrame.vscrollbar, 50)
 
 ppcFrame.valueScrollBar(ppcFrame.hscrollbar, 50)
 
-#close application frame window
+# close application frame window
 ppcFrame.quit()
 
 

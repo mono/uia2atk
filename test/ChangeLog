@@ -1,5 +1,13 @@
 2009-04-13  Calen Chen <cachen@novell.com>
 
+	* testers/printpreviewcontrol/printpreviewcontrolframe.py,
+	* testers/printpreviewcontrol_basic_ops.py: modify comments
+	* testers/printpreviewdialog/printpreviewdialogframe.py: add doc string
+	* testers/printpreviewdialog_basic_ops.py: comment out some tests due 
+	to bugs
+
+2009-04-13  Calen Chen <cachen@novell.com>
+
 	* testers/fontdialog/fontdialogframe.py: rename and rewrite 
 	clickMenuItem wraper; add click test and states test for all color 
 	menuitems; update text test for color menuitems

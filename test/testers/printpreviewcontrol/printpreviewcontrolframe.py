@@ -27,8 +27,11 @@ class PrintPreviewControlFrame(accessibles.Frame):
         super(PrintPreviewControlFrame, self).__init__(accessible)
         self.button = self.findPushButton(self.BUTTON)
 
-    #do click action
     def click(self, button):
+        """
+        Wrap strongwind click action, then make sure all widgets are showing up
+
+        """
         button.click()
 
         procedurelogger.expectedResult("PrintPreviewControl page is showing")
@@ -37,8 +40,8 @@ class PrintPreviewControlFrame(accessibles.Frame):
         self.vscrollbar = self.scrollbars[0]
         self.hscrollbar = self.scrollbars[1]
 
-    #check in scrollbar AtkValue is implemented, because in example Zoom 
-    #property can show both vscrollbar and hscrollbar
+    # Zoom property can show both vscrollbar and hscrollbar. make sure 
+    # scrollbar's AtkValue is implemented, 
     def valueScrollBar(self, scrollbar, newValue=None):
         procedurelogger.action('set %s value to "%s"' % (scrollbar, newValue))
         scrollbar.value = newValue
