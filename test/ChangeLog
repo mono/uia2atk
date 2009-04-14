@@ -1,3 +1,12 @@
+2009-04-14  Calen Chen <cachen@novell.com>
+
+	* testers/progressbar/progressbarframe.py,
+	* testers/progressbar_basic_ops.py: modify comments
+	* testers/savefiledialog/savefiledialogframe.py: rename and update some
+	tests method; add doc strings
+	* testers/savefiledialog_basic_ops.py: modify comments and tests; 
+	comment out some tests due to bugs
+
 2009-04-13  Calen Chen <cachen@novell.com>
 
 	* testers/printpreviewcontrol/printpreviewcontrolframe.py,

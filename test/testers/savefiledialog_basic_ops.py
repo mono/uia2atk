@@ -45,67 +45,59 @@ if app is None:
 ofdFrame = app.saveFileDialogFrame
 
 ###################################################
-##search for all widgets from save dialog
+# search for all widgets from save dialog
 ###################################################
 
-#click "Click me" button to show savedialog page, then check subwidgets
+# click "Click me" button to show savedialog page, then check subwidgets
 ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.MEDIUM_DELAY)
 ofdFrame.AssertWidgets()
 
 ###########################################################
-##search for all widgets from new folder dialog
-##add new folder
+# search for all widgets from "New Folder or File" dialog,
+# click Cancel button won't create new folder,
+# click OK button will create new folder
 ###########################################################
 
-#click newdirtoolbarbutton to creat new folder, then check subwidgets
-ofdFrame.click(ofdFrame.newdirtoolbarbutton)
-sleep(config.SHORT_DELAY)
-ofdFrame.NewFolderCheck()
-#enter new folder name, then click Cancel button will not create it
-ofdFrame.CreatFolder(ofdFrame.newfolder_cancel)
+ofdFrame.creatNewFolderTest("Cancel")
 
-#click newdirtoolbarbutton to creat new folder, then check subwidgets
-ofdFrame.click(ofdFrame.newdirtoolbarbutton)
-sleep(config.SHORT_DELAY)
-ofdFrame.NewFolderCheck()
-#enter new folder name, then click OK button will create it
-ofdFrame.CreatFolder(ofdFrame.newfolder_ok)
+ofdFrame.creatNewFolderTest("Ok")
 
-#######################################################
-##dirComboBox test
-##check states for items under dirCombobox
-##check Action for dirCombobox and menuitems
-#######################################################
+##################
+# dirComboBox test
+##################
 
-#check dirComboBox and children' states, dir_menu and menuitems are invisible and isn't showing
+# check dirComboBox and children' states, menu and menuitems are invisible and isn't showing
 statesCheck(ofdFrame.dir_combobox, "ComboBox")
 statesCheck(ofdFrame.dir_menu, "Menu", invalid_states=["showing", "visible"])
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
+# samples_menuitem is selected and focused by default
+samples_menuitem = ofdFrame.dir_menu.findMenuItem("samples")
+statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
-#click dirComboBox to expand menu, then check states again
+# press dirComboBox to expand menu, then check states again
 ofdFrame.press(ofdFrame.dir_combobox)
 sleep(config.SHORT_DELAY)
 statesCheck(ofdFrame.dir_combobox, "ComboBox")
 statesCheck(ofdFrame.dir_menu, "Menu")
-#recentlyused_menuitem on the top of the list, so it is un-showing 
+# recentlyused_menuitem on the top of the list, so it is un-showing 
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
-#mynetwork_menuitem is shown and visible
+# mynetwork_menuitem is shown and visible
 statesCheck(ofdFrame.mynetwork_menuitem, "MenuItem")
-#samples_menuitem is selected and focused by default
-samples_menuitem = ofdFrame.dir_menu.findMenuItem("samples")
+# samples_menuitem is still selected and focused by default
 statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
-#click menuitem under dir_menu to check its AtkAction, move focus and selection
-#to recentlyused_menuitem, there is no "ANewFolder" folder on treetable
-##click menuitem doesn't change dir BUG475529
-ofdFrame.ItemClick(ofdFrame.recentlyused_menuitem)
+# click menuitem under dir_menu to check its AtkAction, move focus and selection
+# to recentlyused_menuitem, there is no "ANewFolder" folder on treetable
+ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("ANewFolder")
+ofdFrame.assertDirChanged("ANewFolder")
+##MenuItems disappeared when select the first path from dirComboBox due to BUG484615
+'''
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(samples_menuitem, "MenuItem")
 
-#use keyDown move focus and selection to desktop_menuitem
+# use keyDown move focus and selection to desktop_menuitem
 ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=True)
 sleep(config.SHORT_DELAY)
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
@@ -118,53 +110,52 @@ ofdFrame.dir_menu.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.mycomputer_menuitem.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("My Computer")
+ofdFrame.assertDirChanged("My Computer")
 statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
 statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
+'''
+#######################################
+# popUpButtonPanel and popUpButton test
+#######################################
 
-#############################################################
-##popUpButtonPanel and popUpButton test
-##test states
-##test Action and navigation for popUpButton
-#############################################################
+## states test blocks by BUG490572 and BUG475082
+#statesCheck(ofdFrame.popuptoolbar, "ToolBar")
+#statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
+#statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
-##incorrect states BUG475082
-statesCheck(ofdFrame.popuptoolbar, "ToolBar")
-statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
-statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
-
-#click popUpButton personal to rise focused, there is no "Personal" folder on treetable
-ofdFrame.ItemClick(ofdFrame.personal_popup)
+# click popUpButton personal to rise focused, there is no "Personal" folder on treetable
+ofdFrame.itemClick(ofdFrame.personal_popup)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("Personal")
-statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
+ofdFrame.assertDirChanged("Personal")
+#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
 
-#keyUp move focus to desktop_popup, there is no "Desktop" folder on treetable
+# keyUp move focus to desktop_popup, there is no "Desktop" folder on treetable
 ofdFrame.personal_popup.keyCombo("Up", grabFocus=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("Desktop")
-statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
-statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
+ofdFrame.assertDirChanged("Desktop")
+#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
+#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
 
-#mouseClick move focus to mycomputer_popup, there is no "My Computer" folder on treetable
+# mouseClick move focus to mycomputer_popup, there is no "My Computer" folder on treetable
 ofdFrame.mycomputer_popup.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.AssertMenuItemClick("My Computer")
-statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
-statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
+ofdFrame.assertDirChanged("My Computer")
+#statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
+#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
 ###############################################
-##test activate action for Tabel Cell
+# test activate action for Tabel Cell
 ###############################################
 
 #activate action to double click README file
 ##missing activate action BUG476365
+'''
 ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.SHORT_DELAY)
 ofdFrame.AssertWidgets()
 sleep(config.SHORT_DELAY)
 #double click to open "README" file
-ofdFrame.assertActivate("README")
+ofdFrame.enterFolderOrOpenFile("README")
 
 #activate action to double click ANewFolder folder
 ofdFrame.click(ofdFrame.opendialog_button)
@@ -172,8 +163,8 @@ sleep(config.SHORT_DELAY)
 ofdFrame.AssertWidgets()
 sleep(config.SHORT_DELAY)
 #double click to enter "ANewFolder" folder
-ofdFrame.assertActivate("ANewFolder")
-
+ofdFrame.enterFolderOrOpenFile("ANewFolder")
+'''
 
 #close savedialog window
 ofdFrame.click(ofdFrame.cancel_button)

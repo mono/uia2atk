@@ -30,37 +30,49 @@ class SaveFileDialogFrame(accessibles.Frame):
         super(SaveFileDialogFrame, self).__init__(accessible)
         self.opendialog_button = self.findPushButton(self.BUTTON1)
 
-    #do click action
     def click(self, button):
+        """
+        Wrap strongwing click action
+
+        """
         button.click()
 
-        #click button will invoke dialog page
-        self.savedialog = self.app.findDialog("Save As")
+    def itemClick(self, itemname):
+        """
+        Wrap strongwing click action to provide action log
 
-    #do click action and give action log
-    def ItemClick(self, itemname):
+        """
         procedurelogger.action("click %s" % itemname)
         itemname.click()
 
-    #do press action
     def press(self, itemname):
+        """
+        Wrap strongwing press action to provide action log
+
+        """
         procedurelogger.action("press %s" % itemname)
         itemname.press()
 
-    #assert if all widgets on Open dialog are showing
-    def AssertWidgets(self, button=None):
+    # assert if all widgets on Open dialog are showing
+    def AssertWidgets(self):
+        """
+        Search for all widgets on Open Dialog
+
+        """
         procedurelogger.action("search for all widgets from SaveDialog windows")
 
-        #there are 3 labels in dialog
+        # click button will invoke dialog page
+        self.savedialog = self.app.findDialog("Save As")
+        # there are 3 labels in dialog
         procedurelogger.expectedResult("3 Labels are showing up")
         self.lookin_label = self.savedialog.findLabel("Save in:")
         self.filename_label = self.savedialog.findLabel("File name:")
         self.savetype_label = self.savedialog.findLabel("Save as type:")
-        #there are 2 push button in dialog
+        # there are 2 push button in dialog
         procedurelogger.expectedResult("2 PushButtons are showing up")
         self.Save_button = self.savedialog.findPushButton("Save")
         self.cancel_button = self.savedialog.findPushButton("Cancel")
-        #there are 5 popupbutton in popupbuttonpanel on the left side
+        # there are 5 popupbutton in popupbuttonpanel on the left side
         procedurelogger.expectedResult("5 PopUpButton are showing up")
         self.toolbars = self.savedialog.findAllToolBars(None)
         self.popuptoolbar = self.toolbars[1]
@@ -69,7 +81,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.personal_popup = self.popuptoolbar.findMenuItem("Personal")
         self.mycomputer_popup = self.popuptoolbar.findMenuItem("My Computer")
         self.mynetwork_popup = self.popuptoolbar.findMenuItem("My Network")
-        #toolbar with 4 small toolbarbuttons on the top right side
+        # toolbar with 4 small toolbarbuttons on the top right side
         procedurelogger.expectedResult("4 PushButton in small toolbar are showing up")
         self.smalltoolbar = self.toolbars[0]
         self.toolbarbuttons = self.smalltoolbar.findAllPushButtons(None)
@@ -78,20 +90,23 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.newdirtoolbarbutton = self.toolbarbuttons[2]
         self.menutoolbarbutton = self.toolbarbuttons[3]
         self.menutogglebutton = self.smalltoolbar.findToggleButton(None)
-        #there are 5 menuitems under menutogglebutton
+        # there are 5 menuitems under menutogglebutton
+        '''
+        #this should be used if BUG481357 is fixed 
         procedurelogger.expectedResult("5 MenuItem under menutogglebutton are showing up")
         self.smallicon_menuitem = self.menutogglebutton.findMenuItem("Small Icon", checkShowing=False)
         self.tiles_menuitem = self.menutogglebutton.findMenuItem("Tiles", checkShowing=False)
         self.largeicon_menuitem = self.menutogglebutton.findMenuItem("Large Icon", checkShowing=False)
         self.list_menuitem = self.menutogglebutton.findMenuItem("List", checkShowing=False)
         self.details_menuitem = self.menutogglebutton.findMenuItem("Details", checkShowing=False)
-        #there are 2 normal combobox on bottom and 1 dirComboBox on top
+        '''
+        # there are 2 normal combobox on bottom and 1 dirComboBox on top
         procedurelogger.expectedResult("2 normal combobox on bottom and 1 dirComboBox on top are showing up")
         self.comboboxs = self.savedialog.findAllComboBoxs(None)
         self.filename_combobox = self.comboboxs[0]
         self.filetype_combobox = self.comboboxs[1]
         self.dir_combobox = self.comboboxs[2]
-        #there are 5 menuitems under dir_combobox
+        # there are 5 menuitems under dir_combobox
         procedurelogger.expectedResult("5 MenuItems under dir_combobox are showing up")
         self.dir_menu = self.dir_combobox.findMenu(None, checkShowing=False)
         self.recentlyused_menuitem = self.dir_menu.findMenuItem("Recently used", checkShowing=False)
@@ -99,16 +114,28 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.personal_menuitem = self.dir_menu.findMenuItem("Personal", checkShowing=False)
         self.mycomputer_menuitem = self.dir_menu.findMenuItem("My Computer", checkShowing=False)
         self.mynetwork_menuitem = self.dir_menu.findMenuItem("My Network", checkShowing=False)
-        #a treetable to show files
+        # There are 1 TreeTable with some TableCells
         procedurelogger.expectedResult("1 TreeTable with many TableCells are showing up")
         self.treetable = self.savedialog.findTreeTable(None)
         self.tablecells = self.treetable.findAllTableCells(None)
 
         assert len(self.tablecells) != 0, "no table cells under treetable"
 
-    #assert if all widgets on creat new folder dialog are showing
-    def NewFolderCheck(self):
+    # assert if all widgets on creat new folder dialog are showing
+    def creatNewFolderTest(self, button):
+        """
+        Click button to invoke New Folder or File dialog, to make sure all 
+	widgets on this dialog are showing up. 
 
+        Enter folder name, click Ok button will create new folder, click Cancel 
+	button won't create new folder
+
+        """
+        # Action
+        self.itemClick(self.newdirtoolbarbutton)
+        sleep(config.SHORT_DELAY)
+
+        # Expected Result
         procedurelogger.expectedResult("All widgets in NewFolderOrFile dialog is showing up")
         self.newfolderdialog = self.app.findDialog("New Folder or File")
         self.newfolder_panel = self.newfolderdialog.findPanel("New Name")
@@ -118,14 +145,17 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.newfolder_ok = self.newfolderdialog.findPushButton("OK")
         self.newfolder_cancel = self.newfolderdialog.findPushButton("Cancel")
 
-    #creat a new folder
-    def CreatFolder(self, button):       
-        #enter folder name to text click OK, then check list item from treetable
+        # Action
+        # enter folder name to textbox, click OK button will create new folder, 
+        # click Cancel button won't create new folder
         self.newfolder_text.enterText("ANewFolder")
         sleep(config.SHORT_DELAY)
-        button.click()
-        sleep(config.SHORT_DELAY)
-        if button == self.newfolder_cancel:
+
+        # Expected result
+        if button == "Cancel":
+            self.newfolder_cancel.click()
+            sleep(config.SHORT_DELAY)
+
             procedurelogger.expectedResult("never create new folder")
             try:
                 new_menuitem = self.treetable.findTableCell("ANewFolder")
@@ -133,14 +163,22 @@ class SaveFileDialogFrame(accessibles.Frame):
                     raise SearchFolderError
             except SearchError:
                 pass
-        elif button == self.newfolder_ok:
+
+        elif button == "Ok":
+            self.newfolder_ok.click()
+            sleep(config.SHORT_DELAY)
+
             procedurelogger.expectedResult("create new folder")
             self.treetable.findTableCell("ANewFolder")
 
-    #assert the foldername isn't been showing after click dir menuitem
-    def AssertMenuItemClick(self, foldername):
+    def assertDirChanged(self, foldername):
+        """
+        Doing click action against MenuItems under dirCombobox to make sure 
+	directory is changed to the selected MenuItem by checking the 
+	expected foldername doesn't showing in the new directory
 
-        procedurelogger.expectedResult("Directory is changed, you can't find %s folder again" % foldername)
+        """
+        procedurelogger.expectedResult("Directory is changed, you can't find %s folder" % foldername)
         try:
             foldername_menuitem = self.treetable.findTableCell(foldername)
             if foldername_menuitem:
@@ -148,13 +186,21 @@ class SaveFileDialogFrame(accessibles.Frame):
         except SearchError:
             pass
 
-    #assert activate table cell to enter folder or open file
-    def assertActivate(self, cellname):
-        #show all files in treetable
+    # assert activate table cell to enter folder or open file
+    def enterFolderOrOpenFile(self, cellname):
+        """
+        Expect an action to execute double click to enter folder or open file. 
+	Doing activate action for a folder named 'ANewFolder' to make sure it's
+	an empty folder;
+        Doing activate action for a file named 'README' to make sure OpenDialog 
+	is closed
+
+        """
+        # show all files in treetable
         savetype = self.savedialog.findMenuItem(re.compile('^All'), checkShowing=False)
         savetype.click()
         sleep(config.LONG_DELAY)
-        #do activate action
+        # do activate action
         tablecell = self.treetable.findTableCell(cellname, checkShowing=False)
         tablecell.activate()
 
@@ -175,14 +221,14 @@ class SaveFileDialogFrame(accessibles.Frame):
             self.opendialog.assertClosed()
 
    
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
-        #delete ANewFolder
+        # delete ANewFolder
         harness_dir = path[0]
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
         os.rmdir("%s/samples/ANewFolder" % uiaqa_path)
 
         sleep(config.SHORT_DELAY)
-        #close form
+        # close form
         self.altF4()

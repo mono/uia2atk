@@ -43,11 +43,11 @@ if app is None:
 # just an alias to make things shorter
 pbFrame = app.progressBarFrame
 
-#check progressbar's states list
+# check progressbar's states list
 statesCheck(pbFrame.progressbar, "ProgressBar")
 
-#click button to check if label and progressbar's current value is changed
-#value would return to 0 and start again after up to 100
+# click button,label and progressbar's current value is changed
+# value would return to 0 and start again after up to 100
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
@@ -72,38 +72,42 @@ pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("100%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 100)
-#start progress again after the value up to 100
+# start progress again after the value up to 100
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
-#value doesn't changed by giving number in acceciser
+# current value doesn't changed by using acc.value
 pbFrame.value(10)
 sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
 pbFrame.value(100)
 sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
 pbFrame.value(-1)
 sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
 pbFrame.value(101)
 sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
-#maximumValue is 100 and minimumValue is 0
+# maximumValue is 100 and minimumValue is 0
 pbFrame.assertValueImplemented("maximumValue")
 
 pbFrame.assertValueImplemented("minimumValue")
 
-#check progressbar's states list again
+# check progressbar's states list again
 statesCheck(pbFrame.progressbar, "ProgressBar")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 pbFrame.quit()
