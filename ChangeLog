@@ -1,3 +1,7 @@
+2009-04-14  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/gtksharp21autotools.diff: r:mkestner.
+
 2009-04-13  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/tunerbridgestep.diff: added public API hiding.

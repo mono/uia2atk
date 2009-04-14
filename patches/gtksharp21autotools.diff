@@ -1,50 +1,3 @@
-Index: atk/Makefile.am
-===================================================================
---- atk/Makefile.am	(revision 122401)
-+++ atk/Makefile.am	(working copy)
-@@ -22,4 +22,17 @@
- 
- add_dist =
- 
-+	$(CSC) $(build_references) $(BUILD_PARAMS)
-+
-+MOON_BIN_PATH=../moonbin/
-+
-+references_moon = $(MOON_BIN_PATH)glib-sharp.dll
-+build_references_moon = $(addprefix /r:, $(references_moon))
-+
-+moonlight: $(ASSEMBLY)
-+	smcs -define:NET_2_1 $(build_references_moon) $(BUILD_PARAMS) -out:$(MOON_BIN_PATH)$(ASSEMBLY)
-+	$(GAPI_CDECL_INSERT)
-+
- include ../Makefile.include
-Index: glib/Makefile.am
-===================================================================
---- glib/Makefile.am	(revision 122401)
-+++ glib/Makefile.am	(working copy)
-@@ -97,11 +97,21 @@
- GAPI_CDECL_INSERT=
- endif
- 
-+BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
-+
- $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
- 	@rm -f $(ASSEMBLY).mdb
--	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
-+	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
- 	$(GAPI_CDECL_INSERT)
- 
-+MOON_BIN_PATH=../moonbin/
-+
-+moonlight: $(ASSEMBLY)
-+	rm -rf $(MOON_BIN_PATH)
-+	mkdir $(MOON_BIN_PATH)
-+	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$(MOON_BIN_PATH)$(ASSEMBLY)
-+	$(GAPI_CDECL_INSERT)
-+
- $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
- 	@for i in $(POLICY_VERSIONS); do	\
- 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
 Index: Makefile.include
 ===================================================================
 --- Makefile.include	(revision 122401)
@@ -62,3 +15,55 @@ Index: Makefile.include
  	$(GAPI_CDECL_INSERT)
  
  install-data-local:
+Index: glib/Makefile.am
+===================================================================
+--- glib/Makefile.am	(revision 122401)
++++ glib/Makefile.am	(working copy)
+@@ -97,11 +97,23 @@
+ GAPI_CDECL_INSERT=
+ endif
+ 
++BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
++
+ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
+ 	@rm -f $(ASSEMBLY).mdb
+-	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
++	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+ 	$(GAPI_CDECL_INSERT)
+ 
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(ASSEMBLY)
++	mkdir -p $(MOON_DIR)
++	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$@
++	$(GAPI_CDECL_INSERT)
++
+ $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
+ 	@for i in $(POLICY_VERSIONS); do	\
+ 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
+Index: atk/Makefile.am
+===================================================================
+--- atk/Makefile.am	(revision 122401)
++++ atk/Makefile.am	(working copy)
+@@ -22,4 +22,18 @@
+ 
+ add_dist =
+ 
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++
++references_moon = $(MOON_DIR)glib-sharp.dll
++build_references_moon = $(addprefix /r:, $(references_moon))
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(references_moon) $(ASSEMBLY)
++	smcs -define:NET_2_1 $(build_references_moon) $(BUILD_PARAMS) -out:$@
++	$(GAPI_CDECL_INSERT)
++
+ include ../Makefile.include
++
++
