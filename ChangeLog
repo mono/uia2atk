@@ -1,3 +1,7 @@
+2009-04-15  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/gtksharp21autotools.diff: removed, committed as r131780.
+
 2009-04-14  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/gtksharp21autotools.diff: r:mkestner.
