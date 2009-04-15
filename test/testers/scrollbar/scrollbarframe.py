@@ -21,16 +21,16 @@ class ScrollBarFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ScrollBarFrame, self).__init__(accessible)
         self.list = self.findAllTreeTables(None)
-        #listbox1 with vertical scrollbar
+        # listbox1 with vertical scrollbar
         self.listbox1 = self.list[0]
-        #listbox2 with horizontal scrollbar
+        # listbox2 with horizontal scrollbar
         self.listbox2 = self.list[1]
         self.vscrollbar = self.listbox1.findScrollBar(None)
         self.hscrollbar = self.listbox2.findScrollBar(None)
         self.list1item = dict([(x, self.listbox1.findTableCell(str(x), checkShowing=False)) for x in range(30)])
         self.list2item = dict([(x, self.listbox2.findTableCell(str(x), checkShowing=False)) for x in range(30)])
 
-    #change scrollbar's value
+    # change scrollbar's value
     def valueScrollBar(self, scrollbar, newValue=None):
         procedurelogger.action('set %s value to "%s"' % (scrollbar, newValue))
         scrollbar.value = newValue
@@ -53,6 +53,6 @@ class ScrollBarFrame(accessibles.Frame):
                                      "current value is %s:" % \
                                      scrollbar.value
     
-    #close application window
+    # close application window
     def quit(self):
         self.altF4()

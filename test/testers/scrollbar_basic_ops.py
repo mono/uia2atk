@@ -43,16 +43,16 @@ if app is None:
 # just an alias to make things shorter
 sbFrame = app.scrollBarFrame
 
-#check vscrollbar's states list
+# check vscrollbar's states list
 statesCheck(sbFrame.hscrollbar, "HScrollBar")
 statesCheck(sbFrame.vscrollbar, "VScrollBar")
 
 sbFrame.mouseClick(log=False)
 
-##scroll the vertical bar, use mouseClick to check if the bar is scrolling, 
-##then assert scrollbar value
+# scroll the vertical bar, click item to check if the bar is scrolling, 
+# then assert scrollbar value
 
-#set value to 10
+# set value to 10
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 10)
@@ -61,7 +61,7 @@ sbFrame.list1item[10].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list1item[10], "ListItem", add_states=["focused", "selected"])
 
-#set value to 29
+# set value to 29
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 29)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 29)
@@ -70,7 +70,7 @@ sbFrame.list1item[29].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list1item[29],"ListItem", add_states=["focused", "selected"])
 
-#set value to 30, the maximum value is 29
+# set value to 30, the maximum value is 29
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 30)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 30)
@@ -79,7 +79,7 @@ sbFrame.list1item[29].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list1item[29], "ListItem", add_states=["focused", "selected"])
 
-#set value to 0
+# set value to 0
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 0)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 0)
@@ -88,7 +88,7 @@ sbFrame.list1item[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list1item[0], "ListItem", add_states=["focused", "selected"])
 
-#set value to -10, the minimum value is 0
+# set value to -10, the minimum value is 0
 sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, -10) 
@@ -97,15 +97,15 @@ sbFrame.list1item[4].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list1item[4], "ListItem", add_states=["focused", "selected"])
 
-#use keyboard to scroll bar to assert the value
+# press key PageDown to scroll, then assert the value
 sbFrame.keyCombo("PageDown", grabFocus=False)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 4) 
 
-##scroll the horizontal bar, use mouseClick to check if the bar is scrolling, 
-##then assert scrollbar value
+# scroll the horizontal bar, click item to check if the bar is scrolling, 
+# then assert scrollbar value
 
-#set value to 3
+# set value to 3
 sbFrame.valueScrollBar(sbFrame.hscrollbar, 3)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 3)
@@ -115,7 +115,7 @@ sbFrame.list2item[15].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list2item[15], "ListItem", add_states=["focused", "selected"])
 
-#set value to Maxinum
+# set value to Maxinum
 sbFrame.valueScrollBar(sbFrame.hscrollbar, sbFrame.maximumValue)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, sbFrame.maximumValue)
@@ -124,7 +124,7 @@ sbFrame.list2item[29].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list2item[29], "ListItem", add_states=["focused", "selected"])
 
-#set value to Maxinum+1 that is out of range
+# set value to Maxinum+1 that is out of range
 sbFrame.valueScrollBar(sbFrame.hscrollbar, sbFrame.maximumValue + 1)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, sbFrame.maximumValue + 1)
@@ -133,7 +133,7 @@ sbFrame.list2item[29].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list2item[29], "ListItem", add_states=["focused", "selected"])
 
-#set value to 0
+# set value to 0
 sbFrame.valueScrollBar(sbFrame.hscrollbar, 0)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 
@@ -142,7 +142,7 @@ sbFrame.list2item[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list2item[0], "ListItem", add_states=["focused", "selected"])
 
-#set value to -10, the maximum value is 0
+# set value to -10, the maximum value is 0
 sbFrame.valueScrollBar(sbFrame.hscrollbar, -10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, -10)
@@ -151,7 +151,7 @@ sbFrame.list2item[4].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sbFrame.list2item[4], "ListItem", add_states=["focused", "selected"])
 
-#use keyboard to scroll bar to assert the value
+# press key Left to scroll, then assert the value
 sbFrame.keyCombo("Left", grabFocus=False)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 

@@ -4,7 +4,7 @@
 # Date:        11/10/2008
 # Description: statusbarpanel.py wrapper script
 #              Used by the statusbarpanel-*.py tests
-##############################################################################$
+##############################################################################
 
 import sys
 import os
@@ -35,28 +35,45 @@ class StatusBarPanelFrame(accessibles.Frame):
         self.panel2 = self.findLabel(self.PANEL2)
         self.panel3 = self.findLabel(self.PANEL3)
 
-    #give 'click' action
     def click(self,button):
+        """
+        Wrap strongwind click action
+
+        """
         button.click()
 
-    #enter Text Value to make sure the text is uneditable
-    def enterTextValue(self, accessible, entertext):
-        procedurelogger.action('try input %s in %s which is uneditable "' % (entertext, accessible))
+    def assertUnimplementedEditableText(self, accessible):
+        """
+        Make sure EditableText is not implemented for accessible
+
+        """
+        procedurelogger.action('check %s\'s EditableText interface' % accessible)
+
+        procedurelogger.expectedResult('EditableText interface is unimplemented')
 
         try:
-            accessible.text = entertext
+            accessible._accessible.queryEditableText()
         except NotImplementedError:
-            pass
+            print "aaaaa", return
+            return
+        assert False, "%s should not implement the EditableText interface" % accessible
 
-    #assert statusbarpanel's text value after click button1
     def assertText(self, accessible, textValue):
+        """
+        Make sure accessible's text is changed to textValue
+
+        """
         procedurelogger.expectedResult('the text of "%s" change to "%s"' % (accessible, textValue))
         def resultMatches():
             return accessible.text == textValue
         assert retryUntilTrue(resultMatches)
 
-    # assert image size of statusbarpanel to test AtkImage is implemented
     def assertImageSize(self, accessible, width, height):
+        """
+        Make sure image size of accessible is expected to test AtkImage is 
+	implemented
+
+        """
         procedurelogger.action("assert %s's image size" % accessible)
         size = accessible._accessible.queryImage().getImageSize()
 
@@ -76,6 +93,6 @@ class StatusBarPanelFrame(accessibles.Frame):
         
 
     
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

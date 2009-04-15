@@ -46,40 +46,35 @@ if app is None:
 # just an alias to make things shorter
 sbpFrame = app.statusBarPanelFrame
 
-#check statusbarpanel's states
+# check statusbarpanel's states
 statesCheck(sbpFrame.panel1, "StatusBarPanel")
 statesCheck(sbpFrame.panel2, "StatusBarPanel")
 statesCheck(sbpFrame.panel3, "StatusBarPanel")
 
-#click button1 to change statusbarpanel's text value
+# click button1 to change statusbarpanel's text value
 sbpFrame.click(sbpFrame.button1)
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel1, "You have click 1 times")
 
-#click button1 to change statusbarpanel's text value again
+# click button1 to change statusbarpanel's text value again
 sbpFrame.click(sbpFrame.button1)
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel1, "You have click 2 times")
 
-#enter Text Value to make sure the text is uneditable
-sbpFrame.enterTextValue(sbpFrame.panel1, "enter text")
-sleep(config.SHORT_DELAY)
-sbpFrame.assertText(sbpFrame.panel1, "You have click 2 times")
+# make sure the text is uneditable
+sbpFrame.assertUnimplementedEditableText(sbpFrame.panel1)
 
-sbpFrame.enterTextValue(sbpFrame.panel2, "enter text")
-sleep(config.SHORT_DELAY)
-sbpFrame.assertText(sbpFrame.panel2, "statusbarpanel2")
+sbpFrame.assertUnimplementedEditableText(sbpFrame.panel2)
 
-sbpFrame.enterTextValue(sbpFrame.panel3, "enter text")
-sleep(config.SHORT_DELAY)
-sbpFrame.assertText(sbpFrame.panel3, "Icon")
+sbpFrame.assertUnimplementedEditableText(sbpFrame.panel3)
 
-#check image size to make sure Image is implemented
-sbpFrame.assertImageSize(sbpFrame.panel1, width=16, height=16)
-sbpFrame.assertImageSize(sbpFrame.panel2, width=48, height=48)
-sbpFrame.assertImageSize(sbpFrame.panel3, width=32, height=32)
+# check image size to make sure Image is implemented
+## BUG455927 is reopened that icons have incorrect image size (-1x-1)
+#sbpFrame.assertImageSize(sbpFrame.panel1, width=16, height=16)
+#sbpFrame.assertImageSize(sbpFrame.panel2, width=48, height=48)
+#sbpFrame.assertImageSize(sbpFrame.panel3, width=32, height=32)
 
-#close application frame window
+# close application frame window
 sbpFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

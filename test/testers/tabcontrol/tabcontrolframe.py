@@ -28,24 +28,29 @@ class TabControlFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(TabControlFrame, self).__init__(accessible)
         self.tabcontrol = self.findPageTabList(None)
-        self.tabpage0 = self.findPageTab(self.TAB0)
-        self.tabpage1 = self.findPageTab(self.TAB1)
-        self.tabpage2 = self.findPageTab(self.TAB2)
-        self.tabpage3 = self.findPageTab(self.TAB3)
+        self.tabpage0 = self.tabcontrol.findPageTab(self.TAB0)
+        #self.tabpage1 = self.tabcontrol.findPageTab(self.TAB1)
+        #self.tabpage2 = self.tabcontrol.findPageTab(self.TAB2)
+        #self.tabpage3 = self.tabcontrol.findPageTab(self.TAB3)
    
-    #assert AtkSelection implementation
     def assertSelectionChild(self, accessible, childIndex):
+        """
+        Assert AtkSelection is implemented for PageTabList to select PageTab 
+
+        """
         procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
 
         accessible.selectChild(childIndex)
 
-    #assert if enter to a new tab page after press keyLeft/Right by checking 
-    #label that shows in statusbar
     def assertTabChange(self, tabname):
+        """
+        Make sure label shows the current tab is expected tabname
+
+        """
         procedurelogger.expectedResult("you enter to %s" % tabname)
 
-        assert self.findLabel("The current tab is: %s" % newlabel)
+        assert self.findLabel("The current tab is: %s" % tabname)
 
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

@@ -34,26 +34,35 @@ class StatusStripFrame(accessibles.Frame):
         self.StripLabel = self.findLabel(self.LABEL_TWO)
         self.ProgressBar = self.findProgressBar(None)
 
-    #give 'click' action
     def click(self,button):
+        """
+        Wrap strongwind click action
+
+        """
         button.click()
 
-    #assert label's text is changed after click button1 or click menu item
     def assertLabel(self, label, newlabel):
+        """
+        Make sure Label is changed to newlable
+
+        """
         procedurelogger.expectedResult('"%s" is changed to "%s"' % (label, newlabel))
 
         def resultMatches():
             return label.text == newlabel
         assert retryUntilTrue(resultMatches)
 
-    #assert progressbar's value after click button1
     def assertProgressBarValue(self, accessible, value):
+        """
+        Make sure current value of accessible is expected value
+
+        """
         procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % value)
 
         assert accessible.value == value, \
                        "progressbar's current value is %s:" % accessible.value
 
     
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

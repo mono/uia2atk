@@ -12,8 +12,9 @@
 """
 Test accessibility of statusstrip widget which include toolstriplabel,
 toolstripdropdownbutton, toolstripsplitbutton and toolstripprogressbar.
-we just give general test for label and progressbar which on statusstrip,
-the complete test for each of them will be running for each single control test
+This test is only focus on testing the conponents of the statusstrip which are
+toolstriplabel and toolstripprogressbar. the other please see themselves' test
+
 """
 
 # imports
@@ -48,31 +49,30 @@ if app is None:
 # just an alias to make things shorter
 ssFrame = app.statusStripFrame
 
-#check statusbar's states
+# check statusbar's states
 statesCheck(ssFrame.statusstrip, "StatusBar")
 
-###########################################################################
-#test states and value for ToolStripProgressBar and ToolStripStatusLabel to 
-#make sure StatusStrip with "status bar" role have children which also with
-#correct states and event changed
-###########################################################################
+##############################################################################
+# test states and value for ToolStripProgressBar and ToolStripStatusLabel to 
+# make sure children on StatusStrip also have correct states and event changed
+##############################################################################
 
 statesCheck(ssFrame.ProgressBar, "ProgressBar")
 statesCheck(ssFrame.StripLabel, "Label")
 
-#click button1 the first time to change toolstriplabel and toolstripprogressbar
+# click button1 to change toolstriplabel and toolstripprogressbar
 ssFrame.click(ssFrame.button)
 sleep(config.SHORT_DELAY)
 ssFrame.assertLabel(ssFrame.StripLabel, "It is 20% of 100%")
 ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 20)
 
-#click button1 the second time to change toolstriplabel and toolstripprogressbar
+# click button1 again to change toolstriplabel and toolstripprogressbar
 ssFrame.click(ssFrame.button)
 sleep(config.SHORT_DELAY)
 ssFrame.assertLabel(ssFrame.StripLabel, "It is 40% of 100%")
 ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 40)
 
-#close application frame window
+# close application frame window
 ssFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

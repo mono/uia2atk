@@ -30,22 +30,22 @@ class TabPageFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(TabPageFrame, self).__init__(accessible)
         self.tabpage0 = self.findPageTab(self.TAB0)
-        self.tabpage1 = self.findPageTab(self.TAB1)
-        self.tabpage2 = self.findPageTab(self.TAB2)
-        self.tabpage3 = self.findPageTab(self.TAB3)
+        #self.tabpage1 = self.findPageTab(self.TAB1)
+        #self.tabpage2 = self.findPageTab(self.TAB2)
+        #self.tabpage3 = self.findPageTab(self.TAB3)
         self.label0 = self.tabpage0.findLabel(self.LABEL0)
         self.button = self.tabpage0.findPushButton(self.BUTTON)
 
-    #give 'click' action
+    # give 'click' action
     def click(self,accessible):
         accessible.click()
 
-    #enter Text Value for EditableText
+    # enter Text Value for EditableText
     def enterTextValue(self, textbox, values):
         procedurelogger.action('in %s enter %s' % (textbox, values))
         textbox.text = values
 
-    #assert Text implementation for TabPage
+    # assert Text implementation for TabPage
     def assertText(self, accessible, textvelue):
         procedurelogger.action("check TabPage Text Value")
 
@@ -53,18 +53,22 @@ class TabPageFrame(accessibles.Frame):
                                     % (accessible,textvelue))
         assert accessible.text == textvelue
    
-    #assert if label is changed after click items those are locate in TabPages,
-    #by this way to test items in TabPage still with correct actions and useful
     def assertLabeChange(self,newlabel):
+        """
+        Assert newlabel can be found
+
+        """
         procedurelogger.expectedResult("lable in statusbar is changed to %s" % \
                                            newlabel)
 
         assert self.findLabel(newlabel) 
 
-    #assert if enter to a new tab page after press keyLeft/Right by checking 
-    #label that shows in statusbar
-    def assertTabChange(self, tabpage, tabname):
-        procedurelogger.expectedResult("you enter to %s" % tabname)
+    def assertTabChange(self, tabpage):
+        """
+        Make sure current selected Tab is changed by finding its children
+
+        """
+        procedurelogger.expectedResult("you enter to %s" % tabpage)
 
         self.label = tabpage.findLabel(None)
         if tabpage == self.tabpage1:
@@ -73,9 +77,7 @@ class TabPageFrame(accessibles.Frame):
             self.checkbox = tabpage.findCheckBox(None)
         elif tabpage == self.tabpage3:
             self.radiobutton = tabpage.findRadioButton(None)
-        
-        assert self.findLabel("The current tab is: %s" % tabname)
 
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

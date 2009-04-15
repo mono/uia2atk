@@ -1,5 +1,22 @@
 2009-04-14  Calen Chen <cachen@novell.com>
 
+	* testers/statusstrip/statusstripframe.py,
+	* testers/statusbarpanel_basic_ops.py,
+	* testers/scrollbar/scrollbarframe.py,
+	* testers/scrollbar_basic_ops.py: add doc strings, modify comments
+	* testers/statusbarpanel/statusbarpanelframe.py: correct a logic error 
+	and rename assertUnimplementedEditableText; add doc strings
+	* testers/statusbarpanel_basic_ops.py: update tests due to frame is 
+	chenged; add bug455927 reference and comment out some tests
+	* testers/tabcontrol/tabcontrolframe.py: add doc strings
+	* testers/tabcontrol_basic_ops.py: add bugs reference, comment out 
+	tests due to bugs
+	* testers/tabpage/tabpageframe.py: add doc strings
+	* testers/tabpage_basic_ops.py:  add bugs reference, comment out 
+	tests due to bugs
+
+2009-04-14  Calen Chen <cachen@novell.com>
+
 	* testers/progressbar/progressbarframe.py,
 	* testers/progressbar_basic_ops.py: modify comments
 	* testers/savefiledialog/savefiledialogframe.py: rename and update some
