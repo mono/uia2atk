@@ -1,3 +1,7 @@
+2009-04-15  Stephen G. Shaw  <stshaw@novell.com>
+
+	* specs/uiadbuscorebridge.spec: Initial checkin
+
 2009-04-09  Stephen G. Shaw  <stshaw@novell.com>
 
 	* specs/uiautomation.spec:
