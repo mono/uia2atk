@@ -1,7 +1,7 @@
 2009-04-14  Calen Chen <cachen@novell.com>
 
 	* testers/statusstrip/statusstripframe.py,
-	* testers/statusbarpanel_basic_ops.py,
+	* testers/statusstrip_basic_ops.py,
 	* testers/scrollbar/scrollbarframe.py,
 	* testers/scrollbar_basic_ops.py: add doc strings, modify comments
 	* testers/statusbarpanel/statusbarpanelframe.py: correct a logic error 
