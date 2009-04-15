@@ -16,7 +16,7 @@ Release:        1
 License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
-Source0:         uiadbuscorebridge-1.9.0.tar.bz2
+Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 Requires:	mono-core >= 2.4 gtk-sharp2 >= 2.12.8
