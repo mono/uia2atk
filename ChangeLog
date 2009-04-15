@@ -1,3 +1,9 @@
+2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/gtksharp21code.diff: As the assemblies will be merged in
+	one, we don't need the extra Marshaling API for atk-sharp, so this
+	is quite simpler now.
+
 2009-04-15  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/gtksharp21autotools.diff: removed, committed as r131780.

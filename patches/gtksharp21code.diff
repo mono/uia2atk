@@ -1,100 +1,3 @@
-Index: atk/Util.custom
-===================================================================
---- atk/Util.custom	(revision 122401)
-+++ atk/Util.custom	(working copy)
-@@ -102,7 +102,7 @@
- 				IntPtr native_evnt = GLib.Marshaller.StructureToPtrAlloc (evnt);
- 				int result = native_cb (native_evnt, data);
- 				evnt = KeyEventStruct.New (native_evnt);
--				Marshal.FreeHGlobal (native_evnt);
-+				GLib.Global.FreeHGlobal (native_evnt);
- 				return result;
- 			}
- 		}
-Index: generator/StructBase.cs
-===================================================================
---- generator/StructBase.cs	(revision 122401)
-+++ generator/StructBase.cs	(working copy)
-@@ -97,7 +97,7 @@
- 
- 		public string ReleaseNative (string var)
- 		{
--			return "Marshal.FreeHGlobal (" +var + ")";
-+			return "GLib.Global.FreeHGlobal (" +var + ")";
- 		}
- 
- 		private bool DisableNew {
-@@ -215,7 +215,7 @@
- 
- 		public override void Prepare (StreamWriter sw, string indent)
- 		{
--			sw.WriteLine (indent + "IntPtr this_as_native = System.Runtime.InteropServices.Marshal.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));");
-+			sw.WriteLine (indent + "IntPtr this_as_native = GLib.Global.AllocHGlobal (System.Runtime.InteropServices.Marshal.SizeOf (this));");
- 			sw.WriteLine (indent + "System.Runtime.InteropServices.Marshal.StructureToPtr (this, this_as_native, false);");
- 		}
- 
-@@ -223,7 +223,7 @@
- 		{
- 			need_read_native = true;
- 			sw.WriteLine (indent + "ReadNative (this_as_native, ref this);");
--			sw.WriteLine (indent + "System.Runtime.InteropServices.Marshal.FreeHGlobal (this_as_native);");
-+			sw.WriteLine (indent + "GLib.Global.FreeHGlobal (this_as_native);");
- 		}
- 	}
- }
-Index: generator/Parameters.cs
-===================================================================
---- generator/Parameters.cs	(revision 122401)
-+++ generator/Parameters.cs	(working copy)
-@@ -474,7 +474,7 @@
- 		public override string[] Prepare {
- 			get {
- 				if (PassAs == "out")
--					return new string [] { "IntPtr native_" + CallName + " = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + Generatable.QualifiedName + ")));"};
-+					return new string [] { "IntPtr native_" + CallName + " = GLib.Global.AllocHGlobal (Marshal.SizeOf (typeof (" + Generatable.QualifiedName + ")));"};
- 				else
- 					return new string [] { "IntPtr native_" + CallName + " = " + (Generatable as IManualMarshaler).AllocNative (CallName) + ";"};
- 			}
-Index: generator/Signal.cs
-===================================================================
---- generator/Signal.cs	(revision 122401)
-+++ generator/Signal.cs	(working copy)
-@@ -453,11 +453,11 @@
- 						if (p.PassAs == "ref")
- 							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Marshaller.StructureToPtrAlloc (" + p.Generatable.CallByName (p.Name) + ");");
- 						else
--							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + p.MarshalType + ")));");
-+							sw.WriteLine ("\t\t\tIntPtr " + p.Name + "_ptr = GLib.Global.AllocHGlobal (Marshal.SizeOf (typeof (" + p.MarshalType + ")));");
- 
- 						sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (" + p.Name + "_ptr);");
- 						cleanup += "\t\t\t" + p.Name + " = " + p.FromNative ("(" + p.MarshalType + ") Marshal.PtrToStructure (" + p.Name + "_ptr, typeof (" + p.MarshalType + "))") + ";\n";
--						cleanup += "\t\t\tMarshal.FreeHGlobal (" + p.Name + "_ptr);\n";
-+						cleanup += "\t\t\tGLib.Global.FreeHGlobal (" + p.Name + "_ptr);\n";
- 					}
- 				} else if (p.IsLength && parms [i - 1].IsString)
- 					sw.WriteLine ("\t\t\tvals [" + i + "] = new GLib.Value (System.Text.Encoding.UTF8.GetByteCount (" + parms [i-1].Name + "));");
-Index: generator/ByRefGen.cs
-===================================================================
---- generator/ByRefGen.cs	(revision 122401)
-+++ generator/ByRefGen.cs	(working copy)
-@@ -41,7 +41,7 @@
- 		
- 		public string AllocNative ()
- 		{
--			return "Marshal.AllocHGlobal (Marshal.SizeOf (typeof (" + QualifiedName + ")))";
-+			return "GLib.Global.AllocHGlobal (Marshal.SizeOf (typeof (" + QualifiedName + ")))";
- 		}
- 
- 		public string AllocNative (string var_name)
-@@ -56,7 +56,7 @@
- 
- 		public string ReleaseNative (string var_name)
- 		{
--			return "Marshal.FreeHGlobal (" + var_name + ")";
-+			return "GLib.Global.FreeHGlobal (" + var_name + ")";
- 		}
- 	}
- }
 Index: glib/PtrArray.cs
 ===================================================================
 --- glib/PtrArray.cs	(revision 122401)
@@ -189,11 +92,20 @@ Index: glib/ListBase.cs
  		private IntPtr list_ptr = IntPtr.Zero;
  		private int length = -1;
  		private bool managed = false;
+@@ -272,7 +275,7 @@
+ 			list_ptr = IntPtr.Zero;
+ 			length = -1;
+ 		}
+-
++		
+ 		// ICloneable
+ 		abstract public object Clone ();
+ 	}
 Index: glib/Argv.cs
 ===================================================================
 --- glib/Argv.cs	(revision 122401)
 +++ glib/Argv.cs	(working copy)
-@@ -43,15 +43,21 @@
+@@ -43,9 +43,10 @@
  
  			g_free (handle);
  		}
@@ -206,19 +118,7 @@ Index: glib/Argv.cs
  		public Argv (string[] args, bool add_program_name)
  		{
  			add_progname = add_program_name;
- 			if (add_progname) {
- 				string[] full = new string [args.Length + 1];
--				full [0] = System.Environment.GetCommandLineArgs ()[0];
-+				full [0] = 
-+//#if !NET_2_1
-+					System.Environment.GetCommandLineArgs ()[0];
-+//#else
-+//					null; //TODO
-+//#endif
- 				args.CopyTo (full, 1);
- 				args = full;
- 			}
-@@ -67,12 +73,6 @@
+@@ -67,12 +68,6 @@
  				Marshal.WriteIntPtr (handle, i * IntPtr.Size, arg_ptrs [i]);
  		}
  
@@ -231,7 +131,7 @@ Index: glib/Argv.cs
  		public string[] GetArgs (int argc)
  		{
  			int count = add_progname ? argc - 1 : argc;
-@@ -84,6 +84,13 @@
+@@ -84,6 +79,13 @@
  
  			return result;
  		}
@@ -268,32 +168,13 @@ Index: glib/Global.cs
  	public class Global
  	{
  
-@@ -64,5 +76,26 @@
+@@ -64,5 +76,6 @@
  
  		[DllImport("libglib-2.0-0.dll")]
  		static extern IntPtr g_get_application_name ();
+-	}
 +		
-+		public static void FreeHGlobal (IntPtr hglobal)
-+		{
-+			Marshal.FreeHGlobal (hglobal);
-+		}
-+		
-+		public static IntPtr AllocHGlobal (IntPtr cb)
-+		{
-+			return Marshal.AllocHGlobal (cb);
-+		}
-+		
-+		public static IntPtr ReAllocHGlobal (IntPtr pv, IntPtr cb)
-+		{
-+			return Marshal.ReAllocHGlobal (pv, cb);
-+		}
-+		
-+		public static IntPtr AllocHGlobal (int cb)
-+		{
-+			return Marshal.AllocHGlobal (cb);
-+		}
- 	}
-+	
++	}	
  }
 Index: glib/ExceptionManager.cs
 ===================================================================
