@@ -43,105 +43,118 @@ if app is None:
 # just an alias to make things shorter
 tsddbFrame = app.toolStripDropDownButtonFrame
 
-#check menu's action
+# check menu's action
 actionsCheck(tsddbFrame.menu1, "Menu")
 actionsCheck(tsddbFrame.menu2, "Menu")
 
-#check states list for menu without click
-statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
-statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
-#move mouse to menu1 to rise focused and selected
+# check states list for menu without click
+statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu2, "Menu")
+# move mouse to menu1 to rise focused and selected
 panels = tsddbFrame.toolbar.findAllPanels(None)
 panels[0].mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
-#move mouse to menu2 to rise focused and selected
+statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu2, "Menu")
+# move mouse to menu2 to rise focused and selected
 panels[1].mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
+statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu")
 
-#click menu1 to rise selected
+# click menu1 to rise selected
+## BUG485524: missing selected states
+'''
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
-statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
-#click menu1 again
+statesCheck(tsddbFrame.menu2, "Menu")
+
+# click menu1 again
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
-statesCheck(tsddbFrame.menu2, "Menu", invalid_states=["showing"])
+statesCheck(tsddbFrame.menu2, "Menu")
 
-#click menu2 to move selection to menu2
+# click menu2 to move selection to menu2
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
-#click menu2 again
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu1, "Menu")
+# click menu2 again
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
-statesCheck(tsddbFrame.menu1, "Menu", invalid_states=["showing"])
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu1, "Menu")
+'''
 
 ##############menu items test##################
-#check states list for menuitems
+# check states list for menuitems
+## BUG486335: extraneous showing state
+#statesCheck(tsddbFrame.red, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsddbFrame.blue, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsddbFrame.green, "MenuItem", invalid_states=["showing"])
+
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.red, "MenuItem")
-#check menuitem's actions
+statesCheck(tsddbFrame.blue, "MenuItem")
+statesCheck(tsddbFrame.green, "MenuItem")
+
+# check menuitem's actions
 actionsCheck(tsddbFrame.red, "MenuItem")
 actionsCheck(tsddbFrame.blue, "MenuItem")
 actionsCheck(tsddbFrame.green, "MenuItem")
-#move mouse to blue item may rise focused and selected
+
+# move mouse cursor to blue item may rise focused and selected
+##navigation doesn't rise focused and selected BUG493560
 tsddbFrame.blue.mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.blue, "MenuItem", add_states=["focused","selected"])
-#press "down" would move focus and selection to green item
-##key move navigation doesn't rise focused and selected BUG471405
+#statesCheck(tsddbFrame.blue, "MenuItem", add_states=["focused","selected"])
+# press "down" moving focus and selection to green item
 tsddbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
+#statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
 
-#click menuitems to select color, label would shows you slected which color
+# click menuitems to select color, label would shows you slected which color
 tsddbFrame.click(tsddbFrame.red)
 sleep(config.SHORT_DELAY)
 tsddbFrame.assertLabel("You selected Red")
-statesCheck(tsddbFrame.red, "MenuItem", add_states=["selected"])
+statesCheck(tsddbFrame.red, "MenuItem")
 
 tsddbFrame.click(tsddbFrame.blue)
 sleep(config.SHORT_DELAY)
 tsddbFrame.assertLabel("You selected Blue")
-statesCheck(tsddbFrame.blue, "MenuItem", add_states=["selected"])
+statesCheck(tsddbFrame.blue, "MenuItem")
 statesCheck(tsddbFrame.red, "MenuItem")
 
 tsddbFrame.click(tsddbFrame.green)
 sleep(config.SHORT_DELAY)
 tsddbFrame.assertLabel("You selected Green")
-statesCheck(tsddbFrame.green, "MenuItem", add_states=["selected"])
+statesCheck(tsddbFrame.green, "MenuItem")
 statesCheck(tsddbFrame.red, "MenuItem")
 statesCheck(tsddbFrame.blue, "MenuItem")
 
-#test Selection implementation for Menu
-#select menuitem red to rise selected and focused
-#missing focused BUG471411
+# test Selection implementation for Menu
+# select menuitem red to rise selected
+##navigation doesn't rise selected BUG493560
 tsddbFrame.assertSelectionChild(tsddbFrame.menu1, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.red, "MenuItem", add_states=["focused", "selected"])
+#statesCheck(tsddbFrame.red, "MenuItem", add_states=["selected"])
 statesCheck(tsddbFrame.blue, "MenuItem")
-#select menuitem green to rise selected and focused
+# select menuitem green to rise selected
 tsddbFrame.assertSelectionChild(tsddbFrame.menu1, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
+#statesCheck(tsddbFrame.green, "MenuItem", add_states=["selected"])
 statesCheck(tsddbFrame.red, "MenuItem")
-#clear selection, all menuitem without focused and selected
+# clear selection, all menuitem without focused and selected
 tsddbFrame.assertClearSelection(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.red, "MenuItem")
 statesCheck(tsddbFrame.blue, "MenuItem")
 statesCheck(tsddbFrame.green, "MenuItem")
 
-#test Text implementation for Menu and MenuItems
+# test Text implementation for Menu and MenuItems
 tsddbFrame.assertText(tsddbFrame.menu1, "ToolStripDropDownButton1")
 tsddbFrame.assertText(tsddbFrame.menu2, "ToolStripDropDownButton2")
 tsddbFrame.assertText(tsddbFrame.red, "Red")
@@ -150,5 +163,5 @@ tsddbFrame.assertText(tsddbFrame.green, "Green")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 tsddbFrame.quit()

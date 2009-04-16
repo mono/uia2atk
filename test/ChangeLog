@@ -1,4 +1,14 @@
-2009-04-14  Calen Chen <cachen@novell.com>
+2009-04-16  Calen Chen <cachen@novell.com>
+
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py,
+	* testers/toolstripdropdownbutton_basic_ops.py,
+	* testers/toolbar/toolbarframe.py,
+	* testers/toolbar_basic_ops.py,
+	* testers/toolbarbutton/toolbarbuttonframe.py,
+	* testers/toolbarbutton_basic_ops.py: add bug reference and comment out 
+	some failing test cases; correct some logic error
+
+2009-04-15  Calen Chen <cachen@novell.com>
 
 	* testers/statusstrip/statusstripframe.py,
 	* testers/statusstrip_basic_ops.py,

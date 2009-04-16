@@ -27,35 +27,25 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
         super(ToolStripDropDownButtonFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.toolbar = self.findToolBar(None)
-        self.menu1 = self.findMenu(self.DROPDOWN1, checkShowing=False)
-        self.menu2 = self.findMenu(self.DROPDOWN2, checkShowing=False)
+        self.menu1 = self.findMenu(self.DROPDOWN1)
+        self.menu2 = self.findMenu(self.DROPDOWN2)
+        #search menu items in ToolStripDropDownButton1
+        self.red = self.menu1.findMenuItem("Red", checkShowing=False)
+        self.blue = self.menu1.findMenuItem("Blue", checkShowing=False)
+        self.green = self.menu1.findMenuItem("Green", checkShowing=False)
+        #search menu items in ToolStripDropDownButton2
+        items = ["Item1", "Item2", "Item3"]
+        self.item = dict([(x, self.menu2.findMenuItem(y, checkShowing=False)) for x in range(1,3) for y in items])
 
-    #give 'click' action
     def click(self, button):
+        """
+        Wrap strongwind click action to provide action log
+
+        """
         procedurelogger.action("click %s" % button)
         button.click()
 
-        if button == self.menu1:
-            #search menu items in ToolStripDropDownButton1
-            self.red = self.menu1.findMenuItem("Red")
-            self.blue = self.menu1.findMenuItem("Blue")
-            self.green = self.menu1.findMenuItem("Green")
-        elif button == self.menu2:
-            #search menu items in ToolStripDropDownButton2
-            items = ["Item1", "Item2", "Item3"]
-            self.item = dict([(x, self.menu2.findMenuItem(y)) for x in range(3) for y in items])
-        else:
-            pass
-
-    #assert the toolstripprogress's percent after click button
-    def assertLabel(self, newlabel):
-        procedurelogger.expectedResult('label shows "%s"' % newlabel)
-
-        def resultMatches():
-            return self.label.text == newlabel
-        assert retryUntilTrue(resultMatches)
-
-    #assert Text implementation for Menu and MenuItem
+    # assert Text implementation for Menu and MenuItem
     def assertText(self, accessible, textValue):
         procedurelogger.action("check %s's Text" % accessible)
 

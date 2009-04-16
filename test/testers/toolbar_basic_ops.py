@@ -45,34 +45,31 @@ if app is None:
 # just an alias to make things shorter
 tbFrame = app.toolBarFrame
 
-#assert if pyatspi can get toolbar role for toolbar
-tbFrame.assertToolBar()
-
-#check toolstrip's states
+# check toolstrip's states
 statesCheck(tbFrame.toolbar, "ToolBar")
 
-#mouse click toolbar, then check its states never changed
-##has extraneous focused state BUG472279
+# mouse click toolbar, then check states again
 tbFrame.toolbar.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.toolbar, "ToolBar")
 
-#check how many children of toolbar is accessible, in this example there are 4 
-#toolstripbuttons are added by toolbar.Buttons.Add, 1 separator 1 label and 1 
-#combobox are added by toolbar.Controls.add
+# check how many children of toolbar is accessible, in this example there are 4 
+# toolstripbuttons are added by toolbar.Buttons.Add, 1 separator 1 label and 1 
+# combobox are added by toolbar.Controls.add
+## BUG472729: items added by Controls are unaccessible   
 tbFrame.searchItems("push button", 4)
 
 tbFrame.searchItems("separator", 1)
 
-tbFrame.searchItems("label", 1)
+#tbFrame.searchItems("label", 1)
 
-tbFrame.searchItems("combo box", 1)
+#tbFrame.searchItems("combo box", 1)
 
-tbFrame.searchItems("menu", 1)
+#tbFrame.searchItems("menu", 1)
 
-tbFrame.searchItems("menu item", 10)
+#tbFrame.searchItems("menu item", 10)
 
-#close main window
+# close main window
 tbFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

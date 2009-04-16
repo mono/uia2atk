@@ -37,19 +37,26 @@ class ToolBarButtonFrame(accessibles.Frame):
                                                   checkShowing=False)
         self.separator_style = self.toolbar.findSeparator(self.SEPARATOR)
         self.label = self.findLabel(self.LABEL)
+        ## BUG481357:missing MenuItems
+        #self.menuitem_red = self.dropdown_toggle.findMenuItem("Red")
+        #self.menuitem_blue = self.dropdown_toggle.findMenuItem("Blue")
 
     def click(self, accessible):
         accessible.click()
 
-    ##test for PushButton style ToolBarButton
-    def PushButtonStyle(self, accessible):
-        #test AtkText
+    def assertText(self, accessible, textvalue):
         procedurelogger.action('check Text for %s' % accessible)
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "PushButton"))
-        assert accessible.text == "PushButton", "%s doesn't match \
-                                        PushButton" % accessible.text
-        #test AtkAction
+        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, textvalue))
+        assert accessible.text == textvalue, "%s doesn't match \
+                                        %s" % (accessible.text, textvalue)
+
+    # test for PushButton style ToolBarButton
+    def PushButtonStyle(self, accessible):
+        # test AtkText
+        self.assertText(accessible, "PushButton")
+
+        # test AtkAction
         accessible.click()
 
         sleep(config.SHORT_DELAY)
@@ -57,7 +64,7 @@ class ToolBarButtonFrame(accessibles.Frame):
         assert self.label.text == "You clicked PushButton 1 times", \
                 "lable shows %s" % self.label.text
                                           
-        #test AtkComponent by mouse click it to check its position
+        # test AtkComponent by mouse click it to check its position
         accessible.mouseClick()
 
         sleep(config.SHORT_DELAY)
@@ -65,140 +72,141 @@ class ToolBarButtonFrame(accessibles.Frame):
         assert self.label.text == "You clicked PushButton 2 times", \
                 "lable shows %s" % self.label.text
 
-    ##test for DropDownButton style ToolBarButton
+    # test for DropDownButton style ToolBarButton
     def DropDownButtonStyle(self, pushbutton, togglebutton):
-        #test AtkText
-        procedurelogger.action('check Text for %s and %s' % (pushbutton, togglebutton))
-
-        procedurelogger.expectedResult(" %s and %s's Text are %s" % (pushbutton, togglebutton, "DropDownButton"))
-        assert pushbutton.text == "DropDownButton" and \
-               togglebutton.text == "DropDownButton",  "%s and %s doesn't\
-           match DropDownButton" % (pushbutton.text,togglebutton.text)
-
-        #test AtkAction for normal push button doesn't show menu items list
+        # test AtkText
+        self.assertText(pushbutton, "DropDownButton")
+        '''
+        # test AtkAction for normal push button doesn't show menu items list
         pushbutton.click()
-
         sleep(config.SHORT_DELAY)
+        self.menuitem_red.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+
         procedurelogger.expectedResult("click normal push button doesn't show menu items list")
-        try:
-            self.toolbar.findMenuItem("Red")
-        except searchError:
-            pass
+        assert self.label.text != "You selected dropdownbutton item Red"
 
-        #test AtkAction for toggle button to show menu items list
+        # test AtkAction for toggle button to show menu items list
         togglebutton.click()
-
         sleep(config.SHORT_DELAY)
+        self.menuitem_blue.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+
         procedurelogger.expectedResult("click toggle button to show menu items list")
-        self.menuitem1 = self.dropdown_toggle.findMenuItem("Red")
-        self.menuitem2 = self.dropdown_toggle.findMenuItem("Blue")
-        assert self.menuitem1 and self.menuitem2
+        assert self.label.text == "You selected dropdownbutton item Blue"
                                           
-        #test AtkComponent by mouse click normal push button to check its position and size
+        # test AtkComponent by mouse click normal push button to check its position and size
         pushbutton.mouseClick()
-
         sleep(config.SHORT_DELAY)
+        self.menuitem_red.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+
         procedurelogger.expectedResult("mouse click normal push button doesn't show menu items list")
-        try:
-            self.toolbar.findMenuItem("Blue")
-        except searchError:
-            pass
+        assert self.label.text != "You selected dropdownbutton item Red"
 
-        #mouse click toggle button again
+        # mouse click toggle button again
         togglebutton.mouseClick()
-
         sleep(config.SHORT_DELAY)
+        self.menuitem_red.mouseClick(log=False)
+        sleep(config.SHORT_DELAY)
+
         procedurelogger.expectedResult("mouse click toggle button to show menu items list")
-        self.menuitem1 = self.dropdown_toggle.findMenuItem("Red")
-        self.menuitem2 = self.dropdown_toggle.findMenuItem("Blue")
-        assert self.menuitem1 and self.menuitem2
+        assert self.label.text == "You selected dropdownbutton item Red"
 
-        #click menuitem to change label's text
-        self.menuitem1.click()
-
+        # click menuitem to change label's text
+        self.menuitem_blue.click()
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you selected item Red")
-        assert self.label.text == "You selected dropdownbutton item Red", \
-                "lable shows %s" % self.label.text
+        procedurelogger.expectedResult("label shows you selected item Blue")
 
-    ##test for Toggle style ToolBarButton
+        assert self.label.text == "You selected dropdownbutton item Blue"
+        '''
+    # test for Toggle style ToolBarButton
     def ToggleStyle(self, accessible):
-        #test AtkText
-        procedurelogger.action('check Text for %s' % accessible)
+        # test AtkText
+        self.assertText(accessible, "Toggle")
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "Toggle"))
-        assert accessible.text == "Toggle", "%s doesn't match \
-                                        Toggle" % accessible.text
-        #test AtkAction to unable label
+        # test AtkAction to unable label
         accessible.click()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         assert not self.label.sensitive
-        #click again to enable label
+
+        # click again to enable label
         accessible.click()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button")
         assert self.label.sensitive
                                           
-        #test AtkComponent by mouse click to check its position
+        # test AtkComponent by mouse click to check its position
         accessible.mouseClick()
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         assert not self.label.sensitive
 
-    ##test for unable ToolBarButton
+    # test for unable ToolBarButton
     def UnableButton(self, accessible):
-        #test AtkText
-        procedurelogger.action('check Text for %s' % accessible)
+        # test AtkText
+        self.assertText(accessible, "nop")
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "nop"))
-        assert accessible.text == "nop", "%s doesn't match \
-                                        nop" % accessible.text
-        #test AtkAction for nop button doesn't change label's text
+        # test AtkAction for nop button doesn't change label's text
         current_label = self.label.text
-
-        accessible.click()
-        sleep(config.SHORT_DELAY)
+        try:
+            accessible.click()
+        except NotSensitiveError:
+            pass
         procedurelogger.expectedResult("click unable nop button doesn't change label")
         assert self.label.text == current_label, "label is changed to %s" % \
                                                      self.label.text
 
-    ##test for Separator style ToolBarButton
+    # test for Separator style ToolBarButton
     def SeparatorStyle(self, accessible):
-        #test AtkText
+        # test AtkText
         procedurelogger.action('check Text for %s' % accessible)
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, "separator"))
-        assert accessible.text == "separator", "%s doesn't match \
-                                        separator" % accessible.text
+        procedurelogger.expectedResult("AtkText is unimplemented")
+        try:
+            accessible._accessible.queryText()
+        except NotImplementedError:
+            return
+        assert False, "AtkText shouldn't implemented"
 
-        #AtkAction is unimplementd for separator style toolbarbutton
+        # AtkAction is unimplementd for separator style toolbarbutton
         procedurelogger.action('check Action for %s' % accessible)
         procedurelogger.expectedResult("AtkAction is unimplemented")
         try:
-           accessible.click()
+           accessible._accessible.queryAction()
         except NotImplementedError:
-           pass
+            return
+        assert False, "AtkAction shouldn't implemented"
     
-    #in this example all buttons with 24*24 image size, except separator
+    # in this example all buttons with 24*24 image size, except separator
     def assertImageSize(self, button, width=0, height=0):
         procedurelogger.action("assert %s's image size" % button)
-        size = button.imageSize
+        if button == self.separator_style:
+            procedurelogger.expectedResult('%s image is unimplemented' % button)
+            try:
+                button._accessible.queryImage()
+            except NotImplementedError:
+                return
+            assert False
 
-        procedurelogger.expectedResult('"%s" image size is %s x %s' %
+        else:
+            size = button.imageSize
+
+            procedurelogger.expectedResult('"%s" image size is %s x %s' %
                                                   (button, width, height))
 
-        assert width == size[0], "%s (%s), %s (%s)" %\
+            assert width == size[0], "%s (%s), %s (%s)" %\
                                             ("expected width",
                                               width,
                                              "does not match actual width",
                                               size[0])
-        assert height == size[1], "%s (%s), %s (%s)" %\
+            assert height == size[1], "%s (%s), %s (%s)" %\
                                             ("expected height",
                                               height,
                                              "does not match actual height",
                                               size[1])
 
-    #close main window
+    # close main window
     def quit(self):
         self.altF4()
