@@ -36,7 +36,7 @@ svn co svn://151.155.5.148/source/trunk/moon moon
 %{?env_options}
 %{?configure_options}
 cd moon
-autoreconf -f -i
+sh autogen.sh
 %configure 
 
 %install
