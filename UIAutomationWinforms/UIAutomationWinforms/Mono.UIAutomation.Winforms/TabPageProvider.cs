@@ -51,9 +51,14 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.TabItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("tab item");
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return Helper.GetControlScreenBounds (tabPage.TabBounds,
-				                                      tabPage, false);
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+				// Don't return empty if we're not visible.  We
+				// want this control's visiblity managed by the
+				// TabControl, as tab pages are on-screen even
+				// if they report Visible = false.
+				return Helper.RectangleToRect (
+					Control.Parent.RectangleToScreen (tabPage.TabBounds));
+			}
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

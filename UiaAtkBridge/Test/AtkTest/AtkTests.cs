@@ -898,7 +898,23 @@ namespace UiaAtkBridgeTest
 				InterfaceSelection (atkSelection, names, accessible, type);
 				
 				Atk.Object child1 = accessible.RefAccessibleChild (0);
-				Assert.IsTrue (child1.RefStateSet ().ContainsState (Atk.StateType.MultiLine));
+				States (child1,
+				        Atk.StateType.Enabled,
+				        Atk.StateType.MultiLine,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Selected,
+				        Atk.StateType.Sensitive,
+				        Atk.StateType.Showing,
+				        Atk.StateType.Visible);
+
+				Atk.Object child2 = accessible.RefAccessibleChild (1);
+				States (child2,
+				        Atk.StateType.Enabled,
+				        Atk.StateType.MultiLine,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Sensitive,
+				        Atk.StateType.Showing,
+				        Atk.StateType.Visible);
 
 				PropertyRole (BasicWidgetType.TabPage, child1);
 				Atk.Text atkText = CastToAtkInterface<Atk.Text> (child1);
