@@ -1,3 +1,8 @@
+2009-04-16  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: Ensure that inactive
+	TabPages are visible/showing.  [Fixes #495043]
+
 2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Use treeView

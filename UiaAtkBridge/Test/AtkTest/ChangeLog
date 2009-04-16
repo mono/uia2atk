@@ -1,3 +1,8 @@
+2009-04-16  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: Verify that Visible and Showing states are present on
+	inactive tabs.  [Fixes #495043]
+
 2009-03-12  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTester.cs:
