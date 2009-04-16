@@ -2,6 +2,8 @@
 %define with_ffmpeg no
 %define with_cairo embedded
 
+BuildRequires:	subversion
+
 Name:           moonlight
 License:        LGPL v2.0 only
 Group:          Productivity/Multimedia/Other
@@ -49,7 +51,7 @@ Unix systems.
 %doc DUMMY
 
 %prep
-svn co svn://anonsvn.mono-project.com/source/trunk/moon moon
+svn co svn://151.155.5.148/source/trunk/moon moon
 
 
 %build
