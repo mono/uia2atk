@@ -37,9 +37,7 @@ svn co svn://151.155.5.148/source/trunk/moon moon
 %{?configure_options}
 cd moon
 autoreconf -f -i
-%configure --with-ffmpeg=no \
-			--with-managed=yes \
-			 --with-cairo=system
+%configure 
 
 %install
 %{?env_options}
