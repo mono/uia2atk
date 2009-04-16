@@ -49,10 +49,13 @@ Unix systems.
 %doc DUMMY
 
 %prep
+svn co svn://anonsvn.mono-project.com/source/trunk/moon moon
+
 
 %build
 %{?env_options}
 %{?configure_options}
+cd moon
 autoreconf -f -i
 %configure --with-ffmpeg=%{with_ffmpeg} \
 			--with-managed=%{with_managed} \
