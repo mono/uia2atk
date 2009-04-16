@@ -1,5 +1,12 @@
 2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/gtksharp21code.diff: Removing modifications that were
+	not needed since some collection classes will be available now.
+	Also, add back again the autotools modifications, as this patch
+	will not land in gtk-sharp anytime soon.
+
+2009-03-24  Andrés G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/gtksharp21code.diff: As the assemblies will be merged in
 	one, we don't need the extra Marshaling API for atk-sharp, so this
 	is quite simpler now.

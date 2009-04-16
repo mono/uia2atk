@@ -1,53 +1,57 @@
-Index: glib/PtrArray.cs
+Index: atk/Makefile.am
 ===================================================================
---- glib/PtrArray.cs	(revision 122401)
-+++ glib/PtrArray.cs	(working copy)
-@@ -25,7 +25,11 @@
- 	using System.Collections;
- 	using System.Runtime.InteropServices;
+--- atk/Makefile.am	(revision 122401)
++++ atk/Makefile.am	(working copy)
+@@ -22,4 +22,20 @@
  
--	public class PtrArray : IDisposable, ICollection, ICloneable, IWrapper {
-+	public class PtrArray : IDisposable, ICollection, IWrapper
-+#if !NET_2_1
-+		, ICloneable
-+#endif
-+	{
+ add_dist =
  
- 		private IntPtr handle = IntPtr.Zero;
- 		private bool managed = false;
-@@ -268,5 +272,6 @@
- 		{
- 			return new PtrArray (g_ptr_array_copy (Handle), element_type, false, false);
- 		}
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++MOON_PRE_ASSEMBLY=$(MOON_DIR)MoonAtkBridge.dll
 +
- 	}
- }
++references_moon = $(MOON_DIR)glib-sharp.dll
++build_references_moon = $(addprefix /r:, $(references_moon))
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(references_moon) $(ASSEMBLY)
++	smcs -define:NET_2_1 $(build_references_moon) $(BUILD_PARAMS) -out:$(MOON_PRE_ASSEMBLY)
++	mv $(MOON_PRE_ASSEMBLY) $@
++	$(GAPI_CDECL_INSERT)
++
+ include ../Makefile.include
++
++
 Index: glib/Object.cs
 ===================================================================
 --- glib/Object.cs	(revision 122401)
 +++ glib/Object.cs	(working copy)
-@@ -31,11 +31,19 @@
+@@ -431,7 +431,10 @@
  
- 	public class Object : IWrapper, IDisposable {
+ 		Hashtable before_signals;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+-		protected internal Hashtable BeforeSignals {
++#if !NET_2_1
++		protected
++#endif
++		internal Hashtable BeforeSignals {
+ 			get {
+ 				if (before_signals == null)
+ 					before_signals = new Hashtable ();
+@@ -441,7 +444,10 @@
  
-+		internal class ObjectsHashtable : 
-+	#if !NET_2_1
-+			Hashtable
-+	#else
-+			HashDictionary <IntPtr, ToggleRef>
-+	#endif
-+		{}
-+		
- 		IntPtr handle;
- 		ToggleRef tref;
- 		bool disposed = false;
- 		Hashtable data;
--		static Hashtable Objects = new Hashtable();
-+		static ObjectsHashtable Objects = new ObjectsHashtable ();
- 		static ArrayList PendingDestroys = new ArrayList ();
- 		static bool idle_queued;
- 
-@@ -449,6 +457,7 @@
+ 		Hashtable after_signals;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+-		protected internal Hashtable AfterSignals {
++#if !NET_2_1
++		protected
++#endif
++		internal Hashtable AfterSignals {
+ 			get {
+ 				if (after_signals == null)
+ 					after_signals = new Hashtable ();
+@@ -449,6 +455,7 @@
  			}
  		}
  
@@ -55,7 +59,7 @@ Index: glib/Object.cs
  		EventHandlerList before_handlers;
  		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
  		protected EventHandlerList BeforeHandlers {
-@@ -468,6 +477,7 @@
+@@ -468,6 +475,7 @@
  				return after_handlers;
  			}
  		}
@@ -63,239 +67,97 @@ Index: glib/Object.cs
  
  		[CDeclCallback]
  		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
-@@ -617,8 +627,10 @@
+@@ -526,7 +534,12 @@
+ 			return Handle.GetHashCode ();
+ 		}
  
- 		static Object ()
- 		{
+-		public Hashtable Data {
 +#if !NET_2_1
- 			if (Environment.GetEnvironmentVariable ("GTK_SHARP_DEBUG") != null)
- 				GLib.Log.SetLogHandler ("GLib-GObject", GLib.LogLevelFlags.All, new GLib.LogFunc (GLib.Log.PrintTraceLogFunction));
++		public
++#else
++		internal
 +#endif
++		Hashtable Data {
+ 			get { 
+ 				if (data == null)
+ 					data = new Hashtable ();
+@@ -536,7 +549,12 @@
  		}
- 	}
- }
-Index: glib/ListBase.cs
-===================================================================
---- glib/ListBase.cs	(revision 122401)
-+++ glib/ListBase.cs	(working copy)
-@@ -26,8 +26,11 @@
- 	using System.Collections;
- 	using System.Runtime.InteropServices;
  
--	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper, ICloneable {
--
-+	public abstract class ListBase : IDisposable, ICollection, GLib.IWrapper
+ 		Hashtable persistent_data;
+-		protected Hashtable PersistentData {
 +#if !NET_2_1
-+	, ICloneable
++		protected
++#else
++		internal
 +#endif
-+	{
- 		private IntPtr list_ptr = IntPtr.Zero;
- 		private int length = -1;
- 		private bool managed = false;
-@@ -272,7 +275,7 @@
- 			list_ptr = IntPtr.Zero;
- 			length = -1;
- 		}
--
-+		
- 		// ICloneable
- 		abstract public object Clone ();
- 	}
-Index: glib/Argv.cs
++		Hashtable PersistentData {
+ 			get {
+ 				if (persistent_data == null)
+ 					persistent_data = new Hashtable ();
+Index: glib/SignalCallback.cs
 ===================================================================
---- glib/Argv.cs	(revision 122401)
-+++ glib/Argv.cs	(working copy)
-@@ -43,9 +43,10 @@
+--- glib/SignalCallback.cs	(revision 122401)
++++ glib/SignalCallback.cs	(working copy)
+@@ -20,6 +20,8 @@
+ // Boston, MA 02111-1307, USA.
  
- 			g_free (handle);
- 		}
--				
+ 
++#if !NET_2_1
 +
-+#if !NET_2_1
- 		public Argv (string[] args) : this (args, false) {}
--		
-+
- 		public Argv (string[] args, bool add_program_name)
- 		{
- 			add_progname = add_program_name;
-@@ -67,12 +68,6 @@
- 				Marshal.WriteIntPtr (handle, i * IntPtr.Size, arg_ptrs [i]);
- 		}
- 
--		public IntPtr Handle {
--			get {
--				return handle;
--			}
--		}
--
- 		public string[] GetArgs (int argc)
- 		{
- 			int count = add_progname ? argc - 1 : argc;
-@@ -84,6 +79,13 @@
- 
- 			return result;
- 		}
-+#endif
-+		
-+		public IntPtr Handle {
-+			get {
-+				return handle;
-+			}
-+		}
- 	}
- }
- 
-Index: glib/Global.cs
-===================================================================
---- glib/Global.cs	(revision 122401)
-+++ glib/Global.cs	(working copy)
-@@ -25,6 +25,18 @@
- 	using System.Text;
- 	using System.Runtime.InteropServices;
- 
-+#if NET_2_1
-+	public class ArrayList : System.Collections.Generic.List <object> { }
-+	public class Hashtable : System.Collections.Generic.Dictionary <object, object> { }
-+	internal class HashDictionary <K, V> : System.Collections.Generic.Dictionary <K, V>
-+	{
-+		public bool Contains (K k)
-+		{
-+			return ContainsKey (k);
-+		}
-+	}
-+#endif
-+	
- 	public class Global
- 	{
- 
-@@ -64,5 +76,6 @@
- 
- 		[DllImport("libglib-2.0-0.dll")]
- 		static extern IntPtr g_get_application_name ();
--	}
-+		
-+	}	
- }
-Index: glib/ExceptionManager.cs
-===================================================================
---- glib/ExceptionManager.cs	(revision 122401)
-+++ glib/ExceptionManager.cs	(working copy)
-@@ -49,6 +49,13 @@
- 
- 		public static event UnhandledExceptionHandler UnhandledException;
- 
-+		public static void ExitWithError ()
-+		{
-+#if !NET_2_1
-+				Environment.Exit (1);
-+#endif //TODO: #else
-+		}
-+		
- 		public static void RaiseUnhandledException (Exception e, bool is_terminal)
- 		{
- 			if (UnhandledException == null) {
-@@ -56,7 +63,7 @@
- 				Console.Error.WriteLine ("  Note: Applications can use GLib.ExceptionManager.UnhandledException to handle the exception.");
- 				Console.Error.WriteLine (e);
- 				Console.Error.WriteLine (new System.Diagnostics.StackTrace (true));
--				Environment.Exit (1);
-+				ExitWithError ();
- 			}
- 
- 			UnhandledExceptionArgs args = new UnhandledExceptionArgs (e, is_terminal);
-@@ -64,11 +71,11 @@
- 				UnhandledException (args);
- 			} catch (Exception ex) {
- 				Console.Error.WriteLine (ex);
--				Environment.Exit (1);
-+				ExitWithError ();
- 			}
- 
- 			if (is_terminal || args.ExitApplication)
--				Environment.Exit (1);
-+				ExitWithError ();
- 		}
- 	}
- }
-Index: glib/SignalAttribute.cs
-===================================================================
---- glib/SignalAttribute.cs	(revision 122401)
-+++ glib/SignalAttribute.cs	(working copy)
-@@ -24,7 +24,9 @@
- 
+ namespace GLib {
  	using System;
- 
-+#if !NET_2_1
- 	[Serializable]
-+#endif
- 	[AttributeUsage (AttributeTargets.Event, Inherited=false)]
- 	public sealed class SignalAttribute : Attribute 
- 	{
-Index: glib/ValueArray.cs
-===================================================================
---- glib/ValueArray.cs	(revision 122401)
-+++ glib/ValueArray.cs	(working copy)
-@@ -25,11 +25,22 @@
  	using System.Collections;
- 	using System.Runtime.InteropServices;
+@@ -104,3 +106,4 @@
+ 	}
+ }
  
--	public class ValueArray : IDisposable, ICollection, ICloneable, IWrapper {
--
-+	public class ValueArray : IDisposable, ICollection, IWrapper
-+#if !NET_2_1
-+		, ICloneable
 +#endif
-+	{
-+		internal class PendingFreesList : 
-+#if !NET_2_1
-+			ArrayList
-+#else
-+			System.Collections.Generic.List <IntPtr>
-+#endif
-+		{}
-+		
- 		private IntPtr handle = IntPtr.Zero;
- 
--		static private ArrayList PendingFrees = new ArrayList ();
-+		static private PendingFreesList PendingFrees = new PendingFreesList ();
- 		static private bool idle_queued = false;
- 
- 		[DllImport("libgobject-2.0-0.dll")]
-Index: glib/GType.cs
+Index: glib/Makefile.am
 ===================================================================
---- glib/GType.cs	(revision 122401)
-+++ glib/GType.cs	(working copy)
-@@ -29,6 +29,22 @@
- 	using System.Runtime.InteropServices;
- 	using System.Text;
+--- glib/Makefile.am	(revision 122401)
++++ glib/Makefile.am	(working copy)
+@@ -97,11 +97,25 @@
+ GAPI_CDECL_INSERT=
+ endif
  
-+	internal class GTypeHashtable : 
-+#if !NET_2_1
-+		Hashtable
-+#else
-+		HashDictionary <Type, GType>
-+#endif
-+	{}
-+	
-+	internal class TypeHashtable : 
-+#if !NET_2_1
-+		Hashtable
-+#else
-+		HashDictionary <IntPtr, Type>
-+#endif
-+	{}
-+	
- 	[StructLayout(LayoutKind.Sequential)]
- 	public struct GType {
++BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
++
+ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
+ 	@rm -f $(ASSEMBLY).mdb
+-	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
++	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+ 	$(GAPI_CDECL_INSERT)
  
-@@ -86,8 +102,8 @@
- 		public static readonly GType Param = new GType ((IntPtr) TypeFundamentals.TypeParam);
- 		public static readonly GType Object = new GType ((IntPtr) TypeFundamentals.TypeObject);
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++MOON_PRE_ASSEMBLY=$(MOON_DIR)MoonAtkBridge.dll
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(ASSEMBLY)
++	mkdir -p $(MOON_DIR)
++	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$(MOON_PRE_ASSEMBLY)
++	mv $(MOON_PRE_ASSEMBLY) $@
++	$(GAPI_CDECL_INSERT)
++
+ $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
+ 	@for i in $(POLICY_VERSIONS); do	\
+ 	  echo "Creating policy.$$i.$(ASSEMBLY)";	\
+Index: Makefile.include
+===================================================================
+--- Makefile.include	(revision 122401)
++++ Makefile.include	(working copy)
+@@ -62,9 +62,11 @@
+ GAPI_CDECL_INSERT=
+ endif
  
--		static Hashtable types = new Hashtable ();
--		static Hashtable gtypes = new Hashtable ();
-+		static TypeHashtable types = new TypeHashtable ();
-+		static GTypeHashtable gtypes = new GTypeHashtable ();
++BUILD_PARAMS=$(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -target:library $(GENERATED_SOURCES) $(build_sources)
++
+ $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
+ 	@rm -f $(ASSEMBLY).mdb
+-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
++	$(CSC) $(build_references) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+ 	$(GAPI_CDECL_INSERT)
  
- 		public static void Register (GType native_type, System.Type type)
- 		{
+ install-data-local:
