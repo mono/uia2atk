@@ -12,18 +12,9 @@ class MenuBar:
         gtk.main_quit()
         return False
 
-    def after_timeout(self):
-        self.file_item.get_accessible().add_selection (3)
-
-    def open_activate(self, widget):
-        self.label.set_text("You selected Open")
-
-    def quit_activate(self, widget):
-        self.label.set_text("You selected Quit")
-
-    def file_activate(self, widget):
-        self.label.set_text("You selected File")
-        gobject.timeout_add (3000, self.after_timeout)
+    def on_activate(self, widget):
+        text = widget.get_children()[0].get_text()
+        self.label.set_text("You selected: %s" % text)
 
     def set_menu(self):
 
@@ -34,21 +25,20 @@ class MenuBar:
         save_item = gtk.MenuItem("_Save")
         quit_item = gtk.MenuItem("_Quit")
         open_recent_item_menu = gtk.Menu()
-        open_recent_item_menu.append(gtk.MenuItem("foo"))
-        open_recent_item_menu.append(gtk.MenuItem("bar"))
+        foo_menu_item = gtk.MenuItem("foo")
+        bar_menu_item = gtk.MenuItem("bar")
+        open_recent_item_menu.append(foo_menu_item)
+        open_recent_item_menu.append(bar_menu_item)
         open_recent_item.set_submenu(open_recent_item_menu)
 
         file_menu.append(open_item)
         file_menu.append(open_recent_item)
         file_menu.append(save_item)
         file_menu.append(quit_item)
-        open_item.connect("activate", self.open_activate)
-        quit_item.connect("activate", self.quit_activate)
 
         # "File" entry on menubar
         self.file_item = gtk.MenuItem("_File")
         self.file_item.set_submenu(file_menu)
-        self.file_item.connect("activate", self.file_activate)
 
         # items in Help
         help_menu = gtk.Menu()
@@ -57,6 +47,17 @@ class MenuBar:
         # "Help" entry on menubar
         help_item = gtk.MenuItem("_Help")
         help_item.set_submenu(help_menu)
+
+        # connect events for menus and menu items
+        self.file_item.connect("activate", self.on_activate)
+        help_item.connect("activate", self.on_activate)
+        about_item.connect("activate", self.on_activate)
+        open_item.connect("activate", self.on_activate)
+        quit_item.connect("activate", self.on_activate)
+        save_item.connect("activate", self.on_activate)
+        open_recent_item.connect("activate", self.on_activate)
+        foo_menu_item.connect("activate", self.on_activate)
+        bar_menu_item.connect("activate", self.on_activate)
 
         # menubar
         self.menubar = gtk.MenuBar()

@@ -1,3 +1,8 @@
+2009-04-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkmenubar.py: Add event handlers to all of the menu items.
+	Consolidate the event handler methods into a single on_activate method.
+
 2009-04-16  Calen Chen <cachen@novell.com>
 
 	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py,
