@@ -1,3 +1,7 @@
+2009-04-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/panel/panelframe.py: Remove commented out code.
+
 2009-04-17  Calen Chen <cachen@novell.com>
 
 	* testers/toolstripseparator_basic_ops.py,

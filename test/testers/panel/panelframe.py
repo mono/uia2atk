@@ -14,8 +14,6 @@ class PanelFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    #PANEL_ONE = "panel1"
-    #PANEL_TWO = "panel2"
     CHECK_ONE = "Bananas"
     CHECK_TWO = "Chicken"
     CHECK_THREE = "Stuffed Peppers"
@@ -29,8 +27,6 @@ class PanelFrame(accessibles.Frame):
 
     def __init__(self, accessible):
         super(PanelFrame, self).__init__(accessible)
-        #self.panel1 = self.findPanel(self.PANEL_ONE)
-        #self.panel2 = self.findPanel(self.PANEL_TWO)
         self.panel = self.findAllPanels(None)
         self.panel1 = self.panel[0]
         self.panel2 = self.panel[1]
