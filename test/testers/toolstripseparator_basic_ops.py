@@ -8,7 +8,7 @@
 #              Test the samples/toolstripseparator.py script
 ##############################################################################
 
-# The docstring below  is used in the generated log file
+# The docstring below is used in the generated log file
 """
 Test accessibility of toolstripseparator widget
 """
@@ -45,17 +45,18 @@ if app is None:
 # just an alias to make things shorter
 tssFrame = app.toolStripSeparatorFrame
 
-#assert if pyatspi can get all separators
+# assert if pyatspi can get all separators
 tssFrame.assertSeparator(num=3)
 
-#check separators' states
+# check separators' states
+# the first sepatator is not enabled and sensitived
 statesCheck(tssFrame.separators[0], "ToolStripSeparator", invalid_states=["enabled", "sensitive"])
 
 statesCheck(tssFrame.separators[1], "ToolStripSeparator")
 
 statesCheck(tssFrame.separators[2], "ToolStripSeparator")
 
-#close main window
+# close main window
 tssFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

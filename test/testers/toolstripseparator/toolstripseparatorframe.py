@@ -21,7 +21,7 @@ class ToolStripSeparatorFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripSeparatorFrame, self).__init__(accessible)
 
-    #search for ToolStripSeparator as separator role name
+    # search for ToolStripSeparator as separator role name
     def assertSeparator(self, num=0):
         procedurelogger.action('seach for Separators in ToolBar')
 
@@ -32,6 +32,6 @@ class ToolStripSeparatorFrame(accessibles.Frame):
         
         assert retryUntilTrue(resultMatches)
     
-    #close main window
+    # close main window
     def quit(self):
         self.altF4()

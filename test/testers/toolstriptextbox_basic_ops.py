@@ -43,7 +43,7 @@ if app is None:
 # just an alias to make things shorter
 tstbFrame = app.toolStripTextBoxFrame
 
-#check states list for text box
+# check states list for text box
 statesCheck(tstbFrame.singleline, "ToolStripTextBox", \
                            add_states=["single line"])
 statesCheck(tstbFrame.multiline, "ToolStripTextBox", \
@@ -51,7 +51,7 @@ statesCheck(tstbFrame.multiline, "ToolStripTextBox", \
 statesCheck(tstbFrame.readonly, "ToolStripTextBox", \
                            add_states=["single line"], \
                            invalid_states=["editable"])
-#mouse click textbox to rise focused
+# mouse click textbox to rise focused
 tstbFrame.singleline.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(tstbFrame.singleline, "ToolStripTextBox", \
@@ -68,8 +68,8 @@ statesCheck(tstbFrame.readonly, "ToolStripTextBox", \
                            add_states=["single line", "focused"], \
                            invalid_states=["editable"])
 
-#in textbox1(single line), input characters will change label and text, 
-#just 10 characters is valid
+# in textbox1(single line), input characters in application or change text value
+# will change label and text, just 10 characters is valid
 tstbFrame.singleline.mouseClick()
 sleep(config.SHORT_DELAY)
 tstbFrame.inputText(tstbFrame.singleline, "toolstriptextbox1")
@@ -77,27 +77,28 @@ sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("toolstript")
 tstbFrame.assertText(tstbFrame.singleline,"toolstript")
 
-tstbFrame.enterTextValue(tstbFrame.singleline, "toolstriptextbox1")
+tstbFrame.changeTextValue(tstbFrame.singleline, "changeTextValue")
 sleep(config.SHORT_DELAY)
-tstbFrame.assertLabel("toolstript")
+tstbFrame.assertLabel("changeText")
 
-#in textbox2(multi line), input characters will change label and text 
-#with multi line
+# in textbox2(multi line), input characters in application or change text value
+# will change label and text with multi line
 tstbFrame.multiline.mouseClick()
 sleep(config.SHORT_DELAY)
 tstbFrame.inputText(tstbFrame.multiline, "toolstrip")
 tstbFrame.multiline.keyCombo("Return", grabFocus=True)
 tstbFrame.inputText(tstbFrame.multiline, "textbox2")
 sleep(config.SHORT_DELAY)
-##false moving to next line, MWF BUG486716
+## false moving to next line, MWF BUG486716
 #tstbFrame.assertLabel("toolstrip\ntextbox2")
 #tstbFrame.assertText(tstbFrame.multiline,"toolstrip\ntextbox2")
 
-tstbFrame.enterTextValue(tstbFrame.multiline, "multi\r\nline")
+tstbFrame.changeTextValue(tstbFrame.multiline, "multi\r\nline")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 
-#in textbox3(read only), input characters won't change label and text
+# in textbox3(read only), input characters in application or change text value 
+# won't change label and text
 tstbFrame.readonly.mouseClick()
 sleep(config.SHORT_DELAY)
 tstbFrame.inputText(tstbFrame.readonly, "toolstriptextbox3")
@@ -105,29 +106,26 @@ sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 tstbFrame.assertText(tstbFrame.readonly,"")
 
-tstbFrame.enterTextValue(tstbFrame.readonly, "readonly")
+tstbFrame.changeTextValue(tstbFrame.readonly, "readonly")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 
-#Text doesn't show AccessibleName and AccessibleDescription via MSDN
-tstbFrame.assertNameDescription(tstbFrame.singleline, \
-                          "", "")
+# Text doesn't show AccessibleName and AccessibleDescription via MSDN
+tstbFrame.assertNameAndDescription(tstbFrame.singleline, "", "")
 
-tstbFrame.assertNameDescription(tstbFrame.multiline, \
-                          "", "")
+tstbFrame.assertNameAndDescription(tstbFrame.multiline, "", "")
 
-tstbFrame.assertNameDescription(tstbFrame.readonly, \
-                          "", "")
+tstbFrame.assertNameAndDescription(tstbFrame.readonly, "", "")
 
-#test Streamable Contents for three textbox
-tstbFrame.assertContent(tstbFrame.singleline)
+# test Streamable Contents for three textbox
+tstbFrame.assertStreamableContent(tstbFrame.singleline)
 
-tstbFrame.assertContent(tstbFrame.multiline)
+tstbFrame.assertStreamableContent(tstbFrame.multiline)
 
-tstbFrame.assertContent(tstbFrame.readonly)
+tstbFrame.assertStreamableContent(tstbFrame.readonly)
 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 tstbFrame.quit()

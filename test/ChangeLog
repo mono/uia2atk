@@ -1,3 +1,11 @@
+2009-04-17  Calen Chen <cachen@novell.com>
+
+	* testers/toolstripseparator_basic_ops.py,
+	* testers/toolstripseparator/toolstripseparatorframe.py,
+	* testers/toolstriptextbox/toolstriptextboxframe.py,
+	* testers/toolstriptextbox_basic_ops.py: rename and add doc strings, 
+	comment out failing tests
+
 2009-04-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkmenubar.py: Add event handlers to all of the menu items.
