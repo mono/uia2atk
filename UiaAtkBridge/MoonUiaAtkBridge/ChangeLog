@@ -1,3 +1,12 @@
+2009-04-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonUiaAtkBridge.mdp: Update.
+
+	* gtk-sharp-2.8-sources.xml: Add file from old gtk-branch.
+
+	* build-glib21.sh: Several fixes and support for downloading
+	the old atk tarball and calling the trunk-parser.
+
 2009-04-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* build-glib21.sh: Workaround for bug #493702.

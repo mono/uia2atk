@@ -6,17 +6,85 @@ MCS_PATH=../../../../trunk/mcs
 OUTPUT_PATH=./sl
 LINKER_PATH="$MOONLIGHT_PATH/class/lib/tuner"
 LINKER="$LINKER_PATH/monolinker.exe"
-[ -a  $GTK_SHARP_PATH ] || (echo "$GTK_SHARP_PATH does not exist" && exit 1)
+ATK_VERSION="1.10.3"
+ATK_FILENAME="atk-$ATK_VERSION.tar.bz2"
+ATK_URL="http://ftp.gnome.org/pub/gnome/sources/atk/1.10/$ATK_FILENAME"
 
-[ -a  $MOONLIGHT_PATH ] || (echo "$MOONLIGHT_PATH does not exist" && exit 1)
+GAPI_PARSER_PATH="$GTK_SHARP_PATH/parser"
+GAPI_PARSER_FILE="$GAPI_PARSER_PATH/gapi-parser.exe"
 
-[ -a  $MCS_PATH ] || (echo "$MCS_PATH does not exist" && exit 1)
+if test -d $GTK_SHARP_PATH
+then
+	echo "Found gtk-sharp"
+else
+	echo "$GTK_SHARP_PATH does not exist"
+	exit 1
+fi
+
+if test -d $MOONLIGHT_PATH
+then
+	echo "Found moon"
+else
+	echo "$MOONLIGHT_PATH does not exist"
+	exit 1
+fi
+
+if test -d $MCS_PATH
+then
+	echo "Found mcs"
+else
+	echo "$MCS_PATH does not exist"
+	exit 1
+fi
 
 INPUT_PATH="$GTK_SHARP_PATH/moonbin"
 
+
+if test -f $GAPI_PARSER_PATH/$ATK_FILENAME
+then
+	echo "Found $ATK_FILENAME"
+else
+	echo "$ATK_FILENAME does not exist, trying to download it..."
+	wget $ATK_URL --output-document=$GAPI_PARSER_PATH/$ATK_FILENAME
+	if test -f $GAPI_PARSER_PATH/$ATK_FILENAME
+	then
+		echo "Found $ATK_FILENAME"
+		rm -rf $GAPI_PARSER_PATH/atk-$ATK_VERSION/
+		(cd $GAPI_PARSER_PATH/; \
+			tar -xvf $ATK_FILENAME )
+	else
+		echo "$ATK_FILENAME does not exist, it could not be downloaded"
+		exit 1
+	fi
+fi
+
+if test -f $GAPI_PARSER_FILE
+then
+	echo "Found $GAPI_PARSER_FILE"
+else
+	echo "$GAPI_PARSER_FILE does not exist, trying to construct it..."
+
+	(cd $GAPI_PARSER_PATH/; \
+		make && make install )
+	if test -f $GAPI_PARSER_FILE
+	then
+		echo "Found $GAPI_PARSER_FILE"
+	else
+		echo "$GAPI_PARSER_FILE does not exist, it could not be constructed"
+		exit 1
+	fi
+fi
+
+cp gtk-sharp-2.8-sources.xml $GAPI_PARSER_PATH
+(cd $GAPI_PARSER_PATH/; \
+	./gapi2-parser gtk-sharp-2.8-sources.xml )
+
+# TODO: verify that the .raw file generated has an <api> element with a parser_version attrib
+# TODO: create a bootstrap-2.8 config file that just builds atk and glib
+
 #this doesn't work on the parallel env because of BNC#489961
 #(cd $GTK_SHARP_PATH; \
-#	./bootstrap-2.12 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
+#	./bootstrap-2.8 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
 
 LINKER_STEPS="-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightAssemblyStep,Mono.Tuner"
 
