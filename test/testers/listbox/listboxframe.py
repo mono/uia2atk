@@ -3,38 +3,38 @@
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/19/2008
 # Description: Application wrapper for listbox.py
-#              be called by ../menustrip_basic_ops.py
+#              be called by ../listbox_basic_ops.py
 ##############################################################################
 
 """Application wrapper for listbox.py"""
 
 from strongwind import *
+from helpers import *
 
 # class to represent the main window.
 class ListBoxFrame(accessibles.Frame):
 
     # the available widgets on the window
     LABEL = "You select "
+    CHECKBOX = "SelectedIndexChanged Event"
 
     def __init__(self, accessible):
         super(ListBoxFrame, self).__init__(accessible)
+        self.checkbox = self.findCheckBox(self.CHECKBOX)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
         self.tablecell = dict([(x, self.findTableCell(str(x))) for x in range(20)])            
 
-    def click(self, tablecell):
+    def click(self, accessible):
         """give 'click' action"""
 
-        tablecell.click()
+        accessible.click()
 
     def assertLabel(self, itemname):
         """Raise exception if the accessible does not match the given result"""
         procedurelogger.expectedResult('item "%s" is selected' % itemname)
 
-        def resultMatches():
-            return self.findLabel("You select %s" % itemname)
-	
-        assert retryUntilTrue(resultMatches)
+        assert self.label.text == "You select %s" % itemname
 
     def assertText(self, textValue=None):
         """assert Text implementation for ListItem role"""
@@ -45,12 +45,22 @@ class ListBoxFrame(accessibles.Frame):
                                         (self.tablecell[textValue], textValue))
             assert self.tablecell[textValue].text == str(textValue)
 
-    def selectChild(self, accessible, childIndex):
-        """assert Selection implementation"""
+    def selectChildAndCheckStates(self, accessible, childIndex, add_states=[], invalid_states=[]):
+        """
+        Assert Selection implementation by select the child at childIndex and
+        make sure the appropriate accessible was selected
 
-        procedurelogger.action('select childIndex %s in "%s"' % \
+        """
+        # select childIndex
+        procedurelogger.action('Select child at index %s in "%s"' % \
                                         (childIndex, accessible))
         accessible.selectChild(childIndex)
+        sleep(config.SHORT_DELAY)
+        self.assertLabel(str(accessible.getChildAtIndex(childIndex)))
+
+        # check selected item's states
+        statesCheck(accessible.getChildAtIndex(childIndex), "TableCell",\
+                                                 invalid_states, add_states)
 
     def assertClearSelection(self, accessible):
         """clear selections"""

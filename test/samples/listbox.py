@@ -28,8 +28,15 @@ class ListBoxSample(Form):
 
         # setup title
         self.Text = "ListBox control"
-        self.Height = 200
+        self.Height = 230
         self.Width = 370
+
+        # setup checkbox to change event
+        self.checkbox = CheckBox()
+        self.checkbox.Text = "SelectedIndexChanged Event"
+        self.checkbox.Dock = DockStyle.Top
+        self.checkbox.AutoSize = True
+        self.checkbox.Click += self.checkbox_click
 
         # setup label
         self.label = Label()
@@ -45,6 +52,7 @@ class ListBoxSample(Form):
         self.listbox.Dock = DockStyle.Top
         self.listbox.Click += self.select
         self.listbox.MultiColumn = True
+        self.listbox.ItemHeight = 20
 
         # add items in ListBox
         for i in range(20):
@@ -55,6 +63,13 @@ class ListBoxSample(Form):
         # add controls
         self.Controls.Add(self.listbox)
         self.Controls.Add(self.label)
+        self.Controls.Add(self.checkbox)
+
+    def checkbox_click(self, sender, event):
+        if sender.Checked:
+            self.listbox.SelectedIndexChanged += self.select
+        else:
+            self.listbox.SelectedIndexChanged -= self.select
 
     # ListBox click event
     def select(self, sender, event):
