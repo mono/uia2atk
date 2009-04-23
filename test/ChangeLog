@@ -1,3 +1,9 @@
+2009-04-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/checkedlistbox/checkedlistboxframe.py,
+	* testers/checkedlistbox_basic_ops.py: Check in changed from 
+	CheckedListBox review (http://reviews.mono-a11y.org/r/78/).
+
 2009-04-23  Calen Chen <cachen@novell.com>
 
 	* samples/listbox.py,

@@ -13,6 +13,7 @@ import states
 
 from strongwind import *
 from checkedlistbox import *
+from helpers import *
 
 
 # class to represent the main window.
@@ -32,32 +33,47 @@ class CheckedListBoxFrame(accessibles.Frame):
         self.listbox1 = self.list[0]
         #listbox2 with CheckOnClick = False
         self.listbox2 = self.list[1]
+        
+        # This would probably be more clear if findAllCheckBoxes was used.
+        # This approach works, but it a not as straightforward.  A simple
+        # approach would be to create two variables and then search for
+        # all check boxes from each tree table accessible.  For example:
+        # self.listbox1.findAllCheckBoxes and self.listbox2.findAllCheckBoxes.
+        # Making this change would require a significant rewrite of the test.
         self.listitem = dict([(x, self.findCheckBox(str(x), checkShowing=False)) for x in range(50)])
 
-    #give 'click' action to select item
+    # give 'click' action to select item
     def click(self,item):
         item.click()
 
-    #give 'toggle' action to check item
+    # give 'toggle' action to check item
     def toggle(self, item):
         procedurelogger.action('Toggle the "%s"' % (item))
         item.toggle()
 
-    #assert label change after doing click and toggle or mouseClick action
+    # assert label change after doing click and toggle or mouseClick action
     def assertLabel(self, accessible, newlabel):
         procedurelogger.expectedResult('label is changed to %s' % newlabel)
         assert accessible.text == newlabel
 
-    #assert Selection implementation
-    def assertSelectionChild(self, accessible, childIndex):
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
-
+    def selectChildAndCheckStates(self, accessible, childIndex, add_states=[], invalid_states=[]):
+        '''
+        Select the child at childIndex and then assert that the appropriate
+        accessible was indeed selected
+        '''
+        procedurelogger.action('Select child at index %s in "%s"' % (childIndex, accessible))
         accessible.selectChild(childIndex)
+        sleep(config.SHORT_DELAY)
+        procedurelogger.expectedResult('Child at index %s is selected and has the appropriate states' % childIndex)
+        statesCheck(accessible.getChildAtIndex(childIndex), "ListItem", invalid_states, add_states)
 
-    def assertClearSelection(self, accessible):
-        procedurelogger.action('clear selection in "%s"' % (accessible))
-
+    def clearAccessibleSelection(self, accessible):
+        '''
+        Clear the selection for the accessible
+        '''
+        procedurelogger.action('Clear selection in "%s"' % (accessible))
         accessible.clearSelection()
+        procedurelogger.expectedResult('%s should have its selected cleared' % accessible)
     
     #close application main window after running test
     def quit(self):
