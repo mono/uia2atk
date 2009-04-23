@@ -1,7 +1,13 @@
 2009-04-23 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/domainupdown/domainupdownframe.py,
+	* testers/domainupdown_basic_ops.py: Check in changes from
+	DomainUpDown review (http://reviews.mono-a11y.org/r/85/).
+
+2009-04-23 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/checkedlistbox/checkedlistboxframe.py,
-	* testers/checkedlistbox_basic_ops.py: Check in changed from 
+	* testers/checkedlistbox_basic_ops.py: Check in changes from 
 	CheckedListBox review (http://reviews.mono-a11y.org/r/78/).
 
 2009-04-23  Calen Chen <cachen@novell.com>
