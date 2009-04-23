@@ -24,7 +24,6 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
     LABEL1 = "You select "
 
     def __init__(self, accessible):
-        pass
         super(ComboBoxDropDownListFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
@@ -69,7 +68,7 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
         accessible.clearSelection()
 
     def scrollToBottom(self):
-        self.vscrollbar = self.app.findScrollBar("")
+        self.vscrollbar = self.app.findScrollBar("Vertical Scroll Bar")
         # this should be a vertical scroll bar
         assert self.vscrollbar.vertical, "The scroll bar should be vertical"
         procedurelogger.action('Scroll to the bottom of the window')
@@ -81,10 +80,14 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
                                                  "the scroll bar value is %s" \
                                                                     % maxVal]))
         self.vscrollbar.value = maxVal
-        assert self.vscrollbar.value == maxVal
+        sleep(config.SHORT_DELAY)
+        assert self.menu_items[9].showing, "Menu item 9 should be showing"
+        assert self.vscrollbar.value == maxVal, \
+             "%s's value should equal the maximum value (%d)" % \
+             (self.vscrollbar, maxVal)
 
     def scrollToTop(self):
-        self.vscrollbar = self.app.findScrollBar("")
+        self.vscrollbar = self.app.findScrollBar("Vertical Scroll Bar")
         # this should be a vertical scroll bar
         assert self.vscrollbar.vertical, "The scroll bar should be vertical"
         procedurelogger.action('Scroll to the top of the window')
@@ -96,7 +99,11 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
                                                  "the scroll bar value is %s" \
                                                                     % minVal]))
         self.vscrollbar.value = minVal
-        assert self.vscrollbar.value == minVal
+        sleep(config.SHORT_DELAY)
+        assert self.menu_items[0].showing, "Menu item 0 should be showing"
+        assert self.vscrollbar.value == minVal, \
+             "%s's value should equal the minimum value (%d)" % \
+             (self.vscrollbar, minVal)
 
     def findVerticalScrollBar(self):
         self.vscrollbar = self.app.findFrame("ComboBox control")
