@@ -36,7 +36,7 @@ class ComboBoxSample(Form):
 
         # setup combobox
         self.combobox = ComboBox()
-
+        self.combobox.MaxDropDownItems = 3
         self.combobox.Dock = DockStyle.Top
         self.combobox.DropDownStyle = ComboBoxStyle.DropDown
         self.combobox.SelectionChangeCommitted += self.select

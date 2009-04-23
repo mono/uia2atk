@@ -22,23 +22,29 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     LABEL1 = "You select 1"
+    N_MENU_ITEMS = 10
 
     def __init__(self, accessible):
         super(ComboBoxDropDownFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
+        self.menu = self.findMenu(None, checkShowing=False)
+        self.menu_items = self.menu.findAllMenuItems(None, checkShowing=False)
 
-    def assertMenuAction(self, accessible):
+    def assertUnimplementedActionInterface(self, accessible):
         """
-        Check Menu Action is unimplemented
+        Assert that the action interface is unimplemented for the accessible
         """
 
-        procedurelogger.action('check %s Action' % accessible)
+        procedurelogger.action('check %s\'s action interface' % accessible)
+        procedurelogger.expectedResult("action interface is unimplemented")
         try:
             accessible._accessible.queryAction()
         except NotImplementedError:
-            procedurelogger.expectedResult("Action is unimplemented")
+            return
+        assert False, "%s should not implement the action interface" % \
+                       (accessible)
 
     def click(self,accessible):
         """
@@ -52,7 +58,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     def press(self,accessible):
         """
         Wrap stronging press action for ComboBox, then search for subchildren 
-	as expected result
+        as expected result
 
         """
         procedurelogger.action('press %s' % accessible)
@@ -60,9 +66,6 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
 
         procedurelogger.expectedResult('menu item list is showing')
-        self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x), checkShowing=False)) \
-                                                        for x in range(10)])
 
     def assertLabel(self, newlabel):
         """
@@ -76,20 +79,23 @@ class ComboBoxDropDownFrame(accessibles.Frame):
             return self.findLabel(newlabel)
 	assert retryUntilTrue(resultMatches)
 
-    def assertItemText(self, textValue=None):
+    def assertAllItemTexts(self, textValue=None):
         """
-        Check MenuItems have correct Text implementation
+        Ensure that each menu item has the text value that is expected.
+        Strongwind uses
+        _accessible.queryText().getText(0, _accessible.characterCount) to get
+        the text attribute.
 
         """
-        procedurelogger.action('check MenuItem\'s Text')
+        procedurelogger.action('check each menu item\'s text')
 
-        for textValue in range(10):
+        for i in range(10):
             procedurelogger.expectedResult('"%s"\'s Text is %s' % \
-                                     (self.menuitem[textValue],str(textValue)))
-            assert self.menuitem[textValue].text == str(textValue)
+                                     (self.menu_items[i],str(i)))
+            assert self.menu_items[i].text == str(i)
 
     # assert TextBox's text after click MenuItem
-    def assertTextChanged(self, accessible, textvalue):
+    def assertText(self, accessible, textvalue):
         procedurelogger.expectedResult('%s is change to %s' % \
                                                       (accessible, textvalue))
         assert accessible.text == textvalue
@@ -125,19 +131,18 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         # label's text is changed
         self.assertLabel("You select %s" % textvalue)
         # the text of textbox is changed
-        self.assertTextChanged(self.textbox, textvalue)
-        # press combobox to expand menu, menuitem raise focused and selected
+        self.assertText(self.textbox, textvalue)
+        # press combobox to expand menu, menu_items raise focused and selected
         self.combobox.press()
         sleep(config.SHORT_DELAY)
-        statesCheck(self.menuitem[int(textvalue)], "MenuItem", \
+        statesCheck(self.menu_items[int(textvalue)], "MenuItem", \
                                    add_states=["focused", "selected"])
 
     def insertMenuItemTest(self, textvalue):
         """
-        Use strongwind insertText method to input MenuItem's name into ComboBox 
-	TextBox to change label and Text, expand ComboBox may raise focused 
-	and selected for the MenuItem
-
+        Use strongwind insertText method to input MenuItem's name into ComboBox
+        TextBox to change label and Text, expand ComboBox may raise focused 
+        and selected for the MenuItem
         """
         # Action
         self.combobox.press()
@@ -150,11 +155,11 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         # label's text is changed
         self.assertLabel("You select %s" % textvalue)
         # the text of textbox is changed
-        self.assertTextChanged(self.textbox, textvalue)
-        # press combobox to expand menu, menuitem raise focused and selected
+        self.assertText(self.textbox, textvalue)
+        # press combobox to expand menu, menu_items raise focused and selected
         self.combobox.press()
         sleep(config.SHORT_DELAY)
-        statesCheck(self.menuitem[int(textvalue)], "MenuItem", \
+        statesCheck(self.menu_items[int(textvalue)], "MenuItem", \
                                    add_states=["focused", "selected"])
 
     def assertContent(self, accessible):
@@ -169,6 +174,22 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
         assert result == expect, "Contents %s not match the expected %s" % \
                                                                (result, expect)
+
+    def checkAllStates(self, focused_item):
+        """
+        Check the states of all the menu items of the menu accessible.  The
+        focused_item should have +selected +focused states.  All other menu
+        items should have -showing -visible states.
+        """
+        for item in self.menu_items:
+            if item is focused_item:
+                statesCheck(item,
+                            "MenuItem",
+                            add_states=["focused", "selected"])
+            else:
+                statesCheck(item,
+                            "MenuItem",
+                            invalid_states=["showing"])
     
     # close application main window after running test
     def quit(self):

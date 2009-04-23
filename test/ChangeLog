@@ -1,5 +1,14 @@
 2009-04-23 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/combobox_dropdown.py: Add MaxDropDownItems = 3 property to
+	the combobox (Doesn't work in Mono 2.4 due to Bug 493308)
+	* testers/combobox_dropdown_ops.py, 
+	* testers/combobox_dropdown/comboboxdropdownframe.py: Check in changes
+	from ComboBox (DropDownStyle = DropDown) review
+	(http://reviews.mono-a11y.org/r/108/)
+
+2009-04-23 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/domainupdown/domainupdownframe.py,
 	* testers/domainupdown_basic_ops.py: Check in changes from
 	DomainUpDown review (http://reviews.mono-a11y.org/r/85/).
