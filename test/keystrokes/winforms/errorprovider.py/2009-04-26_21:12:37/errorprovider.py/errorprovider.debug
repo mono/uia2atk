@@ -1,0 +1,1006 @@
+Speech not available.
+Speech module has been initialized.
+Magnification module has NOT been initialized.
+SPEECH OUTPUT: 'Willkommen bei Orca.'
+BRAILLE LINE:  'Willkommen bei Orca.'
+     VISIBLE:  'Willkommen bei Orca.', cursor=0
+NEW SCRIPT: default (module=orca.default)
+ACTIVE SCRIPT: default (module=orca.default) (reason=activate)
+Script.getKnownApplications...
+...Script.getKnownApplications
+---------> QUEUEING EVENT window:activate
+DEQUEUED EVENT window:activate <----------
+
+vvvvv PROCESS OBJECT EVENT window:activate vvvvv
+OBJECT EVENT: window:activate                          detail=(0,0)
+    app.name='nautilus' name='Desktop' role='frame' state='active enabled sensitive showing visible' relations=''
+Looking for script at orca-scripts.nautilus.py...
+...could not find orca-scripts.nautilus.py
+Looking for script at scripts.nautilus.py...
+...could not find scripts.nautilus.py
+Looking for script at scripts.apps.nautilus.py...
+...found scripts.apps.nautilus.py
+NEW SCRIPT: nautilus (module=orca.scripts.apps.nautilus)
+ACTIVE SCRIPT: nautilus (module=orca.scripts.apps.nautilus) (reason=window:activate event)
+Looking for settings at app-settings.nautilus.py...
+...could not find app-settings.nautilus.py
+LOCUS OF FOCUS: app='nautilus' name='Desktop' role='frame'
+                event='window:activate'
+GENERATOR: _getBrailleRegionsForFrame
+           obj             = Desktop
+           role            = frame
+Finding top-level object for source.name=Desktop
+BRAILLE LINE:  'Desktop Rahmen'
+     VISIBLE:  'Desktop Rahmen', cursor=1
+default.findCommonAncestor...
+Finding top-level object for source.name=Desktop
+GENERATOR: _getSpeechForFrame
+           obj             = Desktop
+           role            = frame
+           already_focused = False
+           utterances:
+               (Desktop)
+               (Fensterrahmen)
+SPEECH OUTPUT: 'Desktop Fensterrahmen'
+^^^^^ PROCESS OBJECT EVENT window:activate ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+Looking for script at orca-scripts.gnome-panel.py...
+...could not find orca-scripts.gnome-panel.py
+Looking for script at scripts.gnome-panel.py...
+...could not find scripts.gnome-panel.py
+Looking for script at scripts.apps.gnome-panel.py...
+...found scripts.apps.gnome-panel.py
+gnome-panel.py: __init__
+NEW SCRIPT: gnome-panel (module=orca.scripts.apps.gnome-panel)
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT window:deactivate
+DEQUEUED EVENT window:deactivate <----------
+
+vvvvv PROCESS OBJECT EVENT window:deactivate vvvvv
+OBJECT EVENT: window:deactivate                        detail=(0,0)
+    app.name='nautilus' name='Desktop' role='frame' state='enabled sensitive showing visible' relations=''
+LOCUS OF FOCUS: None event='window:deactivate'
+^^^^^ PROCESS OBJECT EVENT window:deactivate ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(0,0)
+    app.name='nautilus' name='Symbolansicht' role='layered pane' state='enabled focusable focused sensitive showing visible' relations=''
+Finding top-level object for source.name=Symbolansicht
+--> obj.name=Inhaltsansicht
+--> obj.name=
+--> obj.name=
+--> obj.name=
+--> obj.name=Desktop
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:active
+DEQUEUED EVENT object:state-changed:active <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:active vvvvv
+OBJECT EVENT: object:state-changed:active              detail=(0,0)
+    app.name='nautilus' name='Desktop' role='frame' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:active ^^^^^
+
+---------> QUEUEING EVENT window:activate
+DEQUEUED EVENT window:activate <----------
+
+vvvvv PROCESS OBJECT EVENT window:activate vvvvv
+OBJECT EVENT: window:activate                          detail=(0,0)
+    app.name='orca' name='Orca-Bildschirmleser/-lupe' role='frame' state='enabled resizable sensitive showing visible' relations=''
+Looking for script at orca-scripts.orca.py...
+...could not find orca-scripts.orca.py
+Looking for script at scripts.orca.py...
+...could not find scripts.orca.py
+Looking for script at scripts.apps.orca.py...
+...could not find scripts.apps.orca.py
+Looking for script at scripts.toolkits.orca.py...
+...could not find scripts.toolkits.orca.py
+Looking for toolkit script GAIL.py...
+...could not find GAIL.py
+Looking for toolkit script GAIL.py...
+...could not find GAIL.py
+Looking for toolkit script GAIL.py...
+...could not find GAIL.py
+Looking for toolkit script GAIL.py...
+NEW SCRIPT: orca (module=orca.scripts.toolkits.GAIL)
+...found scripts.toolkits.GAIL.py
+ACTIVE SCRIPT: orca (module=orca.scripts.toolkits.GAIL) (reason=window:activate event)
+Looking for settings at app-settings.orca.py...
+...could not find app-settings.orca.py
+LOCUS OF FOCUS: app='orca' name='Orca-Bildschirmleser/-lupe' role='frame'
+                event='window:activate'
+GENERATOR: _getBrailleRegionsForFrame
+           obj             = Orca-Bildschirmleser/-lupe
+           role            = frame
+Finding top-level object for source.name=Orca-Bildschirmleser/-lupe
+BRAILLE LINE:  'Orca-Bildschirmleser/-lupe Rahmen'
+     VISIBLE:  'Orca-Bildschirmleser/-lupe Rahme', cursor=1
+default.findCommonAncestor...
+Finding top-level object for source.name=Orca-Bildschirmleser/-lupe
+GENERATOR: _getSpeechForFrame
+           obj             = Orca-Bildschirmleser/-lupe
+           role            = frame
+           already_focused = False
+           utterances:
+               (Orca-Bildschirmleser/-lupe)
+               (Fensterrahmen)
+SPEECH OUTPUT: 'Orca-Bildschirmleser/-lupe Fensterrahmen'
+^^^^^ PROCESS OBJECT EVENT window:activate ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(1,0)
+    app.name='orca' name='Einstellungen' role='push button' state='enabled focusable sensitive showing visible' relations=''
+Finding top-level object for source.name=Einstellungen
+--> obj.name=
+--> obj.name=Orca-Bildschirmleser/-lupe
+LOCUS OF FOCUS: app='orca' name='Einstellungen' role='push button'
+                event='object:state-changed:focused'
+GENERATOR: _getBrailleRegionsForPushButton
+           obj             = Einstellungen
+           role            = push button
+BRAILLE LINE:  'Einstellungen Schaltfläche'
+     VISIBLE:  'Einstellungen Schaltfläche', cursor=1
+default.findCommonAncestor...
+...default.findCommonAncestor
+Object deemed to be for layout purposes only: [panel | ]
+GENERATOR: _getDefaultSpeech
+           obj             = Einstellungen
+           role            = push button
+           already_focused = False
+           utterances:
+               (Einstellungen)
+               (Schaltfläche)
+GENERATOR: _getSpeechForPushButton
+           obj             = Einstellungen
+           role            = push button
+           already_focused = False
+           utterances:
+               (Einstellungen)
+               (Schaltfläche)
+SPEECH OUTPUT: ''
+SPEECH OUTPUT: 'Einstellungen Schaltfläche'
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:active
+DEQUEUED EVENT object:state-changed:active <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:active vvvvv
+OBJECT EVENT: object:state-changed:active              detail=(1,0)
+    app.name='orca' name='Orca-Bildschirmleser/-lupe' role='frame' state='active enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:active ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT focus:
+DEQUEUED EVENT focus: <----------
+
+vvvvv PROCESS OBJECT EVENT focus: vvvvv
+OBJECT EVENT: focus:                                   detail=(0,0)
+    app.name='orca' name='Einstellungen' role='push button' state='enabled focusable focused sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT focus: ^^^^^
+
+DBus Logging.startRecording
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='ErrorProvider control' role='frame' state='enabled resizable sensitive showing visible' relations=''
+Looking for script at orca-scripts.ipy.py...
+...could not find orca-scripts.ipy.py
+Looking for script at scripts.ipy.py...
+...could not find scripts.ipy.py
+Looking for script at scripts.apps.ipy.py...
+...could not find scripts.apps.ipy.py
+Looking for script at scripts.toolkits.ipy.py...
+...could not find scripts.toolkits.ipy.py
+Looking for toolkit script UiaAtkBridge.py...
+...could not find UiaAtkBridge.py
+Looking for toolkit script UiaAtkBridge.py...
+...could not find UiaAtkBridge.py
+Looking for toolkit script UiaAtkBridge.py...
+...could not find UiaAtkBridge.py
+Looking for toolkit script UiaAtkBridge.py...
+...could not find UiaAtkBridge.py
+NEW SCRIPT: ipy (module=orca.default)
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT window:create
+DEQUEUED EVENT window:create <----------
+
+vvvvv PROCESS OBJECT EVENT window:create vvvvv
+OBJECT EVENT: window:create                            detail=(0,0)
+    app.name='ipy' name='ErrorProvider control' role='frame' state='enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT window:create ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='If you leave empty in one textbox and switch focus to another textbox, an icon will appear beside the first textbox. Move mouse over the icon and a tooltip appears.' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='Name:' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='Age:' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='Weight:' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='Height:' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='Depth:' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='AlwaysBlink' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='BlinkIfDifferentError' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='ipy' name='NeverBlink' role='label' state='enabled multi line sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT window:deactivate
+DEQUEUED EVENT window:deactivate <----------
+
+vvvvv PROCESS OBJECT EVENT window:deactivate vvvvv
+OBJECT EVENT: window:deactivate                        detail=(0,0)
+    app.name='orca' name='Orca-Bildschirmleser/-lupe' role='frame' state='enabled resizable sensitive showing visible' relations=''
+LOCUS OF FOCUS: None event='window:deactivate'
+^^^^^ PROCESS OBJECT EVENT window:deactivate ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(0,0)
+    app.name='orca' name='Einstellungen' role='push button' state='enabled focusable focused sensitive showing visible' relations=''
+Finding top-level object for source.name=Einstellungen
+--> obj.name=
+--> obj.name=Orca-Bildschirmleser/-lupe
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:active
+DEQUEUED EVENT object:state-changed:active <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:active vvvvv
+OBJECT EVENT: object:state-changed:active              detail=(0,0)
+    app.name='orca' name='Orca-Bildschirmleser/-lupe' role='frame' state='enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:active ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT window:activate
+DEQUEUED EVENT window:activate <----------
+
+vvvvv PROCESS OBJECT EVENT window:activate vvvvv
+OBJECT EVENT: window:activate                          detail=(0,0)
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+    app.name='ipy' name='ErrorProvider control' role='frame' state='active enabled resizable sensitive showing visible' relations=''
+ACTIVE SCRIPT: ipy (module=orca.default) (reason=window:activate event)
+Looking for settings at app-settings.ipy.py...
+...could not find app-settings.ipy.py
+LOCUS OF FOCUS: app='ipy' name='ErrorProvider control' role='frame'
+                event='window:activate'
+GENERATOR: _getBrailleRegionsForFrame
+           obj             = ErrorProvider control
+           role            = frame
+Finding top-level object for source.name=ErrorProvider control
+BRAILLE LINE:  'ErrorProvider control Rahmen'
+     VISIBLE:  'ErrorProvider control Rahmen', cursor=1
+default.findCommonAncestor...
+Finding top-level object for source.name=ErrorProvider control
+GENERATOR: _getSpeechForFrame
+           obj             = ErrorProvider control
+           role            = frame
+           already_focused = False
+           utterances:
+               (ErrorProvider control)
+               (Fensterrahmen)
+SPEECH OUTPUT: 'ErrorProvider control Fensterrahmen'
+^^^^^ PROCESS OBJECT EVENT window:activate ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(1,0)
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+Finding top-level object for source.name=
+--> obj.name=ErrorProvider control
+LOCUS OF FOCUS: app='ipy' name='' role='text'
+                event='object:state-changed:focused'
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  ''
+     VISIBLE:  '', cursor=1
+default.findCommonAncestor...
+...default.findCommonAncestor
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getSpeechForText
+           obj             = 
+           role            = text
+           already_focused = False
+           utterances:
+               (Text)
+               ()
+SPEECH OUTPUT: ''
+SPEECH OUTPUT: 'Text '
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT focus:
+DEQUEUED EVENT focus: <----------
+
+vvvvv PROCESS OBJECT EVENT focus: vvvvv
+OBJECT EVENT: focus:                                   detail=(0,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+^^^^^ PROCESS OBJECT EVENT focus: ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:active
+DEQUEUED EVENT object:state-changed:active <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:active vvvvv
+OBJECT EVENT: object:state-changed:active              detail=(1,0)
+    app.name='ipy' name='ErrorProvider control' role='frame' state='active enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:active ^^^^^
+
+DBus Logging.stopRecording
+DBus Logging.startRecording
+KEYEVENT: type=0
+          hw_code=58
+          modifiers=0
+          event_string=(m)
+          is_text=True
+          time=1240773203.110590
+orca.keyEcho: string to echo: m
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:text-changed:insert
+DEQUEUED EVENT object:text-changed:insert <----------
+
+vvvvv PROCESS OBJECT EVENT object:text-changed:insert vvvvv
+OBJECT EVENT: object:text-changed:insert               detail=(0,1)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  'm'
+     VISIBLE:  'm', cursor=2
+^^^^^ PROCESS OBJECT EVENT object:text-changed:insert ^^^^^
+
+KEYEVENT: type=1
+          hw_code=58
+          modifiers=0
+          event_string=(m)
+          is_text=True
+          time=1240773203.242607
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+KEYEVENT: type=0
+          hw_code=32
+          modifiers=0
+          event_string=(o)
+          is_text=True
+          time=1240773203.354549
+orca.keyEcho: string to echo: o
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:text-changed:insert
+DEQUEUED EVENT object:text-changed:insert <----------
+
+vvvvv PROCESS OBJECT EVENT object:text-changed:insert vvvvv
+OBJECT EVENT: object:text-changed:insert               detail=(1,1)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  'mo'
+     VISIBLE:  'mo', cursor=3
+^^^^^ PROCESS OBJECT EVENT object:text-changed:insert ^^^^^
+
+KEYEVENT: type=1
+          hw_code=32
+          modifiers=0
+          event_string=(o)
+          is_text=True
+          time=1240773203.390536
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+KEYEVENT: type=0
+          hw_code=57
+          modifiers=0
+          event_string=(n)
+          is_text=True
+          time=1240773203.618537
+orca.keyEcho: string to echo: n
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:text-changed:insert
+DEQUEUED EVENT object:text-changed:insert <----------
+
+vvvvv PROCESS OBJECT EVENT object:text-changed:insert vvvvv
+OBJECT EVENT: object:text-changed:insert               detail=(2,1)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  'mon'
+     VISIBLE:  'mon', cursor=4
+^^^^^ PROCESS OBJECT EVENT object:text-changed:insert ^^^^^
+
+KEYEVENT: type=1
+          hw_code=57
+          modifiers=0
+          event_string=(n)
+          is_text=True
+          time=1240773203.654534
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+KEYEVENT: type=0
+          hw_code=32
+          modifiers=0
+          event_string=(o)
+          is_text=True
+          time=1240773203.882645
+orca.keyEcho: string to echo: o
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:text-changed:insert
+DEQUEUED EVENT object:text-changed:insert <----------
+
+vvvvv PROCESS OBJECT EVENT object:text-changed:insert vvvvv
+OBJECT EVENT: object:text-changed:insert               detail=(3,1)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  'mono'
+     VISIBLE:  'mono', cursor=5
+^^^^^ PROCESS OBJECT EVENT object:text-changed:insert ^^^^^
+
+KEYEVENT: type=1
+          hw_code=32
+          modifiers=0
+          event_string=(o)
+          is_text=True
+          time=1240773203.922528
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+DBus Logging.stopRecording
+DBus Logging.startRecording
+KEYEVENT: type=0
+          hw_code=82
+          modifiers=0
+          event_string=(-)
+          is_text=True
+          time=1240773206.154593
+orca.keyEcho: string to echo: -
+orca.isModifierKey: returning: False
+----------> QUEUEING KEYPRESS '-' (82)
+DEQUEUED KEYPRESS '-' (82) <----------
+
+vvvvv PROCESS KEY PRESS EVENT - vvvvv
+flat_review.getZonesFromAccessible (name=If you leave empty in one textbox and switch focus to another textbox, an icon will appear beside the first textbox. Move mouse over the icon and a tooltip appears. role=label)
+  looking at text:
+    line at 163 is (start=0 end=164): 'If you leave empty in one textbox and switch focus to another textbox, an icon will appear beside the first textbox. Move mouse over the icon and a tooltip appears.'
+flat_review.getZonesFromAccessible (name=Name: role=label)
+  looking at text:
+    line at 4 is (start=0 end=5): 'Name:'
+flat_review.getZonesFromAccessible (name=Age: role=label)
+  looking at text:
+    line at 3 is (start=0 end=4): 'Age:'
+flat_review.getZonesFromAccessible (name=Weight: role=label)
+  looking at text:
+    line at 6 is (start=0 end=7): 'Weight:'
+flat_review.getZonesFromAccessible (name=Height: role=label)
+  looking at text:
+    line at 6 is (start=0 end=7): 'Height:'
+flat_review.getZonesFromAccessible (name=Depth: role=label)
+  looking at text:
+    line at 5 is (start=0 end=6): 'Depth:'
+flat_review.getZonesFromAccessible (name=AlwaysBlink role=label)
+  looking at text:
+    line at 10 is (start=0 end=11): 'AlwaysBlink'
+flat_review.getZonesFromAccessible (name=BlinkIfDifferentError role=label)
+  looking at text:
+    line at 20 is (start=0 end=21): 'BlinkIfDifferentError'
+flat_review.getZonesFromAccessible (name=NeverBlink role=label)
+  looking at text:
+    line at 9 is (start=0 end=10): 'NeverBlink'
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+    line at 3 is (start=0 end=4): 'mono'
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+---------> QUEUEING EVENT window:create
+DEQUEUED EVENT window:create <----------
+
+vvvvv PROCESS OBJECT EVENT window:create vvvvv
+OBJECT EVENT: window:create                            detail=(0,0)
+    app.name='orca' name='None' role='frame' state='enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT window:create ^^^^^
+
+SPEECH OUTPUT: 'mono'
+BRAILLE LINE:  'Name: mono AlwaysBlink'
+     VISIBLE:  'Name: mono AlwaysBlink', cursor=10
+
+^^^^^ PROCESS KEY PRESS EVENT - ^^^^^
+KEYEVENT: type=1
+          hw_code=82
+          modifiers=0
+          event_string=(-)
+          is_text=True
+          time=1240773206.363982
+orca.isModifierKey: returning: False
+----------> QUEUEING KEYRELEASE '-' (82)
+DEQUEUED KEYRELEASE '-' (82) <----------
+
+vvvvv PROCESS KEY RELEASE EVENT - vvvvv
+
+^^^^^ PROCESS KEY RELEASE EVENT - ^^^^^
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+DBus Logging.stopRecording
+DBus Logging.startRecording
+KEYEVENT: type=0
+          hw_code=23
+          modifiers=0
+          event_string=(Tab)
+          is_text=True
+          time=1240773208.424636
+orca.keyEcho: string to echo: Tab
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(0,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable sensitive showing single line visible' relations=''
+Finding top-level object for source.name=
+--> obj.name=ErrorProvider control
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(1,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+Finding top-level object for source.name=
+--> obj.name=ErrorProvider control
+LOCUS OF FOCUS: app='ipy' name='' role='text'
+                event='object:state-changed:focused'
+---------> QUEUEING EVENT object:state-changed:showing
+DEQUEUED EVENT object:state-changed:showing <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:showing vvvvv
+OBJECT EVENT: object:state-changed:showing             detail=(0,0)
+    app.name='orca' name='None' role='frame' state='enabled resizable sensitive' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:showing ^^^^^
+
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  ''
+     VISIBLE:  '', cursor=1
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  ''
+     VISIBLE:  '', cursor=1
+default.findCommonAncestor...
+...default.findCommonAncestor
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getSpeechForText
+           obj             = 
+           role            = text
+           already_focused = False
+           utterances:
+               (Text)
+               ()
+SPEECH OUTPUT: ''
+SPEECH OUTPUT: 'Text '
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT focus:
+DEQUEUED EVENT focus: <----------
+
+vvvvv PROCESS OBJECT EVENT focus: vvvvv
+OBJECT EVENT: focus:                                   detail=(0,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+^^^^^ PROCESS OBJECT EVENT focus: ^^^^^
+
+KEYEVENT: type=1
+          hw_code=23
+          modifiers=0
+          event_string=(Tab)
+          is_text=True
+          time=1240773208.561118
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+DBus Logging.stopRecording
+DBus Logging.startRecording
+KEYEVENT: type=0
+          hw_code=82
+          modifiers=0
+          event_string=(-)
+          is_text=True
+          time=1240773210.701176
+orca.keyEcho: string to echo: -
+orca.isModifierKey: returning: False
+----------> QUEUEING KEYPRESS '-' (82)
+DEQUEUED KEYPRESS '-' (82) <----------
+
+vvvvv PROCESS KEY PRESS EVENT - vvvvv
+flat_review.getZonesFromAccessible (name=If you leave empty in one textbox and switch focus to another textbox, an icon will appear beside the first textbox. Move mouse over the icon and a tooltip appears. role=label)
+  looking at text:
+    line at 163 is (start=0 end=164): 'If you leave empty in one textbox and switch focus to another textbox, an icon will appear beside the first textbox. Move mouse over the icon and a tooltip appears.'
+flat_review.getZonesFromAccessible (name=Name: role=label)
+  looking at text:
+    line at 4 is (start=0 end=5): 'Name:'
+flat_review.getZonesFromAccessible (name=Age: role=label)
+  looking at text:
+    line at 3 is (start=0 end=4): 'Age:'
+flat_review.getZonesFromAccessible (name=Weight: role=label)
+  looking at text:
+    line at 6 is (start=0 end=7): 'Weight:'
+flat_review.getZonesFromAccessible (name=Height: role=label)
+  looking at text:
+    line at 6 is (start=0 end=7): 'Height:'
+flat_review.getZonesFromAccessible (name=Depth: role=label)
+  looking at text:
+    line at 5 is (start=0 end=6): 'Depth:'
+flat_review.getZonesFromAccessible (name=AlwaysBlink role=label)
+  looking at text:
+    line at 10 is (start=0 end=11): 'AlwaysBlink'
+flat_review.getZonesFromAccessible (name=BlinkIfDifferentError role=label)
+  looking at text:
+    line at 20 is (start=0 end=21): 'BlinkIfDifferentError'
+flat_review.getZonesFromAccessible (name=NeverBlink role=label)
+  looking at text:
+    line at 9 is (start=0 end=10): 'NeverBlink'
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+    line at 3 is (start=0 end=4): 'mono'
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+flat_review.getZonesFromAccessible (name= role=text)
+  looking at text:
+---------> QUEUEING EVENT object:state-changed:showing
+DEQUEUED EVENT object:state-changed:showing <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:showing vvvvv
+OBJECT EVENT: object:state-changed:showing             detail=(1,0)
+    app.name='orca' name='None' role='frame' state='enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:showing ^^^^^
+
+---------> QUEUEING EVENT window:create
+DEQUEUED EVENT window:create <----------
+
+vvvvv PROCESS OBJECT EVENT window:create vvvvv
+OBJECT EVENT: window:create                            detail=(0,0)
+    app.name='orca' name='None' role='frame' state='enabled resizable sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT window:create ^^^^^
+
+SPEECH OUTPUT: 'leer'
+BRAILLE LINE:  'Age:  BlinkIfDifferentError'
+     VISIBLE:  'Age:  BlinkIfDifferentError', cursor=6
+
+^^^^^ PROCESS KEY PRESS EVENT - ^^^^^
+KEYEVENT: type=1
+          hw_code=82
+          modifiers=0
+          event_string=(-)
+          is_text=True
+          time=1240773210.885656
+orca.isModifierKey: returning: False
+----------> QUEUEING KEYRELEASE '-' (82)
+DEQUEUED KEYRELEASE '-' (82) <----------
+
+vvvvv PROCESS KEY RELEASE EVENT - vvvvv
+
+^^^^^ PROCESS KEY RELEASE EVENT - ^^^^^
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+DBus Logging.stopRecording
+DBus Logging.startRecording
+KEYEVENT: type=0
+          hw_code=23
+          modifiers=0
+          event_string=(Tab)
+          is_text=True
+          time=1240773212.979939
+orca.keyEcho: string to echo: Tab
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(0,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable sensitive showing single line visible' relations=''
+Finding top-level object for source.name=
+--> obj.name=ErrorProvider control
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT object:state-changed:focused
+DEQUEUED EVENT object:state-changed:focused <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:focused vvvvv
+OBJECT EVENT: object:state-changed:focused             detail=(1,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+Finding top-level object for source.name=
+--> obj.name=ErrorProvider control
+LOCUS OF FOCUS: app='ipy' name='' role='text'
+                event='object:state-changed:focused'
+---------> QUEUEING EVENT object:state-changed:showing
+DEQUEUED EVENT object:state-changed:showing <----------
+
+vvvvv PROCESS OBJECT EVENT object:state-changed:showing vvvvv
+OBJECT EVENT: object:state-changed:showing             detail=(0,0)
+    app.name='orca' name='None' role='frame' state='enabled resizable sensitive' relations=''
+^^^^^ PROCESS OBJECT EVENT object:state-changed:showing ^^^^^
+
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  ''
+     VISIBLE:  '', cursor=1
+GENERATOR: _getBrailleRegionsForText
+           obj             = 
+           role            = text
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+BRAILLE LINE:  ''
+     VISIBLE:  '', cursor=1
+default.findCommonAncestor...
+...default.findCommonAncestor
+default.py:isReadOnlyTextArea=False for app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+GENERATOR: _getSpeechForText
+           obj             = 
+           role            = text
+           already_focused = False
+           utterances:
+               (Text)
+               ()
+SPEECH OUTPUT: ''
+SPEECH OUTPUT: 'Text '
+^^^^^ PROCESS OBJECT EVENT object:state-changed:focused ^^^^^
+
+---------> QUEUEING EVENT focus:
+DEQUEUED EVENT focus: <----------
+
+vvvvv PROCESS OBJECT EVENT focus: vvvvv
+OBJECT EVENT: focus:                                   detail=(0,0)
+    app.name='ipy' name='None' role='text' state='editable enabled focusable focused sensitive showing single line visible' relations=''
+^^^^^ PROCESS OBJECT EVENT focus: ^^^^^
+
+KEYEVENT: type=1
+          hw_code=23
+          modifiers=0
+          event_string=(Tab)
+          is_text=True
+          time=1240773213.113281
+orca.isModifierKey: returning: False
+orca.isModifierKey: returning: False
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+---------> QUEUEING EVENT object:property-change:accessible-name
+DEQUEUED EVENT object:property-change:accessible-name <----------
+
+vvvvv PROCESS OBJECT EVENT object:property-change:accessible-name vvvvv
+OBJECT EVENT: object:property-change:accessible-name   detail=(0,0)
+    app.name='gnome-panel' name='Unteres Kanten-Panel, ausgedehnt' role='panel' state='enabled sensitive showing visible' relations=''
+^^^^^ PROCESS OBJECT EVENT object:property-change:accessible-name ^^^^^
+
+DBus Logging.stopRecording
+---------> QUEUEING EVENT object:children-changed:remove
+DEQUEUED EVENT object:children-changed:remove <----------
+
+vvvvv PROCESS OBJECT EVENT object:children-changed:remove vvvvv
+OBJECT EVENT: object:children-changed:remove           detail=(8,0)
+_cleanupCache: 0 objects removed.
+^^^^^ PROCESS OBJECT EVENT object:children-changed:remove ^^^^^
+

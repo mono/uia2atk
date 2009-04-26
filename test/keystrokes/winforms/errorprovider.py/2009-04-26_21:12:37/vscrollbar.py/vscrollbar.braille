@@ -1,0 +1,20 @@
+braille.BRAILLE LINE:  'Willkommen bei Orca.'
+braille.     VISIBLE:  'Willkommen bei Orca.', cursor=0
+braille.BRAILLE LINE:  'Desktop Rahmen'
+braille.     VISIBLE:  'Desktop Rahmen', cursor=1
+braille.BRAILLE LINE:  'Orca-Bildschirmleser/-lupe Rahmen'
+braille.     VISIBLE:  'Orca-Bildschirmleser/-lupe Rahme', cursor=1
+braille.BRAILLE LINE:  'Einstellungen Schaltfläche'
+braille.     VISIBLE:  'Einstellungen Schaltfläche', cursor=1
+braille.BRAILLE LINE:  'VScrollBar control Rahmen'
+braille.     VISIBLE:  'VScrollBar control Rahmen', cursor=1
+braille.BRAILLE LINE:  'Value: vertikal Bildlaufleiste 0%'
+braille.     VISIBLE:  'Value: vertikal Bildlaufleiste 0', cursor=1
+braille.BRAILLE LINE:  'Value: vertikal Bildlaufleiste 0%'
+braille.     VISIBLE:  'Value: vertikal Bildlaufleiste 0', cursor=8
+braille.BRAILLE LINE:  'Value: 20'
+braille.     VISIBLE:  'Value: 20', cursor=1
+braille.BRAILLE LINE:  'Value: 20'
+braille.     VISIBLE:  'Value: 20', cursor=1
+braille.BRAILLE LINE:  'Value: vertikal Bildlaufleiste 16%'
+braille.     VISIBLE:  'Value: vertikal Bildlaufleiste 1', cursor=8

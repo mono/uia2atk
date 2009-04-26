@@ -1,0 +1,24 @@
+braille.BRAILLE LINE:  'Willkommen bei Orca.'
+braille.     VISIBLE:  'Willkommen bei Orca.', cursor=0
+braille.BRAILLE LINE:  'Desktop Rahmen'
+braille.     VISIBLE:  'Desktop Rahmen', cursor=1
+braille.BRAILLE LINE:  'Orca-Bildschirmleser/-lupe Rahmen'
+braille.     VISIBLE:  'Orca-Bildschirmleser/-lupe Rahme', cursor=1
+braille.BRAILLE LINE:  'Einstellungen Schaltfläche'
+braille.     VISIBLE:  'Einstellungen Schaltfläche', cursor=1
+braille.BRAILLE LINE:  'Panel control Rahmen'
+braille.     VISIBLE:  'Panel control Rahmen', cursor=1
+braille.BRAILLE LINE:  '< > Bananas Ankreuzfeld'
+braille.     VISIBLE:  '< > Bananas Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '<x> Bananas Ankreuzfeld'
+braille.     VISIBLE:  '<x> Bananas Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '< > Chicken Ankreuzfeld'
+braille.     VISIBLE:  '< > Chicken Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '<x> Chicken Ankreuzfeld'
+braille.     VISIBLE:  '<x> Chicken Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '<x> Stuffed Peppers Ankreuzfeld'
+braille.     VISIBLE:  '<x> Stuffed Peppers Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '< > Stuffed Peppers Ankreuzfeld'
+braille.     VISIBLE:  '< > Stuffed Peppers Ankreuzfeld', cursor=1
+braille.BRAILLE LINE:  '&=y Male Auswahlknopf'
+braille.     VISIBLE:  '&=y Male Auswahlknopf', cursor=1

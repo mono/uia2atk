@@ -1,0 +1,18 @@
+braille.BRAILLE LINE:  'Willkommen bei Orca.'
+braille.     VISIBLE:  'Willkommen bei Orca.', cursor=0
+braille.BRAILLE LINE:  'Desktop Rahmen'
+braille.     VISIBLE:  'Desktop Rahmen', cursor=1
+braille.BRAILLE LINE:  'Orca-Bildschirmleser/-lupe Rahmen'
+braille.     VISIBLE:  'Orca-Bildschirmleser/-lupe Rahme', cursor=1
+braille.BRAILLE LINE:  'Einstellungen Schaltfläche'
+braille.     VISIBLE:  'Einstellungen Schaltfläche', cursor=1
+braille.BRAILLE LINE:  'Radio Button Rahmen'
+braille.     VISIBLE:  'Radio Button Rahmen', cursor=1
+braille.BRAILLE LINE:  '&=y Apple Auswahlknopf'
+braille.     VISIBLE:  '&=y Apple Auswahlknopf', cursor=1
+braille.BRAILLE LINE:  '& y Banana Auswahlknopf'
+braille.     VISIBLE:  '& y Banana Auswahlknopf', cursor=1
+braille.BRAILLE LINE:  '& y Cherry Auswahlknopf'
+braille.     VISIBLE:  '& y Cherry Auswahlknopf', cursor=1
+braille.BRAILLE LINE:  '& y Apple Auswahlknopf'
+braille.     VISIBLE:  '& y Apple Auswahlknopf', cursor=1
