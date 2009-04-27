@@ -189,6 +189,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
@@ -463,6 +464,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripButton/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs \

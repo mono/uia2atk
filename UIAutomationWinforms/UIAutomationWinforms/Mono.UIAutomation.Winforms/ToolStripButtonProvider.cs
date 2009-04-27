@@ -39,6 +39,7 @@ namespace Mono.UIAutomation.Winforms
 #region Constructors
 		public ToolStripButtonProvider (ToolStripButton button) : base (button)
 		{
+			this.button = button;
 		}
 #endregion
 
@@ -47,21 +48,47 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
+			button.UIACheckOnClickChanged += new EventHandler (OnCheckOnClickChanged);
+
+			UpdateBehaviors ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
+				return button.CheckOnClick ? ControlType.CheckBox.Id : ControlType.Button.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("button");
+				return button.CheckOnClick ? Catalog.GetString ("checkbox")
+				                           : Catalog.GetString ("button");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
+#endregion
+
+#region Private Methods
+		private void UpdateBehaviors ()
+		{
+			SetBehavior (InvokePatternIdentifiers.Pattern, 
+			             new InvokeProviderBehavior (this));
+
+			if (button.CheckOnClick)
+				SetBehavior (TogglePatternIdentifiers.Pattern, 
+					     new ToggleProviderBehavior (this));
+			else
+				SetBehavior (TogglePatternIdentifiers.Pattern, 
+					     null);
+		}
+
+		private void OnCheckOnClickChanged (object o, EventArgs args)
+		{
+			UpdateBehaviors ();
+		}
+#endregion
+
+#region Private Fields
+		private ToolStripButton button;
 #endregion
 	}
 

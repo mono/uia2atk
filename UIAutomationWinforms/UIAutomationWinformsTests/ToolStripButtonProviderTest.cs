@@ -64,6 +64,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			IRawElementProviderSimple provider
 				= ProviderFactory.GetProvider (button);
+
+			button.CheckOnClick = false;
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -72,6 +74,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "button");
+
+			button.CheckOnClick = true;
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.CheckBox.Id);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "checkbox");
 		}
 		
 		[Test]
@@ -150,8 +162,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id)
 				as IToggleProvider;
 
+			// LAMESPEC: We're going against the spec here -- if
+			// CheckOnClick is set, support Toggle provider.
+
+			button.CheckOnClick = false;
+
 			// Depends -> No
 			Assert.IsNull (toggleProvider, "Implements IToggleProvider");
+
+
+			button.CheckOnClick = true;
+
+			toggleProvider = 
+				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+
+			// Depends -> Yes
+			Assert.IsNotNull (toggleProvider, "Should implement IToggleProvider");
+
+			Assert.AreEqual (ToggleState.Off, toggleProvider.ToggleState, "ToggleState");
+
+			bridge.ResetEventLists ();
+
+			toggleProvider.Toggle ();
+
+			Assert.AreEqual (ToggleState.On, toggleProvider.ToggleState, "ToggleState");
+
+			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
 		}
 		
 		protected override Control GetControlInstance ()

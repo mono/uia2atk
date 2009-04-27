@@ -1,3 +1,8 @@
+2009-04-27  Brad Taylor  <brad@getcoded.net>
+
+	* ToolStripButtonProviderTest.cs: When CheckOnClick = true, test for
+	the Toggle pattern, and verify that the role is CheckBox.
+
 2009-03-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolBarButtonProviderTest.cs: Test provider pattern support
