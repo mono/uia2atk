@@ -19,7 +19,7 @@ sequence.append(utils.AssertPresentationAction(
     "switch to flat-review",
     ["BRAILLE LINE:  'Value:'",
      "     VISIBLE:  'Value:', cursor=1",
-     "SPEECH OUTPUT: 'Value'"]))
+     "SPEECH OUTPUT: 'Value:'"]))
 
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_9"))
@@ -27,7 +27,7 @@ sequence.append(utils.AssertPresentationAction(
     "flat-review line down",
     ["BRAILLE LINE:  'horizontal ScrollBar 0%'",
      "     VISIBLE:  'horizontal ScrollBar 0%', cursor=1",
-      "SPEECH OUTPUT: 'horizontal scroll bar 0 percent'"]))
+      "SPEECH OUTPUT: 'horizontal scroll bar 0 percent.'"]))
 
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_Divide"))
