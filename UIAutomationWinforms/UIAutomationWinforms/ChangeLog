@@ -1,3 +1,11 @@
+2009-04-27  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/ToggleProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ToolStripButton/TogglePatternToggleStateEvent.cs: 
+	If a ToolStripButton has CheckOnClick = true, the role should be
+	CheckBox and it should have the TogglePattern behavior.  [Fixes #478832]
+
 2009-04-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Handle
