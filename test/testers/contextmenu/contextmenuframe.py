@@ -7,7 +7,7 @@
 ##############################################################################
 
 from strongwind import *
-
+from helpers import *
 
 class ContextMenuFrame(accessibles.Frame):
     def __init__(self, accessible):
@@ -23,10 +23,24 @@ class ContextMenuFrame(accessibles.Frame):
 
         # Menu items
         self.menu = self.context_menu.findMenu(None)
-        self.orig_item = self.context_menu.findMenuItem('Item 1')
+        self.normal_item = self.context_menu.findMenuItem('Item 1')
         self.radio_item = self.context_menu.findMenuItem('Item 2')
         self.check_item = self.context_menu.findMenuItem('Item 3')
         self.exit_item = self.context_menu.findMenuItem('Exit')
+
+    def selectChildAndCheckStates(self, accessible, childIndex, add_states=[], 
+                                    invalid_states=[]):
+        """
+        Select the child at childIndex and then assert that the appropriate
+        accessible was indeed selected.
+        """
+        procedurelogger.action('Select child at index %s in "%s"' % \
+                                                (childIndex, accessible))
+        procedurelogger.expectedResult('Child at index %s is selected and has the appropriate states' % childIndex)
+
+        accessible.selectChild(childIndex)
+        sleep(config.SHORT_DELAY)
+        statesCheck(accessible.getChildAtIndex(childIndex), "MenuItem", invalid_states, add_states)
 
     def quit(self):
         self.altF4()

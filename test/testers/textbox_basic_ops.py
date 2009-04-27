@@ -129,7 +129,7 @@ tbFrame.textbox_mline.mouseClick()
 mline_content1 = """
 Strongwind is a GUI test automation framework Strongwind is object-oriented and extensible. You can use Strongwind to build object-oriented representations of your applications ("application wrappers"), then reuse the application wrappers to quickly develop many test scripts. Strongwind scripts generate a human-readable log that contains the action, expected result and a screen shot of each step. Most simple actions are logged automatically.
 """
-# TODO: when you use typeText method to input strings to textbox, all upper chars converted to lower chars, 
+# TODO: BUG491282 when you use typeText method to input strings to textbox, all upper chars converted to lower chars, 
 # so it leads to the actual text does not match the expected text.
 tbFrame.textbox_mline.enterText(mline_content1)
 sleep(config.SHORT_DELAY)

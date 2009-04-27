@@ -53,7 +53,7 @@ statesCheck(cmFrame.context_menu, 'ContextMenu', add_states=['active'])
 ##############################################################################
 # STATES: DEFAULT
 ##############################################################################
-statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focusable'])
+statesCheck(cmFrame.normal_item, 'MenuItem', add_states=['focusable'])
 statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable', 'checked'])
 statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focusable', 'checked'])
 statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focusable'])
@@ -62,8 +62,10 @@ statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focusable'])
 # CHECK ATKSELECTION
 ##############################################################################
 # BUG 492784
-#cmFrame.menu.selectChild(0)
-#statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable', 'selected'])
+#cmFrame.selectChildAndCheckStates(cmFrame.menu, cmFrame.normal_item.getIndexInParent(), add_states=['focused', 'focusable', 'selected'])
+statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable', 'checked'])
+statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focusable', 'checked'])
+statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focusable'])
 
 # close context_menu and make it show up again
 cmFrame.mouseClick()
@@ -77,9 +79,12 @@ sleep(config.SHORT_DELAY)
 # STATES: WHEN CONTEXTMENU SHOW UP
 ##############################################################################
 # BUG 471405
+# TODO: in mono 2.4, you can not use "Down" to navigate to items, but it was
+# fixed in mono trunk, in other words, you have to install mono trunk, and 
+# run the test.
 #cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
-#statesCheck(cmFrame.orig_item, 'MenuItem', add_states=['focused', 'focusable'])
+#statesCheck(cmFrame.normal_item, 'MenuItem', add_states=['focused', 'focusable'])
 
 #cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
@@ -103,6 +108,18 @@ sleep(config.SHORT_DELAY)
 #cmFrame.label.mouseClick(button=3)
 #sleep(config.SHORT_DELAY)
 #cmFrame.assertWidgets()
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable'])
+
+#cmFrame.label.mouseClick(button=3)
+#sleep(config.SHORT_DELAY)
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
+#sleep(config.SHORT_DELAY)
+#cmFrame.context_menu.keyCombo('<Return>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focusable'])
 
