@@ -1,3 +1,7 @@
+2009-04-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ChangeLog: 
+
 2009-04-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
@@ -6,7 +10,7 @@
 2009-03-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
-	Update comment (since this methods are public because we mimic
+	Update comment (since these methods are public because we mimic
 	MS API). Thanks to Sandy for noticing.
 
 2009-03-09  Mario Carrion  <mcarrion@novell.com>

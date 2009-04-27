@@ -187,9 +187,24 @@ namespace Mono.UIAutomation.Winforms
 				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 				          new ETB.AutomationIsEnabledPropertyEvent (this));
 
-				// TODO: Handle style changes (requires MWF patch)
+				try {
+					//TODO: remove reflection when we don't depend on Mono 2.4 (and the pragma below):
+					
+					//toolBarButton.UIAStyleChanged += new EventHandler (OnDropDownMenuChanged);
+					Helper.AddPrivateEvent (typeof (ToolBarButton), toolBarButton, "UIAStyleChanged",
+					                        this, "OnStyleChanged");
+				} catch (NotSupportedException) { }
+				SetStyleBehaviours ();
+			}
+
+			private void SetStyleBehaviours ()
+			{
+				SetBehavior (InvokePatternIdentifiers.Pattern, null);
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
+				SetBehavior (TogglePatternIdentifiers.Pattern, null);
 				
 				if (style == ToolBarButtonStyle.DropDownButton) {
+
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
 					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
@@ -205,18 +220,38 @@ namespace Mono.UIAutomation.Winforms
 			#endregion
 			
 			#region Public Methods
-		
+
+			public override void Terminate ()
+			{
+				base.Terminate ();
+				try {
+					//TODO: remove reflection when we don't depend on Mono 2.4 (and the pragma below):
+					
+					//toolBarButton.UIADropDownMenuChanged -= new EventHandler (OnDropDownMenuChanged);
+					Helper.RemovePrivateEvent (typeof (ToolBarButton), toolBarButton, "UIAStyleChanged",
+					                           this, "OnStyleChanged");
+				} catch (NotSupportedException) { }
+			}
+			
 			public override void InitializeChildControlStructure ()
 			{
+				try {
+					//TODO: remove reflection when we don't depend on Mono 2.4 (and the pragma below):
+					//toolBarButton.UIADropDownMenuChanged += new EventHandler (OnDropDownMenuChanged);
+					Helper.AddPrivateEvent (typeof (ToolBarButton), toolBarButton, "UIADropDownMenuChanged",
+					                        this, "OnDropDownMenuChanged");
+				} catch (NotSupportedException) { }
+
 				if (style == ToolBarButtonStyle.DropDownButton &&
 				    toolBarButton.DropDownMenu != null) {
 					ContextMenu menu = toolBarButton.DropDownMenu as ContextMenu;
 					if (menu != null) {
+						dropDownMenu = menu;
 						menu.Popup += OnMenuPopup;
 						menu.Collapse += OnMenuCollapse;
 					}
-					// TODO: Handle DropDownMenu being set (requires MWF patch)
 				}
+
 			}
 
 			public override void FinalizeChildControlStructure ()
@@ -229,8 +264,39 @@ namespace Mono.UIAutomation.Winforms
 						menu.Collapse -= OnMenuCollapse;
 					}
 				}
-			}
 
+				try {
+					//TODO: remove reflection when we don't depend on Mono 2.4 (and the pragma below):
+					
+					//toolBarButton.UIADropDownMenuChanged -= new EventHandler (OnDropDownMenuChanged);
+					Helper.RemovePrivateEvent (typeof (ToolBarButton), toolBarButton, "UIADropDownMenuChanged",
+					                           this, "OnDropDownMenuChanged");
+				} catch (NotSupportedException) { }
+
+			}
+			
+#pragma warning disable 169
+			private void OnDropDownMenuChanged (object sender, EventArgs args)
+			{
+				if (dropDownMenu != null) {
+					dropDownMenu.Popup -= OnMenuPopup;
+					dropDownMenu.Collapse -= OnMenuCollapse;
+				}
+				if (toolBarButton.DropDownMenu != null) {
+					dropDownMenu = toolBarButton.DropDownMenu as ContextMenu;
+					if (dropDownMenu != null) {
+						dropDownMenu.Popup += OnMenuPopup;
+						dropDownMenu.Collapse += OnMenuCollapse;
+					}
+				}
+			}
+			
+			private void OnStyleChanged (object sender, EventArgs args)
+			{
+				SetStyleBehaviours ();
+			}
+#pragma warning restore 169
+			
 			private void OnMenuPopup (object sender, EventArgs args)
 			{
 				var menuProvider =
@@ -309,6 +375,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			private ToolBarButton toolBarButton;
 			private ToolBarButtonStyle style;
+			private ContextMenu dropDownMenu = null;
 			
 			#endregion
 		}
