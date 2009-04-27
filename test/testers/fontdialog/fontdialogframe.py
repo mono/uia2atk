@@ -69,16 +69,16 @@ class FontDialogFrame(accessibles.Frame):
         self.font_treetable = self.treetables[2]
         # each treetable have some TableCells
         self.size_tablecell = self.size_treetable.findAllTableCells(None, checkShowing = False)
-        self.fontstyle_tablecell =self.fontstyle_treetable.findAllTableCells(None, checkShowing = False)
+        self.fontstyle_tablecell = self.fontstyle_treetable.findAllTableCells(None, checkShowing = False)
         self.font_tablecell = self.font_treetable.findAllTableCells(None, checkShowing = False)
 
         procedurelogger.expectedResult("%s tablecell under size ListBox, \
                                        and %s tablecell under fontstyle ListBox, \
                                        and %s tablecell under font ListBox" % (len(self.size_tablecell), len(self.fontstyle_tablecell), len(self.font_tablecell)))
         # different numbers of Font with the different machine
-        assert len(self.size_tablecell) >0 and  \
-               len(self.fontstyle_tablecell) >0 and \
-               len(self.font_tablecell) >0, "missing TableCell"
+        assert len(self.size_tablecell) > 0 and  \
+               len(self.fontstyle_tablecell) > 0 and \
+               len(self.font_tablecell) > 0, "missing TableCell"
 
         # there are 2 GroupBox
         self.effects_groupbox = self.fontdialog.findPanel("Effects")
