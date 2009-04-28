@@ -1,3 +1,8 @@
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ListViewProviderTest.cs: Implemented Invoke for
+	ColumnHeaders. Fixes #476304.
+
 2009-04-27  Brad Taylor  <brad@getcoded.net>
 
 	* ToolStripButtonProviderTest.cs: When CheckOnClick = true, test for

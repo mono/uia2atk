@@ -70,8 +70,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region IInvokeProvider implementation 
 		
 		public void Invoke ()
-		{
-			Log.Warn ("HeaderItemInvokePatternInvokedEvent: Invoke not implemented");
+		{	
+			var clickArgs = new SWF.ColumnClickEventArgs (
+			  itemProvider.ColumnHeader.ListView.Columns.IndexOf (itemProvider.ColumnHeader));
+			itemProvider.ColumnHeader.ListView.OnColumnClick (clickArgs);
 		}
 
 		#endregion
