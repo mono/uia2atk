@@ -1,3 +1,8 @@
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Focus menuitems that don't have children
+	when selected via Atk.Selection. Fixes #495623.
+
 2009-04-28  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs, BridgeTests.cs, Makefile.am: Add DataGrid test.

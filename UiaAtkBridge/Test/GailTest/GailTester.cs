@@ -177,10 +177,6 @@ namespace UiaAtkBridgeTest
 			get { return true; }
 		}
 
-		protected override bool AllowsSelectingChildMenus { 
-			get { return true; }
-		}
-
 		public override bool HasComboBoxSimpleLayout {
 			get { return false; }
 		}

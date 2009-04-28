@@ -104,5 +104,11 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.AutomationElementNameProperty,
 			          new ETSI.AutomationNamePropertyEvent (this));
 		}
+
+		public override void SetFocus ()
+		{
+			item.Select ();
+		}
+
 	}
 }

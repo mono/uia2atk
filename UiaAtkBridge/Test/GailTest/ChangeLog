@@ -1,3 +1,8 @@
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Focus menuitems that don't have children when
+	selected via Atk.Selection. Fixes #495623.
+
 2009-03-11  Brad Taylor  <brad@getcoded.net>
 
 	* GailTester.cs: Note the bad hack, fix whitespace.
