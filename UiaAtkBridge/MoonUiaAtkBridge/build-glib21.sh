@@ -80,11 +80,12 @@ cp gtk-sharp-2.8-sources.xml $GAPI_PARSER_PATH
 	./gapi2-parser gtk-sharp-2.8-sources.xml )
 
 # TODO: verify that the .raw file generated has an <api> element with a parser_version attrib
-# TODO: create a bootstrap-2.8 config file that just builds atk and glib
+cp bootstrap-2.8 $GTK_SHARP_PATH
+cp ../../patches/gtksharp21code.diff $GTK_SHARP_PATH
 
-#this doesn't work on the parallel env because of BNC#489961
-#(cd $GTK_SHARP_PATH; \
-#	./bootstrap-2.8 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
+#this doesn't work on the parallel env from MD because of BNC#489961
+(cd $GTK_SHARP_PATH; \
+	patch -p0 < gtksharp21code.diff && ./bootstrap-2.8 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
 
 LINKER_STEPS="-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightAssemblyStep,Mono.Tuner"
 
