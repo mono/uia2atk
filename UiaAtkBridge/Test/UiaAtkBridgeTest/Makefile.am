@@ -55,6 +55,7 @@ ATKTEST = $(BUILD_DIR)/AtkTest.dll
 
 REFERENCES =  \
 	System  \
+	System.Data  \
 	System.Xml \
 	System.Core \
 	System.Drawing \

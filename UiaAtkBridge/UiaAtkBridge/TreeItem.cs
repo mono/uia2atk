@@ -385,6 +385,10 @@ namespace UiaAtkBridge
 					((Tree)parentAdapter).HandleItemFocus (this, focused);
 					return;
 					}
+				if (parentAdapter is DataGrid) {
+					((DataGrid)parentAdapter).HandleItemFocus (this, focused);
+					return;
+					}
 				parentAdapter.NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (parentAdapter);

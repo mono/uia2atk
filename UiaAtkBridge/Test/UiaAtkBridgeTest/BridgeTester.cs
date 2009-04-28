@@ -102,6 +102,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
 		protected SWF.MonthCalendar monthCalendar = new SWF.MonthCalendar ();
 		protected SWF.ContainerControl containerControl = new SWF.ContainerControl ();
+		protected SWF.DataGrid datagrid = new SWF.DataGrid ();
 		protected SWF.DataGridView datagridView = new SWF.DataGridView ();
 		protected SWF.MaskedTextBox maskedTextBox = new SWF.MaskedTextBox ();
 		protected SWF.PropertyGrid pgrid = new SWF.PropertyGrid ();
@@ -232,6 +233,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (lv1);
 			form.Controls.Add (treeView);
 			form.Controls.Add (radWithImage);
+			form.Controls.Add (datagrid);
 			datagridView.AllowUserToAddRows = false;
 			form.Controls.Add (datagridView);
 			rad1.Text = "rad1";

@@ -1,3 +1,7 @@
+2009-04-28  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Add a Focus() variant to optionally not test the state.
+
 2009-04-16  Brad Taylor  <brad@getcoded.net>
 
 	* AtkTests.cs: Verify that Visible and Showing states are present on
