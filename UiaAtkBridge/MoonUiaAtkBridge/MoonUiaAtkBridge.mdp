@@ -30,6 +30,7 @@
     <File name="Adapter.cs" subtype="Code" buildaction="Compile" />
     <File name="AdapterFactory.cs" subtype="Code" buildaction="Compile" />
     <File name="gtk-sharp-2.8-sources.xml" subtype="Code" buildaction="Nothing" />
+    <File name="bootstrap-2.8" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="lib/atk-sharp.dll" />

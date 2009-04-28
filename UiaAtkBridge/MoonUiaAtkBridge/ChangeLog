@@ -1,3 +1,8 @@
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* bootstrap-2.8:
+	* MoonUiaAtkBridge.mdp: Add new gtk-sharp bootstrap.
+
 2009-04-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MoonUiaAtkBridge.mdp: Update.
