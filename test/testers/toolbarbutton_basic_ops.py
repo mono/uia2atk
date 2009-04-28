@@ -83,8 +83,9 @@ statesCheck(tbbFrame.separator_style, "ToolStripSeparator")
 tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
 
 # test DropDownButton style
-## BUG481357: missing MenuItems
-tbbFrame.DropDownButtonStyle(tbbFrame.dropdown_button, tbbFrame.toggle_style)
+## BUG490105: dropdown_toggle has wrong postion
+## BUG498724: missing AtkText implemented
+tbbFrame.DropDownButtonStyle()
 
 # test Toggle style
 tbbFrame.ToggleStyle(tbbFrame.toggle_style)

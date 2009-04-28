@@ -37,22 +37,22 @@ class ToolBarButtonFrame(accessibles.Frame):
                                                   checkShowing=False)
         self.separator_style = self.toolbar.findSeparator(self.SEPARATOR)
         self.label = self.findLabel(self.LABEL)
-        ## BUG481357:missing MenuItems
-        #self.menuitem_red = self.dropdown_toggle.findMenuItem("Red")
-        #self.menuitem_blue = self.dropdown_toggle.findMenuItem("Blue")
 
     def click(self, accessible):
+        """click action"""
         accessible.click()
 
-    def assertText(self, accessible, textvalue):
+    def assertText(self, accessible, expected_text):
+        """make sure accessible's text is expected_text"""
         procedurelogger.action('check Text for %s' % accessible)
 
-        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, textvalue))
-        assert accessible.text == textvalue, "%s doesn't match \
-                                        %s" % (accessible.text, textvalue)
+        procedurelogger.expectedResult(" %s's Text is %s" % (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                                    "actual text is %s, expected text is %s" % \
+                                    (accessible.text, expected_text)
 
-    # test for PushButton style ToolBarButton
     def PushButtonStyle(self, accessible):
+        """test wraper for ToolBarButton with PushButton style"""
         # test AtkText
         self.assertText(accessible, "PushButton")
 
@@ -72,56 +72,69 @@ class ToolBarButtonFrame(accessibles.Frame):
         assert self.label.text == "You clicked PushButton 2 times", \
                 "lable shows %s" % self.label.text
 
-    # test for DropDownButton style ToolBarButton
-    def DropDownButtonStyle(self, pushbutton, togglebutton):
+    def DropDownButtonStyle(self):
+        """test wraper for ToolBarButton with DropDownButton style"""
         # test AtkText
-        self.assertText(pushbutton, "DropDownButton")
-        '''
-        # test AtkAction for normal push button doesn't show menu items list
-        pushbutton.click()
+        self.assertText(self.dropdown_button, "DropDownButton")
+        ## BUG498724: missing AtkText implemented
+        #self.assertText(self.dropdown_toggle, "DropDownButton")
+        
+        # test AtkAction for normal push button doesn't show menu list
+        self.dropdown_button.click()
         sleep(config.SHORT_DELAY)
-        self.menuitem_red.mouseClick(log=False)
-        sleep(config.SHORT_DELAY)
-
-        procedurelogger.expectedResult("click normal push button doesn't show menu items list")
+        procedurelogger.expectedResult("click %s doesn't show menu list" % \
+                                                           self.dropdown_button)
+        try:
+           self.app.findMenuItem("Red").click()
+        except SearchError:
+            pass
         assert self.label.text != "You selected dropdownbutton item Red"
 
-        # test AtkAction for toggle button to show menu items list
-        togglebutton.click()
-        sleep(config.SHORT_DELAY)
-        self.menuitem_blue.mouseClick(log=False)
+        # test AtkAction for toggle button to show menu list
+        self.dropdown_toggle.click()
         sleep(config.SHORT_DELAY)
 
-        procedurelogger.expectedResult("click toggle button to show menu items list")
-        assert self.label.text == "You selected dropdownbutton item Blue"
+        procedurelogger.expectedResult("click toggle button to show menu list")
+        self.dropdown_window = self.app.findWindow(None)
+
+        # click menuitem_red to change label's text
+        self.dropdown_window.findMenuItem("Red").click()
+        sleep(config.SHORT_DELAY)
+        procedurelogger.expectedResult("label shows you selected item Red")
+
+        assert self.label.text == "You selected dropdownbutton item Red"
                                           
         # test AtkComponent by mouse click normal push button to check its position and size
-        pushbutton.mouseClick()
-        sleep(config.SHORT_DELAY)
-        self.menuitem_red.mouseClick(log=False)
+        self.dropdown_button.mouseClick()
         sleep(config.SHORT_DELAY)
 
-        procedurelogger.expectedResult("mouse click normal push button doesn't show menu items list")
-        assert self.label.text != "You selected dropdownbutton item Red"
+        procedurelogger.expectedResult("mouse click normal push button doesn't show menu list")
+        try:
+           self.app.findMenuItem("Blue").click()
+        except SearchError:
+            pass
+        assert self.label.text != "You selected dropdownbutton item Blue"
 
         # mouse click toggle button again
-        togglebutton.mouseClick()
-        sleep(config.SHORT_DELAY)
-        self.menuitem_red.mouseClick(log=False)
+        ## BUG490105: dropdown_toggle has wrong postion
+        '''
+        self.dropdown_toggle.mouseClick()
         sleep(config.SHORT_DELAY)
 
-        procedurelogger.expectedResult("mouse click toggle button to show menu items list")
-        assert self.label.text == "You selected dropdownbutton item Red"
+        procedurelogger.expectedResult("mouse click toggle button to show menu list")
+        self.dropdown_window = self.app.findWindow(None)
+        self.dropdown_menuitem_red = self.dropdown_window.findMenuItem("Red")
+        self.dropdown_menuitem_blue = self.dropdown_window.findMenuItem("Blue")
 
-        # click menuitem to change label's text
-        self.menuitem_blue.click()
+        # click menuitem_blue to change label's text
+        self.dropdown_menuitem_blue.click()
         sleep(config.SHORT_DELAY)
         procedurelogger.expectedResult("label shows you selected item Blue")
 
         assert self.label.text == "You selected dropdownbutton item Blue"
         '''
-    # test for Toggle style ToolBarButton
     def ToggleStyle(self, accessible):
+        """test wraper for ToolBarButton with Toggle style"""
         # test AtkText
         self.assertText(accessible, "Toggle")
 
@@ -143,8 +156,8 @@ class ToolBarButtonFrame(accessibles.Frame):
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         assert not self.label.sensitive
 
-    # test for unable ToolBarButton
     def UnableButton(self, accessible):
+        """test wraper for unable ToolBarButton"""
         # test AtkText
         self.assertText(accessible, "nop")
 
@@ -158,8 +171,8 @@ class ToolBarButtonFrame(accessibles.Frame):
         assert self.label.text == current_label, "label is changed to %s" % \
                                                      self.label.text
 
-    # test for Separator style ToolBarButton
     def SeparatorStyle(self, accessible):
+        """test wraper for ToolBarButton with Separator style"""
         # test AtkText
         procedurelogger.action('check Text for %s' % accessible)
 
@@ -179,22 +192,22 @@ class ToolBarButtonFrame(accessibles.Frame):
             return
         assert False, "AtkAction shouldn't implemented"
     
-    # in this example all buttons with 24*24 image size, except separator
-    def assertImageSize(self, button, width=0, height=0):
-        procedurelogger.action("assert %s's image size" % button)
-        if button == self.separator_style:
-            procedurelogger.expectedResult('%s image is unimplemented' % button)
+    def assertImageSize(self, accessible, width=0, height=0):
+        """make sure accessible's image size is expected """
+        procedurelogger.action("assert %s's image size" % accessible)
+        if accessible == self.separator_style:
+            procedurelogger.expectedResult('%s image is unimplemented' % accessible)
             try:
-                button._accessible.queryImage()
+                accessible._accessible.queryImage()
             except NotImplementedError:
                 return
             assert False
 
         else:
-            size = button.imageSize
+            size = accessible.imageSize
 
             procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (button, width, height))
+                                                  (accessible, width, height))
 
             assert width == size[0], "%s (%s), %s (%s)" %\
                                             ("expected width",
