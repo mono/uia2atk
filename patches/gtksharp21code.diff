@@ -1,8 +1,8 @@
 Index: atk/Makefile.am
 ===================================================================
---- atk/Makefile.am	(revision 122401)
+--- atk/Makefile.am	(revision 132856)
 +++ atk/Makefile.am	(working copy)
-@@ -22,4 +22,20 @@
+@@ -21,4 +21,20 @@
  
  add_dist =
  
@@ -25,7 +25,7 @@ Index: atk/Makefile.am
 +
 Index: glib/Object.cs
 ===================================================================
---- glib/Object.cs	(revision 122401)
+--- glib/Object.cs	(revision 132856)
 +++ glib/Object.cs	(working copy)
 @@ -431,7 +431,10 @@
  
@@ -97,7 +97,7 @@ Index: glib/Object.cs
  					persistent_data = new Hashtable ();
 Index: glib/SignalCallback.cs
 ===================================================================
---- glib/SignalCallback.cs	(revision 122401)
+--- glib/SignalCallback.cs	(revision 132856)
 +++ glib/SignalCallback.cs	(working copy)
 @@ -20,6 +20,8 @@
  // Boston, MA 02111-1307, USA.
@@ -115,7 +115,7 @@ Index: glib/SignalCallback.cs
 +#endif
 Index: glib/Makefile.am
 ===================================================================
---- glib/Makefile.am	(revision 122401)
+--- glib/Makefile.am	(revision 132856)
 +++ glib/Makefile.am	(working copy)
 @@ -97,9 +97,23 @@
  GAPI_CDECL_INSERT=
@@ -141,12 +141,26 @@ Index: glib/Makefile.am
 +	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
  	$(GAPI_CDECL_INSERT)
  
- $(POLICY_ASSEMBLIES): $(top_builddir)/policy.config gtk-sharp.snk
+ policy.%.config: $(top_builddir)/policy.config
+Index: bootstrap-generic
+===================================================================
+--- bootstrap-generic	(revision 132856)
++++ bootstrap-generic	(working copy)
+@@ -22,8 +22,8 @@
+     -e "s/@POLICY_VERSIONS@/$POLICY_VERSIONS/" \
+     -e "s/@ASSEMBLY_VERSION@/$ASSEMBLY_VERSION/" $srcdir/configure.in.in > $srcdir/configure.in
+ 
++ln -f $srcdir/atk/atk-api-$GTK_API_TAG.raw $srcdir/atk/atk-api.raw
+ ln -f $srcdir/pango/pango-api-$GTK_API_TAG.raw $srcdir/pango/pango-api.raw
+-ln -f $srcdir/atk/atk-api-$GTK_API_TAG.raw $srcdir/atk/atk-api.raw
+ ln -f $srcdir/gdk/gdk-api-$GTK_API_TAG.raw $srcdir/gdk/gdk-api.raw
+ ln -f $srcdir/gtk/gtk-api-$GTK_API_TAG.raw $srcdir/gtk/gtk-api.raw
+ ln -f $srcdir/glade/glade-api-$GTK_API_TAG.raw $srcdir/glade/glade-api.raw
 Index: Makefile.include
 ===================================================================
---- Makefile.include	(revision 122401)
+--- Makefile.include	(revision 132856)
 +++ Makefile.include	(working copy)
-@@ -62,9 +62,11 @@
+@@ -61,9 +61,11 @@
  GAPI_CDECL_INSERT=
  endif
  
@@ -159,3 +173,22 @@ Index: Makefile.include
  	$(GAPI_CDECL_INSERT)
  
  install-data-local:
+Index: Makefile.am
+===================================================================
+--- Makefile.am	(revision 132856)
++++ Makefile.am	(working copy)
+@@ -1,4 +1,4 @@
+-SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk glade gtkdotnet sample doc
++SUBDIRS = sources generator parser glib atk
+ 
+ EXTRA_DIST = 			\
+ 	mono.snk		\
+@@ -21,7 +21,7 @@
+ 	candle.exe gtk-sharp-2.0-dev.wxs
+ 	light.exe gtk-sharp-2.0-dev.wixobj
+ 
+-assembly_dirs = glib gio pango atk gdk gtk glade gtkdotnet
++assembly_dirs = glib atk
+ 
+ cross-bundle: all
+ 	mkdir -p gtk-sharp-cross-$(VERSION)

@@ -1,3 +1,9 @@
+2009-04-28  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/gtksharp21code.diff: Add modifications for files
+	bootstrap-generic and Makefile.am, and update patch to
+	trunk.
+
 2009-04-21  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/gtksharp21code.diff: This patch applies to gtk-sharp
