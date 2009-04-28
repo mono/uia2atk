@@ -1,3 +1,9 @@
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Pre-changes needed before fixing #456341.
+	Brings back some selection testing in the bridge and fixes a
+	ComboBoxSimpleAsTreeView test.
+
 2009-04-28  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Add a Focus() variant to optionally not test the state.
