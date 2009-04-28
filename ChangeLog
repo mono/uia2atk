@@ -1,5 +1,10 @@
 2009-04-28  Andrés G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/gtksharp21code.diff: Rather remove non-atk
+	elements in bootstrap-generic than changing the order.
+
+2009-04-28  Andrés G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/gtksharp21code.diff: Add modifications for files
 	bootstrap-generic and Makefile.am, and update patch to
 	trunk.
