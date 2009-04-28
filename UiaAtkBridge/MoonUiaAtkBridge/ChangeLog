@@ -1,5 +1,9 @@
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* build-glib21.sh: Make it work after patching.
+
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* build-glib21.sh: Use the new bootstrap and patch.
 
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>

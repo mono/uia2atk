@@ -81,11 +81,21 @@ cp gtk-sharp-2.8-sources.xml $GAPI_PARSER_PATH
 
 # TODO: verify that the .raw file generated has an <api> element with a parser_version attrib
 cp bootstrap-2.8 $GTK_SHARP_PATH
-cp ../../patches/gtksharp21code.diff $GTK_SHARP_PATH
+
+if test -f $GTK_SHARP_PATH/gtksharp21code.diff
+then
+	echo "Found $GTK_SHARP_PATH/gtksharp21code.diff"
+else
+	echo "$GTK_SHARP_PATH/gtksharp21code.diff does not exist, copying and applying..."
+
+	cp ../../patches/gtksharp21code.diff $GTK_SHARP_PATH
+	(cd $GTK_SHARP_PATH/; \
+		patch -p0 < gtksharp21code.diff )
+fi
 
 #this doesn't work on the parallel env from MD because of BNC#489961
 (cd $GTK_SHARP_PATH; \
-	patch -p0 < gtksharp21code.diff && ./bootstrap-2.8 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
+	./bootstrap-2.8 --prefix=$MONO_PREFIX && make && (cd glib; make moonlight) && (cd atk; make moonlight))
 
 LINKER_STEPS="-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightAssemblyStep,Mono.Tuner"
 
