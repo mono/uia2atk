@@ -1,0 +1,249 @@
+# Global ignores
+*~
+*.pyc
+
+# /
+/*.userprefs
+/*.usertasks
+/*.diff
+/*.patch
+
+# /UIAutomation/
+/UIAutomation/configure
+/UIAutomation/Makefile
+/UIAutomation/Makefile.in
+/UIAutomation/config.log
+/UIAutomation/bin
+/UIAutomation/aclocal.m4
+/UIAutomation/install-sh
+/UIAutomation/config.status
+/UIAutomation/missing
+/UIAutomation/autom4te.cache
+/UIAutomation/*.userprefs
+
+# /UIAutomation/UIAutomationBridge/
+/UIAutomation/UIAutomationBridge/Makefile
+/UIAutomation/UIAutomationBridge/Makefile.in
+/UIAutomation/UIAutomationBridge/*.pidb
+/UIAutomation/UIAutomationBridge/*.usertasks
+/UIAutomation/UIAutomationBridge/*.userprefs
+/UIAutomation/UIAutomationBridge/TestResult-net_3_0.*
+/UIAutomation/UIAutomationBridge/*.dll
+/UIAutomation/UIAutomationBridge/*.dll.mdb
+/UIAutomation/UIAutomationBridge/test-results
+/UIAutomation/UIAutomationBridge/AssemblyInfo.cs
+
+# /UIAutomation/UIAutomationClient/
+/UIAutomation/UIAutomationClient/Makefile
+/UIAutomation/UIAutomationClient/Makefile.in
+/UIAutomation/UIAutomationClient/AssemblyInfo.cs
+
+# /UIAutomation/UIAutomationProvider/
+/UIAutomation/UIAutomationProvider/Makefile
+/UIAutomation/UIAutomationProvider/Makefile.in
+/UIAutomation/UIAutomationProvider/*.pidb
+/UIAutomation/UIAutomationProvider/*.usertasks
+/UIAutomation/UIAutomationProvider/*.userprefs
+/UIAutomation/UIAutomationProvider/TestResult-net_3_0.*
+/UIAutomation/UIAutomationProvider/*.dll
+/UIAutomation/UIAutomationProvider/*.dll.mdb
+/UIAutomation/UIAutomationProvider/test-results
+/UIAutomation/UIAutomationProvider/AssemblyInfo.cs
+
+# /UIAutomation/UIAutomationProvider/Test/
+/UIAutomation/UIAutomationProvider/Test/bin
+/UIAutomation/UIAutomationProvider/Test/obj
+/UIAutomation/UIAutomationProvider/Test/*.user
+/UIAutomation/UIAutomationProvider/Test/*.suo
+
+# /UIAutomation/UIAutomationTypes/
+/UIAutomation/UIAutomationTypes/Makefile
+/UIAutomation/UIAutomationTypes/Makefile.in
+/UIAutomation/UIAutomationTypes/*.pidb
+/UIAutomation/UIAutomationTypes/*.usertasks
+/UIAutomation/UIAutomationTypes/*.userprefs
+/UIAutomation/UIAutomationTypes/TestResult-net_3_0.*
+/UIAutomation/UIAutomationTypes/*.dll
+/UIAutomation/UIAutomationTypes/*.dll.mdb
+/UIAutomation/UIAutomationTypes/test-results
+/UIAutomation/UIAutomationTypes/AssemblyInfo.cs
+
+# /UIAutomation/UIAutomationTypes/Test/
+/UIAutomation/UIAutomationTypes/Test/bin
+/UIAutomation/UIAutomationTypes/Test/obj
+/UIAutomation/UIAutomationTypes/Test/*.user
+/UIAutomation/UIAutomationTypes/Test/*.suo
+
+# /UIAutomation/WindowsBase/
+/UIAutomation/WindowsBase/Makefile
+/UIAutomation/WindowsBase/Makefile.in
+/UIAutomation/WindowsBase/AssemblyInfo.cs
+
+# /UIAutomation/build/common/
+/UIAutomation/build/common/Consts.cs
+
+# /UIAutomation/data/
+/UIAutomation/data/Makefile
+/UIAutomation/data/Makefile.in
+/UIAutomation/data/mono-uia.pc
+/UIAutomation/data/mono-uia.pc.in
+
+# /UIAutomationWinforms/
+/UIAutomationWinforms/*.userprefs
+/UIAutomationWinforms/*.usertasks
+/UIAutomationWinforms/Makefile.in
+/UIAutomationWinforms/configure
+/UIAutomationWinforms/config.log
+/UIAutomationWinforms/config.status
+/UIAutomationWinforms/autom4te.cache
+/UIAutomationWinforms/missing
+/UIAutomationWinforms/Makefile
+/UIAutomationWinforms/aclocal.m4
+/UIAutomationWinforms/install-sh
+/UIAutomationWinforms/intltool-update
+/UIAutomationWinforms/intltool-update.in
+/UIAutomationWinforms/intltool-merge
+/UIAutomationWinforms/intltool-merge.in
+/UIAutomationWinforms/intltool-extract
+/UIAutomationWinforms/intltool-extract.in
+
+# /UIAutomationWinforms/UIAutomationWinforms/
+/UIAutomationWinforms/UIAutomationWinforms/bin
+/UIAutomationWinforms/UIAutomationWinforms/*.pidb
+/UIAutomationWinforms/UIAutomationWinforms/Makefile
+/UIAutomationWinforms/UIAutomationWinforms/Makefile.in
+/UIAutomationWinforms/UIAutomationWinforms/*.pc
+/UIAutomationWinforms/UIAutomationWinforms/Globals.cs
+
+# /UIAutomationWinforms/UIAutomationWinforms/Mono.UIAutomation.Winforms/
+/UIAutomationWinforms/UIAutomationWinforms/Mono.UIAutomation.Winforms/bin
+/UIAutomationWinforms/UIAutomationWinforms/Mono.UIAutomation.Winforms/*.pidb
+
+# /UIAutomationWinforms/UIAutomationWinformsTests/
+/UIAutomationWinforms/UIAutomationWinformsTests/bin
+/UIAutomationWinforms/UIAutomationWinformsTests/*.pidb
+/UIAutomationWinforms/UIAutomationWinformsTests/Makefile
+/UIAutomationWinforms/UIAutomationWinformsTests/Makefile.in
+/UIAutomationWinforms/UIAutomationWinformsTests/*.pc
+/UIAutomationWinforms/UIAutomationWinformsTests/providertest.sh
+
+# /UIAutomationWinforms/po/
+/UIAutomationWinforms/po/*.gmo
+/UIAutomationWinforms/po/stamp-it
+/UIAutomationWinforms/po/missing
+/UIAutomationWinforms/po/POTFILES
+/UIAutomationWinforms/po/UIAutomationWinforms.pot
+/UIAutomationWinforms/po/Makefile
+/UIAutomationWinforms/po/Makefile.in
+/UIAutomationWinforms/po/Makefile.in.in
+
+# /UiaAtkBridge/
+/UiaAtkBridge/bin
+/UiaAtkBridge/*.pidb
+/UiaAtkBridge/*.userprefs
+/UiaAtkBridge/Makefile
+/UiaAtkBridge/Makefile.in
+/UiaAtkBridge/configure
+/UiaAtkBridge/config.*
+/UiaAtkBridge/autom4te.cache
+/UiaAtkBridge/missing
+/UiaAtkBridge/aclocal.m4
+/UiaAtkBridge/install-sh
+/UiaAtkBridge/depcomp
+/UiaAtkBridge/libtool
+/UiaAtkBridge/ltmain.sh
+
+# /UiaAtkBridge/Test/
+/UiaAtkBridge/Test/Makefile.in
+/UiaAtkBridge/Test/Makefile
+
+# /UiaAtkBridge/Test/AtkTest/
+/UiaAtkBridge/Test/AtkTest/Makefile
+/UiaAtkBridge/Test/AtkTest/Makefile.in
+/UiaAtkBridge/Test/AtkTest/*.pidb
+/UiaAtkBridge/Test/AtkTest/bin
+
+# /UiaAtkBridge/Test/GailTest/
+/UiaAtkBridge/Test/GailTest/bin
+/UiaAtkBridge/Test/GailTest/*.pidb
+/UiaAtkBridge/Test/GailTest/Makefile.in
+/UiaAtkBridge/Test/GailTest/Makefile
+/UiaAtkBridge/Test/GailTest/gailtest.sh
+
+# /UiaAtkBridge/Test/GailTestApp/
+/UiaAtkBridge/Test/GailTestApp/bin
+/UiaAtkBridge/Test/GailTestApp/*.pidb
+/UiaAtkBridge/Test/GailTestApp/Makefile
+/UiaAtkBridge/Test/GailTestApp/Makefile.in
+
+# /UiaAtkBridge/Test/UiaAtkBridgeTest/
+/UiaAtkBridge/Test/UiaAtkBridgeTest/bin
+/UiaAtkBridge/Test/UiaAtkBridgeTest/*.pidb
+/UiaAtkBridge/Test/UiaAtkBridgeTest/Makefile
+/UiaAtkBridge/Test/UiaAtkBridgeTest/Makefile.in
+/UiaAtkBridge/Test/UiaAtkBridgeTest/bridgetest.sh
+
+# /UiaAtkBridge/UiaAtkBridge/
+/UiaAtkBridge/UiaAtkBridge/bin
+/UiaAtkBridge/UiaAtkBridge/*.pidb
+/UiaAtkBridge/UiaAtkBridge/*.pc
+/UiaAtkBridge/UiaAtkBridge/Makefile
+/UiaAtkBridge/UiaAtkBridge/Makefile.in
+
+# /UiaAtkBridge/bridge-glue/
+/UiaAtkBridge/bridge-glue/*.pidb
+/UiaAtkBridge/bridge-glue/Makefile.in
+/UiaAtkBridge/bridge-glue/Makefile
+/UiaAtkBridge/bridge-glue/main.d
+/UiaAtkBridge/bridge-glue/.prec
+/UiaAtkBridge/bridge-glue/bin
+/UiaAtkBridge/bridge-glue/.deps
+/UiaAtkBridge/bridge-glue/.libs
+/UiaAtkBridge/bridge-glue/*.la
+/UiaAtkBridge/bridge-glue/*.lo
+/UiaAtkBridge/bridge-glue/*.o
+
+# /UiaAtkBridge/samples/
+/UiaAtkBridge/samples/*.userprefs
+/UiaAtkBridge/samples/*.usertasks
+
+# /UiaAtkBridge/samples/managed/
+/UiaAtkBridge/samples/managed/*.userprefs
+/UiaAtkBridge/samples/managed/*.usertasks
+/UiaAtkBridge/samples/managed/configure
+/UiaAtkBridge/samples/managed/Makefile.in
+/UiaAtkBridge/samples/managed/config.log
+/UiaAtkBridge/samples/managed/config.status
+/UiaAtkBridge/samples/managed/config.guess
+/UiaAtkBridge/samples/managed/ltmain.sh
+/UiaAtkBridge/samples/managed/config.sub
+/UiaAtkBridge/samples/managed/libtool
+/UiaAtkBridge/samples/managed/autom4te.cache
+/UiaAtkBridge/samples/managed/missing
+/UiaAtkBridge/samples/managed/Makefile.am
+/UiaAtkBridge/samples/managed/aclocal.m4
+/UiaAtkBridge/samples/managed/Makefile
+/UiaAtkBridge/samples/managed/install-sh
+/UiaAtkBridge/samples/managed/GailTestApp/Makefile.in
+/UiaAtkBridge/samples/managed/GailTestApp/bin
+/UiaAtkBridge/samples/managed/GailTestApp/Makefile
+
+# /UiaAtkBridge/samples/managed/FormTest/
+/UiaAtkBridge/samples/managed/FormTest/*.usertasks
+/UiaAtkBridge/samples/managed/FormTest/*.userprefs
+/UiaAtkBridge/samples/managed/FormTest/bin
+/UiaAtkBridge/samples/managed/FormTest/*.pidb
+
+# /UiaAtkBridge/samples/managed/atkSharpHelloWorld/
+/UiaAtkBridge/samples/managed/atkSharpHelloWorld/*.pidb
+/UiaAtkBridge/samples/managed/atkSharpHelloWorld/bin
+
+# /UiaAtkBridge/samples/unmanaged/atkHelloWorld/
+/UiaAtkBridge/samples/unmanaged/atkHelloWorld/bin
+/UiaAtkBridge/samples/unmanaged/atkHelloWorld/*.pidb
+/UiaAtkBridge/samples/unmanaged/atkHelloWorld/*.d
+/UiaAtkBridge/samples/unmanaged/atkHelloWorld/.prec
+
+# /build/hudson/scripts/
+/build/hudson/scripts/.mktarball.py.swp
+/build/hudson/scripts/.xml_example.py.swp
