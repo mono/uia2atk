@@ -120,9 +120,10 @@ namespace UiaAtkBridge
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
 				NotifyStateChange (Atk.StateType.Selected, Selected);
-				NotifyStateChange (Atk.StateType.Focused, Selected);
+				NotifyFocused (Selected);
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				NotifyStateChange (Atk.StateType.Selected, Selected);
+				NotifyFocused (Selected);
 				((ComboBoxOptions)Parent).RecursiveDeselect (this);
 			} else {
 				Log.Warn ("ComboBoxItem: RaiseAutomationEvent({0},...) not implemented", eventId.ProgrammaticName);

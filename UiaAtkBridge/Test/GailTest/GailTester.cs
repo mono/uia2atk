@@ -140,9 +140,11 @@ namespace UiaAtkBridgeTest
 
 		public override void RemoveAdditionalForm (object obj)
 		{
-			Gtk.Window win = (Gtk.Window)obj;
-			win.Hide ();
-			GailTestApp.MainClass.GiveMeARealButton (true).GrabFocus ();
+			RunInGuiThread (delegate () {
+				Gtk.Window win = (Gtk.Window)obj;
+				win.Hide ();
+				GailTestApp.MainClass.GiveMeARealButton (true).GrabFocus ();
+			});
 		}
 
 		public override void EnableWidget (Atk.Object accessible)

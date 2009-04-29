@@ -61,6 +61,12 @@ namespace UiaAtkBridge
 			base.AddOneChild (child);
 		}
 
+		internal void CheckAndHandleNewActiveWindow (UiaAtkBridge.Window oldWin, UiaAtkBridge.Window newWin)
+		{
+			if (object.ReferenceEquals (currentActiveWindow, oldWin))
+				CheckAndHandleNewActiveWindow (newWin);
+		}
+
 		internal void CheckAndHandleNewActiveWindow (UiaAtkBridge.Window newWin)
 		{
 			if (object.ReferenceEquals (currentActiveWindow, newWin))
