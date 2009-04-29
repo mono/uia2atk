@@ -66,7 +66,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ProviderPatternTest ()
 		{
-			T menuItem = GetNewToolStripDropDownItem ();
+			T menuItem = item;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 
 			// Should never support Toggle
@@ -89,10 +89,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void InvokeTest ()
 		{
-			T menuItem = GetNewToolStripDropDownItem ();
+			T menuItem = item;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			IInvokeProvider invokeProvider = (IInvokeProvider)
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+
+			ToolStripItem childItem = menuItem.DropDownItems.Add ("testchild");
+			var childItemProvider = ProviderFactory.GetProvider (childItem);
+			IInvokeProvider childInvokeProvider =  (IInvokeProvider)
+				childItemProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+
+			bool childItemClicked = false;
+			childItem.Click += delegate(object sender, EventArgs e) {
+				childItemClicked = true;
+			};
+			childInvokeProvider.Invoke ();
+			Assert.IsFalse (childItemClicked,
+			                "Should fail when invoking child " +
+			                "without first showing parent");
 			
 			bool itemClicked = false;
 			menuItem.Click += delegate (object sender, EventArgs e) {
@@ -102,6 +116,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			invokeProvider.Invoke ();			
 			Assert.IsTrue (itemClicked,
 			               "Click should fire when button is enabled");
+			if (menuItem is ToolStripSplitButton)
+				((IExpandCollapseProvider) provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id)).Expand ();
+			childInvokeProvider.Invoke ();
+			Assert.IsTrue (childItemClicked,
+			                "Invoking child should work after first showing parent");
 			
 			itemClicked = false;
 			menuItem.Enabled = false;
@@ -195,7 +214,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void InvokedEventTest ()
 		{
-			T menuItem = GetNewToolStripDropDownItem ();
+			T menuItem = item;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			
 			bridge.ResetEventLists ();
@@ -222,7 +241,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public override void LabeledByAndNamePropertyTest()
 		{
-			T menuItem = GetNewToolStripDropDownItem ();
+			T menuItem = item;
 			menuItem.Text = "My menu item";
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 
