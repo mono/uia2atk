@@ -167,8 +167,14 @@ namespace UiaAtkBridge
 					fakeWindow.AddOneChild ((Adapter)RefAccessibleChild (0));
 				}
 				TopLevelRootItem.Instance.AddOneChild (fakeWindow);
+				TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (fakeWindow);
 			} else if (newState == ExpandCollapseState.Collapsed) {
-				TopLevelRootItem.Instance.RemoveChild (fakeWindow);
+				Atk.Object realWindow = this;
+				while (realWindow != null && !(realWindow is Window))
+					realWindow = realWindow.Parent;
+				if (realWindow != null)
+					TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (fakeWindow, (Window)realWindow);
+				TopLevelRootItem.Instance.RemoveChild (fakeWindow, false);
 			}
 			InnerMenu.RaiseExpandedCollapsed ();
 		}

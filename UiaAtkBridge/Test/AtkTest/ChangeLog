@@ -1,3 +1,7 @@
+2009-04-29  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Expect window-activate when opening a combo box.
+
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Focus menuitems that don't have children when

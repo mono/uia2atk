@@ -53,6 +53,31 @@ namespace UiaAtkBridge
 			NotifyStateChange (state, RefStateSet ().ContainsState (state));
 		}
 		
+		protected void NotifyFocused (bool focused)
+		{
+			NotifyStateChange (Atk.StateType.Focused, focused);
+
+			Window focusWindow = null;
+			// FIXME: Gail sends the events in a slighly different order:
+			// window:activate , object:state-changed:focused, object:state-changed:active
+			if (focused) {
+				Atk.Object container = Parent;
+				while (container != null) {
+					if (container is Window) {
+						focusWindow = (Window)container;
+						TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (focusWindow);
+						break;
+					}
+					container = container.Parent;
+				}
+			}
+
+			if (focused)
+				Atk.Focus.TrackerNotify (this);
+			if (focusWindow != null)
+				focusWindow.SendActiveStateChange ();
+		}
+
 		public IRawElementProviderSimple Provider { get; private set; }
 
 		protected bool manages_removal = false;
@@ -92,26 +117,7 @@ namespace UiaAtkBridge
 				}
 
 				bool focused = (bool)e.NewValue;
-				Window focusWindow = null;
-				// FIXME: Gail sends the events in a slighly different order:
-				// window:activate , object:state-changed:focused, object:state-changed:activate
-				if (focused) {
-					Atk.Object container = Parent;
-					while (container != null) {
-						if (container is Window) {
-							focusWindow = (Window)container;
-							TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (focusWindow);
-							break;
-						}
-						container = container.Parent;
-					}
-				}
-
-				NotifyStateChange (Atk.StateType.Focused, focused);
-				if (focused)
-					Atk.Focus.TrackerNotify (this);
-				if (focusWindow != null)
-					focusWindow.SendActiveStateChange ();
+				NotifyFocused (focused);
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				bool offscreen = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Visible, !offscreen);

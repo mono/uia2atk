@@ -285,7 +285,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ListItem || type == BasicWidgetType.CheckedListItem)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
-			EventMonitor.Start ();
+			StartEventMonitor ();
 
 			int expectedNumOfWindows = GetTopLevelRootItem ().NAccessibleChildren;
 
@@ -321,6 +321,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (++expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
 				  "Windows in my app should be" + expectedNumOfWindows + 
 				  " now that I opened the pandora's box; but I got:" + DescribeChildren (GetTopLevelRootItem ()));
+				ExpectEvents (1, Atk.Role.Window, "window:activate");
 				Atk.Object newWindow = GetTopLevelRootItem ().RefAccessibleChild (1);
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
@@ -338,13 +339,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (accessible.Name, accessible.Parent.Parent.Name, "action on combobox item should yield selection");
 			
 			if (type == BasicWidgetType.CheckBox || type == BasicWidgetType.CheckedListItem) {
-
-				EventCollection events = EventMonitor.Pause ();
-				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-				string evType = "object:state-changed:checked";
-				EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
-				EventCollection typeEvs = checkboxEvs.FindByType (evType);
-				Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
+				ExpectEvents (1, Atk.Role.CheckBox, "object:state-changed:checked", 1);
 
 				if (type == BasicWidgetType.CheckBox &&
 				    validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
@@ -2207,6 +2202,15 @@ namespace UiaAtkBridgeTest
 			if (events == null)
 				events = EventMonitor.Pause ();
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
+		}
+
+		protected void ExpectEvents (int count, Atk.Role role, string evType, int detail1)
+		{
+			if (events == null)
+				events = EventMonitor.Pause ();
+			EventCollection evs = events.FindByRole (role).FindByType (evType).FindWithDetail1 (detail1.ToString ());
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
 		}
