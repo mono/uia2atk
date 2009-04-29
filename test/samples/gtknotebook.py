@@ -19,7 +19,7 @@ class Notebook:
         self.window.resize(400, 400)
 
         notebook = gtk.Notebook()
-        notebook.append_page(gtk.Label("Contents 1"), gtk.Label("Tab 1"))
+        notebook.append_page(gtk.Button("Contents 1"), gtk.Label("Tab 1"))
         notebook.append_page(gtk.Label("Contents 2"), gtk.Label("Tab 2"))
         self.window.add(notebook)
 

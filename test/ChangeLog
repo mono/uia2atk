@@ -1,3 +1,9 @@
+2009-04-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtknotebook.py: Use a button rather than a label,
+	because it can be focusable and is more representative for
+	testing the states.
+
 2009-04-27 Ray Wang <rawang@novell.com>
 
 	* testers/textbox_basic_ops.py: add a bug reference.
