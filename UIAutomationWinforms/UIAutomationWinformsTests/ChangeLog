@@ -1,3 +1,10 @@
+2009-04-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolStripLabelProviderTest.cs: Use a parented item in InvokeTest.
+	* ToolStripDropDownItemProviderTest.cs: Use parented items in most
+	tests. Expand InvokeTest to cover attempts to Invoke child items
+	when their parent menus are not visible (bugs #494586, #494917).
+
 2009-04-27  Brad Taylor  <brad@getcoded.net>
 
 	* ToolStripButtonProviderTest.cs: When CheckOnClick = true, test for

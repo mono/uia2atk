@@ -97,9 +97,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 				return;
 			}
 
+			SWF.ToolStrip currentParent = item.GetCurrentParent ();
+
+			// Invoking without a visible parent results in exceptions
+			if (currentParent == null || !currentParent.Visible)
+				return;
+
 			// Make sure selection changes, or else another item's
 			// dropdown menu might still appear.
-			if (item.Owner != null && item.GetCurrentParent () != null)
+			if (item.Owner != null)
 				item.Select ();
 			
 			// PerformClick does _not_ show/hide the DropDown, so

@@ -1,3 +1,8 @@
+2009-04-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Prevent Invoke if there is no visible parent. [Fixes #494586, #494917]
+
 2009-04-27  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 

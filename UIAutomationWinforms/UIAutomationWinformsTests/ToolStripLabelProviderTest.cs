@@ -105,7 +105,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void InvokeTest ()
 		{
-			ToolStripLabel menuItem = new ToolStripLabel ();
+			ToolStripLabel menuItem = item;
 			menuItem.IsLink = true;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			IInvokeProvider invokeProvider = (IInvokeProvider)
