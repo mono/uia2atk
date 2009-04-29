@@ -45,17 +45,14 @@ if app is None:
 ofdFrame = app.openFileDialogFrame
 
 ###############################################################################
-# click EnableVisible button to show openfiledialog page, then check subwidgets, 
-# HelpButon and ReadOnlyCheckBox are showing up
+# click EnableVisible button to show openfiledialog page, then check HelpButon 
+# and ReadOnlyCheckBox are showing up
 ###############################################################################
 
 ofdFrame.click(ofdFrame.enable_button)
 sleep(config.MEDIUM_DELAY)
-##BUG481357:ToggleButton in small button ToolBar is missing menuitems, but appears
-##a Window that shows them as children after click ToggleButton
-##BUG490105:accessible position and size of ToggleButton is incorrect 
-ofdFrame.assertWidgets()
-ofdFrame.assertVisibleWidget()
+ofdFrame.assertNormalElements()
+ofdFrame.assertVisibleElements()
 
 # close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
@@ -63,12 +60,17 @@ sleep(config.MEDIUM_DELAY)
 ofdFrame.opendialog.assertClosed()
 
 ############################################################################
-# click OpenDialog button to show openfiledialog page, then check subwidgets
+# click OpenDialog button to show openfiledialog page, then check all elements 
+# are showing up
 ############################################################################
 
 ofdFrame.click(ofdFrame.opendialog_button)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.assertWidgets()
+##BUG490105:accessible position and size of ToggleButton is incorrect 
+ofdFrame.assertNormalElements()
+ofdFrame.assertPopUpButtonElements()
+ofdFrame.assertSmallToolBarButtonElements()
+ofdFrame.assertDirComboBoxElements()
 
 ###########################################################
 # search for all widgets from "New Folder or File" dialog,
@@ -105,43 +107,45 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # click menuitem under dir_menu to check its AtkAction, move focus and selection
 # to recentlyused_menuitem, there is no "ANewFolder" folder on listview
-ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
-sleep(config.SHORT_DELAY)
-ofdFrame.press(ofdFrame.dir_combobox)
+ofdFrame.click(ofdFrame.recentlyused_menuitem, log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChange("ANewFolder")
-##MenuItems disappeared when select the first path from dirComboBox due to BUG484615
-'''
+# search for elements under dirCombobox again
+ofdFrame.assertDirComboBoxElements()
+
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
-statesCheck(samples_menuitem, "MenuItem")
 
-#use keyDown move focus and selection to desktop_menuitem
-ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=False)
+# use keyDown move focus and selection to desktop_menuitem
+## BUG499139: SWF has not provide keyUp/Down navigation
+#ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=True)
+#sleep(config.SHORT_DELAY)
+#statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
+#statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
+
+# move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
+ofdFrame.click(ofdFrame.mycomputer_menuitem, log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
-statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
+#ofdFrame.mouseClick()
+#sleep(config.SHORT_DELAY)
+ofdFrame.assertDirChange("My Computer")
+ofdFrame.assertDirComboBoxElements()
 
-#move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
-ofdFrame.itemClick(ofdFrame.mycomputer_menuitem)
+statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
+
+# regression test that click first and last dir menuitem doesn't crash app due to bug474611
+ofdFrame.click(ofdFrame.recentlyused_menuitem, log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("My Computer")
-#menuitems in dirComboBox is missing focused BUG490126
-statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
-statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
+ofdFrame.assertDirComboBoxElements()
 
-#regression test to click first and last dir menuitem doesn't crash app due to bug474611
-ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
+ofdFrame.click(ofdFrame.mynetwork_menuitem, log=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.mouseClick(ofdFrame)
-sleep(config.SHORT_DELAY)
-assert not ofdFrame.opendialog.assertClosed()
+ofdFrame.assertDirComboBoxElements()
 
-ofdFrame.itemClick(ofdFrame.mynetwork_menuitem)
-sleep(config.SHORT_DELAY)
-assert not ofdFrame.opendialog.assertClosed()
-'''
+# click dirCombobox to contract menu_item list
+ofdFrame.dir_combobox.mouseClick(log=False)
+
 ########################################
 # popUpButtonPanel and popUpButton test
 ########################################
@@ -152,7 +156,7 @@ assert not ofdFrame.opendialog.assertClosed()
 #statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
 # click popUpButton personal to rise focused, there is no "Personal" folder on listview
-ofdFrame.itemClick(ofdFrame.personal_popup)
+ofdFrame.click(ofdFrame.personal_popup, log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChange("Personal")
 #statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
@@ -171,23 +175,10 @@ ofdFrame.assertDirChange("My Computer")
 #statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
 #statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
-############################################################
-# test activate action for Tabel Cell to open folder or file
-############################################################
-##missing activate action BUG476365
-'''
-ofdFrame.click(ofdFrame.opendialog_button)
-sleep(config.MEDIUM_DELAY)
-# double click to open "README" file
-ofdFrame.openFolderOrFile("README")
-
-ofdFrame.click(ofdFrame.opendialog_button)
-sleep(config.MEDIUM_DELAY)
-# double click to enter "ANewFolder" folder
-ofdFrame.openFolderOrFile("ANewFolder")
-'''
 # close opendialog window
 ofdFrame.click(ofdFrame.cancel_button)
+sleep(config.SHORT_DELAY)
+ofdFrame.opendialog.assertClosed()
 
 # close application frame window
 ofdFrame.quit()
