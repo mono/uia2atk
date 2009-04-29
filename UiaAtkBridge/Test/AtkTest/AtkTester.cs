@@ -2144,6 +2144,11 @@ namespace UiaAtkBridgeTest
 
 		protected void Focus (Atk.Object accessible)
 		{
+			Focus (accessible, true);
+		}
+
+		protected void Focus (Atk.Object accessible, bool testState)
+		{
 			bool transient = (accessible.RefStateSet ().ContainsState (Atk.StateType.Transient));
 
 			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
@@ -2156,7 +2161,8 @@ namespace UiaAtkBridgeTest
 			EventCollection evs = events.FindByRole (focusedAccessible.Role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (expectedCount, evs.Count, "bad number of events expected!" + eventsInXml);
-			Assert.IsTrue (focusedAccessible.RefStateSet ().ContainsState (Atk.StateType.Focused), "List focused");
+			if (testState)
+				Assert.IsTrue (focusedAccessible.RefStateSet ().ContainsState (Atk.StateType.Focused), "List focused");
 		}
 
 		protected double GetMinimumValue (Atk.Value value)

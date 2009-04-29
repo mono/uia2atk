@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 	{
 		private ISelectionProvider		selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
+		private bool hasFocus = false;
 		
 		public DataGrid (IRawElementProviderFragment provider): base (provider)
 		{
@@ -43,6 +44,19 @@ namespace UiaAtkBridge
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 		}
 		
+		internal void HandleItemFocus (Adapter item, bool itemFocused)
+		{
+			bool tableFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+			if (hasFocus != tableFocused) {
+				NotifyStateChange (Atk.StateType.Focused, tableFocused);
+				if (tableFocused)
+					Atk.Focus.TrackerNotify (this);
+			}
+			if (itemFocused)
+				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+			hasFocus = tableFocused;
+		}
+
 		public int SelectionCount
 		{
 			get { return selectionHelper.SelectionCount; }

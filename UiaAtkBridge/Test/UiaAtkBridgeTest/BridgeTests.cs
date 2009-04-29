@@ -37,6 +37,7 @@ using System.Threading;
 //only used for the regression test:
 using SWF = System.Windows.Forms;
 using System.Drawing;
+using SD = System.Data;
 
 
 namespace UiaAtkBridgeTest
@@ -494,6 +495,33 @@ namespace UiaAtkBridgeTest
 			InterfaceAction (BasicWidgetType.TableCell, atkAction, tableCell);
 		}
 		
+		[Test]
+		public void DataGrid ()
+		{
+			SD.DataTable dataTable = new SD.DataTable ();
+			SD.DataColumn column = new SD.DataColumn ();
+			column.DataType = typeof (string);
+			dataTable.Columns.Add (column);
+			for (int i = 0; i < 2; i++)
+				dataTable.Rows.Add (dataTable.NewRow ());
+			dataTable.Rows [0] [0] = "r1c1";
+			dataTable.Rows [1] [0] = "r2c1";
+			datagrid.DataSource = dataTable;
+
+			Atk.Object accessible = GetAdapterForWidget (datagrid);
+
+			// I don't like this: no tree; should be a Table
+			Assert.AreEqual (Atk.Role.TreeTable, accessible.Role, "DataGrid Role");
+
+			// Column header and two cells
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren");
+
+			Atk.Object cell = accessible.RefAccessibleChild (2);
+			Assert.AreEqual (Atk.Role.TableCell, cell.Role, "cell Role");
+
+			// Calling Focus on the DataGrid appears not to work.
+			Focus (cell, false);
+		}
 
 		[Test]
 		public void DomainUpDown ()

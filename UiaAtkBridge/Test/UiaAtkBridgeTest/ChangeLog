@@ -1,3 +1,7 @@
+2009-04-28  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs, BridgeTests.cs, Makefile.am: Add DataGrid test.
+
 2009-03-12  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTests.cs: Test updated for Bug #479787.
