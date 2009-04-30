@@ -1111,11 +1111,13 @@ namespace Mono.UIAutomation.Winforms
 					return new ListItemProvider [0];
 				else {
 					if (comboboxProvider.ComboBoxCell.DataSource == null)  {
-						return new ListItemProvider [1] { 
-							GetItemProviderFrom (this,
-							                     comboboxProvider.ComboBoxCell.Value,
-							                     false) 
-								};
+						ListItemProvider itemProvider = GetItemProviderFrom (this,
+						                                                     comboboxProvider.ComboBoxCell.Value,
+						                                                     false);
+						if (itemProvider == null) // Dropping button down usually sets current value to null
+							return new ListItemProvider [0];
+							
+						return new ListItemProvider [1] { itemProvider };
 					} else {
 						ListItemProvider itemProvider = null;
 						foreach (ListItemProvider item in Items) {
