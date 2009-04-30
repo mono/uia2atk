@@ -50,6 +50,14 @@ namespace UiaAtkBridge
 		{
 		}
 
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			//because we're a container
+			states.RemoveState (Atk.StateType.Focused);
+			return states;
+		}
+
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == SelectionPatternIdentifiers.SelectionProperty) {
