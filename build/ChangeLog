@@ -1,3 +1,11 @@
+2009-04-30  Stephen G. Shaw  <stshaw@novell.com>
+
+	* specs/uiautomation.spec:
+	* specs/uiaatkbridge.spec:
+	* specs/uiadbuscorebridge.spec:
+	* specs/uiautomationwinforms.spec:
+	  Some clean ups to make the spec more fedora friendly
+
 2009-04-15  Stephen G. Shaw  <stshaw@novell.com>
 
 	* specs/uiadbuscorebridge.spec: Initial checkin

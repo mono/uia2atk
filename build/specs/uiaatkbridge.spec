@@ -1,24 +1,15 @@
 #
 # spec file for package UiaAtkBridge
 #
-# Copyright (c) 2008 SUSE Linux Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-#       
-# Please submit bugfixes or comments via http://bugs.opensuse.org/ 
-#            
-# norootforbuild 
-# 
 
 Name:           uiaatkbridge
 Version:	1.0
-Release:	0
+Release:	1
 License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-AutoReqProv:    on
 Requires:	mono-core gtk-sharp2
 Requires:	mono-uia mono-winfxcore at-spi 
 BuildRequires:	mono-devel gtk-sharp2
