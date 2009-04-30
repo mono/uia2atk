@@ -36,7 +36,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class DataGridViewProviderTest : BaseProviderTest
 	{
-		
+
 		#region Column tests
 
 		[Test]
@@ -102,12 +102,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			SWF.DataGridViewComboBoxColumn column = new SWF.DataGridViewComboBoxColumn ();
 			column.HeaderText = "CheckBox Column";
 			column.Items.AddRange ("1", "2", "3", "4", "5");
+
+			SWF.DataGridViewComboBoxCell cell = new SWF.DataGridViewComboBoxCell ();
+			SWF.DataGridViewComboBoxCell newCell = new SWF.DataGridViewComboBoxCell ();
 			
 			IRawElementProviderFragmentRoot provider 
 				= ColumnCellTest (column,
-				                  new SWF.DataGridViewComboBoxCell (),
+				                  cell,
 				                  true,
-				                  new SWF.DataGridViewComboBoxCell ());
+				                  newCell);
 
 			// Lets test navigation.
 
@@ -130,6 +133,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// ComboBox should have 2 children. Button and ListBox
 			int children = 0;
+			
+			IRawElementProviderFragmentRoot comboboxProvider = child as IRawElementProviderFragmentRoot;
 
 			child = child.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
@@ -137,6 +142,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 			Assert.AreEqual (2, children, "ComboBox.Children");
+			
+			// Exposes #493520
+			// cell should be the first combobox
+			cell.Value = "1";
+			ISelectionProvider selectionProvider 
+				= (ISelectionProvider) comboboxProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (selectionProvider, "Selection Provider missing");
+			IRawElementProviderSimple []selection = selectionProvider.GetSelection ();
+			Assert.IsNotNull (selection, "Selection is null");
+
+			foreach (IRawElementProviderSimple selected in selection)
+				Assert.IsNotNull (selected, "Selected is null");
+
+			cell.Value = null;
+			selection = selectionProvider.GetSelection ();
+			Assert.IsNotNull (selection, "Selection is null");
+
+			foreach (IRawElementProviderSimple selected in selection)
+				Assert.IsNotNull (selected, "Selected is null");
 		}
 
 		[Test]

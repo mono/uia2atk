@@ -1,3 +1,8 @@
+2009-04-30  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationWinformsTests/DataGridViewProviderTest.cs: Tests requesting GetSelection
+	when ComboBox cell is null value. For bug #493520.
+
 2009-04-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolStripLabelProviderTest.cs: Use a parented item in InvokeTest.
