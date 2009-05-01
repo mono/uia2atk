@@ -1,3 +1,7 @@
+2009-05-01  Brad Taylor  <brad@getcoded.net>
+
+	* Tree.cs: Make sure that Name is never set. [Fixes #486721]
+
 2009-04-29  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs, ComboBoxItem.cs, ComboBoxDropDown.cs, TopLevelRootItem.cs:

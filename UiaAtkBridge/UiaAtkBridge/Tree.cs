@@ -146,17 +146,11 @@ namespace UiaAtkBridge
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 		}
-
-		protected override void UpdateNameProperty (string newName, bool fromCtor)
-		{
-			// ControlType.Tree returns Name from one static label, Atk returns ""
-		}
 		
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
 			if (childToRemove == selectedItem) {
 				selectedItem = null;
-				Name = String.Empty;
 			}
 			base.RemoveChild (childToRemove);
 		}
@@ -273,7 +267,6 @@ namespace UiaAtkBridge
 				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
 			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
-			Name = selectedItem.Name;
 		}
 
 		internal void NotifyItemSelectionRemoved (Adapter item)
@@ -282,7 +275,6 @@ namespace UiaAtkBridge
 				return;
 			item.NotifyStateChange (Atk.StateType.Selected, false);
 			selectedItem = null;
-			Name = String.Empty;
 		}
 
 		public Atk.Object RefAt (int row, int column)
