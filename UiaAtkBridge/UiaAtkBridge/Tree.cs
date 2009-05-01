@@ -145,6 +145,9 @@ namespace UiaAtkBridge
 			Role = Atk.Role.TreeTable;
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
+
+			hasFocus = (bool) Provider.GetPropertyValue (
+				AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 		}
 		
 		internal override void RemoveChild (Atk.Object childToRemove)
@@ -163,6 +166,11 @@ namespace UiaAtkBridge
 				return states;
 
 			states.AddState (Atk.StateType.ManagesDescendants);
+			
+			if (hasFocus)
+				states.AddState (Atk.StateType.Focused);
+			else
+				states.RemoveState (Atk.StateType.Focused);
 
 			return states;
 		}

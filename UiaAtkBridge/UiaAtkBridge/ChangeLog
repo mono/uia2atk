@@ -1,5 +1,10 @@
 2009-05-01  Brad Taylor  <brad@getcoded.net>
 
+	* Tree.cs: Set hasFocus initially just in case it was focused before we
+	started listening to events.  [Fixes #476786]
+
+2009-05-01  Brad Taylor  <brad@getcoded.net>
+
 	* Tree.cs: Make sure that Name is never set. [Fixes #486721]
 
 2009-04-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
