@@ -1,5 +1,10 @@
 2009-05-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* samples/button_label_linklabel.py: One more
+	DirectorySeparatorChar to go.
+
+2009-05-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* samples/button_label_linklabel.py: Make this crossplatform.
 
 2009-04-29  Andrés G. Aragoneses  <aaragoneses@novell.com>

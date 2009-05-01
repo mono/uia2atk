@@ -27,7 +27,7 @@ from System.Windows.Forms import *
 import System
 
 harness_dir = path[0]
-i = harness_dir.rfind("/")
+i = harness_dir.rfind(System.IO.Path.DirectorySeparatorChar)
 uiaqa_path = harness_dir[:i]
 
 class RunApp(Form):
