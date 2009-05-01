@@ -81,7 +81,8 @@ class RunApp(Form):
         self.button4.Name = "button4"
         self.button4.Text = "button4"
         self.button4.Location = Point(10,130)
-        self.button4.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+        imgsubpath = "%s" + System.IO.Path.DirectorySeparatorChar + "samples" + System.IO.Path.DirectorySeparatorChar + "opensuse60x38.gif"
+        self.button4.Image = Image.FromFile(imgsubpath % uiaqa_path)
         self.button4.AutoSize = True
 
         # set up LinkLabel control
