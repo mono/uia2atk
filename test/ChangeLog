@@ -1,3 +1,12 @@
+2009-05-04  Calen Chen <cachen@novell.com>
+
+	* testers/statusbarpanel/statusbarpanelframe.py: correct syntax error
+
+2009-04-30  Calen Chen <cachen@novell.com>
+
+	* testers/opendfiledialog/openfiledialogframe.py,
+	* testers/openfiledialog_basic_ops.py: update due to but fixed
+
 2009-05-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/button_label_linklabel.py: One more

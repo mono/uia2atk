@@ -54,7 +54,6 @@ class StatusBarPanelFrame(accessibles.Frame):
         try:
             accessible._accessible.queryEditableText()
         except NotImplementedError:
-            print "aaaaa", return
             return
         assert False, "%s should not implement the EditableText interface" % accessible
 
