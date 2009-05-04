@@ -1,3 +1,7 @@
+2009-05-04 Marco Skambraks <marco@suse.de>
+	* added statusbar.py, statusbarpanel.py, linklabel.py, button_label_linklabel.py
+	* some cleanup
+
 2009-04-28 Marco Skambraks <marco@suse.de>
 
 	* removed debug output  (2009...) from keystrokes/winforms
