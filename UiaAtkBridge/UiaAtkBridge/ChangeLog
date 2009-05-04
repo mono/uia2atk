@@ -1,3 +1,13 @@
+2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TabPage.cs:
+	* Makefile.am:
+	* UiaAtkBridge.mdp:
+	* TextContainer.cs:
+	* AutomationBridge.cs: The Focused state doesn't map exactly
+	to the HasKeyboardFocus property/event for TabControl in UIA,
+	so we need these tweaks. Fixes #464071.
+
 2009-05-01  Brad Taylor  <brad@getcoded.net>
 
 	* Tree.cs: Set hasFocus initially just in case it was focused before we

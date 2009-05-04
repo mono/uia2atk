@@ -37,11 +37,7 @@ namespace UiaAtkBridge
 		
 		public TextContainer (IRawElementProviderSimple provider): base (provider)
 		{
-			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.StatusBar.Id)
-				Role = Atk.Role.Statusbar;
-			else if (controlTypeId == ControlType.TabItem.Id)
-				Role = Atk.Role.PageTab;
+			Role = Atk.Role.Statusbar;
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 		}
@@ -165,19 +161,6 @@ namespace UiaAtkBridge
 		{
 			// TODO
 			Log.Warn ("TextContainer: RaiseStructureChangedEvent not implemented.");
-		}
-		
-		protected override Atk.StateSet OnRefStateSet ()
-		{
-			Atk.StateSet states = base.OnRefStateSet ();
-
-			if (states.ContainsState (Atk.StateType.Defunct))
-				return states;
-
-			if (Role == Atk.Role.PageTab) 
-				states.AddState (Atk.StateType.MultiLine);
-
-			return states;
 		}
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)

@@ -1,3 +1,10 @@
+2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: The Focused
+	state doesn't map exactly to the HasKeyboardFocus
+	property/event for TabControl in UIA, so we need these tweaks.
+	Fixes #464071.
+
 2009-04-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Prevent returning null
