@@ -1,0 +1,69 @@
+2009-04-28 Marco Skambraks <marco@suse.de>
+
+	* removed debug output  (2009...) from keystrokes/winforms
+
+
+2009-04-20 Marco Skambraks <marco@suse.de>
+
+	* added errorprovider and helpprovider test
+
+2009-04-06 Marco Skambraks <marco@suse.de>
+
+	* added vscrollbar and hscrollbar test
+
+
+2009-03-19 Marco Skambraks <marco@suse.de>
+
+	* basic maskedtextbox tesst
+	* just enter 12/12/2009
+	* jump to the other textboxes with tab and check the output
+
+2009-03-13 Marco Skambraks <marco@suse.de>
+
+	* added tabpage.py
+	* jump from tab 0 to tab 1 and switch to flat-review
+2009-03-09 Marco Skambraks <marco@suse.de>
+
+	* added groupbox.py
+	* checking button focus and counter
+
+2009-02-16 Marco Skambraks <marco@suse.de>
+
+	* added flat-review check to checkbox.py
+
+2009-02-13 Marco Skambraks <marco@suse.de>
+
+	* initial test for checkbox.py
+	* not ready yet - problem with Bananas checkbox
+	* checkbox triggers focus event, but no braille and speech output
+
+2009-02-12 Marco Skambraks <marco@suse.de>
+
+	* added panel.py
+	* current problem is the Female radiobutton
+
+
+2009-02-11 Marco Skambraks <marco@suse.de>
+
+- changed value in "which item and how many" test
+
+2009-02-11 Marco Skambraks <marco@suse.de>
+
+	* added a check for: which item and how many in total (orca KP_Enter)
+
+2009-02-06 Marco Skambraks <marco@suse.de>
+
+	* added progressbar.py
+
+2009-02-06 Marco Skambraks <marco@suse.de>
+
+	* winradiobutton.py
+	* braille line and visible was different in the test
+	* line=& y visible=&=y - now both have a checked radiobutton
+
+2009-02-06 Marco Skambraks <marco@suse.de>
+
+	* added monotest.settings
+	* added test for listbox_single_column.py
+	* modified the tests to work with monotest.settings
+
