@@ -31,7 +31,8 @@ class Range(object):
     ACTIVATE = "activate"
 
 class TreeViewTableCell:
-    actions = (ACTIVATE, )
+    CLICK = "click"
+    actions = (CLICK, )
 
 class CheckBox(Button):
     pass

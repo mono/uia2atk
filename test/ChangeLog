@@ -1,3 +1,8 @@
+2009-05-05 Felicia Mu <fxmu@novell.com>
+
+	* testers/actions.py: According to BUG475864's comment, the default
+	state of treeviewtablecell should be "click".
+
 2009-05-04  Calen Chen <cachen@novell.com>
 
 	* testers/statusbarpanel/statusbarpanelframe.py: correct syntax error
