@@ -88,7 +88,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		}
 		
 		public bool IsReadOnly {
-			get { return false; }
+			get { return provider.Column.ReadOnly; }
 		}
 		
 		public string Value {
@@ -101,11 +101,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 
 		private void PerformSetValue (string value)
 		{
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
 			if (provider.ItemProvider.Control.InvokeRequired) {
 				provider.ItemProvider.Control.BeginInvoke (new DataItemSetValueDelegate (PerformSetValue),
 				                                           new object [] { value } );
 				return;
 			}
+			
 		 	try {
 				provider.ItemProvider.SetEditValue (provider, value);
 			} catch (Exception e) {

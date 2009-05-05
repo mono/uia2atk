@@ -215,7 +215,62 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 
-		#endregion
+		[Test]
+		public void ReadOnlyTest ()
+		{
+			using (SWF.Form form = new SWF.Form ()) {
+				SWF.DataGrid datagrid = GetControlInstance () as SWF.DataGrid;
+				datagrid.ColumnHeadersVisible = true;
+				form.Controls.Add (datagrid);
+				form.Show ();
+
+				SWF.DataGridTableStyle style = new SWF.DataGridTableStyle ();
+				style.MappingName = "MyTable";
+				style.GridColumnStyles.Clear ();
+
+				SWF.DataGridTextBoxColumn col = new SWF.DataGridTextBoxColumn ();
+				col.MappingName = col.HeaderText = "MyColumn1";
+				col.ReadOnly = true;
+				style.GridColumnStyles.Add (col);
+
+				col = new SWF.DataGridTextBoxColumn ();
+				col.MappingName = col.HeaderText = "MyColumn2";
+				col.ReadOnly = false;
+				style.GridColumnStyles.Add (col);
+
+				datagrid.TableStyles.Clear ();
+				datagrid.TableStyles.Add (style);
+
+				IRawElementProviderFragment datagridProvider 
+					= (IRawElementProviderFragment) GetProviderFromControl (datagrid);
+
+				IRawElementProviderFragment child = datagridProvider.Navigate (
+					NavigateDirection.FirstChild);
+				while (child != null) {
+					int controlType = (int) child.GetPropertyValue (
+						AutomationElementIdentifiers.ControlTypeProperty.Id);
+					if (controlType == ControlType.DataItem.Id
+					    && (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) == "hello 1")
+						break;
+
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+
+				child = child.Navigate (NavigateDirection.FirstChild);
+
+				Assert.AreEqual (typeof (DataGridProvider.DataGridDataItemEditProvider), child.GetType ());
+
+				Assert.AreEqual ("hello 1", (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+
+				IValueProvider valueProvider = child.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
+
+				Assert.IsNotNull (valueProvider, "Child does not support ValueProvider!");
+				Assert.IsTrue (valueProvider.IsReadOnly, "Child is not read only.");
+			}
+		}
+
+		#endregion 
 
 		#region Navigation Tests
 
@@ -280,7 +335,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			dataTable.Columns.Add (new DataColumn ("MyColumn1"));
 			dataTable.Columns.Add (new DataColumn ("MyColumn2"));
 
-            for (int index = 0; index < Elements; index++) {
+			for (int index = 0; index < Elements; index++) {
 				DataRow row = dataTable.NewRow ();
 				row ["MyColumn1"] = string.Format ("hello {0}", index);
 				row ["MyColumn2"] = string.Format ("world {0}", index);
@@ -290,7 +345,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			DataSet dataset = new DataSet ();
 			dataset.Tables.Add (dataTable);
 
-            datagrid.DataSource = dataset;
+			datagrid.DataSource = dataset;
 			datagrid.DataMember = "MyTable";
 			datagrid.CaptionVisible = false;
 			return datagrid;
@@ -376,36 +431,35 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#endregion
 	}
 
-
-    public class BindableReadonlyElement
-    {
+	public class BindableReadonlyElement
+	{
 		public BindableReadonlyElement (int integer, string name)
-        {
-            this.integer = integer;
-            this.name = name;
-        }
+		{
+			this.integer = integer;
+			this.name = name;
+		}
 
-        public int Integer {
-            get { return integer; }
-        }
+		public int Integer {
+			get { return integer; }
+		}
 
-        public string Name {
-            get { return name;  }
-        }
+		public string Name {
+			get { return name;  }
+		}
 
-        private int integer;
-        private string name;
-    }
+		private int integer;
+		private string name;
+	}
 
-    public class BindableReadWriteElement
-    {
-        public BindableReadWriteElement (int integer, string name)
-        {
-            Integer = integer;
-            Name = name;
-        }
+	public class BindableReadWriteElement
+	{
+		public BindableReadWriteElement (int integer, string name)
+		{
+			Integer = integer;
+			Name = name;
+		}
 
-        public int Integer { get; set; }
-        public string Name { get; set; }
-    }
+		public int Integer { get; set; }
+		public string Name { get; set; }
+	}
 }

@@ -1,3 +1,8 @@
+2009-05-05  Brad Taylor  <brad@getcoded.net>
+
+	* DataGridProviderTest.cs: Verify that cells whose column is read only
+	return true for IsReadOnly.
+
 2009-04-30  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationWinformsTests/DataGridViewProviderTest.cs: Tests requesting GetSelection
