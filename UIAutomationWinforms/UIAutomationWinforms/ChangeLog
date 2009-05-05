@@ -1,3 +1,9 @@
+2009-05-05  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs: 
+	If the column is read only, make sure the cell provider returns true
+	from IsReadOnly.  [Fixes #479796]
+
 2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/TabPageProvider.cs: The Focused
