@@ -1,3 +1,7 @@
+2009-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* DialogTester.cs: Expect 5 PopupButtonPanel children, not 6.
+
 2009-05-06  Neville Gao  <nevillegao@gmail.com>
 
 	* BridgeTests.cs: Tested ToolBarDropDownButton.
