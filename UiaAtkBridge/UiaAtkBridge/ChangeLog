@@ -1,3 +1,8 @@
+2009-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs: Check whether defunct before setting relations.
+	[Fixes bug#491053]
+
 2009-05-06  Neville Gao  <nevillegao@gmail.com>
 
 	* ExpandCollapseButton.cs: Added 'focusable' state in

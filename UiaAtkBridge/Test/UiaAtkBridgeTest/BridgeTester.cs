@@ -372,7 +372,7 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
-		public override object ActivateAdditionalForm (string name)
+		public override Atk.Object ActivateAdditionalForm (string name)
 		{
 			SWF.Form f = new SWF.Form ();
 			f.Text = name;
@@ -380,12 +380,12 @@ namespace UiaAtkBridgeTest
 			f.Controls.Add (button);
 			f.Show ();
 			button.Focus ();
-			return f;
+			return GetAdapterForWidget (f);
 		}
 
-		public override void RemoveAdditionalForm (object obj)
+		public override void RemoveAdditionalForm (Atk.Object obj)
 		{
-			SWF.Form f = (SWF.Form)obj;
+			SWF.Form f = (SWF.Form)mappings [obj];
 			f.Close ();
 			butWithImage.Focus ();
 		}
