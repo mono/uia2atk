@@ -1,3 +1,8 @@
+2009-05-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DialogTester.cs: Fix most threading problems in dialog
+	tests.
+
 2009-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* DialogTester.cs: Expect 5 PopupButtonPanel children, not 6.

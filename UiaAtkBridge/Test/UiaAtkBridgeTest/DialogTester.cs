@@ -32,9 +32,8 @@ namespace UiaAtkBridgeTest
 {
 
 	[TestFixture]
-	[Ignore ("Run this TestFixture independently from the BridgeTester")]
 	public class DialogTester {
-		
+
 		[Test]
 		public void OpenFileDialog ()
 		{
@@ -100,22 +99,21 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
-		
+		//TODO: test Atk.Role.Dialog when using ShowDialog() [currently threading problems]
 		private void VerifyBasicProperties (System.ComponentModel.Component dialog)
 		{
 			UiaAtkBridge.Window dialogAdapter = BridgeTester.GetAdapterForWidget (dialog) as UiaAtkBridge.Window;
 			Assert.IsNotNull (dialogAdapter, "dialogAdapter has a different type than Window");
-			Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
 			Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
 		}
 	}
-	
+
 	public class DialogRunner : IDisposable
 	{
 		private SWF.CommonDialog commonDialog;
 		private SWF.ThreadExceptionDialog threadExceptionDialog;
-		private Thread dialogThread;
-		
+		private SWF.Form f;
+
 		public DialogRunner (System.ComponentModel.Component dialog)
 		{
 			commonDialog = dialog as SWF.CommonDialog;
@@ -123,10 +121,8 @@ namespace UiaAtkBridgeTest
 				threadExceptionDialog = dialog as SWF.ThreadExceptionDialog;
 			if (commonDialog == null && threadExceptionDialog == null)
 				throw new ArgumentException ("Unsupported dialog type: " + dialog);
-			
-			dialogThread = new Thread (new ThreadStart (Show));
-			dialogThread.Start ();
-			Thread.Sleep (10000);
+
+			Show ();
 		}
 
 		public void Dispose ()
@@ -141,24 +137,23 @@ namespace UiaAtkBridgeTest
 				threadExceptionDialog.Close ();
 				threadExceptionDialog.Dispose ();
 			}
-
-			if (dialogThread != null)
-				dialogThread.Abort ();
 		}
 
 		private void Show ()
 		{
-			if (commonDialog != null)
-				commonDialog.ShowDialog ();
+			if (commonDialog != null) {
+				var fi = typeof (SWF.CommonDialog).GetField ("form",
+				           System.Reflection.BindingFlags.Instance |
+				           System.Reflection.BindingFlags.NonPublic);
+				f = (SWF.Form)fi.GetValue (commonDialog);
+			}
 			else if (threadExceptionDialog != null)
-				threadExceptionDialog.ShowDialog ();
+				f = threadExceptionDialog;
+			f.Show ();
 		}
 
-		public System.ComponentModel.Component Dialog {
-			get {
-				return (System.ComponentModel.Component) commonDialog ??
-					(System.ComponentModel.Component) threadExceptionDialog;
-			}
+		public SWF.Form Dialog {
+			get { return f; }
 		}
 	}
 }
