@@ -69,8 +69,8 @@ namespace UiaAtkBridgeTest
 
 		public abstract void SetReadOnly (BasicWidgetType type, Atk.Object accessible, bool readOnly);
 
-		public abstract object ActivateAdditionalForm (string name);
-		public abstract void RemoveAdditionalForm (object obj);
+		public abstract Atk.Object ActivateAdditionalForm (string name);
+		public abstract void RemoveAdditionalForm (Atk.Object obj);
 
 		public abstract Atk.Object GetTopLevelRootItem ();
 

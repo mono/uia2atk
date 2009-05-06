@@ -1,3 +1,10 @@
+2009-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Re-define ActivateAdditionalForm to reutrn an
+	Atk object.
+	Test that RefRelationSet doesn't return an exception after an object
+	is disposed [bug 491053].
+
 2009-04-29  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Expect window-activate when opening a combo box.

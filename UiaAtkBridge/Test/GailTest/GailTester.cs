@@ -126,7 +126,7 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
-		public override object ActivateAdditionalForm (string name)
+		public override Atk.Object ActivateAdditionalForm (string name)
 		{
 			Gtk.Window win = new Gtk.Window (name);
 			Gtk.Button button = new Gtk.Button ("test");
@@ -135,13 +135,14 @@ namespace UiaAtkBridgeTest
 				win.Show ();
 				button.GrabFocus ();
 			});
-			return win;
+			mappings [win.Accessible] = win;
+			return win.Accessible;
 		}
 
-		public override void RemoveAdditionalForm (object obj)
+		public override void RemoveAdditionalForm (Atk.Object obj)
 		{
 			RunInGuiThread (delegate () {
-				Gtk.Window win = (Gtk.Window)obj;
+				Gtk.Window win = (Gtk.Window)mappings [obj];
 				win.Hide ();
 				GailTestApp.MainClass.GiveMeARealButton (true).GrabFocus ();
 			});

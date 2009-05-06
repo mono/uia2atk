@@ -1,5 +1,9 @@
 2009-05-06  Mike Gorse  <mgorse@novell.com>
 
+	* UiaAtkBridgeTest.cs: Modify ActivateAdditionalForm to return an Atk object.
+
+2009-05-06  Mike Gorse  <mgorse@novell.com>
+
 	* DialogTester.cs: Expect 5 PopupButtonPanel children, not 6.
 
 2009-04-28  Mike Gorse  <mgorse@novell.com>

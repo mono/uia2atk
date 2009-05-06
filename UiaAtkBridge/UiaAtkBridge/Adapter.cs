@@ -240,6 +240,9 @@ namespace UiaAtkBridge
 		{
 			Atk.RelationSet relationSet = base.OnRefRelationSet ();
 
+			if (defunct)
+				return relationSet;
+
 			if (Role == Atk.Role.ScrollBar 
 			    || Role == Atk.Role.RadioButton)
 				return relationSet;

@@ -1,3 +1,7 @@
+2009-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* GailTester.cs: Modify ActivateAdditionalForm to return an Atk object.
+
 2009-04-29  Mike Gorse  <mgorse@novell.com>
 
 	* GailTester.cs: Set focus in the gui thread when removing an

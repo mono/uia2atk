@@ -45,7 +45,7 @@ namespace UiaAtkBridgeTest
 					BridgeTester.GetAdapterForWidget (runner.Dialog) as UiaAtkBridge.Window;
 
 				Atk.Object popupButtonPanelAdapter = dialogAdapter.RefAccessibleChild (10);
-				Assert.AreEqual (5, popupButtonPanelAdapter.NAccessibleChildren, "PopupButtonPanel (toolbar) should have 6 children");
+				Assert.AreEqual (5, popupButtonPanelAdapter.NAccessibleChildren, "PopupButtonPanel (toolbar) should have 5 children");
 
 				Atk.Object popupButtonAdapter1 = popupButtonPanelAdapter.RefAccessibleChild (0).RefAccessibleChild (0);
 				AtkTester.States (popupButtonAdapter1,
