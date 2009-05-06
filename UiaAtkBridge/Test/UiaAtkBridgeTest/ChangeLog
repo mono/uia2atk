@@ -1,3 +1,8 @@
+2009-05-06  Neville Gao  <nevillegao@gmail.com>
+
+	* BridgeTests.cs: Tested ToolBarDropDownButton.
+	* BridgeTester.cs: Added DropDown style ToolBarButton. [Fixes Bug #48136]
+	
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Focus menuitems that don't have children

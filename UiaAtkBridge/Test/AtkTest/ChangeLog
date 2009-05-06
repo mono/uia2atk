@@ -1,3 +1,8 @@
+2009-05-06  Neville Gao  <nevillegao@gmail.com>
+
+	* BasicWidgetType.cs:
+	* AtkTester.cs: Split ToolBarButton into two styles. [Fixes Bug #481362]
+
 2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: The Focused state doesn't map exactly to the

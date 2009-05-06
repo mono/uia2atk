@@ -42,6 +42,14 @@ namespace UiaAtkBridge
 
 			Role = Atk.Role.ToggleButton;
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.Focusable);
+
+			return states;
+		}
 		
 #region Atk.Action Implementation
 		public int NActions {

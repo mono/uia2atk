@@ -1031,9 +1031,9 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test] //TODO: move to AtkTests.cs (along with ToolStripButton) and call it from here
-		public void ToolBarButton ()
+		public void ToolBarPushButton ()
 		{
-			BasicWidgetType type = BasicWidgetType.ToolbarButton;
+			BasicWidgetType type = BasicWidgetType.ToolBarPushButton;
 
 			string name = "test-caption";
 			Atk.Object accessible = GetAccessible (type, name);
@@ -1080,6 +1080,26 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+		}
+
+		[Test]
+		public void ToolBarDropDownButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolBarDropDownButton;
+
+			string name = "dropdownbutton";
+			Atk.Object accessible = GetAccessible (type, name);
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (Atk.Role.Filler, accessible.Parent.Role);
+			Assert.AreEqual (0, accessible.NAccessibleChildren);
+
+			States (accessible,
+			        Atk.StateType.Enabled,
+			        Atk.StateType.Focusable,
+			        Atk.StateType.Sensitive,
+			        Atk.StateType.Showing,
+			        Atk.StateType.Visible);
 		}
 
 		[Test] //TODO: move to AtkTests.cs (along with ToolBarButton) and call it from here

@@ -1,3 +1,8 @@
+2009-05-06  Neville Gao  <nevillegao@gmail.com>
+
+	* ExpandCollapseButton.cs: Added 'focusable' state in
+	ToolBarDropDownButton. [Fixes Bug #481362]
+
 2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TabPage.cs:
