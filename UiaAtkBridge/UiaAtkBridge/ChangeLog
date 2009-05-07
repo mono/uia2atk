@@ -1,3 +1,7 @@
+2009-05-07  Brad Taylor  <brad@getcoded.net>
+
+	* Tree.cs: Fix test breakage introduced by the fix for #486721.
+
 2009-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs: Check whether defunct before setting relations.

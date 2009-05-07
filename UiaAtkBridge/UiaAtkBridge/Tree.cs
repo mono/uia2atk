@@ -154,8 +154,16 @@ namespace UiaAtkBridge
 		{
 			if (childToRemove == selectedItem) {
 				selectedItem = null;
+
+				if (!String.IsNullOrEmpty (Name)) 
+					Name = String.Empty;
 			}
 			base.RemoveChild (childToRemove);
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			// Don't allow the name to be set
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -275,6 +283,10 @@ namespace UiaAtkBridge
 				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
 			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
+			
+			if ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+			    != ControlType.Tree.Id)
+				Name = selectedItem.Name;
 		}
 
 		internal void NotifyItemSelectionRemoved (Adapter item)
@@ -283,6 +295,9 @@ namespace UiaAtkBridge
 				return;
 			item.NotifyStateChange (Atk.StateType.Selected, false);
 			selectedItem = null;
+
+			if (!String.IsNullOrEmpty (Name)) 
+				Name = String.Empty;
 		}
 
 		public Atk.Object RefAt (int row, int column)
