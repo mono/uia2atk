@@ -299,7 +299,7 @@ namespace Mono.UIAutomation.Winforms
 					  new Events.DateTimePicker.AutomationNamePropertyEvent (
 						this, rootProvider));
 
-				SetEvent (ProviderEventType.AutomationElementNameProperty,
+				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty,
 					  new PartAutomationIsEnabledPropertyEvent (this));
 			}
 

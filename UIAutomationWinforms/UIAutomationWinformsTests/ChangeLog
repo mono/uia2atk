@@ -1,3 +1,8 @@
+2009-05-07  Brad Taylor  <brad@getcoded.net>
+
+	* DateTimePickerProviderTest.cs: Ensure that the
+	AutomationNamePropertyEvent is properly raised.
+
 2009-05-05  Brad Taylor  <brad@getcoded.net>
 
 	* DataGridProviderTest.cs: Verify that cells whose column is read only

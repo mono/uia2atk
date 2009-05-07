@@ -1,3 +1,8 @@
+2009-05-07  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: Fix a typo
+	where AutomationNamePropertyEvent was being overridden.
+
 2009-05-05  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs: 
