@@ -213,6 +213,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					Assert.AreEqual (1, bridge.GetAutomationPropertyEventCount (
 						RangeValuePatternIdentifiers.ValueProperty), "Event count");
 
+					Assert.AreEqual (3, bridge.GetAutomationPropertyEventCount (
+						AutomationElementIdentifiers.NameProperty),
+						"NameProperty Event count");
+
 					rangeValueProvider.SetValue (awesome_values[i]);
 
 					picker.ShowCheckBox = true;
