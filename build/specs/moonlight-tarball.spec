@@ -39,11 +39,11 @@ svn co svn://151.155.5.148/source/trunk/moon moon
 %{?configure_options}
 cd moon
 sh autogen.sh
-%configure 
 
 %install
 %{?env_options}
 touch DUMMY
+cd moon
 make dist-bzip2
 
 %clean
