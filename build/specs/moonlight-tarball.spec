@@ -11,7 +11,7 @@ Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  gtk-sharp2 mono-devel monodoc-core rsvg2-sharp
 BuildRequires:  alsa-devel gcc-c++ gtk2-devel
-BuildRequires:  libpulse-devel
+BuildRequires:  libpulse-devel bc
 BuildRequires:  libexpat-devel mozilla-xulrunner190-devel
 
 %description
