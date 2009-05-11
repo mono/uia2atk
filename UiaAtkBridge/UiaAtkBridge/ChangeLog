@@ -1,3 +1,11 @@
+2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Menu.cs:
+	* Adapter.cs:
+	* MenuBar.cs:
+	* MenuItem.cs: Rework Selected&Focused states of ParentMenus
+	and MenuItems. Fixes #479397 and #485524.
+
 2009-05-07  Brad Taylor  <brad@getcoded.net>
 
 	* Tree.cs: Fix test breakage introduced by the fix for #486721.

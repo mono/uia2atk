@@ -71,7 +71,7 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public bool IsChildSelected (int i)
+		public virtual bool IsChildSelected (int i)
 		{
 			return selectedChild == i;
 		}

@@ -1,3 +1,10 @@
+2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Rework Selected&Focused states of ParentMenus and MenuItems.
+	Fixes #479397 and #485524.
+
 2009-05-11  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

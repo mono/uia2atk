@@ -147,12 +147,10 @@ namespace UiaAtkBridgeTest
 			cbDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			cbDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
 			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-
 			tbx1.Multiline = false;
 			toolStripTextBox1.Multiline = false;
 			tbx2.Multiline = true;
 			toolStripTextBox2.Multiline = true;
-
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
@@ -292,6 +290,16 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
+		public override bool IsBGO580460Addressed ()
+		{
+			return true;
+		}
+
+		public override bool IsBGO580452Addressed ()
+		{
+			return true;
+		}
+
 		public override void CloseContextMenu (Atk.Object accessible)
 		{
 			var comp = mappings [accessible];
@@ -385,8 +393,10 @@ namespace UiaAtkBridgeTest
 
 		public override void RemoveAdditionalForm (Atk.Object obj)
 		{
-			SWF.Form f = (SWF.Form)mappings [obj];
-			f.Close ();
+			if (obj != null) {
+				SWF.Form f = (SWF.Form)mappings [obj];
+				f.Close ();
+			}
 			butWithImage.Focus ();
 		}
 		public override object CastToAtkInterface (Type t, Atk.Object accessible)
@@ -542,7 +552,7 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
-				
+
 			case BasicWidgetType.CheckedListBox:
 				SWF.CheckedListBox clistBox = new SWF.CheckedListBox ();
 				if (real)
@@ -629,7 +639,7 @@ namespace UiaAtkBridgeTest
 				}
 				accessible = GetAdapterForWidget (tssb);
 				break;
-				
+
 			case BasicWidgetType.ToolStripDropDownButton:
 				while (tsddb.DropDownItems.Count > 0)
 					tsddb.DropDownItems.Remove (tsddb.DropDownItems [0]);

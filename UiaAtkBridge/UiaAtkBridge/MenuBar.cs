@@ -55,5 +55,13 @@ namespace UiaAtkBridge
 			//TODO
 			return;
 		}
+
+		public override bool IsChildSelected (int i)
+		{
+			if ((i < 0) || (i >= NAccessibleChildren))
+				return false;
+			return ((Adapter) RefAccessibleChild (i)).IsFocused;
+		}
+
 	}
 }
