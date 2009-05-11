@@ -85,6 +85,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			picker.ShowUpDown = false;
 
+			// The checkbox will get focus first, so from then on,
+			// we'll get 2 HasKeyboardFocusProperty events
+			picker.ShowCheckBox = true;
+			picker.Focus ();
+
 			picker.Format = DateTimePickerFormat.Long;
 			picker.Value = awesome;
 
@@ -104,21 +109,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple child
 				= ((IRawElementProviderFragmentRoot) pickerProvider)
 					.Navigate (NavigateDirection.FirstChild);
+
+			TestProperty (child,
+				      AutomationElementIdentifiers.ControlTypeProperty,
+				      ControlType.CheckBox.Id);
+
+			child = ((IRawElementProviderFragment) child)
+				.Navigate (NavigateDirection.NextSibling);
+
 			int i = 0;
 			do {
-				TestProperty (child,
-				              AutomationElementIdentifiers.NameProperty,
-				              name_values[i]);
-
 				PartType type = long_pattern_part_type[i];
 				if (type == PartType.Spinner) {
+					TestProperty (child,
+						      AutomationElementIdentifiers.NameProperty,
+						      name_values[i]);
+
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.Spinner.Id);
 					TestProperty (child,
 						      AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 						      true);
+
+					bridge.ResetEventLists ();
+
+					((IRawElementProviderFragment) child).SetFocus ();
+					TestProperty (child,
+						      AutomationElementIdentifiers.HasKeyboardFocusProperty,
+						      true);
+
+					Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
+						AutomationElementIdentifiers.HasKeyboardFocusProperty),
+						"HasKeyboardFocusProperty Event count");
 				} else if (type == PartType.Text) {
+					TestProperty (child,
+						      AutomationElementIdentifiers.NameProperty,
+						      name_values[i]);
+
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.Text.Id);
@@ -139,7 +167,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						      AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 						      true);
 				}
-				
+
 				i++;
 				child = ((IRawElementProviderFragment) child)
 					.Navigate (NavigateDirection.NextSibling);
@@ -416,9 +444,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						Assert.AreEqual (1, bridge.GetAutomationPropertyEventCount (
 						                 SelectionPatternIdentifiers.SelectionProperty),
 						                 "SelectionProperty Event count");
-						Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
-						                 AutomationElementIdentifiers.HasKeyboardFocusProperty),
-						                 "HasKeyboardFocusProperty Event count");
 
 						items = prov.GetSelection ();
 						Assert.IsNotNull (items, "Should never return null");
@@ -446,7 +471,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
 						                 SelectionPatternIdentifiers.SelectionProperty),
 						                 "SelectionProperty Event count");
-						Assert.AreEqual (4, bridge.GetAutomationPropertyEventCount (
+						
+						// Focus shouldn't change when we alter the value
+						Assert.AreEqual (0, bridge.GetAutomationPropertyEventCount (
 						                 AutomationElementIdentifiers.HasKeyboardFocusProperty),
 						                 "HasKeyboardFocusProperty Event count");
 

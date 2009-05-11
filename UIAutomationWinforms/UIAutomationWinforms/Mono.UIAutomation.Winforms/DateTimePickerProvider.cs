@@ -205,6 +205,9 @@ namespace Mono.UIAutomation.Winforms
 
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             new ToggleProviderBehavior (this));
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+					  new CheckboxAutomationHasKeyboardFocusPropertyEvent (this));
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -218,7 +221,10 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AEIds.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
-					return false;
+					return true;
+				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+					return (bool) rootProvider.GetPropertyValue (AEIds.HasKeyboardFocusProperty.Id)
+					       && ((DateTimePicker) rootProvider.Control).UIAIsCheckBoxSelected;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
@@ -301,6 +307,9 @@ namespace Mono.UIAutomation.Winforms
 
 				SetEvent (ProviderEventType.AutomationElementIsEnabledProperty,
 					  new PartAutomationIsEnabledPropertyEvent (this));
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+					  new PartAutomationHasKeyboardFocusPropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -364,7 +373,8 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 					return true;
 				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-					return part_data.Selected;
+					return (bool) rootProvider.GetPropertyValue (AEIds.HasKeyboardFocusProperty.Id)
+					       && part_data.Selected;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.Spinner.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
@@ -473,7 +483,8 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AEIds.NameProperty.Id)
 					return itemProv.Text;
 				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-					return IsItemSelected (prov);
+					return (bool) rootProvider.GetPropertyValue (AEIds.HasKeyboardFocusProperty.Id)
+					       && IsItemSelected (prov);
 				else if (propertyId == AEIds.BoundingRectangleProperty.Id)
 					return GetProviderPropertyValue (AEIds.BoundingRectangleProperty.Id);
 				return null;
@@ -580,7 +591,8 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 					return true;
 				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-					return part_data.Selected;
+					return (bool) rootProvider.GetPropertyValue (AEIds.HasKeyboardFocusProperty.Id)
+					       && part_data.Selected;
 				else if (propertyId == AEIds.NameProperty.Id)
 					return Text;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)

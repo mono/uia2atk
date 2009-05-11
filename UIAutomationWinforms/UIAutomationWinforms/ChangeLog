@@ -1,3 +1,11 @@
+2009-05-11  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartAutomationHasKeyboardFocusPropertyEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/CheckboxAutomationHasKeyboardFocusPropertyEvent.cs: 
+	Fix Orca focus issues. [Fixes #502029]
+
 2009-05-07  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: Fix a typo
