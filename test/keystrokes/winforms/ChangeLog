@@ -1,4 +1,7 @@
 2009-05-11 Marco Skambraks <marco@suse.de>
+	* added form.py
+
+2009-05-11 Marco Skambraks <marco@suse.de>
 	* added menustrip.py and numericupdown.py
 
 2009-05-04 Marco Skambraks <marco@suse.de>
