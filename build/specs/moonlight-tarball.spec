@@ -29,6 +29,8 @@ Unix systems.
 %doc DUMMY
 
 %prep
+svn co svn://151.155.5.148/source/trunk/mono mono
+svn co svn://151.155.5.148/source/trunk/mcs mcs
 svn co svn://151.155.5.148/source/trunk/moon moon
 
 
@@ -46,5 +48,6 @@ make dist-bzip2
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
+%docs DUMMY
 
 %changelog
