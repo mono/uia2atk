@@ -1,3 +1,8 @@
+2009-05-11  Brad Taylor  <brad@getcoded.net>
+
+	* DateTimePickerProviderTest.cs: Ensure that focus events and
+	properties are sent/set correctly.
+
 2009-05-07  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Ensure that the
