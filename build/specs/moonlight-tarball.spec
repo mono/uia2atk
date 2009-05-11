@@ -11,7 +11,7 @@ Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  gtk-sharp2 mono-devel monodoc-core rsvg2-sharp
 BuildRequires:  alsa-devel gcc-c++ gtk2-devel
-BuildRequires:  libpulse-devel bc ImageMagick ImageMagick-devel
+BuildRequires:  libpulse-devel bc libGraphicsMagick++2 libMagick++-devel libGraphicsMagick++-devel
 BuildRequires:  libexpat-devel mozilla-xulrunner190-devel
 
 %description
