@@ -59,6 +59,7 @@ class ToolStripDropDownButtonApp(Form):
         self.db2.DropDownItems.Add("Item1")
         self.db2.DropDownItems.Add("Item2")
         self.db2.DropDownItems.Add("Item3")
+        self.db2.DropDownItemClicked += self.cc
         self.ts.Items.Add(self.db2)
 
     def cc(self, sender, event):
@@ -71,7 +72,15 @@ class ToolStripDropDownButtonApp(Form):
         elif event.ClickedItem.Text is "Green":
             self.label.Text = "You selected %s" % event.ClickedItem
             self.label.BackColor = Color.Green
-     
+        elif event.ClickedItem.Text is "Item1":
+            self.label.Text = "You selected %s" % event.ClickedItem
+            self.label.BackColor = Button.DefaultBackColor
+        elif event.ClickedItem.Text is "Item2":
+            self.label.Text = "You selected %s" % event.ClickedItem
+            self.label.BackColor = Button.DefaultBackColor
+        elif event.ClickedItem.Text is "Item3":
+            self.label.Text = "You selected %s" % event.ClickedItem
+            self.label.BackColor = Button.DefaultBackColor
 
 form = ToolStripDropDownButtonApp()
 Application.Run(form)
