@@ -1,3 +1,6 @@
+2009-05-11 Marco Skambraks <marco@suse.de>
+	* added menustrip.py and numericupdown.py
+
 2009-05-04 Marco Skambraks <marco@suse.de>
 	* added statusbar.py, statusbarpanel.py, linklabel.py, button_label_linklabel.py
 	* some cleanup
