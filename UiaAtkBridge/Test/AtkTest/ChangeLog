@@ -11,6 +11,11 @@
 
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Focus menuitems that don't have children when
+	selected via Atk.Selection. Fixes #495623.
+
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Pre-changes needed before fixing #456341.
 	Brings back some selection testing in the bridge and fixes a
 	ComboBoxSimpleAsTreeView test.

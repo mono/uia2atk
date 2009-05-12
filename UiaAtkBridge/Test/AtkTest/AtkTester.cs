@@ -158,7 +158,6 @@ namespace UiaAtkBridgeTest
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
-		protected abstract bool AllowsSelectingChildMenus { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
 		protected abstract bool TextBoxHasScrollBar { get; }
 
@@ -433,12 +432,6 @@ namespace UiaAtkBridgeTest
 			for (int i = initial; i < accessible.NAccessibleChildren; i++) {
 				bool shouldBeSelected = (theSelected == i);
 				
-				if (shouldBeSelected && 
-				    (type == BasicWidgetType.ParentMenu ||
-				     type == BasicWidgetType.ContextMenu) && 
-				    (accessible.RefAccessibleChild (i).NAccessibleChildren == 0))
-					shouldBeSelected = AllowsSelectingChildMenus;
-				
 				Assert.AreEqual (shouldBeSelected, sel.IsChildSelected (i), 
 				                 "IsChildSelected(" + i + ")!=" + shouldBeSelected.ToString());
 				Assert.AreEqual (shouldBeSelected, 
@@ -524,10 +517,6 @@ namespace UiaAtkBridgeTest
 					selected = implementor.AddSelection (val);
 				});
 
-				if ((type == BasicWidgetType.ParentMenu ||
-				     type == BasicWidgetType.ContextMenu) && 
-				    (accessible.RefAccessibleChild (i).NAccessibleChildren == 0))
-					shouldSuccess = AllowsSelectingChildMenus;
 				Assert.AreEqual (selected.Value, shouldSuccess, "AddSelection(" + i + "), we got:" + selected.Value);
 				
 				if ((type != BasicWidgetType.ParentMenu &&

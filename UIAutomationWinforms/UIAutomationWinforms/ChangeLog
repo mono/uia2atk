@@ -29,6 +29,12 @@
 
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Focus
+	menuitems that don't have children when selected via
+	Atk.Selection. Fixes #495623.
+
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs:
 	Implemented Invoke for ColumnHeaders. Fixes #476304.
 

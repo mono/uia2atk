@@ -299,11 +299,7 @@ namespace UiaAtkBridgeTest
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return false; }
 		}
-
-		protected override bool AllowsSelectingChildMenus { 
-			get { return false; }
-		}
-
+		
 		public override bool HasComboBoxSimpleLayout {
 			get { return true; }
 		}

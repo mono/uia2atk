@@ -24,6 +24,11 @@
 	Add method to set the active window only if the window going away
 	is currently active.
 
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Menu.cs: Focus menuitems that don't have children when
+	selected via Atk.Selection. Fixes #495623.
+
 2009-04-28  Mike Gorse  <mgorse@novell.com>
 
 	* DataGrid.cs, TreeItem.cs: Send active-descendant-changed event for
