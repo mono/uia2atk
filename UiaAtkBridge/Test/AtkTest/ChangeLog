@@ -5,6 +5,11 @@
 	Test that RefRelationSet doesn't return an exception after an object
 	is disposed [bug 491053].
 
+2009-04-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Ignore focused state from UIA for Atk. Fixes
+	#481279.
+
 2009-04-29  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Expect window-activate when opening a combo box.

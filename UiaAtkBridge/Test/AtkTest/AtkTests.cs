@@ -886,6 +886,13 @@ namespace UiaAtkBridgeTest
 				accessible = GetAccessible (type, names, true);
 			});
 
+			States (accessible,
+			        Atk.StateType.Enabled,
+			        Atk.StateType.Focusable,
+			        Atk.StateType.Sensitive,
+			        Atk.StateType.Showing,
+			        Atk.StateType.Visible);
+
 			PropertyRole (type, accessible);
 
 			Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
