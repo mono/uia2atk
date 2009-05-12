@@ -5,6 +5,12 @@
 	Test that RefRelationSet doesn't return an exception after an object
 	is disposed [bug 491053].
 
+2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: The Focused state doesn't map exactly to the
+	HasKeyboardFocus property/event for TabControl in UIA, so we
+	need these tweaks. Fixes #464071.
+
 2009-04-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Ignore focused state from UIA for Atk. Fixes

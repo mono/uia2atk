@@ -95,6 +95,7 @@ FILES =  \
 	Tab.cs \
 	Table.cs \
 	TableImplementorHelper.cs \
+	TabPage.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \
 	TextImageLabel.cs \

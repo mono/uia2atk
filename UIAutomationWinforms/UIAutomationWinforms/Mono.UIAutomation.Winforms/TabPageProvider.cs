@@ -41,8 +41,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.tabPage = control;
 
+			selectionBehavior = new SelectionItemProviderBehavior (this);
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-				     new SelectionItemProviderBehavior (this));
+			             selectionBehavior);
 		}
 		
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -85,7 +86,15 @@ namespace Mono.UIAutomation.Winforms
 				return TabControlProvider.IsItemSelected (this);
 			}
 		}
+
+		public override void SetFocus ()
+		{
+			//because we want to cause a HasKeyboardFocus property changed event on
+			//the tab control, not on the tabpage (as this is how this works on UIA+Vista)
+			selectionBehavior.Select ();
+		}
 		
 		private TabPage tabPage;
+		private SelectionItemProviderBehavior selectionBehavior;
 	}
 }

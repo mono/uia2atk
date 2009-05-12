@@ -906,6 +906,7 @@ namespace UiaAtkBridgeTest
 				
 				Atk.Object child1 = accessible.RefAccessibleChild (0);
 				States (child1,
+				        Atk.StateType.Focused,
 				        Atk.StateType.Enabled,
 				        Atk.StateType.MultiLine,
 				        Atk.StateType.Selectable,

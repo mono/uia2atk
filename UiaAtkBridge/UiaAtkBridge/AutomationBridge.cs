@@ -1212,7 +1212,7 @@ namespace UiaAtkBridge
 
 		private static void HandleNewTabItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			var atkTextContainer = CreateAdapter<TextContainer> (provider);
+			var atkTextContainer = CreateAdapter <TabPage> (provider);
 			if (atkTextContainer != null)
 				IncludeNewAdapter (atkTextContainer, parentObject);
 		}

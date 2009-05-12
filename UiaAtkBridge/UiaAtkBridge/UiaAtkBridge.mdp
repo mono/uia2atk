@@ -4,6 +4,7 @@
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../mono-uia.snk" assembly="UiaAtkBridge" />
       <Build debugmode="True" target="Library" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <EnvironmentVariables />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
@@ -84,6 +85,8 @@
     <File name="ToggleButton.cs" subtype="Code" buildaction="Compile" />
     <File name="EditableTextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolBar.cs" subtype="Code" buildaction="Compile" />
+    <File name="ContextMenuWindow.cs" subtype="Code" buildaction="Compile" />
+    <File name="TabPage.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
