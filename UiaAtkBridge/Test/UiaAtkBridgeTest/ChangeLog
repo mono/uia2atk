@@ -1,3 +1,8 @@
+2009-05-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DialogTester.cs: Fix most threading problems in dialog
+	tests.
+
 2009-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* UiaAtkBridgeTest.cs: Modify ActivateAdditionalForm to return an Atk object.
