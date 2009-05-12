@@ -36,6 +36,12 @@ class ToolStripSplitButtonSample(Form):
         self.label.Text = "The current font size is 10"
         self.label.Dock = DockStyle.Top
 
+        self.labelcount = Label()
+        self.labelcount.Text = "0 clicks"
+        self.labelcount.Dock = DockStyle.Bottom
+
+        self.clickscount = 0
+
         # ToolStrip:
         self.toolstrip = ToolStrip()
         self.toolstrip.Text = "ToolStrip"
@@ -53,6 +59,7 @@ class ToolStripSplitButtonSample(Form):
 
         # ToolStripSplitButton
         self.toolstrip_splitbutton = ToolStripSplitButton()
+        self.toolstrip_splitbutton.Click += self.button_click
         self.toolstrip_splitbutton.Text = self.toolstrip_menuitem_10.Text
         sample_dir = sys.path[0]
         image_path = "%s/%s" % (sample_dir, "apple-red.png")
@@ -67,12 +74,17 @@ class ToolStripSplitButtonSample(Form):
         self.toolstrip.Items.Add(self.toolstriplabel)
         self.toolstrip.Items.Add(self.toolstrip_splitbutton)
         self.Controls.Add(self.label)
+        self.Controls.Add(self.labelcount)
         self.Controls.Add(self.toolstrip)
 
     def menuitem_click(self, sender, event):
         self.label.Text = "The current font size is %s" % sender.Text
-        self.toolstrip_splitbutton.Text = sender.Text 
+        self.toolstrip_splitbutton.Text = sender.Text
         self.label.Font = Font(self.label.Font.Name, int(sender.Text))
+
+    def button_click(self, sender, event):
+        self.clickscount = self.clickscount + 1
+        self.labelcount.Text = "%s clicks" % self.clickscount
 
 form = ToolStripSplitButtonSample()
 Application.Run(form)
