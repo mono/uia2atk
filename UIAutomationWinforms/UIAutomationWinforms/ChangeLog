@@ -35,6 +35,12 @@
 	If a ToolStripButton has CheckOnClick = true, the role should be
 	CheckBox and it should have the TogglePattern behavior.  [Fixes #478832]
 
+2009-04-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Handle
+	dropdownmenu and style changed-events. Fixes final part of
+	bug#481357.
+
 2009-04-16  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TabPageProvider.cs: Ensure that inactive
