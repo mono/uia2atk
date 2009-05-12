@@ -1,5 +1,11 @@
 2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Fix
+	NRE that may happen when the PropertyGrid.SelectedObject
+	property is not set.
+
+2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs:
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
 	Rework Selected&Focused states of ParentMenus and MenuItems.

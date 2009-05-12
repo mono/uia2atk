@@ -250,6 +250,9 @@ namespace Mono.UIAutomation.Winforms
 		private void AddChildren ()
 		{
 			GridItem root = propertyGrid.RootGridItem;
+			if (root == null)
+				return;
+			
 			foreach (GridItem cat in root.GridItems) {
 				foreach (GridItem item in cat.GridItems) {
 					PropertyGridListItemProvider itemProvider
