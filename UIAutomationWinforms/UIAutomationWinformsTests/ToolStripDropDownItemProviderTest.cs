@@ -85,7 +85,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (invokeProvider);
 			Assert.IsTrue (invokeProvider is IInvokeProvider, "IInvokeProvider");
 		}
-		
+
 		[Test]
 		public void InvokeTest ()
 		{
@@ -113,7 +113,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				itemClicked = true;
 			};
 			
-			invokeProvider.Invoke ();			
+			invokeProvider.Invoke ();
 			Assert.IsTrue (itemClicked,
 			               "Click should fire when button is enabled");
 			if (menuItem is ToolStripSplitButton)
@@ -506,6 +506,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// TODO: For some reason this test is failing but 
 			// ExpandCollapseProvider is passing
 		}
-		
+
+		[Test]
+		public void InvokeNotDropDownTest ()
+		{
+			ToolStripSplitButton split_button = GetNewToolStripDropDownItem ();
+			ToolStripMenuItem item = new ToolStripMenuItem ();
+			ToolStrip tool_strip = new ToolStrip ();
+
+			tool_strip.Items.AddRange (new ToolStripItem[] { split_button });
+			split_button.DropDownItems.AddRange (new ToolStripItem[] { item });
+			Form.Controls.Add (tool_strip);
+
+			tool_strip.Show ();
+			Assert.IsFalse (split_button.DropDown.Visible);
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (split_button);
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+
+			invokeProvider.Invoke ();
+			Assert.IsFalse (split_button.DropDown.Visible);
+		}
+
 	}
 }

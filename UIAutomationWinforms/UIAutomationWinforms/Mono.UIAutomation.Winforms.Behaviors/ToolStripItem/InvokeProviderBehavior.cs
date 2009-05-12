@@ -119,7 +119,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 			// we must do this manually.  On Vista, clicking the
 			// button appears to both Show the drop down and
 			// Perform a click, so we emulate that behavior.
-			if (dropdown != null) {
+			if (dropdown != null && !(item is SWF.ToolStripSplitButton)) {
 				if (hide)
 					dropdown.HideDropDown ();
 				else
