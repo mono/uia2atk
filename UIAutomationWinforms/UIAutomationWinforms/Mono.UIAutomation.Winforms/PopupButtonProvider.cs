@@ -30,6 +30,8 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms.Behaviors.PopupButtonPanel;
+using Mono.UIAutomation.Winforms.Events;
+using EPB = Mono.UIAutomation.Winforms.Events.PopupButton;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
@@ -38,9 +40,12 @@ namespace Mono.UIAutomation.Winforms
 	[MapsComponent (typeof (SWF.PopupButtonPanel.PopupButton))]
 	internal class PopupButtonProvider : FragmentControlProvider
 	{
+		private SWF.PopupButtonPanel panel = null;
+
 		public PopupButtonProvider (SWF.PopupButtonPanel.PopupButton button) :
 			base (button)
 		{
+			panel = Control.Parent as SWF.PopupButtonPanel;
 		}
 
 		public override void Initialize ()
@@ -49,6 +54,9 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (InvokePatternIdentifiers.Pattern,
 			             new InvokeProviderBehavior (this));
+
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          new EPB.AutomationHasKeyboardFocusPropertyEvent (this));
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -61,6 +69,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus;
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+				return (panel.UIAFocusButton == Control);
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

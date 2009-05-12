@@ -75,7 +75,7 @@ namespace UiaAtkBridgeTest
 					xmlResult += args.Data;
 		}
 
-		internal static EventCollection Pause () {
+		public static EventCollection Pause () {
 			lock (locking) {
 				if (singleton == null)
 					throw new Exception ("EventMonitor has not been started yet");
@@ -110,6 +110,7 @@ namespace UiaAtkBridgeTest
 				p = null;
 				string result = xmlResult;
 				xmlResult = String.Empty;
+				singleton = null;
 				return new EventCollection (result);
 			}
 		}

@@ -54,7 +54,30 @@ namespace UiaAtkBridgeTest
 				                  Atk.StateType.Sensitive,
 				                  Atk.StateType.Showing,
 				                  Atk.StateType.Visible);
-				// TODO: Simulate selecting so we can teset Selected/Focused
+
+				// TODO: Enable the below if we find a way
+				// to get the MWFFileView to update
+				//Atk.Object treeTable = dialogAdapter.RefAccessibleChild (3);
+				//Assert.AreEqual (Atk.Role.TreeTable, treeTable.Role, "TreeTable Role");
+				//Atk.Object tableCell = treeTable.RefAccessibleChild (1);;
+				//Assert.IsNotNull (tableCell, "TableCell should not be null");
+				//Assert.AreEqual (Atk.Role.TableCell, tableCell.Role, "TableCell role");
+				//Atk.Action atkAction = Atk.ActionAdapter.GetObject (tableCell.Handle, false);
+				//Assert.AreEqual (2, atkAction.NActions, "TableCell NActions");
+				//Assert.AreEqual ("invoke", atkAction.GetName (1), "TableCell Action.GetName (1)");
+
+				Atk.Object comboBox = dialogAdapter.RefAccessibleChild (8);
+				Assert.AreEqual (Atk.Role.ComboBox, comboBox.Role, "ComboBox Role");
+				Atk.Object list = comboBox.RefAccessibleChild (0);
+				Assert.IsTrue (list.NAccessibleChildren > 0, "ComboBox child should have children");
+				EventMonitor.Start ();
+				Atk.Selection atkSelection = Atk.SelectionAdapter.GetObject (list.Handle, false);
+				atkSelection.AddSelection (5);
+				string evType = "object:state-changed:selected";
+				EventCollection events = EventMonitor.Pause ();
+				EventCollection evs = events.FindByType (evType).FindWithDetail1 ("1");
+				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+				Assert.IsTrue (evs.Count > 0, "bad number of " + evType + " events: " + eventsInXml);
 			}
 		}
 
@@ -146,9 +169,17 @@ namespace UiaAtkBridgeTest
 				           System.Reflection.BindingFlags.Instance |
 				           System.Reflection.BindingFlags.NonPublic);
 				f = (SWF.Form)fi.GetValue (commonDialog);
+				if (commonDialog is SWF.FileDialog) {
+					var methodInfo = commonDialog.GetType ().GetMethod ("RunDialog",
+				                                                           System.Reflection.BindingFlags.InvokeMethod
+				                                                           | System.Reflection.BindingFlags.NonPublic
+				                                                           | System.Reflection.BindingFlags.Instance);
+					methodInfo.Invoke (commonDialog, new object [] { f.Handle });
+				}
 			}
 			else if (threadExceptionDialog != null)
 				f = threadExceptionDialog;
+
 			f.Show ();
 		}
 
