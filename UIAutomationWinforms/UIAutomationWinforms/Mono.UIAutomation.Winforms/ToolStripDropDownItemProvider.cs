@@ -50,13 +50,15 @@ namespace Mono.UIAutomation.Winforms
 			itemProviders = new Dictionary<ToolStripItem, FragmentControlProvider> ();
 			
 		}
-		
+
 		#region FragmentRootControlProvider: Specializations
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.NameProperty.Id)
 				return Helper.StripAmpersands (dropDrownItem.Text);
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+				return dropDrownItem.Selected;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

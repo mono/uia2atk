@@ -84,7 +84,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		private Dictionary <Atk.Object, Gtk.Widget> mappings = new Dictionary<Atk.Object, Gtk.Widget> ();
-		
+
 		public override void DisableWidget (Atk.Object accessible)
 		{
 			RunInGuiThread (delegate () {
@@ -166,6 +166,16 @@ namespace UiaAtkBridgeTest
 		}
 
 		public override bool IsBGO574674Addressed ()
+		{
+			return false;
+		}
+
+		public override bool IsBGO580460Addressed ()
+		{
+			return false;
+		}
+
+		public override bool IsBGO580452Addressed ()
 		{
 			return false;
 		}

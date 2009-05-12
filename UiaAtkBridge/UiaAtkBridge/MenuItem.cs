@@ -32,7 +32,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
-	
+
 	public class MenuItem : Menu, Atk.ActionImplementor, Atk.TextImplementor
 	{
 		ITextImplementor textExpert = null;
@@ -69,11 +69,10 @@ namespace UiaAtkBridge
 			
 			Role = Atk.Role.MenuItem;
 		}
-		
+
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			
 			if (states.ContainsState (Atk.StateType.Defunct))
 				return states;
 
@@ -89,10 +88,17 @@ namespace UiaAtkBridge
 					states.AddState (Atk.StateType.Showing);
 			}
 
-			if (states.ContainsState (Atk.StateType.Showing)
-			    && states.ContainsState (Atk.StateType.Focused)) {
-				states.AddState (Atk.StateType.Selected);
+			if (states.ContainsState (Atk.StateType.Showing)) {
+				if (IsFocused) {
+					states.AddState (Atk.StateType.Focused);
+					if (Parent.Role != Atk.Role.Panel && Parent.Role != Atk.Role.ToolBar)
+						states.AddState (Atk.StateType.Selected);
+				} else if (!(Parent is MenuBar)) {
+					states.AddState (Atk.StateType.Focusable);
+				}
 			} else {
+				states.RemoveState (Atk.StateType.Focused);
+				states.RemoveState (Atk.StateType.Focusable);
 				states.RemoveState (Atk.StateType.Selected);
 			}
 

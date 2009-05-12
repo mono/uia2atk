@@ -714,7 +714,7 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
-			
+
 			string menuName = "File";
 			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!") };
 
@@ -734,10 +734,10 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Visible,
 			  Atk.StateType.Showing);
-			
+
 			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, 
 			                 "number of children; children roles:" + DescribeChildren (accessible));
-			
+
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object menuChild = accessible.RefAccessibleChild (i);
 				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
@@ -753,7 +753,7 @@ namespace UiaAtkBridgeTest
 
 				Assert.AreEqual (menuChild.Name, firstSubmenus [i].Label, "name of the menu is the same as its label");
 			}
-			
+
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
@@ -763,13 +763,62 @@ namespace UiaAtkBridgeTest
 				names.Add (submenu.Label);
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
-			
+
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
 			menu = new List <MenuLayout> (new MenuLayout [] { new MenuLayout (simpleTestText, firstSubmenus), new MenuLayout ("Help") });
 			accessible = GetAccessible (type, menu);
 			InterfaceText (type, true, accessible);
+		}
+
+		[Test]
+		public void ParentMenu_ChildrenStates ()
+		{
+			BasicWidgetType type = BasicWidgetType.ParentMenu;
+			Atk.Object accessible = null;
+
+			string menuName = "File";
+			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!") };
+
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout (menuName, firstSubmenus));
+			menu.Add (new MenuLayout ("Help", new MenuLayout ("About?")));
+
+			accessible = GetAccessible (type, menu);
+
+			List <string> names = new List <string> ();
+			names.Add (menuName);
+			foreach (MenuLayout submenu in firstSubmenus)
+				names.Add (submenu.Label);
+
+			//we check this when the ParentMenu is open (bnc#479397)
+			int j = 0;
+			names.Remove (menuName);
+			CastToAtkInterface <Atk.Action> (accessible).DoAction (0);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+
+			Assert.IsTrue (accessible.RefAccessibleChild (0).RefStateSet ().ContainsState (Atk.StateType.Showing));
+			foreach (string name in names) {
+				Assert.AreEqual (accessible.RefAccessibleChild (j).Name, name);
+				States (accessible.RefAccessibleChild (j),
+				        Atk.StateType.Enabled,
+				        IsBGO580460Addressed () ? Atk.StateType.Focusable : Atk.StateType.Enabled,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Sensitive,
+				        Atk.StateType.Showing,
+				        Atk.StateType.Visible);
+				atkSelection.AddSelection (j);
+				States (accessible.RefAccessibleChild (j),
+				        Atk.StateType.Enabled,
+				        (IsBGO580452Addressed () || j != 0) ? Atk.StateType.Focused : Atk.StateType.Enabled,
+				        Atk.StateType.Selected,
+				        Atk.StateType.Selectable,
+				        Atk.StateType.Sensitive,
+				        Atk.StateType.Showing,
+				        Atk.StateType.Visible);
+				j++;
+			}
 		}
 
 		[Test]
@@ -1089,7 +1138,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (2, // <- textbox + treetable
 				  accessible.NAccessibleChildren, 
 				  "numChildren; children roles:" + DescribeChildren (accessible));
-				
+
 				TestInnerTextBoxInComboBox (accessible);
 			}
 
@@ -1113,7 +1162,7 @@ namespace UiaAtkBridgeTest
 				            typeof (Atk.Selection));
 				
 				accessible = GetAccessible (type, names, comboBox);
-				
+
 				//we want this to behave like comboboxdropdownentry, the treetable
 				// selection behaviour is already tested in CheckComboBoxMenuChild()
 				Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
@@ -1414,19 +1463,23 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Bug445210 ()
 		{
-			Atk.Object accessible;
-			StartEventMonitor ();
-			accessible = ActivateAdditionalForm ("445210");
-			Atk.Object child = accessible.RefAccessibleChild (0);
-			Assert.IsNotNull (child, "Added form should have a child");
-			ExpectEvents (1, Atk.Role.Frame, "window:activate", "445210");
-			ExpectEvents (0, Atk.Role.Frame, "window:activate", "UiaAtkBridge test");
-			StartEventMonitor ();
-			RemoveAdditionalForm (accessible);
-			ExpectEvents (1, Atk.Role.Frame, "window:activate", "MainWindow");
-			ExpectEvents (0, Atk.Role.Frame, "window:activate", "445210");
-			// Don't crash on the next line (bug 491053)
-			accessible.RefRelationSet ();
+			Atk.Object accessible = null;
+			try {
+				StartEventMonitor ();
+				accessible = ActivateAdditionalForm ("445210");
+				Atk.Object child = accessible.RefAccessibleChild (0);
+				Assert.IsNotNull (child, "Added form should have a child");
+				ExpectEvents (1, Atk.Role.Frame, "window:activate", "445210");
+				ExpectEvents (0, Atk.Role.Frame, "window:activate", "UiaAtkBridge test");
+				StartEventMonitor ();
+				RemoveAdditionalForm (accessible);
+				ExpectEvents (1, Atk.Role.Frame, "window:activate", "MainWindow");
+				ExpectEvents (0, Atk.Role.Frame, "window:activate", "445210");
+				// Don't crash on the next line (bug 491053)
+				accessible.RefRelationSet ();
+			} finally {
+				RemoveAdditionalForm (accessible);
+			}
 		}
 		
 		public void HSplitter (Atk.Object accessible)

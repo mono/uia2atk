@@ -1,3 +1,9 @@
+2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: Rework Selected&Focused states of ParentMenus
+	and MenuItems. Fixes #479397 and #485524.
+
 2009-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Re-define ActivateAdditionalForm to reutrn an

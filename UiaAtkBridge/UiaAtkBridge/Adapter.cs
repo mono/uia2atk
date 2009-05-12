@@ -108,14 +108,6 @@ namespace UiaAtkBridge
 		public virtual void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
-				bool canFocus = (bool) Provider.GetPropertyValue (
-				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				// Menus do not report Focusable even though they are, as in gtk.
-				// TODO: Report a gail bug?
-				if (!canFocus && !(this is Menu)) {
-					return;
-				}
-
 				bool focused = (bool)e.NewValue;
 				NotifyFocused (focused);
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
@@ -131,7 +123,7 @@ namespace UiaAtkBridge
 				EmitBoundsChanged ((System.Windows.Rect)e.NewValue);
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				string newName = (string) e.NewValue;
-				
+
 				// Don't set Name if we don't really want to
 				// and don't fire events if we're not changing
 				if (!(Name == null && newName == String.Empty)
@@ -210,15 +202,12 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Enabled);
 				}
 				
-				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (canFocus)
+				if (CanFocus)
 					states.AddState (Atk.StateType.Focusable);
 				else
 					states.RemoveState (Atk.StateType.Focusable);
 
-				bool focused = canFocus && (bool) Provider.GetPropertyValue (
-				  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-				if (focused)
+				if (CanFocus && IsFocused)
 					states.AddState (Atk.StateType.Focused);
 				else
 					states.RemoveState (Atk.StateType.Focused);
@@ -284,6 +273,20 @@ namespace UiaAtkBridge
 					return i;
 			}
 			return -1;
+		}
+
+		protected bool CanFocus {
+			get {
+				return Provider != null &&
+				       true.Equals (Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id));
+			}
+		}
+
+		internal bool IsFocused {
+			get {
+				return Provider != null &&
+				       true.Equals (Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
+			}
 		}
 #endregion
 

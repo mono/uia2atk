@@ -79,7 +79,11 @@ namespace UiaAtkBridgeTest
 		public abstract bool IsBGO567991Addressed ();
 
 		public abstract bool IsBGO574674Addressed ();
-		
+
+		public abstract bool IsBGO580460Addressed ();
+
+		public abstract bool IsBGO580452Addressed ();
+
 		public abstract void CloseContextMenu (Atk.Object accessible);
 
 		public abstract bool HasComboBoxSimpleLayout { get; }
