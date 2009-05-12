@@ -152,12 +152,8 @@ namespace UiaAtkBridge
 		
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
-			if (childToRemove == selectedItem) {
+			if (childToRemove == selectedItem)
 				selectedItem = null;
-
-				if (!String.IsNullOrEmpty (Name)) 
-					Name = String.Empty;
-			}
 			base.RemoveChild (childToRemove);
 		}
 
@@ -283,10 +279,6 @@ namespace UiaAtkBridge
 				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
 			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
-			
-			if ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
-			    != ControlType.Tree.Id)
-				Name = selectedItem.Name;
 		}
 
 		internal void NotifyItemSelectionRemoved (Adapter item)
@@ -295,9 +287,6 @@ namespace UiaAtkBridge
 				return;
 			item.NotifyStateChange (Atk.StateType.Selected, false);
 			selectedItem = null;
-
-			if (!String.IsNullOrEmpty (Name)) 
-				Name = String.Empty;
 		}
 
 		public Atk.Object RefAt (int row, int column)

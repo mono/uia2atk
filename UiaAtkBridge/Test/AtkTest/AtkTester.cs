@@ -164,6 +164,7 @@ namespace UiaAtkBridgeTest
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
 		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
 		protected abstract bool TextBoxHasScrollBar { get; }
+		protected abstract bool SupportsLabeledBy (out string labelName);
 
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                                Atk.Action actionable2, Atk.Object accessible2,
@@ -307,7 +308,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ParentMenu)
 				Assert.IsFalse (accessible.RefStateSet ().ContainsState (Atk.StateType.Selected),
 				                "shouldn't contain Selected before DoAction");
-			
+
 			// only valid actions should work
 			for (int i = 0; i < validNumberOfActions; i++) {
 				RunInGuiThread (delegate {
@@ -454,16 +455,18 @@ namespace UiaAtkBridgeTest
 				throw new ArgumentException ("For testing purposes, use 2 or more items", "names");
 			
 			string accessibleName = null;
-			if (type == BasicWidgetType.ParentMenu)
+			if (type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.GroupBox)
 				accessibleName = items [0];
 			else if (type == BasicWidgetType.ListBox ||
 			         type == BasicWidgetType.CheckedListBox ||
-			         type == BasicWidgetType.DomainUpDown)
-				// Not sure if this is right; setting so I can test other things -MPG
+			         type == BasicWidgetType.DomainUpDown ||
+			         type == BasicWidgetType.ListView)
 				accessibleName = null;
-			else if (type == BasicWidgetType.ListView
-			         || type == BasicWidgetType.GroupBox)
-				accessibleName = accessible.Name;
+
+			string labelName = null;
+			if (type == BasicWidgetType.ListView && SupportsLabeledBy (out labelName))
+				accessibleName = labelName;
 
 			// Be forgiving when we can't set NULL due to
 			// Gtk-CRITICALs
@@ -476,7 +479,7 @@ namespace UiaAtkBridgeTest
 			                 "AtkObj Name, was: " + accessible.Name);
 
 			string [] names = items;
-			if (type == BasicWidgetType.ParentMenu) {
+			if (type == BasicWidgetType.ParentMenu || type == BasicWidgetType.GroupBox) {
 				names = new string [items.Length - 1];
 				Array.Copy (items, 1, names, 0, names.Length);
 				Assert.AreEqual (names [0], items [1], "array copy not done correctly");
@@ -546,20 +549,21 @@ namespace UiaAtkBridgeTest
 				}
 				
 				string accName = names [i];
-				if (type == BasicWidgetType.ParentMenu)
+				if (type == BasicWidgetType.ParentMenu ||
+				    type == BasicWidgetType.GroupBox)
 					accName = items [0];
+				else if (type == BasicWidgetType.ListView)
+					accName = accessibleName;
 				else if (type == BasicWidgetType.TabControl ||
 				         type == BasicWidgetType.ComboBoxMenu ||
 				         type == BasicWidgetType.MainMenuBar ||
 				         type == BasicWidgetType.ContextMenu ||
-				         type == BasicWidgetType.ComboBoxSimpleMenu)
+				         type == BasicWidgetType.ComboBoxSimpleMenu ||
+				         type == BasicWidgetType.ListBox ||
+				         type == BasicWidgetType.CheckedListBox)
 					accName = null;
-				else if (type == BasicWidgetType.TreeView
-				         || type == BasicWidgetType.ListView
-				         || type == BasicWidgetType.GroupBox)
-					accName = accessible.Name;
-				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
-				
+				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i + ", we got: " + accessible.Name);
+
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu && type != BasicWidgetType.ContextMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");

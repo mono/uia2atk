@@ -325,6 +325,12 @@ namespace UiaAtkBridgeTest
 			get { return true; }
 		}
 
+		protected override bool SupportsLabeledBy (out string labelName)
+		{
+			labelName = lab1.Text;
+			return true;
+		}
+
 		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = 
 			new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		

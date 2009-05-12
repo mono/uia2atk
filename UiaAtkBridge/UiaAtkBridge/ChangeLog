@@ -1,5 +1,10 @@
 2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Tree.cs: Names should not be propragated to the parent like
+	in the ComboBox case. Fixes #485965.
+
+2009-05-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Menu.cs:
 	* Adapter.cs:
 	* MenuBar.cs:

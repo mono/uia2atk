@@ -35,7 +35,7 @@ namespace UiaAtkBridgeTest
 	{
 		
 		[Test]
-		public void Label ()
+		public void TextLabel ()
 		{
 			Label (BasicWidgetType.Label);
 		}

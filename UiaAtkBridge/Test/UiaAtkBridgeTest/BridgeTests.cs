@@ -64,9 +64,9 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
-			
+
 			PropertyRole (type, accessible);
-			
+
 			Assert.AreEqual (3, accessible.NAccessibleChildren, "ListBox#RO numChildren");
 			
 			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
@@ -267,12 +267,13 @@ namespace UiaAtkBridgeTest
 			lv1.SmallImageList = new SWF.ImageList ();
 			lv1.SmallImageList.Images.Add (Image.FromFile (System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif")));
 			lv1.SmallImageList.Images.Add (Image.FromFile (System.IO.Path.Combine (uiaQaPath, "apple-red.png")));
-			
+
 			lv1.Items.Clear ();
 			lv1.Scrollable = false;
 			lv1.Groups.Clear ();
 			lv1.View = SWF.View.SmallIcon;
-			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
+			string groupName = "group1";
+			lv1.Groups.Add (new SWF.ListViewGroup (groupName));
 			lv1.Groups.Add (new SWF.ListViewGroup ("group2"));
 			lv1.Items.Add("item1", 0); // opensuse60x38.gif
 			lv1.Items.Add("item2", 1); // apple-red.png
@@ -288,14 +289,14 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (accessible, "Adapter should not be null");
 			// 2 groups
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
-			Atk.Object group1 = FindObjectByName (accessible, "group1");
-			Assert.IsNotNull (group1, "FindObjectByName (group1)");
+			Atk.Object group1 = FindObjectByName (accessible, groupName);
+			Assert.IsNotNull (group1, "FindObjectByName (" + groupName + ")");
 			Assert.AreEqual (Atk.Role.LayeredPane, group1.Role, "Group1 role");
 			Atk.Object item1 = FindObjectByName (group1, "item1");
 			Assert.IsNotNull (item1, "FindObjectByName (item1)");
 			Assert.AreEqual (Atk.Role.TableCell, item1.Role, "Item1 role");
 			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (item1.Parent);
-			string [] names = { "item1", "item2" };
+			string [] names = { groupName, "item1", "item2" };
 			InterfaceSelection (atkSelection, names, item1.Parent, BasicWidgetType.GroupBox);
 			accessible = group1 = item1 = null;
 			lv1.CheckBoxes = true;
