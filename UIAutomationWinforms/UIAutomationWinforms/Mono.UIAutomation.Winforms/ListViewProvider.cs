@@ -127,6 +127,8 @@ namespace Mono.UIAutomation.Winforms
 					return new ListItemGridItemProviderBehavior (listItem);
 				else
 					return null;
+			} else if (behavior == InvokePatternIdentifiers.Pattern && Control is SWF.MWFFileView) {
+				return new ListItemInvokeProviderBehavior (listItem);
 			} else if (behavior == ValuePatternIdentifiers.Pattern) {
 				if (listView.LabelEdit == true)
 					return new ListItemValueProviderBehavior (listItem);

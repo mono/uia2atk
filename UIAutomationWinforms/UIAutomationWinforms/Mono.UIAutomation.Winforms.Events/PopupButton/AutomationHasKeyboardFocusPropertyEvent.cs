@@ -23,52 +23,50 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ComboBox
+namespace Mono.UIAutomation.Winforms.Events.PopupButton
 {
-	
-	internal class ListItemSelectionItemPatternIsSelectedEvent
+
+	internal class AutomationHasKeyboardFocusPropertyEvent
 		: BaseAutomationPropertyEvent
 	{
+		
+		#region Constructors
 
-		#region Constructor
-
-		public ListItemSelectionItemPatternIsSelectedEvent (SimpleControlProvider provider)
-			: base (provider, SelectionItemPatternIdentifiers.IsSelectedProperty)
+		public AutomationHasKeyboardFocusPropertyEvent (PopupButtonProvider provider)
+			: base (provider,
+				AutomationElementIdentifiers.HasKeyboardFocusProperty)
 		{
 		}
 		
 		#endregion
 		
 		#region IConnectable Overrides
-		
+	
 		public override void Connect ()
 		{
-			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
-				+= new EventHandler (OnElementSelectedEvent);
-			if (Provider.Control is SWF.DirComboBox)
-				((SWF.ComboBox) Provider.Control).SelectedValueChanged 
-					+= new EventHandler (OnElementSelectedEvent);
+			SWF.PopupButtonPanel panel = (SWF.PopupButtonPanel)Provider.Control.Parent;
+			panel.UIAFocusedItemChanged 
+				+= new EventHandler (OnUIAFocusedItemChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			if (Provider.Control is SWF.DirComboBox)
-				((SWF.ComboBox) Provider.Control).SelectedValueChanged 
-					-= new EventHandler (OnElementSelectedEvent);
-			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
-				-= new EventHandler (OnElementSelectedEvent);
+			SWF.PopupButtonPanel panel = (SWF.PopupButtonPanel)Provider.Control.Parent;
+			panel.UIAFocusedItemChanged 
+				-= new EventHandler (OnUIAFocusedItemChanged);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnElementSelectedEvent (object sender, EventArgs args)
+		private void OnUIAFocusedItemChanged (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

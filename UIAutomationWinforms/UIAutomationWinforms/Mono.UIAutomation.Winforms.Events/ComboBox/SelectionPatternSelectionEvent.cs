@@ -53,10 +53,16 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		{
 			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				+= new EventHandler (OnSelectedIndexChanged);
+			if (Provider.Control is SWF.DirComboBox)
+				((SWF.ComboBox) Provider.Control).SelectedValueChanged 
+					+= new EventHandler (OnSelectedIndexChanged);
 		}
 
 		public override void Disconnect ()
 		{
+			if (Provider.Control is SWF.DirComboBox)
+				((SWF.ComboBox) Provider.Control).SelectedValueChanged 
+					-= new EventHandler (OnSelectedIndexChanged);
 			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				-= new EventHandler (OnSelectedIndexChanged);
 		}

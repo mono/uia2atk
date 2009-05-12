@@ -30,7 +30,7 @@ using System.Xml;
 namespace UiaAtkBridgeTest
 {
 	
-	internal class EventCollection : List <AtSpiEvent>
+	public class EventCollection : List <AtSpiEvent>
 	{
 		string originalRepr = null;
 

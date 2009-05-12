@@ -123,6 +123,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs \
@@ -404,6 +405,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternMinimumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/NumericUpDown/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PopupButton/AutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs \

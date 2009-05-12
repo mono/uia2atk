@@ -29,7 +29,7 @@ using System.Globalization;
 namespace UiaAtkBridgeTest
 {
 	
-	internal class AtSpiEvent
+	public class AtSpiEvent
 	{
 		string type = null;
 		string detail1 = null;

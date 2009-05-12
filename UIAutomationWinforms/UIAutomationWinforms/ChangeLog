@@ -1,3 +1,22 @@
+2009-05-12  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: Not focusable.
+
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs,
+	Mono.UIAutomation.Winforms.Events/PopupButton/AutomationHasKeyboardFocusPropertyEvent.cs,
+	Makefile.am: Add Focus event and fix property.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs,
+	Mono.UIAutomation.Winforms.Behaviors.ListView/ListItemInvokeProviderBehavior.cs,
+	Makefile.am: Add invoke for MWFFileView [bug 476365].
+
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs,
+	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs,
+	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs,
+	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs:
+	Hook SelectedValueChanged for DirComboBox, since SelectedIndexChanged
+	is ignored [bug 490126].
+
 2009-05-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:

@@ -50,6 +50,10 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("tool bar");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return false;
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+				return false;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
