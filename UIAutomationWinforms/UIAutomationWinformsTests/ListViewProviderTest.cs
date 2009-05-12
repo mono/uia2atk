@@ -2462,6 +2462,98 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestFocusInDataItemChildren (listview, 1, dataItems [1], false);
 		}
 
+		[Test]
+		public void ListViewColumnInvokeTest ()
+		{
+			var listview = (ListView)GetControlInstance ();
+			listview.View = View.Details;
+			listview.CheckBoxes = true;
+			listview.GridLines = true;
+			listview.Sorting = SortOrder.Ascending;
+			listview.Dock = DockStyle.Top;
+			listview.Width = 350;
+			listview.Height = 260;
+
+			listview.Columns.Add ("Column1", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column2", 200, HorizontalAlignment.Left);
+			listview.Columns.Add ("Column3", 200, HorizontalAlignment.Left);
+
+			for (int i = 0; i < 3; i++) {
+				ListViewItem item = new ListViewItem (string.Format ("Item:{0}", i));
+				item.SubItems.Add (i.ToString ());
+				item.SubItems.Add ((i + 10).ToString ());
+				listview.Items.Add (item);
+			}
+//
+//			// We have the following table:
+//			// "Column1"         | "Column2" | "Column3"
+//			// ------------------|-----------|----------
+//			// checkbox, "Item0" | "0"       | "10"
+//			// checkbox, "Item1" | "1"       | "11"
+//			// checkbox, "Item2" | "2"       | "12"
+//
+//			// ListViewUIATree:
+//			// - Header
+//			//   - HeaderItem "Column1"
+//			//   - HeaderItem "Column2"
+//			//   - HeaderItem "Column3"
+//			// - DataItem "Item0"
+//			//   - CheckBox
+//			//   - "Item0"
+//			//   - "0"
+//			//   - "10"
+//			// - DataItem "Item1"
+//			//   - CheckBox
+//			//   - "Item1"
+//			//   - "1"
+//			//   - "11"
+//			// - DataItem "Item2"
+//			//   - CheckBox
+//			//   - "Item2"
+//			//   - "2"
+//			//   - "12"
+			int clicked = 0;
+			listview.ColumnClick += delegate(object sender, ColumnClickEventArgs e) {
+				clicked ++;
+			};
+			IRawElementProviderFragmentRoot root
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
+			Assert.IsNotNull (root, "Missing ListViewProvider");
+			IRawElementProviderFragment child = root.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment header = null;
+
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Header.Id) {
+					header = child;
+					break;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.IsNotNull (header, "We didn't find a Header");
+			
+			IRawElementProviderFragment []headerChildren = new IRawElementProviderFragment [listview.Columns.Count];
+			child = header.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "HeaderItem missing");
+			int index = 0;
+			while (child != null) {
+				headerChildren [index] = child;
+				Assert.AreEqual ((int)child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id), 
+				                 ControlType.HeaderItem.Id, "child " + index);
+				child = child.Navigate (NavigateDirection.NextSibling);
+				index++;
+			}
+			IInvokeProvider invokeProv = 
+				(IInvokeProvider)headerChildren [1].
+					GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (invokeProv, "Column should be invokeprovider");
+			invokeProv.Invoke ();
+
+			Assert.AreEqual (clicked, 1, "Invoke didn't work on the column");
+		}
+
+
 		private int GetIndexFromName (ListViewItem item, string name)
 		{
 			int index = 0;

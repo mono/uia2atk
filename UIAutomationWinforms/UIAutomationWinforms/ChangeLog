@@ -27,6 +27,11 @@
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
 	Prevent Invoke if there is no visible parent. [Fixes #494586, #494917]
 
+2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs:
+	Implemented Invoke for ColumnHeaders. Fixes #476304.
+
 2009-04-27  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
