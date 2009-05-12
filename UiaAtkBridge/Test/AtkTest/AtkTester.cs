@@ -514,8 +514,11 @@ namespace UiaAtkBridgeTest
 					Assert.IsTrue (val >= 0, "IndexInParent should not be negative");
 					Assert.IsFalse (indexUsed [val], "Child " + names [i] + " has already-used IndexInParent " + val);
 					indexUsed [val] = true;
-				} else 
+				} else if (type == BasicWidgetType.ComboBoxSimpleMenu && !HasComboBoxSimpleLayout) {
+					val = i + 1; //column header child doesn't count to be selected
+				} else {
 					val = i;
+				}
 				bool? selected = null;
 				RunInGuiThread (delegate () {
 					selected = implementor.AddSelection (val);
@@ -527,7 +530,10 @@ namespace UiaAtkBridgeTest
 					shouldSuccess = AllowsSelectingChildMenus;
 				Assert.AreEqual (selected.Value, shouldSuccess, "AddSelection(" + i + "), we got:" + selected.Value);
 				
-				if (!IsBGO574674Addressed ())
+				if ((type != BasicWidgetType.ParentMenu &&
+				     type != BasicWidgetType.MainMenuBar &&
+				     type != BasicWidgetType.ContextMenu)
+				    || !IsBGO574674Addressed ())
 					CheckNonMultipleChildrenSelection (implementor, accessible, val, false, type);
 
 				if (!Misc.IsComboBox (type))
@@ -694,6 +700,8 @@ namespace UiaAtkBridgeTest
 				firstSelectionIndex =1;
 			else if (type == BasicWidgetType.ListView)
 				firstSelectionIndex = FindObjectByName (accessible, names[0]).IndexInParent;
+			else if (type == BasicWidgetType.ComboBoxSimpleMenu && !HasComboBoxSimpleLayout)
+				firstSelectionIndex = 1; //column header child doesn't count to be selected
 			RunInGuiThread (delegate() {
 				Assert.IsTrue (implementor.AddSelection (firstSelectionIndex), "AddSelection->0");
 			});
