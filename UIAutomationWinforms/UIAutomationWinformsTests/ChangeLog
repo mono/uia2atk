@@ -1,3 +1,8 @@
+2009-05-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolStripDropDownItemProviderTest.cs: Fixes the regression
+	introduced (affecting ToolStripSplitButton) on r133927.
+
 2009-05-11  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Ensure that focus events and
