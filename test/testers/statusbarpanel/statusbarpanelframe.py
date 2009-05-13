@@ -35,17 +35,9 @@ class StatusBarPanelFrame(accessibles.Frame):
         self.panel2 = self.findLabel(self.PANEL2)
         self.panel3 = self.findLabel(self.PANEL3)
 
-    def click(self,button):
-        """
-        Wrap strongwind click action
-
-        """
-        button.click()
-
     def assertUnimplementedEditableText(self, accessible):
         """
         Make sure EditableText is not implemented for accessible
-
         """
         procedurelogger.action('check %s\'s EditableText interface' % accessible)
 
@@ -57,21 +49,22 @@ class StatusBarPanelFrame(accessibles.Frame):
             return
         assert False, "%s should not implement the EditableText interface" % accessible
 
-    def assertText(self, accessible, textValue):
+    def assertText(self, accessible, expected_text):
         """
-        Make sure accessible's text is changed to textValue
-
+        Make sure accessible's text is changed to expected_text
         """
-        procedurelogger.expectedResult('the text of "%s" change to "%s"' % (accessible, textValue))
+        procedurelogger.expectedResult('the text of %s change to "%s"' % \
+                                                   (accessible, expected_text))
+        actual_text = accessible.text
         def resultMatches():
-            return accessible.text == textValue
-        assert retryUntilTrue(resultMatches)
+            return actual_text == expected_text
+        assert retryUntilTrue(resultMatches), \
+                  'Text was "%s", expected "%s"' % (actual_text, expected_text)
 
     def assertImageSize(self, accessible, width, height):
         """
-        Make sure image size of accessible is expected to test AtkImage is 
-	implemented
-
+        Make sure image size of accessible is expected to test AtkImage is
+        implemented
         """
         procedurelogger.action("assert %s's image size" % accessible)
         size = accessible._accessible.queryImage().getImageSize()
@@ -89,9 +82,7 @@ class StatusBarPanelFrame(accessibles.Frame):
                                               height,
                                              "does not match actual height",
                                               size[1])    
-        
 
-    
     # close application main window after running test
     def quit(self):
         self.altF4()

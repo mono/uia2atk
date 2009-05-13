@@ -52,12 +52,12 @@ statesCheck(sbpFrame.panel2, "StatusBarPanel")
 statesCheck(sbpFrame.panel3, "StatusBarPanel")
 
 # click button1 to change statusbarpanel's text value
-sbpFrame.click(sbpFrame.button1)
+sbpFrame.button1.click(log=True)
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel1, "You have click 1 times")
 
 # click button1 to change statusbarpanel's text value again
-sbpFrame.click(sbpFrame.button1)
+sbpFrame.button1.click(log=True)
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel1, "You have click 2 times")
 
@@ -69,7 +69,7 @@ sbpFrame.assertUnimplementedEditableText(sbpFrame.panel2)
 sbpFrame.assertUnimplementedEditableText(sbpFrame.panel3)
 
 # check image size to make sure Image is implemented
-## BUG455927 is reopened that icons have incorrect image size (-1x-1)
+# BUG455927 is reopened that icons have incorrect image size (-1x-1)
 #sbpFrame.assertImageSize(sbpFrame.panel1, width=16, height=16)
 #sbpFrame.assertImageSize(sbpFrame.panel2, width=48, height=48)
 #sbpFrame.assertImageSize(sbpFrame.panel3, width=32, height=32)
