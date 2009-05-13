@@ -72,28 +72,28 @@ statesCheck(tstbFrame.readonly, "ToolStripTextBox", \
 # will change label and text, just 10 characters is valid
 tstbFrame.singleline.mouseClick()
 sleep(config.SHORT_DELAY)
-tstbFrame.inputText(tstbFrame.singleline, "toolstriptextbox1")
+tstbFrame.singleline.typeText("toolstriptextbox1")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("toolstript")
 tstbFrame.assertText(tstbFrame.singleline,"toolstript")
 
-tstbFrame.changeTextValue(tstbFrame.singleline, "changeTextValue")
+tstbFrame.setTextValue(tstbFrame.singleline, "setTextValue")
 sleep(config.SHORT_DELAY)
-tstbFrame.assertLabel("changeText")
+tstbFrame.assertLabel("setTextVal")
 
 # in textbox2(multi line), input characters in application or change text value
 # will change label and text with multi line
 tstbFrame.multiline.mouseClick()
 sleep(config.SHORT_DELAY)
-tstbFrame.inputText(tstbFrame.multiline, "toolstrip")
+tstbFrame.multiline.typeText("toolstrip")
 tstbFrame.multiline.keyCombo("Return", grabFocus=True)
-tstbFrame.inputText(tstbFrame.multiline, "textbox2")
+tstbFrame.multiline.typeText("textbox2")
 sleep(config.SHORT_DELAY)
 ## false moving to next line, MWF BUG486716
 #tstbFrame.assertLabel("toolstrip\ntextbox2")
 #tstbFrame.assertText(tstbFrame.multiline,"toolstrip\ntextbox2")
 
-tstbFrame.changeTextValue(tstbFrame.multiline, "multi\r\nline")
+tstbFrame.setTextValue(tstbFrame.multiline, "multi\r\nline")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 
@@ -101,12 +101,12 @@ tstbFrame.assertLabel("multi\r\nline")
 # won't change label and text
 tstbFrame.readonly.mouseClick()
 sleep(config.SHORT_DELAY)
-tstbFrame.inputText(tstbFrame.readonly, "toolstriptextbox3")
+tstbFrame.readonly.typeText("toolstriptextbox3")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 tstbFrame.assertText(tstbFrame.readonly,"")
 
-tstbFrame.changeTextValue(tstbFrame.readonly, "readonly")
+tstbFrame.setTextValue(tstbFrame.readonly, "readonly")
 sleep(config.SHORT_DELAY)
 tstbFrame.assertLabel("multi\r\nline")
 

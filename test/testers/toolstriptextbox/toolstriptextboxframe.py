@@ -27,50 +27,42 @@ class ToolStripTextBoxFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripTextBoxFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
-        self.textboxs = self.findAllTexts(None)
-        self.singleline = self.textboxs[0]
-        self.multiline = self.textboxs[1]
-        self.readonly = self.textboxs[2]
+        self.textboxes = self.findAllTexts(None)
+        self.singleline = self.textboxes[0]
+        self.multiline = self.textboxes[1]
+        self.readonly = self.textboxes[2]
 
-    def inputText(self, textbox, values):
+    def setTextValue(self, textbox, value):
         """
-        Wrap strongwind typeText method, imitate key pressing to input values 
-	in application 
-
+        Change textbox's text to value to ensure EditableText is implemented
         """
-        textbox.typeText(values)
+        procedurelogger.action('in %s enter %s' % (textbox, value))
+        textbox.text = value
 
-    def changeTextValue(self, textbox, values):
+    def assertLabel(self, text):
         """
-        Change textbox's text to values to ensure EditableText is implemented
-
+        assert label text matches the expected text
         """
-        procedurelogger.action('in %s enter %s' % (textbox, values))
-        textbox.text = values
+        expected_text = "Your input:%s" % text
+        procedurelogger.expectedResult("Label text is \"%s\"" % expected_text)
+        actual_text = self.label.text
+        assert actual_text == expected_text,\
+            'Label text was "%s", expected "%s"' % (actual_text, expected_text)
 
-    def assertLabel(self, newlabel):
+    def assertText(self, accessible, expected_text):
         """
-        assert label is changed to show input newlabel
-
+        Make sure accessible's text is expected_text
         """
-        procedurelogger.expectedResult("label shows Your input is:%s" % newlabel)
-
-        assert self.label.text == "Your input:%s" % newlabel
-
-    def assertText(self, accessible, textvalue):
-        """
-        Make sure accessible's text is textvalue
-
-        """
-        procedurelogger.expectedResult("the text of %s shows %s" % \
-						(accessible,textvalue))
-        assert accessible.text == textvalue
+        procedurelogger.expectedResult("the text of %s is \"%s\"" % \
+						                              (accessible, expected_text))
+        actual_text = accessible.text
+        assert actual_text == expected_text, 'Text was "%s", expected "%s"' % \
+                                                   (actual_text, expected_text)
 
     def assertNameAndDescription(self, accessible, name, description):
         """
         Make sure accessible's AccessibleName and AccessibleDescription are 
 	expected
-
         """
         procedurelogger.action("Verify %s AccessibleName and AccessibleDescription" % accessible)
  
@@ -82,11 +74,14 @@ class ToolStripTextBoxFrame(accessibles.Frame):
 
     def assertStreamableContent(self, accessible):
         procedurelogger.action("Verify Streamable Content for %s" % accessible)
-        expect = ['text/plain']
-        result = accessible._accessible.queryStreamableContent().getContentTypes()
-
-        procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
-        assert result == expect, "Contents %s not match the expected" % result
+        expected_types = ['text/plain']
+        actual_types = \
+              accessible._accessible.queryStreamableContent().getContentTypes()
+        procedurelogger.expectedResult("%s Contents is %s" % \
+                                                  (accessible, expected_types))
+        assert actual_types == expected_types, \
+                                'Content types was "%s", expected "%s"' % \
+                                (actual_types, expected_types)
 
     # close application window
     def quit(self):
