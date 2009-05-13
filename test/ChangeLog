@@ -1,5 +1,14 @@
 2009-05-13  Calen Chen <cachen@novell.com>
 
+	* testers/toolstripcombobox/toolstripcomboboxframe.py,
+	* testers/toolstripcombobox_basic_ops.py: commit my updates from review
+	board(http://reviews.mono-a11y.org/r/183/) for Brian to do final review
+	* testers/listview_list/listviewframe.py,
+	* testers/listview_list_ops.py: commit my updates from review
+	board(http://reviews.mono-a11y.org/r/141/) for Brian to do final review
+
+2009-05-13  Calen Chen <cachen@novell.com>
+
 	* samples/toolstripprogressbar.py,
 	* testers/toolstripprogressbar/__init__.py,
 	* testers/toolstripprogressbar/toolstripprogressbarframe.py,

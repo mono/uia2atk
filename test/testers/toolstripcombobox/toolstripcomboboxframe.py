@@ -13,7 +13,6 @@ from strongwind import *
 class ToolStripComboBoxFrame(accessibles.Frame):
     """the profile of the toolstripcombobox sample"""
 
-    MENU = '8'
     MENUITEM_6 = '6'
     MENUITEM_8 = '8'
     MENUITEM_10 = '10'
@@ -25,31 +24,41 @@ class ToolStripComboBoxFrame(accessibles.Frame):
         self.label = self.findLabel("Please Select one Font Size from the ComboxBox")
         self.toolbar = self.findToolBar(None)
         self.toolstripcombobox = self.findComboBox(None)
+        self.menu = self.findMenu(None, checkShowing=False)
+        self.menuitem_6 = self.findMenuItem(self.MENUITEM_6, checkShowing=False)
+        self.menuitem_8 = self.findMenuItem(self.MENUITEM_8, checkShowing=False)
+        self.menuitem_10 = self.findMenuItem(self.MENUITEM_10, checkShowing=False)
+        self.menuitem_12 = self.findMenuItem(self.MENUITEM_12, checkShowing=False)
+        self.menuitem_14 = self.findMenuItem(self.MENUITEM_14, checkShowing=False)
+
+    def click(self, accessible):
+        """wrap strongwind click action to add log"""
+        procedurelogger.action('click %s' % accessible)
+        accessible.click()
 
     def press(self, accessible):
+        """wrap strongwind press action to add log"""
+        procedurelogger.action('press %s' % accessible)
         accessible.press()
-        self.menu = self.findMenu(None)
-        self.menuitem_6 = self.findMenuItem(self.MENUITEM_6)
-        self.menuitem_8 = self.findMenuItem(self.MENUITEM_8)
-        self.menuitem_10 = self.findMenuItem(self.MENUITEM_10)
-        self.menuitem_12 = self.findMenuItem(self.MENUITEM_12)
-        self.menuitem_14 = self.findMenuItem(self.MENUITEM_14)
 
-    def inputText(self, accessible, text):
+    def editableTextIsNotImplemented(self, accessible):
+        """assert accessible's EditableText is not implemented"""
+        procedurelogger.action('check EditableText for %s' % accessible)
+
+        procedurelogger.expectedResult('EditableText is not implemented for %s' % accessible)
         try:
-            procedurelogger.action('input %s to %s' % (text, accessible))
-            accessible.text = text
+            accessible._accessible.queryEditableText()
         except NotImplementedError:
-            pass
+            return
+        assert False, "EditableText shouldn't be implemented"
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.action('Assert the text of %s' % accessible)
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s text is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text=None):
+        """assert text is equal to the expected_text"""
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                                (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                            'the actual text is %s, the expected text is %s' % \
+                                                (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
         """assert Selection implementation"""

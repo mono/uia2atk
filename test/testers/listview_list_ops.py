@@ -15,6 +15,7 @@ Test accessibility of listview_list widget
 """
 
 # imports
+import pyatspi
 from listview_list import *
 from helpers import *
 from actions import *
@@ -44,8 +45,8 @@ lvFrame = app.listViewFrame
 ##############################
 # check tablecell's AtkAction
 ##############################
-actionsCheck(lvFrame.tablecell[0], "TableCell")
-actionsCheck(lvFrame.tablecell[4], "TableCell")
+for i in range(5):
+    actionsCheck(lvFrame.tablecell[i], "TableCell")
 
 ##############################
 # check treetable's AtkAccessible
@@ -62,100 +63,122 @@ statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 ##############################
 # check tablecell's AtkAccessible while multi-items selected
 ##############################
-#click tablecell to rise selected states, tablecell1 also with 
-#selected states after click tablecell3 because MultiSelect is True
+# click tablecell0 to rise selected states, tablecell4 also with 
+# selected states after Ctrl+click tablecell4 because MultiSelect is True
 lvFrame.click(lvFrame.tablecell[0])
 sleep(config.SHORT_DELAY)
+# TODO: BUG487118 focused is missing and doesn't send event to change label 
+# when perform click from accerciser
+#lvFrame.assertText(lvFrame.label, "Items are: Item 0 ")
 statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused", "editable"])
 statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 
-lvFrame.click(lvFrame.tablecell[4])
+pyatspi.Registry.generateKeyboardEvent(37, None, pyatspi.KEY_PRESS)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["selected", "editable"])
+lvFrame.click(lvFrame.tablecell[4])
+pyatspi.Registry.generateKeyboardEvent(37, None, pyatspi.KEY_RELEASE)
+sleep(config.SHORT_DELAY)
+# TODO: BUG487118 
+#lvFrame.assertText(lvFrame.label, "Items are: Item 0 Item 4 ")
+#statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["selected", "focused",  "editable"])
 statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused", "editable"])
 
 ##############################
 # check tablecell's AtkAccessible while single-item selected
 ##############################
-#close MultiSelect, then select tablecells to check states, 
+# close MultiSelect, then select tablecells to check states, 
 lvFrame.checkbox.click()
 sleep(config.SHORT_DELAY)
 
 lvFrame.click(lvFrame.tablecell[1])
 sleep(config.SHORT_DELAY)
-# TODO: BUG487118 focused is missing when you perform click from accerciser
-#statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "focused", "editable"])
-statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
+# TODO: BUG487118
+#lvFrame.assertText(lvFrame.label, "Items are: Item 1 ")
+#statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "focused",  "editable"])
 
 lvFrame.click(lvFrame.tablecell[2])
 sleep(config.SHORT_DELAY)
-# TODO: BUG487118 focused is missing when you perform click from accerciser
-#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused", "editable"])
+# TODO: BUG487118
+#lvFrame.assertText(lvFrame.label, "Items are: Item 2 ")
+#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused",  "editable"])
 statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["editable"])
 
 ##############################
 # check tablecell's AtkAccessible by mouseClick
 ##############################
-#mouse click TableCell to rise focused and selected states
+# mouse click TableCell to rise focused and selected states
 lvFrame.mouseClick(log=False)
 lvFrame.tablecell[0].mouseClick()
 sleep(config.SHORT_DELAY)
+lvFrame.assertText(lvFrame.label, "Items are: Item 0 ")
 statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused", "editable"])
-statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
 
-lvFrame.tablecell[3].mouseClick()
+lvFrame.tablecell[4].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["selected", "focused", "editable"])
+lvFrame.assertText(lvFrame.label, "Items are: Item 4 ")
+statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["selected", "focused", "editable"])
 statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["editable"])
 
 ##############################
 # check tablecell's AtkAccessible by keyboard
 ##############################
 lvFrame.keyCombo("Up", grabFocus=False)
-statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["focused", "selected", "editable"])
-statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["focused", "selected", "editable"])
+statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 
 lvFrame.keyCombo("Down", grabFocus=False)
-statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["focused", "selected", "editable"])
-statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
+statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["focused", "selected", "editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
 
 ##############################
 # check tablecell's AtkSelection
 ##############################
-#check treetable selection implementation
-lvFrame.selectChild(lvFrame.treetable, 2)
+# single selected
+lvFrame.selectChild(lvFrame.treetable, lvFrame.tablecell[2].getIndexInParent())
 sleep(config.SHORT_DELAY)
-# TODO: BUG487118 focused is missing when you perform selection from accerciser
-#statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "focused", "editable"])
+statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["selected", "editable"])
 
-#clear selection
-lvFrame.assertClearSelection(lvFrame.treetable)
+# clear selection
+lvFrame.clearSelection(lvFrame.treetable)
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.tablecell[2], "TableCell", add_states=["editable"])
+statesCheck(lvFrame.treetable, "TreeTable", add_states=["focused"])
+
+# multi selected
+lvFrame.checkbox.click()
+sleep(config.SHORT_DELAY)
+
+lvFrame.selectChild(lvFrame.treetable, lvFrame.tablecell[0].getIndexInParent())
+lvFrame.selectChild(lvFrame.treetable, lvFrame.tablecell[3].getIndexInParent())
+sleep(config.SHORT_DELAY)
+statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["selected", "editable"])
+
+# clear selection
+lvFrame.clearSelection(lvFrame.treetable)
+sleep(config.SHORT_DELAY)
+statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["editable"])
+statesCheck(lvFrame.tablecell[3], "TableCell", add_states=["editable"])
 statesCheck(lvFrame.treetable, "TreeTable", add_states=["focused"])
 
 ##############################
 # check tablecell's AtkText
 ##############################
-#check tablecell's text implementation
+# check tablecell's text implementation
 lvFrame.assertText(lvFrame.tablecell[0], "Item 0")
 lvFrame.assertText(lvFrame.tablecell[4], "Item 4")
 
 ##############################
 # check tablecell's LabelEdit
 ##############################
-# edit item's text from GUI
-lvFrame.tablecell[4].mouseClick()
-sleep(config.SHORT_DELAY)
-lvFrame.tablecell[4].mouseClick()
+lvFrame.tablecell[4].deleteText()
 sleep(config.SHORT_DELAY)
 lvFrame.tablecell[4].insertText("Item 99")
 sleep(config.SHORT_DELAY)
-lvFrame.tablecell[0].mouseClick()
-sleep(config.SHORT_DELAY)
-lvFrame.assertText(lvFrame.tablecell[4], "Item 99Item 4")
+lvFrame.assertText(lvFrame.tablecell[4], "Item 99")
 
-lvFrame.inputText(lvFrame.tablecell[3], "Item 99")
+lvFrame.changeText(lvFrame.tablecell[3], "Item 99")
+sleep(config.SHORT_DELAY)
 lvFrame.assertText(lvFrame.tablecell[3], "Item 99")
 
 ##############################
@@ -167,7 +190,7 @@ lvFrame.assertTable(lvFrame.treetable, 5, 1)
 ##############################
 # End
 ##############################
-#close application frame window
+# close application frame window
 lvFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
