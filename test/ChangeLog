@@ -1,3 +1,8 @@
+2009-05-13  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/tabpage_basic_ops.py: Added a comment to explain
+	MONO_WINFORMS_XIM_STYLE env variable.
+
 2009-05-13  Calen Chen <cachen@novell.com>
 
 	* testers/statusstrip/statusstripframe.py,

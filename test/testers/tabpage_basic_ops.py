@@ -33,7 +33,7 @@ except IndexError:
 try:
   app = launchTabPage(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
+  print "ERROR: %s" % msg
   exit(2)
 
 # make sure we got the app back
@@ -53,6 +53,7 @@ statesCheck(tpFrame.button, "Button")
 # keyTab move focus from tabpage0 to button
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
+# We should set 'export MONO_WINFORMS_XIM_STYLE=disabled' to ensure keyCombo working fine
 statesCheck(tpFrame.button, "Button", add_states=["focused"])
 statesCheck(tpFrame.tabpage0, "TabPage", add_states=["selected"])
 # keyTab move focus from button to tabpage0
