@@ -1093,10 +1093,21 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible = GetAccessible (type, name);
 			PropertyRole (type, accessible);
 
-			Assert.AreEqual (Atk.Role.Filler, accessible.Parent.Role);
-			Assert.AreEqual (0, accessible.NAccessibleChildren);
+			Assert.AreEqual (2, accessible.NAccessibleChildren);
 
-			States (accessible,
+			Atk.Object pushButton = accessible.RefAccessibleChild (0);
+			Atk.Object toggleButton = accessible.RefAccessibleChild (1);
+
+			Assert.AreEqual (Atk.Role.PushButton, pushButton.Role);
+			Assert.AreEqual (Atk.Role.ToggleButton, toggleButton.Role);
+
+			States (pushButton,
+			        Atk.StateType.Enabled,
+			        Atk.StateType.Focusable,
+			        Atk.StateType.Sensitive,
+			        Atk.StateType.Showing,
+			        Atk.StateType.Visible);
+			States (toggleButton,
 			        Atk.StateType.Enabled,
 			        Atk.StateType.Focusable,
 			        Atk.StateType.Sensitive,

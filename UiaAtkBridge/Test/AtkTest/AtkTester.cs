@@ -964,7 +964,6 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripLabel:
 				return Atk.Role.Label;
 			case BasicWidgetType.ToolBarPushButton:
-			case BasicWidgetType.ToolBarDropDownButton:
 			case BasicWidgetType.ToolStripButton:
 			case BasicWidgetType.NormalButton:
 				return Atk.Role.PushButton;
@@ -1029,6 +1028,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.GroupBox:
 				return Atk.Role.Panel;
 			case BasicWidgetType.ToolStripSplitButton:
+			case BasicWidgetType.ToolBarDropDownButton:
 				return Atk.Role.Filler;
 			case BasicWidgetType.ToolStripDropDownButton:
 				return Atk.Role.Menu;

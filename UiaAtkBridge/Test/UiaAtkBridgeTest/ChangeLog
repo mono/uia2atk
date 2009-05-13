@@ -1,3 +1,7 @@
+2009-05-13  Neville Gao  <nevillegao@gmail.com>
+
+	* BridgeTests.cs: Tested states for ToolBarDropDownButton.
+
 2009-05-12  Mike Gorse  <mgorse@novell.com>
 
 	* DialogTester.cs: Test for event when selecting in a DirComboBox.
