@@ -44,5 +44,5 @@ class ToolStripProgressBar(accessibles.Application):
         'Get a reference to the toolstripprogressbar window'
         super(ToolStripProgressBar, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^ToolStripProgressBar control'), logName='Tool Strip Progress Bar')
+        self.findFrame(re.compile('^ToolStripProgressBar Sample'), logName='Tool Strip Progress Bar')
 

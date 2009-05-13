@@ -1,3 +1,11 @@
+2009-05-13  Calen Chen <cachen@novell.com>
+
+	* samples/toolstripprogressbar.py,
+	* testers/toolstripprogressbar/__init__.py,
+	* testers/toolstripprogressbar/toolstripprogressbarframe.py,
+	* testers/toolstripprogressbar_basic_ops.py: check in changes from 
+	review board (http://reviews.mono-a11y.org/r/197/)
+
 2009-05-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/toolstripsplitbutton.py: Click on a

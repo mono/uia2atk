@@ -46,64 +46,81 @@ tspbFrame = app.toolStripProgressBarFrame
 #check progressbar's states list
 statesCheck(tspbFrame.progressbar, "ToolStripProgressBar")
 
-#click button to check if label is changed, in each time current value is up 20, label would shows "Done" after value rise to 100
-tspbFrame.click(tspbFrame.button)
+# click button to check if label is changed, in each time current value is up
+# 20, label would shows "Done" after value rise to 100
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 20% of 100%")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 20)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 20)
+# changing the label should change the name of the progress bar, because
+# progress bars get their names from labels
+# BUG500402 - Accessible that gets it name from a label does not update its
+# name when label text changes
+# tspbFrame.findProgressBar("It is 20% of 100%")
 
-tspbFrame.click(tspbFrame.button)
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 40% of 100%")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 40)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 40)
+# BUG500402
+# tspbFrame.findProgressBar("It is 40% of 100%")
 
-tspbFrame.click(tspbFrame.button)
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 60% of 100%")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 60)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 60)
+# BUG500402
+# tspbFrame.findProgressBar("It is 60% of 100%")
 
-tspbFrame.click(tspbFrame.button)
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 80% of 100%")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 80)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 80)
+# BUG500402
+# tspbFrame.findProgressBar("It is 80% of 100%")
 
-tspbFrame.click(tspbFrame.button)
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 100% of 100%")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
-#label shows "Done" when click button again after the value rise to 100%, value
-#is still 100% 
-tspbFrame.click(tspbFrame.button)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
+# BUG500402
+# tspbFrame.findProgressBar("It is 100% of 100%")
+
+# label shows "Done" when click button again after the value rise to 100%,
+# value is still 100% 
+
+tspbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("Done")
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
+# BUG500402
+# tspbFrame.findProgressBar("Done")
 
-#value doesn't changed by giving number in acceciser
-tspbFrame.value(10)
+# value doesn't changed by giving number in acceciser
+tspbFrame.assignValue(10)
 sleep(config.SHORT_DELAY)
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
 
-tspbFrame.value(100)
+tspbFrame.assignValue(100)
 sleep(config.SHORT_DELAY)
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
 
-tspbFrame.value(-1)
+tspbFrame.assignValue(-1)
 sleep(config.SHORT_DELAY)
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
 
-tspbFrame.value(101)
+tspbFrame.assignValue(101)
 sleep(config.SHORT_DELAY)
-tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
+tspbFrame.assertCurrentValue(tspbFrame.progressbar, 100)
 
-#maximumValue is 100 and minimumValue is 0
-tspbFrame.assertValueImplemented("maximumValue")
+# maximumValue is 100 and minimumValue is 0
+tspbFrame.assertMaximumValue()
+tspbFrame.assertMinimumValue()
 
-tspbFrame.assertValueImplemented("minimumValue")
-
-#check progressbar's states list again
+# check progressbar's states list again
 statesCheck(tspbFrame.progressbar, "ProgressBar")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 tspbFrame.quit()
