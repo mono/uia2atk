@@ -32,12 +32,6 @@ class ToolStripComboBoxSample(Form):
         self.Width = 500
         self.Height = 100 
 
-        # setup label
-        self.label = Label()
-        self.label.AutoSize = True
-        self.label.Dock = DockStyle.Top
-        self.label.Text = "Please Select one Font Size from the ComboBox"
-    
         # ToolStrip:
         self.toolstrip = ToolStrip()
 
@@ -56,14 +50,10 @@ class ToolStripComboBoxSample(Form):
         
         # add Controls
         self.toolstrip.Items.Add(self.toolstrip_combobox)
-        self.Controls.Add(self.label)
         self.Controls.Add(self.toolstrip)
 
     def toolstrip_combobox_SelectedIndexChanged(self, sender, event):
-        if self.toolstrip_combobox.SelectedIndex >= 0:
-            self.label.Text = "The font size is %d" % int(self.toolstrip_combobox.SelectedItem)
-            self.label.Font = Font(self.label.Font.Name, 
-                                   int(self.toolstrip_combobox.SelectedItem))
+        pass
 
 form = ToolStripComboBoxSample()
 Application.Run(form)

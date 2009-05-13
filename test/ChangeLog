@@ -1,3 +1,10 @@
+2009-05-13 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/toolstripcombobox.py: Fix typo ("ComboxBox" -> "ComboBox")
+	* samples/toolstripcombobox_nolabel.py: Create a new ToolStripComboBox
+	sample that has no label from which the ToolStripComboBox can get its
+	name.
+
 2009-05-13  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/tabpage_basic_ops.py: Added a comment to explain
