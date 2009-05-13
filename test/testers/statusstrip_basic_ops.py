@@ -12,7 +12,7 @@
 """
 Test accessibility of statusstrip widget which include toolstriplabel,
 toolstripdropdownbutton, toolstripsplitbutton and toolstripprogressbar.
-This test is only focus on testing the conponents of the statusstrip which are
+This test is only focus on testing the components of the statusstrip which are
 toolstriplabel and toolstripprogressbar. the other please see themselves' test
 
 """
@@ -61,16 +61,18 @@ statesCheck(ssFrame.ProgressBar, "ProgressBar")
 statesCheck(ssFrame.StripLabel, "Label")
 
 # click button1 to change toolstriplabel and toolstripprogressbar
-ssFrame.click(ssFrame.button)
+ssFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 ssFrame.assertLabel(ssFrame.StripLabel, "It is 20% of 100%")
 ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 20)
+statesCheck(ssFrame.statusstrip, "StatusBar")
 
 # click button1 again to change toolstriplabel and toolstripprogressbar
-ssFrame.click(ssFrame.button)
+ssFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 ssFrame.assertLabel(ssFrame.StripLabel, "It is 40% of 100%")
 ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 40)
+statesCheck(ssFrame.statusstrip, "StatusBar")
 
 # close application frame window
 ssFrame.quit()

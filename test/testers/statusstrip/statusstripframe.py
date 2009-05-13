@@ -34,34 +34,29 @@ class StatusStripFrame(accessibles.Frame):
         self.StripLabel = self.findLabel(self.LABEL_TWO)
         self.ProgressBar = self.findProgressBar(None)
 
-    def click(self,button):
+    def assertLabel(self, label, expected_text):
         """
-        Wrap strongwind click action
-
+        Make sure Label text is changed to expected_text
         """
-        button.click()
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                                        (label, expected_text))
 
-    def assertLabel(self, label, newlabel):
-        """
-        Make sure Label is changed to newlable
-
-        """
-        procedurelogger.expectedResult('"%s" is changed to "%s"' % (label, newlabel))
-
+        actual_text = label.text
         def resultMatches():
-            return label.text == newlabel
-        assert retryUntilTrue(resultMatches)
+            return actual_text == expected_text
+        assert retryUntilTrue(resultMatches), \
+                  'text was "%s", expected "%s"' % (actual_text, expected_text)
+                                               
 
-    def assertProgressBarValue(self, accessible, value):
+    def assertProgressBarValue(self, accessible, expected_value):
         """
         Make sure current value of accessible is expected value
-
         """
-        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % value)
-
-        assert accessible.value == value, \
-                       "progressbar's current value is %s:" % accessible.value
-
+        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % expected_value)
+        actual_value = accessible.value
+        assert actual_value == expected_value, \
+                                  "progressbar's value was %s, expected %s" % \
+                                  (actual_value, expected_value)
     
     # close application main window after running test
     def quit(self):

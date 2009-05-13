@@ -1,5 +1,11 @@
 2009-05-13  Calen Chen <cachen@novell.com>
 
+	* testers/statusstrip/statusstripframe.py,
+	* testers/statusstrip_basic_ops.py: commit Brian's changes from 
+	review board (http://reviews.mono-a11y.org/r/203/)
+
+2009-05-13  Calen Chen <cachen@novell.com>
+
 	* testers/statusbarpanel/statusbarpanelframe.py,
 	* testers/statusbarpanel_basic_ops.py: commit Brian's changes from 
 	review board (http://reviews.mono-a11y.org/r/201/)
