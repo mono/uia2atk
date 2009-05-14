@@ -26,7 +26,10 @@ BuildRequires: libxml2-devel >= 2.0.0
 BuildRequires: dbus-1-devel >= 1.0
 BuildRequires: dbus-1-glib-devel >= 0.7.0
 BuildRequires: gtk2-devel > 2.10.0
+%if 0%{suse_version} == 1100
 BuildRequires: gail-devel > 1.9.0 gail-lang > 1.9.0
+%endif
+BuildRequires: libgail-gnome-devel
 
 Summary:       Assistive Technology Service Provider Interface - dbus
 
