@@ -82,8 +82,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc AUTHORS INSTALL README COPYING
+%dir %{_prefix}/share/at-spi
 %_prefix/share/at-spi/dbus/*
 %{_libdir}/gtk-2.0/modules/libspiatk.so
+%dir %{_libdir}/%{name}
 %{_libdir}/%{name}/at-spi-registryd
 
 # FIXME: split these off into a separate -python package
@@ -96,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/*.so*
+%dir %{_includedir}/at-spi-1.0
+%dir %{_includedir}/droute
+%dir %{_includedir}/dbind-0.1
 %{_includedir}/at-spi-1.0/cspi/*.h
 %{_includedir}/at-spi-1.0/libspi/*.h
 %{_includedir}/at-spi-1.0/login-helper/login-helper.h
