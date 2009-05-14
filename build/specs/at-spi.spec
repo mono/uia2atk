@@ -99,6 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/at-spi-1.0/cspi/*.h
 %{_includedir}/at-spi-1.0/libspi/*.h
 %{_includedir}/at-spi-1.0/login-helper/login-helper.h
+%{_includedir}/droute/*.h
 %{_includedir}/dbind-0.1/*.h
 
 %changelog
