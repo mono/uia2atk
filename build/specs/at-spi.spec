@@ -81,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS ChangeLog INSTALL NEWS README COPYING
+%doc AUTHORS INSTALL README COPYING
 %_prefix/share/at-spi/dbus/*
 %{_libdir}/gtk-2.0/modules/libspiatk.so
 %{_libdir}/%{name}/at-spi-registryd
