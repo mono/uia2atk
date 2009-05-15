@@ -280,7 +280,7 @@ class MenuStrip(MainMenu):
     pass
 
 class MenuItem(object):
-    states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class ComboBox(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)

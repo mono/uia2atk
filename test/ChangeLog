@@ -1,3 +1,9 @@
+2009-05-15 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/toolstripmenuitem_basic_ops.py,
+	* testers/toolstripmenuitem/toolstripmenuitemframe.py: Finish test
+	* testers/states.py: Add FOCUSABLE as a default state for MenuItem
+
 2009-05-13 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/toolstripcombobox.py: Fix typo ("ComboxBox" -> "ComboBox")

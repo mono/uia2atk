@@ -35,6 +35,7 @@ class ToolStripMenuItemFrame(accessibles.Frame):
         super(ToolStripMenuItemFrame, self).__init__(accessible)
         print "Finding accessibles..."
         sys.stdout.flush()
+        self.text_area = self.findText("")
         self.view_menu = self.findMenu(self.VIEW_MENU)
         self.help_menu = self.findMenu(self.HELP_MENU)
         self.file_menu = self.findMenu(self.FILE_MENU)
@@ -50,12 +51,41 @@ class ToolStripMenuItemFrame(accessibles.Frame):
         print "Found all accessibles"
 
     # make sure we find a MessageBox was clicked with the specified title
-    def assert_message_box_appeared(self, title):
-        procedurelogger.action('Verify that we can find the %s MessageBox' %\
+    def assertMessageBoxAppeared(self, title):
+        procedurelogger.action('Verify that we can find the "%s" MessageBox' %\
                                                                          title)
-        procedurelogger.expectedResult('Message Box %s exists' % title)
-        mb = self.findFrame("Create Clicked")
+        procedurelogger.expectedResult('Message Box "%s" exists' % title)
+        mb = self.app.findDialog(title)
 
+    def assertText(self, expected_text):
+        procedurelogger.action('Verify that the text area contains the text we expecte')
+        procedurelogger.expectedResult('The text area contains "%s"' % \
+                                                                 expected_text)
+        actual_text = self.text_area.text 
+        assert actual_text == expected_text, 'Text was "%s", expected "%s"' % \
+                                             (actual_text, expected_text)
+
+    def assertEditMenuOpen(self):
+        '''
+        Assert that the "Edit" menu is open by asserting that the "Copy This"
+        and "Paste That" menu items are showing
+        '''
+        procedurelogger.action('Verify that the expected menu items are showing')
+        procedurelogger.expectedResult('The following menu items are showing: %s' % map(str, [self.copy_this_menu_item, self.paste_that_menu_item]))
+        # BUG486335 MenuItem, ToolStripMenuItem: extraneous "showing" state of
+        # menu item when it is not showing
+        assert self.copy_this_menu_item.showing
+        assert self.paste_that_menu_item.showing
+
+    def clearTextArea(self):
+        '''
+        Clear the text area directly using at-spi
+        '''
+        self.text_area.text = ""
+        text_area_text = self.text_area.text
+        assert text_area_text == "", '%s contained "%s". It should be blank' %\
+                                     (self.text_area, text_area_text)
+    
     #close main window
     def quit(self):
         self.altF4()
