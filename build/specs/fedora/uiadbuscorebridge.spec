@@ -45,6 +45,19 @@ rm -rf %{buildroot}
 %_libdir/mono/accessibility/DbusCore.dll
 %_libdir/mono/gac/DbusCore
 %_libdir/mono/gac/UiaDbusCoreBridge
+
+
+%package -n uiadbuscorebridge-devel
+License:        MIT/X11
+Summary:        mono-uia devel package
+Group:          System/Libraries
+Requires:       uiadbuscorebridge == %{version}-%{release}
+
+%description
+Bridge between UIA providers and Dbus
+
+%files -n uiadbuscorebridge-devel
+%defattr(-,root,root)
 %_libdir/pkgconfig/*.pc
 
 

@@ -42,6 +42,18 @@ rm -rf %{buildroot}
 %{_libdir}/mono/accessibility/UIAutomationBridge.dll
 %{_libdir}/mono/gac/UIAutomationClient
 %{_libdir}/mono/accessibility/UIAutomationClient.dll
+
+%package -n mono-uia-devel
+License:	MIT/X11
+Summary:	mono-uia devel package
+Group:		Development/Languages/Mono
+Requires:	mono-uia == %{version}-%{release}
+
+%description
+Implementations of the members and interfaces based on MS UIA API
+
+%files -n mono-uia-devel
+%defattr(-,root,root)
 %{_libdir}/pkgconfig/*.pc
 
 %package -n mono-winfxcore
