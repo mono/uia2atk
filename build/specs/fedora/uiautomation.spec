@@ -1,3 +1,4 @@
+%define		debug_package %{nil}
 #
 # spec file for package UIAutomation
 #
@@ -5,26 +6,45 @@
 Name:           mono-uia
 Version:        1.0
 Release:        1
-License:        MIT/X11
+License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
-Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
+Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	mono-core >= 2.4
 BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
+User Interface Automation (UIA) is a new accessibility standard for use with Mono
+
+%package -n mono-uia-devel
+License:	MIT
+Summary:	mono-uia devel package
+Group:		Development/Languages
+Requires:	mono-uia == %{version}-%{release}
+
+%description
 Implementations of the members and interfaces based on MS UIA API
+
+%package -n mono-winfxcore
+License:	MIT
+Summary:	Parts of winfx
+Group:		Development/Languages
+Requires:	mono-core >= 2.4
+
+%description -n mono-winfxcore
+WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %prep
 %setup -q
 
 %build
 %configure
-make
+make %{?_smp_mflags}
 
 %install
+rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
 %clean
@@ -43,33 +63,9 @@ rm -rf %{buildroot}
 %{_libdir}/mono/gac/UIAutomationClient
 %{_libdir}/mono/accessibility/UIAutomationClient.dll
 
-%package -n mono-uia-devel
-License:	MIT/X11
-Summary:	mono-uia devel package
-Group:		Development/Languages/Mono
-Requires:	mono-uia == %{version}-%{release}
-
-%description
-Implementations of the members and interfaces based on MS UIA API
-
 %files -n mono-uia-devel
 %defattr(-,root,root)
 %{_libdir}/pkgconfig/*.pc
-
-%package -n mono-winfxcore
-License:	MIT/X11
-Summary:	Parts of winfx
-Group:		Development/Languages/Mono
-Requires:	mono-core >= 2.4
-
-%description -n mono-winfxcore
-The Mono Project is an open development initiative that is working to
-develop an open source, Unix version of the .NET development platform.
-Its objective is to enable Unix developers to build and deploy
-cross-platform .NET applications. The project will implement various
-technologies that have been submitted to the ECMA for standardization.
-
-Parts of winfx
 
 %files -n mono-winfxcore
 %defattr(-, root, root)
@@ -77,5 +73,5 @@ Parts of winfx
 %{_libdir}/mono/2.0/WindowsBase.dll
 
 %changelog
-* Thu Apr 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.0
+* Thu Apr 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.0-1
 - Initial RPM
