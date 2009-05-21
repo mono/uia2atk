@@ -16,15 +16,15 @@ BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
-User Interface Automation (UIA) is a new accessibility standard for use with Mono
+User Interface Automation (UIA) is a new accessibility standard
 
-%package -n mono-uia-devel
+%package devel
 License:	MIT
 Summary:	mono-uia devel package
 Group:		Development/Languages
 Requires:	mono-uia == %{version}-%{release}
 
-%description
+%description devel
 Implementations of the members and interfaces based on MS UIA API
 
 %package -n mono-winfxcore
@@ -41,7 +41,8 @@ WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %build
 %configure
-make %{?_smp_mflags}
+#Break build with parrallel make
+make
 
 %install
 rm -rf %{buildroot}
@@ -51,7 +52,7 @@ make DESTDIR=%{buildroot} install
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc README COPYING NEWS
 %{_libdir}/mono/accessibility
 %{_libdir}/mono/gac/UIAutomationProvider
@@ -63,12 +64,12 @@ rm -rf %{buildroot}
 %{_libdir}/mono/gac/UIAutomationClient
 %{_libdir}/mono/accessibility/UIAutomationClient.dll
 
-%files -n mono-uia-devel
-%defattr(-,root,root)
+%files devel
+%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/*.pc
 
 %files -n mono-winfxcore
-%defattr(-, root, root)
+%defattr(-, root, root,-)
 %{_libdir}/mono/gac/WindowsBase
 %{_libdir}/mono/2.0/WindowsBase.dll
 

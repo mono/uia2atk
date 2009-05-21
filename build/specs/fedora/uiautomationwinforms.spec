@@ -41,7 +41,7 @@ make DESTDIR=%{buildroot} install
 rm -rf %{buildroot}
 
 %files -f UIAutomationWinforms.lang
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc COPYING README NEWS 
 %dir %_libdir/uiautomationwinforms
 %_libdir/uiautomationwinforms/UIAutomationWinforms.dll*

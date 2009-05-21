@@ -43,7 +43,7 @@ rm -f %{buildroot}/%_libdir/uiaatkbridge/libbridge-glue.la
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc COPYING README NEWS
 %dir %_libdir/uiaatkbridge
 %_libdir/uiaatkbridge/UiaAtkBridge.dll*
