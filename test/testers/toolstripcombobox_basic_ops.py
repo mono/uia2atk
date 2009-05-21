@@ -141,12 +141,14 @@ tscbFrame.selectChild(tscbFrame.menu, 0)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 6")
 statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected", "focused"])
+statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 
 # select the last item from combobox
 tscbFrame.selectChild(tscbFrame.menu, 4)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 14")
 statesCheck(tscbFrame.menuitem_14, "MenuItem", add_states=["selected", "focused"])
+statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check menu item's AtkText 

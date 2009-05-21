@@ -14,7 +14,6 @@ Test accessibility of TextBox widget
 """
 
 # imports
-import pdb
 from textbox import *
 from helpers import *
 from actions import *

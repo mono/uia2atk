@@ -9,7 +9,6 @@
 """Application wrapper for domainupdown.py"""
 
 from strongwind import *
-import pdb
 from helpers import *
 
 # class to represent the main window.
@@ -72,6 +71,6 @@ class DomainUpDownFrame(accessibles.Frame):
                 #statesCheck(item, "ListItem", invalid_states=["showing", "visible"])
                 pass # delete this line when BUG482285 is fixed
         
-    #close application window
+    # close application window
     def quit(self):
         self.altF4()

@@ -18,10 +18,11 @@ class ToolStripComboBoxFrame(accessibles.Frame):
     MENUITEM_10 = '10'
     MENUITEM_12 = '12'
     MENUITEM_14 = '14'
+    LABEL_TEXT = 'Please Select one Font Size from the ComboBox'
 
     def __init__(self, accessible):
         super(ToolStripComboBoxFrame, self).__init__(accessible)
-        self.label = self.findLabel("Please Select one Font Size from the ComboxBox")
+        self.label = self.findLabel(self.LABEL_TEXT)
         self.toolbar = self.findToolBar(None)
         self.toolstripcombobox = self.findComboBox(None)
         self.menu = self.findMenu(None, checkShowing=False)
@@ -57,13 +58,12 @@ class ToolStripComboBoxFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s\'s text is "%s"' % \
                                                 (accessible, expected_text))
         assert accessible.text == expected_text, \
-                            'the actual text is %s, the expected text is %s' % \
-                                                (accessible.text, expected_text)
+                           'the actual text is %s, the expected text is %s' % \
+                                               (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
         """assert Selection implementation"""
-        procedurelogger.action('select index %s in "%s"' % \
-                                        (index, accessible))
+        procedurelogger.action('select index %s in "%s"' % (index, accessible))
         accessible.selectChild(index)
 
     def quit(self):
