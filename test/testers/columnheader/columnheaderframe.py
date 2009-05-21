@@ -28,92 +28,82 @@ class ColumnHeaderFrame(accessibles.Frame):
         super(ColumnHeaderFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
-        self.column_a = self.findTableColumnHeader(self.COLUMN_A, \
-                                                            checkShowing=False)
-        self.column_b = self.findTableColumnHeader(self.COLUMN_B, \
-                                                            checkShowing=False)
+        self.column_a = self.findTableColumnHeader(self.COLUMN_A)
+        self.column_b = self.findTableColumnHeader(self.COLUMN_B)
         self.item0 = self.findTableCell("Item0")
         self.num0 = self.findTableCell("0")
         self.item5 = self.findTableCell("Item5")
         self.num5 = self.findTableCell("5")
         # search for initial position for assertOrder test
-        self.item0_position = self.item0._getAccessibleCenter()
-        self.num0_position = self.num0._getAccessibleCenter()
-        self.item5_position = self.item5._getAccessibleCenter()
-        self.num5_position = self.num5._getAccessibleCenter()
+        self.top_column_a_position = self.item0._getAccessibleCenter()
+        self.top_num_position = self.num0._getAccessibleCenter()
+        self.bottom_column_a_position = self.item5._getAccessibleCenter()
+        self.bottom_num_position = self.num5._getAccessibleCenter()
 
-    def click(self,accessible):
+    def assertText(self, accessible, expected_text):
         """
-        Wrap strongwing click action to provide action log
-
+        Check TableColumnHeader's Text value is match up to expected_text
         """
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
+        procedurelogger.action("check ColumnHeader text value")
 
-    def assertText(self, accessible, textvelue):
+        procedurelogger.expectedResult('text of %s is %s' % \
+                                                    (accessible,expected_text))
+        actual_text = accessible.text
+        assert actual_text == expected_text, \
+                  'Text was "%s", expected "%s"' % (actual_text, expected_text)
+
+    def assertSortedOrder(self, is_reversed):  
         """
-        Check TableColumnHeader's Text value is match up to textvelue
-
+        Ensure that the order of the rows is correct.  If is_reversed is True,
+        the list should be in reverse order.  Otherwise, the list should be
+        in descending order.
         """
-        procedurelogger.action("check ColumnHeader Text Value")
+        procedurelogger.action('Ensure that the rows are in the correct order')
 
-        procedurelogger.expectedResult('text of %s is %s' \
-                                    % (accessible,textvelue))
-        assert accessible.text == textvelue
-
-    def clickColumnHeaderToSortOrder(self, accessible, actionway, firstitem=None):  
-        """
-        Click TableColumnHeader to sort column's order, then check if the 
-        order is changed
-
-        """
-        # Action
-        if actionway is "click":
-            accessible.click()
-            sleep(config.SHORT_DELAY)
-        elif actionway is "mouseClick":
-            accessible.mouseClick()
-            sleep(config.SHORT_DELAY)
-
-        # Expected result
-        if firstitem == "Item5":
-            procedurelogger.expectedResult('Item5 and Num5 change position to \
-                        %s and %s' % (self.item0_position, self.num0_position))
+        if is_reversed:
+            procedurelogger.expectedResult('The list is reversed.')
+            procedurelogger.expectedResult('Item5 and Num5 change position to %s and %s' % (self.top_column_a_position, self.top_num_position))
             item5_new_position = self.item5._getAccessibleCenter()
             num5_new_position = self.num5._getAccessibleCenter()
 
-            assert item5_new_position == self.item0_position and \
-                   num5_new_position == self.num0_position
-        elif firstitem == "Item0":
-            procedurelogger.expectedResult('Item0 and Num0 change position to \
-                        %s and %s' % (self.item0_position, self.num0_position))
+            assert item5_new_position == self.top_column_a_position and \
+                   num5_new_position == self.top_num_position, \
+                   "The list is not reversed and it should be"
+        else:
+            procedurelogger.expectedResult('The list is not reversed.')
+            procedurelogger.expectedResult('Item0 and Num0 change position to %s and %s' % (self.top_column_a_position, self.top_num_position))
             item0_new_position = self.item0._getAccessibleCenter()
             num0_new_position = self.num0._getAccessibleCenter()
 
-            assert item0_new_position == self.item0_position and \
-                   num0_new_position == self.num0_position
+            assert item0_new_position == self.top_column_a_position and \
+                   num0_new_position == self.top_num_position, \
+                   "The list is not in descending order and it should be"
 
-    def assertImageSize(self, accessible, width=16, height=16):
+    def assertImageSize(self,
+                        accessible,
+                        expected_width=16,
+                        expected_height=16):
         """
         This method be used to check Image implementation for TableColumnHeader
-
         """
-        procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible._accessible.queryImage().getImageSize()
+        procedurelogger.action('Ensure "%s" image size is what we expect' % \
+                                                                    accessible)
+        actual_width, actual_height = \
+                             accessible._accessible.queryImage().getImageSize()
 
-        procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (accessible, width, height))
+        procedurelogger.expectedResult('"%s" image size is %s x %s' % \
+                                 (accessible, expected_width, expected_height))
 
-        assert width == size[0], "%s (%s), %s (%s)" %\
+        assert actual_width == expected_width, "%s (%s), %s (%s)" %\
                                             ("expected width",
-                                              width,
+                                              expected_width,
                                              "does not match actual width",
-                                              size[0])
-        assert height == size[1], "%s (%s), %s (%s)" %\
+                                              actual_width)
+        assert actual_height == expected_height, "%s (%s), %s (%s)" %\
                                             ("expected height",
-                                              height,
+                                              expected_height,
                                              "does not match actual height",
-                                              size[1]) 
+                                              actual_height) 
     
     # close application main window after running test
     def quit(self):

@@ -1,5 +1,11 @@
 2009-05-21  Calen Chen <cachen@novell.com>
 
+	* testers/columnheader/columnheaderframe.py,
+	* testers/columnheader_basic_ops.py: commit Brian's changes from review 
+	board (http://reviews.mono-a11y.org/r/211/)
+
+2009-05-21  Calen Chen <cachen@novell.com>
+
 	* testers/colordialog/colordialogframe.py: sorry forgot to change bug 
 	number 484216 to 484217
 

@@ -53,30 +53,36 @@ statesCheck(chFrame.column_b, "TableColumnHeader")
 
 # check text implementation
 chFrame.assertText(chFrame.column_a, "Column A")
-
 chFrame.assertText(chFrame.column_b, "Num")
 
-
 # check item's order after click column header
-##click action doesn't work BUG476304
-#chFrame.clickColumnHeaderToSortOrder(chFrame.column_a, "click", firstitem="Item5")
-#statesCheck(chFrame.column_a, "TableColumnHeader")
-
-#chFrame.clickColumnHeaderToSortOrder(chFrame.column_b, "click", firstitem="Item0")
-#statesCheck(chFrame.column_b, "TableColumnHeader")
-
-chFrame.clickColumnHeaderToSortOrder(chFrame.column_a, "mouseClick", firstitem="Item5")
+chFrame.column_a.click(log=True)
+sleep(config.SHORT_DELAY)
+chFrame.assertSortedOrder(is_reversed=True)
 statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
-chFrame.clickColumnHeaderToSortOrder(chFrame.column_b, "mouseClick", firstitem="Item0")
+chFrame.column_b.click(log=True)
+sleep(config.SHORT_DELAY)
+chFrame.assertSortedOrder(is_reversed=False)
+statesCheck(chFrame.column_a, "TableColumnHeader")
+statesCheck(chFrame.column_b, "TableColumnHeader")
+
+chFrame.column_a.mouseClick()
+sleep(config.SHORT_DELAY)
+chFrame.assertSortedOrder(is_reversed=True)
+statesCheck(chFrame.column_a, "TableColumnHeader")
+statesCheck(chFrame.column_b, "TableColumnHeader")
+
+chFrame.column_b.mouseClick()
+sleep(config.SHORT_DELAY)
+chFrame.assertSortedOrder(is_reversed=False)
 statesCheck(chFrame.column_a, "TableColumnHeader")
 statesCheck(chFrame.column_b, "TableColumnHeader")
 
 # check ColumnHeader AtkImage implementation
-##incorrect imageSize BUG477563
+# incorrect imageSize BUG477563
 #chFrame.assertImageSize(chFrame.column_a)
-
 #chFrame.assertImageSize(chFrame.column_b)
 
 # close application frame window
