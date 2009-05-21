@@ -48,6 +48,5 @@ make dist-bzip2
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
-%docs DUMMY
 
 %changelog
