@@ -58,6 +58,11 @@ else
 	fi
 fi
 
+cp bootstrap-2.8 $GTK_SHARP_PATH
+#just bootstrap because we need to configure because we need to make
+(cd $GTK_SHARP_PATH; \
+	./bootstrap-2.8 --prefix=$MONO_PREFIX)
+
 if test -f $GAPI_PARSER_FILE
 then
 	echo "Found $GAPI_PARSER_FILE"
@@ -76,11 +81,13 @@ else
 fi
 
 cp gtk-sharp-2.8-sources.xml $GAPI_PARSER_PATH
+
+#I'm setting PATH=. because the parser calls some perl files that need to be in the path
 (cd $GAPI_PARSER_PATH/; \
-	./gapi2-parser gtk-sharp-2.8-sources.xml )
+	export PATH=.:$PATH && \
+	mono gapi-parser.exe gtk-sharp-2.8-sources.xml )
 
 # TODO: verify that the .raw file generated has an <api> element with a parser_version attrib
-cp bootstrap-2.8 $GTK_SHARP_PATH
 
 if test -f $GTK_SHARP_PATH/gtksharp21code.diff
 then

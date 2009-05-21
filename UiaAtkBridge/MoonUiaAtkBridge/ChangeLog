@@ -1,3 +1,7 @@
+2009-05-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* build-glib21.sh: Fixed call to the parser.
+
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* build-glib21.sh: Make it work after patching.
