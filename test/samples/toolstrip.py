@@ -31,7 +31,6 @@ class RunApp(Form):
         self.ts = ToolStrip()
         self.Controls.Add(self.ts)
 
-
 form = RunApp()
 Application.Run(form)
 

@@ -27,32 +27,32 @@ class RunApp(Form):
         self.Height = 300
         self.FormBorderStyle = FormBorderStyle.Fixed3D
 
-##ToolStrip:
+        # ToolStrip
         self.ts = ToolStrip()
         self.Controls.Add(self.ts)
 
-##ToolStripLabel1
+        # ToolStripLabel1
         self.tsl1 = ToolStripLabel("Font:")
         self.ts.Items.Add(self.tsl1)
 
-##ToolStripSeparator1
+        # ToolStripSeparator1
         self.toolstripseparator1 = ToolStripSeparator()
         self.toolstripseparator1.Enabled = False
         self.ts.Items.Add(self.toolstripseparator1)
 
-##ToolStripLabel1
+        # ToolStripLabel1
         self.tsl2 = ToolStripLabel("Size:")
         self.ts.Items.Add(self.tsl2)
 
-##ToolStripSeparator2
+        # ToolStripSeparator2
         self.toolstripseparator2 = ToolStripSeparator()
         self.ts.Items.Add(self.toolstripseparator2)
 
-##ToolStripLabel3
+        # ToolStripLabel3
         self.tsl3 = ToolStripLabel("Color:")
         self.ts.Items.Add(self.tsl3)
 
-##ToolStripSeparator3
+	# ToolStripSeparator3
         self.toolstripseparator3 = ToolStripSeparator()
         self.ts.Items.Add(self.toolstripseparator3)
 

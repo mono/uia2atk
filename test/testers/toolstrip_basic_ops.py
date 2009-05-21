@@ -45,9 +45,6 @@ if app is None:
 # just an alias to make things shorter
 tsFrame = app.toolStripFrame
 
-#assert if pyatspi can get toolbar role for toolstrip
-tsFrame.assertToolStrip()
-
 #check toolstrip's states
 statesCheck(tsFrame.toolstrip, "ToolBar")
 

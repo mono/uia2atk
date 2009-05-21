@@ -45,9 +45,6 @@ if app is None:
 # just an alias to make things shorter
 tssFrame = app.toolStripSeparatorFrame
 
-# assert if pyatspi can get all separators
-tssFrame.assertSeparator(num=3)
-
 # check separators' states
 # the first sepatator is not enabled and sensitived
 statesCheck(tssFrame.separators[0], "ToolStripSeparator", invalid_states=["enabled", "sensitive"])

@@ -1,4 +1,3 @@
-
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        02/03/2009
@@ -14,24 +13,18 @@ import states
 from strongwind import *
 from toolstripseparator import *
 
-
 # class to represent the main window.
 class ToolStripSeparatorFrame(accessibles.Frame):
 
+    NUMSEPARATORS = 3
+
     def __init__(self, accessible):
         super(ToolStripSeparatorFrame, self).__init__(accessible)
+        self.separators = self.findAllSeparators("")
+        assert len(self.separators) == self.NUMSEPARATORS, \
+                                "Found %s separator(s), expected %s" % \
+                                (len(self.separators), self.NUMSEPARATORS)
 
-    # search for ToolStripSeparator as separator role name
-    def assertSeparator(self, num=0):
-        procedurelogger.action('seach for Separators in ToolBar')
-
-        procedurelogger.expectedResult('there are %s separators in ToolBar' % num)
-        def resultMatches():
-            self.separators = self.findAllSeparators(None)
-            return len(self.separators) == num
-        
-        assert retryUntilTrue(resultMatches)
-    
     # close main window
     def quit(self):
         self.altF4()
