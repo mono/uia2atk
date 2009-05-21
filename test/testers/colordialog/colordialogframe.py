@@ -121,7 +121,7 @@ class ColorDialogFrame(accessibles.Frame):
                     add_states=["active", "modal"], 
                     invalid_states=["resizable"])
 
-        # BUG484216 Color panel has extra focusable state
+        # BUG484217 Color panel has extra focusable state
         # statesCheck(self.colors_panel, "Panel")
 
         # Now check the states of the "Color" dialog's children
