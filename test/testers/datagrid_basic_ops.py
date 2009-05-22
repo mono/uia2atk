@@ -82,7 +82,7 @@ for i in range(len(columnheaders)):
     statesCheck(columnheaders[i], "TableColumnHeader")
 
 # focus on first TableCell(row0, col0) default
-## BUG480831: cells under BoolColumn shouldn't implement Atk.EditableText
+# BUG480831: cells under BoolColumn shouldn't implement Atk.EditableText
 #statesCheck(dgFrame.null_cell, "TableCell", add_states=["focused"])
 
 # mouse click columnheader doesn't raise "focused" because HasKeyboardFocus is False
@@ -107,7 +107,7 @@ dgFrame.assertLabel("row:0 col:1 Value:Edit0")
 # keyRight move focus to 'Read0'
 dgFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-## BUG479796: read_cells shouldn't have editable state
+# BUG479796: read_cells shouldn't have editable state
 #statesCheck(dgFrame.read_cells[0], "TableCell", add_states=["focused"])
 statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["editable"])
 dgFrame.assertLabel("row:0 col:2 Value:Read0")
@@ -115,7 +115,7 @@ dgFrame.assertLabel("row:0 col:2 Value:Read0")
 # keyDown move focus to 'Read1'
 dgFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-## BUG479796: read_cells shouldn't have editable state
+# BUG479796: read_cells shouldn't have editable state
 #statesCheck(dgFrame.read_cells[1], "TableCell", add_states=["focused"])
 #statesCheck(dgFrame.read_cells[0], "TableCell")
 dgFrame.assertLabel("row:1 col:2 Value:Read1")
@@ -124,7 +124,7 @@ dgFrame.assertLabel("row:1 col:2 Value:Read1")
 dgFrame.click(dgFrame.edit_cells[2])
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.edit_cells[2], "TableCell", add_states=["selected", "editable"])
-## BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
+# BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
 #statesCheck(dgFrame.combobox_cells[2], "TableCell", add_states=["selected"])
 #statesCheck(dgFrame.false_cell, "TableCell", add_states=["selected"])
 #statesCheck(dgFrame.read_cells[2], "TableCell", add_states=["selected"])
@@ -136,7 +136,7 @@ dgFrame.assertLabel("row:1 col:2 Value:Read1")
 dgFrame.click(dgFrame.combobox_cells[1])
 sleep(config.SHORT_DELAY)
 statesCheck(dgFrame.edit_cells[1], "TableCell", add_states=["selected", "editable"])
-## BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
+# BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
 #statesCheck(dgFrame.combobox_cells[1], "TableCell", add_states=["selected"])
 #statesCheck(dgFrame.true_cell, "TableCell", add_states=["selected"])
 #statesCheck(dgFrame.read_cells[1], "TableCell", add_states=["selected"])
@@ -156,7 +156,7 @@ statesCheck(dgFrame.bool_column, "TableColumnHeader")
 # select index5 'Edit0' to raise selected for row1 TableCells
 dgFrame.assertSelectionChild(dgFrame.treetable, 5)
 sleep(config.SHORT_DELAY)
-## BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
+# BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
 #statesCheck(dgFrame.null_cell, "TableCell", add_states=["selected"])
 statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["selected", "editable"])
 #statesCheck(dgFrame.read_cells[0], "TableCell", add_states=["selected"])
@@ -165,7 +165,7 @@ statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["selected", "editabl
 # clear selection to get rid of "selected" state from row1 TableCells
 dgFrame.assertClearSelection(dgFrame.treetable)
 sleep(config.SHORT_DELAY)
-## BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
+# BUG479796, BUG480831: read_cells and bool_cells and dropdown_combobox shouldn't have editable state
 #statesCheck(dgFrame.null_cell, "TableCell")
 statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["editable"])
 #statesCheck(dgFrame.read_cells[0], "TableCell")
@@ -183,15 +183,24 @@ dgFrame.assertTable(dgFrame.treetable, row=3, col=4)
 ###############################################
 
 # check item's order after click column header
-##click action doesn't work BUG476304
-#dgFrame.clickColumnHeaderToSortOrder(dgFrame.bool_column, "click", firstitem="Read2")
-#dgFrame.clickColumnHeaderToSortOrder(dgFrame.readtext_column, "click", firstitem="Read0")
+# BUG493176: TableCell doesn't exchange position
+#dgFrame.edittext_column.click(log=True)
+#sleep(config.SHORT_DELAY)
+#dgFrame.assertSortedOrder(is_reversed=True)
+
+#dgFrame.readtext_column.click(log=True)
+#sleep(config.SHORT_DELAY)
+#dgFrame.assertSortedOrder(is_reversed=False)
 
 # check item's order after mouse click column header, also the test can check 
 # column header's position
-## BUG493176: TableCell doesn't exchange position
-#dgFrame.clickColumnHeaderToSortOrder(dgFrame.edittext_column, "mouseClick", firstitem="Read2")
-#dgFrame.clickColumnHeaderToSortOrder(dgFrame.combobox_column, "mouseClick", firstitem="Read0")
+#dgFrame.edittext_column.mouseClick()
+#sleep(config.SHORT_DELAY)
+#dgFrame.assertSortedOrder(is_reversed=True)
+
+#dgFrame.combobox_column.mouseClick()
+#sleep(config.SHORT_DELAY)
+#dgFrame.assertSortedOrder(is_reversed=False)
 
 # close application frame window
 dgFrame.quit()

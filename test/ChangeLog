@@ -1,3 +1,15 @@
+2009-05-22  Calen Chen <cachen@novell.com>
+
+	* testers/datagrid/datagridframe.py,
+	* testers/datagridtextboxcolumn_basic_ops.py,
+	* testers/datagridboolcolumn_basic_ops.py,
+	* testers/datagridcomboboxcolumn_basic_ops.py,
+	* testers/datagrid_basic_ops.py: modify tests due to some frame method 
+	is updated. I don't think those are completely finished because we still
+	have two crash problem in sample need to be fixed, also I think combobox 
+	style is implemented with wrong name. but I want to commit this new 
+	update
+
 2009-05-21  Calen Chen <cachen@novell.com>
 
 	* testers/columnheader/columnheaderframe.py,

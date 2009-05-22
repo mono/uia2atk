@@ -46,8 +46,8 @@ dgFrame = app.dataGridFrame
 #################
 # states test 
 #################
-## BUG479796: I think TableCells under combobox column also shouldn't have 
-## editable state
+# BUG480237: I think the cells should be accessible with ComboBox role with Menu
+# and MenuItem children, so this test is not completed
 #statesCheck(dgFrame.combobox_cells[0], "TableCell")
 
 #statesCheck(dgFrame.combobox_cells[1], "TableCell")
@@ -67,7 +67,7 @@ sleep(config.SHORT_DELAY)
 dgFrame.assertLabel("row:1 col:3 Value:Box1")
 
 # press/click action, states check for menu/menuitem
-## BUG480237: missing menu and menuitems
+# BUG480237: missing menu and menuitems
 #dgFrame.combobox_cells[2].press()
 #sleep(config.SHORT_DELAY)
 #menu = dgFrame.combobox_cells[2].findMenu(None)
@@ -82,8 +82,10 @@ dgFrame.assertLabel("row:1 col:3 Value:Box1")
 ##########################
 # Text is uneditable
 ##########################
-
-dgFrame.assertInsertText(dgFrame.combobox_cells[0], "uneditable", oldtext="Box0")
+# cells under combobox shouldn't be editable, I think it relate to BUG480237 
+# it is accessbile with wrong role, if bug is valid, we also need update 
+# *frame to find combobox
+#dgFrame.assertUnEditableText(dgFrame.combobox_cells[0], is_implemented=False, expected_text="Box0")
 
 #close application frame window
 dgFrame.quit()

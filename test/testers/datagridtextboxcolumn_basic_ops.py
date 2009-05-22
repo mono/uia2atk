@@ -77,26 +77,27 @@ dgFrame.assertLabel("row:2 col:2 Value:Read2")
 #########################################
 
 # Cells under TextBox_Read is uneditable, text doesn't being changed
-## BUG479801: ReadOnly cells shouldn't implement EditableText
-#dgFrame.assertInsertText(dgFrame.read_cells[0], "uneditable", oldtext="Read0")
-#dgFrame.assertInsertText(dgFrame.read_cells[1], "uneditable", oldtext="Read1")
-#dgFrame.assertInsertText(dgFrame.read_cells[2], "uneditable", oldtext="Read2")
+# BUG479801: ReadOnly cells shouldn't implement EditableText
+#dgFrame.assertUnEditableText(dgFrame.read_cells[0], is_implemented=False, oldtext="Read0")
+#dgFrame.assertUnEditableText(dgFrame.read_cells[1], is_implemented=False, oldtext="Read1")
+#dgFrame.assertUnEditableText(dgFrame.read_cells[2], is_implemented=False, oldtext="Read2")
 
 # Cells under TextBox_Edit is editable, change text to 'editable'
-## BUG493865: EditableText of TableCells still remain (null) after doing deleteText
-#dgFrame.assertInsertText(dgFrame.edit_cells[0], "editable")
-#dgFrame.assertInsertText(dgFrame.edit_cells[1], "editable")
-#dgFrame.assertInsertText(dgFrame.edit_cells[2], "editable")
+# BUG493865: EditableText of TableCells still remain (null) after doing deleteText
+#dgFrame.assertEditableText(dgFrame.edit_cells[0], "editable")
+#dgFrame.assertEditableText(dgFrame.edit_cells[1], "editable")
+#dgFrame.assertEditableText(dgFrame.edit_cells[2], "editable")
 
 # Cells under TextBox_Read is uneditable, text doesn't being changed
-dgFrame.assertTypeText(dgFrame.read_cells[0], "uneditable", expectedtext="Read0")
-dgFrame.assertTypeText(dgFrame.read_cells[1], "uneditable", expectedtext="Read1")
-dgFrame.assertTypeText(dgFrame.read_cells[2], "uneditable", expectedtext="Read2")
+dgFrame.assertTypeText(dgFrame.read_cells[0], expected_text="Read0")
+dgFrame.assertTypeText(dgFrame.read_cells[1], expected_text="Read1")
+dgFrame.assertTypeText(dgFrame.read_cells[2], expected_text="Read2")
 
-# Cells under TextBox_Edit is editable, change text to 'editable'
-dgFrame.assertTypeText(dgFrame.edit_cells[0], "editable", expectedtext="editable")
-dgFrame.assertTypeText(dgFrame.edit_cells[1], "editable", expectedtext="Edit1editable")
-## BUG485466: navigate to last line cause crash
+# Cells under TextBox_Edit is editable, change text to 'type something'
+dgFrame.assertTypeText(dgFrame.edit_cells[0], expected_text="type something")
+dgFrame.assertTypeText(dgFrame.edit_cells[1], expected_text="Edit1type something")
+# BUG485466: navigate to last line cause crash, now we know that is our 
+# sample's bug
 #dgFrame.assertTypeText(dgFrame.edit_cells[2], "editable", expectedtext="editable")
 
 

@@ -44,15 +44,14 @@ class DataGridFrame(accessibles.Frame):
         self.combobox_cells = self.treetable.findAllTableCells(re.compile("Box*"), checkShowing=False)
         self.item_menuitems = self.treetable.findAllMenuItems(re.compile("Item*"), checkShowing=False)
         # search for initial position for assert order test
-        self.read0_position = self.read_cells[0]._getAccessibleCenter()
-        self.edit0_position = self.edit_cells[0]._getAccessibleCenter()
-        self.read2_position = self.read_cells[2]._getAccessibleCenter()
-        self.edit2_position = self.edit_cells[2]._getAccessibleCenter()
+        self.top_read_position = self.read_cells[0]._getAccessibleCenter()
+        self.top_edit_position = self.edit_cells[0]._getAccessibleCenter()
+        self.bottom_read_position = self.read_cells[2]._getAccessibleCenter()
+        self.bottom_edit_position = self.edit_cells[2]._getAccessibleCenter()
 
     def click(self,accessible):
         """
         Wrap strongwind click action to add log
-
         """
         procedurelogger.action("click %s" % accessible)
         accessible.click()
@@ -60,43 +59,41 @@ class DataGridFrame(accessibles.Frame):
     def assertLabel(self, newlabel):
         """
         Assert label is changed to newlabel
-
         """
         procedurelogger.expectedResult('label is changed to "%s"' % newlabel)
 
         assert self.label.text == newlabel, "%s not match %s" % \
                                            (self.label.text, newlabel)
 
-    def assertDefaultText(self, testtype, actual=[], expected=[]):
+    def assertDefaultText(self, column_type, actual=[], expected=[]):
         """
         Ensure that each widgets has the text value that is expected by compare
 	actual list and expected list via different testtype
-
         """
         # test column header type
-        if testtype == "ColumnHeader":
+        if column_type == "ColumnHeader":
             actual = [self.bool_column.text, self.edittext_column.text, self.readtext_column.text, self.combobox_column.text]
             expected = ["BoolColumn", "TextBox_Edit", "TextBox_Read", "ComboBox"]
 
         # test boolean type
-        elif testtype == "BoolColumn":
+        elif column_type == "BoolColumn":
             actual = [self.null_cell.text, self.true_cell.text, self.false_cell.text]
             expected = ["(null)", "True", "False"]
 
         # test edit text box type
-        elif testtype == "TextBox_Edit":
+        elif column_type == "TextBox_Edit":
             for i in range(3):
                 actual.append(self.edit_cells[i].text)
                 expected.append("Edit%s" % i)
 
         # test read text box type
-        elif testtype == "TextBox_Read":
+        elif column_type == "TextBox_Read":
             for i in range(3):
                 actual.append(self.read_cells[i].text)
                 expected.append("Read%s" % i)
 
         # test combobox type type
-        elif testtype == "Combobox":
+        elif column_type == "Combobox":
             for i in range(3):
                 actual.append(self.box_cells[i].text)
                 expected.append("Box%s" % i)                   
@@ -110,7 +107,6 @@ class DataGridFrame(accessibles.Frame):
     def assertText(self, accessible, newtext):
         """
         Ensure accessible's Text is changed to newtext
-
         """
         procedurelogger.expectedResult("%s\' Text is changed to %s" % \
 						(accessible, newtext))
@@ -120,7 +116,6 @@ class DataGridFrame(accessibles.Frame):
     def assertSelectionChild(self, accessible, childIndex):
         """
         Select childIndex to test its parent's AtkSelection
-
         """
         procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
 
@@ -135,7 +130,6 @@ class DataGridFrame(accessibles.Frame):
         """
         Assert AtkTable implementation to ensure TreeTable has row and column 
 	number that is expected
-
         """
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
@@ -144,91 +138,90 @@ class DataGridFrame(accessibles.Frame):
         assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" \
                                                                   % (itable.nRows, itable.nColumns)
 
-    def clickColumnHeaderToSortOrder(self, accessible, actionway, firstitem=None):  
+    def assertSortedOrder(self, is_reversed):  
         """
-        Click TableColumnHeader to sort column's order, then check if the 
-        order is changed
-
+        Ensure that the order of the rows is correct.  If is_reversed is True,
+        the list should be in reverse order.  Otherwise, the list should be
+        in descending order.
         """
-        # Action
-        if actionway is "click":
-            self.click(accessible)
-            sleep(config.SHORT_DELAY)
-        elif actionway is "mouseClick":
-            accessible.mouseClick()
-            sleep(config.SHORT_DELAY)
+        procedurelogger.action('Ensure that the rows are in the correct order')
 
-        # Expected result     
-        if firstitem == "Read2":
-            procedurelogger.expectedResult('Read2 and Edit2 change position to \
-			%s and %s' % (self.read0_position, self.edit0_position))
+        if is_reversed:
+            procedurelogger.expectedResult('The list is reversed.')
+            procedurelogger.expectedResult('read2 and edit2 change position to %s and %s' % (self.top_read_position, self.top_edit_position))
             read2_new_position = self.read_cells[2]._getAccessibleCenter()
             edit2_new_position = self.edit_cells[2]._getAccessibleCenter()
 
-            assert read2_new_position == self.read0_position and \
-                   edit2_new_position == self.edit0_position
-        elif firstitem == "Read0":
-            procedurelogger.expectedResult('Read0 and Edit0 change position to \
-			%s and %s' % (self.Read0_position, self.Edit0_position))
-            Read0_new_position = self.read_cells[0]._getAccessibleCenter()
-            Edit0_new_position = self.edit_cells[1]._getAccessibleCenter()
+            assert read2_new_position == self.top_read_position and \
+                   edit2_new_position == self.top_edit_position, \
+                   "The list is not reversed and it should be"
+        else:
+            procedurelogger.expectedResult('The list is not reversed.')
+            procedurelogger.expectedResult('read0 and edit0 change position to %s and %s' % (self.top_read_position, self.top_edit_position))
+            read0_new_position = self.read_cells[0]._getAccessibleCenter()
+            edit0_new_position = self.edit_cells[0]._getAccessibleCenter()
 
-            assert Read0_new_position == self.Read0_position and \
-                   Edit0_new_position == self.Edit0_position
+            assert read0_new_position == self.top_read_position and \
+                   edit0_new_position == self.top_edit_position, \
+                   "The list is not in descending order and it should be"
 
-    def assertInsertText(self, accessible, newtext, oldtext=None):
+
+    def assertEditableText(self, accessible, expected_text):
         """
-        Check EditableText for accessibles which under TextBox_Edit column;
-	Check UnEditableText for accessibles which under TextBox_Read, 
-	BoolColumn, ComboBox columns by insert newtext. 
-
-        If accessible is editable that text is changed, 
-	otherwise, if accessible is not editable that oldtext is remained 
-
+        Check EditableText for accessibles by delete and insert text 
         """
-        if newtext == "editable":
-            accessible.deleteText()
+        procedurelogger.action("check the text of %s is editable" % accessible)
+
+        accessible.deleteText()
+        sleep(config.SHORT_DELAY)
+        accessible.insertText("editable")
+        sleep(config.SHORT_DELAY)
+        actual_text = accessible.text
+
+        procedurelogger.expectedResult("the text of %s is editable" % accessible)
+        assert actual_text == expected_text, \
+                                    "actual text is %s, expected text is %s" % \
+						(actual_text, expected_text)
+
+    def assertUnEditableText(self, accessible, is_implemented, expected_text):
+        """
+        make sure accessible's text can't be edited
+        """
+        # cells under read textbox column have implemented EditableText, but 
+        # they can't be edited, so the expected_text may remain the old one.
+        # other cells shouldn't implement EditableText
+        procedurelogger.action("check the text of %s is uneditable" % accessible)
+        procedurelogger.expectedResult("the text of %s is still remain %s" % \
+                                                    (accessible, expected_text))
+
+        if is_implemented:
+            accessible.insertText("insert something")
             sleep(config.SHORT_DELAY)
-            accessible.insertText(newtext)
-            sleep(config.SHORT_DELAY)
-            procedurelogger.expectedResult("%s text is %s" % (accessible,newtext))
-            assert accessible.text == newtext, "%s not match %s" % \
-						(accessible.text, newtext)
-        elif newtext == "uneditable":
+            actual_text = accessible.text
+
+            assert actual_text == expected_text, \
+                                    "actual text is %s, expected text is %s" % \
+						(actual_text, expected_text)    
+        else:   
             try:
-                accessible.deleteText()
-                sleep(config.SHORT_DELAY)
-                accessible.insertText(newtext)
-                sleep(config.SHORT_DELAY)
+                accessible._accessible.queryEditableText()
             except NotImplementedError:
-                pass
+                return
+            assert False ,"EditableText should not be implemented for %s" % \
+                                                                  accessible
 
-            sleep(config.SHORT_DELAY)
-
-            procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
-            assert accessible.text == oldtext, "%s not match %s" % \
-						(accessible.text, oldtext)
-
-    def assertTypeText(self, accessible, text, expectedtext=None):
+    def assertTypeText(self, accessible, expected_text):
         """
         Wrap strongwind typeText to assert if accessible's text is changed.
-
-        If accessible is editable that text is changed, otherwise, if 
-	accessible is not editable that oldtext is remained 
-
         """
-        accessible.typeText(text)
+        accessible.typeText("type something")
         sleep(config.SHORT_DELAY)
 
-        if text == "editable":
-            procedurelogger.expectedResult("%s text is %s" % (accessible,expectedtext))
-            assert accessible.text == expectedtext, \
-				"%s not match %s" % (accessible.text, expectedtext)
-        elif text == "uneditable":
-            procedurelogger.expectedResult("%s text still is %s" % (accessible, expectedtext))
-            assert accessible.text == expectedtext, "%s not match %s" % \
-						(accessible.text, expectedtext)
-
+        procedurelogger.expectedResult("%s text is %s" % (accessible,expected_text))
+        actual_text = accessible.text
+        assert actual_text == expected_text, \
+                                   "actual text is %s, expected text is %s" % \
+                                                    (actual_text, expected_text)
     
     # close application main window after running test
     def quit(self):

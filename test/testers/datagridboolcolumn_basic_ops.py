@@ -64,7 +64,7 @@ dgFrame.assertLabel("row:2 col:0 Value:False")
 
 dgFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##BUG485466: navigate to last line cause crash
+# BUG485466: navigate to last line cause crash
 #dgFrame.keyCombo("Return", grabFocus=False)
 dgFrame.null_cell.mouseClick()
 sleep(config.SHORT_DELAY)
@@ -85,13 +85,13 @@ dgFrame.assertLabel("row:2 col:0 Value:True")
 ##########################
 # Text is uneditable
 ##########################
-##BUG480831:cells under BoolColumn should not implement Atk.EditableText, 
-##it doesn't blocks test but throw exception
-dgFrame.assertTextEditableOrUnEditable(dgFrame.true_cell, "uneditable", oldtext="(null)")
+# BUG480831:cells under BoolColumn should not implement Atk.EditableText, 
 
-dgFrame.assertTextEditableOrUnEditable(dgFrame.null_cell, "uneditable", oldtext="False")
+#dgFrame.assertUnEditableText(dgFrame.true_cell, is_implemented=False, expected_text="(null)")
 
-dgFrame.assertTextEditableOrUnEditable(dgFrame.false_cell, "uneditable", oldtext="True")
+#dgFrame.assertUnEditableText(dgFrame.null_cell, is_implemented=False, expected_text="False")
+
+#dgFrame.assertUnEditableText(dgFrame.false_cell, is_implemented=False, expected_text="True")
 
 # close application frame window
 dgFrame.quit()
