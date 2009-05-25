@@ -42,34 +42,53 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
         procedurelogger.action("click %s" % button)
         button.click()
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
+    def assertText(self, accessible, expected_text):
+        """assert the accessible's text is equal to the expected text"""
 
-        procedurelogger.action('Assert the text of %s' % accessible)
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+        procedurelogger.action('Check the text of: %s' % accessible)
+        actual_text = accessible.text
+        procedurelogger.expectedResult('Text is "%s"' % actual_text)
+        assert actual_text == expected_text, 'Text was "%s", expected "%s"' % \
+                                                (actual_text, expected_text)
 
-    def inputText(self, accessible, text):
-        procedurelogger.action('set %s text to "%s"' % (accessible, text))
+    def assertUneditableText(self, accessible, text):
+        '''
+        Ensure that the EditableText interface is not implemented for the
+        accessible
+        '''
+        procedurelogger.action('Attempt to set %s text to "%s"' % \
+                                                            (accessible, text))
         try:
+            # this uses the EditableText interface
             accessible.text = text
         except NotImplementedError:
-            pass
+            return
+        assert False, "The Text interface should not be implemented for %s" % \
+                                                                   (accessible)
 
-    def inputValue(self, accessible, value):
-        procedurelogger.action('set %s value to "%s"' % (accessible, value))
-        try:
-            accessible.value = value
-        except NotImplementedError:
-            pass
+    def assignValue(self, accessible, value):
+        procedurelogger.action('set "%s" value to "%s"' % (accessible, value))
+        accessible.value = value
 
-    def assertSelectChild(self, accessible, index):
-        """assert Selection implementation"""
-        procedurelogger.action('select index %s in "%s"' % \
-                                        (index, accessible))
+    def selectChild(self, accessible, index):
+        """
+        Simply call strongwind's selectChild method but add some logging
+        information
+        """
+        procedurelogger.action('Select index %s of "%s"' % (index, accessible))
         accessible.selectChild(index)    
+
+    def assertName(self, accessible, expected_name):
+        """assert name is equal to the expected_name"""
+        # this method be used in checking if the name of spin button is 
+        # updated when change day or year's number
+        procedurelogger.action('Assert the name of %s' % accessible)
+        procedurelogger.expectedResult('%s expects its name is"%s"' % \
+                                                (accessible, expected_name))
+        actual_name = accessible.name
+        assert actual_name == expected_name, \
+                        'actual name is: %s, expected name is: %s' % \
+                                                (actual_name, expected_name)
 
     def quit(self):
         self.altF4()

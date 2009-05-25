@@ -1,3 +1,10 @@
+2009-05-25 Ray Wang <rawang@novell.com>
+
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py,
+	* testers/datetimepicker_dropdown_ops.py: commit Brian and Calen's
+	changes from review board. (http://reviews.mono-a11y.org/r/194/,
+	http://reviews.mono-a11y.org/r/218)
+
 2009-05-25  Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py,
