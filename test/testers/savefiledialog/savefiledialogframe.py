@@ -29,35 +29,11 @@ class SaveFileDialogFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(SaveFileDialogFrame, self).__init__(accessible)
         self.opendialog_button = self.findPushButton(self.BUTTON1)
-
-    def click(self, button):
-        """
-        Wrap strongwing click action
-
-        """
-        button.click()
-
-    def itemClick(self, itemname):
-        """
-        Wrap strongwing click action to provide action log
-
-        """
-        procedurelogger.action("click %s" % itemname)
-        itemname.click()
-
-    def press(self, itemname):
-        """
-        Wrap strongwing press action to provide action log
-
-        """
-        procedurelogger.action("press %s" % itemname)
-        itemname.press()
-
+ 
     # assert if all widgets on Open dialog are showing
     def AssertWidgets(self):
         """
         Search for all widgets on Open Dialog
-
         """
         procedurelogger.action("search for all widgets from SaveDialog windows")
 
@@ -70,7 +46,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         self.savetype_label = self.savedialog.findLabel("Save as type:")
         # there are 2 push button in dialog
         procedurelogger.expectedResult("2 PushButtons are showing up")
-        self.Save_button = self.savedialog.findPushButton("Save")
+        self.save_button = self.savedialog.findPushButton("Save")
         self.cancel_button = self.savedialog.findPushButton("Cancel")
         # there are 5 popupbutton in popupbuttonpanel on the left side
         procedurelogger.expectedResult("5 PopUpButton are showing up")
@@ -103,8 +79,8 @@ class SaveFileDialogFrame(accessibles.Frame):
         # there are 2 normal combobox on bottom and 1 dirComboBox on top
         procedurelogger.expectedResult("2 normal combobox on bottom and 1 dirComboBox on top are showing up")
         self.comboboxs = self.savedialog.findAllComboBoxs(None)
-        self.filename_combobox = self.comboboxs[0]
-        self.filetype_combobox = self.comboboxs[1]
+        self.filename_combobox = self.comboboxs[1]
+        self.filetype_combobox = self.comboboxs[0]
         self.dir_combobox = self.comboboxs[2]
         # there are 5 menuitems under dir_combobox
         procedurelogger.expectedResult("5 MenuItems under dir_combobox are showing up")
@@ -122,7 +98,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         assert len(self.tablecells) != 0, "no table cells under treetable"
 
     # assert if all widgets on creat new folder dialog are showing
-    def creatNewFolderTest(self, button):
+    def creatNewFolderTest(self, is_created):
         """
         Click button to invoke New Folder or File dialog, to make sure all 
 	widgets on this dialog are showing up. 
@@ -132,7 +108,7 @@ class SaveFileDialogFrame(accessibles.Frame):
 
         """
         # Action
-        self.itemClick(self.newdirtoolbarbutton)
+        self.newdirtoolbarbutton.click(log=True)
         sleep(config.SHORT_DELAY)
 
         # Expected Result
@@ -152,7 +128,14 @@ class SaveFileDialogFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
 
         # Expected result
-        if button == "Cancel":
+        if is_created:
+            self.newfolder_ok.click()
+            sleep(config.SHORT_DELAY)
+
+            procedurelogger.expectedResult("create new folder")
+            self.treetable.findTableCell("ANewFolder")
+
+        else:
             self.newfolder_cancel.click()
             sleep(config.SHORT_DELAY)
 
@@ -164,19 +147,11 @@ class SaveFileDialogFrame(accessibles.Frame):
             except SearchError:
                 pass
 
-        elif button == "Ok":
-            self.newfolder_ok.click()
-            sleep(config.SHORT_DELAY)
-
-            procedurelogger.expectedResult("create new folder")
-            self.treetable.findTableCell("ANewFolder")
-
     def assertDirChanged(self, foldername):
         """
         Doing click action against MenuItems under dirCombobox to make sure 
 	directory is changed to the selected MenuItem by checking the 
 	expected foldername doesn't showing in the new directory
-
         """
         procedurelogger.expectedResult("Directory is changed, you can't find %s folder" % foldername)
         try:
@@ -187,27 +162,16 @@ class SaveFileDialogFrame(accessibles.Frame):
             pass
 
     # assert activate table cell to enter folder or open file
-    def enterFolderOrOpenFile(self, cellname):
+    def enterFolderOrOpenFile(self, is_folder):
         """
         Expect an action to execute double click to enter folder or open file. 
-	Doing activate action for a folder named 'ANewFolder' to make sure it's
+	Doing invoke action for a folder named 'ANewFolder' to make sure it's
 	an empty folder;
-        Doing activate action for a file named 'README' to make sure OpenDialog 
-	is closed
-
+        Doing invoke action for a file to make sure it can be saved and 
+	OpenDialog is closed
         """
-        # show all files in treetable
-        savetype = self.savedialog.findMenuItem(re.compile('^All'), checkShowing=False)
-        savetype.click()
-        sleep(config.LONG_DELAY)
-        # do activate action
-        tablecell = self.treetable.findTableCell(cellname, checkShowing=False)
-        tablecell.activate()
-
-        sleep(config.SHORT_DELAY)
-
-        if cellname == "ANewFolder":
-            procedurelogger.expectedResult('Enter to "%s" folder' % cellname)
+        if is_folder:
+            procedurelogger.expectedResult('Enter to folder')
             try:
                 table_cell = self.treetable.findTableCell(None)
                 if len(table_cell) > 0:
@@ -215,10 +179,10 @@ class SaveFileDialogFrame(accessibles.Frame):
             except SearchError:
                 pass
         else:
-            procedurelogger.expectedResult('"%s" file is saved' % cellname)
+            procedurelogger.expectedResult('file is saved')
             self.app.findDialog("Save").findPushButton("OK").click()
             sleep(config.SHORT_DELAY)
-            self.opendialog.assertClosed()
+            self.savedialog.assertClosed()
 
    
     # close application main window after running test
@@ -228,6 +192,7 @@ class SaveFileDialogFrame(accessibles.Frame):
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
         os.rmdir("%s/samples/ANewFolder" % uiaqa_path)
+        os.rm("%s/samples/ANewFile" % uiaqa_path)
 
         sleep(config.SHORT_DELAY)
         # close form

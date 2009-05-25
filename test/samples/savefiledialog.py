@@ -16,14 +16,21 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 
 # imports
 import clr
+import System
+import System.IO
+
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
-from System.Windows.Forms import (
-    Application, Button, Form, SaveFileDialog, Label, DialogResult, DockStyle
-)
-from System.Drawing import Point
+from System.Windows.Forms import *
+from System.Drawing import *
+from sys import path
+from os.path import exists
 from System.IO import StreamWriter
+
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
 
 class SaveFileDialogSample(Form):
     """SaveFileDialog control class"""
@@ -55,8 +62,9 @@ class SaveFileDialogSample(Form):
         """open a savefiledialog dialog"""
 
         self.save_file_dialog = SaveFileDialog()
+        self.save_file_dialog.InitialDirectory = "%s/samples" % uiaqa_path
         self.save_file_dialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-        self.save_file_dialog.FilterIndex = 1
+        self.save_file_dialog.FilterIndex = 2
         self.save_file_dialog.RestoreDirectory = True
         
         # save the label content to a file.

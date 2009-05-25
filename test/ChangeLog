@@ -1,3 +1,11 @@
+2009-05-25  Calen Chen <cachen@novell.com>
+
+	* samples/savefiledialog.py: add InitialDirectory property
+	* testers/savefiledialog/savefiledialogframe.py: delete some click and 
+	press wraper, correct some method to not use string as parameter
+	* testers/savefiledialog_basic_ops.py: update tests due to bug476365 is
+	fixed that 'invoke' action is implemented to double click tablecells
+
 2009-05-22  Calen Chen <cachen@novell.com>
 
 	* testers/datagrid/datagridframe.py,

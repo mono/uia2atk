@@ -49,7 +49,7 @@ ofdFrame = app.saveFileDialogFrame
 ###################################################
 
 # click "Click me" button to show savedialog page, then check subwidgets
-ofdFrame.click(ofdFrame.opendialog_button)
+ofdFrame.opendialog_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
 ofdFrame.AssertWidgets()
 
@@ -59,13 +59,23 @@ ofdFrame.AssertWidgets()
 # click OK button will create new folder
 ###########################################################
 
-ofdFrame.creatNewFolderTest("Cancel")
+ofdFrame.creatNewFolderTest(is_created=False)
 
-ofdFrame.creatNewFolderTest("Ok")
+ofdFrame.creatNewFolderTest(is_created=True)
+
+# create a new file that will be used in doing invoke test
+ofdFrame.filename_combobox.findText(None).insertText("ANewFile")
+sleep(config.SHORT_DELAY)
+ofdFrame.save_button.click(log=True)
+sleep(config.SHORT_DELAY)
+ofdFrame.savedialog.assertClosed()
 
 ##################
 # dirComboBox test
 ##################
+ofdFrame.opendialog_button.click(log=True)
+sleep(config.MEDIUM_DELAY)
+ofdFrame.AssertWidgets()
 
 # check dirComboBox and children' states, menu and menuitems are invisible and isn't showing
 statesCheck(ofdFrame.dir_combobox, "ComboBox")
@@ -76,7 +86,7 @@ samples_menuitem = ofdFrame.dir_menu.findMenuItem("samples")
 statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # press dirComboBox to expand menu, then check states again
-ofdFrame.press(ofdFrame.dir_combobox)
+ofdFrame.dir_combobox.press(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(ofdFrame.dir_combobox, "ComboBox")
 statesCheck(ofdFrame.dir_menu, "Menu")
@@ -89,7 +99,7 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # click menuitem under dir_menu to check its AtkAction, move focus and selection
 # to recentlyused_menuitem, there is no "ANewFolder" folder on treetable
-ofdFrame.itemClick(ofdFrame.recentlyused_menuitem)
+ofdFrame.recentlyused_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChanged("ANewFolder")
 ##MenuItems disappeared when select the first path from dirComboBox due to BUG484615
@@ -124,7 +134,7 @@ statesCheck(ofdFrame.desktop_menuitem, "MenuItem")
 #statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
 # click popUpButton personal to rise focused, there is no "Personal" folder on treetable
-ofdFrame.itemClick(ofdFrame.personal_popup)
+ofdFrame.personal_popup.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChanged("Personal")
 #statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
@@ -143,31 +153,35 @@ ofdFrame.assertDirChanged("My Computer")
 #statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
 #statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
+ofdFrame.cancel_button.click(log=True)
+sleep(config.SHORT_DELAY)
+ofdFrame.savedialog.assertClosed()
+
 ###############################################
 # test activate action for Tabel Cell
 ###############################################
 
-#activate action to double click README file
-##missing activate action BUG476365
-'''
-ofdFrame.click(ofdFrame.opendialog_button)
+# invoke action to save file
+ofdFrame.opendialog_button.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.AssertWidgets()
 sleep(config.SHORT_DELAY)
-#double click to open "README" file
-ofdFrame.enterFolderOrOpenFile("README")
+ofdFrame.treetable.findTableCell("ANewFile", checkShowing=False).invoke(log=True)
+sleep(config.SHORT_DELAY)
+ofdFrame.enterFolderOrOpenFile(is_folder=False)
 
-#activate action to double click ANewFolder folder
-ofdFrame.click(ofdFrame.opendialog_button)
+# invoke action to enter ANewFolder folder
+ofdFrame.opendialog_button.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.AssertWidgets()
 sleep(config.SHORT_DELAY)
-#double click to enter "ANewFolder" folder
-ofdFrame.enterFolderOrOpenFile("ANewFolder")
-'''
+ofdFrame.treetable.findTableCell("ANewFolder", checkShowing=False).invoke(log=True)
+sleep(config.SHORT_DELAY)
+ofdFrame.enterFolderOrOpenFile(is_folder=True)
 
-#close savedialog window
-ofdFrame.click(ofdFrame.cancel_button)
+
+# close savedialog window
+ofdFrame.cancel_button.click(log=True)
 
 #close application frame window
 ofdFrame.quit()
