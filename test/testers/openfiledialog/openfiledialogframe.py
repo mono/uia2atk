@@ -31,25 +31,6 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.opendialog_button = self.findPushButton(self.BUTTON1)
         self.enable_button = self.findPushButton(self.BUTTON2)
 
-    def click(self, accessible, log=None):
-        """
-        Wrap strongwing click action
-
-        """
-        if log is True:
-            procedurelogger.action("click %s" % accessible)
-
-        accessible.click()
-
-    def press(self, accessible, log=None):
-        """
-        Wrap strongwing press action to provide action log
-
-        """
-        if log is True:
-            procedurelogger.action("press %s" % accessible)
-        accessible.press()
-
     def assertNormalElements(self):
         """
         Search for Label, normal PushButton, Treeview,  ComboBox elements on 
@@ -141,7 +122,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.help_button = self.opendialog.findPushButton("Help")
         self.readonly_checkbox = self.opendialog.findCheckBox("Open Readonly")
 
-    def creatNewFolderTest(self, accessible):
+    def creatNewFolderTest(self, is_created):
         """
         Invoke New Folder or File dialog, to make sure all widgets on this 
         dialog are showing up. 
@@ -151,7 +132,7 @@ class OpenFileDialogFrame(accessibles.Frame):
 
         """
         # Action
-        self.click(self.newdirtoolbarbutton)
+        self.newdirtoolbarbutton.click(log=True)
         sleep(config.SHORT_DELAY)
 
         # Expected Result
@@ -172,7 +153,14 @@ class OpenFileDialogFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
 
         # Expected result
-        if accessible == "Cancel":
+        if is_created:
+            self.newfolder_ok.click()
+            sleep(config.SHORT_DELAY)
+
+            procedurelogger.expectedResult("create new folder")
+            self.listview.findTableCell("ANewFolder")
+
+        else:
             self.newfolder_cancel.click()
             sleep(config.SHORT_DELAY)
 
@@ -183,13 +171,6 @@ class OpenFileDialogFrame(accessibles.Frame):
                     raise SearchFolderError
             except SearchError:
                 pass
-
-        elif accessible == "Ok":
-            self.newfolder_ok.click()
-            sleep(config.SHORT_DELAY)
-
-            procedurelogger.expectedResult("create new folder")
-            self.listview.findTableCell("ANewFolder")
 
     def assertDirChange(self, foldername):
         """

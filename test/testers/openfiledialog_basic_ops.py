@@ -49,13 +49,13 @@ ofdFrame = app.openFileDialogFrame
 # and ReadOnlyCheckBox are showing up
 ###############################################################################
 
-ofdFrame.click(ofdFrame.enable_button)
+ofdFrame.enable_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
 ofdFrame.assertNormalElements()
 ofdFrame.assertVisibleElements()
 
 # close opendialog window
-ofdFrame.click(ofdFrame.cancel_button)
+ofdFrame.cancel_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
 ofdFrame.opendialog.assertClosed()
 
@@ -64,9 +64,9 @@ ofdFrame.opendialog.assertClosed()
 # are showing up
 ############################################################################
 
-ofdFrame.click(ofdFrame.opendialog_button)
+ofdFrame.opendialog_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-##BUG490105:accessible position and size of ToggleButton is incorrect 
+# BUG490105:accessible position and size of ToggleButton is incorrect 
 ofdFrame.assertNormalElements()
 ofdFrame.assertPopUpButtonElements()
 ofdFrame.assertSmallToolBarButtonElements()
@@ -78,9 +78,9 @@ ofdFrame.assertDirComboBoxElements()
 # click OK button will create new folder
 ###########################################################
 
-ofdFrame.creatNewFolderTest("Cancel")
+ofdFrame.creatNewFolderTest(is_created=False)
 
-ofdFrame.creatNewFolderTest("Ok")
+ofdFrame.creatNewFolderTest(is_created=True)
 
 #####################
 # dirComboBox test
@@ -93,7 +93,7 @@ statesCheck(ofdFrame.dir_menu, "Menu", invalid_states=["showing", "visible"])
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
 
 # click dirComboBox to expand menu, then check states again
-ofdFrame.press(ofdFrame.dir_combobox)
+ofdFrame.dir_combobox.press(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(ofdFrame.dir_combobox, "ComboBox")
 statesCheck(ofdFrame.dir_menu, "Menu")
@@ -107,7 +107,7 @@ statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # click menuitem under dir_menu to check its AtkAction, move focus and selection
 # to recentlyused_menuitem, there is no "ANewFolder" folder on listview
-ofdFrame.click(ofdFrame.recentlyused_menuitem, log=True)
+ofdFrame.recentlyused_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChange("ANewFolder")
 # search for elements under dirCombobox again
@@ -116,14 +116,14 @@ ofdFrame.assertDirComboBoxElements()
 statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # use keyDown move focus and selection to desktop_menuitem
-## BUG499139: SWF has not provide keyUp/Down navigation
+# BUG499139: SWF has not provide keyUp/Down navigation
 #ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=True)
 #sleep(config.SHORT_DELAY)
 #statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
 #statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
 
 # move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
-ofdFrame.click(ofdFrame.mycomputer_menuitem, log=True)
+ofdFrame.mycomputer_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 #ofdFrame.mouseClick()
 #sleep(config.SHORT_DELAY)
@@ -133,13 +133,13 @@ ofdFrame.assertDirComboBoxElements()
 statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
 
 # regression test that click first and last dir menuitem doesn't crash app due to bug474611
-ofdFrame.click(ofdFrame.recentlyused_menuitem, log=True)
+ofdFrame.recentlyused_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.mouseClick()
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirComboBoxElements()
 
-ofdFrame.click(ofdFrame.mynetwork_menuitem, log=True)
+ofdFrame.mynetwork_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirComboBoxElements()
 
@@ -149,14 +149,14 @@ ofdFrame.dir_combobox.mouseClick(log=False)
 ########################################
 # popUpButtonPanel and popUpButton test
 ########################################
-##states test blocks by BUG490572 and BUG475082
+# states test blocks by BUG490572 and BUG475082
 
 #statesCheck(ofdFrame.popuptoolbar, "ToolBar")
 #statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
 #statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
 
 # click popUpButton personal to rise focused, there is no "Personal" folder on listview
-ofdFrame.click(ofdFrame.personal_popup, log=True)
+ofdFrame.personal_popup.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.assertDirChange("Personal")
 #statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
@@ -176,7 +176,7 @@ ofdFrame.assertDirChange("My Computer")
 #statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
 
 # close opendialog window
-ofdFrame.click(ofdFrame.cancel_button)
+ofdFrame.cancel_button.click(log=True)
 sleep(config.SHORT_DELAY)
 ofdFrame.opendialog.assertClosed()
 
