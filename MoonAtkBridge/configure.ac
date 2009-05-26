@@ -57,6 +57,13 @@ AC_SUBST(NUNIT_PATH)
 
 AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
+dnl package checks, common for all configs
+PKG_CHECK_MODULES([MONO], [mono >= 2.5])
+
+if test "x$MOON_A11Y_INTERNAL_HACK" = "x"; then
+	AC_MSG_ERROR([The env var MOON_A11Y_INTERNAL_HACK is not set, you need to use it for building mono's trunk corlib for now])
+fi
+
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
 		[Use 'DEBUG' Configuration [default=YES]]),
