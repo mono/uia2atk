@@ -1,3 +1,7 @@
+2009-05-26  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/gtksharp21-mcs.diff: Removed, committed as r134789.
+
 2009-04-28  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/gtksharp21code.diff: Rather remove non-atk
