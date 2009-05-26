@@ -8,6 +8,9 @@
 #              datetimepicker_showupdown/* are the wrappers of datetimepicker_showupdown test sample 
 ##############################################################################
 
+# WONTFIX506159 - DateTimePicker spin button accessibles erroneously
+# implemented the EditableText interface
+
 # The docstring below is used in the generated log file
 """
 Test accessibility of DateTimePicker widget
@@ -46,15 +49,16 @@ dtpsudFrame = app.dateTimePickerShowUpDownFrame
 # check datetimepicker_showupdown  AtkAction
 #############################
 actionsCheck(dtpsudFrame.checkbox, "CheckBox")
-actionsCheck(dtpsudFrame.weekdays[0], "TableCell")
-actionsCheck(dtpsudFrame.weekdays[6], "TableCell")
-actionsCheck(dtpsudFrame.months[0], "TableCell")
-actionsCheck(dtpsudFrame.months[11], "TableCell")
+for i in range(7):
+    actionsCheck(dtpsudFrame.weekdays[i], "TableCell")
+for i in range(12):
+    actionsCheck(dtpsudFrame.months[i], "TableCell")
 
 ##############################
 # check datetimepicker_showupdown AtkAccessible
 ##############################
-# TODO: BUG483735
+# BUG506082 DateTimePicker panel accessible should not have "focusable" and
+# "focused" states
 #statesCheck(dtpsudFrame.panel, "Panel", add_states=["focused"])
 statesCheck(dtpsudFrame.weekday, "TreeTable")
 
@@ -96,36 +100,35 @@ statesCheck(dtpsudFrame.day, "DateTimePicker_Spin")
 statesCheck(dtpsudFrame.commas[1], "Label")
 statesCheck(dtpsudFrame.spaces[2], "Label")
 statesCheck(dtpsudFrame.year, "DateTimePicker_Spin")
-# XXX: the "focusable" problem is under discussion
-statesCheck(dtpsudFrame.checkbox, "CheckBox", add_states=["checked"], invalid_states=["focusable"])
+statesCheck(dtpsudFrame.checkbox, "CheckBox", add_states=["checked", "focused"])
 sleep(config.SHORT_DELAY)
 
-dtpsudFrame.inputText(dtpsudFrame.spaces[0], "test")
+dtpsudFrame.assertUneditableText(dtpsudFrame.spaces[0], "test")
 dtpsudFrame.assertText(dtpsudFrame.spaces[0], " ")
-dtpsudFrame.inputText(dtpsudFrame.commas[0], "test")
+dtpsudFrame.assertUneditableText(dtpsudFrame.commas[0], "test")
 dtpsudFrame.assertText(dtpsudFrame.commas[0], ",")
-dtpsudFrame.inputText(dtpsudFrame.checkbox, "test")
+dtpsudFrame.assertUneditableText(dtpsudFrame.checkbox, "test")
 dtpsudFrame.assertText(dtpsudFrame.checkbox, "")
 
-dtpsudFrame.inputText(dtpsudFrame.months[0], "test")
-dtpsudFrame.assertText(dtpsudFrame.months[0], "January")
-dtpsudFrame.inputText(dtpsudFrame.weekdays[0], "test")
-dtpsudFrame.assertText(dtpsudFrame.weekdays[0], "Monday")
-dtpsudFrame.inputText(dtpsudFrame.day, "test")
-dtpsudFrame.assertText(dtpsudFrame.day, str(CURRENT_DAY))
-dtpsudFrame.inputText(dtpsudFrame.year, "test")
-dtpsudFrame.assertText(dtpsudFrame.year, str(CURRENT_YEAR))
+# BUG506252 DateTimePicker table cell accessibles erroneously implement the
+# EditableText interface
+#dtpsudFrame.assertUneditableText(dtpsudFrame.months[0], "test")
+#dtpsudFrame.assertText(dtpsudFrame.months[0], "January")
+#dtpsudFrame.assertUneditableText(dtpsudFrame.weekdays[0], "test")
+#dtpsudFrame.assertText(dtpsudFrame.weekdays[0], "Monday")
 
 ##############################
 # Value
 ##############################
-dtpsudFrame.inputValue(dtpsudFrame.day, 20)
+# change the value of the day of the month and year spin buttons, then make
+# sure that the GUI updated appropriately.
+dtpsudFrame.assignValue(dtpsudFrame.day, 20)
 mkdate = datetime.date(CURRENT_YEAR, CURRENT_MONTH + 1, 20)
 DATE = mkdate.strftime("%A, %B %d, %Y")
 sleep(config.SHORT_DELAY)
 dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
 
-dtpsudFrame.inputValue(dtpsudFrame.year, 2008)
+dtpsudFrame.assignValue(dtpsudFrame.year, 2008)
 mkdate = datetime.date(2008, CURRENT_MONTH + 1, 20)
 DATE = mkdate.strftime("%A, %B %d, %Y")
 sleep(config.SHORT_DELAY)
@@ -135,18 +138,18 @@ dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
 # Selection
 ##############################
 # we make the value of DateTimePicker to 2009-1-1
-dtpsudFrame.assertSelectChild(dtpsudFrame.month, 0)
+dtpsudFrame.selectChild(dtpsudFrame.month, 0)
 sleep(config.SHORT_DELAY)
 
-dtpsudFrame.inputValue(dtpsudFrame.day, 1)
+dtpsudFrame.assignValue(dtpsudFrame.day, 1)
 sleep(config.SHORT_DELAY)
 
-dtpsudFrame.inputValue(dtpsudFrame.year, 2009)
+dtpsudFrame.assignValue(dtpsudFrame.year, 2009)
 sleep(config.SHORT_DELAY)
 
 # then we set weekday to Tuesday for instance, 
 # the date will be Tuesday, December 30, 2008
-dtpsudFrame.assertSelectChild(dtpsudFrame.weekday, 1)
+dtpsudFrame.selectChild(dtpsudFrame.weekday, 1)
 sleep(config.SHORT_DELAY)
 
 mkdate = datetime.date(2008, 12, 30)
@@ -155,17 +158,21 @@ sleep(config.SHORT_DELAY)
 dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % DATE)
 
 ##############################
-# checkbox is disabled
+# checkbox is disabled (so the date should not change when we try to change it)
 ##############################
 dtpsudFrame.click(dtpsudFrame.checkbox)
 sleep(config.SHORT_DELAY)
 
 PREVIOUS_DATE = DATE
-dtpsudFrame.inputValue(dtpsudFrame.day, 02)
+dtpsudFrame.assignValue(dtpsudFrame.day, 02)
 sleep(config.SHORT_DELAY)
 dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
 
-dtpsudFrame.inputValue(dtpsudFrame.year, 1980)
+dtpsudFrame.assignValue(dtpsudFrame.year, 1980)
+sleep(config.SHORT_DELAY)
+dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
+
+dtpsudFrame.selectChild(dtpsudFrame.month, 0)
 sleep(config.SHORT_DELAY)
 dtpsudFrame.assertText(dtpsudFrame.label, "The date you select is: %s" % PREVIOUS_DATE)
 

@@ -60,7 +60,7 @@ ccFrame.assertText(ccFrame.label_top, "I lose focus")
 ccFrame.assertText(ccFrame.label_bottom, "I got it")
 
 # move focus to the top panel
-ccFrame.keyCombo("Tab", grabFocus=False)
+ccFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(ccFrame.panel_top, "ContainerControl", add_states=["focused"])
 statesCheck(ccFrame.panel_bottom, "ContainerControl")
