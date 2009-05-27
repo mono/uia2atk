@@ -44,6 +44,8 @@ class Settings(object):
   should_update = False
   package_failed_machines = []
   test_failed_machines = []
+  is_force = False
+  is_nodeps = False
   
   def __init__(self):
       self.argument_parser()

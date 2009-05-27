@@ -1,3 +1,7 @@
+2009-05-27  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/remote_run.py: Initialized two attributes in class Settings.
+
 2009-05-26 Ray Wang <rawang@novell.com>
 
 	* testers/datetimepicker_showupdown/datetimepickershowupdownframe.py,
