@@ -1,3 +1,7 @@
+2009-05-27  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/moon-security.diff: Cleaned up.
+
 2009-05-26  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/gtksharp21-mcs.diff: Removed, committed as r134789.
