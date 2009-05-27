@@ -1,3 +1,8 @@
+2009-05-27 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkpynotify.py: Gtk buttons that show pynotify notifications
+	when pressed.
+
 2009-05-27 Ray Wang <rawang@novell.com>
 
 	* testers/combobox_simple/comboboxsimpleframe.py,
