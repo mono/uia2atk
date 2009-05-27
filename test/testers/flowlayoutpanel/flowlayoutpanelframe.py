@@ -19,22 +19,45 @@ class FlowLayoutPanelFrame(accessibles.Frame):
         self.labels = self.findAllLabels(None)
         self.buttons = self.findAllPushButtons(None)
 
-        assert len(self.panels) == 4, "The numbers of panel is wrong!"
-        assert len(self.labels) == 4, "The numbers of label is wrong!"
-        assert len(self.buttons) == 4, "The numbers of buttons is wrong!"
+        PNL_NUM = 4
+        LBL_NUM = 4
+        BTN_NUM = 4
+
+        assert len(self.panels) == PNL_NUM, \
+            "The number of panels is wrong! (found %s, expected %s)" % \
+                                                  (len(self.panels), PNL_NUM)
+        assert len(self.labels) == LBL_NUM, \
+            "The number of labels is wrong! (found %s, expected %s)" % \
+                                                  (len(self.labels), LBL_NUM)
+        assert len(self.buttons) == BTN_NUM, \
+            "The number of buttons is wrong! (found %s, expected %s)" % \
+                                                  (len(self.buttons), BTN_NUM)
+
+        # give the buttons some intuitive names
+        self.button1 = self.buttons[0]
+        self.button2 = self.buttons[1]
+        self.button3 = self.buttons[2]
+        self.button4 = self.buttons[3]
+
+        # give the labels some intuitive names
+        self.label1 = self.labels[0]
+        self.label2 = self.labels[1]
+        self.label3 = self.labels[2]
+        self.label4 = self.labels[3]
+
+        # give the panels some intuitive names
+        self.panel1 = self.panels[0]
+        self.panel2 = self.panels[1]
+        self.panel3 = self.panels[2]
+        self.panel4 = self.panels[3]
     
-    def click(self, accessible):
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
-
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.action('Assert the text of %s' % accessible)
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text):
+        """Assert that accessible's text is equal to the expected text"""
+        procedurelogger.action('Check the text of "%s"' % accessible)
+        procedurelogger.expectedResult('The text is "%s"' % expected_text)
+        actual_text = accessible.text
+        assert actual_text == expected_text, \
+              'Text was "%s", expected "%s"' % (actual_text, expected_text)
 
     def quit(self):
         self.altF4()

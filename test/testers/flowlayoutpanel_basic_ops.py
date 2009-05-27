@@ -44,44 +44,63 @@ flpFrame = app.flowLayoutPanelFrame
 ##############################
 # check FlowLayoutPanel and its children's AtkAccessible
 ##############################
-statesCheck(flpFrame.panels[0], "Panel")
-statesCheck(flpFrame.labels[0], "Label")
-statesCheck(flpFrame.buttons[0], "Button", add_states=["focused"])
-statesCheck(flpFrame.buttons[1], "Button")
+statesCheck(flpFrame.panel1, "Panel")
+statesCheck(flpFrame.label1, "Label")
+statesCheck(flpFrame.button1, "Button", add_states=["focused"])
 
-statesCheck(flpFrame.panels[1], "Panel")
-statesCheck(flpFrame.labels[1], "Label")
-statesCheck(flpFrame.buttons[1], "Button")
-statesCheck(flpFrame.buttons[0], "Button", add_states=["focused"])
+statesCheck(flpFrame.button2, "Button")
+statesCheck(flpFrame.panel2, "Panel")
+statesCheck(flpFrame.label2, "Label")
+
+statesCheck(flpFrame.panel3, "Panel")
+statesCheck(flpFrame.label3, "Label")
+statesCheck(flpFrame.button3, "Button")
+
+statesCheck(flpFrame.panel4, "Panel")
+statesCheck(flpFrame.label4, "Label")
+statesCheck(flpFrame.button4, "Button")
 
 flpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 flpFrame.keyCombo("Tab", grabFocus=False)
-statesCheck(flpFrame.panels[2], "Panel")
-statesCheck(flpFrame.labels[2], "Label")
-statesCheck(flpFrame.buttons[2], "Button", add_states=["focused"])
-statesCheck(flpFrame.buttons[1], "Button")
-
-statesCheck(flpFrame.panels[3], "Panel")
-statesCheck(flpFrame.labels[3], "Label")
-statesCheck(flpFrame.buttons[3], "Button")
-
-# press Tab key again to move focused state from button
-flpFrame.click(flpFrame.buttons[0])
 sleep(config.SHORT_DELAY)
-flpFrame.assertText(flpFrame.labels[0], "TopDown")
 
-flpFrame.click(flpFrame.buttons[1])
-sleep(config.SHORT_DELAY)
-flpFrame.assertText(flpFrame.labels[1], "BottomUp")
+statesCheck(flpFrame.panel1, "Panel")
+statesCheck(flpFrame.label1, "Label")
+statesCheck(flpFrame.button1, "Button")
 
-flpFrame.click(flpFrame.buttons[2])
-sleep(config.SHORT_DELAY)
-flpFrame.assertText(flpFrame.labels[2], "LeftToRight")
+statesCheck(flpFrame.button2, "Button")
 
-flpFrame.click(flpFrame.buttons[3])
+statesCheck(flpFrame.panel3, "Panel")
+statesCheck(flpFrame.label3, "Label")
+statesCheck(flpFrame.button3, "Button", add_states=["focused"])
+
+statesCheck(flpFrame.panel4, "Panel")
+statesCheck(flpFrame.label4, "Label")
+statesCheck(flpFrame.button4, "Button")
+
+# Perform click action on button1
+flpFrame.button1.click(log=True)
 sleep(config.SHORT_DELAY)
-flpFrame.assertText(flpFrame.labels[3], "RightToLeft")
+flpFrame.assertText(flpFrame.label1, "TopDown")
+# Bug 504593 Button does not receive focus when click action is performed on it
+#statesCheck(flpFrame.button1, "Button", add_states=["focused"])
+#statesCheck(flpFrame.button3, "Button")
+
+flpFrame.button2.click(log=True)
+sleep(config.SHORT_DELAY)
+flpFrame.assertText(flpFrame.label2, "BottomUp")
+# Bug 504593 Button does not receive focus when click action is performed on it
+#statesCheck(flpFrame.button2, "Button", add_states=["focused"])
+#statesCheck(flpFrame.button1, "Button")
+
+flpFrame.button3.click(log=True)
+sleep(config.SHORT_DELAY)
+flpFrame.assertText(flpFrame.label3, "LeftToRight")
+
+flpFrame.button4.click(log=True)
+sleep(config.SHORT_DELAY)
+flpFrame.assertText(flpFrame.label4, "RightToLeft")
 
 ##############################
 # End

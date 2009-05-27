@@ -14,6 +14,7 @@ from strongwind import *
 class ComboBoxSimpleFrame(accessibles.Frame):
     """the profile of the combobox_simple sample"""
     LABEL = "You select "
+    NUMTABLECELLS = 10
 
     def __init__(self, accessible):
         super(ComboBoxSimpleFrame, self).__init__(accessible)
@@ -21,7 +22,8 @@ class ComboBoxSimpleFrame(accessibles.Frame):
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
         self.treetable = self.findTreeTable(None)
-        self.tablecell = dict([(x, self.findTableCell(str(x))) for x in range(10)])
+        self.tablecells = \
+                [self.findTableCell(str(i)) for i in range(self.NUMTABLECELLS)]
 
     def click(self,accessible):
         """'click' action"""
@@ -30,8 +32,7 @@ class ComboBoxSimpleFrame(accessibles.Frame):
 
     def editableTextIsUnimplemented(self, accessible):
         """make sure EditableText of accessible is unimplemented"""
-        procedurelogger.action("check %s's text" % accessible)
-
+        procedurelogger.action("check the implementation of %s's text interface" % accessible)
         procedurelogger.expectedResult("%s's text is uneditable" % accessible)
         try:
             accessible._accessible.queryEditableText()
@@ -41,44 +42,41 @@ class ComboBoxSimpleFrame(accessibles.Frame):
 
     def assertLabel(self, expected_label):
         """make sure label's text is expected"""
-        procedurelogger.expectedResult("Lable's text is %s" % expected_label)
+        procedurelogger.action("check %s's text" % self.label)
+        procedurelogger.expectedResult('Label\'s text is "%s"' % \
+                                       expected_label)
         assert self.label.text == expected_label, \
-                                  "actual label is %s, expected label is %s" % \
-                                               (self.label.text, expected_label)
+                             'actual label is "%s", expected label is "%s"' % \
+                             (self.label.text, expected_label)
 
-    def assertText(self, accessible, expected_text, actionlog=None):
+    def assertText(self, accessible, expected_text):
         """make sure accessible's text is expected"""
-        if actionlog is True:
-            procedurelogger.action("check %s's text" % accessible)
-
-        procedurelogger.expectedResult('%s\'s text is %s' % \
+        procedurelogger.action("check %s's text" % accessible)
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
                                             (accessible, expected_text))
         assert accessible.text == expected_text, \
-                                    "actual text is %s, expected text is %s" % \
-                                            (accessible.text, expected_text)
+                               'actual text is "%s", expected text is "%s"' % \
+                               (accessible.text, expected_text)
     
-    def assertTable(self, accessible, row=None, col=None):
+    def assertTable(self, accessible, num_rows, num_cols):
         """
         assert Table implementation, make sure row and col's number are expected
-
         """
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
-        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % \
-                                                        (accessible, row, col))
-        assert itable.nRows == row and itable.nColumns == col, \
-                                        "Not match Rows %s and Columns %s" % \
-                                        (itable.nRows, itable.nColumns)
+        procedurelogger.expectedResult('"%s" has %s row(s) and %s column(s)' %\
+                                              (accessible, num_rows, num_cols))
+
+        assert itable.nRows == num_rows, \
+               "%s rows reported, expected %s" % (itable.nRows, num_rows)
+
+        assert itable.nColumns == num_cols, \
+               "%s columns reported, expected %s" % (itable.nColumns, num_rows)
 
     def selectChild(self, accessible, index):
         """assert Selection implementation"""
         procedurelogger.action('select item%s in "%s"' % (index, accessible))
         accessible.selectChild(index)
-
-    def clearSelection(self, accessible):
-        """assert ClearSelection implementation"""
-        procedurelogger.action('clear selection in "%s"' % (accessible))
-        accessible.clearSelection()
 
     def quit(self):
         self.altF4()

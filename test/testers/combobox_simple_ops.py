@@ -45,8 +45,8 @@ cbFrame = app.comboBoxSimpleFrame
 # check Combobox children's AtkAction
 ##############################
 # check tablecell's actions
-for i in range(10):
-    actionsCheck(cbFrame.tablecell[i], "TableCell")
+for tablecell in cbFrame.tablecells:
+    actionsCheck(tablecell, "TableCell")
 
 ##############################
 # check Combobox children's AtkAccessible
@@ -55,20 +55,22 @@ for i in range(10):
 # TODO: BUG483223, Extraneous "focuable" and "manages descendants" states, 
 # and reluctant "focused" state
 #statesCheck(cbFrame.combobox, "ComboBox")
-statesCheck(cbFrame.textbox, "TextBox", add_states=["selectable", "focused"])
+# BUG505281 - ComboBox (DropDownStyle = Simple) text field has extraneous
+# "selectable" state.
+#statesCheck(cbFrame.textbox, "TextBox", add_states=["focused"])
 # TODO: BUG483225, Extraneous "selectable" state, 
 # missing "manages descendants" state, and reluctant "focused" state
 #statesCheck(cbFrame.treetable, "TreeTable")
-# TODO: BUG483236, missing 'focusable', 'transient' and  'single line' states
-#for i in range(10):
-#    statesCheck(cbFrame.tablecell[i], "TableCell")
+# TODO: BUG483226, missing 'focusable', 'transient' and  'single line' states
+#for tablecell in cbFrame.tablecells:
+#    statesCheck(tablecell, "TableCell")
 
 ##############################
 # test AtkText
 ##############################
 # check "text" for TableCells
-for i in range(10):
-    cbFrame.assertText(cbFrame.tablecell[i], str(i), actionlog=True)
+for i, tablecell in enumerate(cbFrame.tablecells):
+    cbFrame.assertText(tablecell, str(i))
 
 # check TextBox's Text is editable
 cbFrame.textbox.typeText("2")
@@ -80,19 +82,19 @@ sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "9")
 
 # check "tablecell"'s Text is not editable
-cbFrame.editableTextIsUnimplemented(cbFrame.tablecell[0])
+cbFrame.editableTextIsUnimplemented(cbFrame.tablecells[0])
 sleep(config.SHORT_DELAY)
-cbFrame.assertText(cbFrame.tablecell[0], "0")
+cbFrame.assertText(cbFrame.tablecells[0], "0")
 
 #############################
 # test AtkAction
 #############################
-cbFrame.click(cbFrame.tablecell[5])
+cbFrame.click(cbFrame.tablecells[5])
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "5")
 cbFrame.assertLabel("You select 5")
 
-cbFrame.click(cbFrame.tablecell[9])
+cbFrame.click(cbFrame.tablecells[9])
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "9")
 cbFrame.assertLabel("You select 9")
@@ -103,8 +105,8 @@ cbFrame.assertLabel("You select 9")
 # set index 0 to select text
 #cbFrame.selectChild(cbFrame.combobox, 0)
 #sleep(config.SHORT_DELAY)
-## BUG488474, selectChild called the selection interface's selectChild
-## method, which is not working.
+# BUG488474, selectChild called the selection interface's selectChild
+# method, which is not working.
 #cbFrame.assertText(cbFrame.textbox, "0")
 ## doesn't rise 'selected' state for Menu and Text due to BUG456341
 #statesCheck(cbFrame.textbox, "Text", add_states=["focused", "selected"])
@@ -112,68 +114,57 @@ cbFrame.assertLabel("You select 9")
 ##############################
 # check "treetable"'s AtkSelection
 ##############################
-# TODO: mark all statesCheck due to BUG483226
+# TODO: comment all statesCheck due to BUG483226
 # check AtkSelecton
 cbFrame.selectChild(cbFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "0")
 cbFrame.assertLabel("You select 0")
-#statesCheck(cbFrame.tablecell[0], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[0], "TableCell", add_states=["selected"])
 
 cbFrame.selectChild(cbFrame.treetable, 9)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "9")
 cbFrame.assertLabel("You select 9")
-#statesCheck(cbFrame.tablecell[9], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[9], "TableCell", add_states=["selected"])
 
-cbFrame.tablecell[1].mouseClick()
+cbFrame.tablecells[1].mouseClick()
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "1")
 cbFrame.assertLabel("You select 1")
-#statesCheck(cbFrame.tablecell[1], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[1], "TableCell", add_states=["selected"])
 
-cbFrame.tablecell[8].mouseClick()
+cbFrame.tablecells[8].mouseClick()
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "8")
 cbFrame.assertLabel("You select 8")
-#statesCheck(cbFrame.tablecell[8], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[8], "TableCell", add_states=["selected"])
 
 # press Up/Down 
 cbFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "7")
 cbFrame.assertLabel("You select 7")
-#statesCheck(cbFrame.tablecell[7], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[7], "TableCell", add_states=["selected"])
 
 cbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "8")
 cbFrame.assertLabel("You select 8")
-#statesCheck(cbFrame.tablecell[8], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[8], "TableCell", add_states=["selected"])
 
 # press PageUp/PageDown
 cbFrame.keyCombo("PageUp", grabFocus=False)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "0")
 cbFrame.assertLabel("You select 0")
-#statesCheck(cbFrame.tablecell[0], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[0], "TableCell", add_states=["selected"])
 
 cbFrame.keyCombo("PageDown", grabFocus=False)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "9")
 cbFrame.assertLabel("You select 9")
-#statesCheck(cbFrame.tablecell[9], "TableCell", add_states=["selected"])
-
-# TODO: mark all statesCheck due to BUG483225
-# check clear Selection
-#cbFrame.clearSelection(cbFrame.treetable)
-#sleep(config.SHORT_DELAY)
-#statesCheck(cbFrame.tree, "TreeTable")
-
-# TODO: mark all statesCheck due to BUG483223
-#cbFrame.clearSelection(cbFrame.combobox)
-#sleep(config.SHORT_DELAY)
-#statesCheck(cbFrame.combobox, "ComboBox")
+#statesCheck(cbFrame.tablecells[9], "TableCell", add_states=["selected"])
 
 ##############################
 # check "treetable"'s AtkTable

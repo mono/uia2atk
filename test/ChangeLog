@@ -1,3 +1,12 @@
+2009-05-27 Ray Wang <rawang@novell.com>
+
+	* testers/combobox_simple/comboboxsimpleframe.py,
+	* testers/combobox_simple_ops.py: commit Brian's review from review
+	board. (http://reviews.mono-a11y.org/r/213/)
+	* testers/flowlayoutpanel/flowlayoutpanelframe.py,
+	* testers/flowlayoutpanel_basic_ops.py: commit Brian's review from 
+	review board. (http://reviews.mono-a11y.org/r/220/)
+
 2009-05-27  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/remote_run.py: Initialized two attributes in class Settings.
