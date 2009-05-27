@@ -1,0 +1,11 @@
+<gapi-parser-input>
+  <!-- this is a part of this file: http://anonsvn.mono-project.com/viewvc/branches/gtk-sharp-2-468-branch/gtk-sharp/sources/gtk-sharp-2.8-sources.xml?revision=HEAD
+       which is the one that matches atk at the time of SLEx10's glib: 2.8.11 -->
+  <api filename="../atk/atk-api-2.8.raw">
+    <library name="libatk-1.0-0.dll">
+      <namespace name="Atk">
+        <dir>atk-1.10.3/atk</dir>
+      </namespace>
+    </library>
+  </api>
+</gapi-parser-input>

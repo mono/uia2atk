@@ -1,5 +1,14 @@
 2009-05-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* build-glib21.sh: 
+	* Makefile.am: converted build script to Makefile (still missing
+	some bits).
+	* bootstrap-2.8:
+	* gtk-sharp-2.8-sources.xml: Pieces imported from old branch,
+	needed for the build.
+
+2009-05-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* build-glib21.sh: Import from branch, for reference.
 
 2009-05-27  Brad Taylor  <brad@getcoded.net>
