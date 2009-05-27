@@ -1,3 +1,7 @@
+2009-05-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* bootstrap-2.8: Latest gtk-sharp requires MONO_REQUIRED_VERSION.
+
 2009-05-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* build-glib21.sh: Fixed call to the parser.
