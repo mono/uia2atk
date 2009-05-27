@@ -1,0 +1,196 @@
+Index: atk/Makefile.am
+===================================================================
+--- atk/Makefile.am	(revision 132856)
++++ atk/Makefile.am	(working copy)
+@@ -21,4 +21,20 @@
+ 
+ add_dist =
+ 
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++MOON_PRE_ASSEMBLY=$(MOON_DIR)MoonAtkBridge.dll
++
++references_moon = $(MOON_DIR)glib-sharp.dll
++build_references_moon = $(addprefix /r:, $(references_moon))
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(references_moon) $(ASSEMBLY)
++	smcs -define:NET_2_1 $(build_references_moon) $(BUILD_PARAMS) -out:$(MOON_PRE_ASSEMBLY)
++	mv $(MOON_PRE_ASSEMBLY) $@
++	$(GAPI_CDECL_INSERT)
++
+ include ../Makefile.include
++
++
+Index: glib/Object.cs
+===================================================================
+--- glib/Object.cs	(revision 132856)
++++ glib/Object.cs	(working copy)
+@@ -431,7 +431,10 @@
+ 
+ 		Hashtable before_signals;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+-		protected internal Hashtable BeforeSignals {
++#if !NET_2_1
++		protected
++#endif
++		internal Hashtable BeforeSignals {
+ 			get {
+ 				if (before_signals == null)
+ 					before_signals = new Hashtable ();
+@@ -441,7 +444,10 @@
+ 
+ 		Hashtable after_signals;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+-		protected internal Hashtable AfterSignals {
++#if !NET_2_1
++		protected
++#endif
++		internal Hashtable AfterSignals {
+ 			get {
+ 				if (after_signals == null)
+ 					after_signals = new Hashtable ();
+@@ -449,6 +455,7 @@
+ 			}
+ 		}
+ 
++#if !NET_2_1
+ 		EventHandlerList before_handlers;
+ 		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
+ 		protected EventHandlerList BeforeHandlers {
+@@ -468,6 +475,7 @@
+ 				return after_handlers;
+ 			}
+ 		}
++#endif
+ 
+ 		[CDeclCallback]
+ 		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
+@@ -526,7 +534,12 @@
+ 			return Handle.GetHashCode ();
+ 		}
+ 
+-		public Hashtable Data {
++#if !NET_2_1
++		public
++#else
++		internal
++#endif
++		Hashtable Data {
+ 			get { 
+ 				if (data == null)
+ 					data = new Hashtable ();
+@@ -536,7 +549,12 @@
+ 		}
+ 
+ 		Hashtable persistent_data;
+-		protected Hashtable PersistentData {
++#if !NET_2_1
++		protected
++#else
++		internal
++#endif
++		Hashtable PersistentData {
+ 			get {
+ 				if (persistent_data == null)
+ 					persistent_data = new Hashtable ();
+Index: glib/SignalCallback.cs
+===================================================================
+--- glib/SignalCallback.cs	(revision 132856)
++++ glib/SignalCallback.cs	(working copy)
+@@ -20,6 +20,8 @@
+ // Boston, MA 02111-1307, USA.
+ 
+ 
++#if !NET_2_1
++
+ namespace GLib {
+ 	using System;
+ 	using System.Collections;
+@@ -104,3 +106,4 @@
+ 	}
+ }
+ 
++#endif
+Index: glib/Makefile.am
+===================================================================
+--- glib/Makefile.am	(revision 132856)
++++ glib/Makefile.am	(working copy)
+@@ -97,9 +97,23 @@
+ GAPI_CDECL_INSERT=
+ endif
+ 
++BUILD_PARAMS=$(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -target:library $(references) $(build_sources)
++
++MOON_DIR=$(top_builddir)/moonbin/
++MOON_ASSEMBLY=$(MOON_DIR)$(ASSEMBLY)
++MOON_PRE_ASSEMBLY=$(MOON_DIR)MoonAtkBridge.dll
++
++moonlight: $(MOON_ASSEMBLY)
++
++$(MOON_ASSEMBLY): $(ASSEMBLY)
++	mkdir -p $(MOON_DIR)
++	smcs -define:NET_2_1 $(BUILD_PARAMS) -out:$(MOON_PRE_ASSEMBLY)
++	mv $(MOON_PRE_ASSEMBLY) $@
++	$(GAPI_CDECL_INSERT)
++
+ $(ASSEMBLY): $(build_sources) gtk-sharp.snk AssemblyInfo.cs
+ 	@rm -f $(ASSEMBLY).mdb
+-	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
++	$(CSC) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+ 	$(GAPI_CDECL_INSERT)
+ 
+ policy.%.config: $(top_builddir)/policy.config
+Index: bootstrap-generic
+===================================================================
+--- bootstrap-generic	(revision 132856)
++++ bootstrap-generic	(working copy)
+@@ -22,11 +22,7 @@
+     -e "s/@POLICY_VERSIONS@/$POLICY_VERSIONS/" \
+     -e "s/@ASSEMBLY_VERSION@/$ASSEMBLY_VERSION/" $srcdir/configure.in.in > $srcdir/configure.in
+ 
+-ln -f $srcdir/pango/pango-api-$GTK_API_TAG.raw $srcdir/pango/pango-api.raw
+ ln -f $srcdir/atk/atk-api-$GTK_API_TAG.raw $srcdir/atk/atk-api.raw
+-ln -f $srcdir/gdk/gdk-api-$GTK_API_TAG.raw $srcdir/gdk/gdk-api.raw
+-ln -f $srcdir/gtk/gtk-api-$GTK_API_TAG.raw $srcdir/gtk/gtk-api.raw
+-ln -f $srcdir/glade/glade-api-$GTK_API_TAG.raw $srcdir/glade/glade-api.raw
+ EOF
+ 
+ chmod +x bootstrap.status
+Index: Makefile.include
+===================================================================
+--- Makefile.include	(revision 132856)
++++ Makefile.include	(working copy)
+@@ -61,9 +61,11 @@
+ GAPI_CDECL_INSERT=
+ endif
+ 
++BUILD_PARAMS=$(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -target:library $(GENERATED_SOURCES) $(build_sources)
++
+ $(ASSEMBLY): generated-stamp $(SNK) $(build_sources) $(references)
+ 	@rm -f $(ASSEMBLY).mdb
+-	$(CSC) $(CSFLAGS) -nowarn:0169,0612,0618 -unsafe -out:$(ASSEMBLY) -target:library $(build_references) $(GENERATED_SOURCES) $(build_sources)
++	$(CSC) $(build_references) $(BUILD_PARAMS) -out:$(ASSEMBLY)
+ 	$(GAPI_CDECL_INSERT)
+ 
+ install-data-local:
+Index: Makefile.am
+===================================================================
+--- Makefile.am	(revision 132856)
++++ Makefile.am	(working copy)
+@@ -1,4 +1,4 @@
+-SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk glade gtkdotnet sample doc
++SUBDIRS = sources generator parser glib atk
+ 
+ EXTRA_DIST = 			\
+ 	mono.snk		\
+@@ -21,7 +21,7 @@
+ 	candle.exe gtk-sharp-2.0-dev.wxs
+ 	light.exe gtk-sharp-2.0-dev.wixobj
+ 
+-assembly_dirs = glib gio pango atk gdk gtk glade gtkdotnet
++assembly_dirs = glib atk
+ 
+ cross-bundle: all
+ 	mkdir -p gtk-sharp-cross-$(VERSION)

@@ -1,3 +1,9 @@
+2009-05-27  Brad Taylor  <brad@getcoded.net>
+
+	* patches: 
+	* Makefile.am: Export gtk-sharp and patch it as part of the build
+	targets.
+
 2009-05-26  Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* configure.ac: Add checks for the correct version of Mono and
