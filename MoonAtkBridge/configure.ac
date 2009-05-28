@@ -28,6 +28,11 @@ if test "x$GMCS" = "xno"; then
         AC_MSG_ERROR([gmcs Not found])
 fi
 
+AC_PATH_PROG(SMCS, smcs, no)
+if test "x$SMCS" = "xno"; then
+        AC_MSG_ERROR([smcs Not found, please install moonlight])
+fi
+
 AC_PATH_PROG(CC, gcc, no)
 if test "x$CC" = "xno"; then
         AC_MSG_ERROR([gcc Not found])
@@ -63,6 +68,8 @@ PKG_CHECK_MODULES([MONO], [mono >= 2.5])
 if test "x$MOON_A11Y_INTERNAL_HACK" = "x"; then
 	AC_MSG_ERROR([The env var MOON_A11Y_INTERNAL_HACK is not set, you need to use it for building mono's trunk corlib for now])
 fi
+
+PKG_CHECK_MODULES(CECIL, cecil)
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],

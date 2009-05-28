@@ -1,5 +1,11 @@
 2009-05-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* configure.ac: Add cecil and smcs as reqs.
+	* Makefile.am: Use monomerge to merge atk-sharp.dll and
+	glib-sharp.dll before building MoonlightAtkBridge.dll.
+
+2009-05-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* patches/moonlight-a11y-initialization.diff: Import from
 	old branch.
 

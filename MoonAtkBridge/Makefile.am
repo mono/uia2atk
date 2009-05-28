@@ -21,7 +21,14 @@ ATK_API_DIR=$(GAPI_PARSER_PATH)atk-$(ATK_VERSION)/atk
 
 
 
-all: atk-sharp-dll
+all: glib-atk-sharp-dll
+
+glib-atk-sharp-dll: bin/glib-atk-sharp.dll
+
+bin/glib-atk-sharp.dll: glib-sharp-dll atk-sharp-dll monomerge
+	mkdir -p bin/
+	cp $(GTK_SHARP)/moonbin/*.dll bin/
+	mono merge/monomerge.exe -out bin/glib-atk-sharp.dll bin/glib-sharp.dll bin/atk-sharp.dll
 
 atk-sharp-dll: $(GTK_SHARP)/moonbin/atk-sharp.dll
 
@@ -88,6 +95,16 @@ $(ATK_API_FILE):
 $(GAPI_GENERATOR): bootstrap28
 	( cd $(GAPI_GENERATOR_PATH); make )
 
+monomerge: merge/monomerge.exe
+
+merge/monomerge.exe: merge
+	(cd merge; make)
+
+merge:
+	svn export http://anonsvn.mono-project.com/source/trunk/cecil/merge
+
 clean:
 	rm -f $(PATCH_STAMP)
-	rm -rf gtk-sharp/
+	rm -rf $(GTK_SHARP)/
+	rm -rf bin/
+	rm -rf merge/
