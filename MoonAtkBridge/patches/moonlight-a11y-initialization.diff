@@ -1,0 +1,107 @@
+Index: class/System.Windows/System.Windows.mdp
+===================================================================
+--- class/System.Windows/System.Windows.mdp	(revision 134922)
++++ class/System.Windows/System.Windows.mdp	(working copy)
+@@ -458,6 +458,7 @@
+     <File name="System.Windows.Media.Animation/QuinticEase.cs" subtype="Code" buildaction="Compile" />
+     <File name="System.Windows.Media.Animation/SineEase.cs" subtype="Code" buildaction="Compile" />
+     <File name="Mono/EasingFunctionWrapper.cs" subtype="Code" buildaction="Compile" />
++    <File name="Mono/A11yHelper.cs" subtype="Code" buildaction="Compile" />
+     <File name="System.Windows.Interop/PluginHost.cs" subtype="Code" buildaction="Compile" />
+     <File name="System.Windows.Automation.Peers/ButtonAutomationPeer.cs" subtype="Code" buildaction="Compile" />
+     <File name="System.Windows.Automation.Peers/ButtonBaseAutomationPeer.cs" subtype="Code" buildaction="Compile" />
+@@ -514,4 +515,4 @@
+     <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+     <ProjectReference type="Gac" localcopy="True" refto="System.Core" />
+   </References>
+-</Project>
+\ No newline at end of file
++</Project>
+Index: class/System.Windows/Mono/A11yHelper.cs
+===================================================================
+--- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
++++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
+@@ -0,0 +1,55 @@
++using System;
++using System.IO;
++using System.Reflection;
++
++namespace Mono {
++
++	internal static class A11yHelper {
++
++		const string @namespace = "MoonUiaAtkBridge";
++		
++		internal static void Initialize ()
++		{
++			const string assembly_name = @namespace + ".dll";
++			
++			string current_assembly_location = Assembly.GetExecutingAssembly ().Location;
++			string load_location = Path.Combine (Path.GetDirectoryName (current_assembly_location), assembly_name);
++			if (File.Exists (load_location)) {
++				Launch (load_location);
++				return;
++			}
++
++			int pos = current_assembly_location.IndexOf ("moonlight@novell");
++			if (pos > 0) {
++				load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
++				if (Directory.Exists (load_location)) {
++					load_location = Path.Combine (Path.Combine (load_location, "components"), assembly_name);
++					Launch (load_location);
++				}
++			}
++		}
++		
++		internal static void Launch (string location)
++		{
++			bridge = Assembly.LoadFrom (location);
++		}
++		
++		static Assembly bridge;
++		
++		public static IntPtr GetAccessible ()
++		{
++			IntPtr a11y_obj_handle = IntPtr.Zero;
++			if (bridge != null) {
++				Type automationbridge = bridge.GetType (@namespace + ".AutomationBridge");
++				
++				a11y_obj_handle = (IntPtr)
++				  automationbridge.InvokeMember ("Initialize", 
++				                                 BindingFlags.InvokeMethod |
++				                                 BindingFlags.Static | 
++				                                 BindingFlags.Public, null, null, null);
++			}
++			return a11y_obj_handle;
++		}
++	}
++}
++
+Index: class/System.Windows/Mono/ApplicationLauncher.cs
+===================================================================
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 134922)
++++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
+@@ -44,6 +44,11 @@
+ 	/// </summary>	
+ 	class ApplicationLauncher {
+ 
++		static ApplicationLauncher ()
++		{
++			A11yHelper.Initialize ();
++		}
++
+ 		/// <summary>
+ 		///   Creates a new Loader for a XAML file.
+ 		/// </summary>
+Index: class/System.Windows/Makefile.am
+===================================================================
+--- class/System.Windows/Makefile.am	(revision 134922)
++++ class/System.Windows/Makefile.am	(working copy)
+@@ -38,6 +38,7 @@
+ 	$(srcdir)/MS.Internal/Dummy.cs	\
+ 	$(srcdir)/System.Windows.Hosting/Dummy.cs	\
+ 	$(srcdir)/System.IO/SimpleUnmanagedMemoryStream.cs			\
++	$(srcdir)/Mono/A11yHelper.cs						\
+ 	$(srcdir)/Mono/ApplicationLauncher.cs					\
+ 	$(srcdir)/Mono/DispatcherTimer.cs					\
+ 	$(srcdir)/Mono/EasingFunctionWrapper.cs					\
