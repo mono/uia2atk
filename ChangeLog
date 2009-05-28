@@ -1,5 +1,9 @@
 2009-05-27  Andrés G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/moon-security.diff: Updated so it applies to trunk.
+
+2009-05-27  Andrés G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/moon-security.diff: Cleaned up.
 
 2009-05-26  Andrés G. Aragoneses <aaragoneses@novell.com>
