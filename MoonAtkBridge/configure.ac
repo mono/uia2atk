@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE([foreign])
 # pkg-config
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test "x$PKG_CONFIG" = "xno"; then
-        AC_MSG_ERROR([You need to install pkg-config])
+	AC_MSG_ERROR([You need to install pkg-config])
 fi
 
 SHAMROCK_EXPAND_LIBDIR
@@ -19,23 +19,23 @@ AM_PROG_LIBTOOL
 
 AC_PATH_PROG(MONO, mono, no)
 if test "x$MONO" = "xno"; then
-        AC_MSG_ERROR([mono Not found])
+	AC_MSG_ERROR([mono Not found])
 fi
 AC_SUBST(MONO)
 
 AC_PATH_PROG(GMCS, gmcs, no)
 if test "x$GMCS" = "xno"; then
-        AC_MSG_ERROR([gmcs Not found])
+	AC_MSG_ERROR([gmcs Not found])
 fi
 
 AC_PATH_PROG(SMCS, smcs, no)
 if test "x$SMCS" = "xno"; then
-        AC_MSG_ERROR([smcs Not found, please install moonlight])
+	AC_MSG_ERROR([smcs Not found, please install moonlight])
 fi
 
 AC_PATH_PROG(CC, gcc, no)
 if test "x$CC" = "xno"; then
-        AC_MSG_ERROR([gcc Not found])
+	AC_MSG_ERROR([gcc Not found])
 fi
 
 AC_PATH_PROG(GACUTIL, gacutil, no)
