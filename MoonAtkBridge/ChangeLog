@@ -1,3 +1,7 @@
+2009-05-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* create-xpi.sh: Import from old branch, for reference.
+
 2009-05-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* configure.ac: Add cecil and smcs as reqs.
