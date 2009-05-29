@@ -19,16 +19,32 @@ GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SOURCES=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 ATK_API_DIR=$(GAPI_PARSER_PATH)atk-$(ATK_VERSION)/atk
 
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -warnaserror
+ASSEMBLY_REFERENCES = /r:System.Core.dll /r:System.Windows.dll /r:System.dll /r:bin/glib-atk-sharp.dll
 
+all: xpi
 
-all: glib-atk-sharp-dll
+xpi: bin/xpi/novell-moonlight-a11y.xpi
+
+bin/xpi/novell-moonlight-a11y.xpi: bin/MoonAtkBridge.dll
+	mkdir -p bin/xpi/
+	cp install.rdf bin/xpi/
+	mkdir -p bin/xpi/components/
+	cp -fvp bin/MoonAtkBridge.dll bin/xpi/components
+	(cd bin/xpi/; $(ZIP) -r9 novell-moonlight-a11y.xpi *)
+
+bin/MoonAtkBridge.dll: glib-atk-sharp-dll MoonAtkBridge-alone
+	$(MONO) merge/monomerge.exe -out bin/MoonAtkBridge.dll bin/glib-atk-sharp.dll bin/MoonAtkBridge-alone.dll
+
+MoonAtkBridge-alone:
+	$(SMCS) $(ASSEMBLY_COMPILER_FLAGS) $(ASSEMBLY_REFERENCES) *.cs -out:bin/MoonAtkBridge-alone.dll -target:library
 
 glib-atk-sharp-dll: bin/glib-atk-sharp.dll
 
 bin/glib-atk-sharp.dll: glib-sharp-dll atk-sharp-dll monomerge
 	mkdir -p bin/
 	cp $(GTK_SHARP)/moonbin/*.dll bin/
-	mono merge/monomerge.exe -out bin/glib-atk-sharp.dll bin/glib-sharp.dll bin/atk-sharp.dll
+	$(MONO) merge/monomerge.exe -out bin/glib-atk-sharp.dll bin/glib-sharp.dll bin/atk-sharp.dll
 
 atk-sharp-dll: $(GTK_SHARP)/moonbin/atk-sharp.dll
 

@@ -71,6 +71,11 @@ fi
 
 PKG_CHECK_MODULES(CECIL, cecil)
 
+AC_PATH_PROG(ZIP, zip, no)
+if test "x$ZIP" = "xno" ; then
+	AC_MSG_ERROR([No zip tool found])
+fi
+
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
 		[Use 'DEBUG' Configuration [default=YES]]),

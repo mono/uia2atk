@@ -1,5 +1,18 @@
 2009-05-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* install.rdf: Imported from old branch.
+	* Adapter.cs:
+	* AssemblyInfo.cs
+	* AutomationBridge.cs
+	* AtkTextImplementor.cs
+	* AdapterFactory.cs: Imported code from old branch.
+	* configure.ac:
+	* Makefile.am: Include compilation of the bridge and
+	generation of the XPI.
+	* create-xpi.sh: Removed, not needed anymore.
+
+2009-05-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* create-xpi.sh: Import from old branch, for reference.
 
 2009-05-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
