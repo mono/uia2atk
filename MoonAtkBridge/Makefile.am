@@ -18,6 +18,8 @@ ATK_API_RAW=$(ATK_SHARP_PATH)atk-api.raw
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SOURCES=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 ATK_API_DIR=$(GAPI_PARSER_PATH)atk-$(ATK_VERSION)/atk
+MONO_CECIL_PATH=`pkg-config cecil --variable=Libraries`
+
 
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -warnaserror
 ASSEMBLY_REFERENCES = /r:System.Core.dll /r:System.Windows.dll /r:System.dll /r:bin/glib-atk-sharp.dll
@@ -114,7 +116,7 @@ $(GAPI_GENERATOR): bootstrap28
 monomerge: merge/monomerge.exe
 
 merge/monomerge.exe: merge
-	(cd merge; make)
+	$(GMCS) merge/Mono.Merge/*.cs /r:$(MONO_CECIL_PATH) -out:merge/monomerge.exe
 
 merge:
 	svn export http://anonsvn.mono-project.com/source/trunk/cecil/merge
