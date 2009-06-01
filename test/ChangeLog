@@ -1,3 +1,12 @@
+2009-06-01  Calen Chen <cachen@novell.com>
+
+	* testers/hscrollbar_basic_ops.py,
+	* testers/hscrollbar/hscrollbarframe.py: commit Brian's review form 
+	review board(http://reviews.mono-a11y.org/r/223/)
+	* testers/vscrollbar/vscrollbarframe.py,
+	* testers/vscrollbar_basic_ops.py: commit Brian's review form 
+	review board(http://reviews.mono-a11y.org/r/166/)
+
 2009-05-27 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkpynotify.py: Gtk buttons that show pynotify notifications

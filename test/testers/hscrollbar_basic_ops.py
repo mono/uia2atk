@@ -43,62 +43,82 @@ if app is None:
 # just an alias to make things shorter
 hsbFrame = app.hScrollBarFrame
 
-#check hscrollbar's default states
+# check hscrollbar's default states
 statesCheck(hsbFrame.hscrollbar, "HScrollBar")
 
-#mouse click scrollbar
+# mouse click scrollbar
 hsbFrame.hscrollbar.mouseClick()
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(20)
-#mouseClick action update label's text
+hsbFrame.assertScrollBar(20)
+# mouseClick action update label's text
 hsbFrame.assertLabel(20)
 
-#still have default states
+# still have default states
 statesCheck(hsbFrame.hscrollbar, "HScrollBar")
 
-#keyCombo move scrollbar
-hsbFrame.hscrollbar.keyCombo("Page_Down")
+# keyCombo move scrollbar using Page Down
+hsbFrame.hscrollbar.keyCombo("Page_Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(40)
-#keyCombo action update label's text
+hsbFrame.assertScrollBar(40)
+# keyCombo action update label's text
 hsbFrame.assertLabel(40)
 
-#set value to 10
-hsbFrame.valueScrollBar(10)
+# keyCombo move scrollbar using Page Up
+hsbFrame.hscrollbar.keyCombo("Page_Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(10)
-#update label's text
+hsbFrame.assertScrollBar(20)
+# keyCombo action update label's text
+hsbFrame.assertLabel(20)
+
+# keyCombo move scrollbar using Page Down
+hsbFrame.hscrollbar.keyCombo("Page_Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+hsbFrame.assertScrollBar(40)
+# keyCombo action update label's text
+hsbFrame.assertLabel(40)
+
+# set value to 10
+hsbFrame.assignScrollBar(10)
+sleep(config.SHORT_DELAY)
+hsbFrame.assertScrollBar(10)
+# update label's text
 hsbFrame.assertLabel(10)
 
-#set value to 0
-hsbFrame.valueScrollBar(0)
+# set value to 0
+hsbFrame.assignScrollBar(0)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(0)
-#update label's text
+hsbFrame.assertScrollBar(0)
+# update label's text
 hsbFrame.assertLabel(0)
 
-#set value to 100
-hsbFrame.valueScrollBar(100)
+# set value to 100
+hsbFrame.assignScrollBar(100)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(100)
-#update label's text
+hsbFrame.assertScrollBar(100)
+# update label's text
 hsbFrame.assertLabel(100)
 
-#set value to -10, minimum value is 0
-hsbFrame.valueScrollBar(-10)
+# set value to -10, minimum value is 0
+hsbFrame.assignScrollBar(-10)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(-10)
-#doesn't change label's text
+hsbFrame.assertScrollBar(0)
+# doesn't change label's text
 hsbFrame.assertLabel(0)
 
-#set value to 120, maximum value is 119
-hsbFrame.valueScrollBar(120)
+# set value to 120, maximum value is 119
+hsbFrame.assignScrollBar(120)
 sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(120)
-#doesn't change label's text
+hsbFrame.assertScrollBar(0)
+# doesn't change label's text
 hsbFrame.assertLabel(0)
+
+# assert the max, min, and min increment values
+# BUG499883 - Accessible maximum value of a scroll bar is 119
+#hsbFrame.assertMaximumValue()
+hsbFrame.assertMinimumValue()
+hsbFrame.assertMinimumIncrement()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 hsbFrame.quit()

@@ -21,39 +21,62 @@ class VScrollBarFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     LABEL = "Value:"
+    MAXVAL = 119
+    MINVAL = 0
+    MININCREMENT = 10
 
     def __init__(self, accessible):
         super(VScrollBarFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.vscrollbar = self.findScrollBar(None)
 
-    #change vscrollbar's value
-    def valueScrollBar(self, newValue=None):
-        procedurelogger.action('set scrollbar value to "%s"' % newValue)
-        #self.vscrollbar.__setattr__('value', newValue)
-        self.vscrollbar.value = newValue
+    # change vscrollbar's value
+    def assignScrollBarValue(self, new_value):
+        procedurelogger.action('set scrollbar value to "%s"' % new_value)
+        self.vscrollbar.value = new_value
 
-    def assertLabel(self, newValue=None):
-        procedurelogger.expectedResult('label\'s value changed to "%s"' % newValue)
-        label = self.findLabel("Value: %s" % newValue)
-        assert label
+    def assertLabel(self, value):
+        procedurelogger.expectedResult('label\'s value is "%s"' % value)
+        expected_label = "Value: %s" % value
+        assert self.label.text == expected_label, \
+               'Label reads "%s", expected "%s"' % (self.label, expected_label)
 
-    def assertScrollbar(self, newValue=None):
-        maximumValue = self.vscrollbar._accessible.queryValue().maximumValue
-        minimumValue = self.vscrollbar._accessible.queryValue().minimumValue
+    def assertMaximumValue(self):
+        procedurelogger.action("Ensure that %s's maximum value is what we expect" % self.vscrollbar)
+        procedurelogger.expectedResult("%s's maximum value is %s" % \
+                                                (self.vscrollbar, self.MAXVAL))
+        self.maximumValue = \
+                        self.vscrollbar._accessible.queryValue().maximumValue
+        assert self.maximumValue == self.MAXVAL, \
+                                        "Maximum value is %s, expected %s" % \
+                                        (self.maximumValue, self.MAXVAL)
 
-        if 0 <= newValue <= maximumValue:
-            procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-            assert self.vscrollbar.value == newValue, \
-                       "scrollbar's current value is %s:" % self.vscrollbar.value
-        else:
-            if newValue > maximumValue:
-                procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, maximumValue))
-            elif newValue < minimumValue:
-                procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, minimumValue))
-            assert not self.vscrollbar.value == newValue, \
-                       "scrollbar's current value is %s:" % self.vscrollbar.value
+    def assertMinimumValue(self):
+        procedurelogger.action("Ensure that %s's minimum value is what we expect" % self.vscrollbar)
+        procedurelogger.expectedResult("%s's minimum value is %s" % \
+                                                (self.vscrollbar, self.MINVAL))
+        self.minimumValue = \
+                        self.vscrollbar._accessible.queryValue().minimumValue
+        assert self.minimumValue == self.MINVAL, \
+                                        "Minimum value is %s, expected %s" % \
+                                        (self.minimumValue, self.MAXVAL)
+
+    def assertMinimumIncrement(self):
+        procedurelogger.action("Ensure that %s's minimum increment value is what we expect" % self.vscrollbar)
+        procedurelogger.expectedResult("%s's minimum increment value is %s" % \
+                                          (self.vscrollbar, self.MININCREMENT))
+        self.minimumIncrement = \
+                      self.vscrollbar._accessible.queryValue().minimumIncrement
+        assert self.minimumIncrement == self.MININCREMENT, \
+                               "Minimum increment value is %s, expected %s" % \
+                               (self.minimumIncrement, self.MININCREMENT)
+
+    def assertScrollBar(self, expected_value):
+        procedurelogger.expectedResult('the scrollbar\'s current value is %s' % expected_value)
+        assert self.vscrollbar.value == expected_value, \
+                         "scrollbar's current value is %s, expected %s" % \
+                         (self.vscrollbar.value, expected_value)
     
-    #close application window
+    # close application window
     def quit(self):
         self.altF4()
