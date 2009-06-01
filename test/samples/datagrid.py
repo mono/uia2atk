@@ -66,13 +66,13 @@ class DataGridApp(Form):
 
         self.datatable = DataTable("DataTable")
 
-        #####add boolean column.
+        # add boolean column.
         self.boolcolumn = DataColumn("BoolColumn")
         self.boolcolumn.DataType = System.Boolean
         self.boolcolumn.DefaultValue = None
         self.datatable.Columns.Add(self.boolcolumn)
 
-        #####add 2 textbox column and 1 combobox column
+        # add 2 textbox column and 1 combobox column
         columns = ["TextBox_Edit", "TextBox_Read", "ComboBox"]
         self.textcolumn = DataColumn()
         for i in columns:
@@ -81,10 +81,10 @@ class DataGridApp(Form):
             self.textcolumn.DefaultValue = ""
             self.datatable.Columns.Add(self.textcolumn)
 
-        #####bound to datagrid
+        # bound to datagrid
         self.datagrid.DataSource = self.datatable
 
-        #####add new rows
+        # add new rows
         for i in range(0,3):
             self.newRow1 = self.datatable.NewRow()
             self.datatable.Rows.Add(self.newRow1)
@@ -126,22 +126,25 @@ class DataGridApp(Form):
         self.textcolumnstyle1.ReadOnly = True
         self.tablestyle.GridColumnStyles.Add(self.textcolumnstyle1)
 
-        self.datagrid.TableStyles.Add(self.tablestyle)
-
-        self.dgtb = self.datagrid.TableStyles[0].GridColumnStyles[3]
+        textcolumnstyle2 = DataGridTextBoxColumn()
+        textcolumnstyle2.MappingName = "ComboBox"
+        textcolumnstyle2.HeaderText = "ComboBox"
+        textcolumnstyle2.Width = 120
         self.comboboxstyle = ComboBox()
-        self.comboboxstyle.Items.AddRange(("Item1", "Item2", "Item3"))
-        self.comboboxstyle.Cursor = Cursors.Arrow
         self.comboboxstyle.DropDownStyle = ComboBoxStyle.DropDownList
+        self.comboboxstyle.Items.AddRange(("Item1", "Item2", "Item3"))
         self.comboboxstyle.Dock = DockStyle.Fill
         self.comboboxstyle.SelectionChangeCommitted += self.comboboxstyle_SelectionChangeCommitted
-        self.dgtb.TextBox.Controls.Add(self.comboboxstyle)
+        textcolumnstyle2.TextBox.Controls.Add(self.comboboxstyle)
+        self.tablestyle.GridColumnStyles.Add(textcolumnstyle2)
+
+        self.datagrid.TableStyles.Add(self.tablestyle)
 
         self.datagrid.CurrentCellChanged += self.datagrid_currencellchanged
 
     def datagrid_currencellchanged(self, sender, event):
         cell = self.datagrid.CurrentCell
-        bool_value = self.datatable.Rows[cell.RowNumber][cell.ColumnNumber]
+        bool_value = self.datagrid[cell]
 
         self.label.Text = "row:%s col:%s Value:%s" % (cell.RowNumber, cell.ColumnNumber, bool_value)
 

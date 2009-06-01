@@ -1,3 +1,9 @@
+2009-06-01  Calen Chen <cachen@novell.com>
+
+	* samples/datagrid.py: solve two crash issue, now it can be run in 
+	windows with combobox column, click last row to create a new row won't 
+	crash the app, but still have another crash(see BUG506286)
+
 2009-06-01 Ray Wang <rawang@novell.com>
 
 	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py,
