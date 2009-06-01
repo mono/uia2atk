@@ -13,7 +13,8 @@ from strongwind import *
 class ToolStripSplitButtonFrame(accessibles.Frame):
     """the profile of the toolstripsplitbutton sample"""
 
-    LABEL = 'The current font size is 10'
+    FONT_SIZE_LABEL = 'The current font size is 10'
+    CLICK_LABEL = '0 clicks'
     PUSH_BUTTON = '10'
     MENUITEM_10 = '10'
     MENUITEM_12 = '12'
@@ -21,7 +22,8 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
 
     def __init__(self, accessible):
         super(ToolStripSplitButtonFrame, self).__init__(accessible)
-        self.label = self.findLabel(self.LABEL)
+        self.font_size_label = self.findLabel(self.FONT_SIZE_LABEL)
+        self.click_label = self.findLabel(self.CLICK_LABEL)
         self.toolbar = self.findToolBar(None)
         self.push_button = self.findPushButton(self.PUSH_BUTTON)
         self.toggle_button = self.findToggleButton(None)
@@ -50,14 +52,14 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
                                              "does not match the actual height",
                                               size[1]) 
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.action('Assert the text of %s' % accessible)
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text):
+        """make sure accessible's text is expected"""
+        procedurelogger.action("check %s's text" % accessible)
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                            (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                               'actual text is "%s", expected text is "%s"' % \
+                               (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
         """assert Selection implementation"""
@@ -65,17 +67,18 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
                                         (index, accessible))
         accessible.selectChild(index)
 
-    def inputText(self, accessible, text):
-        try:
-            procedurelogger.action('input %s to %s' % (text, accessible))
-            accessible.text = text
-        except NotImplementedError:
-            pass
-
-    def assertComponent(self):
-        self.menuitems = self.findAllMenuItems(None)
-        assert len(self.menuitems) == 3, \
-                        "the number of menu items is not correct"
+    def assertDifferentAbsolutePositions(self, accessible1, accessible2):
+        '''
+        Assert that accessible1 and accessible2 have different absolute
+        positions.
+        '''
+        # get the (x,y) position of accessible1
+        position1 = accessible1._accessible.queryComponent().getPosition(0) 
+        # get the (x,y) position of accessible1
+        position2 = accessible2._accessible.queryComponent().getPosition(0) 
+        assert position1 != position2, \
+                        "%s and %s should not have the same position %s" % \
+                        (accessible1, accessible2, position1)
 
     def quit(self):
         self.altF4()
