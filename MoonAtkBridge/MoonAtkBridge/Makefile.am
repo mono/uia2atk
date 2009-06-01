@@ -49,8 +49,7 @@ REFERENCES =  \
 	System.Windows
 
 DLL_REFERENCES = \
-	$(top_srcdir)/bin/glib-atk-sharp.dll \
-	/home/brad/mono/lib/moonlight/plugin/System.Core.dll
+	$(top_srcdir)/bin/glib-atk-sharp.dll
 
 CLEANFILES = $(PROGRAMFILES)
 
