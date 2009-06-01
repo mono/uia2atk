@@ -103,8 +103,12 @@ fi
 TOPDIR=$PWD
 AC_SUBST(TOPDIR)
 
+AC_SUBST(VERSION)
+
 AC_CONFIG_FILES([
 Makefile
+install.rdf
+MoonAtkBridge/Makefile
 ])
 
 AC_OUTPUT

@@ -1,0 +1,12 @@
+2009-06-01  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* AssemblyInfo.cs: 
+	* Moonlight.AtkBridge: 
+	* Moonlight.AtkBridge/Adapter.cs: 
+	* Moonlight.AtkBridge.PatternImplementors: 
+	* Moonlight.AtkBridge/AutomationBridge.cs: 
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: 
+	* Moonlight.AtkBridge/ImplementsPatternAttribute.cs: 
+	Initial import.

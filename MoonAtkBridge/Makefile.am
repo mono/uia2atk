@@ -16,113 +16,68 @@ ATK_SHARP_PATH=$(GTK_SHARP)/atk/
 ATK_API_28_RAW=$(ATK_SHARP_PATH)atk-api-2.8.raw
 ATK_API_RAW=$(ATK_SHARP_PATH)atk-api.raw
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
-GTK_SHARP_28_SOURCES=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
+GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 ATK_API_DIR=$(GAPI_PARSER_PATH)atk-$(ATK_VERSION)/atk
 MONO_CECIL_PATH=`pkg-config cecil --variable=Libraries`
 
+all-am: bin/glib-atk-sharp.dll stage/install.rdf
 
-ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -warnaserror
-ASSEMBLY_REFERENCES = /r:System.Core.dll /r:System.Windows.dll /r:System.dll /r:bin/glib-atk-sharp.dll
+stage:
+	mkdir -p stage/components/
 
-all: xpi
+stage/install.rdf: stage install.rdf
+	cp -p install.rdf stage/install.rdf
 
-xpi: bin/xpi/novell-moonlight-a11y.xpi
+mono-merge:
+	svn export http://anonsvn.mono-project.com/source/trunk/cecil/merge mono-merge
+	$(GMCS) mono-merge/Mono.Merge/*.cs /r:$(MONO_CECIL_PATH) -out:mono-merge/monomerge.exe
 
-bin/xpi/novell-moonlight-a11y.xpi: bin/MoonAtkBridge.dll
-	mkdir -p bin/xpi/
-	cp install.rdf bin/xpi/
-	mkdir -p bin/xpi/components/
-	cp -fvp bin/MoonAtkBridge.dll bin/xpi/components
-	(cd bin/xpi/; $(ZIP) -r9 novell-moonlight-a11y.xpi *)
-
-bin/MoonAtkBridge.dll: glib-atk-sharp-dll MoonAtkBridge-alone
-	$(MONO) merge/monomerge.exe -out bin/MoonAtkBridge.dll bin/glib-atk-sharp.dll bin/MoonAtkBridge-alone.dll
-
-MoonAtkBridge-alone:
-	$(SMCS) $(ASSEMBLY_COMPILER_FLAGS) $(ASSEMBLY_REFERENCES) *.cs -out:bin/MoonAtkBridge-alone.dll -target:library
-
-glib-atk-sharp-dll: bin/glib-atk-sharp.dll
-
-bin/glib-atk-sharp.dll: glib-sharp-dll atk-sharp-dll monomerge
+bin/glib-atk-sharp.dll: $(GTK_SHARP) mono-merge
 	mkdir -p bin/
-	cp $(GTK_SHARP)/moonbin/*.dll bin/
-	$(MONO) merge/monomerge.exe -out bin/glib-atk-sharp.dll bin/glib-sharp.dll bin/atk-sharp.dll
-
-atk-sharp-dll: $(GTK_SHARP)/moonbin/atk-sharp.dll
-
-#after having parsed the API, the generator from gtk-sharp trunk will generate the .cs files of the binding
-$(GTK_SHARP)/moonbin/atk-sharp.dll: bootstrap28 glib-sharp-dll $(ATK_API_RAW) $(GAPI_GENERATOR)
-	( cd $(GTK_SHARP)/atk; make moonlight )
-
-bootstrap28: $(GTK_SHARP)/bootstrap-2.8
-	( cd $(GTK_SHARP); ./bootstrap-2.8 )
-
-$(GTK_SHARP)/bootstrap-2.8: $(GTK_SHARP) patch
-	cp bootstrap-2.8 $(GTK_SHARP)
+	$(MONO) mono-merge/monomerge.exe -out bin/glib-atk-sharp.dll \
+		$(GTK_SHARP)/moonbin/glib-sharp.dll $(GTK_SHARP)/moonbin/atk-sharp.dll
 
 $(GTK_SHARP):
 	svn export http://anonsvn.mono-project.com/source/trunk/gtk-sharp $(GTK_SHARP)
 
-patch: $(GTK_SHARP)
-	if [ -f $(PATCH_STAMP) ]; then \
-		for p in $(GTK_SHARP_PATCHES); do \
-			if [ $(PATCH_STAMP) -ot $$p ]; then \
-				rm -f $(PATCH_STAMP); \
-				$(MAKE) $(AM_MAKEFLAGS) $(PATCH_STAMP); \
-				break; \
-			fi; \
-		done; \
-	else \
-		$(MAKE) $(AM_MAKEFLAGS) $(PATCH_STAMP); \
-	fi
+	## Apply patches to gtk-sharp to add moonlight targets
+	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p)
 
-$(PATCH_STAMP): $(GTK_SHARP_PATCHES)
-	rm -f patch.tmp
-	touch patch.tmp
-	$(foreach p,$^, patch -p0 -N -d gtk-sharp < $p)
-	mv -f patch.tmp $@
+	## Bootstrap for the oldest version of atk that we support
+	cp bootstrap-2.8 $(GTK_SHARP)
+	cd $(GTK_SHARP) && ./bootstrap-2.8
 
-glib-sharp-dll: $(GTK_SHARP)/moonbin/glib-sharp.dll
-
-$(GTK_SHARP)/moonbin/glib-sharp.dll: bootstrap28
-	( cd $(GTK_SHARP)/glib; make moonlight )
-
-#after parsing the API, we need to bootstrap again because this process will make a symbolic link
-$(ATK_API_RAW): $(ATK_API_28_RAW)
-	( cd $(GTK_SHARP); ./bootstrap-2.8 )
-
-#we use the parser from gtk-sharp trunk to parse an old API
-$(ATK_API_28_RAW): parser $(GTK_SHARP_28_SOURCES) $(ATK_API_DIR)
-	( cd $(GTK_SHARP)/parser; PATH=.:$$PATH mono --debug gapi-parser.exe gtk-sharp-2.8-sources.xml )
-
-parser: $(GAPI_PARSER)
-
-$(GAPI_PARSER): $(GTK_SHARP) patch bootstrap28
-	( cd $(GTK_SHARP)/parser && make )
-
-$(GTK_SHARP_28_SOURCES):
-	cp $(GTK_SHARP_28_SOURCES_FILE) $(GTK_SHARP_28_SOURCES)
-
-$(ATK_API_DIR): $(ATK_API_FILE)
-	( cd $(GAPI_PARSER_PATH); tar -xvf $(ATK_FILENAME) )
-
-#we need to bring the API metadata from the oldest ATK version we support
-$(ATK_API_FILE):
+	## Give the parser the correct API definitions for 2.8
+	cp $(GTK_SHARP_28_SOURCES_FILE) $(GTK_SHARP_28_SRCDIR)
 	wget $(ATK_XML_URL) --output-document=$(ATK_API_FILE)
+	cd $(GAPI_PARSER_PATH) && tar -xvf $(ATK_FILENAME)
+	cd $(GTK_SHARP)/parser && $(MAKE) \
+		&& PATH=.:$$PATH $(MONO) --debug gapi-parser.exe gtk-sharp-2.8-sources.xml
+	
+	## Bootstrap is required the second time around to generate the
+	## atk-api.raw symlink
+	cd $(GTK_SHARP) && ./bootstrap-2.8
+	cd $(GTK_SHARP)/glib && $(MAKE) moonlight
+	cd $(GAPI_GENERATOR_PATH) && $(MAKE)
+	cd $(GTK_SHARP)/atk && $(MAKE) moonlight
 
-$(GAPI_GENERATOR): bootstrap28
-	( cd $(GAPI_GENERATOR_PATH); make )
+merge: mono-merge bin/glib-atk-sharp.dll MoonAtkBridge/bin/*/MoonAtkBridge.dll
+	$(MONO) mono-merge/monomerge.exe -out stage/components/MoonAtkBridge.dll \
+		bin/glib-atk-sharp.dll MoonAtkBridge/bin/*/MoonAtkBridge.dll
 
-monomerge: merge/monomerge.exe
+xpi: stage/install.rdf merge bin/xpi/novell-moonlight-a11y.xpi
 
-merge/monomerge.exe: merge
-	$(GMCS) merge/Mono.Merge/*.cs /r:$(MONO_CECIL_PATH) -out:merge/monomerge.exe
-
-merge:
-	svn export http://anonsvn.mono-project.com/source/trunk/cecil/merge
+bin/xpi/novell-moonlight-a11y.xpi: 
+	mkdir -p bin/xpi/
+	cd stage/ && zip -r9 ../bin/xpi/novell-moonlight-a11y.xpi *
 
 clean:
 	rm -f $(PATCH_STAMP)
 	rm -rf $(GTK_SHARP)/
 	rm -rf bin/
-	rm -rf merge/
+	rm -rf stage/
+	rm -rf mono-merge/
+
+SUBDIRS = \
+	. \
+	MoonAtkBridge

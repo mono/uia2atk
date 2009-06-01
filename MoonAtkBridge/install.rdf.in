@@ -3,9 +3,9 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>moonlight-a11y@novell.com</em:id>
-    <em:name>Novell Moonlight-UiaAtkBridge</em:name>
-    <em:version>0.1</em:version>
-    <em:description>Open source accessibility support for Moonlight between UIA and ATK technologies</em:description>
+    <em:name>Novell Moonlight Accessibility Support</em:name>
+    <em:version>@VERSION@</em:version>
+    <em:description>Enables Accessibility for Moonlight on Linux desktops.</em:description>
     <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
     <!-- TODO:
     em:updateURL>http://go-mono.com/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
@@ -16,7 +16,7 @@
     -->
 
     <em:homepageURL>http://mono-project.com/Moonlight</em:homepageURL>
-    <em:creator>Mono-A11y Team</em:creator>
+    <em:creator>Mono Accessibility Team</em:creator>
     <em:contributor>Andrés G. Aragoneses</em:contributor>
     <em:contributor>Brad Taylor</em:contributor>
     <em:contributor>Mario Carrión</em:contributor>
@@ -26,7 +26,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>2.9.*</em:minVersion>
-        <em:maxVersion>3.5.*</em:maxVersion>
+        <em:maxVersion>3.6.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 

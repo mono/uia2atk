@@ -1,3 +1,14 @@
+2009-06-01  Brad Taylor  <brad@getcoded.net>
+
+	* install.rdf: 
+	* Makefile.am: 
+	* configure.ac: 
+	* mono-uia.snk: 
+	* expansions.m4: 
+	* install.rdf.in: 
+	* Makefile.include: Simplify the build and seperate out the dll build
+	from gtk-sharp building, merging and XPI building.
+
 2009-05-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: Fix build of monomerge to not require a
