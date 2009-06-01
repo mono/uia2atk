@@ -1,7 +1,13 @@
 2009-06-01  Calen Chen <cachen@novell.com>
 
+	* testers/notifyicon/notifyiconframe.py,
+	* testers/notifyicon_basic_ops.py: commit Brian's review from review 
+	board (http://reviews.mono-a11y.org/r/240/)
+
+2009-06-01  Calen Chen <cachen@novell.com>
+
 	* testers/hscrollbar_basic_ops.py,
-	* testers/hscrollbar/hscrollbarframe.py: commit Brian's review form 
+	* testers/hscrollbar/hscrollbarframe.py: commit Brian's review from 
 	review board(http://reviews.mono-a11y.org/r/223/)
 	* testers/vscrollbar/vscrollbarframe.py,
 	* testers/vscrollbar_basic_ops.py: commit Brian's review form 
