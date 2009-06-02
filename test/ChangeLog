@@ -1,3 +1,9 @@
+2009-06-02 Ray Wang <rawang@novell.com>
+
+	* testers/trackbar/trackbarframe.py,
+	* testers/trackbar_basic_ops.py: commit Brian's review from review 
+	board. (http://reviews.mono-a11y.org/r/209/)
+
 2009-06-02  Calen Chen <cachen@novell.com>
 
 	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py,
