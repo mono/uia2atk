@@ -1,0 +1,55 @@
+Index: plugin/plugin.cpp
+===================================================================
+--- plugin/plugin.cpp	(revision 135211)
++++ plugin/plugin.cpp	(working copy)
+@@ -1697,6 +1697,24 @@
+ 	return (MoonlightScriptControlObject*)rootobject;
+ }
+ 
++gpointer
++PluginInstance::GetA11yRootObject ()
++{
++	MonoAssembly *uiautomation_moonlight_assembly =
++	//FIXME: update KeyToken and version
++	mono_assembly_load_with_partial_name ("System.Windows, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", NULL);
++	if (uiautomation_moonlight_assembly) {
++		MonoImage *image = mono_assembly_get_image (uiautomation_moonlight_assembly);
++	
++		MonoClass *a11y_helper = mono_class_from_name (image, "Mono", "A11yHelper");
++		MonoMethod *get_accessible  = MonoGetMethodFromName (a11y_helper, "GetAccessible", 0);
++			
++		MonoObject *monoAtkObj = 
++			mono_runtime_invoke (get_accessible, NULL, NULL, NULL);
++		gpointer atkObj = GUINT_TO_POINTER (mono_gchandle_new (monoAtkObj, false));
++	}
++}
++
+ NPP
+ PluginInstance::GetInstance ()
+ {
+Index: plugin/plugin.h
+===================================================================
+--- plugin/plugin.h	(revision 135211)
++++ plugin/plugin.h	(working copy)
+@@ -114,6 +114,7 @@
+ 	BrowserBridge *GetBridge () { return bridge; }
+ 	
+ 	MoonlightScriptControlObject *GetRootObject ();
++	gpointer GetA11yRootObject ();
+ 	NPP GetInstance ();
+ 	NPWindow *GetWindow ();
+ 	/* @GenerateCBinding,GeneratePInvoke */
+Index: plugin/plugin-entry.cpp
+===================================================================
+--- plugin/plugin-entry.cpp	(revision 135211)
++++ plugin/plugin-entry.cpp	(working copy)
+@@ -36,6 +36,9 @@
+ NPError
+ NPN_GetValue (NPP instance, NPNVariable variable, void *r_value)
+ {
++//TODO: (when firefox patch gets committed)
++//	if (variable == NPNVNativeAccessible)
++//		return PluginInstance::GetA11yRootObject ();
+ 	return MozillaFuncs.getvalue (instance, variable, r_value);
+ }
+ 

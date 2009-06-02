@@ -1,3 +1,8 @@
+2009-06-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-slot-tree.diff: Added incomplete patch
+	to hook into the new API introduced in BMO#480317.
+
 2009-06-01  Brad Taylor  <brad@getcoded.net>
 
 	* install.rdf: 
