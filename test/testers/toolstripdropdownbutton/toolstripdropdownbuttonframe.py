@@ -22,6 +22,12 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
     LABEL = "Please Select one Color from ToolStripDropDownButton"
     DROPDOWN1 = "ToolStripDropDownButton1"
     DROPDOWN2 = "ToolStripDropDownButton2"
+    RED = "Red"
+    BLUE = "Blue"
+    GREEN = "Green"
+    ITEM1 = "Item1"
+    ITEM2 = "Item2"
+    ITEM3 = "Item3"
 
     def __init__(self, accessible):
         super(ToolStripDropDownButtonFrame, self).__init__(accessible)
@@ -30,38 +36,22 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
         self.menu1 = self.findMenu(self.DROPDOWN1)
         self.menu2 = self.findMenu(self.DROPDOWN2)
         #search menu items in ToolStripDropDownButton1
-        self.red = self.menu1.findMenuItem("Red", checkShowing=False)
-        self.blue = self.menu1.findMenuItem("Blue", checkShowing=False)
-        self.green = self.menu1.findMenuItem("Green", checkShowing=False)
-        #search menu items in ToolStripDropDownButton2
-        items = ["Item1", "Item2", "Item3"]
-        self.item = dict([(x, self.menu2.findMenuItem(y, checkShowing=False)) for x in range(1,3) for y in items])
-
-    def click(self, button):
-        """
-        Wrap strongwind click action to provide action log
-
-        """
-        procedurelogger.action("click %s" % button)
-        button.click()
+        self.red = self.menu1.findMenuItem(self.RED, checkShowing=False)
+        self.blue = self.menu1.findMenuItem(self.BLUE, checkShowing=False)
+        self.green = self.menu1.findMenuItem(self.GREEN, checkShowing=False)
+        self.item1 = self.menu2.findMenuItem(self.ITEM1, checkShowing=False)
+        self.item2 = self.menu2.findMenuItem(self.ITEM2, checkShowing=False)
+        self.item3 = self.menu2.findMenuItem(self.ITEM3, checkShowing=False)
 
     # assert Text implementation for Menu and MenuItem
-    def assertText(self, accessible, textValue):
-        procedurelogger.action("check %s's Text" % accessible)
+    def assertText(self, accessible, expected_text):
+        procedurelogger.action("check %s's text" % accessible)
 
-        procedurelogger.expectedResult("%s's Text is %s" % (accessible,textValue))
-        assert accessible.text == textValue
-
-    #assert Selection implementation for Menu
-    def assertSelectionChild(self, accessible, childIndex):
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
-
-        accessible.selectChild(childIndex)
-
-    def assertClearSelection(self, accessible):
-        procedurelogger.action('clear selection in "%s"' % (accessible))
-
-        accessible.clearSelection()
+        procedurelogger.expectedResult("%s's Text is \"%s\"" % \
+                                                   (accessible, expected_text))
+        actual_text = accessible.text
+        assert actual_text == expected_text, \
+                   'Text was "%s", epected "%s"' % (actual_text, expected_text)
 
     #close application window
     def quit(self):

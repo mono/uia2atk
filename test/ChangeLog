@@ -1,3 +1,10 @@
+2009-06-02  Calen Chen <cachen@novell.com>
+
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py,
+	* testers/toolstripdropdownbutton_basic_ops.py: commit Brian's review 
+	from (http://reviews.mono-a11y.org/r/188), also change some states check
+	and add bug reference
+
 2009-06-01  Calen Chen <cachen@novell.com>
 
 	* samples/datagrid.py: solve two crash issue, now it can be run in 
