@@ -1,3 +1,8 @@
+2009-06-03  Calen Chen <cachen@novell.com>
+
+	* testers/toolbar/toolbarframe.py,
+	* testers/toolbar_basic_ops.py: update assertChildrenNumber method
+
 2009-06-02  Calen Chen <cachen@novell.com>
 
 	* testers/printpreviewcontrol/printpreviewcontrolframe.py,

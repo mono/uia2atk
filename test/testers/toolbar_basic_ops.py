@@ -10,7 +10,9 @@
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of toolbar widget
+Test accessibility of toolbar widget.
+The children's test of toolbar will be done in ToolBarButton alone. but we will 
+make sure all of children can be fond in this test.
 """
 
 # imports
@@ -54,20 +56,20 @@ sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.toolbar, "ToolBar")
 
 # check how many children of toolbar is accessible, in this example there are 4 
-# toolstripbuttons are added by toolbar.Buttons.Add, 1 separator 1 label and 1 
+# toolstripbuttons are added by toolbar.Buttons.Add, 1 separator, 1 label and 1 
 # combobox are added by toolbar.Controls.add
-## BUG472729: items added by Controls are unaccessible   
-tbFrame.searchItems("push button", 4)
+# BUG472729: children added by Controls are unaccessible   
+tbFrame.assertChildrenNumber("push button")
 
-tbFrame.searchItems("separator", 1)
+tbFrame.assertChildrenNumber("separator")
 
-#tbFrame.searchItems("label", 1)
+#tbFrame.assertChildrenNumber("label")
 
-#tbFrame.searchItems("combo box", 1)
+#tbFrame.assertChildrenNumber("combo box")
 
-#tbFrame.searchItems("menu", 1)
+#tbFrame.assertChildrenNumber("menu")
 
-#tbFrame.searchItems("menu item", 10)
+#tbFrame.assertChildrenNumber("menu item")
 
 # close main window
 tbFrame.quit()
