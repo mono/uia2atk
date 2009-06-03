@@ -24,6 +24,8 @@ class ToolBarButtonFrame(accessibles.Frame):
     UNEDITED = "nop"
     SEPARATOR = "separator"
     LABEL = "ToolBar and ToolBarButton example"
+    DROPDOWN_ITEM1 = "Red"
+    DROPDOWN_ITEM2 = "Blue"
 
 
     def __init__(self, accessible):
@@ -38,10 +40,6 @@ class ToolBarButtonFrame(accessibles.Frame):
         self.separator_style = self.toolbar.findSeparator(self.SEPARATOR)
         self.label = self.findLabel(self.LABEL)
 
-    def click(self, accessible):
-        """click action"""
-        accessible.click()
-
     def assertText(self, accessible, expected_text):
         """make sure accessible's text is expected_text"""
         procedurelogger.action('check Text for %s' % accessible)
@@ -51,87 +49,96 @@ class ToolBarButtonFrame(accessibles.Frame):
                                     "actual text is %s, expected text is %s" % \
                                     (accessible.text, expected_text)
 
+    def assertLabel(self, expected_label):
+        """
+        this method will be used in below tests to make sure label is changed 
+	after click toolbar button
+        """
+        procedurelogger.expectedResult("label shows %s" % expected_label)
+        assert self.label.text == expected_label, \
+                                      "actual label: %s, expected label: %s" % \
+                                             (self.label.text, expected_label)
+
     def PushButtonStyle(self, accessible):
         """test wraper for ToolBarButton with PushButton style"""
         # test AtkText
         self.assertText(accessible, "PushButton")
 
         # test AtkAction
-        accessible.click()
-
+        accessible.click(log=True)
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you have clicked %s 1 time" % accessible)
-        assert self.label.text == "You clicked PushButton 1 times", \
-                "lable shows %s" % self.label.text
+        self.assertLabel("You clicked PushButton 1 times")
                                           
         # test AtkComponent by mouse click it to check its position
         accessible.mouseClick()
-
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you clicked %s 2 times" % accessible)
-        assert self.label.text == "You clicked PushButton 2 times", \
-                "lable shows %s" % self.label.text
+        self.assertLabel("You clicked PushButton 2 times")
+
+    def CheckDropDownMenuItems(self):
+        self.dropdown_window = self.app.findWindow(None)
+        self.dropdown_menuitem_red = self.dropdown_window.findMenuItem(self.DROPDOWN_ITEM1)
+        self.dropdown_menuitem_blue = self.dropdown_window.findMenuItem(self.DROPDOWN_ITEM2)
 
     def DropDownButtonStyle(self):
         """test wraper for ToolBarButton with DropDownButton style"""
         # test AtkText
         self.assertText(self.dropdown_button, "DropDownButton")
-        ## BUG498724: missing AtkText implemented
+        # BUG498724: missing AtkText implemented
         #self.assertText(self.dropdown_toggle, "DropDownButton")
         
         # test AtkAction for normal push button doesn't show menu list
-        self.dropdown_button.click()
+        self.dropdown_button.click(log=True)
         sleep(config.SHORT_DELAY)
         procedurelogger.expectedResult("click %s doesn't show menu list" % \
                                                            self.dropdown_button)
         try:
-           self.app.findMenuItem("Red").click()
+           self.CheckDropDownMenuItems()
         except SearchError:
-            pass
-        assert self.label.text != "You selected dropdownbutton item Red"
+            return
+        assert False, "dropdown menu list shouldn't be shown"
 
         # test AtkAction for toggle button to show menu list
-        self.dropdown_toggle.click()
+        self.dropdown_toggle.click(log=True)
         sleep(config.SHORT_DELAY)
 
         procedurelogger.expectedResult("click toggle button to show menu list")
-        self.dropdown_window = self.app.findWindow(None)
+        self.CheckDropDownMenuItems()
+
+        #states test for window, menu, menuitems
+        statesCheck(self.dropdown_window, "Form", \
+                            invalid_states=["resizable"], add_states=["active"])
+        statesCheck(self.dropdown_menuitem_red, "MenuItem")
+        statesCheck(self.dropdown_menuitem_blue, "MenuItem")
 
         # click menuitem_red to change label's text
-        self.dropdown_window.findMenuItem("Red").click()
+        self.dropdown_menuitem_red.click(log=True)
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you selected item Red")
-
-        assert self.label.text == "You selected dropdownbutton item Red"
+        self.assertLabel("You selected dropdownbutton item Red")
                                           
         # test AtkComponent by mouse click normal push button to check its position and size
-        self.dropdown_button.mouseClick()
+        self.dropdown_menuitem_button.mouseClick()
         sleep(config.SHORT_DELAY)
 
         procedurelogger.expectedResult("mouse click normal push button doesn't show menu list")
         try:
-           self.app.findMenuItem("Blue").click()
+           self.CheckDropDownMenuItems()
         except SearchError:
-            pass
-        assert self.label.text != "You selected dropdownbutton item Blue"
+            return
+        assert False, "dropdown menu list shouldn't be shown"
 
         # mouse click toggle button again
-        ## BUG490105: dropdown_toggle has wrong postion
+        # BUG490105: dropdown_toggle has wrong postion
         '''
         self.dropdown_toggle.mouseClick()
         sleep(config.SHORT_DELAY)
 
         procedurelogger.expectedResult("mouse click toggle button to show menu list")
-        self.dropdown_window = self.app.findWindow(None)
-        self.dropdown_menuitem_red = self.dropdown_window.findMenuItem("Red")
-        self.dropdown_menuitem_blue = self.dropdown_window.findMenuItem("Blue")
+        self.CheckDropDownMenuItems()
 
         # click menuitem_blue to change label's text
-        self.dropdown_menuitem_blue.click()
+        self.dropdown_menuitem_blue.click(log=True)
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you selected item Blue")
-
-        assert self.label.text == "You selected dropdownbutton item Blue"
+        self.assertLabel("You selected dropdownbutton item Blue")
         '''
     def ToggleStyle(self, accessible):
         """test wraper for ToolBarButton with Toggle style"""
@@ -139,7 +146,7 @@ class ToolBarButtonFrame(accessibles.Frame):
         self.assertText(accessible, "Toggle")
 
         # test AtkAction to unable label
-        accessible.click()
+        accessible.click(log=True)
         sleep(config.SHORT_DELAY)
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         assert not self.label.sensitive
@@ -156,7 +163,7 @@ class ToolBarButtonFrame(accessibles.Frame):
         statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         assert not self.label.sensitive
 
-    def UnableButton(self, accessible):
+    def UnsensitiveButton(self, accessible):
         """test wraper for unable ToolBarButton"""
         # test AtkText
         self.assertText(accessible, "nop")

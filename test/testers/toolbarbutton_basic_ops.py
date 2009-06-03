@@ -55,20 +55,20 @@ statesCheck(tbbFrame.toolbar, "ToolBar")
 statesCheck(tbbFrame.pushbutton_style, "Button")
 
 statesCheck(tbbFrame.dropdown_button, "Button")
-## BUG481362: missing focusable state
-#statesCheck(tbbFrame.dropdown_toggle, "ToggleButton")
+
+statesCheck(tbbFrame.dropdown_toggle, "ToggleButton")
 
 statesCheck(tbbFrame.toggle_style, "ToggleButton")
 
 # nop toolbarbutton is enabled and sensitive by default
 statesCheck(tbbFrame.nop_unable, "Button")
 # click toggle_style button to set "Enabled = False" for nop_unable button
-tbbFrame.click(tbbFrame.toggle_style)
+tbbFrame.toggle_style.click(log=True)
 sleep(config.SHORT_DELAY)
 # nop_unable button get rid of enabled and sensitive states
 statesCheck(tbbFrame.nop_unable, "Button", invalid_states=["enabled", "sensitive"])
 # click toggle_style button again to set "Enabled = True" for nop_unable button
-tbbFrame.click(tbbFrame.toggle_style)
+tbbFrame.toggle_style.click(log=True)
 sleep(config.SHORT_DELAY)
 # nop_unable button is enalbed and sensitive
 statesCheck(tbbFrame.nop_unable, "Button")
@@ -83,15 +83,15 @@ statesCheck(tbbFrame.separator_style, "ToolStripSeparator")
 tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
 
 # test DropDownButton style
-## BUG490105: dropdown_toggle has wrong postion
-## BUG498724: missing AtkText implemented
+# BUG490105: dropdown_toggle has wrong postion
+# BUG498724: missing AtkText implemented
 tbbFrame.DropDownButtonStyle()
 
 # test Toggle style
 tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 
-# test Unable ToolBarButton
-tbbFrame.UnableButton(tbbFrame.nop_unable)
+# test Unsensitive ToolBarButton
+tbbFrame.UnsensitiveButton(tbbFrame.nop_unable)
 
 # test Separator style
 tbbFrame.SeparatorStyle(tbbFrame.separator_style)

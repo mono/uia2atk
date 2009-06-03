@@ -1,5 +1,11 @@
 2009-06-03  Calen Chen <cachen@novell.com>
 
+	* testers/toolbarbutton/toolbarbuttonframe.py,
+	* testers/toolbarbutton_basic_ops.py: add CheckDropDownMenuItems and 
+	assertLabel method, modify tests to use new method, add some new tests
+
+2009-06-03  Calen Chen <cachen@novell.com>
+
 	* testers/toolbar/toolbarframe.py,
 	* testers/toolbar_basic_ops.py: update assertChildrenNumber method
 
