@@ -66,7 +66,7 @@ dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO], [mono >= 2.5])
 
 if test "x$MOON_A11Y_INTERNAL_HACK" = "x"; then
-	AC_MSG_ERROR([The env var MOON_A11Y_INTERNAL_HACK is not set, you need to use it for building mono's trunk corlib for now])
+	AC_MSG_ERROR([The env var MOON_A11Y_INTERNAL_HACK is not set, you need to use it for building mono and moon for now])
 fi
 
 PKG_CHECK_MODULES(CECIL, cecil)

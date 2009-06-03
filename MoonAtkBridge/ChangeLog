@@ -1,3 +1,9 @@
+2009-06-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: the env var is now needed for moon as well.
+	* Makefile.am: fix build wrt MonoMerge from trunk, merging
+	config files as well, needed by the XPI.
+
 2009-06-03  Brad Taylor  <brad@getcoded.net>
 
 	* patches/moonlight-a11y-slot-tree.diff: 

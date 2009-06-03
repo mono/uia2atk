@@ -28,11 +28,11 @@ stage:
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
 
-mono-merge:
+mono-merge/monomerge.exe:
 	svn export http://anonsvn.mono-project.com/source/trunk/cecil/merge mono-merge
-	$(GMCS) mono-merge/Mono.Merge/*.cs /r:$(MONO_CECIL_PATH) -out:mono-merge/monomerge.exe
+	$(GMCS) mono-merge/Mono.Merge/*.cs /r:$(MONO_CECIL_PATH) /r:System.Data.dll -out:mono-merge/monomerge.exe
 
-bin/glib-atk-sharp.dll: $(GTK_SHARP) mono-merge
+bin/glib-atk-sharp.dll: $(GTK_SHARP) mono-merge/monomerge.exe
 	mkdir -p bin/
 	$(MONO) mono-merge/monomerge.exe -out bin/glib-atk-sharp.dll \
 		$(GTK_SHARP)/moonbin/glib-sharp.dll $(GTK_SHARP)/moonbin/atk-sharp.dll
@@ -58,10 +58,12 @@ $(GTK_SHARP):
 	## atk-api.raw symlink
 	cd $(GTK_SHARP) && ./bootstrap-2.8
 	cd $(GTK_SHARP)/glib && $(MAKE) moonlight
+	cp $(GTK_SHARP)/glib/glib-sharp.dll.config $(GTK_SHARP)/moonbin/
 	cd $(GAPI_GENERATOR_PATH) && $(MAKE)
 	cd $(GTK_SHARP)/atk && $(MAKE) moonlight
+	cp $(GTK_SHARP)/atk/atk-sharp.dll.config $(GTK_SHARP)/moonbin/
 
-merge: mono-merge bin/glib-atk-sharp.dll MoonAtkBridge/bin/*/MoonAtkBridge.dll
+merge: mono-merge/monomerge.exe bin/glib-atk-sharp.dll MoonAtkBridge/bin/*/MoonAtkBridge.dll
 	$(MONO) mono-merge/monomerge.exe -out stage/components/MoonAtkBridge.dll \
 		bin/glib-atk-sharp.dll MoonAtkBridge/bin/*/MoonAtkBridge.dll
 
