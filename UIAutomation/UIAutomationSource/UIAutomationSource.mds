@@ -1,0 +1,16 @@
+<Combine name="UIAutomationSource" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationSource" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationSource" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode single="True">
+    <Execute type="None" entry="UIAutomationSource" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UIAutomationSource.mdp" />
+  </Entries>
+</Combine>

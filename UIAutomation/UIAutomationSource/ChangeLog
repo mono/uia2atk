@@ -1,0 +1,13 @@
+2009-06-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: 
+	* AssemblyInfo.cs.in: 
+	* UIAutomationSource.mdp: 
+	* UIAutomationSource.mds: Infrastructure for UIAutomationSource
+	assembly.
+ 
+	* Mono.UIAutomation.Source/IElement.cs: UIA automation element
+	abstraction layer (bug #489322).
+
+	* Mono.UIAutomation.Source/IAutomationSource.cs: UIA automation
+	source abstraction layer (bug #489323).

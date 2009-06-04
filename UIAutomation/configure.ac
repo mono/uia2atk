@@ -74,6 +74,8 @@ UIAutomationTypes/Makefile
 UIAutomationTypes/AssemblyInfo.cs
 UIAutomationBridge/Makefile
 UIAutomationBridge/AssemblyInfo.cs
+UIAutomationSource/Makefile
+UIAutomationSource/AssemblyInfo.cs
 UIAutomationClient/Makefile
 UIAutomationClient/AssemblyInfo.cs
 UIAutomationProvider/Makefile

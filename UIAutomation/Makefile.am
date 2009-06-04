@@ -3,4 +3,4 @@ EXTRA_DIST = \
 	mono.snk \
 	winfx3.pub
 
-SUBDIRS =  WindowsBase UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationClient data
+SUBDIRS =  WindowsBase UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationSource UIAutomationClient data
