@@ -1,5 +1,10 @@
 2009-06-04  Calen Chen <cachen@novell.com>
 
+	* samples/toolbar.py: forgot commit this sample, I add an event for 
+	selected combobox menuitem to change page label
+
+2009-06-04  Calen Chen <cachen@novell.com>
+
 	* testers/toolbar/toolbarframe.py,
 	* testers/toolbar_basic_ops.py: add checkComboBox checkComboBoxMenuItem
 	tests, but be used after bug472729 is fixed. I only add tests for 

@@ -105,6 +105,7 @@ class ToolBarSample(Form):
         self.combobox.Size = Size(50,18)
         self.combobox.Dock = DockStyle.Right
         self.combobox.DropDownStyle = ComboBoxStyle.DropDownList 
+        self.combobox.SelectedIndexChanged += self.select
         # add items in ComboBox
         for i in range(10):
             self.combobox.Items.Add(str(i))
@@ -135,6 +136,11 @@ class ToolBarSample(Form):
                 self.label.Text = self.savefiledialog.FileName
         elif btn == 2:
             self.printdialog.ShowDialog()
+
+    # ComboBox click event
+    def select(self, sender, event):
+        """select a item"""
+        self.label1.Text = "page: " + self.combobox.Text
 
 # run application
 form = ToolBarSample()
