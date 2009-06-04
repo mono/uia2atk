@@ -30,7 +30,7 @@ class Settings(object):
         opts = []
         args = []
         try:
-          opts, args = getopt.getopt(sys.argv[1:],"hqf:d:",["help","quiet","dashboard="])
+          opts, args = getopt.getopt(sys.argv[2:],"hqd:",["help","quiet","dashboard="])
         except getopt.GetoptError:
           self.help()
           sys.exit(1)
@@ -46,7 +46,7 @@ class Settings(object):
             Settings.dashboard_path = a
 
         try:
-            Settings.monitor_path = args[0]
+            Settings.monitor_path = sys.argv[1]
         except IndexError, e:
             output("Error: directory to monitor argument is required")
             self.help()
@@ -82,7 +82,7 @@ class Monitor(object):
 
 class PTmp(ProcessEvent):
     def process_IN_CREATE(self, event):
-        pkg_status_re = re.compile("[a-z]+(32|64)v[0-9]+_package_status")
+        pkg_status_re = re.compile(".+_package_status")
         if os.path.isdir(event.pathname):
             Settings.wdd = Settings.wm.add_watch(event.pathname, Settings.mask)
         elif os.path.basename(event.pathname) == "procedures.xml":

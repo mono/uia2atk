@@ -1,3 +1,7 @@
+2009-06-04  Neville Gao  <nevillegao@gmail.com>
+
+	* tools/dashboard/qamon.py: Modified opt handler.
+
 2009-06-03  Calen Chen <cachen@novell.com>
 
 	* testers/toolbarbutton/toolbarbuttonframe.py,
