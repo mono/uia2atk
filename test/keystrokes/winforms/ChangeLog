@@ -1,3 +1,6 @@
+2009-06-04 Marco Skambraks <marco@suse.de>
+	- fixed typos in checkbox.py - thanks to Mike Gorse
+
 2009-05-25 Marco Skambraks <marco@suse.de>
 	* added toolstriptextbox.py and toolstripcombobox.py
 	 - the input field and the combobox are currently activated via a left

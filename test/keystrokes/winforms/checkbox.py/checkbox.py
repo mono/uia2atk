@@ -21,7 +21,7 @@ sequence.append(utils.AssertPresentationAction(
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("space"))
 sequence.append(utils.AssertPresentationAction(
-    "Banas checked",
+    "Bananas checked",
     ["BRAILLE LINE:  '<x> Bananas CheckBox'",
     "     VISIBLE:  '<x> Bananas CheckBox', cursor=1",
     "SPEECH OUTPUT: 'checked'"]))
@@ -39,7 +39,7 @@ sequence.append(utils.AssertPresentationAction(
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("space"))
 sequence.append(utils.AssertPresentationAction(
-    "Chciken checked",
+    "Chicken checked",
     ["BRAILLE LINE:  '<x> Chicken CheckBox'",
     "     VISIBLE:  '<x> Chicken CheckBox', cursor=1",
     "SPEECH OUTPUT: 'checked'"]))
