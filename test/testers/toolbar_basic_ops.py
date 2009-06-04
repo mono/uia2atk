@@ -71,6 +71,11 @@ tbFrame.assertChildrenNumber("separator")
 
 #tbFrame.assertChildrenNumber("menu item")
 
+# these two tests should be added after BUG472729 is fixed
+# tbFrame.checkComboBox()
+
+# tbFrame.checkComboBoxMenuItem()
+
 # close main window
 tbFrame.quit()
 

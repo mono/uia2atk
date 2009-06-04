@@ -13,6 +13,7 @@ import states
 
 from strongwind import *
 from toolbar import *
+from helpers import *
 
 
 # class to represent the main window.
@@ -37,40 +38,87 @@ class ToolBarFrame(accessibles.Frame):
         procedurelogger.action("how many %s items on toolbar" % children_type)
 
         if children_type == "push button":
-            count = self.toolbar.findAllPushButtons(None)
+            self.pushbuttons = self.toolbar.findAllPushButtons(None)
             expected_num = self.PUSHBUTTON_NUM
-            assert len(count) == expected_num, \
-             "actual %s, expected %s push button" % (len(count), expected_num)
+            assert len(self.pushbuttons) == expected_num, \
+                                        "actual %s, expected %s push button" % \
+                                          (len(self.pushbuttons), expected_num)
         elif children_type == "label":
-            count = self.toolbar.findAllLabels(None)
+            self.labels = self.toolbar.findAllLabels(None)
             expected_num = self.LABEL_NUM
-            assert len(count) == expected_num,  \
-                    "actual %s, expected %s label" % (len(count), expected_num)
+            assert len(self.labels) == expected_num,  \
+                                              "actual %s, expected %s label" % \
+                                               (len(self.labels), expected_num)
         elif children_type == "separator":
-            count = self.toolbar.findAllSeparators(None)
+            self.separators = self.toolbar.findAllSeparators(None)
             expected_num = self.SEPARATOR_NUM
-            assert len(count) == expected_num, \
-                "actual %s, expected %s separator" % (len(count), expected_num)
+            assert len(self.separators) == expected_num, \
+                                          "actual %s, expected %s separator" % \
+                                            (len(self.separators), expected_num)
         elif children_type == "combo box":
-            count = self.toolbar.findAllComboBoxs(None)
+            self.comboboxs = self.toolbar.findAllComboBoxs(None)
             expected_num = self.COMBOBOX_NUM
-            assert len(count) == expected_num, \
-                  "actual %s, expected %s combobox" % (len(count), expected_num)
+            assert len(self.comboboxs) == expected_num, \
+                                           "actual %s, expected %s combobox" % \
+                                             (len(self.comboboxs), expected_num)
         elif children_type == "menu":
-            count = self.toolbar.findAllMenus(None)
+            self.menus = self.toolbar.findAllMenus(None, checkShowing=False)
             expected_num = self.MENU_NUM
-            assert len(count) == expected_num, \
-                  "actual %s, expected %s menu" % (len(count), expected_num)
+            assert len(self.menus) == expected_num, \
+                 "actual %s, expected %s menu" % (len(self.menus), expected_num)
         elif children_type == "menu item":
-            count = self.toolbar.findAllMenuItems(None)
+            self.menuitems = self.toolbar.findAllMenuItems(None, checkShowing=False)
             expected_num = self.MENUITEM_NUM
-            assert len(count) == expected_num, \
-                  "actual %s, expected %s menu" % (len(count), expected_num)
+            assert len(self.menuitems) == expected_num, \
+                                               "actual %s, expected %s menu" % \
+                                             (len(self.menuitems), expected_num)
         else:
             print "no %s in this sample" % children_type
 
         procedurelogger.expectedResult("%s %s on toolbar" % \
                                                   (expected_num, children_type))
+
+    def checkComboBox(self):
+
+        # combobox Actions
+        actionsCheck(self.comboboxs[0], "ComboBox")
+
+        # combobox States, should default focus on combobox
+        statesCheck(self.comboboxs[0], "ComboBox", \
+                                            add_states=["focused"])
+
+        # doing click action to drop down menu 
+        self.comboboxs[0].click(log=True)
+        sleep(config.SHORT_DELAY)
+        procedurelogger.expectedResult("drop_down menu is showing up")
+        assert self.menus[0].showing, "combobox drop_down menu doesn't showing"
+
+        # doing click action again to close menu
+        self.comboboxs[0].click(log=True)
+        sleep(config.SHORT_DELAY)
+        procedurelogger.expectedResult("drop_down menu is closed")
+        assert not self.menus[0].showing, "combobox drop_down menu still showing"      
+
+    def checkComboBoxMenuItem(self):
+
+        # combobox Actions and States
+        for menuitem in self.menuitems:
+            actionsCheck(menuitem, "MenuItem")
+            statesCheck(menuitem, "MenuItem")
+
+        # doing click action to raise focused and selected states
+        self.menuitems[0].click(log=True)
+        sleep(config.SHORT_DELAY)
+        procedurelogger.expectedResult("combobox and page label's name is changed")
+        assert self.combobox[0].name == "0"
+        assert self.toolbar.findLabel("page:0")
+
+        for menuitem in self.menuitems:
+            if menuitem is self.menuitems[0]:
+                statesCheck(self.menuitems[0], "MenuItem", 
+                                       add_states["focused", "selected"])
+            else:
+                statesCheck(self.menuitems[0], "MenuItem")
     
     # close main window
     def quit(self):

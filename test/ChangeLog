@@ -1,5 +1,13 @@
 2009-06-04  Calen Chen <cachen@novell.com>
 
+	* testers/toolbar/toolbarframe.py,
+	* testers/toolbar_basic_ops.py: add checkComboBox checkComboBoxMenuItem
+	tests, but be used after bug472729 is fixed. I only add tests for 
+	combobox and combobox menuitems just because they haven't be tested in 
+	ToolBarButton control.
+
+2009-06-04  Calen Chen <cachen@novell.com>
+
 	* testers/fontdialog/fontdialogframe.py,
 	* testers/fontdialog_basic_ops.py: update from review board
 	(http://reviews.mono-a11y.org/r/222/), add some states check
