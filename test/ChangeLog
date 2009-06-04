@@ -1,3 +1,9 @@
+2009-06-04  Calen Chen <cachen@novell.com>
+
+	* testers/fontdialog/fontdialogframe.py,
+	* testers/fontdialog_basic_ops.py: update from review board
+	(http://reviews.mono-a11y.org/r/222/), add some states check
+
 2009-06-04  Neville Gao  <nevillegao@gmail.com>
 
 	* tools/dashboard/qamon.py: Modified opt handler.

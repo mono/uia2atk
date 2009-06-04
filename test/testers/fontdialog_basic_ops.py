@@ -48,24 +48,33 @@ fdFrame = app.fontDialogFrame
 # search for all widgets from font dialog
 ###################################################
 
-#click "Click me" button to show fontdialog page, then check subwidgets
-fdFrame.fontdialog_button.click()
+# click "Click me" button to show fontdialog page
+fdFrame.fontdialog_button.click(log=True)
+# give enough time for the font dialog to load entirely
 sleep(config.MEDIUM_DELAY)
-fdFrame.AssertWidgets()
+# find all of the new accessibles from the font dialog
+fdFrame.findAllFontDialogAccessibles()
 
-################################################################################
-# search for color ComboBox and its sub children in Effects GroupBox;
-# check States;
-# check AtkText for MenuItems;
-# color ComboBox Press action test;
-# color MenuItem Click action test
-################################################################################
-## BUG478526 that MenuItems have wrong texts, remember to return test case in 
-## frame wraper line123-125
-fdFrame.colorComboBoxTest()
+fdFrame.checkDefaultFontDialogStates()
+
+# ensure that the color combo box texsts are what we expect
+fdFrame.colorComboBoxNameAndTextTest()
+
+# test the click action of MenuItems under color combo box 
+fdFrame.colorComboBoxMenuItemActionTest()
+
+# press down, which should move the keyboard focus to "Bold" under "Font Style"
+fdFrame.keyCombo("Down", grabFocus=False)
+# make sure that the "Bold" table cell gets the "selected" state and that the
+# "Regular" table cell loses the selected states
+statesCheck(fdFrame.fontstyle_table_cells[1],
+            "TableCell",
+            add_states=["selected"])
+statesCheck(fdFrame.fontstyle_table_cells[0], "TableCell")
 
 # close font dialog
-fdFrame.click(fdFrame.ok_button)
+fdFrame.fontdialog.ok()
+sleep(config.SHORT_DELAY)
 
 # close application frame window
 fdFrame.quit()
