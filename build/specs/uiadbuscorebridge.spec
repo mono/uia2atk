@@ -5,7 +5,7 @@
 Name:           uiadbuscorebridge
 Version:        1.9.0
 Release:        1
-License:        MIT/X11
+License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
@@ -21,13 +21,21 @@ Summary:        Bridge between UIA providers and Dbus
 %description
 Bridge between UIA providers and Dbus
 
+%package -n uiadbuscorebridge-devel
+License:        MIT
+Summary:        mono-uia devel package
+Group:          System/Libraries
+Requires:       uiadbuscorebridge == %{version}-%{release}
+
+%description
+Bridge between UIA providers and Dbus
 
 %prep
 %setup -q
 
 %build
 %configure --disable-tests
-make
+make %{?_smp_mflags}
 
 %install
 make DESTDIR=%{buildroot} install
@@ -45,7 +53,10 @@ rm -rf %{buildroot}
 %_prefix/lib/mono/accessibility/DbusCore.dll
 %_prefix/lib/mono/gac/DbusCore
 %_prefix/lib/mono/gac/UiaDbusCoreBridge
-%{_libdir}/pkgconfig/*.pc
+
+%files -n uiadbuscorebridge-devel
+%defattr(-,root,root)
+%_libdir/pkgconfig/*.pc
 
 
 %post
@@ -53,5 +64,5 @@ rm -rf %{buildroot}
 %postun
 
 %changelog
-* Thu Apr 09 2009 sshaw@decriptor.com
+* Thu Apr 09 2009 <sshaw@decriptor.com>
 - packaged UiaDbusCoreBridge version 1.9.0 using the buildservice spec file wizard

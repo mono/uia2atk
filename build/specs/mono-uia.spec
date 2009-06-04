@@ -5,23 +5,42 @@
 Name:           mono-uia
 Version:        1.0
 Release:        1
-License:        MIT/X11
+License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-Requires:	mono-core
-BuildRequires:	mono-core mono-devel mono-nunit
+Requires:	mono-core >= 2.4
+BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
+User Interface Automation (UIA) is a new accessibility standard
+
+%package devel
+License:	MIT
+Summary:	mono-uia devel package
+Group:		Development/Languages
+Requires:	mono-uia == %{version}-%{release}
+
+%description devel
 Implementations of the members and interfaces based on MS UIA API
+
+%package -n mono-winfxcore
+License:	MIT
+Summary:	Parts of winfx
+Group:		Development/Languages
+Requires:	mono-core >= 2.4
+
+%description -n mono-winfxcore
+WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %prep
 %setup -q
 
 %build
 %configure
+#Break build with parrallel make
 make
 
 %install
@@ -42,22 +61,10 @@ rm -rf %{buildroot}
 %{_prefix}/lib/mono/accessibility/UIAutomationBridge.dll
 %{_prefix}/lib/mono/gac/UIAutomationClient
 %{_prefix}/lib/mono/accessibility/UIAutomationClient.dll
+
+%files devel
+%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/*.pc
-
-%package -n mono-winfxcore
-License:	MIT/X11
-Summary:	Parts of winfx
-Group:		Development/Languages/Mono
-Requires:	mono-core >= 2.4
-
-%description -n mono-winfxcore
-The Mono Project is an open development initiative that is working to
-develop an open source, Unix version of the .NET development platform.
-Its objective is to enable Unix developers to build and deploy
-cross-platform .NET applications. The project will implement various
-technologies that have been submitted to the ECMA for standardization.
-
-Parts of winfx
 
 %files -n mono-winfxcore
 %defattr(-, root, root)

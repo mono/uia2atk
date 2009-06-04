@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 %_libdir/mono/gac/UiaDbusCoreBridge
 
 %files -n uiadbuscorebridge-devel
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %_libdir/pkgconfig/*.pc
 
 
