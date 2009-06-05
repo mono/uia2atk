@@ -1,3 +1,8 @@
+2009-06-05  Calen Chen <cachen@novell.com>
+
+	* testers/fontdialog/fontdialogframe.py: add bug510048 reference, and 
+	remove focused state test from combobox menuitem
+
 2009-06-04 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/a_blank_file: Just adding a file we can use for some tests

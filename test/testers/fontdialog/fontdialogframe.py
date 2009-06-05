@@ -114,11 +114,11 @@ class FontDialogFrame(accessibles.Frame):
 
         # find single ComboBox that is a direct descendant of the font dialog
         self.script_combobox = self.fontdialog.findComboBox(None)
-        self.script_menuitems = \
+        self.script_combobox_menuitems = \
               self.script_combobox.findAllMenuItems(None, checkShowing = False)
-        assert len(self.script_menuitems) == self.NUMSCRIPTS, \
+        assert len(self.script_combobox_menuitems) == self.NUMSCRIPTS, \
                                   "Found %s script menu items, expected %s" % \
-                                  (len(self.script_menuitems), self.NUMSCRIPTS)
+                                  (len(self.script_combobox_menuitems), self.NUMSCRIPTS)
      
     def checkDefaultFontDialogStates(self):
         # check the default states of the color combo box
@@ -142,10 +142,11 @@ class FontDialogFrame(accessibles.Frame):
         statesCheck(self.size_table_cells[2], "TableCell", 
                                                        add_states=["selected"])
         # BUG506744: combobox menuitems are missing focusable state
+        # BUG510048: selected index of ComboBox erroneously has "focused" state 
         #statesCheck(self.color_combobox_menuitems[0], "MenuItem",
-        #                                    add_states=["focused", "selected"])
-        #statesCheck(self.script_menuitems[0], "MenuItem",
-        #                                    add_states=["focused", "selected"]) 
+        #                                    add_states=["selected"])
+        #statesCheck(self.script_combobox_menuitems[0], "MenuItem",
+        #                                    add_states=["selected"]) 
         # TODO: There are lot more states we could check here
 
     # color ComboBox and sub children test
