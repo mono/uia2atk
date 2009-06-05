@@ -1,3 +1,8 @@
+2009-06-04 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/a_blank_file: Just adding a file we can use for some tests
+	and not have to worry about it being modified.
+
 2009-06-04  Calen Chen <cachen@novell.com>
 
 	* samples/toolbar.py: forgot commit this sample, I add an event for 
