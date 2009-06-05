@@ -33,10 +33,9 @@ namespace Moonlight.AtkBridge
 {
 	public class AutomationBridge
 	{
+#region Public Methods
 		public AutomationBridge ()
 		{
-			GLib.GType.Init ();
-
 			adapterFactory = new DynamicAdapterFactory ();
 		}
 
@@ -55,7 +54,10 @@ namespace Moonlight.AtkBridge
 			return (adapter == null) ? IntPtr.Zero
 			                         : adapter.Handle;
 		}
+#endregion
 		
+#region Private Fields
 		private DynamicAdapterFactory adapterFactory;
+#endregion
 	}
 }

@@ -31,10 +31,29 @@ using System.Windows.Automation.Peers;
 
 namespace Moonlight.AtkBridge
 {
-	public class Adapter
+	public class Adapter : Atk.Object
 	{
-		public Adapter (AutomationPeer peer)
+#region Public Methods
+		public Adapter (UIElement element, AutomationPeer peer)
 		{
+			this.Element = element;
+			this.Peer = peer;
+
+			if (Peer != null)
+				Name = Peer.GetName ();
 		}
+#endregion
+
+#region Protected Properties
+		protected UIElement Element {
+			get;
+			set;
+		}
+
+		protected AutomationPeer Peer {
+			get;
+			set;
+		}
+#endregion
 	}
 }

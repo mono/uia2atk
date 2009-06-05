@@ -1,3 +1,15 @@
+2009-06-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* MoonAtkBridge.sources: Remove Makefile.am in favor of a .sources file
+	that is imported by the toplevel Makefile.
+
+
+	* Moonlight.AtkBridge/Adapter.cs: 
+	* Moonlight.AtkBridge/AutomationBridge.cs: 
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Partially implement
+	generation of dynamic adapters.
+
 2009-06-01  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Remove hardcoded System.Core reference used for

@@ -1,3 +1,14 @@
+2009-06-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* configure.ac: Rewrite the toplevel Makefile to compile glib, atk and
+	MoonAtkBridge in one shot.  This will allow us to sidestep the merger
+	and still build one DLL for consumption.
+
+	* patches/001_gtk-sharp_target-smcs.diff: Update gtk-sharp Makefiles to
+	add a list-sources target (huge hack) so that we can get at the list of
+	files to compile for atk and glib.
+
 2009-06-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* configure.ac: the env var is now needed for moon as well.

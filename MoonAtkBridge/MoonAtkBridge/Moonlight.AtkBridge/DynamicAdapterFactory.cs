@@ -44,11 +44,11 @@ namespace Moonlight.AtkBridge
 			an.Version = new Version (0, 0, 0, 1);
 			an.Name = GENERATED_ASM_NAME;
 
-			AssemblyBuilder ab
+			assemblyBuilder
 				= AppDomain.CurrentDomain.DefineDynamicAssembly (
 						an, AssemblyBuilderAccess.Run);
 
-			moduleBuilder = ab.DefineDynamicModule (GENERATED_ASM_NAME);
+			moduleBuilder = assemblyBuilder.DefineDynamicModule (GENERATED_ASM_NAME);
 
 			RegisterPatternImplementors ();
 		}
@@ -58,9 +58,13 @@ namespace Moonlight.AtkBridge
 			if (elm == null)
 				return null;
 
-			AutomationPeer peer = elm.AutomationPeer;
-			if (peer == null) 
+			AutomationPeer peer
+				= FrameworkElementAutomationPeer.CreatePeerForElement (elm);
+			if (peer == null) {
+				// TODO: Log.Error
+				Console.WriteLine ("Unable to get AutomationPeer for {0}", elm);
 				return null;
+			}
 
 			// Create a list of all potential implementors that
 			// will later be merged to have a list of implementors
@@ -104,7 +108,7 @@ namespace Moonlight.AtkBridge
 			}
 
 			// Add the distinct implementors
-			implementors.AddRange (atkInterfaces.Distinct ().Select (x => x.Value));
+			implementors.AddRange (atkInterfaces.Select (x => x.Value).Distinct ());
 			implementors.Sort ((a, b) => a.Name.CompareTo (b.Name));
 
 			// Concat the type names together
@@ -151,18 +155,33 @@ namespace Moonlight.AtkBridge
 		public Type CreateDynamicType (string typeName,
 		                               Type[] implementors)
 		{
+			// TODO: Extend implementors
 			TypeBuilder tb = moduleBuilder.DefineType (
 				GENERATED_NAMESPACE + "." + typeName,
 				TypeAttributes.Class | TypeAttributes.Public,
 				typeof (Adapter), null
-/*
-				implementors.SelectMany (i => i.GetInterfaces ())
-				            .ToArray ()
-*/
 			);
-			// TODO:
-			tb.ToString ();
-			return typeof (String);
+			
+			ConstructorBuilder cb = tb.DefineConstructor (
+				MethodAttributes.Public, CallingConventions.Standard,
+				new Type[] { typeof (UIElement), typeof (AutomationPeer) });
+
+			ILGenerator ilgen = cb.GetILGenerator ();
+
+			// Chain up our base ctor:
+			// return this.AutomationPeer (peer);
+			ilgen.Emit (OpCodes.Ldarg_0);
+			ilgen.Emit (OpCodes.Ldarg_1);
+			ilgen.Emit (OpCodes.Ldarg_2);
+
+			ilgen.Emit (OpCodes.Call, typeof (Adapter).GetConstructor (
+				new Type[] { typeof (UIElement), typeof (AutomationPeer) }));
+
+			ilgen.Emit (OpCodes.Ret);
+
+			// TODO: actually implement the implementors
+
+			return tb.CreateType ();
 		}
 #endregion
 
@@ -217,6 +236,15 @@ namespace Moonlight.AtkBridge
 			               .Select (f => (T) f.GetValue (enumType))
 			               .ToArray ();
 		}
+
+		// Assumed that type is already in PascalCase as per STYLE
+		// guide.
+		private string CamelCaseType (Type t)
+		{
+			string name = t.Name;
+			return name.Length > 0 ? Char.ToLower (name[0]) + name.Substring (1)
+			                       : String.Empty;
+		}
 #endregion
 
 #region Private Fields
@@ -231,6 +259,7 @@ namespace Moonlight.AtkBridge
 			= new Dictionary<string, Type> ();
 
 		private static ModuleBuilder moduleBuilder;
+		private static AssemblyBuilder assemblyBuilder;
 
 		private const char TYPE_SEPARATOR = '_';
 		private const string GENERATED_ASM_NAME = "DynamicAtkTypes";
