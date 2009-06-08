@@ -123,7 +123,7 @@ class TabControlTabPageSample(Form):
 
         # setup tabcontrol
         self.tabcontrol = TabControl()
-        self.tabcontrol.Width = 260
+        self.tabcontrol.Width = 200
         self.tabcontrol.Height = 240
 
         # setup tabpage
@@ -133,7 +133,6 @@ class TabControlTabPageSample(Form):
             self.tabpage.Enter += self.on_click
             self.tabpage.Controls.Add(self.diclabels[i])
             self.tabpage.Controls.Add(self.dicitems[i])
-
             # add controls
             self.tabcontrol.TabPages.Add(self.tabpage)
 

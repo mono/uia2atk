@@ -43,6 +43,17 @@ if app is None:
 # just an alias to make things shorter
 tpFrame = app.tabPageFrame
 
+####################################################################
+# check TabPages' default states, tab_page_0 with focused and selected
+####################################################################
+statesCheck(tpFrame.tab_page_0, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_1, "TabPage")
+statesCheck(tpFrame.tab_page_2, "TabPage")
+statesCheck(tpFrame.tab_page_3, "TabPage")
+
+# BUG510841: off screen tab page is missing "visible" state 
+#statesCheck(tpFrame.tab_pages[6], "TabPage", invalid_states=["showing"])
+
 ###################
 # Test Tab 0
 ###################
@@ -50,24 +61,24 @@ tpFrame = app.tabPageFrame
 # items in TabPages should with correct states, button is showing
 statesCheck(tpFrame.button, "Button")
 
-# keyTab move focus from tabpage0 to button
+# keyTab move focus from tab_page_0 to button
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-# We should set 'export MONO_WINFORMS_XIM_STYLE=disabled' to ensure keyCombo working fine
+# We should set 'export MONO_WINFORMS_XIM_STYLE=disabled' to ensure keyCombo
+# working fine
 statesCheck(tpFrame.button, "Button", add_states=["focused"])
-statesCheck(tpFrame.tabpage0, "TabPage", add_states=["selected"])
-# keyTab move focus from button to tabpage0
+statesCheck(tpFrame.tab_page_0, "TabPage", add_states=["selected"])
+# keyTab move focus from button to tab_page_0
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-## BUG464071: miss focused states 
-#statesCheck(tpFrame.tabpage0, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_0, "TabPage", add_states=["focused", "selected"])
 statesCheck(tpFrame.button, "Button")
 
-tpFrame.click(tpFrame.button)
+# click the button on Tab 0, and make sure that the label changes
+tpFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-tpFrame.assertLabeChange("You click me 1 times")
+tpFrame.assertLabelText("You click me 1 times")
 
-'''
 ###################
 # Test Tab 1
 ###################
@@ -75,29 +86,30 @@ tpFrame.assertLabeChange("You click me 1 times")
 # keyRight move focus to Tab 1
 tpFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-# all items in tabpage1 are showing
-tpFrame.assertTabChange(tpFrame.tabpage1)
+# tab page 1 is selected, find its accessibles
+tpFrame.findTabPageAccessibles(1)
+tpFrame.assertTabPageChildCount(tpFrame.tab_page_1, 2)
 # the current tab page 1 with focused and selected state
-statesCheck(tpFrame.tabpage1, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_1, "TabPage", add_states=["focused", "selected"])
 # the uper tab page 0 get rid of focused state
-statesCheck(tpFrame.tabpage0, "TabPage")
+statesCheck(tpFrame.tab_page_0, "TabPage")
 # TextBox in current tab page 1 with showing state
 assert tpFrame.textbox.showing
 
-# keyTab move focus from tabpage1 to textbox
+# keyTab move focus from tab_page_1 to textbox
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tpFrame.textbox, "Text", add_states=["focused"])
-statesCheck(tpFrame.tabpage1, "TabPage", add_states=["selected"])
-# keyTab move focus from button to tabpage0
+statesCheck(tpFrame.tab_page_1, "TabPage", add_states=["selected"])
+# keyTab move focus from button to tab_page_0
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(tpFrame.tabpage1, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_1, "TabPage", add_states=["focused", "selected"])
 statesCheck(tpFrame.textbox, "Text")
 
 tpFrame.enterTextValue(tpFrame.textbox, "enter")
 sleep(config.SHORT_DELAY)
-tpFrame.assertLabeChange("You input:enter")
+tpFrame.assertLabelText("You input:enter")
 
 ###################
 # Test Tab 2
@@ -106,33 +118,34 @@ tpFrame.assertLabeChange("You input:enter")
 # keyRight move focus to Tab 2
 tpFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-# all items in tabpage2 are showing
-tpFrame.assertTabChange(tpFrame.tabpage2)
+# tab page 2 is selected, find its accessibles
+tpFrame.findTabPageAccessibles(2)
+tpFrame.assertTabPageChildCount(tpFrame.tab_page_2, 2)
 # the current tab page 2 with focused and selected state
-statesCheck(tpFrame.tabpage2, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_2, "TabPage", add_states=["focused", "selected"])
 # the uper tab page 1 get rid of focused state
-statesCheck(tpFrame.tabpage1, "TabPage")
+statesCheck(tpFrame.tab_page_1, "TabPage")
 # CheckBox in current tab page 2 with showing state
 assert tpFrame.checkbox.showing
 
-# keyTab move focus from tabpage2 to checkbox
+# keyTab move focus from tab_page_2 to checkbox
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tpFrame.checkbox, "CheckBox", add_states=["focused"])
-statesCheck(tpFrame.tabpage2, "TabPage", add_states=["selected"])
-# keyTab move focus from checkbox to tabpage0
+statesCheck(tpFrame.tab_page_2, "TabPage", add_states=["selected"])
+# keyTab move focus from checkbox to tab_page_0
 tpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(tpFrame.tabpage2, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_2, "TabPage", add_states=["focused", "selected"])
 statesCheck(tpFrame.checkbox, "CheckBox")
 
-tpFrame.click(tpFrame.checkbox)
+tpFrame.checkbox.click(log=True)
 sleep(config.SHORT_DELAY)
-tpFrame.assertLabeChange("checked")
+tpFrame.assertLabelText("checked")
 
-tpFrame.click(tpFrame.checkbox)
+tpFrame.checkbox.click(log=True)
 sleep(config.SHORT_DELAY)
-tpFrame.assertLabeChange("unchecked")
+tpFrame.assertLabelText("unchecked")
 
 ###################
 # Test Tab 3
@@ -141,37 +154,28 @@ tpFrame.assertLabeChange("unchecked")
 # keyRight move focus to Tab 3
 tpFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-# all items in tabpage3 are showing
-tpFrame.assertTabChange(tpFrame.tabpage3)
+# tab page 3 is selected, find its accessibles
+tpFrame.findTabPageAccessibles(3)
+tpFrame.assertTabPageChildCount(tpFrame.tab_page_3, 2)
 # the current tab page 3 with focused and selected state
-statesCheck(tpFrame.tabpage3, "TabPage", add_states=["focused", "selected"])
+statesCheck(tpFrame.tab_page_3, "TabPage", add_states=["focused", "selected"])
 # the uper tab page 2 get rid of focused state
-statesCheck(tpFrame.tabpage2, "TabPage")
-# RadioButton in current tab page 3 with showing state, others without showing state
+statesCheck(tpFrame.tab_page_2, "TabPage")
+# RadioButton in current tab page 3 with showing state
 assert tpFrame.radiobutton.showing
 
-tpFrame.click(tpFrame.radiobutton)
+tpFrame.radiobutton.click(log=True)
 sleep(config.SHORT_DELAY)
-tpFrame.assertLabeChange("checked radiobutton")
+tpFrame.assertLabelText("checked radiobutton")
 
-## BUG495043: find* method doesn't work for pagetab due to missing visible and showing.
 ##############################
 # check AtkText implementation
 ##############################
-tpFrame.assertText(tpFrame.tabpage0, "Tab 0")
-tpFrame.assertText(tpFrame.tabpage1, "Tab 1")
-tpFrame.assertText(tpFrame.tabpage2, "Tab 2")
-tpFrame.assertText(tpFrame.tabpage3, "Tab 3")
+tpFrame.assertText(tpFrame.tab_page_0, "Tab 0")
+tpFrame.assertText(tpFrame.tab_page_1, "Tab 1")
+tpFrame.assertText(tpFrame.tab_page_2, "Tab 2")
+tpFrame.assertText(tpFrame.tab_page_3, "Tab 3")
 
-####################################################################
-# check TabPages' default states, tabpage0 with focused and selected
-####################################################################
-## BUG464071: miss focused states
-statesCheck(tpFrame.tabpage0, "TabPage", add_states=["focused", "selected"])
-statesCheck(tpFrame.tabpage1, "TabPage")
-statesCheck(tpFrame.tabpage2, "TabPage")
-statesCheck(tpFrame.tabpage3, "TabPage")
-'''
 # close application frame window
 tpFrame.quit()
 

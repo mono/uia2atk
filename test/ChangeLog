@@ -1,3 +1,15 @@
+2009-06-08  Calen Chen <cachen@novell.com>
+
+	* samples/tabpage.py: minimize tabcontrol's widght to let last tab page
+	off screen as far as possible
+	* testers/tabcontrol_basic_ops.py: change mouseClick accessible from 
+	Tab0 to Tab1 because tabpage.py's update
+	* testers/tabpage/tabpageframe.py,
+	* testers/tabpage_basic_ops.py: commit Brian's reviews from 
+	(http://reviews.mono-a11y.org/r/261/); add states check for Tab6 to 
+	against bug510841; correct typo; add checkShowing=False for finding all 
+	TabPages
+
 2009-06-08  Felicia Mu <fxmu@novell.com>
 
 	* testers/contextmenustrip_basic_ops.py: add bug510829 reference

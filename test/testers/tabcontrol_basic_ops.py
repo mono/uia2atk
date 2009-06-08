@@ -78,10 +78,10 @@ statesCheck(tcFrame.tabpage3, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage2, "TabPage")
 
 # use a mouseClick to navigate to Tab 3 and check the label and states
-tcFrame.tabpage0.mouseClick()
+tcFrame.tabpage1.mouseClick()
 sleep(config.SHORT_DELAY)
-tcFrame.assertLabelText("Tab 0")
-statesCheck(tcFrame.tabpage0, "TabPage", add_states=["focused", "selected"])
+tcFrame.assertLabelText("Tab 1")
+statesCheck(tcFrame.tabpage1, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage3, "TabPage")
 
 #close application frame window
