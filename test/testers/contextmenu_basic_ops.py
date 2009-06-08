@@ -78,23 +78,21 @@ sleep(config.SHORT_DELAY)
 ##############################################################################
 # STATES: WHEN CONTEXTMENU SHOW UP
 ##############################################################################
-# BUG 471405
-# TODO: in mono 2.4, you can not use "Down" to navigate to items, but it was
-# fixed in mono trunk, in other words, you have to install mono trunk, and 
+# 510829 - ContextMenu: keyUp/Down doesn't rise focused and selected states for menu items 
 # run the test.
-#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cmFrame.normal_item, 'MenuItem', add_states=['focused', 'focusable'])
-
-#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#
+cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cmFrame.radio_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
-
-#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#
+cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cmFrame.check_item, 'MenuItem', add_states=['focused', 'focusable', 'checked'])
-
-#cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
+#
+cmFrame.context_menu.keyCombo('<Down>', grabFocus=False)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cmFrame.exit_item, 'MenuItem', add_states=['focused', 'focusable'])
 
