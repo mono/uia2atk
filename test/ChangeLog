@@ -1,3 +1,7 @@
+2009-06-08  Felicia Mu <fxmu@novell.com>
+
+	* testers/contextmenustrip_basic_ops.py: add bug510829 reference
+ 
 2009-06-08  Calen Chen <cachen@novell.com>
 
 	* testers/tabcontrol/tabcontrolframe.py,
