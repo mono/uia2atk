@@ -44,49 +44,46 @@ if app is None:
 tcFrame = app.tabControlFrame
 
 # check TabControl's default states
-## BUG464071, BUG481279: PageTabList has extraneous focused states
-#statesCheck(tcFrame.tabcontrol, "TabControl")
+statesCheck(tcFrame.tabcontrol, "TabControl")
 
 ##############################################################################
 # Test AtkSelection for PageTabList, label in statusbar shows the current tab, 
 # selected Tab comes focused and selected states
 ##############################################################################
 
-# select Tab 1, label in statusbar shows "The current tab is: Tab 1"
-## BUG495043: find* method doesn't work for pagetab due to missing visible and showing.
-'''
-tcFrame.assertSelectionChild(tcFrame.tabcontrol, 1)
-sleep(config.SHORT_DELAY)
-tcFrame.assertTabChange("Tab 1")
+# check the state of the default tab page
+statesCheck(tcFrame.tabpage0, "TabPage", add_states=["focused", "selected"])
 
-## BUG464071: miss focused states
+# select Tab 1, label in statusbar shows "The current tab is: Tab 1"
+tcFrame.selectChild(tcFrame.tabcontrol, 1)
+sleep(config.SHORT_DELAY)
+tcFrame.assertLabelText("Tab 1")
+
+# check the expected states of the tab pages
 statesCheck(tcFrame.tabpage1, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage0, "TabPage")
 
 # select Tab 2, label in statusbar shows "The current tab is: Tab 2"
-tcFrame.assertSelectionChild(tcFrame.tabcontrol, 2)
+tcFrame.selectChild(tcFrame.tabcontrol, 2)
 sleep(config.SHORT_DELAY)
-tcFrame.assertTabChange("Tab 2")
-
+tcFrame.assertLabelText("Tab 2")
 statesCheck(tcFrame.tabpage2, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage1, "TabPage")
 
-# select Tab 3, label in statusbar shows "The current tab is: Tab 3"
-tcFrame.assertSelectionChild(tcFrame.tabcontrol, 3)
+# use the keyboard to navigate to Tab 3 and check the label and states
+tcFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-tcFrame.assertTabChange("Tab 3")
-
+tcFrame.assertLabelText("Tab 3")
 statesCheck(tcFrame.tabpage3, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage2, "TabPage")
 
-# select Tab 0, label in statusbar shows "The current tab is: Tab 0"
-tcFrame.assertSelectionChild(tcFrame.tabcontrol, 0)
+# use a mouseClick to navigate to Tab 3 and check the label and states
+tcFrame.tabpage0.mouseClick()
 sleep(config.SHORT_DELAY)
-tcFrame.assertTabChange("Tab 0")
-
+tcFrame.assertLabelText("Tab 0")
 statesCheck(tcFrame.tabpage0, "TabPage", add_states=["focused", "selected"])
 statesCheck(tcFrame.tabpage3, "TabPage")
-'''
+
 #close application frame window
 tcFrame.quit()
 

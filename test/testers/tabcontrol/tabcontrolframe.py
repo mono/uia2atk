@@ -1,4 +1,3 @@
-
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        01/09/2009
@@ -14,7 +13,6 @@ import states
 from strongwind import *
 from tabcontrol import *
 
-
 # class to represent the main window.
 class TabControlFrame(accessibles.Frame):
 
@@ -29,27 +27,26 @@ class TabControlFrame(accessibles.Frame):
         super(TabControlFrame, self).__init__(accessible)
         self.tabcontrol = self.findPageTabList(None)
         self.tabpage0 = self.tabcontrol.findPageTab(self.TAB0)
-        #self.tabpage1 = self.tabcontrol.findPageTab(self.TAB1)
-        #self.tabpage2 = self.tabcontrol.findPageTab(self.TAB2)
-        #self.tabpage3 = self.tabcontrol.findPageTab(self.TAB3)
+        self.tabpage1 = self.tabcontrol.findPageTab(self.TAB1)
+        self.tabpage2 = self.tabcontrol.findPageTab(self.TAB2)
+        self.tabpage3 = self.tabcontrol.findPageTab(self.TAB3)
    
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, child_index):
         """
-        Assert AtkSelection is implemented for PageTabList to select PageTab 
-
+        Use the AtkSelection interface to select the child of the accessible at
+        child_index
         """
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
+        procedurelogger.action('selected child_index %s in "%s"' % \
+                                                     (child_index, accessible))
+        accessible.selectChild(child_index)
 
-        accessible.selectChild(childIndex)
-
-    def assertTabChange(self, tabname):
+    def assertLabelText(self, tabname):
         """
         Make sure label shows the current tab is expected tabname
-
         """
         procedurelogger.expectedResult("you enter to %s" % tabname)
 
-        assert self.findLabel("The current tab is: %s" % tabname)
+        self.findLabel("The current tab is: %s" % tabname)
 
     # close application main window after running test
     def quit(self):

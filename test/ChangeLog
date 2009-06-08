@@ -1,3 +1,9 @@
+2009-06-08  Calen Chen <cachen@novell.com>
+
+	* testers/tabcontrol/tabcontrolframe.py,
+	* testers/tabcontrol_basic_ops.py: commit Brian's review from 
+	(http://reviews.mono-a11y.org/r/260/)
+
 2009-06-05  Calen Chen <cachen@novell.com>
 
 	* testers/fontdialog/fontdialogframe.py: add bug510048 reference, and 
