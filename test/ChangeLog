@@ -1,5 +1,11 @@
 2009-06-08  Calen Chen <cachen@novell.com>
 
+	* testers/printpreviewdialog/printpreviewdialogframe.py,
+	* testers/printpreviewdialog_basic_ops.py: commit from Brian's reviews 
+	from (http://reviews.mono-a11y.org/r/252/)
+
+2009-06-08  Calen Chen <cachen@novell.com>
+
 	* samples/tabpage.py: minimize tabcontrol's widght to let last tab page
 	off screen as far as possible
 	* testers/tabcontrol_basic_ops.py: change mouseClick accessible from 
