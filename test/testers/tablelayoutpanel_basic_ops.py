@@ -56,17 +56,22 @@ statesCheck(tlpFrame.buttons[0], "Button", add_states=["focused"])
 tlpFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tlpFrame.keyCombo("Tab", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tlpFrame.buttons[1], "Button")
 statesCheck(tlpFrame.labels[2], "Label")
 statesCheck(tlpFrame.buttons[2], "Button", add_states=["focused"])
-statesCheck(tlpFrame.buttons[1], "Button")
-
 statesCheck(tlpFrame.labels[3], "Label")
 statesCheck(tlpFrame.buttons[3], "Button")
 
-# press Tab key again to move focused state from button
+# click buttons and ensure that the appropriate labels change
 tlpFrame.click(tlpFrame.buttons[0])
 sleep(config.SHORT_DELAY)
 tlpFrame.assertText(tlpFrame.labels[0], "I am in cell1")
+#BUG504593 Button does not receive focus when click action is performed on it
+# the clicked button should receive focus
+#statesCheck(tlpFrame.buttons[0], "Button", add_states=["focused"])
+# button that previously had focus should lose it
+#statesCheck(tlpFrame.buttons[2])
 
 tlpFrame.click(tlpFrame.buttons[1])
 sleep(config.SHORT_DELAY)
@@ -79,6 +84,11 @@ tlpFrame.assertText(tlpFrame.labels[2], "I am in cell3")
 tlpFrame.click(tlpFrame.buttons[3])
 sleep(config.SHORT_DELAY)
 tlpFrame.assertText(tlpFrame.labels[3], "I am in cell4")
+
+# all the other labels should remain unaffected
+tlpFrame.assertText(tlpFrame.labels[0], "I am in cell1")
+tlpFrame.assertText(tlpFrame.labels[1], "I am in cell2")
+tlpFrame.assertText(tlpFrame.labels[2], "I am in cell3")
 
 ##############################
 # End

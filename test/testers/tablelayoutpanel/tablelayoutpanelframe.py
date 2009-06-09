@@ -26,14 +26,14 @@ class TableLayoutPanelFrame(accessibles.Frame):
         procedurelogger.action("click %s" % accessible)
         accessible.click()
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.action('Assert the text of %s' % accessible)
+    def assertText(self, accessible, expected_text):
+        """assert text is equal to the expected text"""
+        procedurelogger.action('Assert the text of %s is what we expect' % accessible)
         procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+                                                (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                                             'text was "%s", expected "%s"' % \
+                                             (accessible.text, expected_text)
 
     def quit(self):
         self.altF4()
