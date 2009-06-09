@@ -1,3 +1,7 @@
+2009-06-09  Calen Chen <cachen@novell.com>
+
+	* testers/tabpage/tabpageframe.py: revert children to child(ren)
+
 2009-06-08  Calen Chen <cachen@novell.com>
 
 	* testers/printpreviewdialog/printpreviewdialogframe.py,

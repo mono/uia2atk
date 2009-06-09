@@ -111,7 +111,7 @@ class TabPageFrame(accessibles.Frame):
         for tab_page in self.tab_pages:
             num_actual_children = tab_page.childCount
             if tab_page._accessible is selected_tab_page._accessible:
-                procedurelogger.expectedResult('"%s" has %s children' % \
+                procedurelogger.expectedResult('"%s" has %s child(ren)' % \
                                              (tab_page, num_expected_children))
                 assert num_actual_children == num_expected_children, \
                                    '%s child(ren) found, expected %s' % \
