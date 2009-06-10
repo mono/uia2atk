@@ -77,6 +77,9 @@ class TabControlTabPageSample(Form):
                          4: self.label5,
                          5: self.label6,
                          6: self.label7,
+                         7: self.label7,
+                         8: self.label7,
+                         9: self.label7,
                          }
 
         self.button = Button()
@@ -118,7 +121,10 @@ class TabControlTabPageSample(Form):
                          3: self.radiobutton,
                          4: self.radiobutton1,
                          5: self.radiobutton2,
-                         6: self.radiobutton3
+                         6: self.radiobutton3,
+                         7: self.radiobutton3,
+                         8: self.radiobutton3,
+                         9: self.radiobutton3,
                             }
 
         # setup tabcontrol
@@ -127,7 +133,7 @@ class TabControlTabPageSample(Form):
         self.tabcontrol.Height = 240
 
         # setup tabpage
-        for i in range(7):
+        for i in range(10):
             self.tabpage = TabPage()
             self.tabpage.Text = "Tab %s" % i
             self.tabpage.Enter += self.on_click

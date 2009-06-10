@@ -1,3 +1,7 @@
+2009-06-10  Calen Chen <cachen@novell.com>
+
+	* samples/tabpage.py: expand tabpage to 9 pages due to bug510841
+
 2009-06-09 Ray Wang <rawang@novell.com>
 
 	* testers/tablelayoutpanel/tablelayoutpanelframe.py
