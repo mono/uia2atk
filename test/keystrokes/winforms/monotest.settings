@@ -23,7 +23,7 @@ orca.settings.enableActionKeys = False
 
 orca.settings.enableBraille = False
 orca.settings.enableBrailleMonitor = False
-# this feature is implemented since 2008-10-05
+# this feature is implemented since rev 4277 2008-10-05
 orca.settings.enableBrailleContext = False
 orca.settings.disableBrailleEOL = True
 
