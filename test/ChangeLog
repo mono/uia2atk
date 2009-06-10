@@ -1,5 +1,10 @@
 2009-06-10  Calen Chen <cachen@novell.com>
 
+	* testers/toolbar/toolbarframe.py: commit Brian's reviews from 
+	(http://reviews.mono-a11y.org/r/265/)
+
+2009-06-10  Calen Chen <cachen@novell.com>
+
 	* samples/tabpage.py: expand tabpage to 9 pages due to bug510841
 
 2009-06-09 Ray Wang <rawang@novell.com>
