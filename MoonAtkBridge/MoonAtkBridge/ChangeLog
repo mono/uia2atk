@@ -1,3 +1,22 @@
+2009-06-10  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge.sources: 
+	* Moonlight.AtkBridge/RootVisualAdapter.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs: 
+	Add new RootVisualAdapter and ExpandCollapseInvokeToggle implementor.
+
+	* Moonlight.AtkBridge/Adapter.cs: 
+	Flesh out basic properties.
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: 
+	Restructure to reflect DynamicAdapterFactory's new singleton pattern
+	and the new RootVisualAdapter.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Make a singleton and
+	flesh out the dynamic adapter generation so that it generates
+	implementations of Atk interfaces that call into our
+	PatternImplementor classes.
+
 2009-06-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

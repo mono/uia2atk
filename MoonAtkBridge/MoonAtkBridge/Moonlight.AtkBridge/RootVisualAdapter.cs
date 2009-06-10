@@ -20,7 +20,6 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//      Andres Aragoneses <aaragoneses@novell.com>
 //      Brad Taylor <brad@getcoded.net>
 //
 
@@ -28,34 +27,26 @@ using Atk;
 
 using System;
 using System.Windows;
+using System.Windows.Automation.Peers;
 
 namespace Moonlight.AtkBridge
 {
-	public class AutomationBridge
+	public class RootVisualAdapter : Adapter
 	{
 #region Public Methods
-		public AutomationBridge ()
+		public RootVisualAdapter ()
+			: base (new WindowAutomationPeer (
+				(FrameworkElement) Application.Current.RootVisual))
 		{
-		}
-
-		public static bool IsAccessibilityEnabled ()
-		{
-			// Detect whether it is turned on at a platform level
-			// TODO: Copy this code from UiaAtkBridge
-			return true;
-		}
-
-		public IntPtr GetAccessibleHandle ()
-		{
-			if (rootVisualAdapter == null)
-				rootVisualAdapter = new RootVisualAdapter ();
-
-			return rootVisualAdapter.Handle;
 		}
 #endregion
 
-#region Private Fields
-		private static RootVisualAdapter rootVisualAdapter = null;
+#region Protected Methods
+		protected override string OnGetName ()
+		{
+			// TODO: I18N
+			return "Silverlight Control";
+		}
 #endregion
 	}
 }
