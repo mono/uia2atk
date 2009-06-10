@@ -28,7 +28,7 @@ using System;
 
 namespace System.Windows.Automation
 {
-	
+	[Flags]
 	public enum TreeScope
 	{
 		Element = 1,

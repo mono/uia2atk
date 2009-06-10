@@ -21,55 +21,61 @@
 // 
 // Authors: 
 //      Brad Taylor <brad@getcoded.net>
+//      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace System.Windows.Automation
 {
 	public class AutomationElementCollection : ICollection, IEnumerable
 	{
+#region Private Fields
+		private List<AutomationElement> elements;
+#endregion
+
 #region Public Properties
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return elements.Count; }
 		}
 
-		public bool IsSynchronized {
-			get { throw new NotImplementedException (); }
+		public virtual bool IsSynchronized {
+			get { return ((ICollection) elements).IsSynchronized; }
 		}
 
 		public AutomationElement this [int index] {
-			get { throw new NotImplementedException (); }
+			get { return elements [index]; }
 		}
 
 		public virtual object SyncRoot {
-			get { throw new NotImplementedException (); }
+			get { return ((ICollection) elements).SyncRoot; }
 		}
 #endregion
 
 #region Constructor
-		private AutomationElementCollection ()
+		internal AutomationElementCollection (IEnumerable<AutomationElement> elements)
 		{
+			this.elements = new List<AutomationElement> (elements);
 		}
 #endregion
-		
+
 #region Public Methods
 		public virtual void CopyTo (Array array, int index)
 		{
-			throw new NotImplementedException ();
+			((ICollection) elements).CopyTo (array, index);
 		}
 
 		public void CopyTo (AutomationElement[] array, int index)
 		{
-			throw new NotImplementedException ();
+			elements.CopyTo (array, index);
 		}
 
 		public IEnumerator GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return elements.GetEnumerator ();
 		}
-
 #endregion
 	}
 }

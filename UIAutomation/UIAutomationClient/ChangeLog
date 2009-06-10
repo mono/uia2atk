@@ -1,3 +1,37 @@
+2009-06-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: 
+	* AssemblyInfo.cs.in: 
+	* UIAutomationClient.mdp: 
+	* UIAutomationClient.mds: Add new files and a MonoDevelop solution.
+
+	* System.Windows.Automation/*Condition.cs: Implement Condition
+	classes, including one for internal uses.
+
+	* System.Windows.Automation/Automation.cs: Implement (bug #489325).
+
+	* System.Windows.Automation/TreeWalker.cs: 
+	* System.Windows.Automation/SourceManager.cs: Implement TreeWalker class,
+	and SourceManager which aids in loading AutomationSources and their
+	AutomationElements into the automation tree (bug #489321 and bug #489323).
+	
+	* System.Windows.Automation/DesktopElement.cs: 
+	* System.Windows.Automation/AutomationElement.cs: Implment AutomationElement
+	class as a wrapper around the UIAutomationSource.IElement interface, and a
+	special DesktopElement for the root of the automation tree.  This fixes
+	bug #489322, but some pieces of this class are the work of future bugs.
+
+	* System.Windows.Automation/AutomationElementCollection.cs: Implement
+	(bug #489330).
+	
+	* System.Windows.Automation/*Pattern*.cs: 
+	* System.Windows.Automation/CacheRequest.cs: 
+	* System.Windows.Automation/AutomationFocusChangedEventArgs.cs: Stub-out.
+
+	* Test/UIAutomationClientTests/*: Tests of UIAutomationClient classes.
+	Created in Visual Studio to test Microsoft's implementation, first.  Only
+	Automation and AutomationElement classes are thoroughly tested so far.
+
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Remove cruft, use bin instead of lib/Debug.

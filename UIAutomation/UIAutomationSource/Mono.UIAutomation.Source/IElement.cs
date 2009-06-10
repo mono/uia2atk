@@ -31,6 +31,8 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IElement
 	{
+		bool SupportsProperty (AutomationProperty property);
+
 		string AcceleratorKey { get; }
 
 		string AccessKey { get; }

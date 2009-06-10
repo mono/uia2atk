@@ -31,17 +31,15 @@ namespace System.Windows.Automation
 	{
 #region Public Properties
 		public AutomationElementMode AutomationElementMode {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get; set;
 		}
 
 		public Condition TreeFilter {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get; set;
 		}
 
 		public TreeScope TreeScope {
-			get { throw new NotImplementedException (); }
+			get; set;
 		}
 #endregion
 

@@ -70,7 +70,13 @@ namespace Mono.UIAutomation.UiaDbusCoreBridge.Wrappers
 #endregion
 
 #region IAutomationElement Members
-		
+
+		public bool SupportsProperty (int propertyId)
+		{
+			object val = provider.GetPropertyValue (propertyId);
+			return val != null && val != AEIds.NotSupported;
+		}
+
 		public string AcceleratorKey {
 			get {
 				string val = (string)
@@ -93,11 +99,11 @@ namespace Mono.UIAutomation.UiaDbusCoreBridge.Wrappers
 
 		public string AutomationId {
 			get {
-				string val = (string)
+				int? val = (int?)
 					provider.GetPropertyValue (AEIds.AutomationIdProperty.Id);
-				if (val == null)
+				if (!val.HasValue)
 					return string.Empty;
-				return val;
+				return val.Value.ToString ();
 			}
 		}
 

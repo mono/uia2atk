@@ -1,5 +1,6 @@
 # Global ignores
 *~
+*.pyc
 
 # /
 /*.userprefs
@@ -39,6 +40,13 @@
 /UIAutomation/UIAutomationClient/*.pidb
 /UIAutomation/UIAutomationClient/*.usertasks
 /UIAutomation/UIAutomationClient/*.userprefs
+
+# /UIAutomation/UIAutomationClient/Test
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/*.userprefs
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/bin
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/*.pidb
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/bin
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/*.pidb
 
 # /UIAutomation/UIAutomationSource/
 /UIAutomation/UIAutomationSource/Makefile

@@ -25,17 +25,47 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
-FILES =  \
-        AssemblyInfo.cs \
-        ../build/common/*.cs \
-	System.Windows.Automation/AutomationElementCollection.cs \
+PROJECT_SOURCE_FILES =  \
+	System.Windows.Automation.Text/TextPatternRange.cs \
+	System.Windows.Automation/AndCondition.cs \
+	System.Windows.Automation/Automation.cs \
 	System.Windows.Automation/AutomationElement.cs \
+	System.Windows.Automation/AutomationElementCollection.cs \
 	System.Windows.Automation/AutomationElementMode.cs \
+	System.Windows.Automation/AutomationFocusChangedEventArgs.cs \
 	System.Windows.Automation/BasePattern.cs \
 	System.Windows.Automation/CacheRequest.cs \
 	System.Windows.Automation/Condition.cs \
+	System.Windows.Automation/DesktopElement.cs \
+	System.Windows.Automation/DockPattern.cs \
+	System.Windows.Automation/ExpandCollapsePattern.cs \
+	System.Windows.Automation/GridItemPattern.cs \
+	System.Windows.Automation/GridPattern.cs \
+	System.Windows.Automation/InternalCondition.cs \
+	System.Windows.Automation/InvokePattern.cs \
+	System.Windows.Automation/MultipleViewPattern.cs \
+	System.Windows.Automation/NotCondition.cs \
+	System.Windows.Automation/OrCondition.cs \
+	System.Windows.Automation/PropertyConditon.cs \
+	System.Windows.Automation/RangeValuePattern.cs \
+	System.Windows.Automation/ScrollItemPattern.cs \
+	System.Windows.Automation/ScrollPattern.cs \
+	System.Windows.Automation/SelectionItemPattern.cs \
+	System.Windows.Automation/SelectionPattern.cs \
+	System.Windows.Automation/SourceManager.cs \
+	System.Windows.Automation/TableItemPattern.cs \
+	System.Windows.Automation/TablePattern.cs \
 	System.Windows.Automation/TextPattern.cs \
-	System.Windows.Automation.Text/TextPatternRange.cs
+	System.Windows.Automation/TogglePattern.cs \
+	System.Windows.Automation/TransformPattern.cs \
+	System.Windows.Automation/TreeWalker.cs \
+	System.Windows.Automation/ValuePattern.cs \
+	System.Windows.Automation/WindowPattern.cs
+
+FILES =  \
+        AssemblyInfo.cs \
+        ../build/common/*.cs \
+	$(PROJECT_SOURCE_FILES)
 
 DATA_FILES = 
 
@@ -44,7 +74,9 @@ RESOURCES =
 REFERENCES =  \
 	WindowsBase \
 	System \
+	UIAutomationBridge \
 	UIAutomationTypes \
+	UIAutomationSource \
 	UIAutomationProvider
 
 DLL_REFERENCES = 

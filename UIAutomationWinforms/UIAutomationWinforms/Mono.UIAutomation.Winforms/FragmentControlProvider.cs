@@ -487,8 +487,19 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
-		#region IRawElementProviderFragment Interface 
+
+		#region SimpleControlProvider Overrides
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.RuntimeIdProperty.Id)
+				return GetRuntimeId ();
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		#endregion
+
+		#region IRawElementProviderFragment Interface
 
 		public virtual System.Windows.Rect BoundingRectangle {
 			get {

@@ -1,0 +1,68 @@
+<Project name="UIAutomationClient" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assemblyKeyFile="." assembly="UIAutomationClient" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" assembly="UIAutomationClient" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="System.Windows.Automation/AndCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/Automation.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationElementCollection.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationElementMode.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/BasePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/CacheRequest.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/Condition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TextPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextPatternRange.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationFocusChangedEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TreeWalker.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/DockPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SelectionPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ExpandCollapsePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/GridItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/GridPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/InvokePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/MultipleViewPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/RangeValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SelectionItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TableItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TablePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TogglePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TransformPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/PropertyConditon.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/NotCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/OrCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/DesktopElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/InternalCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SourceManager.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationSource" />
+    <ProjectReference type="Assembly" localcopy="True" specificVersion="False" refto="../bin/WindowsBase.dll" />
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationBridge" />
+  </References>
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+    <BuildFilesVar Sync="True" Name="PROJECT_SOURCE_FILES" />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar />
+    <AsmRefVar />
+    <ProjectRefVar />
+  </MonoDevelop.Autotools.MakefileInfo>
+</Project>

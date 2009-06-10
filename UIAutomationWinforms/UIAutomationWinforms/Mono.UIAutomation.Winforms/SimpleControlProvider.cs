@@ -39,7 +39,12 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal abstract class SimpleControlProvider : IRawElementProviderSimple
 	{
-		
+		#region Private Static Fields
+
+		private static int? pid = null;
+
+		#endregion
+
 		#region Private Fields
 
 		private SWF.Control control;
@@ -331,6 +336,8 @@ namespace Mono.UIAutomation.Winforms
 				return Control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Helper.GetClickablePoint (this);
+			else if (propertyId == AEIds.FrameworkIdProperty.Id)
+				return "WinForm"; // TODO: Localizable?
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
 				if (ToolTip == null)
 					return Control.AccessibleDescription ?? string.Empty;
@@ -343,6 +350,11 @@ namespace Mono.UIAutomation.Winforms
 					int index = Control.Text.LastIndexOf ('&') + 1;
 					return "Alt+" + Control.Text.Substring (index, 1);
 				}
+			} else if (propertyId == AEIds.ProcessIdProperty.Id) {
+				// TODO: Write test for this property
+				if (!pid.HasValue)
+					pid = System.Diagnostics.Process.GetCurrentProcess ().Id;
+				return pid.Value;
 			} else
 				return null;
 		}

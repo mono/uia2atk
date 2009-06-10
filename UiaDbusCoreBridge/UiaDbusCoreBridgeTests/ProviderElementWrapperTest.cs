@@ -229,10 +229,10 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusCoreBridge
 			                 "Initial value");
 
 			// Test set value
-			object testVal = "3254";
+			int testVal = 3254;
 			mockWindow.SetPropertyValue (AEIds.AutomationIdProperty.Id,
 			                             testVal);
-			Assert.AreEqual (testVal,
+			Assert.AreEqual (testVal.ToString (),
 			                 windowElement.AutomationId,
 			                 "Set value");
 		}

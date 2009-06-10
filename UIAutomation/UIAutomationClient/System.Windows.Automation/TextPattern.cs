@@ -36,6 +36,22 @@ namespace System.Windows.Automation
 		}
 #endregion
 
+#region Public Properties
+
+		public SupportedTextSelection SupportedTextSelection {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public TextPatternRange DocumentRange {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+#endregion
+
 #region Public Methods
 		public TextPatternRange[] GetSelection ()
 		{
@@ -124,6 +140,10 @@ namespace System.Windows.Automation
 		public static readonly AutomationTextAttribute UnderlineColorAttribute = TextPatternIdentifiers.UnderlineColorAttribute;
 
 		public static readonly AutomationTextAttribute UnderlineStyleAttribute = TextPatternIdentifiers.UnderlineStyleAttribute;
+
+		public static readonly AutomationEvent TextChangedEvent;
+
+		public static readonly AutomationEvent TextSelectionChangedEvent;
 #endregion
 	}
 }

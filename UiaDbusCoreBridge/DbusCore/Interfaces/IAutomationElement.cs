@@ -32,6 +32,8 @@ namespace Mono.UIAutomation.DbusCore.Interfaces
 	[Interface (Constants.AutomationElementInterfaceName)]
 	public interface IAutomationElement
 	{
+		bool SupportsProperty (int propertyId);
+
 		string AcceleratorKey { get; }
 
 		string AccessKey { get; }

@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Brad Taylor <brad@getcoded.net>
+//      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
@@ -29,10 +30,16 @@ namespace System.Windows.Automation
 {
 	public abstract class Condition
 	{
-#region Public Static Fields
-		public static Condition FalseCondition;
+#region Constructor
+		internal Condition ()
+		{
+		}
+#endregion
 
-		public static Condition TrueCondition;
+#region Public Static Fields
+		public static readonly Condition FalseCondition;
+
+		public static readonly Condition TrueCondition;
 #endregion
 	}
 }
