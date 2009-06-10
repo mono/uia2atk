@@ -1,0 +1,6 @@
+mono-uia (1.0-1) unstable; urgency=high
+
+  * initial release. (Close: #531827)
+
+ -- Ray Wang <rawang@novell.com>  Wed, 03 Jun 2009 15:46:46 +0800
+

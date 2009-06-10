@@ -1,0 +1,6 @@
+mono-uiaatkbridge (1.0-1) unstable; urgency=high
+
+  * initial release. (Close: #532270)
+
+ -- Ray Wang <rawang@novell.com>  Wed, 03 Jun 2009 18:06:32 +0800
+

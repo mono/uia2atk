@@ -1,3 +1,8 @@
+2009-06-10  Ray Wang <rawang@novell.com>
+
+	* debian/: add debian build scripts for mono-uia,
+	uiautomationwinforms, uiaatkbridge.
+
 2009-04-30  Stephen G. Shaw  <stshaw@novell.com>
 
 	* specs/fedora/*.spec: Added specs specific to fedora
