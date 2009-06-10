@@ -1,11 +1,20 @@
 #
 # spec file for package UIAutomation
 #
+# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+# 
+# Please submit bugfixes or comments via http://bugs.opensuse.org/ 
+# 
+# norootforbuild 
+# 
+
 
 Name:           mono-uia
 Version:        1.0
 Release:        1
-License:        MIT
+License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
@@ -61,6 +70,8 @@ rm -rf %{buildroot}
 %{_prefix}/lib/mono/accessibility/UIAutomationBridge.dll
 %{_prefix}/lib/mono/gac/UIAutomationClient
 %{_prefix}/lib/mono/accessibility/UIAutomationClient.dll
+%{_prefix}/lib/mono/gac/UIAutomationSource
+%{_prefix}/lib/mono/accessibility/UIAutomationSource.dll
 
 %files devel
 %defattr(-,root,root,-)
