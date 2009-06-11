@@ -46,21 +46,34 @@ tbFrame = app.textBoxFrame
 ##############################
 # check TextBox's AtkAccessible
 ##############################
-# check mormal textbox
-statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
-statesCheck(tbFrame.textbox_passwd, "TextBox")
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
-# switch focus to next multi line  textbox
+# check the states of the text boxes
+statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
+statesCheck(tbFrame.textbox_mline,
+            "TextBox",
+            add_states=["multi line"],
+            invalid_states=["single line"])
+statesCheck(tbFrame.textbox_passwd, "TextBox")
+statesCheck(tbFrame.textbox_nonedit,
+            "TextBox",
+            invalid_states=["editable", "enabled", "focusable", "sensitive"])
+
+# switch focus to next multi line textbox and check the states of all the
+# text boxes again
 tbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox")
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line", "focused"], invalid_states=["single line"])
+statesCheck(tbFrame.textbox_mline,
+            "TextBox",
+            add_states=["multi line", "focused"],
+            invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox")
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit,
+            "TextBox",
+            invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
-# switch focus to next password textbox
+# switch focus to next password textbox (using a mouse click) and check the
+# states
 tbFrame.textbox_passwd.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox")
@@ -68,13 +81,18 @@ statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid
 statesCheck(tbFrame.textbox_passwd, "TextBox", add_states=["focused"])
 statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
-# switch focus to single line textbox
+# switch focus to single line textbox and check the states
 tbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox_normal, "TextBox", add_states=["focused"])
-statesCheck(tbFrame.textbox_mline, "TextBox", add_states=["multi line"], invalid_states=["single line"])
+statesCheck(tbFrame.textbox_mline,
+            "TextBox",
+            add_states=["multi line"],
+            invalid_states=["single line"])
 statesCheck(tbFrame.textbox_passwd, "TextBox")
-statesCheck(tbFrame.textbox_nonedit, "TextBox", invalid_states=["editable", "enabled", "focusable", "sensitive"])
+statesCheck(tbFrame.textbox_nonedit,
+            "TextBox",
+            invalid_states=["editable", "enabled", "focusable", "sensitive"])
 
 ##############################
 # check TextBox's AtkAction, AtkComponent, AtkEditableText and AtkText
@@ -128,8 +146,7 @@ tbFrame.textbox_mline.mouseClick()
 mline_content1 = """
 Strongwind is a GUI test automation framework Strongwind is object-oriented and extensible. You can use Strongwind to build object-oriented representations of your applications ("application wrappers"), then reuse the application wrappers to quickly develop many test scripts. Strongwind scripts generate a human-readable log that contains the action, expected result and a screen shot of each step. Most simple actions are logged automatically.
 """
-# TODO: BUG491282 when you use typeText method to input strings to textbox, all upper chars converted to lower chars, 
-# so it leads to the actual text does not match the expected text.
+
 tbFrame.textbox_mline.enterText(mline_content1)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1)
@@ -151,9 +168,14 @@ mline_content3 = "\nmulti-line textbox\n\n"
 text_len = len(tbFrame.textbox_mline.text)
 tbFrame.textbox_mline.insertText(mline_content3, text_len) 
 sleep(config.SHORT_DELAY)
-tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1 + mline_content2 + mline_content3)
+tbFrame.assertEditableText(tbFrame.textbox_mline,
+                     ''.join([mline_content1, mline_content2, mline_content3]))
 
-tbFrame.assertScrollBars(tbFrame.textbox_mline)
+# find the scroll bar accessibles now that they exist, and then check their
+# states
+tbFrame.findScrollBars(tbFrame.textbox_mline)
+statesCheck(tbFrame.vertical_scroll_bar, "VScrollBar")
+statesCheck(tbFrame.horizontal_scroll_bar, "HScrollBar")
 
 # Select a character: text-caret-moved, text-selection-changed 
 # Delete a character: text-changed:delete, text-caret-moved 
@@ -168,6 +190,16 @@ content_len = len(mline_content1)
 tbFrame.textbox_mline.deleteText(0, content_len)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content2)
+
+# delete all text and then test the typeText method
+# BUG491282 when you use typeText method to input strings to textbox, all
+# upper chars converted to lower chars, so it leads to the actual text does
+# not match the expected text.  
+#tbFrame.textbox_mline.deleteText()
+#sleep(config.SHORT_DELAY)
+#tbFrame.textbox_mline.typeText(mline_content1)
+#sleep(config.SHORT_DELAY)
+#tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content1)
 
 ##
 ## Password TextBox

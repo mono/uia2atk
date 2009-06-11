@@ -1,3 +1,9 @@
+2009-06-11 Ray Wang <rawang@novell.com>
+
+	* testers/textbox/textboxframe.py:
+	* testers/textbox_basic_ops.py: Commit Brian's review from review
+	board. (http://reviews.mono-a11y.org/r/271/)
+
 2009-06-11  Calen Chen <cachen@novell.com>
 
 	* testers/savefiledialog/savefiledialogframe.py,
