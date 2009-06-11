@@ -1,5 +1,19 @@
 2009-06-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* System.Windows.Automation/Condition.cs: Implement TrueCondition and
+	FalseCondition.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/ConditionTest.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj: 
+	Unit tests for TrueCondition and FalseCondition.
+
+	* Test/UIAutomationClientTests/SampleForm/Form1.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationTest.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
+	Add missing headers, fix some typos.
+
+2009-06-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am: 
 	* AssemblyInfo.cs.in: 
 	* UIAutomationClient.mdp: 

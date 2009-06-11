@@ -37,9 +37,11 @@ namespace System.Windows.Automation
 #endregion
 
 #region Public Static Fields
-		public static readonly Condition FalseCondition;
+		public static readonly Condition FalseCondition =
+			new InternalCondition ();
 
-		public static readonly Condition TrueCondition;
+		public static readonly Condition TrueCondition =
+			new InternalCondition ();
 #endregion
 	}
 }
