@@ -21,12 +21,19 @@ class NumericUpDownFrame(accessibles.Frame):
         # uneditable
         self.uneditable_numericupdown = self.numericupdown[1]
 
+        self.uneditableMaximumValue = \
+            self.uneditable_numericupdown._accessible.queryValue().maximumValue
+        self.uneditableMinimumValue = \
+            self.uneditable_numericupdown._accessible.queryValue().minimumValue
+        self.editableMaximumValue = \
+            self.editable_numericupdown._accessible.queryValue().maximumValue
+        self.editableMinimumValue = \
+            self.editable_numericupdown._accessible.queryValue().minimumValue
 
     # set numericupdown's value
     def valueNumericUpDown(self, accessible, value):
         procedurelogger.action('set %s value to %s' % (accessible, value))
         accessible.value = value
-
 
     # enter Text Value for EditableText
     def enterTextValue(self, accessible, text):
@@ -38,34 +45,43 @@ class NumericUpDownFrame(accessibles.Frame):
         if accessible == self.editable_numericupdown:
             accessible.insertText(text)
         elif accessible == self.uneditable_numericupdown:
+            # The editable interface is actually implemented for a readonly
+            # NumericUpDown control.  This is fine, because it is also the
+            # case for an uneditable Gtk spin button.  Therefore, calling
+            # insertText will simply be ignored instead of raising a
+            # NotImplementedError.  We will leave the try block here because
+            # it should be acceptable for a NotImplementedError to be thrown
+            # here.
             try:
                 accessible.insertText(text)
             except NotImplementedError:
                 pass
 
-    # assert numericupdown's Text value
-    def assertText(self, accessible, text):
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s text is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    # assign the current value of the accessible
+    def assignValue(self, accessible, value):
+        # use strongwind to assign to queryValue().currentValue
+        procedurelogger.action('set %s value to "%s"' % (accessible, value))
+        accessible.value = value
 
+    # assert numericupdown's Text value
+    def assertText(self, accessible, expected_text):
+        procedurelogger.action('Ensure that %s\'s text is what we expect' % accessible)
+        actual_text = accessible.text
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                                (accessible, expected_text))
+        assert actual_text == expected_text, \
+               '%s text is "%s", expected "%s"' % \
+               (accessible, actual_text, expected_text)
 
     # assert numericupdown's value
-    def assertValue(self, accessible, value):
-        self.maximumValue = accessible._accessible.queryValue().maximumValue
-        self.minimumValue = accessible._accessible.queryValue().minimumValue
-        if  self.minimumValue <= value <= self.maximumValue:
-            procedurelogger.expectedResult('%s value is %d' % \
-                                            (accessible, accessible.value))
-            assert accessible.value == value, \
-                                    "%s value is not match with %d" % \
-                                            (accessible, accessible.value)
-        else:
-            procedurelogger.expectedResult('value %s is out of range' % value)
-            assert not accessible.value == value, \
-                                "value %d is out of range" % accessible.value
-
+    def assertValue(self, accessible, expected_value):
+        actual_value = accessible.value
+        procedurelogger.action('Ensure that %s\'s value is what we expect' % accessible)
+        procedurelogger.expectedResult('%s value is %d' % \
+                                        (accessible, actual_value))
+        assert actual_value == expected_value, \
+                                "%s's value is %d, expected %d" % \
+                                 (accessible, actual_value, expected_value)
 
     #close application window
     def quit(self):
