@@ -1,3 +1,8 @@
+2009-06-12  Brad Taylor  <brad@getcoded.net>
+
+	* patches/moonlight-ff3.6.diff: Add a patch for Moonlight to allow
+	their XPI to install on latest Firefox.
+
 2009-06-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
