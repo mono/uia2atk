@@ -1,3 +1,11 @@
+2009-06-15  Calen Chen <cachen@novell.com>
+
+	* testers/listview_smallimage/listviewsmallimageframe.py,
+	* testers/listview_smallimage_ops.py: update some test wraper & testcase
+	* testers/toolbarbutton/toolbarbuttonframe.py,
+	* testers/toolbarbutton_basic_ops.py: commit reviews from review board
+	(http://reviews.mono-a11y.org/r/267/)
+
 2009-06-12 Ray Wang <rawang@novell.com>
 
 	* testers/numericupdown/numericupdownframe.py,

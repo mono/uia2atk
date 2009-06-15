@@ -66,7 +66,8 @@ statesCheck(tbbFrame.nop_unable, "Button")
 tbbFrame.toggle_style.click(log=True)
 sleep(config.SHORT_DELAY)
 # nop_unable button get rid of enabled and sensitive states
-statesCheck(tbbFrame.nop_unable, "Button", invalid_states=["enabled", "sensitive"])
+statesCheck(tbbFrame.nop_unable, "Button", \
+                                        invalid_states=["enabled", "sensitive"])
 # click toggle_style button again to set "Enabled = True" for nop_unable button
 tbbFrame.toggle_style.click(log=True)
 sleep(config.SHORT_DELAY)
@@ -80,34 +81,38 @@ statesCheck(tbbFrame.separator_style, "ToolStripSeparator")
 #######################################
 
 # test PushButton style
-tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
+tbbFrame.TestBasicPushButtonStyle(tbbFrame.pushbutton_style)
 
 # test DropDownButton style
 # BUG490105: dropdown_toggle has wrong postion
 # BUG498724: missing AtkText implemented
-tbbFrame.DropDownButtonStyle()
+tbbFrame.TestBasicDropDownButtonStyle()
 
 # test Toggle style
-tbbFrame.ToggleStyle(tbbFrame.toggle_style)
+tbbFrame.TestBasicToggleStyle(tbbFrame.toggle_style)
 
-# test Unsensitive ToolBarButton
-tbbFrame.UnsensitiveButton(tbbFrame.nop_unable)
+# test Insensitive ToolBarButton
+tbbFrame.TestBasicInsensitiveButton(tbbFrame.nop_unable)
 
 # test Separator style
-tbbFrame.SeparatorStyle(tbbFrame.separator_style)
+tbbFrame.TestBasicSeparatorStyle(tbbFrame.separator_style)
 
 ############################
 # Image test
 ############################
 
 # test Image size for all toolbar buttons
-tbbFrame.assertImageSize(tbbFrame.pushbutton_style, width=24, height=24)
+tbbFrame.assertImageSize(tbbFrame.pushbutton_style, \
+                                          expected_width=24, expected_height=24)
 
-tbbFrame.assertImageSize(tbbFrame.dropdown_button, width=24, height=24)
+tbbFrame.assertImageSize(tbbFrame.dropdown_button, \
+                                          expected_width=24, expected_height=24)
 
-tbbFrame.assertImageSize(tbbFrame.toggle_style, width=24, height=24)
+tbbFrame.assertImageSize(tbbFrame.toggle_style, \
+                                          expected_width=24, expected_height=24)
 
-tbbFrame.assertImageSize(tbbFrame.nop_unable, width=24, height=24)
+tbbFrame.assertImageSize(tbbFrame.nop_unable, \
+                                          expected_width=24, expected_height=24)
 
 tbbFrame.assertImageSize(tbbFrame.separator_style)
 
