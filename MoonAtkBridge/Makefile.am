@@ -20,7 +20,6 @@ ATK_SHARP_PATH=$(GTK_SHARP)/atk/
 ATK_API_FILE=$(GAPI_PARSER_PATH)$(ATK_FILENAME)
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
-TUNER_FLAGS=-a ./DummyEntryPoint.exe -d ./ -o ../ -l none -b true
 
 all-am: $(ASSEMBLY_STAGE_PATH)
 
@@ -63,9 +62,7 @@ GTK_SHARP_FLAGS = -define:NET_2_1 -unsafe -nowarn:0169,0612,0618
 CSCFLAGS = \
 	-noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ \
 	-keyfile:mono-uia.snk -target:library $(GTK_SHARP_FLAGS) \
-	-out:bin/raw/$(ASSEMBLY)
-
-DUMMY_REFERENCES = /r:bin/raw/mscorlib.dll /r:bin/raw/MoonAtkBridge.dll
+	-out:$(ASSEMBLY_STAGE_PATH)
 
 REFERENCES = \
 	System \
@@ -94,15 +91,7 @@ $(ASSEMBLY_CONFIG): stage $(GTK_SHARP) $(CONFIG_FILES)
 	echo "</configuration>" >> $@
 
 $(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG)
-	mkdir -p bin/raw/
-	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
-	$(SMCS) /t:exe DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:bin/raw/DummyEntryPoint.exe
-	cd bin/raw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
-		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yAssemblyStep,Mono.Tuner
-	rm bin/raw/DummyEntryPoint.exe
-	rm bin/*.exe
-	cp bin/*.dll stage/components/
 
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
@@ -121,5 +110,3 @@ clean:
 	rm -f $(PATCH_STAMP)
 	rm -rf $(GTK_SHARP)/
 	rm -rf stage/
-	rm -rf bin/
-	rm -f *.xpi

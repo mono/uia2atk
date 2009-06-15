@@ -34,6 +34,10 @@ namespace Moonlight.AtkBridge
 	public class AutomationBridge
 	{
 #region Public Methods
+		public AutomationBridge ()
+		{
+		}
+
 		public static bool IsAccessibilityEnabled ()
 		{
 			// Detect whether it is turned on at a platform level
@@ -50,13 +54,8 @@ namespace Moonlight.AtkBridge
 		}
 #endregion
 
-#region Private Members
+#region Private Fields
 		private static RootVisualAdapter rootVisualAdapter = null;
-
-		public static AutomationBridge CreateAutomationBridge ()
-		{
-			return new AutomationBridge ();
-		}
 #endregion
 	}
 }

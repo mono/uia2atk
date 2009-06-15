@@ -1,14 +1,3 @@
-2009-06-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
-
-	* build-glib21.sh: removed, not needed anymore.
-	* patches/moonlight-a11y-initialization.diff: changed some reflection
-	usage to not be filtered by the moonlight security engine.
-	* patches/moonlight-a11y-security.diff: needed to make our stuff become
-	platform code and run without restrictions.
-	* DummyEntryPoint.cs: needed for the linking process.
-	* configure.ac: Detect the tuner/linker presence.
-	* Makefile.am: Add tuning steps to the build (ported from build-glib21.sh).
-
 2009-06-12  Brad Taylor  <brad@getcoded.net>
 
 	* patches/moonlight-ff3.6.diff: Add a patch for Moonlight to allow

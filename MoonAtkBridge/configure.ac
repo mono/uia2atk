@@ -71,20 +71,6 @@ fi
 
 PKG_CHECK_MODULES(CECIL, cecil)
 
-LINKING_PATH=../../moon/class/lib/tuner
-
-#uncomment this when we can do a proper check instead of using the monolinker.exe in lib/tuner
-#AC_PATH_PROG(MONOLINKER, monolinker, no)
-#if test "x$MONO" = "xno"; then
-#	AC_MSG_ERROR([monolinker Not found])
-#fi
-
-if [ ! test -f "$LINKING_PATH/Mono.Tuner.dll" ]
-then
-	AC_MSG_ERROR([You need a built checkout of moon at the same level of the uia2atk folder])
-fi
-AC_SUBST(LINKING_PATH)
-
 AC_PATH_PROG(ZIP, zip, no)
 if test "x$ZIP" = "xno" ; then
 	AC_MSG_ERROR([No zip tool found])
