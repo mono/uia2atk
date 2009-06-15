@@ -29,22 +29,160 @@ using System;
 using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Automation.Peers;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Moonlight.AtkBridge
 {
-	public class Adapter : Atk.Object
+	public class Adapter : Atk.Object, Atk.ComponentImplementor
 	{
+#region Public Properties
+		public AutomationPeer Peer {
+			get;
+			protected set;
+		}
+
+		public double Alpha {
+			get { return 1.0d; }
+		}
+
+		public new Layer Layer {
+			get { return Atk.Layer.Widget; }
+		}
+
+		public new int MdiZorder {
+			get { return 0; }
+		}
+#endregion
+
 #region Public Methods
 		public Adapter (AutomationPeer peer)
 		{
 			this.Peer = peer;
 		}
-#endregion
 
-#region Protected Properties
-		protected AutomationPeer Peer {
-			get;
-			set;
+		public uint AddFocusHandler (FocusHandler handler)
+		{
+			if (focusHandlers.ContainsValue (handler))
+				return 0;
+
+			lastFocusHandlerId++;
+			focusHandlers [lastFocusHandlerId] = handler;
+			return lastFocusHandlerId;
+		}
+
+		public bool Contains (int x, int y, CoordType coordType)
+		{
+			if (Peer == null)
+				return false;
+
+			// Despite MSDN documentation, this is actually in
+			// window coordinates
+			Rect r = Peer.GetBoundingRectangle ();
+
+			if (coordType == CoordType.Screen)
+				ScreenToWindow (ref x, ref y);
+
+			return r.Contains (new System.Windows.Point (x, y));
+		}
+
+		public void GetExtents (out int x, out int y,
+		                        out int width, out int height,
+		                        CoordType coordType)
+		{
+			x = y = Int32.MinValue;
+			width = height = 0;
+
+			if (Peer == null)
+				return;
+
+			// Despite MSDN documentation, this is actually in
+			// window coordinates
+			Rect r = Peer.GetBoundingRectangle ();
+
+			if (!Peer.IsOffscreen ()) {
+				x = (int) r.X;
+				y = (int) r.Y;
+
+				if (coordType == CoordType.Screen)
+					WindowToScreen (ref x, ref y);
+			}
+
+			width = 100;
+			height = 100;
+			width = (int) r.Width;
+			height = (int) r.Height;
+		}
+
+		public void GetPosition (out int x, out int y,
+		                         CoordType coordType)
+		{
+			x = y = Int32.MinValue;
+
+			if (Peer == null || Peer.IsOffscreen ())
+				return;
+
+			// Despite MSDN documentation, this is actually in
+			// window coordinates
+			Rect r = Peer.GetBoundingRectangle ();
+
+			x = (int) r.X;
+			y = (int) r.Y;
+
+			if (coordType == CoordType.Screen)
+				WindowToScreen (ref x, ref y);
+		}
+
+		public void GetSize (out int width, out int height)
+		{
+			width = height = 0;
+
+			if (Peer == null)
+				return;
+
+			// Despite MSDN documentation, this is actually in
+			// window coordinates
+			Rect r = Peer.GetBoundingRectangle ();
+
+			width = (int) r.Width;
+			height = (int) r.Height;
+		}
+
+		public bool GrabFocus ()
+		{
+			if (Peer == null)
+				return false;
+
+			Peer.SetFocus ();
+
+			return Peer.HasKeyboardFocus ();
+		}
+
+		public Atk.Object RefAccessibleAtPoint (int x, int y,
+		                                        CoordType coordType)
+		{
+			return null;
+		}
+
+		public void RemoveFocusHandler (uint handlerId)
+		{
+			if (focusHandlers.ContainsKey (handlerId))
+				focusHandlers.Remove (handlerId);
+		}
+
+		public bool SetExtents (int x, int y, int width, int height,
+		                        CoordType coordType)
+		{
+			return false;
+		}
+
+		public bool SetPosition (int x, int y, CoordType coordType)
+		{
+			return false;
+		}
+
+		public bool SetSize (int width, int height)
+		{
+			return false;
 		}
 #endregion
 
@@ -219,12 +357,104 @@ namespace Moonlight.AtkBridge
 
 			Children = Peer.GetChildren ();
 		}
+
+		protected void NotifyFocused (bool focused)
+		{
+			NotifyStateChange (Atk.StateType.Focused, focused);
+
+			if (focused)
+				Atk.Focus.TrackerNotify (this);
+		}
 #endregion
 
 #region Protected Fields
 		protected List<AutomationPeer> Children = null;
 		protected Dictionary<AutomationPeer, Atk.Object> Adapters
 			= new Dictionary<AutomationPeer, Atk.Object> ();
+#endregion
+
+#region Internal Methods
+		internal void HandleAutomationPropertyChanged (AutomationPropertyChangedEventArgs args)
+		{
+Console.WriteLine ("************* {0}: Got {1}", Name, args.Property);
+
+			if (args.Property == AEIds.HasKeyboardFocusProperty) {
+				bool focused = (bool) args.NewValue;
+				NotifyFocused (focused);
+
+				foreach (FocusHandler handler in focusHandlers.Values)
+					handler (this, focused);
+			} else if (args.Property == AEIds.IsOffscreenProperty) {
+				bool offscreen = (bool) args.NewValue;
+				NotifyStateChange (Atk.StateType.Visible, !offscreen);
+			} else if (args.Property == AEIds.IsEnabledProperty) {
+				bool enabled = (bool) args.NewValue;
+				NotifyStateChange (Atk.StateType.Enabled, enabled);
+				NotifyStateChange (Atk.StateType.Sensitive, enabled);
+			} else if (args.Property == AEIds.HelpTextProperty) {
+				Description = (string) args.NewValue;
+			} else if (args.Property == AEIds.BoundingRectangleProperty) {
+				EmitBoundsChanged ((System.Windows.Rect) args.NewValue);
+			} else if (args.Property == AEIds.NameProperty) {
+				// TODO: Emit name changed signal
+			}
+		}
+
+		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
+		{
+Console.WriteLine ("************* {0}: Got {1}", Name, args.Event);
+		}
+
+		internal void WindowToScreen (ref int x, ref int y)
+		{
+			ConvertCoords (ref x, ref y, true);
+		}
+
+		internal void ScreenToWindow (ref int x, ref int y)
+		{
+			ConvertCoords (ref x, ref y, false);
+		}
+#endregion
+
+#region Private Methods
+		private void ConvertCoords (ref int x, ref int y, bool addParent)
+		{
+			Adapter rootVisual
+				= DynamicAdapterFactory.Instance.RootVisualAdapter;
+			if (rootVisual == null || rootVisual.Parent == null) {
+				// TODO: Logging
+				return;
+			}
+
+			// Since our parent is unmanaged, we can't just cast.
+			Atk.Component parent = ComponentAdapter.GetObject (rootVisual.Parent);
+			if (parent == null) {
+				// TODO: Logging
+				return;
+			}
+
+			int parentX, parentY;
+			parent.GetPosition (out parentX, out parentY, CoordType.Screen);
+
+			x += parentX * (addParent ? 1 : -1);
+			y += parentY * (addParent ? 1 : -1);
+		}
+
+		private void EmitBoundsChanged (System.Windows.Rect rect)
+		{
+			Atk.Rectangle atkRect;
+			atkRect.X = (int) rect.X;
+			atkRect.Y = (int) rect.Y;
+			atkRect.Width = (int) rect.Width;
+			atkRect.Height = (int) rect.Height;
+			GLib.Signal.Emit (this, "bounds_changed", atkRect);
+		}
+#endregion
+
+#region Private Fields
+		private uint lastFocusHandlerId = 0;
+		private Dictionary<uint, FocusHandler> focusHandlers
+			= new Dictionary<uint, FocusHandler> ();
 #endregion
 	}
 }

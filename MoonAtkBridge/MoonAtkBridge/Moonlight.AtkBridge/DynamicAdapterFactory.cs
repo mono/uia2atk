@@ -41,13 +41,30 @@ namespace Moonlight.AtkBridge
 		public static DynamicAdapterFactory Instance {
 			get { return instance; }
 		}
+
+		public Adapter RootVisualAdapter {
+			get {
+				if (rootVisualAdapter == null) {
+					rootVisualAdapter = new RootVisualAdapter ();
+					activeAdapters [rootVisualAdapter.Peer]
+						= rootVisualAdapter;
+				}
+
+				return rootVisualAdapter;
+			}
+		}
 #endregion
 
 #region Public Methods
-		public Atk.Object GetAdapter (AutomationPeer peer)
+		public Adapter GetAdapter (AutomationPeer peer)
 		{
 			if (peer == null)
 				return null;
+
+			// Do we already have a running Adapter instance for
+			// this peer?
+			if (activeAdapters.ContainsKey (peer))
+				return activeAdapters [peer];
 
 			// Create a list of all potential implementors that
 			// will later be merged to have a list of implementors
@@ -100,24 +117,40 @@ namespace Moonlight.AtkBridge
 
 			// If we're not implementing anything, just
 			// short-circuit the process
-			if (implementors.Count () == 0)
-				return new Adapter (peer);
+			Adapter adapter = null;
+			if (implementors.Count () == 0) {
+				adapter = new Adapter (peer);
+				activeAdapters [peer] = adapter;
+				return adapter;
+			}
 
 			// See if we've created the type already
 			Type dynamicType;
-			if (!dynamicAdapters.TryGetValue (typeName,
+			if (!dynamicAdapterTypes.TryGetValue (typeName,
 			                                  out dynamicType)) {
 				dynamicType = CreateDynamicType (
 					typeName, implementors.ToArray ()
 				);
+				dynamicAdapterTypes [typeName] = dynamicType;
 			}
 
 			if (dynamicType == null)
 				return null;
 
-			return (Atk.Object) Activator.CreateInstance (
+			adapter = (Adapter) Activator.CreateInstance (
 				dynamicType, new object [] { peer }
 			);
+			
+			activeAdapters [peer] = adapter;
+			return adapter;
+		}
+
+		public void UnregisterAdapter (AutomationPeer peer)
+		{
+			if (!activeAdapters.ContainsKey (peer))
+				return;
+
+			activeAdapters.Remove (peer);
 		}
 
 		public Type [] GetImplementorsForPeer (AutomationPeer peer)
@@ -368,9 +401,14 @@ namespace Moonlight.AtkBridge
 		private Dictionary<Type, List<Type>> explicitImplementors
 			= new Dictionary<Type, List<Type>> ();
 
-		// Maps generated type name to the generated adapter class
-		private Dictionary<string, Type> dynamicAdapters
+		// Maps generated type name to the generated adapter type
+		private Dictionary<string, Type> dynamicAdapterTypes
 			= new Dictionary<string, Type> ();
+
+		private Dictionary<AutomationPeer, Adapter> activeAdapters
+			= new Dictionary<AutomationPeer, Adapter> ();
+
+		private RootVisualAdapter rootVisualAdapter;
 
 		private ModuleBuilder moduleBuilder;
 		private AssemblyBuilder assemblyBuilder;

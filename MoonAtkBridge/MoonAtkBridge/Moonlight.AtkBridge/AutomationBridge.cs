@@ -28,6 +28,7 @@ using Atk;
 
 using System;
 using System.Windows;
+using System.Windows.Automation.Peers;
 
 namespace Moonlight.AtkBridge
 {
@@ -36,6 +37,13 @@ namespace Moonlight.AtkBridge
 #region Public Methods
 		public AutomationBridge ()
 		{
+			AutomationSingleton.Instance.AutomationPropertyChanged
+				+= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
+
+			AutomationSingleton.Instance.AutomationEventRaised
+				+= new EventHandler<AutomationEventEventArgs> (
+					OnAutomationEventRaised);
 		}
 
 		public static bool IsAccessibilityEnabled ()
@@ -47,15 +55,43 @@ namespace Moonlight.AtkBridge
 
 		public IntPtr GetAccessibleHandle ()
 		{
-			if (rootVisualAdapter == null)
-				rootVisualAdapter = new RootVisualAdapter ();
-
-			return rootVisualAdapter.Handle;
+			Adapter root
+				= DynamicAdapterFactory.Instance.RootVisualAdapter;
+			return (root != null) ? root.Handle : IntPtr.Zero;
 		}
 #endregion
 
-#region Private Fields
-		private static RootVisualAdapter rootVisualAdapter = null;
-#endregion
+#region Private Methods
+		private void OnAutomationPropertyChanged (
+			object o, AutomationPropertyChangedEventArgs args)
+		{
+Console.WriteLine ("OnAutomationPropertyChanged: Peer = {0}, Property = {1}, Old = {2}, New = {3}", args.Peer, args.Property, args.OldValue, args.NewValue);
+
+			if (args.Peer == null)
+				return;
+
+			Adapter adapter
+				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);
+			if (adapter == null)
+				return;
+
+			adapter.HandleAutomationPropertyChanged (args);
+		}
+
+		private void OnAutomationEventRaised (
+			object o, AutomationEventEventArgs args)
+		{
+Console.WriteLine ("OnAutomationEventRaised: Peer = {0}, Event = {1}", args.Peer, args.Event);
+			if (args.Peer == null)
+				return;
+
+			Adapter adapter
+				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);
+			if (adapter == null)
+				return;
+
+			adapter.HandleAutomationEventRaised (args);
+		}
 	}
+#endregion
 }
