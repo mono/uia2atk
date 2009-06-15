@@ -1,5 +1,11 @@
 2009-06-15  Calen Chen <cachen@novell.com>
 
+	* testers/datagrid/datagridframe.py,
+	* testers/datagrid_basic_ops.py: commit Brian's changes from review 
+	board (http://reviews.mono-a11y.org/r/276/); delete some checkShowing
+
+2009-06-15  Calen Chen <cachen@novell.com>
+
 	* samples/listview_list.py: add Height property for listview to show 
 	all items in 2 lines and 3 rows in different machine. 
 
