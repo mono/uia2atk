@@ -40,24 +40,30 @@ if app is None:
 tslFrame = app.toolStripLabelFrame
 
 ##############################
-# check toolstriplabel's AtkAccessible
+# check the toolstriplabels' states
 ##############################
 statesCheck(tslFrame.toolstriplabel, "Label")
 statesCheck(tslFrame.toolstriplabel_image, "Label")
-sleep(config.SHORT_DELAY)
 
 ##############################
-# check toolstriplabel's AtkText
+# check toolstriplabels' text
 ##############################
 tslFrame.assertText(tslFrame.toolstriplabel, "Mono\nAccessibility")
 tslFrame.assertText(tslFrame.toolstriplabel_image, "ToolStripLabel with image")
-sleep(config.SHORT_DELAY)
 
 ##############################
-# check toolstriplabel's AtkImage
+# check toolstriplabel_image's image interface
 ##############################
-# TODO: BUG482714, should assert the label's icon information
+# TODO: BUG482714, should check the label's icon information
 #tslFrame.assertImage(tslFrame.toolstriplabel_image, 16, 16)
+
+##############################
+# check toolstriplabel's hyperlink interface
+##############################
+# BUG501526 - ToolStripLabel with IsLink property set to true should implement
+# the hyperlink interface
+#tslFrame.assertURI(tslFrame.toolstriplabel,
+#                   "http://www.mono-project.com/Accessibility")
 
 ##############################
 # End

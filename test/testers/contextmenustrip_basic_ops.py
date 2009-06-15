@@ -27,6 +27,7 @@ except IndexError:
     pass #expected
 
 # open the contextmenustrip sample application
+try:
     app = launchContextMenuStrip(app_path)
 except IOError, e:
     print 'Error: %s' % e
@@ -53,20 +54,21 @@ statesCheck(cmsFrame.context_menu_strip, 'ContextMenuStrip', add_states=['active
 # STATES: DEFAULT
 ##############################################################################
 statesCheck(cmsFrame.item1, 'Menu')
-statesCheck(cmsFrame.item1a, 'MenuItem', add_states=['showing'])
-statesCheck(cmsFrame.item1b, 'MenuItem', add_states=['showing'])
-statesCheck(cmsFrame.item2, 'MenuItem')
-statesCheck(cmsFrame.item3, 'MenuItem')
-statesCheck(cmsFrame.item4, 'MenuItem')
-statesCheck(cmsFrame.item5, 'MenuItem')
+# BUG486335: extraneous "showing" state of menu item when it is not showing
+#statesCheck(cmsFrame.item1a, 'MenuItem', invalid_states=['showing'])
+#statesCheck(cmsFrame.item1b, 'MenuItem', invalid_states=['showing'])
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(cmsFrame.item2, 'MenuItem')
+#statesCheck(cmsFrame.item3, 'MenuItem')
+#statesCheck(cmsFrame.item4, 'MenuItem')
+#statesCheck(cmsFrame.item5, 'MenuItem')
 
 ##############################################################################
 # CHECK ATKSELECTION
 ##############################################################################
-cmsFrame.menu.selectChild(0)
-# BUG 479397
-#statesCheck(cmsFrame.item1, 'MenuItem', add_states=['focused', 'selected'])
-# sub menu item should display automatically
+cmsFrame.menu.selectChild(cmsFrame.item1.getIndexInParent())
+statesCheck(cmsFrame.item1, 'Menu', add_states=['focused', 'selected'])
+# sub menu item should be displayed automatically
 statesCheck(cmsFrame.item1a, 'MenuItem')
 statesCheck(cmsFrame.item1b, 'MenuItem')
 
@@ -80,31 +82,77 @@ cmsFrame.assertWidgets()
 ##############################################################################
 # STATES: WHEN CONTEXTMENUSTRIP SHOW UP
 ##############################################################################
-# BUG 471405
-#cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
-#sleep(config.SHORT_DELAY)
-#statesCheck(cmsFrame.item1, 'MenuItem', add_states=['focused', 'selected'])
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(cmsFrame.item1, 'Menu', add_states=['focused', 'selected']) 
 
-#cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
-#sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Right>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(cmsFrame.item1a, 'MenuItem', add_states=['focused', 'selected'])
+
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(cmsFrame.item1b, 'MenuItem', add_states=['focused', 'selected'])
+
+cmsFrame.context_menu_strip.keyCombo('<Up>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(cmsFrame.item1a, 'MenuItem', add_states=['focused', 'selected'])
+statesCheck(cmsFrame.item1b, 'MenuItem')
+
+cmsFrame.context_menu_strip.keyCombo('<Left>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
 #statesCheck(cmsFrame.item2, 'MenuItem', add_states=['focused', 'selected'])
 
-#cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
-#sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
 #statesCheck(cmsFrame.item3, 'MenuItem', add_states=['focused', 'selected'])
 
-#cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
-#sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
 #statesCheck(cmsFrame.item4, 'MenuItem', add_states=['focused', 'selected'])
 
-#cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
-#sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG509872: menu items receive "focused" state, but do not have "focusable" state
 #statesCheck(cmsFrame.item5, 'MenuItem', add_states=['focused', 'selected'])
 
-#cmsFrame.item1.mouseClick()
-#sleep(config.SHORT_DELAY)
-#statesCheck(cmsFrame.item1a, 'MenuItem')
-#statesCheck(cmsFrame.item1b, 'MenuItem')
+cmsFrame.item1.mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(cmsFrame.item1a, 'MenuItem')
+statesCheck(cmsFrame.item1b, 'MenuItem')
+cmsFrame.assertText(cmsFrame.label, 'You have clicked Apple')
+
+# use keyboard to navigate menu items and hit "Return" to select a menu item
+cmsFrame.mouseClick()
+sleep(config.SHORT_DELAY)
+cmsFrame.label.mouseClick(button=3)
+sleep(config.SHORT_DELAY)
+cmsFrame.assertWidgets()
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Down>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+cmsFrame.context_menu_strip.keyCombo('<Return>', grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG512103: when the ContextMenu have been destroied, "focused" state still remain on the menu item of the ContextMenu
+#statesCheck(cmsFrame.item2, 'MenuItem', add_states=['defunct'], \
+#    invalid_states=['visible', 'focusable', 'showing', 'enabled', 'sensitive', 'selectable'])
+cmsFrame.assertText(cmsFrame.label, 'You have clicked Banana')
+
+##############################################################################
+# CHECK ATKIMAGE 
+##############################################################################
+# BUG 486290: menu item's image is not implemented
+#cmsFrame.assertImage(cmsFrame.item1, 16, 16)
 
 # close application frame window
 cmsFrame.quit()

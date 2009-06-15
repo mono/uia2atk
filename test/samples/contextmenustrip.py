@@ -14,6 +14,8 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 """
 
 # imports
+import sys
+import os
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -21,7 +23,7 @@ clr.AddReference('System.Drawing')
 from System.Windows.Forms import (
     Application, Form, Label, BorderStyle, ContextMenuStrip, ToolStripMenuItem
 )
-from System.Drawing import Color
+from System.Drawing import Color, Bitmap
 
 class ContextMenuStripSample(Form):
     """ContextMenuStrip control class"""
@@ -33,8 +35,11 @@ class ContextMenuStripSample(Form):
         self.Text = "ContextMenuStrip control"
 
         # set up menu items
+        sample_dir = sys.path[0]
+        image_path = os.path.join(sample_dir, "apple-red.png")
         self.toolstrip_menuitem1 = ToolStripMenuItem("Apple")
         self.toolstrip_menuitem1.Click += self.cms_click
+        self.toolstrip_menuitem1.Image = Bitmap.FromFile(image_path)
         self.toolstrip_menuitem1a = ToolStripMenuItem("Macintosh")
         self.toolstrip_menuitem1b = ToolStripMenuItem("Delicious")
         self.toolstrip_menuitem2 = ToolStripMenuItem("Banana")

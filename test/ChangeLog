@@ -1,3 +1,12 @@
+2009-06-15 Ray Wang <rawang@novell.com>
+
+	* samples/contextmenustrip.py,
+	* testers/contextmenustrip/contextmenustripframe.py,
+	* testers/contextmenustrip_basic_ops.py: Review ContextMenuStrip test.
+	* testers/toolstriplabel/toolstriplabelframe.py,
+	* testers/toolstriplabel_basic_ops.py: Commit Brian's review from
+	review board. (http://reviews.mono-a11y.org/r/191/)
+
 2009-06-15  Calen Chen <cachen@novell.com>
 
 	* testers/listview_largeimage/listviewlargeimageframe.py,
