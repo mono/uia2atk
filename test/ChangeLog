@@ -1,5 +1,11 @@
 2009-06-15  Calen Chen <cachen@novell.com>
 
+	* testers/listview_largeimage/listviewlargeimageframe.py,
+	* testers/listview_largeimage_ops.py: update some test wraper and some 
+	testcases; click and toggle method is no longer need
+
+2009-06-15  Calen Chen <cachen@novell.com>
+
 	* testers/listview_smallimage/listviewsmallimageframe.py,
 	* testers/listview_smallimage_ops.py: update some test wraper & testcase
 	* testers/toolbarbutton/toolbarbuttonframe.py,

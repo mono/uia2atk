@@ -25,38 +25,33 @@ class ListViewLargeImageFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ListViewLargeImageFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
-        self.list = self.findList(None)
+        self.list = self.findTreeTable(None)
         self.listitem = dict([(x, self.findCheckBox("Item" + str(x))) for x in range(6)]) 
 
-    #give 'click' action
-    def click(self,item):
-        item.click()
+    def assertLabel(self, expected_label):
+        """
+        Raise exception if the accessible does not match the given result.
+        mouse click checkbox or do toggle action, label shows which item is 
+        checked.
+        """            
+        procedurelogger.expectedResult('label change to %s' % expected_label)
+        actual_label = self.label.text
+        assert expected_label == actual_label, \
+                                "actual label is: %s, expected label is: %s" % \
+                                  (actual_label, expected_label)
 
-    #give 'toggle' action
-    def toggle(self, item):
-        procedurelogger.action('do toggle action for %s' % item)
-        item.toggle()
-
-    #mouse click checkbox or do toggle action would rise checked state and shows 
-    #which item is checked
-    def assertLabel(self, item, itemname):
-        'Raise exception if the accessible does not match the given result'   
-            
-        if item.checked:
-            procedurelogger.expectedResult('Item "%s" is %s' % (item, 'checked'))
-            assert self.label.text == "%s Checked" % itemname
-        elif not item.checked:
-            procedurelogger.expectedResult('Item "%s" is %s' % (item, 'Unchecked'))
-            assert self.label.text == "%s Unchecked" % itemname
-
-    #assert Text implementation for ListItem role
-    def assertText(self, accessible, item):
-        procedurelogger.action("check ListItem's Text Value")
+    def assertText(self, accessible, expected_text):
+        """
+        make sure accessible's Text is expected
+        """
+        procedurelogger.action("check %s's Text Value" % accessible)
 
         procedurelogger.expectedResult('the text of "%s" is %s' \
-                                        % (accessible,item))
+                                        % (accessible,expected_text))
 
-        assert accessible.text == item
+        assert accessible.text == expected_text, \
+                                "actual text is: %s, expected text is: %s" % \
+                                  (accessible.text, expected_text)
 
     #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):
@@ -70,24 +65,27 @@ class ListViewLargeImageFrame(accessibles.Frame):
 
         accessible.clearSelection()
 
-    # assert the size of an image to test image implementation
-    def assertImageSize(self, item, width=64, height=64):
-        procedurelogger.action("assert %s's image size" % item)
-        size = item._accessible.queryImage().getImageSize()
+    def assertImageSize(self, accessible, expected_width=64, expected_height=64):
+        """
+        make sure accessible's Image size is expected
+        """
+        procedurelogger.action("assert %s's image size" % accessible)
+        actual_width, actual_height = \
+                              accessible._accessible.queryImage().getImageSize()
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (item, width, height))
+                                  (accessible, expected_width, expected_height))
 
-        assert width == size[0], "%s (%s), %s (%s)" %\
+        assert expected_width == actual_width, "%s (%s), %s (%s)" %\
                                             ("expected width",
-                                              width,
+                                              expected_width,
                                              "does not match actual width",
-                                              size[0])
-        assert height == size[1], "%s (%s), %s (%s)" %\
+                                              actual_width)
+        assert expected_height == actual_height, "%s (%s), %s (%s)" %\
                                             ("expected height",
-                                              height,
+                                             expected_height,
                                              "does not match actual height",
-                                              size[1]) 
+                                              actual_height)  
 
     #close application main window after running test
     def quit(self):
