@@ -51,6 +51,7 @@ class ListViewSample(Form):
         # place widget besides left.
         self.listview.Dock = DockStyle.Top
         self.listview.Width = self.Width
+        self.listview.Height = 80
         self.listview.ColumnClick += self.column_click
         self.listview.Click += self.item_click
 
