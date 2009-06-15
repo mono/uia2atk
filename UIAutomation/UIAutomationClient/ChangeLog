@@ -1,3 +1,8 @@
+2009-06-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation/TreeWalker.cs: Fix typo which broke
+	use of all TreeWalkers expect RawViewWalker.
+
 2009-06-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation/Condition.cs: Implement TrueCondition and

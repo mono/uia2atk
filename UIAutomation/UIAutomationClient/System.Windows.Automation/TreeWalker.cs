@@ -70,7 +70,7 @@ namespace System.Windows.Automation
 		public AutomationElement GetFirstChild (AutomationElement element)
 		{
 			if (element == AutomationElement.RootElement)
-				return directChildren.Count > 0 ?
+				return RawViewWalker.directChildren.Count > 0 ?
 					RawViewWalker.directChildren [0] :
 					null;
 			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.FirstChild);
@@ -79,7 +79,7 @@ namespace System.Windows.Automation
 		public AutomationElement GetLastChild (AutomationElement element)
 		{
 			if (element == AutomationElement.RootElement)
-				return directChildren.Count > 0 ?
+				return RawViewWalker.directChildren.Count > 0 ?
 					RawViewWalker.directChildren [RawViewWalker.directChildren.Count - 1] :
 					null;
 			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.LastChild);

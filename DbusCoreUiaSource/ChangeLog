@@ -1,0 +1,23 @@
+
+2009-06-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+	* NEWS: 
+	* README: 
+	* COPYING: 
+	* ChangeLog: 
+	* autogen.sh: 
+	* Makefile.am: 
+	* configure.ac: 
+	* mono-uia.snk: 
+	* expansions.m4: 
+	* Makefile.include: 
+	* DbusCoreUiaSource.mds: 
+	* DbusCoreUiaSource/ChangeLog: 
+	* DbusCoreUiaSource/Makefile.am: 
+	* DbusCoreUiaSource/AssemblyInfo.cs: 
+	* DbusCoreUiaSource/DbusCoreUiaSource.mdp: Infrastructure for new
+	DbusCoreUiaSource assembly.
+ 
+	* DbusCoreUiaSource/DbusCoreElement.cs: 
+	* DbusCoreUiaSource/DbusCoreAutomationSource.cs: Implementation of
+	UIAutomationSource interfaces for automation elements exposed over the
+	UiaDbusCoreBridge.
