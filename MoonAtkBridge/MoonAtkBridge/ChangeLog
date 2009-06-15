@@ -1,3 +1,8 @@
+2009-06-15  Andrés G. Aragoneses <aaragoneses@novell.com>
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: use a method to call the ctor,
+	to be called by reflection.
+
 2009-06-10  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge.sources: 

@@ -1,6 +1,6 @@
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 135062)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136130)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -11,7 +11,7 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/Assembly/ChangeLog
 ===================================================================
---- class/System.Windows/Assembly/ChangeLog	(revision 135062)
+--- class/System.Windows/Assembly/ChangeLog	(revision 136130)
 +++ class/System.Windows/Assembly/ChangeLog	(working copy)
 @@ -1,3 +1,9 @@
 +2009-05-29  Brad Taylor  <brad@getcoded.net>
@@ -25,20 +25,20 @@ Index: class/System.Windows/Assembly/ChangeLog
  	* AssemblyInfo.cs: gtksilver -> Moonlight.Gtk
 Index: class/System.Windows/ChangeLog
 ===================================================================
---- class/System.Windows/ChangeLog	(revision 135062)
+--- class/System.Windows/ChangeLog	(revision 136130)
 +++ class/System.Windows/ChangeLog	(working copy)
-@@ -1,3 +1,8 @@
+@@ -1,3 +1,10 @@
 +2009-05-29  Brad Taylor  <brad@getcoded.net>
 +
 +	* Makefile.am: Define MOON_A11Y_INTERNAL_HACK as a temporary workaround
 +	until security audit is completed.
 +
- 2009-05-28  Mario Carrion  <mcarrion@novell.com>
+ 2009-06-04  Chris Toshok  <toshok@ximian.com>
  
- 	* System.Windows.Automation.Peers/ButtonAutomationPeer.cs: Subclassing
+ 	* Makefile.am (system_windows_sources): add MoonException.cs
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 135062)
+--- class/System.Windows/System.Windows.mdp	(revision 136130)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
 @@ -458,6 +458,7 @@
      <File name="System.Windows.Media.Animation/QuinticEase.cs" subtype="Code" buildaction="Compile" />
@@ -70,7 +70,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +
 +		private const string BRIDGE_ASM_NAME = "MoonAtkBridge.dll";
 +		private const string BRIDGE_FULL_NAME = "Moonlight.AtkBridge.AutomationBridge";
-+		
++
 +		internal static void Initialize ()
 +		{
 +			string current_assembly_location = Assembly.GetExecutingAssembly ().Location;
@@ -89,7 +89,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +				}
 +			}
 +		}
-+		
++
 +		internal static void Launch (string location)
 +		{
 +			Assembly bridge_asm;
@@ -99,19 +99,21 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +				return;
 +			}
 +
++
 +			bridge_type = bridge_asm.GetType (BRIDGE_FULL_NAME);
 +			if (bridge_type == null)
 +				return;
 +
-+			automation_bridge = Activator.CreateInstance (bridge_type, new object[0]);
-+			if (automation_bridge == null)
-+				return;
++			//we cannot use InvokeMember because it's filtered by the SecurityCLR (simply because the moon team is not using it)
++			automation_bridge = bridge_type.GetMethod (
++				"CreateAutomationBridge",
++				BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
++				.Invoke (null, null);
 +
-+			accessibilityEnabled = (bool) bridge_type.InvokeMember (
++			accessibilityEnabled = (bool) bridge_type.GetMethod (
 +				"IsAccessibilityEnabled",
-+				BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod,
-+				null, null, null
-+			);
++				BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
++				.Invoke (null, null);
 +		}
 +		
 +		private static Type bridge_type;
@@ -123,18 +125,16 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +			if (!accessibilityEnabled || automation_bridge == null)
 +				return IntPtr.Zero;
 +
-+			return (IntPtr) bridge_type.InvokeMember (
++			return (IntPtr) bridge_type.GetMethod (
 +				"GetAccessibleHandle",
-+				BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod,
-+				null, automation_bridge, null
-+			);
++				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
++				.Invoke (automation_bridge, null);
 +		}
 +	}
 +}
-+
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 135062)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136130)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -150,7 +150,7 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 135062)
+--- class/System.Windows/Makefile.am	(revision 136130)
 +++ class/System.Windows/Makefile.am	(working copy)
 @@ -19,6 +19,12 @@
  
