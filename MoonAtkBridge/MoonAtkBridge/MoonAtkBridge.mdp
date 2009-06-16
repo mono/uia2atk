@@ -1,0 +1,26 @@
+<Project name="MoonAtkBridge" fileversion="2.0" language="C#" targetFramework="2.0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Debug" assembly="MoonAtkBridge" />
+      <Build debugmode="True" target="Exe" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" assembly="MoonAtkBridge" />
+      <Build debugmode="False" target="Exe" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="Moonlight.AtkBridge/Adapter.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge/AutomationBridge.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge/DynamicAdapterFactory.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge/ImplementsPatternAttribute.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge/RootVisualAdapter.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs" subtype="Code" buildaction="Compile" />
+    <File name="Moonlight.AtkBridge.PatternImplementors/Value.cs" subtype="Code" buildaction="Compile" />
+    <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+</Project>
