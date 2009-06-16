@@ -1,5 +1,11 @@
 2009-06-16  Calen Chen <cachen@novell.com>
 
+	* testers/listview_detail/listviewframe.py,
+	* testers/listview_detail_ops.py: commit Brian's changes from review 
+	board (http://reviews.mono-a11y.org/r/279/)
+
+2009-06-16  Calen Chen <cachen@novell.com>
+
 	* testers/datagridboolcolumn_basic_ops.py: commit from review board 
 	(http://reviews.mono-a11y.org/r/277/)
 

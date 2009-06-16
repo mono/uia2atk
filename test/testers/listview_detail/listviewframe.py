@@ -1,4 +1,3 @@
-
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        12/15/2008
@@ -14,7 +13,6 @@ import states
 from strongwind import *
 from listview_detail import *
 
-
 # class to represent the main window.
 class ListViewFrame(accessibles.Frame):
 
@@ -28,122 +26,125 @@ class ListViewFrame(accessibles.Frame):
         super(ListViewFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
-        self.column_a = self.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
-        self.column_b = self.findTableColumnHeader(self.COLUMN_B, checkShowing=False)
-        self.checkbox = dict([(x, self.findCheckBox("Item" + str(x))) for x in range(6)])
-        tablecell_list = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3", "3", "Item4", "4", "Item5", "5"]
-        self.tablecells = dict([(x, self.findTableCell(x)) for x in tablecell_list])
-        self.alltablecell = self.findAllTableCells(None)
+        self.column_a = \
+                  self.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
+        self.column_b = \
+                  self.findTableColumnHeader(self.COLUMN_B, checkShowing=False)
+        self.checkboxes = {}
+        for i in range(6):
+            self.checkboxes[i] = self.findCheckBox('%s%s' % ('Item', i))
+        # "Default Group" may need to be added to this list if BUG459054 is
+        # invalid
+        table_cell_names = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3",
+                            "3", "Item4", "4", "Item5", "5"]
+        self.table_cells = {}
+        for table_cell_name in table_cell_names:
+            self.table_cells[table_cell_name] = \
+                                            self.findTableCell(table_cell_name)
+        self.all_table_cells = self.findAllTableCells(None)
+        # "tree table" has extraneous "table cell" BUG459054
+        #assert len(self.table_cells) == len(self.all_table_cells), \
+        #                    "Found %s table cell(s), expected %s" % \
+        #                    (len(self.table_cells), len(self.all_table_cells))
         #search for initial position for assert order test
-        self.item0_position = self.tablecells['Item0']._getAccessibleCenter()
-        self.num0_position = self.tablecells['0']._getAccessibleCenter()
-        self.item5_position = self.tablecells['Item5']._getAccessibleCenter()
-        self.num5_position = self.tablecells['5']._getAccessibleCenter()
+        self.item0_position = self.table_cells['Item0']._getAccessibleCenter()
+        self.num0_position = self.table_cells['0']._getAccessibleCenter()
+        self.item5_position = self.table_cells['Item5']._getAccessibleCenter()
+        self.num5_position = self.table_cells['5']._getAccessibleCenter()
 
-        print "item0:%s, item5:%s, num0:%s, num5:%s" % (self.item0_position, \
-			self.item5_position, self.num0_position,self.num5_position)
-
-    def click(self,accessible):
-        """
-        Wrap strongwind click action to add log if the accessible is 
-	ColumnHeader
-
-        """
-        if accessible == self.column_a or accessible == self.column_b:
-            procedurelogger.action("click %s" % accessible)
-            accessible.click()
-        else:
-            accessible.click()
-
-    def assertText(self, accessible):
+    def assertDefaultText(self):
         """
         Check Text implementation for TableCells and CheckBoxs
-
         """
         procedurelogger.action("check ListView Items Text Value")
 
-        items = [
-                 "Item0", "0", "Item1", "1", 
-                 "Item2", "2", "Item3", "3", 
-                 "Item4", "4", "Item5", "5"
-                ]
-        if accessible == self.tablecells:
-            for index in items:
-                procedurelogger.expectedResult('%s text is %s' \
-                                    % (accessible[index],index))
-                assert accessible[index].text == index
+        for table_cell in self.table_cells.values():
+            procedurelogger.expectedResult('%s text is %s' % \
+                                               (table_cell, table_cell.name))
+            assert table_cell.text == table_cell.name
 
-        elif accessible == self.checkbox:
-            for index in range(6):
-                procedurelogger.expectedResult('the CheckBox[%s] is %s' \
-                                    % (index,"Item" + str(index)))
-                assert accessible[index].text == "Item" + str(index)
+        for checkbox in self.checkboxes.values():
+            procedurelogger.expectedResult('%s text is %s' % \
+                                                (checkbox, checkbox.name))
+            assert checkbox.text == checkbox.name
 
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectChild(self, accessible, child_index):
         """
-        Check Selection implementation
-
+        Select accessibles child at the given index.  This method just logs and
+        then calls Strongwind's selectChild method.
         """
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
+        procedurelogger.action('select index %s of "%s"' % \
+                                                     (child_index, accessible))
 
-        accessible.selectChild(childIndex)
+        accessible.selectChild(child_index)
 
-    def assertClearSelection(self, accessible):
+    def clearSelection(self, accessible):
+        '''
+        Log and then call Strongwind's clearSelection method from the
+        accessible.
+        '''
         procedurelogger.action('clear selection in "%s"' % (accessible))
-
         accessible.clearSelection()
 
     def assertTable(self, accessible, row=0, col=0):
         """
-        Check Table implementation for TreeTable to check row and column
-        
+        Ensure that the number of rows and number of columns are what is
+        expected for the accessible
         """
-        procedurelogger.action('check "%s" Table implemetation' % accessible)
+        procedurelogger.action('Check number of rows and columsn for %s' % accessible)
         itable = accessible._accessible.queryTable()
+        procedurelogger.expectedResult('"%s" has %s Row(s) and %s Column(s)' %\
+                                                        (accessible, row, col))
+        assert itable.nRows == row,\
+                        "%s actual rows, expected %s" % (itable.nRows, row)
+        assert itable.nColumns == col,\
+                        "%s actual cols, expected %s" % (itable.nColumns, col)
 
-        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' \
-				% (accessible, row, col))
-        assert itable.nRows == row and itable.nColumns == col, \
-				"Not match Rows %s and Columns %s" \ 
-				% (itable.nRows, itable.nColumns)
-
-    def assertOrder(self, itemone=None): 
+    def assertOrder(self, is_ascending=True):
         """
-        Check TableCells' order after click TableColumnHeader, itemone means the first TableCell
-
+        Check the order of the table cells after clicking the
+        TableColumnHeader.
         """       
-        if itemone == "Item5":
-            procedurelogger.expectedResult('Item5 and Num5 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item5_new_position = self.tablecells['Item5']._getAccessibleCenter()
-            num5_new_position = self.tablecells['5']._getAccessibleCenter()
+        if is_ascending:
+            procedurelogger.expectedResult('Item0 and Num0 are at position %s and %s respectively' % (self.item0_position, self.num0_position))
+            item0_new_position = self.table_cells['Item0']._getAccessibleCenter()
+            num0_new_position = self.table_cells['0']._getAccessibleCenter()
 
-            assert item5_new_position == self.item0_position and \
-                   num5_new_position == self.num0_position
-        elif itemone == "Item0":
-            procedurelogger.expectedResult('Item0 and Num0 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item0_new_position = self.tablecells['Item0']._getAccessibleCenter()
-            num0_new_position = self.tablecells['0']._getAccessibleCenter()
+            assert item0_new_position == self.item0_position, \
+                               "Item0 position was %s, expected %s" % \
+                               (item0_new_position, self.item0_position)
+            assert num0_new_position == self.num0_position, \
+                               "num0 position was %s, expected %s" % \
+                               (num0_new_position, self.num0_position)
+        else:
+            procedurelogger.expectedResult('Item5 and Num5 are at position %s and %s respectively' % (self.item0_position, self.num0_position))
+            item5_new_position = self.table_cells['Item5']._getAccessibleCenter()
+            num5_new_position = self.table_cells['5']._getAccessibleCenter()
 
-            assert item0_new_position == self.item0_position and \
-                   num0_new_position == self.num0_position
+            assert item5_new_position == self.item0_position, \
+                               "Item5 position was %s, expected %s" % \
+                               (item5_new_position, self.item0_position)
+            assert num5_new_position == self.num0_position, \
+                               "num5 position was %s, expected %s" % \
+                               (num5_new_position, self.num0_position)
 
-    def enterTextValue(self, accessible, entertext, oldtext=None):
+    def assertUneditableText(self, accessible, text):
         """
-        Change text with some character to make sure EditableText isn't implemented, 
-	text doesn't being changed
-
+        Attempt to set the accessible's text and then assert that the
+        accessibles text did not change.  The accessible should not be
+        editable.
         """
-        procedurelogger.action('try input %s in %s which is uneditable' % (entertext, accessible))
-
+        procedurelogger.action('Try to input "%s" in "%s", which is uneditable' % (text, accessible))
+        before_text = accessible.text
         try:
-            accessible.text = entertext
+            accessible.text = text
         except NotImplementedError:
-            pass
-
+            pass # a NotImplementedError is acceptable here
         sleep(config.SHORT_DELAY)
+        after_text = accessible.text
 
-        procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
-        assert accessible.text == oldtext
+        procedurelogger.expectedResult('"%s" text still is "%s"' % (accessible, before_text))
+        assert before_text == after_text
 
     
     #close application main window after running test

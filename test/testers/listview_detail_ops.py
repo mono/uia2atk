@@ -48,8 +48,8 @@ actionsCheck(lvFrame.column_a, "TableColumnHeader")
 actionsCheck(lvFrame.column_b, "TableColumnHeader")
 
 # check ListView checkbox's actions
-for index in range(6):
-    actionsCheck(lvFrame.checkbox[index], "CheckBox")
+for checkbox in lvFrame.checkboxes.values():
+    actionsCheck(checkbox, "CheckBox")
 
 # check TreeTable 's states
 statesCheck(lvFrame.treetable, "TreeTable", add_states=["focused"])
@@ -59,14 +59,18 @@ statesCheck(lvFrame.column_a, "TableColumnHeader")
 statesCheck(lvFrame.column_b, "TableColumnHeader")
 
 # check checkbox's states
-for index in range(6):
-    statesCheck(lvFrame.checkbox[index], "ListViewCheckBox")
+for checkbox in lvFrame.checkboxes.values():
+    statesCheck(checkbox, "ListViewCheckBox")
   
 # check table cell's states, focus on Item0 default
-statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell", add_states=["focused"])
-statesCheck(lvFrame.tablecells['0'], "ListViewTableCell")
+for table_cell in lvFrame.table_cells.values():
+    if table_cell is lvFrame.table_cells['Item0']:
+        statesCheck(table_cell, "ListViewTableCell", add_states=["focused"])
+    else:
+        statesCheck(table_cell, "ListViewTableCell")
 
-# mouse click ColumnHeader doesn't rise "focused" because HasKeyboardFocus is False
+# mouse click ColumnHeader doesn't rise "focused" because HasKeyboardFocus is
+# False
 lvFrame.column_a.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.column_a, "TableColumnHeader")
@@ -76,94 +80,106 @@ sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.column_b, "TableColumnHeader")
 
 # mouse click Item0 checkbox to rise "checked"
-lvFrame.checkbox[0].mouseClick()
+lvFrame.checkboxes[0].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.checkbox[0], "ListViewCheckBox", add_states=["checked"])
+statesCheck(lvFrame.checkboxes[0], "ListViewCheckBox", add_states=["checked"])
 
 # mouse click again to uncheck
-lvFrame.checkbox[0].mouseClick()
+lvFrame.checkboxes[0].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.checkbox[0], "ListViewCheckBox")
+statesCheck(lvFrame.checkboxes[0], "ListViewCheckBox")
 
 # do click action for Item1 checkbox to rise "checked"
-lvFrame.click(lvFrame.checkbox[1])
+lvFrame.checkboxes[1].click()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.checkbox[1], "ListViewCheckBox", add_states=["checked"])
+statesCheck(lvFrame.checkboxes[1], "ListViewCheckBox", add_states=["checked"])
 
 # do click action again to uncheck
-lvFrame.click(lvFrame.checkbox[1])
+lvFrame.checkboxes[1].click()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.checkbox[1], "ListViewCheckBox")
+statesCheck(lvFrame.checkboxes[1], "ListViewCheckBox")
 
 # mouse click items under Column A, both items in the same row be selected, 
 # because FullRowSelect is True, items under Column A should rise focused
-##items under Column A can rise focused but accerciser doesn't show BUG468271 Comment#6
-lvFrame.tablecells['Item0'].mouseClick()
+# items under Column A can rise focused but accerciser doesn't show BUG468271
+# Comment#6
+lvFrame.table_cells['Item0'].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell", add_states=["selected", "focused"])
-statesCheck(lvFrame.tablecells['0'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['Item0'], "ListViewTableCell", add_states=["selected", "focused"])
+statesCheck(lvFrame.table_cells['0'], "ListViewTableCell", add_states=["selected"])
 
 # keyUp/Down navigate in tree table list, table cell under first column 
 # should rise focused, both table cells in the same row should rise selected
 lvFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecells['Item1'], "ListViewTableCell", add_states=["selected", "focused"])
-statesCheck(lvFrame.tablecells['1'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['Item1'], "ListViewTableCell", add_states=["selected", "focused"])
+statesCheck(lvFrame.table_cells['1'], "ListViewTableCell", add_states=["selected"])
 # table cells in first line get rid of focused and selected
-statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell")
-statesCheck(lvFrame.tablecells['0'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['Item0'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['0'], "ListViewTableCell")
 
 # check TreeTable selection implementation
-lvFrame.assertSelectionChild(lvFrame.treetable, 4)
+lvFrame.selectChild(lvFrame.treetable, 4)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecells['Item0'], "ListViewTableCell", add_states=["selected"])
-statesCheck(lvFrame.tablecells['0'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['Item0'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['0'], "ListViewTableCell", add_states=["selected"])
 
-lvFrame.assertSelectionChild(lvFrame.treetable, 10)
+lvFrame.selectChild(lvFrame.treetable, 10)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecells['Item2'], "ListViewTableCell", add_states=["selected"])
-statesCheck(lvFrame.tablecells['2'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['Item2'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['2'], "ListViewTableCell", add_states=["selected"])
+# the first row should still be selected
+statesCheck(lvFrame.table_cells['Item0'], "ListViewTableCell", add_states=["selected"])
+statesCheck(lvFrame.table_cells['0'], "ListViewTableCell", add_states=["selected"])
 
-# clear selection to get rid of "selected" state, but Item1 still is focused
-lvFrame.assertClearSelection(lvFrame.treetable)
+# clear selection to get rid of all "selected" states, but Item1 still is
+# focused
+lvFrame.clearSelection(lvFrame.treetable)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.tablecells['Item1'], "ListViewTableCell", add_states=["focused"])
-statesCheck(lvFrame.tablecells['1'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['Item0'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['0'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['Item1'],
+            "ListViewTableCell",
+            add_states=["focused"])
+statesCheck(lvFrame.table_cells['1'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['Item2'], "ListViewTableCell")
+statesCheck(lvFrame.table_cells['2'], "ListViewTableCell")
 
-# check text implementation for TableCells and CheckBoxs
-lvFrame.assertText(lvFrame.tablecells)
-
-lvFrame.assertText(lvFrame.checkbox)
+# check the default text for the table cells and check boxes
+lvFrame.assertDefaultText()
 
 # check table implementation for TreeTable
 lvFrame.assertTable(lvFrame.treetable, row=6, col=2)
 
+# column_a.click causes the test to hang: BUG494034
+# columnheader do click action doesn't work BUG476304
+#lvFrame.column_a.click(log=True)
+#sleep(config.SHORT_DELAY)
 # check TableCells' order after click ColumnHeader
-##columnheader do click action doesn't work BUG476304
-lvFrame.click(lvFrame.column_a)
-sleep(config.SHORT_DELAY)
-#lvFrame.assertOrder(itemone="Item5")
+#lvFrame.assertOrder(False)
 
-lvFrame.click(lvFrame.column_b)
-sleep(config.SHORT_DELAY)
-#lvFrame.assertOrder(itemone="Item0")
+# column_b.click causes the test to hang: BUG494034
+# do the same thing for the "Num" column (i.e., column_b)
+#lvFrame.column_b.click(log=True)
+#sleep(config.SHORT_DELAY)
+#lvFrame.assertOrder()
 
 # check TableCells' order after mouse click TableCells, also check 
 # TableCells' position
 lvFrame.column_a.mouseClick()
 sleep(config.SHORT_DELAY)
-lvFrame.assertOrder(itemone="Item5")
+lvFrame.assertOrder(is_ascending=False)
 
 lvFrame.column_b.mouseClick()
 sleep(config.SHORT_DELAY)
-lvFrame.assertOrder(itemone="Item0")
+lvFrame.assertOrder()
 
 # check TableCells' Text is uneditable
-lvFrame.enterTextValue(lvFrame.tablecells['Item0'], "aaaa", oldtext="Item0")
+lvFrame.assertUneditableText(lvFrame.table_cells['Item0'], "aaaa")
 
-lvFrame.enterTextValue(lvFrame.tablecells['0'], "10", oldtext="0")
+lvFrame.assertUneditableText(lvFrame.table_cells['0'], "10")
 
-##"tree table" has extraneous "table cell" BUG459054
+# "tree table" has extraneous "table cell" BUG459054
 '''
 if lvFrame.alltablecell[0].name != "Default Group":
     print "Expected Results: There is no 'Default Group' to be showing"
