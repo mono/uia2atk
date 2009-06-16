@@ -21,13 +21,13 @@ Summary:        Bridge between UIA providers and Dbus
 %description
 Bridge between UIA providers and Dbus
 
-%package -n uiadbuscorebridge-devel
+%package devel
 License:        MIT
 Summary:        mono-uia devel package
 Group:          System/Libraries
 Requires:       uiadbuscorebridge == %{version}-%{release}
 
-%description
+%description devel
 Bridge between UIA providers and Dbus
 
 %prep
