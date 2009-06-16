@@ -52,7 +52,7 @@ statesCheck(tpFrame.tab_page_2, "TabPage")
 statesCheck(tpFrame.tab_page_3, "TabPage")
 
 # BUG510841: off screen tab page is missing "visible" state 
-#statesCheck(tpFrame.tab_pages[6], "TabPage", invalid_states=["showing"])
+#statesCheck(tpFrame.tab_pages[-1], "TabPage", invalid_states=["showing"])
 
 ###################
 # Test Tab 0

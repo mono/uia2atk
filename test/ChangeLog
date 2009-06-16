@@ -1,4 +1,9 @@
 
+2009-06-16  Calen Chen <cachen@novell.com>
+
+	* testers/tabpage_basic_ops.py: change the states check of Tab6 to last 
+	Tab due to sample was updated
+
 2009-06-16  Felicia Mu <fxmu@novell.com>
 
 	* testers/toolbarbutton_basic_ops.py: add new bug 506765 reference:
