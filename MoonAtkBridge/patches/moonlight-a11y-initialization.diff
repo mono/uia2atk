@@ -1,6 +1,6 @@
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136196)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136250)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -11,7 +11,7 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 136196)
+--- class/System.Windows/System.Windows.mdp	(revision 136250)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
 @@ -18,6 +18,7 @@
      <File name="System.Windows/DependencyObject.g.cs" subtype="Code" buildaction="Compile" />
@@ -32,7 +32,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 ===================================================================
 --- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
 +++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,71 @@
 +using System;
 +using System.IO;
 +using System.Reflection;
@@ -40,7 +40,6 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +namespace Mono {
 +
 +	internal static class A11yHelper {
-+
 +		
 +		private const string BRIDGE_ASM_NAME = "MoonAtkBridge.dll";
 +		private const string BRIDGE_FULL_NAME = "Moonlight.AtkBridge.AutomationBridge";
@@ -80,12 +79,12 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +			//we cannot use InvokeMember because it's filtered by the SecurityCLR (simply because the moon team is not using it)
 +			automation_bridge = bridge_type.GetMethod (
 +				"CreateAutomationBridge",
-+				BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod)
++				BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
 +				.Invoke (null, null);
 +
 +			accessibilityEnabled = (bool) bridge_type.GetMethod (
 +				"IsAccessibilityEnabled",
-+				BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod)
++				BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
 +				.Invoke (null, null);
 +		}
 +		
@@ -100,14 +99,14 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +
 +			return (IntPtr) bridge_type.GetMethod (
 +				"GetAccessibleHandle",
-+				BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod)
++				BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
 +				.Invoke (automation_bridge, null);
 +		}
 +	}
 +}
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136196)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136250)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -123,7 +122,7 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 136196)
+--- class/System.Windows/Makefile.am	(revision 136250)
 +++ class/System.Windows/Makefile.am	(working copy)
 @@ -19,6 +19,12 @@
  

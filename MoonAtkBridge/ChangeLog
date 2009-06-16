@@ -1,3 +1,14 @@
+2009-06-16 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* build-glib21.sh: removed, not needed anymore.
+	* patches/002_gtk-sharp_private-api.diff: new patch to make GLibSharp
+	work in a secured (all non-public members) environment.
+	* patches/moonlight-a11y-initialization.diff: changed some reflection
+	usage to not be filtered by the moonlight security engine.
+	* DummyEntryPoint.cs: needed for the linking process.
+	* configure.ac: Detect the tuner/linker presence.
+	* Makefile.am: Add tuning steps to the build (ported from build-glib21.sh).
+
 2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: Add FIXME.

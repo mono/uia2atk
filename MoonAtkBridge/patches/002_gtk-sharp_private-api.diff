@@ -1,0 +1,48 @@
+Index: glib/Object.cs
+===================================================================
+--- glib/Object.cs	(revision 136250)
++++ glib/Object.cs	(working copy)
+@@ -235,7 +235,7 @@
+ 			uint idx = 1;
+ 			
+ 			bool handlers_overridden = false;
+-			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)) {
++			foreach (PropertyInfo pinfo in t.GetProperties (BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
+ 				foreach (object attr in pinfo.GetCustomAttributes (typeof (PropertyAttribute), false)) {
+ 					if(pinfo.GetIndexParameters().Length > 0)
+ 						throw(new InvalidOperationException(String.Format("GLib.RegisterPropertyAttribute cannot be applied to property {0} of type {1} because the property expects one or more indexed parameters", pinfo.Name, t.FullName)));
+Index: glib/Value.cs
+===================================================================
+--- glib/Value.cs	(revision 136250)
++++ glib/Value.cs	(working copy)
+@@ -416,7 +418,7 @@
+ 			else if (t.IsSubclassOf (typeof (GLib.Opaque)))
+ 				return (GLib.Opaque) this;
+ 
+-			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
++			MethodInfo mi = t.GetMethod ("New", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+ 			if (mi == null)
+ 				return Marshal.PtrToStructure (boxed_ptr, t);
+ 			else
+Index: glib/GType.cs
+===================================================================
+--- glib/GType.cs	(revision 136250)
++++ glib/GType.cs	(working copy)
+@@ -140,7 +140,7 @@
+ 				gtype = (GType) pi.GetValue (null, null);
+ 			else if (type.IsDefined (typeof (GTypeAttribute), false)) {
+ 				GTypeAttribute gattr = (GTypeAttribute)Attribute.GetCustomAttribute (type, typeof (GTypeAttribute), false);
+-				pi = gattr.WrapperType.GetProperty ("GType", BindingFlags.Public | BindingFlags.Static);
++				pi = gattr.WrapperType.GetProperty ("GType", BindingFlags.NonPublic | BindingFlags.Static);
+ 				gtype = (GType) pi.GetValue (null, null);
+ 			} else if (type.IsSubclassOf (typeof (GLib.Opaque)))
+ 				gtype = GType.Pointer;
+@@ -347,7 +347,7 @@
+ 			if (gtypes.Contains (t))
+ 				return (GType) gtypes [t];
+ 			
+-			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
++			PropertyInfo pi = t.GetProperty ("GType", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.NonPublic);
+ 			if (pi != null)
+ 				return (GType) pi.GetValue (null, null);
+ 			
