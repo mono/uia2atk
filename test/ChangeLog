@@ -1,3 +1,7 @@
+2009-06-15  Felicia Chen <fxmu@novell.com>
+
+	* testers/propertygrid_basic_ops.py: add new bug 513097 reference
+
 2009-06-15  Calen Chen <cachen@novell.com>
 
 	* testers/datagrid/datagridframe.py,
