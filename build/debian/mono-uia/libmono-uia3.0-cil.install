@@ -1,6 +1,6 @@
 debian/tmp/usr/lib/mono/accessibility
+debian/tmp/usr/lib/pkgconfig
 debian/tmp/usr/lib/mono/gac/UIAutomationProvider
 debian/tmp/usr/lib/mono/gac/UIAutomationTypes
 debian/tmp/usr/lib/mono/gac/UIAutomationBridge
 debian/tmp/usr/lib/mono/gac/UIAutomationClient
-debian/tmp/usr/lib/pkgconfig

@@ -1,3 +1,7 @@
+2009-06-16  Ray Wang <rawang@novell.com>
+
+	* debian: fix some files to meet debian policy.
+	
 2009-06-10  Ray Wang <rawang@novell.com>
 
 	* debian/: add debian build scripts for mono-uia,

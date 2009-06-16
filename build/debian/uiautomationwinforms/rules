@@ -75,15 +75,13 @@ binary-indep: install
 	dh_strip
 	dh_compress
 	dh_fixperms
+	dh_makeclilibs -m $(UPVERSION)
+	dh_clideps -d
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-
-# Build architecture-dependent files here.
-binary-arch: install
-# We have nothing to do by default.
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install 

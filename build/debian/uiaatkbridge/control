@@ -4,20 +4,21 @@ Priority: optional
 Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 Uploaders: Ray Wang <rawang@novell.com>
 Build-Depends: debhelper (>= 7),
-    autotools-dev,
     libgtk2.0-dev (>= 2.12),
+    autotools-dev,
     mono-devel (>= 2.4),
+    cli-common-dev (>= 0.6.0),
     libglib2.0-cil (>= 2.12.8),
     libgtk2.0-cil (>= 2.12.8),
-    mono-uia (>= 1.0),
-    mono-winfxcore (>= 1.0),
-    mono-uiautomationwinforms (>= 1.0)
-Standards-Version: 3.8.0
+    libmono-uia3.0-cil (>= 1.0),
+    libmono-winfxcore3.0-cil (>= 1.0),
+    libmono-uiautomationwinforms1.0-cil (>= 1.0)
+Standards-Version: 3.8.1
 Homepage: http://www.mono-project.com/Accessibility
 
-Package: mono-uiaatkbridge
+Package: libmono-uiaatkbridge1.0
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
 Description: Bridge between UIA providers and ATK
  The bridge contains adapter Atk.Objects that wrap UIA providers.  Adapter
  behavior is determined by provider ControlType and supported pattern interfaces.

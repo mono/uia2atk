@@ -3,20 +3,21 @@ Section: cli-mono
 Priority: optional
 Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 Uploaders: Ray Wang <rawang@novell.com>
-Build-Depends: debhelper (>= 7),
-    mono-devel (>= 2.4),
-    mono-uia (>= 1.0),
-    mono-winfxcore (>= 1.0),
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: mono-devel (>= 2.4),
+    cli-common-dev (>= 0.6.0),
+    libmono-uia3.0-cil (>= 1.0),
+    libmono-winfxcore3.0-cil (>= 1.0),
     libmono-winforms2.0-cil (>= 2.4),
     libmono-webbrowser0.5-cil (>= 2.4),
     libglib2.0-cil (>= 2.12.8),
     libgtk2.0-cil (>= 2.12.8),
     intltool (>= 0.35.0)
-Standards-Version: 3.8.0
+Standards-Version: 3.8.1
 Homepage: http://www.mono-project.com/Accessibility
 
-Package: mono-uiautomationwinforms
+Package: libmono-uiautomationwinforms1.0-cil
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
 Description: Implementation of UIA providers
  Implementation of UIA providers for Mono's Winforms controls.

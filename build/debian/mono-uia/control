@@ -3,21 +3,21 @@ Section: cli-mono
 Priority: optional
 Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 Uploaders: Ray Wang <rawang@novell.com>
-Build-Depends: debhelper (>= 7),
-    mono-gac (>= 2.4),
-    mono-devel (>= 2.4)
-Standards-Version: 3.8.0
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: mono-devel (>= 2.4),
+    cli-common-dev (>= 0.6.0)
+Standards-Version: 3.8.1
 Homepage: http://www.mono-project.com/Accessibility
 
-Package: mono-uia
+Package: libmono-uia3.0-cil
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
 Description: Implementations of members and interfaces based on MS UIA API
  Implementations of the members and interfaces based on MS UIA API.
 
-Package: mono-winfxcore
+Package: libmono-winfxcore3.0-cil
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
 Description: Parts of winfx
  The Mono Project is an open development initiative that is working to
  develop an open source, Unix version of the .NET development platform.
