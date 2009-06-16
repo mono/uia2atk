@@ -1,3 +1,7 @@
+2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Uia2Atk.mds: Add solution folder for MoonAtkBridge.
+
 2009-06-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Uia2Atk.mds: Add DbusCoreUiaSource to solution.
