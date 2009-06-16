@@ -1,5 +1,9 @@
 2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am: Add FIXME.
+
+2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MoonAtkBridge.mds: Add.
 
 2009-06-15  Andrés G. Aragoneses  <aaragoneses@novell.com>

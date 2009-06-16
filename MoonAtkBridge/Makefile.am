@@ -23,6 +23,7 @@ GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 
 all-am: $(ASSEMBLY_STAGE_PATH)
 
+#FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):
 	svn export http://anonsvn.mono-project.com/source/trunk/gtk-sharp $(GTK_SHARP)
 
