@@ -91,6 +91,8 @@ sleep(config.SHORT_DELAY)
 
 pgFrame.textpanel.findLabel(pgFrame.child.name)
 
+#bug 513097 PropertyGrid:characters in EditableText of TableCells can't be deleted by "Backspace" key
+
 #close application frame window
 pgFrame.quit()
 
