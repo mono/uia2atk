@@ -64,7 +64,7 @@ dgFrame.assertLabel("row:2 col:0 Value:False")
 
 dgFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
-# BUG485466: navigate to last line cause crash
+# BUG506286: navigate to last line cause crash
 #dgFrame.keyCombo("Return", grabFocus=False)
 dgFrame.null_cell.mouseClick()
 sleep(config.SHORT_DELAY)
@@ -76,7 +76,7 @@ dgFrame.assertLabel("row:0 col:0 Value:False")
 ###################################
 dgFrame.true_cell.mouseClick()
 sleep(config.SHORT_DELAY)
-dgFrame.assertLabel("row:1 col:0 Value:")
+dgFrame.assertLabel("row:1 col:0 Value:None")
 
 dgFrame.false_cell.mouseClick()
 sleep(config.SHORT_DELAY)

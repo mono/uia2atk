@@ -1,4 +1,9 @@
-2009-06-15  Felicia Chen <fxmu@novell.com>
+2009-06-16  Calen Chen <cachen@novell.com>
+
+	* testers/datagridboolcolumn_basic_ops.py: commit from review board 
+	(http://reviews.mono-a11y.org/r/277/)
+
+2009-06-16  Felicia Chen <fxmu@novell.com>
 
 	* testers/propertygrid_basic_ops.py: add new bug 513097 reference
 
