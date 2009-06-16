@@ -28,7 +28,7 @@ Group:          System/Libraries
 Requires:       uiadbuscorebridge == %{version}-%{release}
 
 %description devel
-Bridge between UIA providers and Dbus
+Bridge between UIA providers and Dbus devel package
 
 %prep
 %setup -q
