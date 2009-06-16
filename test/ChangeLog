@@ -1,3 +1,9 @@
+
+2009-06-16  Felicia Mu <fxmu@novell.com>
+
+	* testers/toolbarbutton_basic_ops.py: add new bug 506765 reference:
+        ToolBarButton: DropDown style toolbarbutton with wrong role name
+
 2009-06-16  Calen Chen <cachen@novell.com>
 
 	* testers/listview_detail/listviewframe.py,
@@ -9,7 +15,7 @@
 	* testers/datagridboolcolumn_basic_ops.py: commit from review board 
 	(http://reviews.mono-a11y.org/r/277/)
 
-2009-06-16  Felicia Chen <fxmu@novell.com>
+2009-06-16  Felicia Mu <fxmu@novell.com>
 
 	* testers/propertygrid_basic_ops.py: add new bug 513097 reference
 
