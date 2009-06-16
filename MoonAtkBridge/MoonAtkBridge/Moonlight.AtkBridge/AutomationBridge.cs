@@ -35,8 +35,13 @@ namespace Moonlight.AtkBridge
 	public class AutomationBridge
 	{
 #region Public Methods
-		public AutomationBridge ()
+		public static AutomationBridge CreateAutomationBridge ()
 		{
+			return new AutomationBridge ();
+		}
+
+ 		private AutomationBridge ()
+ 		{
 			AutomationSingleton.Instance.AutomationPropertyChanged
 				+= new EventHandler<AutomationPropertyChangedEventArgs> (
 					OnAutomationPropertyChanged);

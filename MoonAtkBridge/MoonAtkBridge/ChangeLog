@@ -1,3 +1,8 @@
+2009-06-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: Use a static method
+	rather than a ctor, to track the reflection usage in A11yHelper.
+
 2009-06-15  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Implement Atk.ComponentImplementor,

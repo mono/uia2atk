@@ -1,3 +1,9 @@
+2009-06-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-initialization: Use reflection API not
+	filtered by Mono's CoreCLR. Also, remove ChangeLog bits from the
+	patch because they cause conflicts (they will be added when committed).
+
 2009-06-12  Brad Taylor  <brad@getcoded.net>
 
 	* patches/moonlight-ff3.6.diff: Add a patch for Moonlight to allow
