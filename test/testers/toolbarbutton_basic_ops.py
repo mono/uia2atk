@@ -48,7 +48,7 @@ tbbFrame = app.toolBarButtonFrame
 ###########################
 # States test
 ###########################
-
+# BUG506765 ToolBarButton: DropDown style toolbarbutton with wrong role name
 # check toolstrip's states
 statesCheck(tbbFrame.toolbar, "ToolBar")
 
