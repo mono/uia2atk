@@ -137,6 +137,9 @@ namespace Moonlight.AtkBridge
 			if (dynamicType == null)
 				return null;
 
+			Log.Debug ("Creating new instance of {0} for {1}",
+			           dynamicType, peer.GetType ());
+
 			adapter = (Adapter) Activator.CreateInstance (
 				dynamicType, new object [] { peer }
 			);
@@ -176,6 +179,8 @@ namespace Moonlight.AtkBridge
 		public Type CreateDynamicType (string typeName,
 		                               Type [] implementors)
 		{
+			Log.Debug ("Generating dynamic adapter type {0}", typeName);
+
 			Type [] atkInterfaces
 				= implementors.SelectMany (i => i.GetInterfaces ())
 			                      .Where (i => i.Namespace == "Atk")
@@ -218,9 +223,16 @@ namespace Moonlight.AtkBridge
 				ilgen.Emit (OpCodes.Ldarg_0);
 				ilgen.Emit (OpCodes.Ldarg_1);
 
-				ilgen.Emit (OpCodes.Newobj, item.Key.GetConstructor (
-					new Type [] { typeof (AutomationPeer) }));
+				ConstructorInfo ctor
+					= item.Key.GetConstructor (
+						new Type [] { typeof (AutomationPeer) });
+				if (ctor == null) {
+					Log.Error ("Implementor {0} does not have an AutomationPeer ctor",
+					           item.Key);
+					continue;
+				}
 
+				ilgen.Emit (OpCodes.Newobj, ctor);
 				ilgen.Emit (OpCodes.Stfld, item.Value);
 			}
 

@@ -33,6 +33,11 @@ if test "x$SMCS" = "xno"; then
 	AC_MSG_ERROR([smcs Not found, please install moonlight])
 fi
 
+AC_PATH_PROG(MXAP, mxap, no)
+if test "x$MXAP" = "xno"; then
+	AC_MSG_ERROR([mxap Not found, please install moonlight])
+fi
+
 AC_PATH_PROG(CC, gcc, no)
 if test "x$CC" = "xno"; then
 	AC_MSG_ERROR([gcc Not found])
@@ -108,6 +113,9 @@ AC_SUBST(VERSION)
 AC_CONFIG_FILES([
 Makefile
 install.rdf
+tests/Makefile
+tests/assets/Makefile
+tests/assets/ValueTest/Makefile
 ])
 
 AC_OUTPUT

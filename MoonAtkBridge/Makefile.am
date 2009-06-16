@@ -21,7 +21,7 @@ ATK_API_FILE=$(GAPI_PARSER_PATH)$(ATK_FILENAME)
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 
-all-am: $(ASSEMBLY_STAGE_PATH)
+all-am: $(ASSEMBLY_STAGE_PATH) tests-build
 
 #FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):
@@ -85,7 +85,6 @@ CONFIG_FILES = \
 	$(srcdir)/$(ATK_SHARP_PATH)atk-sharp.dll.config \
 	$(srcdir)/$(GLIB_SHARP_PATH)glib-sharp.dll.config
 
-
 $(ASSEMBLY_CONFIG): stage $(GTK_SHARP) $(CONFIG_FILES)
 	echo "<configuration>" > $@
 	cat $(CONFIG_FILES) | grep -v configuration | sort | uniq >> $@
@@ -96,6 +95,9 @@ $(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG)
 
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
+
+tests-build:
+	cd tests && $(MAKE) $(AM_MAKEFLAGS)
 
 
 ##

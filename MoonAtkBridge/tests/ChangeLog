@@ -1,0 +1,12 @@
+2009-06-16  Brad Taylor  <brad@getcoded.net>
+
+	* assets:
+	* Makefile.am: Add make setup so that we can build assets.
+
+	* test_value.py: 
+	* assets/ValueTest: Add test for the Value pattern implementor.
+
+2009-06-15  Brad Taylor  <brad@getcoded.net>
+
+	* *: Add initial test infrastructure, Adapter and
+	ExpandCollapseInvokeButton test.

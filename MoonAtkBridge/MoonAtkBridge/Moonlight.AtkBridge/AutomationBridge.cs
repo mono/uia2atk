@@ -42,6 +42,8 @@ namespace Moonlight.AtkBridge
 
  		private AutomationBridge ()
  		{
+			Log.Debug ("Moonlight Automation Bridge starting up...");
+
 			AutomationSingleton.Instance.AutomationPropertyChanged
 				+= new EventHandler<AutomationPropertyChangedEventArgs> (
 					OnAutomationPropertyChanged);
@@ -70,10 +72,11 @@ namespace Moonlight.AtkBridge
 		private void OnAutomationPropertyChanged (
 			object o, AutomationPropertyChangedEventArgs args)
 		{
-Console.WriteLine ("OnAutomationPropertyChanged: Peer = {0}, Property = {1}, Old = {2}, New = {3}", args.Peer, args.Property, args.OldValue, args.NewValue);
-
 			if (args.Peer == null)
 				return;
+
+			Log.Info ("OnAutomationPropertyChanged: Peer = {0}, Property = {1}, Old = {2}, New = {3}",
+			          args.Peer, args.Property, args.OldValue, args.NewValue);
 
 			Adapter adapter
 				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);
@@ -86,9 +89,11 @@ Console.WriteLine ("OnAutomationPropertyChanged: Peer = {0}, Property = {1}, Old
 		private void OnAutomationEventRaised (
 			object o, AutomationEventEventArgs args)
 		{
-Console.WriteLine ("OnAutomationEventRaised: Peer = {0}, Event = {1}", args.Peer, args.Event);
 			if (args.Peer == null)
 				return;
+
+			Log.Info ("OnAutomationEventRaised: Peer = {0}, Event = {1}",
+			          args.Peer, args.Event);
 
 			Adapter adapter
 				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);

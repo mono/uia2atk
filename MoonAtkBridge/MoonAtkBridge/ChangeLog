@@ -1,3 +1,18 @@
+2009-06-16  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge.sources: 
+	* Moonlight.AtkBridge/Log.cs: Add rudiementary logging infrastructure.
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: Use new logging
+	infrastructure to log when the bridge starts up.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Properly handle
+	implementor stupidity and warn if no AutomationPeer ctor is found for
+	a given pattern implementor.  Add debug logging.
+
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: Flesh out Value
+	pattern implementor with code from UiaAtkBridge.
+
 2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
         * MoonAtkBridge.mdp: Add.

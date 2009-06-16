@@ -3,6 +3,7 @@ Moonlight.AtkBridge/Adapter.cs
 Moonlight.AtkBridge/AutomationBridge.cs
 Moonlight.AtkBridge/DynamicAdapterFactory.cs 
 Moonlight.AtkBridge/ImplementsPatternAttribute.cs
+Moonlight.AtkBridge/Log.cs
 Moonlight.AtkBridge/RootVisualAdapter.cs
 Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
 Moonlight.AtkBridge.PatternImplementors/Value.cs
