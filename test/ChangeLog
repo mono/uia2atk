@@ -1,4 +1,8 @@
 
+2009-06-17  Felicia Mu <fxmu@novell.com>
+	* testers/datagridview_basic_ops.py: remove Bug 478840 478856 478891 and update their test cases.
+         add new Bug 503078 513476 513837 reference and add their counterpart test case
+
 2009-06-16  Calen Chen <cachen@novell.com>
 
 	* testers/tabpage_basic_ops.py: change the states check of Tab6 to last 

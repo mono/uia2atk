@@ -47,8 +47,7 @@ dtgvFrame = app.dataGridViewFrame
 
 # -> Check DataGridView TableColumnHeader's actions and states list
 for column in dtgvFrame.columns:
-	# BUG478840 - DataGridView. Columns are missing "click" action
-	##actionsCheck(column, "TableColumnHeader")
+	actionsCheck(column, "TableColumnHeader")
 	statesCheck(column, "TableColumnHeader")
 	
 	# Mouse clicking column won't rise "focused" because HasKeyboardFocus is False
@@ -58,88 +57,86 @@ for column in dtgvFrame.columns:
 	
 # -> CheckBox cells tests
 
-# BUG478856 - Uncomment following lines
+#BUG513476 - DataGridView:the uneditable table cell lack the 'sensitive' and 'enable' state:
 ##statesCheck(dtgvFrame.tablecells[0], "TreeViewTableCell", add_states=["focused", "selected"])
-##statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell")
+statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell", add_states=["editable"])
 ##statesCheck(dtgvFrame.tablecells[2], "TreeViewTableCell")
 
-##reg = EventListener(event_types='object:state-changed')
-##reg.start()
+reg = EventListener(event_types='object:state-changed')
+reg.start()
 
 checkbox = dtgvFrame.findAllCheckBoxes(None)[1]
 checkbox.grabFocus()
 
-# BUG478856 - focusable is missing
-#assert reg.containsEvent(checkbox, 'object:state-changed:focused')
 
-##reg.clearQueuedEvents()
+assert reg.containsEvent(checkbox, 'object:state-changed:focused')
 
-##sleep(config.LONG_DELAY)
-# BUG478856 - focusable is missing
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##    "selectable", "selected", "focused" \
-##])
+reg.clearQueuedEvents()
 
-##checkbox.click()
-##sleep(config.LONG_DELAY)
-# BUG478856 - focusable is missing
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##    "selectable", "selected", "focused", "checked" \
-##])
+sleep(config.LONG_DELAY)
 
-# assert reg.containsEvent(checkbox, 'object:state-changed:checked')
-
-##reg.clearQueuedEvents()
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused" \
+])
 
 checkbox.click()
-# BUG478856 - focusable is missing
-##sleep(config.LONG_DELAY)
-##statesCheck(checkbox, "CheckBox", add_states=[ \
-##   "selectable", "selected", "focused", \
-##])
+sleep(config.LONG_DELAY)
+statesCheck(checkbox, "CheckBox", add_states=[ \
+    "selectable", "selected", "focused", "checked" \
+])
 
-##sleep(config.LONG_DELAY)
-##assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
 
-##reg.stop()
+reg.clearQueuedEvents()
+
+checkbox.click()
+sleep(config.LONG_DELAY)
+statesCheck(checkbox, "CheckBox", add_states=[ \
+   "selectable", "selected", "focused", \
+])
+
+sleep(config.LONG_DELAY)
+assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+
+reg.stop()
 
 # -> TextBox cell tests
 dtgvFrame.assertEditsText(dtgvFrame.edits)
 
-# BUG478856 - Uncomment following 4 lines
+#BUG513476 - DataGridView:the uneditable table cell lack the 'sensitive' and 'enable' state:
 ##dtgvFrame.edits[0].mouseClick()
 ##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=[ "selectable", "selected", "focused" ])
 ##dtgvFrame.edits[1].mouseClick()
-##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=[ "selectable", "selected", "focused" ])
+##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=["editable", "selectable", "selected", "focused" ])
 
 # -> Button cell tests
 
 for button in dtgvFrame.buttons:
 	actionsCheck(button,"Button")
-	# BUG478856 "focusable"
-	# statesCheck(button,"Button")
+	statesCheck(button,"Button", add_states=["selectable"])
 	
 # Testing click
 dtgvFrame.buttons[0].mouseClick()
 sleep(config.SHORT_DELAY)
 dtgvFrame.assertCellClickValue(0, 3)
-# BUG478856 - focusable is missing
-##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["focused", "selectable", "selected"])
+
+statesCheck(dtgvFrame.buttons[0],"Button", add_states=["focused", "selectable", "selected"])
 dtgvFrame.buttons[1].mouseClick()
 sleep(config.SHORT_DELAY)
-# BUG478856 - focusable is missing
-##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
+
+statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
 dtgvFrame.assertCellClickValue(1, 3)
-# BUG478856 - focusable is missing
-# statesCheck(dtgvFrame.buttons[1],"Button", add_states=["focused", "selectable", "selected"])
+
+statesCheck(dtgvFrame.buttons[1],"Button", add_states=["focused", "selectable", "selected"])
 
 # -> Link cell tests
 
-# BUG478856  missing focusable
-##for label in dtgvFrame.labels:
-##	statesCheck(button,"Label", invalid_states=["multi line"], add_states=["selectable", "focusable"])
+for label in dtgvFrame.labels:
+	statesCheck(button,"Label", invalid_states=["multi line"], add_states=["selectable", "focusable"])
 
 # -> ComboBox cell tests
+#BUG503078 combobox in datagridview lacks of 'sensitive' ,'enabled' state
+#statesCheck(dtgvFrame.comboboxes[0],"ComboBox", add_states=["selectable"])
 
 # -> All cells: Selection tests
 dtgvFrame.assertClearSelection(dtgvFrame.treetable)
@@ -147,8 +144,8 @@ sleep(config.SHORT_DELAY)
 # Selecting first checkbox
 dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
-# BUG478891 - DataGridView: Selected cells don't emit "selected" event.
-##statesCheck(dtgvFrame.treetable[0], "CheckBox", add_states=["selected", "checked", "selectable"], invalid_states=["enabled", "sensitive"])
+# BUG513837 - DataGridView:the "checked" check box lack the 'sensitive' and 'enable' state
+#statesCheck(dtgvFrame.treetable[5], "CheckBox", add_states=[ "checked", "selectable"])
 
 # Selecting first textbox
 dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 1)
