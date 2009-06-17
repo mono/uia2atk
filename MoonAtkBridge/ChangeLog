@@ -1,5 +1,11 @@
 2009-06-16 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* patches/moonlight-a11y-initialization.diff: really check for the
+	env var (ifdef in a Makefile.am doesn't work). Drop comment (since
+	it's a patch for moon, not in MoonAtkBridge).
+
+2009-06-16 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* build-glib21.sh: removed, not needed anymore.
 	* patches/002_gtk-sharp_private-api.diff: new patch to make GLibSharp
 	work in a secured (all non-public members) environment.

@@ -1,6 +1,6 @@
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136250)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136249)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -11,7 +11,7 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 136250)
+--- class/System.Windows/System.Windows.mdp	(revision 136249)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
 @@ -18,6 +18,7 @@
      <File name="System.Windows/DependencyObject.g.cs" subtype="Code" buildaction="Compile" />
@@ -32,7 +32,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 ===================================================================
 --- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
 +++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,70 @@
 +using System;
 +using System.IO;
 +using System.Reflection;
@@ -76,7 +76,6 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +			if (bridge_type == null)
 +				return;
 +
-+			//we cannot use InvokeMember because it's filtered by the SecurityCLR (simply because the moon team is not using it)
 +			automation_bridge = bridge_type.GetMethod (
 +				"CreateAutomationBridge",
 +				BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
@@ -106,7 +105,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +}
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136250)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136249)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -122,7 +121,7 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 136250)
+--- class/System.Windows/Makefile.am	(revision 136249)
 +++ class/System.Windows/Makefile.am	(working copy)
 @@ -19,6 +19,12 @@
  
@@ -130,9 +129,9 @@ Index: class/System.Windows/Makefile.am
  
 +## this hack will be dropped once we get this working:
 +## http://www.mono-project.com/Moonlight/SecurityStatus#Assembly_Loading
-+#ifdef MOON_A11Y_INTERNAL_HACK
++if MOON_A11Y_INTERNAL_HACK
 +CSCFLAGS += -define:MOON_A11Y_INTERNAL_HACK
-+#endif
++endif
 +
  GMCS = gmcs $(CSCFLAGS) -lib:../lib/moonlight -d:NET_3_0
  SMCS = MONO_PATH="../lib/2.1:$$MONO_PATH" mono --runtime=moonlight --security=temporary-smcs-hack ../lib/2.1/smcs.exe -r:System.Net $(CSCFLAGS)
@@ -145,3 +144,16 @@ Index: class/System.Windows/Makefile.am
  	$(srcdir)/Mono/ApplicationLauncher.cs					\
  	$(srcdir)/Mono/DispatcherTimer.cs					\
  	$(srcdir)/Mono/EasingFunctionWrapper.cs					\
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 136249)
++++ configure.ac	(working copy)
+@@ -106,6 +106,8 @@
+ LOADER_LIBS="$GLIB_LIBS"
+ AC_SUBST(LOADER_LIBS)
+ 
++AM_CONDITIONAL(MOON_A11Y_INTERNAL_HACK,test x$MOON_A11Y_INTERNAL_HACK = x1)
++
+ if test x$with_ff3 = xyes; then
+    MOZILLA_CFLAGS=$FF3_CFLAGS
+ else
