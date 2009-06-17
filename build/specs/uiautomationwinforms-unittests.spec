@@ -11,24 +11,19 @@
 # 
 
 Name:           uiautomationwinforms
-Version:	0.9.1
+Version:	1.0
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-AutoReqProv:    on
-Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-data
+Requires:       mono-core gtk-sharp2 mono-data
 Requires:       mono-uia mono-winfxcore uiaatkbridge 
-BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2
+BuildRequires:	mono-devel mono-data gtk-sharp2 glib-sharp2
 BuildRequires:	mono-uia mono-uia-devel mono-winfxcore uiaatkbridge intltool >= 0.35
-BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
-BuildRequires:  3ddiag cabextract xterm ghostscript-x11
-BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
-BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
-BuildRequires:  xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
-BuildRequires:  fvwm-themes gv mmv pmidi xine-ui xosview xpp xosd desktop-data-openSUSE-extra
+BuildRequires:  mono-nunit metacity xorg-x11-Xvfb
+%define		X_display		":98"
 
 Summary:        UIAutomationWinforms unit tests
 
@@ -41,11 +36,14 @@ Don't install this package. Seriously. Fo' rizzle.
 %build
 %configure
 make
-export DISPLAY=:1
-Xvfb -ac -screen 0 1280x1024x16 -br :1 &
+export DISPLAY=%{X_display}
+Xvfb %{X_display} >& Xvfb.log &
+trap "kill $! || true" EXIT
+sleep 10
+metacity &
+#Xvfb -ac -screen 0 1280x1024x16 -br :1 &
 cd UIAutomationWinformsTests
 chmod +x providertest.sh
-metacity &
 ./providertest.sh
 
 %install
