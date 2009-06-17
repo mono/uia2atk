@@ -1,0 +1,82 @@
+Index: src/security.c
+===================================================================
+--- src/security.c	(revision 136249)
++++ src/security.c	(working copy)
+@@ -16,6 +16,7 @@
+ #if MONO_ENABLE_CORECLR_SECURITY
+ 
+ static struct stat platform_stat;
++static struct stat platform_a11y_stat;
+ 
+ const static char* platform_code_assemblies [] = {
+ 	"mscorlib.dll",
+@@ -32,6 +33,9 @@
+ #if DEBUG
+ 	"jtr.dll",
+ #endif
++#if MOON_A11Y_INTERNAL_HACK_ENABLED
++	"MoonAtkBridge.dll",
++#endif
+ };
+ 
+ static gboolean
+@@ -55,8 +63,14 @@
+ 	if ((platform_stat.st_mode != info.st_mode) ||
+ 		(platform_stat.st_ino != info.st_ino) ||
+ 		(platform_stat.st_dev != info.st_dev)) {
+-		g_free (dir);
+-		return FALSE;
++		if ((platform_a11y_stat.st_mode != info.st_mode) ||
++			(platform_a11y_stat.st_ino != info.st_ino) ||
++			(platform_a11y_stat.st_dev != info.st_dev)) {
++
++			g_free (dir);
++			return FALSE;
++		}
+ 	}
+ 	g_free (dir);
+ 
+@@ -88,7 +106,25 @@
+ 			   "you're doing!");
+ 	} else if (g_path_is_absolute (platform_dir)) {
+ 		memset (&platform_stat, 0, sizeof (platform_stat));
++
+ 		if (stat (platform_dir, &platform_stat) == 0) {
++
++			const char* moonlight_at_novell = g_strrstr (platform_dir, "moonlight@novell.com");
++			if (moonlight_at_novell != NULL) {
++				const char* after = g_strdup ("moonlight-a11y@novell.com/components");
++
++				const char* before = g_strndup (platform_dir, 
++				                                strlen(platform_dir) - strlen(moonlight_at_novell));
++				const char* platform_a11y_dir = g_strconcat (before, after, NULL);
++
++				memset (&platform_a11y_stat, 0, sizeof (platform_a11y_stat));
++				stat (platform_a11y_dir, &platform_a11y_stat);
++				g_free (platform_a11y_dir);
++				g_free (before);
++				g_free (after);
++				moonlight_at_novell = NULL;
++			}
++
+ 			mono_security_enable_core_clr ();
+ 			mono_security_set_core_clr_platform_callback (determine_platform_image);
+ 		}
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 136249)
++++ configure.ac	(working copy)
+@@ -106,6 +108,13 @@
+ LOADER_LIBS="$GLIB_LIBS"
+ AC_SUBST(LOADER_LIBS)
+ 
++# this hack will be dropped once we get this working:
++# http://www.mono-project.com/Moonlight/SecurityStatus#Assembly_Loading
++if test "x$MOON_A11Y_INTERNAL_HACK" = "x1"; then
++       AC_DEFINE([MOON_A11Y_INTERNAL_HACK_ENABLED], [1],
++                 [Whether Mono A11y is enabled for now])
++fi
++
+ if test x$with_ff3 = xyes; then
+    MOZILLA_CFLAGS=$FF3_CFLAGS
+ else

@@ -1,3 +1,9 @@
+2009-06-17 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-security.diff: New.
+	* patches/moonlight-a11y-initialization.diff: Add headers, move
+	line from configure.ac to not conflict with the above patch.
+
 2009-06-16 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight-a11y-initialization.diff: really check for the
