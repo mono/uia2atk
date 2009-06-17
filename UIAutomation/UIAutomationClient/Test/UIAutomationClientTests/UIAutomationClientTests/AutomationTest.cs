@@ -72,22 +72,11 @@ namespace MonoTests.System.Windows.Automation
 				"Expected ArgumentNullException");
 		}
 
-		public virtual Process StartApplication (string name, string arguments)
-		{
-			Process p = new Process ();
-			p.StartInfo.FileName = name;
-			p.StartInfo.Arguments = arguments;
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.Start ();
-			return p;
-		}
-
 		[Test]
 		public void CompareAutomationElementsTest ()
 		{
-			Process p = StartApplication (@"SampleForm.exe",
-				string.Empty);
+			Process p = BaseTest.StartApplication (@"SampleForm.exe",
+				String.Empty);
 			try {
 				Thread.Sleep (1000);
 

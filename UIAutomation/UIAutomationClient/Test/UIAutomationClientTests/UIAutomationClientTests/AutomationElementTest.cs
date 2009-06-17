@@ -37,109 +37,8 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation
 {
 	[TestFixture]
-	public class AutomationElementTest
+	public class AutomationElementTest : BaseTest
 	{
-		#region Setup/Teardown
-
-		private Process p;
-		private AutomationElement testFormElement;
-		private AutomationElement groupBox1Element;
-		private AutomationElement button1Element;
-		private AutomationElement button2Element;
-		private AutomationElement button3Element;
-		private AutomationElement label1Element;
-		private AutomationElement textbox1Element;
-		private AutomationElement textbox2Element;
-		private AutomationElement textbox3Element;
-		private AutomationElement tb3horizontalScrollBarElement;
-		private AutomationElement tb3verticalScrollBarElement;
-		//private AutomationElement horizontalMenuStripElement;
-		//private AutomationElement verticalMenuStripElement;
-
-		public virtual void StartApplication (string name, string arguments)
-		{
-			if (p != null)
-				return;
-			p = new Process ();
-			p.StartInfo.FileName = name;
-			p.StartInfo.Arguments = arguments;
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.Start ();
-		}
-
-		[TestFixtureSetUp]
-		public void FixtureSetUp ()
-		{
-			StartApplication (@"SampleForm.exe",
-				string.Empty);
-
-			Thread.Sleep (1000);
-
-			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ProcessIdProperty,
-					p.Id));
-			groupBox1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Group));
-			button1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Button));
-			textbox1Element = testFormElement.FindFirst (TreeScope.Children,
-				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
-					new PropertyCondition (AEIds.IsPasswordProperty, false)));
-			textbox2Element = testFormElement.FindFirst (TreeScope.Children,
-				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
-					new PropertyCondition (AEIds.IsPasswordProperty, true)));
-			label1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Text));
-			button2Element = groupBox1Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.NameProperty,
-					"button2"));
-			button3Element = groupBox1Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.NameProperty,
-					"button3"));
-			textbox3Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Document));
-			tb3horizontalScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.OrientationProperty,
-					OrientationType.Horizontal));
-			tb3verticalScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.OrientationProperty,
-					OrientationType.Vertical));
-			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
-			//        new PropertyCondition (AEIds.NameProperty,
-			//                "menuStrip1"));
-			//verticalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
-			//        new PropertyCondition (AEIds.NameProperty,
-			//                "menuStrip2"));
-
-			Assert.IsNotNull (testFormElement);
-			Assert.IsNotNull (groupBox1Element);
-			Assert.IsNotNull (button1Element);
-			Assert.IsNotNull (button2Element);
-			Assert.IsNotNull (button3Element);
-			Assert.IsNotNull (label1Element);
-			Assert.IsNotNull (textbox1Element);
-			Assert.IsNotNull (textbox2Element);
-			Assert.IsNotNull (textbox3Element);
-			Assert.IsNotNull (tb3horizontalScrollBarElement);
-			Assert.IsNotNull (tb3verticalScrollBarElement);
-			//Assert.IsNotNull (horizontalMenuStripElement);
-			//Assert.IsNotNull (verticalMenuStripElement);
-		}
-
-		[TestFixtureTearDown]
-		public void FixtureTearDown ()
-		{
-			p.Kill ();
-			p = null;
-		}
-
-		#endregion
-
 		#region Test Methods
 
 		[Test]
@@ -161,7 +60,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("Alt+u",
 				button1Element.Current.AccessKey,
 				"button1");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 				button2Element.Current.AccessKey,
 				"button2");
 		}
@@ -286,7 +185,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("help text 3",
 				button3Element.Current.HelpText,
 				"button3");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 				button1Element.Current.HelpText,
 				"button1");
 		}
@@ -463,7 +362,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("label1",
 				textbox1Element.Current.Name,
 				"textbox1");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 				textbox2Element.Current.Name,
 				"textbox2");
 		}
@@ -586,8 +485,10 @@ namespace MonoTests.System.Windows.Automation
 			// Test search order, conditions (also tested in FindAllTest and FixtureSetUp)
 			AutomationElement firstFound =
 				groupBox1Element.FindFirst (TreeScope.Descendants,
-				new PropertyCondition (AEIds.OrientationProperty, OrientationType.None));
-			Assert.AreEqual (button3Element, firstFound, "In Descendants, first element added found first");
+				new AndCondition (new PropertyCondition (AEIds.OrientationProperty, OrientationType.None),
+					new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button)));
+			Assert.AreEqual (button7Element, firstFound, "In Descendants, first element added found first. " +
+				String.Format ("Expected element named {0}, got element named {1}", button7Element.Current.Name, firstFound.Current.Name));
 			firstFound =
 				groupBox1Element.FindFirst (TreeScope.Subtree,
 				new PropertyCondition (AEIds.OrientationProperty, OrientationType.None));
@@ -690,24 +591,24 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void RootElementTest ()
 		{
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.AcceleratorKey,
 			                 "AcceleratorKey");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.AccessKey,
 			                 "AccessKey");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.AutomationId,
 			                 "AutomationId");
-			//Assert.AreEqual (string.Empty, AutomationElement.RootElement.Current.BoundingRectangle, "BoundingRectangle"); // TODO
+			//Assert.AreEqual (String.Empty, AutomationElement.RootElement.Current.BoundingRectangle, "BoundingRectangle"); // TODO
 			//Assert.AreEqual ("#32769", AutomationElement.RootElement.Current.ClassName, "ClassName"); // TODO
 			Assert.AreEqual (ControlType.Pane,
 			                 AutomationElement.RootElement.Current.ControlType,
 			                 "ControlType");
-			//Assert.AreEqual (string.Empty, AutomationElement.RootElement.Current.FrameworkId, "FrameworkId"); // TODO: "Win32"
+			//Assert.AreEqual (String.Empty, AutomationElement.RootElement.Current.FrameworkId, "FrameworkId"); // TODO: "Win32"
 			Assert.IsFalse (AutomationElement.RootElement.Current.HasKeyboardFocus,
 			                "HasKeyboardFocus");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.HelpText,
 			                 "HelpText");
 			Assert.IsTrue (AutomationElement.RootElement.Current.IsContentElement,
@@ -724,10 +625,10 @@ namespace MonoTests.System.Windows.Automation
 			                "IsPassword");
 			Assert.IsFalse (AutomationElement.RootElement.Current.IsRequiredForForm,
 			                "IsRequiredForForm");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.ItemStatus,
 			                 "ItemStatus");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.ItemType,
 			                 "ItemType");
 			Assert.IsNull (AutomationElement.RootElement.Current.LabeledBy,
@@ -735,7 +636,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (ControlType.Pane.LocalizedControlType,
 			                 AutomationElement.RootElement.Current.LocalizedControlType,
 			                 "LocalizedControlType");
-			Assert.AreEqual (string.Empty,
+			Assert.AreEqual (String.Empty,
 			                 AutomationElement.RootElement.Current.Name,
 			                 "Name");
 			//Assert.AreEqual (65552, AutomationElement.RootElement.Current.NativeWindowHandle, "NativeWindowHandle"); // TODO: Probably changes
@@ -784,12 +685,12 @@ namespace MonoTests.System.Windows.Automation
 				resultList.Add (element);
 				// TODO: Uncomment when Count assertion is supported (see above)
 				//Assert.IsTrue (expectedElements.Contains (element),
-				//        string.Format ("Did not expect element named '{0}' with RuntimeId{1}", element.Current.Name, element.GetRuntimeId ()));
+				//        String.Format ("Did not expect element named '{0}' with RuntimeId{1}", element.Current.Name, element.GetRuntimeId ()));
 			}
 
 			foreach (var element in expectedElements)
 				Assert.IsTrue (resultList.Contains (element),
-					string.Format ("Did not find expected element named '{0}' with RuntimeId{1}", element.Current.Name, PrintRuntimeId (element.GetRuntimeId ())));
+					String.Format ("Did not find expected element named '{0}' with RuntimeId{1}", element.Current.Name, PrintRuntimeId (element.GetRuntimeId ())));
 		}
 
 		private void VerifyFindFirst (AutomationElement root, TreeScope scope, AutomationElement [] includedElements, AutomationElement [] excludedElements)
@@ -799,16 +700,16 @@ namespace MonoTests.System.Windows.Automation
 				AutomationElement result = root.FindFirst (scope,
 					new PropertyCondition (AEIds.RuntimeIdProperty, runtimeId));
 				Assert.IsNotNull (result,
-					string.Format ("Expected element named '{0}' with RuntimeId {1}", element.Current.Name, PrintRuntimeId (runtimeId)));
+					String.Format ("Expected element named '{0}' with RuntimeId {1}", element.Current.Name, PrintRuntimeId (runtimeId)));
 				Assert.AreEqual (element, result,
-					string.Format ("Expected element named '{0}' with RuntimeId {1}, got '{2}' with Id {3}", element.Current.Name, PrintRuntimeId (runtimeId), result.Current.Name, result.Current.AutomationId));
+					String.Format ("Expected element named '{0}' with RuntimeId {1}, got '{2}' with Id {3}", element.Current.Name, PrintRuntimeId (runtimeId), result.Current.Name, result.Current.AutomationId));
 			}
 			foreach (var element in excludedElements) {
 				int [] runtimeId = element.GetRuntimeId ();
 				AutomationElement result = root.FindFirst (scope,
 					new PropertyCondition (AEIds.RuntimeIdProperty, runtimeId));
 				Assert.IsNull (result,
-					string.Format ("Did not expect element named '{0}' with RuntimeId{1}", element.Current.Name, PrintRuntimeId (runtimeId)));
+					String.Format ("Did not expect element named '{0}' with RuntimeId{1}", element.Current.Name, PrintRuntimeId (runtimeId)));
 			}
 		}
 

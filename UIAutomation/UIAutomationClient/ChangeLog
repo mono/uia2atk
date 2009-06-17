@@ -1,3 +1,22 @@
+2009-06-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Test/UIAutomationClientTests/SampleForm/Form1.resx:
+	* Test/UIAutomationClientTests/SampleForm/Form1.cs:
+	* Test/UIAutomationClientTests/SampleForm/Form1.Designer.cs:
+	Add more layers to control hierarchy for TreeWalkerTest.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationTest.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs:
+	Factor common code dealing with SampleForm into BaseTest.  Also, use
+	String instead of string when accessing static String members.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/TreeWalkerTest.cs:
+	New unit test of TreeWalker support for Conditions.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Add new files
+
 2009-06-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation/TreeWalker.cs: Fix typo which broke
