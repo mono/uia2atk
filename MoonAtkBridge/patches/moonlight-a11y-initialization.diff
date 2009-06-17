@@ -1,3 +1,154 @@
+Index: m4/mozilla.m4
+===================================================================
+--- m4/mozilla.m4	(revision 136249)
++++ m4/mozilla.m4	(working copy)
+@@ -80,6 +80,11 @@
+     	MAX_FIREFOX_VERSION="3.5.*"
+   	fi
+ 
++	#a11y only works on Firefox trunk
++	if test x$MOON_A11Y_INTERNAL_HACK = x1; then
++		MAX_FIREFOX_VERSION="3.6.*"
++	fi
++
+ 	AC_SUBST([MIN_FIREFOX_VERSION])
+ 	AC_SUBST([MAX_FIREFOX_VERSION])
+ 	AM_CONDITIONAL(HAVE_MOZILLA, test x$with_mozilla = xyes)
+Index: src/security.c
+===================================================================
+--- src/security.c	(revision 136249)
++++ src/security.c	(working copy)
+@@ -16,6 +16,7 @@
+ #if MONO_ENABLE_CORECLR_SECURITY
+ 
+ static struct stat platform_stat;
++static struct stat platform_a11y_stat;
+ 
+ const static char* platform_code_assemblies [] = {
+ 	"mscorlib.dll",
+@@ -40,6 +41,8 @@
+ 	struct stat info;
+ 	gchar *dir, *name;
+ 	unsigned int i;
++	struct stat the_platform_stat = platform_stat;
++	gboolean a11y = FALSE;
+ 
+ 	if (!image_name)
+ 		return FALSE;
+@@ -51,20 +54,35 @@
+ 		return FALSE;
+ 	}
+ 
++	name = g_path_get_basename (image_name);
++	if (!name) {
++		g_free (dir);
++		return FALSE;
++	}
++	
++#if MOON_A11Y_INTERNAL_HACK_ENABLED
++	if (g_ascii_strcasecmp (name, "MoonAtkBridge.dll") == 0) {
++		the_platform_stat = platform_a11y_stat;
++		a11y = TRUE;
++	}
++#endif
++
+ 	/* we avoid comparing strings, e.g. /opt/mono/lib/moon versus /opt/mono//lib/moon */
+-	if ((platform_stat.st_mode != info.st_mode) ||
+-		(platform_stat.st_ino != info.st_ino) ||
+-		(platform_stat.st_dev != info.st_dev)) {
++	if ((the_platform_stat.st_mode != info.st_mode) ||
++		(the_platform_stat.st_ino != info.st_ino) ||
++		(the_platform_stat.st_dev != info.st_dev)) {
+ 		g_free (dir);
++		g_free (name);
+ 		return FALSE;
+ 	}
+ 	g_free (dir);
+ 
++	if (a11y == TRUE){
++		g_free (name);
++		return TRUE;
++	}
++
+ 	/* we know the names of every platform assembly, because we ship them */
+-	name = g_path_get_basename (image_name);
+-	if (!name)
+-		return FALSE;
+-
+ 	for (i = 0; i < G_N_ELEMENTS (platform_code_assemblies); i++) {
+ 		if (g_ascii_strcasecmp (name, platform_code_assemblies [i]) == 0) {
+ 			g_free (name);
+@@ -88,7 +106,25 @@
+ 			   "you're doing!");
+ 	} else if (g_path_is_absolute (platform_dir)) {
+ 		memset (&platform_stat, 0, sizeof (platform_stat));
++
+ 		if (stat (platform_dir, &platform_stat) == 0) {
++
++			const char* moonlight_at_novell = g_strrstr (platform_dir, "moonlight@novell.com");
++			if (moonlight_at_novell != NULL) {
++				const char* after = g_strdup ("moonlight-a11y@novell.com/components");
++
++				const char* before = g_strndup (platform_dir, 
++				                                strlen(platform_dir) - strlen(moonlight_at_novell));
++				const char* platform_a11y_dir = g_strconcat (before, after, NULL);
++
++				memset (&platform_a11y_stat, 0, sizeof (platform_a11y_stat));
++				stat (platform_a11y_dir, &platform_a11y_stat);
++				g_free (platform_a11y_dir);
++				g_free (before);
++				g_free (after);
++				moonlight_at_novell = NULL;
++			}
++
+ 			mono_security_enable_core_clr ();
+ 			mono_security_set_core_clr_platform_callback (determine_platform_image);
+ 		}
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 136249)
++++ configure.ac	(working copy)
+@@ -106,6 +106,14 @@
+ LOADER_LIBS="$GLIB_LIBS"
+ AC_SUBST(LOADER_LIBS)
+ 
++# this hack will be dropped once we get this working:
++# http://www.mono-project.com/Moonlight/SecurityStatus#Assembly_Loading
++if test "x$MOON_A11Y_INTERNAL_HACK" = "x1"; then
++       AC_DEFINE([MOON_A11Y_INTERNAL_HACK_ENABLED], [1],
++                 [Whether Mono A11y is enabled for now])
++fi
++AM_CONDITIONAL(MOON_A11Y_INTERNAL_HACK,test x$MOON_A11Y_INTERNAL_HACK = x1)
++
+ if test x$with_ff3 = xyes; then
+    MOZILLA_CFLAGS=$FF3_CFLAGS
+ else
+Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
+===================================================================
+--- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 136249)
++++ class/tuning/SecurityAttributes/overrides/System.Windows.manual	(working copy)
+@@ -8,3 +8,6 @@
+ 
+ # this method reflects into GCHandle to avoid creating an exception every time we try a invalid handle
+ +SC-M: System.Boolean Mono.Helper::GCHandleInDomain(System.IntPtr)
++
++# this method is called by the embedding API from moon
+++SSC-M: System.IntPtr Mono.A11yHelper::GetAccessible()
+Index: class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc
+===================================================================
+--- class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(revision 136249)
++++ class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(working copy)
+@@ -1,7 +1,9 @@
+ # [SecuritySafeCritical] needed inside System.Windows to call all [SecurityCritical] methods
+-# 462 methods
++# 464 methods
+ 
+ +SSC-M: System.Void Microsoft.Internal.TextBoxView::.ctor()
+++SSC-M: System.Void Mono.A11yHelper::Initialize()
+++SSC-M: System.Void Mono.A11yHelper::Launch(System.String)
+ +SSC-M: Mono.Xaml.ManagedXamlLoader Mono.ApplicationLauncher::CreateXamlLoader(System.IntPtr,System.IntPtr,System.IntPtr,System.String,System.String)
+ +SSC-M: System.Void Mono.DispatcherTimer::.ctor()
+ +SSC-M: System.Void Mono.EasingFunctionWrapper::ReportException(System.Exception)
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
 --- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136249)
@@ -32,7 +183,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 ===================================================================
 --- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
 +++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
-@@ -0,0 +1,98 @@
+@@ -0,0 +1,92 @@
 +//
 +// A11yHelper.cs
 +//
@@ -75,15 +226,9 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +		internal static void Initialize ()
 +		{
 +			string current_assembly_location = Assembly.GetExecutingAssembly ().Location;
-+			string load_location = Path.Combine (Path.GetDirectoryName (current_assembly_location), BRIDGE_ASM_NAME);
-+			if (File.Exists (load_location)) {
-+				Launch (load_location);
-+				return;
-+			}
-+
 +			int pos = current_assembly_location.IndexOf ("moonlight@novell");
 +			if (pos > 0) {
-+				load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
++				string load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
 +				if (Directory.Exists (load_location)) {
 +					load_location = Path.Combine (Path.Combine (load_location, "components"), BRIDGE_ASM_NAME);
 +					Launch (load_location);
@@ -172,16 +317,3 @@ Index: class/System.Windows/Makefile.am
  	$(srcdir)/Mono/ApplicationLauncher.cs					\
  	$(srcdir)/Mono/DispatcherTimer.cs					\
  	$(srcdir)/Mono/EasingFunctionWrapper.cs					\
-Index: configure.ac
-===================================================================
---- configure.ac	(revision 136249)
-+++ configure.ac	(working copy)
-@@ -90,6 +90,8 @@
- AC_SUBST(MOON_EXTRA_CFLAGS)
- AC_SUBST(MOON_EXTRA_LIBS)
- 
-+AM_CONDITIONAL(MOON_A11Y_INTERNAL_HACK,test x$MOON_A11Y_INTERNAL_HACK = x1)
-+
- MOON_PROG_CFLAGS="$GTK_CFLAGS $ALSA_CFLAGS $FFMPEG_CFLAGS $PULSEAUDIO_CFLAGS $MONO_CFLAGS -I\$(top_srcdir)/src/"
- MOON_PROG_LIBS="$GTK_LIBS $FFMPEG_LIBS $UNWIND_LIBS \$(top_builddir)/src/libmoon.la"
- AC_SUBST(MOON_PROG_CFLAGS)

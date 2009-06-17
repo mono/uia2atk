@@ -1,5 +1,12 @@
 2009-06-17 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* patches/moonlight-a11y-initialization.diff: Merge 3 patches in 1,
+	in preparation for review.
+	* patches/moonlight-a11y-security.diff:
+	* patches/moonlight-ff3.6.diff: Removed.
+
+2009-06-17 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* patches/moonlight-a11y-security.diff: New.
 	* patches/moonlight-a11y-initialization.diff: Add headers, move
 	line from configure.ac to not conflict with the above patch.
