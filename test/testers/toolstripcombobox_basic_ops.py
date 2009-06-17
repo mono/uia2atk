@@ -22,20 +22,20 @@ from sys import argv
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the toolstripcombobox sample application
 try:
-  app = launchToolStripComboBox(app_path)
+    app = launchToolStripComboBox(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 tscbFrame = app.toolStripComboBoxFrame
@@ -55,49 +55,54 @@ actionsCheck(tscbFrame.menuitem_14, "MenuItem")
 ##################################################
 statesCheck(tscbFrame.toolbar, "ToolBar")
 statesCheck(tscbFrame.toolstripcombobox, "ComboBox")
-## BUG501269: visible state should be exist
+# BUG501269: visible state should be exist
 #statesCheck(tscbFrame.menu, "Menu", invalid_states=["showing"])
-statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
-statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
-statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
-statesCheck(tscbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
-statesCheck(tscbFrame.menuitem_14, "MenuItem", invalid_states=["showing"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
+#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+#statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
+#statesCheck(tscbFrame.menuitem_12, "MenuItem", invalid_states=["showing"])
+#statesCheck(tscbFrame.menuitem_14, "MenuItem", invalid_states=["showing"])
 
 ###############################################################
 # check toolstripcombobox elements' states after press combobox
 ###############################################################
 # expand combobox
-tscbFrame.press(tscbFrame.toolstripcombobox)
+tscbFrame.toolstripcombobox.press(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(tscbFrame.toolbar, "ToolBar")
 statesCheck(tscbFrame.toolstripcombobox, "ComboBox")
 statesCheck(tscbFrame.menu, "Menu")
-statesCheck(tscbFrame.menuitem_6, "MenuItem")
-statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
-statesCheck(tscbFrame.menuitem_10, "MenuItem")
-statesCheck(tscbFrame.menuitem_12, "MenuItem")
-statesCheck(tscbFrame.menuitem_14, "MenuItem")
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem")
+#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+#statesCheck(tscbFrame.menuitem_10, "MenuItem")
+#statesCheck(tscbFrame.menuitem_12, "MenuItem")
+#statesCheck(tscbFrame.menuitem_14, "MenuItem")
 
 ###########################
 # check elements' AtkAction
 ###########################
-tscbFrame.click(tscbFrame.menuitem_6)
+tscbFrame.menuitem_6.click(log=True)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 6")
-statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
 
-tscbFrame.click(tscbFrame.menuitem_14)
+tscbFrame.menuitem_14.click(log=True)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 14")
-statesCheck(tscbFrame.menuitem_14, "MenuItem", add_states=["selected","focused"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_14, "MenuItem", add_states=["selected","focused"])
 
-tscbFrame.click(tscbFrame.menuitem_8)
+tscbFrame.menuitem_8.click(log=True)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 8")
-statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
 
 # contract combobox
-tscbFrame.press(tscbFrame.toolstripcombobox)
+tscbFrame.toolstripcombobox.press(log=True)
 sleep(config.SHORT_DELAY)
 ## BUG501269: visible state should be exist
 #statesCheck(tscbFrame.menu, "Menu", invalid_states=["showing"])
@@ -110,28 +115,32 @@ sleep(config.SHORT_DELAY)
 tscbFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 6")
-statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
-statesCheck(tscbFrame.menuitem_8, "MenuItem")
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected","focused"])
+#statesCheck(tscbFrame.menuitem_8, "MenuItem")
 
 tscbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 8")
-statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
-statesCheck(tscbFrame.menuitem_6, "MenuItem")
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_8, "MenuItem", add_states=["selected","focused"])
+#statesCheck(tscbFrame.menuitem_6, "MenuItem")
 
 tscbFrame.menuitem_10.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 10")
-statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
-statesCheck(tscbFrame.menuitem_10, "MenuItem", add_states=["selected","focused"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
+#statesCheck(tscbFrame.menuitem_10, "MenuItem", add_states=["selected","focused"])
 
 tscbFrame.toolstripcombobox.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.menuitem_12.mouseClick()
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 12")
-statesCheck(tscbFrame.menuitem_12, "MenuItem", add_states=["selected","focused"])
-statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_12, "MenuItem", add_states=["selected","focused"])
+#statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check toolstripcombobox's AtkSelection
@@ -140,15 +149,17 @@ statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 tscbFrame.selectChild(tscbFrame.menu, 0)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 6")
-statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected", "focused"])
-statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", add_states=["selected", "focused"])
+#statesCheck(tscbFrame.menuitem_10, "MenuItem", invalid_states=["showing"])
 
 # select the last item from combobox
 tscbFrame.selectChild(tscbFrame.menu, 4)
 sleep(config.SHORT_DELAY)
 tscbFrame.assertText(tscbFrame.label, "The font size is 14")
-statesCheck(tscbFrame.menuitem_14, "MenuItem", add_states=["selected", "focused"])
-statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
+# BUG512261: ToolStripCombBox menu items receive "focused" state, but do not have "focusable" state
+#statesCheck(tscbFrame.menuitem_14, "MenuItem", add_states=["selected", "focused"])
+#statesCheck(tscbFrame.menuitem_6, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check menu item's AtkText 

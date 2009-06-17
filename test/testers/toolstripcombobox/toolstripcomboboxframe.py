@@ -32,18 +32,9 @@ class ToolStripComboBoxFrame(accessibles.Frame):
         self.menuitem_12 = self.findMenuItem(self.MENUITEM_12, checkShowing=False)
         self.menuitem_14 = self.findMenuItem(self.MENUITEM_14, checkShowing=False)
 
-    def click(self, accessible):
-        """wrap strongwind click action to add log"""
-        procedurelogger.action('click %s' % accessible)
-        accessible.click()
-
-    def press(self, accessible):
-        """wrap strongwind press action to add log"""
-        procedurelogger.action('press %s' % accessible)
-        accessible.press()
-
     def editableTextIsNotImplemented(self, accessible):
         """assert accessible's EditableText is not implemented"""
+
         procedurelogger.action('check EditableText for %s' % accessible)
 
         procedurelogger.expectedResult('EditableText is not implemented for %s' % accessible)
@@ -53,17 +44,21 @@ class ToolStripComboBoxFrame(accessibles.Frame):
             return
         assert False, "EditableText shouldn't be implemented"
 
-    def assertText(self, accessible, expected_text=None):
-        """assert text is equal to the expected_text"""
-        procedurelogger.expectedResult('%s\'s text is "%s"' % \
-                                                (accessible, expected_text))
-        assert accessible.text == expected_text, \
-                           'the actual text is %s, the expected text is %s' % \
-                                               (accessible.text, expected_text)
+    def assertText(self, accessible, expected_text):
+        """assert the accessible's text is equal to the expected text"""
+
+        procedurelogger.action('Check the text of: %s' % accessible)
+        actual_text = accessible.text
+        procedurelogger.expectedResult('Text is "%s"' % actual_text)
+        assert actual_text == expected_text, 'Text was "%s", expected "%s"' % \
+                                                (actual_text, expected_text)
 
     def selectChild(self, accessible, index):
-        """assert Selection implementation"""
-        procedurelogger.action('select index %s in "%s"' % (index, accessible))
+        """
+        Simply call strongwind's selectChild method but add some logging
+        information
+        """
+        procedurelogger.action('Select index %s of "%s"' % (index, accessible))
         accessible.selectChild(index)
 
     def quit(self):

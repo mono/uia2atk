@@ -41,7 +41,7 @@ if app is None:
 
 # just an alias to make things shorter
 tedFrame = app.threadExceptionDialogFrame
-tedFrame.show_dialog(tedFrame.raise_button)
+tedFrame.showDialog(tedFrame.raise_button)
 sleep(config.SHORT_DELAY)
 
 ##############################
@@ -50,7 +50,9 @@ sleep(config.SHORT_DELAY)
 statesCheck(tedFrame, "Form")
 statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"], invalid_states=["resizable"])
 
+# ensure that the ThreadExceptionDialog is modal
 tedFrame.mouseClick()
+sleep(config.SHORT_DELAY)
 statesCheck(tedFrame, "Form")
 statesCheck(tedFrame.dialog, "Dialog", add_states=["active", "modal"], invalid_states=["resizable"])
 
@@ -64,34 +66,45 @@ statesCheck(tedFrame.detail_button, "Button", add_states=["focused"])
 statesCheck(tedFrame.ignore_button, "Button")
 statesCheck(tedFrame.abort_button, "Button")
 
+# press tab to change focus
+tedFrame.keyCombo("Tab", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tedFrame.detail_button, "Button")
+statesCheck(tedFrame.ignore_button, "Button", add_states=["focused"])
+statesCheck(tedFrame.abort_button, "Button")
+tedFrame.keyCombo("Tab", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tedFrame.detail_button, "Button")
+statesCheck(tedFrame.ignore_button, "Button")
+statesCheck(tedFrame.abort_button, "Button", add_states=["focused"])
+
 ##############################
 # Test each children
 ##############################
 # TEST DETAIL_BUTTON & TEXTBOX & ERRORTITLE_LABEL
 # perform click to show the textbox
-tedFrame.show_textbox(tedFrame.detail_button)
+tedFrame.showTextBox(tedFrame.detail_button)
 statesCheck(tedFrame.errortitle_label, "Label")
 statesCheck(tedFrame.textbox, "ThreadExceptionDialog_Text")
 statesCheck(tedFrame.scrollbar_ver, "VScrollBar")
 statesCheck(tedFrame.scrollbar_hor, "HScrollBar")
 
-# test the textbox could be edit or not
+# ensure that the textbox is not editable
 error_msg = tedFrame.textbox.text
-tedFrame.inputText(tedFrame.textbox, "test")
+tedFrame.assignText(tedFrame.textbox, "test")
 tedFrame.assertText(tedFrame.textbox, error_msg)
 
 # hide the textbox
-tedFrame.hide_textbox(tedFrame.detail_button)
-sleep(config.SHORT_DELAY)
+tedFrame.hideTextBox(tedFrame.detail_button)
 
-# TEST IGNORE_BUTTON
+# TEST IGNORE_BUTTON and make sure that the original window becomes active
 tedFrame.click(tedFrame.ignore_button)
+sleep(config.SHORT_DELAY)
 statesCheck(tedFrame, "Form", add_states=["active"])
 
-# TEST ABORT_BUTTON
-tedFrame.show_dialog(tedFrame.raise_button)
+# TEST ABORT_BUTTON and make sure that the original window becomes active
+tedFrame.showDialog(tedFrame.raise_button)
 sleep(config.SHORT_DELAY)
-
 tedFrame.click(tedFrame.abort_button)
 sleep(config.SHORT_DELAY)
 

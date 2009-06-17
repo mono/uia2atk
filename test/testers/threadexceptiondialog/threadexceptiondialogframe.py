@@ -18,12 +18,14 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         self.raise_button = self.findPushButton("Raise an Exception")
 
     def click(self, accessible):
-
         procedurelogger.action("click %s" % accessible)
         accessible.click()
 
-    def show_dialog(self, accessible):
-
+    def showDialog(self, accessible):
+        '''
+        Click on the "Raise an Exception" button and find all the accessibles
+        on the ThreadExceptionDialog that opens.
+        '''
         procedurelogger.action("click %s" % accessible)
         accessible.click()
 
@@ -31,7 +33,6 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         self.dialog = self.app.findDialog(None)
     
         # assign controls
-        
         DESCRIPTION = re.compile("^An unhandled exception has occurred in you application.")
         ERROR_TYPE = "Division by zero"
         self.description_label = self.dialog.findLabel(DESCRIPTION)
@@ -41,10 +42,11 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         self.ignore_button = self.dialog.findPushButton("Ignore")
         self.abort_button = self.dialog.findPushButton("Abort")
 
-    def show_textbox(self, accessible):
-        """click detain_button in order to show its textbox"""
+    def showTextBox(self, accessible):
+        """click detail_button in order to show its textbox"""
         procedurelogger.action("click %s" % accessible)
         accessible.click()
+        sleep(config.SHORT_DELAY)
 
         if accessible is self.detail_button:
             ERROR_TITLE = "Exception details"
@@ -55,20 +57,30 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
             self.scrollbar_hor = self.scrollbars[0]
             self.scrollbar_ver = self.scrollbars[1]
 
-    def hide_textbox(self, accessible):
-        """click detain_button in order to hide its textbox"""
+    def hideTextBox(self, accessible):
+        """
+        click detail_button in order to hide its textbox and then ensure that
+        the details accessibles cannot be found
+        """
         procedurelogger.action("click %s" % accessible)
         accessible.click()
+        sleep(config.SHORT_DELAY)
+        ERROR_TITLE = "Exception details"
 
-        if accessible is self.detail_button:
-            ERROR_TITLE = "Exception details"
-            try:
-                self.textbox = self.dialog.findText(None)
-                self.errortitle_label = self.dialog.findLabel(ERROR_TITLE)
-            except SearchError:
-                pass # expected
+        try:
+            self.textbox = self.dialog.findText(None)
+        except SearchError:
+            return # expected
+        else:
+            assert False, 'Details text accessible should not be found'
+        try:
+            self.errortitle_label = self.dialog.findLabel(ERROR_TITLE)
+        except SearchError:
+            return # expected
+        else:
+            assert False, '"%s" label should not be found' % ERROR_TITLE
 
-    def inputText(self, accessible, text):
+    def assignText(self, accessible, text):
         procedurelogger.action('set %s text to "%s"' % (accessible, text))
         try:
             accessible.text = text
@@ -77,7 +89,6 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
 
     def assertText(self, accessible, text=None):
         """assert text is equal to the input"""
-
         procedurelogger.action('Assert the text of %s' % accessible)
         procedurelogger.expectedResult('%s text is "%s"' % \
                                                 (accessible, accessible.text))

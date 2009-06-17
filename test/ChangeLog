@@ -1,7 +1,16 @@
+2009-06-17 Ray Wang <rawang@novell.com>
+
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py,
+	* testers/threadexceptiondialog_basic_ops.py: Commit Brian's review
+	from review board. (http://reviews.mono-a11y.org/r/264/)
+	* testers/toolstripcombobox/toolstripcomboboxframe.py,
+	* testers/toolstripcombobox_basic_ops.py: update toolstripcombobox 
+	with bug #512261, and add bug reference.
 
 2009-06-17  Felicia Mu <fxmu@novell.com>
-	* testers/datagridview_basic_ops.py: remove Bug 478840 478856 478891 and update their test cases.
-         add new Bug 503078 513476 513837 reference and add their counterpart test case
+	* testers/datagridview_basic_ops.py: remove Bug 478840 478856 478891 
+    and update their test cases, add new Bug 503078 513476 513837 reference 
+    and add their counterpart test case
 
 2009-06-16  Calen Chen <cachen@novell.com>
 
