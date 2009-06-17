@@ -1,0 +1,2 @@
+version=3
+http://ftp.novell.com/pub/mono/sources/uiaatkbridge/ uiaatkbridge-([.\d]+)\.tar\.bz2

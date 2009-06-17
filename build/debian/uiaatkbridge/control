@@ -20,7 +20,8 @@ Package: libmono-uiaatkbridge1.0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
 Description: Bridge between UIA providers and ATK
- The bridge contains adapter Atk.Objects that wrap UIA providers.  Adapter
- behavior is determined by provider ControlType and supported pattern interfaces.
- The bridge implements interfaces from UIAutomationBridge which allow the UI
- Automation core to send it automation events and provider information.
+ The bridge contains adapter Atk.Objects that wrap UIA providers. Adapter 
+ behavior is determined by provider ControlType and supported pattern 
+ interfaces. The bridge implements interfaces from UIAutomationBridge which 
+ allow the UI Automation core to send it automation events and provider 
+ information.

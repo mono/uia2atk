@@ -1,0 +1,2 @@
+version=3
+http://ftp.novell.com/pub/mono/sources/uiautomationwinforms/ uiautomationwinforms-([.\d]+)\.tar\.bz2

@@ -1,6 +1,6 @@
 mono-uiautomationwinforms (1.0-1) unstable; urgency=low
 
-  * initial release. (Close: #123456)
+  * initial release. (Closes: #123456)
 
  -- Ray Wang <rawang@novell.com>  Wed, 03 Jun 2009 17:01:56 +0800
 

@@ -18,9 +18,8 @@ Description: Implementations of members and interfaces based on MS UIA API
 Package: libmono-winfxcore3.0-cil
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${cli:Depends}
-Description: Parts of winfx
- The Mono Project is an open development initiative that is working to
- develop an open source, Unix version of the .NET development platform.
- Its objective is to enable Unix developers to build and deploy
- cross-platform .NET applications. The project will implement various
- technologies that have been submitted to the ECMA for standardization.
+Description: WinFx components required by UIA for use with Mono
+ This defines the core (and in many cases lower-level) types that constitute 
+ the infrastructure of the WPF API. You will find types representing WPF 
+ threading types, security types, various type converters, and other basic 
+ programming primitives (Point, Vector, Rect, etc.).
