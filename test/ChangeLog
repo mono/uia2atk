@@ -1,3 +1,7 @@
+
+2009-06-17  Felicia Mu <fxmu@novell.com>
+	* testers/mainmenu_basic_ops.py: remove Bug 485524 reference
+ 
 2009-06-17 Ray Wang <rawang@novell.com>
 
 	* testers/threadexceptiondialog/threadexceptiondialogframe.py,

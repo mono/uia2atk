@@ -92,13 +92,13 @@ mmFrame.assertText(mmFrame.menuitem_file_new_doc, "Document")
 ##############################
 mmFrame.selectChild(mmFrame.mainmenu, 0)
 sleep(config.SHORT_DELAY)
-# TODO: BUG476362, BUG485515, BUG485524
+# TODO: BUG476362, BUG485515, 
 #statesCheck(mmFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
 #statesCheck(mmFrame.menuitem_edit, "Menu")
 
 mmFrame.selectChild(mmFrame.mainmenu, 1)
 sleep(config.SHORT_DELAY)
-# TODO: BUG476362, BUG485515, BUG485524
+# TODO: BUG476362, BUG485515, 
 #statesCheck(mmFrame.menuitem_file, "Menu")
 #statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["selected", "focusable"])
 
@@ -106,7 +106,7 @@ sleep(config.SHORT_DELAY)
 # check menu and menu item's AtkComponent
 ##############################
 # check menu
-# TODO: BUG485515, BUG485524, BUG476878
+# TODO: BUG485515, BUG476878
 mmFrame.menuitem_file.mouseClick()
 sleep(config.SHORT_DELAY)
 #statesCheck(mmFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
@@ -115,7 +115,7 @@ mmFrame.menuitem_edit.mouseClick()
 sleep(config.SHORT_DELAY)
 #statesCheck(mmFrame.menuitem_edit, "Menu", add_states=["selected", "focusable"])
 
-# TODO: BUG476362, BUG485515, BUG485524
+# TODO: BUG476362, BUG485515
 # check menu Selection
 mmFrame.selectChild(mmFrame.menuitem_file, 0)
 sleep(config.SHORT_DELAY)
