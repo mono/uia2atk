@@ -1,7 +1,8 @@
 2009-06-17 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight-a11y-initialization.diff: Merge 3 patches in 1,
-	in preparation for review.
+	in preparation for review. Also, refactor some stuff in security.c
+	and A11yHelper.cs pointed out in a review by spouliot.
 	* patches/moonlight-a11y-security.diff:
 	* patches/moonlight-ff3.6.diff: Removed.
 
