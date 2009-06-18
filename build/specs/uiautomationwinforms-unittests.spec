@@ -23,7 +23,6 @@ Requires:       mono-uia mono-winfxcore uiaatkbridge
 BuildRequires:	mono-devel mono-data gtk-sharp2 glib-sharp2
 BuildRequires:	mono-uia mono-uia-devel mono-winfxcore uiaatkbridge intltool >= 0.35
 BuildRequires:  mono-nunit metacity xorg-x11-Xvfb bc
-%define		X_display		":98"
 
 Summary:        UIAutomationWinforms unit tests
 
@@ -36,9 +35,9 @@ Don't install this package. Seriously. Fo' rizzle.
 %build
 %configure
 make
-export DISPLAY=%{X_display}
-#Xvfb -ac -screen 0 1280x1024x16 -br :1 &
-Xvfb -ac -screen 0 1280x1024x16 -br %{X_display} >& Xvfb.log &
+export DISPLAY=:1
+Xvfb -ac -screen 0 1280x1024x16 -br :1 &
+#Xvfb -ac -screen 0 1280x1024x16 -br %{X_display} >& Xvfb.log &
 trap "kill $! || true" EXIT
 sleep 10
 metacity &
