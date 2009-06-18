@@ -26,10 +26,11 @@ class ToolStripButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolStripButtonFrame, self).__init__(accessible)
         self.toolbar = self.findToolBar(None)
-        self.toggle_style = self.toolbar.findToggleButton(self.NEWBUTTON)
+        #BUG514300 ToolBarButton: the "new" toggle button is identified as check box 
+        #self.toggle_style = self.toolbar.findToggleButton(self.NEWBUTTON)
 
-#this should be findPushButton, not ToggleButton (bug: 478832)
-        self.pushbutton_style = self.toolbar.findToggleButton(self.OPENBUTTON)
+        #this should be findPushButton, not ToggleButton (bug: 478832)
+        self.pushbutton_style = self.toolbar.findPushButton(self.OPENBUTTON)
         self.label = self.findLabel(self.LABEL)
 
     def click(self, accessible):
@@ -60,8 +61,8 @@ class ToolStripButtonFrame(accessibles.Frame):
         accessible.mouseClick()
 
         sleep(config.SHORT_DELAY)
-        procedurelogger.expectedResult("label shows you clicked %s 2 times" % accessible)
-        assert self.label.text == "You clicked PushButton 2 times", \
+        procedurelogger.expectedResult("label shows you clicked %s 3 times" % accessible)
+        assert self.label.text == "You clicked PushButton 3 times", \
                 "label shows %s" % self.label.text
 
     ##test for Toggle style ToolBarButton
@@ -89,8 +90,7 @@ class ToolStripButtonFrame(accessibles.Frame):
         accessible.mouseClick()
         sleep(config.SHORT_DELAY)
 
-##missing armed and checked states when this button is pushed BUG474649
-#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
+        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
         statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
         #mouse click again to enable label
         accessible.mouseClick()

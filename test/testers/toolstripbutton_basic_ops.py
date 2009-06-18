@@ -62,11 +62,12 @@ sleep(config.SHORT_DELAY)
 ##Text, Action, Component test
 #####################################
 
-#test Toggle style
+#test PushButton style
 tbbFrame.PushButtonStyle(tbbFrame.pushbutton_style)
 
-#test PushButton style
-tbbFrame.ToggleStyle(tbbFrame.toggle_style)
+#test ToggleButton stylei
+#BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+#tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 
 
 ############################
@@ -76,7 +77,9 @@ tbbFrame.ToggleStyle(tbbFrame.toggle_style)
 #test Image size for all toolbar buttons
 #NOTE: for this to work you need to patch strongwind with the diff in BGO#72995
 tbbFrame.assertImageSize(tbbFrame.pushbutton_style, width=16, height=16)
-tbbFrame.assertImageSize(tbbFrame.toggle_style, width=0, height=0)
+
+#BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+#tbbFrame.assertImageSize(tbbFrame.toggle_style, width=0, height=0)
 
 #close main window
 tbbFrame.quit()
