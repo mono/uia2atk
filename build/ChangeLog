@@ -1,3 +1,11 @@
+2009-06-18  Ray Wang <rawang@novell.com>
+
+	* debian/*/rules: Re-order the build rules.
+	* debian/uiautomationwinforms/*.install: .install file is useless when
+	build a single binary package.
+	* debian/uiaatkbridge/libmono-uiaatkbridge1.0.install: .install file 
+	is useless when build a single binary package.
+
 2009-06-17  Ray Wang <rawang@novell.com>
 
 	* debian: changelog is now compliant to debian policy, 
