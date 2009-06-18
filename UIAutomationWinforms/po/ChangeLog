@@ -1,3 +1,7 @@
+2009-06-18  Ray Wang  <rawang@novell.com>
+
+	* POTFILES.in: add missing files and sort them alphabetically.
+
 2009-01-12  Ray Wang  <rawang@novell.com>
 
 	* zh_CN.po: Chinese(Simplified) translation.
