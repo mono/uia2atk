@@ -40,7 +40,7 @@ Xvfb -ac -screen 0 1280x1024x16 -br :1 &
 #Xvfb -ac -screen 0 1280x1024x16 -br %{X_display} >& Xvfb.log &
 trap "kill $! || true" EXIT
 sleep 10
-metacity &
+metacity --display=DISPLAY &
 cd UIAutomationWinformsTests
 chmod +x providertest.sh
 ./providertest.sh
