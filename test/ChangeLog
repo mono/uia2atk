@@ -1,3 +1,9 @@
+
+2009-06-19  Felicia Mu <fxmu@novell.com>
+	* testers/maskedtextbox_basic_ops.py, 
+	* testers/maskedtextbox/maskedtextboxframe.py: commit my changes from review board, 
+          remove the close bug reference.
+
 2009-06-19  Calen Chen <cachen@novell.com>
 
 	* testers/savefiledialog_basic_ops.py: change alias ofdFrame to sfdFrame

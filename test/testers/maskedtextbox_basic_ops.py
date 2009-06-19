@@ -79,14 +79,18 @@ sleep(config.SHORT_DELAY)
 mtbFrame.assertText(mtbFrame.phone_text, "(861)-234-5678")
 mtbFrame.phone_text.deleteText()
 sleep(config.SHORT_DELAY)
-# two deletes should not crash the application BUG465467
+
+# two deletes should not crash the application 
 mtbFrame.phone_text.deleteText()
 sleep(config.SHORT_DELAY)
 mtbFrame.assertText(mtbFrame.phone_text, "(86_)-___-____")
+
 # arrow over to the first blank
+# Insert the numbers into the second MaskedTextBox accessible
 mtbFrame.keyCombo("Right", grabFocus=False)
 mtbFrame.keyCombo("Right", grabFocus=False)
 mtbFrame.keyCombo("Right", grabFocus=False)
+mtbFrame.typeText("12345678")
 mtbFrame.typeText("12345678")
 sleep(config.MEDIUM_DELAY)
 mtbFrame.assertText(mtbFrame.phone_text, "(861)-234-5678")
@@ -94,48 +98,50 @@ mtbFrame.assertText(mtbFrame.phone_text, "(861)-234-5678")
 # tab down to the next MaskedTextBox
 mtbFrame.keyCombo("Tab", grabFocus=False)
 
-# check to make sure the character count is what we expect BUG465018
-mtbFrame.assertCharacterCount(money_text, 11)
+mtbFrame.assertCharacterCount(mtbFrame.money_text, 11)
 
 # insert some text into this MaskedTextControl and check the results use two
 # different methods of insertion
 mtbFrame.money_text.insertText("987654")
 sleep(config.SHORT_DELAY)
 mtbFrame.assertText(mtbFrame.money_text, "$987,654.__")
+
+# text a deletion of a subset of the text in the date text box 
+mtbFrame.money_text.deleteText(start=0, end=2)
+mtbFrame.assertText(mtbFrame.money_text, "$_87,654.__")
+
+mtbFrame.money_text.deleteText(start=1, end=3)
+mtbFrame.assertText(mtbFrame.money_text, "$__7,654.__")
+sleep(config.SHORT_DELAY)
+
 # delete should not crash the application when the blanks still exist
-# in the MaskedTextBox control BUG465467 
 mtbFrame.money_text.deleteText()
 sleep(config.SHORT_DELAY)
-sys.exit(33)
 mtbFrame.assertText(mtbFrame.money_text, "$___,___.__")
+
 # arrow over to the first blank
-mtbFrame.keyCombo("Right", grabFocus=False)
-mtbFrame.typeText("987654")
+# test after delete all the text in MaskedTextBox still can be inserted any character
+mtbFrame.money_text.keyCombo("Right", grabFocus=False)
+mtbFrame.money_text.typeText("987654")
 sleep(config.MEDIUM_DELAY)
 mtbFrame.assertText(mtbFrame.money_text, "$987,654.__")
 
-# text a deletion of a subset of the text in the date text box BUG466598
-mtbFrame.money_text.deleteText(start=0, end=2)
-mtbFrame.assertText(mtbFrame.date_text, "__/14/1982")
-mtbFrame.phone_text.deleteText(start=1, end=3)
-sleep(config.SHORT_DELAY)
-# two deletes should not crash the application BUG465467
-# mtbFrame.phone_text.deleteText()
-sleep(config.SHORT_DELAY)
-# not sure exactly what should be the expected result here.  
-# it depends on the resolution of BUG465095.  Here is a guess:
-mtbFrame.assertText(mtbFrame.phone_text, "(86_)-234-5678")
 
-# TODO: create a test case for BUG465095 once we determined the desired
-# functionality
+# two deletes should not crash the application 7
+mtbFrame.phone_text.deleteText()
+mtbFrame.phone_text.deleteText()
+sleep(config.SHORT_DELAY)
+mtbFrame.assertText(mtbFrame.phone_text, "(86_)-___-____")
+
+# test if the character inputted is follow the right order
+mtbFrame.assertInsertRightOrder(mtbFrame.phone_text,11)
 
 # insert a single character into the first index 
-mtbFrame.blank_text.insertText(0, "A")
+mtbFrame.blank_text.insertText('A')
 mtbFrame.assertText(mtbFrame.blank_text, "A______")
 
-# should be able to insert a single character in the last index of the
-# MaskedTextControl BUG465091
-mtbFrame.blank_text.insertText(6, "Z", 1)
+# should be able to insert a single character in the last index of the blank_text
+mtbFrame.blank_text.insertText("Z", offset=6)
 mtbFrame.assertText(mtbFrame.blank_text, "A_____Z")
 
 mtbFrame.quit()

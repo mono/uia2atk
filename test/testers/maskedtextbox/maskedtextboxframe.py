@@ -49,11 +49,39 @@ class MaskedTextBoxFrame(accessibles.Frame):
     def assertCharacterCount(self, accessible, expected_char_count):
         'Ensure that the accessible character count is what we expect'
 
-        eti = accessibles._accessible.queryEditableText()
+        eti = accessible._accessible.queryEditableText()
         char_count = eti.characterCount
         assert expected_char_count == char_count,\
                 "Character count was %d instead of %d" %\
                                               (char_count, expected_char_count)
+
+    def assertInsertRightOrder(self, accessible, expected_range):
+        'Ensure that the accessible character inputted is follow the right order'
+        procedurelogger.action(' Inserting characters one at a time into %s ,start from 0.' % accessible)
+ 
+        procedurelogger.expectedResult('%s should between 0 and %s and in the ascending order like (860)-123-4567' %\
+                                                   (accessible, expected_range-2))
+        # insert num from 0 to 9 , the expected_text should not be (860)-123-4567,but the (860)-145-6891    
+        # because of the "if you try to insert into a mask slot, forward to the next open spot" behavior. 
+        expected_text='(860)-145-6891'
+        eti = accessible._accessible.queryEditableText()
+        #insert_value = ''
+        j= 0
+        for i in range(3, expected_range+3):
+            #insert_value+=str(i) 
+            eti.insertText(i, str(j), 1)
+            j+=1
+        sleep(config.SHORT_DELAY)
+        etext = eti.getText(0, eti.characterCount)
+
+        print "the extext is : %s" % etext
+        print "the accessible.text is : %s" % accessible.text
+        assert eti.getText(0, eti.characterCount) == expected_text,\
+            "\n".join(["%s does not contain the expected text." % accessible,
+                       "  Expected: %s" % expected_text,
+                       "  Actual: %s" % accessible.text])
+
+
 
     #close application window
     def quit(self):
