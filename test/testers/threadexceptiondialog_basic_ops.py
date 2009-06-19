@@ -98,14 +98,14 @@ tedFrame.assertText(tedFrame.textbox, error_msg)
 tedFrame.hideTextBox(tedFrame.detail_button)
 
 # TEST IGNORE_BUTTON and make sure that the original window becomes active
-tedFrame.click(tedFrame.ignore_button)
+tedFrame.ignore_button.click(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(tedFrame, "Form", add_states=["active"])
 
 # TEST ABORT_BUTTON and make sure that the original window becomes active
 tedFrame.showDialog(tedFrame.raise_button)
 sleep(config.SHORT_DELAY)
-tedFrame.click(tedFrame.abort_button)
+tedFrame.abort_button.click(log=True)
 sleep(config.SHORT_DELAY)
 
 tedFrame.assertClosed()

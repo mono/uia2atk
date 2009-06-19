@@ -21,20 +21,20 @@ from sys import argv
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the treeview sample application
 try:
-  app = launchListBox(app_path)
+    app = launchListBox(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 lbFrame = app.listBoxFrame
@@ -49,7 +49,8 @@ actionsCheck(lbFrame.tablecell[19], "TableCell")
 ############################
 # check TreeTable's states
 ############################
-statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
+# BUG480218: Both treetable and tablecell[0] should has focused state
+#statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 
 ############################
 # check TableCell's states
@@ -76,14 +77,14 @@ statesCheck(lbFrame.tablecell[15], "TableCell", add_states=["focused", "selected
 #########################################################
 # check TableCell's AtkAction, TableCells use Click event
 #########################################################
-lbFrame.click(lbFrame.tablecell[0])
+lbFrame.tablecell[0].click(log=True)
 sleep(config.SHORT_DELAY)
 ## BUG496786: Click action doesn't send event to change lable
 #lbFrame.assertLabel('0')
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
 statesCheck(lbFrame.tablecell[15], "TableCell")
 
-lbFrame.click(lbFrame.tablecell[9])
+lbFrame.tablecell[9].click(log=True)
 sleep(config.SHORT_DELAY)
 #lbFrame.assertLabel('9')
 statesCheck(lbFrame.tablecell[9], "TableCell", add_states=["focused", "selected"])
@@ -92,16 +93,16 @@ statesCheck(lbFrame.tablecell[0], "TableCell")
 ########################################################################
 # check TableCell's AtkAction, TableCells use SelectedIndexChanged event
 ########################################################################
-lbFrame.checkbox.click()
+lbFrame.checkbox.click(log=True)
 sleep(config.SHORT_DELAY)
 
-lbFrame.click(lbFrame.tablecell[0])
+lbFrame.tablecell[0].click(log=True)
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('0')
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused", "selected"])
 statesCheck(lbFrame.tablecell[19], "TableCell")
 
-lbFrame.click(lbFrame.tablecell[9])
+lbFrame.tablecell[9].click(log=True)
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('9')
 statesCheck(lbFrame.tablecell[9], "TableCell", add_states=["focused", "selected"])
@@ -136,8 +137,8 @@ statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused"])
 ############################
 # check TableCell's AtkText
 ############################
-#check tablecell's Text Value
-lbFrame.assertText()
+#check tablecell's Text
+lbFrame.assertItemsText()
 
 ############################
 # End

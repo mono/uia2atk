@@ -25,25 +25,22 @@ class ListBoxFrame(accessibles.Frame):
         self.treetable = self.findTreeTable(None)
         self.tablecell = dict([(x, self.findTableCell(str(x))) for x in range(20)])            
 
-    def click(self, accessible):
-        """give 'click' action"""
-
-        accessible.click()
-
     def assertLabel(self, itemname):
         """Raise exception if the accessible does not match the given result"""
-        procedurelogger.expectedResult('item "%s" is selected' % itemname)
 
+        procedurelogger.expectedResult('item "%s" is selected' % itemname)
         assert self.label.text == "You select %s" % itemname
 
-    def assertText(self, textValue=None):
-        """assert Text implementation for ListItem role"""
-        procedurelogger.action('check ListItem\'s Text Value')
+    def assertItemsText(self):
+        """assert the text of list items is equal to what we see"""
 
-        for textValue in range(20):
+        procedurelogger.action('Check ListItem\'s Text')
+
+        for i in range(20):
             procedurelogger.expectedResult('item "%s"\'s Text is %s' % \
-                                        (self.tablecell[textValue], textValue))
-            assert self.tablecell[textValue].text == str(textValue)
+                                                        (self.tablecell[i], i))
+            assert self.tablecell[i].text == str(i), \
+                'Text was "%s", expected "%s"' % (self.tablecell[i].text, i)
 
     def selectChildAndCheckStates(self, accessible, childIndex, add_states=[], invalid_states=[]):
         """
@@ -53,7 +50,7 @@ class ListBoxFrame(accessibles.Frame):
         """
         # select childIndex
         procedurelogger.action('Select child at index %s in "%s"' % \
-                                        (childIndex, accessible))
+                                                    (childIndex, accessible))
         accessible.selectChild(childIndex)
         sleep(config.SHORT_DELAY)
         self.assertLabel(str(accessible.getChildAtIndex(childIndex)))
@@ -63,7 +60,7 @@ class ListBoxFrame(accessibles.Frame):
                                                  invalid_states, add_states)
 
     def assertClearSelection(self, accessible):
-        """clear selections"""
+        """Clear selections"""
 
         procedurelogger.action('clear selection in "%s"' % accessible)
         accessible.clearSelection()

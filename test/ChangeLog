@@ -1,25 +1,36 @@
+2009-06-19 Ray Wang <rawang@novell.com>
+
+	* testers/threadexceptiondialog/threadexceptiondialogframe.py: Rewrite
+	assertText method, and remove click method.
+	* testers/threadexceptiondialog_basic_ops.py: Use click method from
+	strongwind.
+	* testers/listbox/listboxframe.py,
+	* testers/listbox_basic_ops.py: Use click method from strongwind and 
+	some code clean up.
 
 2009-06-19  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripbutton_basic_ops.py: 
-	* testers/toolstripbutton/toolstripbuttonframe.py: remove Bug 478838 478822 reference , add bug 506765
-        reference, and update the test cases 
+	* testers/toolstripbutton/toolstripbuttonframe.py: remove Bug 478838
+	478822 reference , add bug 506765 reference, and update the test cases 
 
 2009-06-19  Felicia Mu <fxmu@novell.com>
 	* testers/maskedtextbox_basic_ops.py, 
-	* testers/maskedtextbox/maskedtextboxframe.py: commit my changes from review board, 
-          remove the close bug reference.
+	* testers/maskedtextbox/maskedtextboxframe.py: commit my changes from
+	review board, remove the close bug reference.
 
 2009-06-19  Calen Chen <cachen@novell.com>
 
-	* testers/savefiledialog_basic_ops.py: change alias ofdFrame to sfdFrame
+	* testers/savefiledialog_basic_ops.py: change alias ofdFrame to 
+	sfdFrame.
 
 2009-06-18  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripbutton_basic_ops.py: add Bug 514300 reference
-	* testers/toolstripbutton/toolstripbuttonframe.py: remove Bug 474649 reference , add Bug 514300, update some tests
- 
+	* testers/toolstripbutton/toolstripbuttonframe.py: remove Bug 474649
+	reference , add Bug 514300, update some tests
+
 2009-06-17  Felicia Mu <fxmu@novell.com>
 	* testers/mainmenu_basic_ops.py: remove Bug 485524 reference
- 
+
 2009-06-17 Ray Wang <rawang@novell.com>
 
 	* testers/threadexceptiondialog/threadexceptiondialogframe.py,
@@ -31,8 +42,8 @@
 
 2009-06-17  Felicia Mu <fxmu@novell.com>
 	* testers/datagridview_basic_ops.py: remove Bug 478840 478856 478891 
-    and update their test cases, add new Bug 503078 513476 513837 reference 
-    and add their counterpart test case
+	and update their test cases, add new Bug 503078 513476 513837
+	reference and add their counterpart test case
 
 2009-06-16  Calen Chen <cachen@novell.com>
 

@@ -17,10 +17,6 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         super(ThreadExceptionDialogFrame, self).__init__(accessible)
         self.raise_button = self.findPushButton("Raise an Exception")
 
-    def click(self, accessible):
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
-
     def showDialog(self, accessible):
         '''
         Click on the "Raise an Exception" button and find all the accessibles
@@ -87,13 +83,14 @@ class ThreadExceptionDialogFrame(accessibles.Frame):
         except NotImplementedError:
             pass
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-        procedurelogger.action('Assert the text of %s' % accessible)
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text):
+        """assert the accessible's text is equal to the expected text"""
+
+        procedurelogger.action('Check the text of: %s' % accessible)
+        actual_text = accessible.text
+        procedurelogger.expectedResult('Text is "%s"' % actual_text)
+        assert actual_text == expected_text, 'Text was "%s", expected "%s"' % \
+                                                (actual_text, expected_text)
 
     def quit(self):
         self.altF4()
