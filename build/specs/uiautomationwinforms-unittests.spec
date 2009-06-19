@@ -22,7 +22,7 @@ Requires:       mono-core gtk-sharp2 mono-data
 Requires:       mono-uia mono-winfxcore uiaatkbridge 
 BuildRequires:	mono-devel mono-data gtk-sharp2 glib-sharp2
 BuildRequires:	mono-uia mono-uia-devel mono-winfxcore uiaatkbridge intltool >= 0.35
-BuildRequires:  mono-nunit metacity xorg-x11-Xvfb bc
+BuildRequires:  mono-nunit metacity xorg-x11-Xvfb bc xorg-x11-libX11
 
 Summary:        UIAutomationWinforms unit tests
 
