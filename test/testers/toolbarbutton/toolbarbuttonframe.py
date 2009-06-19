@@ -29,6 +29,7 @@ class ToolBarButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ToolBarButtonFrame, self).__init__(accessible)
         self.toolbar = self.findToolBar(None)
+        self.filler = self.findFiller(None)
         self.pushbutton_style = self.toolbar.findPushButton(self.PUSHBUTTON)
         self.dropdown_button = self.toolbar.findPushButton(self.DROPDOWNBUTTON)
         self.dropdown_toggle = \
@@ -244,7 +245,16 @@ class ToolBarButtonFrame(accessibles.Frame):
                                               expected_height,
                                              "does not match actual height",
                                               actual_height)
+    def assertName(self, accessible, expected_name):
+        """assert name is equal to the expected_name"""
 
+        procedurelogger.action('Assert the name of %s' % accessible)
+        procedurelogger.expectedResult('%s expects its name is"%s"' % \
+                                                (accessible, expected_name))
+        actual_name = accessible.name
+        assert actual_name == expected_name, \
+                        'actual name is: %s, expected name is: %s' % \
+                                                (actual_name, expected_name)
     # close main window
     def quit(self):
         self.altF4()

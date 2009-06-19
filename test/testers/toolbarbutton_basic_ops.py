@@ -86,7 +86,9 @@ tbbFrame.TestBasicPushButtonStyle(tbbFrame.pushbutton_style)
 # test DropDownButton style
 # BUG490105: dropdown_toggle has wrong postion
 # BUG498724: missing AtkText implemented
-tbbFrame.TestBasicDropDownButtonStyle()
+
+# BUG514667: DropDown button's 'click'action can't be implemented
+#tbbFrame.TestBasicDropDownButtonStyle()
 
 # test Toggle style
 tbbFrame.TestBasicToggleStyle(tbbFrame.toggle_style)
@@ -115,6 +117,19 @@ tbbFrame.assertImageSize(tbbFrame.nop_unable, \
                                           expected_width=24, expected_height=24)
 
 tbbFrame.assertImageSize(tbbFrame.separator_style)
+
+############################
+# assert name
+############################
+# BUG506765 - ToolBarButton: DropDown style toolbarbutton with wrong role name
+#tbbFrame.assertName(tbbFrame.filler, " ")
+tbbFrame.assertName(tbbFrame.pushbutton_style, "PushButton")
+tbbFrame.assertName(tbbFrame.dropdown_button, "DropDownButton")
+tbbFrame.assertName(tbbFrame.dropdown_toggle, "DropDownButton")
+tbbFrame.assertName(tbbFrame.toggle_style, "Toggle")
+tbbFrame.assertName(tbbFrame.nop_unable, "nop")
+tbbFrame.assertName(tbbFrame.separator_style, "separator")
+tbbFrame.assertName(tbbFrame.label, "You clicked PushButton 2 times")
 
 # close main window
 tbbFrame.quit()

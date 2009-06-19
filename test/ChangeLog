@@ -1,5 +1,10 @@
 
 2009-06-19  Felicia Mu <fxmu@novell.com>
+	* testers/toolbarbutton_basic_ops.py ,
+	* testers/toolbarbutton/toolbarbuttonframe.py:add assertName method,
+        add new bug 514667 reference
+ 
+2009-06-19  Felicia Mu <fxmu@novell.com>
 	* testers/datagridview_basic_ops.py,
 	* testers/datagridview/datagridviewframe.py:update the two tests 
           according to my update on the review board
