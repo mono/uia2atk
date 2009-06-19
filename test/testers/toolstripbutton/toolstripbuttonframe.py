@@ -48,11 +48,10 @@ class ToolStripButtonFrame(accessibles.Frame):
         accessible.click()
 
         sleep(config.SHORT_DELAY)
-##all of the above is commented out because of bug 478872 (if it gets fixed, drop a mouseClick() call above when enabling this)
-#        procedurelogger.expectedResult("label shows you have clicked %s 1 time" % accessible)
-#        assert self.label.text == "You clicked PushButton 1 times", \
-#                "label shows %s" % self.label.text
-#                                          
+        procedurelogger.expectedResult("label shows you have clicked %s 1 time" % accessible)
+        assert self.label.text == "You clicked PushButton 1 times", \
+                "label shows %s" % self.label.text
+                                          
         #test AtkComponent by mouse click it to check its position
         accessible.mouseClick()
 
@@ -76,14 +75,15 @@ class ToolStripButtonFrame(accessibles.Frame):
         #test AtkAction to unable label
         accessible.click()
         sleep(config.SHORT_DELAY)
-##all of the above is commented out because of bug 478872 (if it gets fixed, drop a mouseClick() call above when enabling this)
-#        statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
-#        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
+        #BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+        #statesCheck(self.toggle_style, "Button", add_states=["armed", "checked"])
+        statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
         #click again to enable label
         accessible.click()
         sleep(config.SHORT_DELAY)
-#bug 478838: missing focusable state
-#        statesCheck(self.toggle_style, "Button")
+
+        #BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+        #statesCheck(self.toggle_style, "Button", invalid_states=["focusable"])
         statesCheck(self.label, "Label")
                                           
         #test AtkComponent by mouse click to check its position
@@ -94,9 +94,10 @@ class ToolStripButtonFrame(accessibles.Frame):
         statesCheck(self.label, "Label", invalid_states=["enabled", "sensitive"])
         #mouse click again to enable label
         accessible.mouseClick()
+
         sleep(config.SHORT_DELAY)
-#bug 478838: missing focusable state
-#        statesCheck(self.toggle_style, "Button")
+        #BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+        #statesCheck(self.toggle_style, "Button")
         statesCheck(self.label, "Label")
 
     #in this example all buttons with 24*24 image size, except separator
@@ -119,6 +120,7 @@ class ToolStripButtonFrame(accessibles.Frame):
                                               height,
                                              "does not match actual height",
                                               size[1])
+
 
     #close main window
     def quit(self):

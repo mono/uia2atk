@@ -1,5 +1,10 @@
 
 2009-06-19  Felicia Mu <fxmu@novell.com>
+	* testers/toolstripbutton_basic_ops.py: 
+	* testers/toolstripbutton/toolstripbuttonframe.py: remove Bug 478838 478822 reference , add bug 506765
+        reference, and update the test cases 
+
+2009-06-19  Felicia Mu <fxmu@novell.com>
 	* testers/maskedtextbox_basic_ops.py, 
 	* testers/maskedtextbox/maskedtextboxframe.py: commit my changes from review board, 
           remove the close bug reference.

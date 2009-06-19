@@ -52,10 +52,11 @@ tbbFrame = app.toolStripButtonFrame
 #check toolstrip's states
 statesCheck(tbbFrame.toolbar, "ToolBar")
 
-#bug 478838: missing focusable state
-#statesCheck(tbbFrame.pushbutton_style, "Button")
-#statesCheck(tbbFrame.toggle_style, "Button")
+statesCheck(tbbFrame.pushbutton_style, "Button", invalid_states=["focusable"])
 
+#BUG514300 ToolBarButton: the "new" toggle button is identified as check box
+#in toolsripbtton should not have focusable state.
+#statesCheck(tbbFrame.toggle_style, "Button", invalid_states=["focusable"])
 sleep(config.SHORT_DELAY)
 
 #####################################
