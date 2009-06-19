@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-##
-# Written by:  Mario Carrion <mcarrion@novell.com>
-# Date:        02/23/2009
-# Description: Test accessibility of DataGridView widget 
-#              Use the datagridviewframe.py wrapper script
-#              Test the samples/datagridview.py script
-##
+############################################################################################
+####    Written by:  Mario Carrion <mcarrion@novell.com>                               #####
+####    Date:        02/23/2009                                                        #####
+####    Description: Test accessibility of DataGridView widget                         #####
+####                 Use the datagridviewframe.py wrapper script                       #####
+####                 Test the samples/datagridview.py script                           #####
+############################################################################################
 
 # The docstring below  is used in the generated log file
 """
@@ -62,93 +62,222 @@ for column in dtgvFrame.columns:
 statesCheck(dtgvFrame.tablecells[1], "TreeViewTableCell", add_states=["editable"])
 ##statesCheck(dtgvFrame.tablecells[2], "TreeViewTableCell")
 
-reg = EventListener(event_types='object:state-changed')
-reg.start()
-
-checkbox = dtgvFrame.findAllCheckBoxes(None)[1]
-checkbox.grabFocus()
-
-
-assert reg.containsEvent(checkbox, 'object:state-changed:focused')
-
-reg.clearQueuedEvents()
-
-sleep(config.LONG_DELAY)
-
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused" \
-])
-
-checkbox.click()
-sleep(config.LONG_DELAY)
-statesCheck(checkbox, "CheckBox", add_states=[ \
-    "selectable", "selected", "focused", "checked" \
-])
-
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
-
-reg.clearQueuedEvents()
-
-checkbox.click()
-sleep(config.LONG_DELAY)
-statesCheck(checkbox, "CheckBox", add_states=[ \
-   "selectable", "selected", "focused", \
-])
-
-sleep(config.LONG_DELAY)
-assert reg.containsEvent(checkbox, 'object:state-changed:checked')
-
-reg.stop()
-
+####*reg = EventListener(event_types='object:state-changed')
+####*reg.start()
+####*
+####*checkbox = dtgvFrame.findAllCheckBoxes(None)[1]
+####*checkbox.grabFocus()
+####*
+####*
+####*assert reg.containsEvent(checkbox, 'object:state-changed:focused')
+####*
+####*reg.clearQueuedEvents()
+####*
+####*sleep(config.LONG_DELAY)
+####*
+####*statesCheck(checkbox, "CheckBox", add_states=[ \
+####*    "selectable", "selected", "focused" \
+####*])
+####*
+####*checkbox.click()
+####*sleep(config.LONG_DELAY)
+####*statesCheck(checkbox, "CheckBox", add_states=[ \
+####*    "selectable", "selected", "focused", "checked" \
+####*])
+####*
+####*assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+####*
+####*reg.clearQueuedEvents()
+####*
+####*checkbox.click()
+####*sleep(config.LONG_DELAY)
+####*statesCheck(checkbox, "CheckBox", add_states=[ \
+####*   "selectable", "selected", "focused", \
+####*])
+####*
+####*sleep(config.LONG_DELAY)
+####*assert reg.containsEvent(checkbox, 'object:state-changed:checked')
+####*
+####*reg.stop()
+####*
 # -> TextBox cell tests
 dtgvFrame.assertEditsText(dtgvFrame.edits)
 
 #BUG513476 - DataGridView:the uneditable table cell lack the 'sensitive' and 'enable' state:
 ##dtgvFrame.edits[0].mouseClick()
-##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=[ "selectable", "selected", "focused" ])
-##dtgvFrame.edits[1].mouseClick()
-##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=["editable", "selectable", "selected", "focused" ])
+##sleep(config.LONG_DELAY)
+##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=[ "selectable", "selected", "focused" ])i
 
-# -> Button cell tests
+##dtgvFrame.edits[1].mouseClick()
+##sleep(config.LONG_DELAY)
+##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=["editable", "selectable", "selected", "focused" ])
+##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=["editable", "selectable" ])
+
+##dtgvFrame.edits[0].grabFocus()
+##statesCheck(dtgvFrame.edits[0], "TextBox", add_states=[ "selectable", "focused" ])i
+
+##dtgvFrame.edits[1].grabFocus()
+##statesCheck(dtgvFrame.edits[1], "TextBox", add_states=["editable", "selectable", "focused" ])
+
+# -> statecheck and actioncheck test for Button cell 
 
 for button in dtgvFrame.buttons:
 	actionsCheck(button,"Button")
 	statesCheck(button,"Button", add_states=["selectable"])
 	
-# Testing click
+###
 dtgvFrame.buttons[0].mouseClick()
 sleep(config.SHORT_DELAY)
-dtgvFrame.assertCellClickValue(0, 3)
 
+dtgvFrame.assertCellClickValue(5, 3)
+dtgvFrame.assertCurrentCellValue(5, 3)
 statesCheck(dtgvFrame.buttons[0],"Button", add_states=["focused", "selectable", "selected"])
+
 dtgvFrame.buttons[1].mouseClick()
 sleep(config.SHORT_DELAY)
-
 statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
-dtgvFrame.assertCellClickValue(1, 3)
+
+dtgvFrame.assertCellClickValue(4, 3)
+dtgvFrame.assertCurrentCellValue(4, 3)
 
 statesCheck(dtgvFrame.buttons[1],"Button", add_states=["focused", "selectable", "selected"])
-
-# -> Link cell tests
+statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
+# -> statecheck and for Link cell 
 
 for label in dtgvFrame.labels:
-	statesCheck(button,"Label", invalid_states=["multi line"], add_states=["selectable", "focusable"])
+    statesCheck(label,"Label",  add_states=["selectable", "focusable"])
+
+dtgvFrame.labels[0].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(dtgvFrame.labels[0],"Label", add_states=["selectable", "focusable", "selected", "focused"])
+
+dtgvFrame.labels[1].grabFocus()
+sleep(config.SHORT_DELAY)
+statesCheck(dtgvFrame.labels[1],"Label", add_states=["selectable", "focusable", "selected", "focused"])
+statesCheck(dtgvFrame.labels[0],"Label", add_states=["selectable", "focusable"])
+
+dtgvFrame.labels[2].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(dtgvFrame.labels[1],"Label", add_states=["selectable", "focusable"])
+statesCheck(dtgvFrame.labels[2],"Label", add_states=["selectable", "focusable", "selected", "focused"])
+
+### Testing click
+##dtgvFrame.buttons[0].mouseClick()
+##sleep(config.SHORT_DELAY)
+##dtgvFrame.assertCellClickValue(0, 3)
+##
+##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["focused", "selectable", "selected"])
+##dtgvFrame.buttons[1].mouseClick()
+##sleep(config.SHORT_DELAY)
+##
+##statesCheck(dtgvFrame.buttons[0],"Button", add_states=["selectable"])
+##dtgvFrame.assertCellClickValue(1, 3)
+##
+##statesCheck(dtgvFrame.buttons[1],"Button", add_states=["focused", "selectable", "selected"])
+##
+### -> Link cell tests
+##
+##for label in dtgvFrame.labels:
+##	statesCheck(button,"Label", invalid_states=["multi line"], add_states=["selectable", "focusable"])
 
 # -> ComboBox cell tests
 #BUG503078 combobox in datagridview lacks of 'sensitive' ,'enabled' state
 #statesCheck(dtgvFrame.comboboxes[0],"ComboBox", add_states=["selectable"])
 
 # -> All cells: Selection tests
+# ->test after selecting many accessibles , the state of every accessible will correct
+
+#test after selecting many accessibles, the "focused" state of the first checkbox will not lost
 dtgvFrame.assertClearSelection(dtgvFrame.treetable)
 sleep(config.SHORT_DELAY)
-# Selecting first checkbox
-dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 0)
+
+# Selecting first checkbox, and check it's state
+dtgvFrame.checkboxes[0].mouseClick()
 sleep(config.SHORT_DELAY)
+
+dtgvFrame.treetable.selectChild(dtgvFrame.checkboxes[0].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+sleep(config.SHORT_DELAY)
+
+# Selecting first tablecell, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.edits[0].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.edits[0], "TableCell", add_states=["selected",  "selectable"], invalid_states=["enabled", "sensitive"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting first combobox, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.comboboxes[0].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.comboboxes[0], "ComboBox", add_states=["selected",  "selectable"], invalid_states=["enabled", "sensitive"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting first pushbutton, and check it's state
+
+dtgvFrame.treetable.selectChild(dtgvFrame.buttons[0].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.buttons[0], "Button", add_states=["selected", "selectable"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting first label, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.labels[0].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.labels[0], "Label", add_states=["selected", "selectable","focusable"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting second checkbox, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.checkboxes[1].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[1], "CheckBox", add_states=["selected", "selectable"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+
+# Selecting second tablecell, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.tablecells[1].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.tablecells[1], "TableCell", add_states=["selected", "selectable", "enabled", "editable", "sensitive"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting second combobox, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.comboboxes[1].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.comboboxes[1], "ComboBox", add_states=["selected",  "selectable"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
+# Selecting second combobox, and check it's state
+dtgvFrame.treetable.selectChild(dtgvFrame.buttons[1].getIndexInParent())
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.buttons[1], "Button", add_states=["selected", "selectable"])
+sleep(config.SHORT_DELAY)
+
+statesCheck(dtgvFrame.checkboxes[0], "CheckBox", add_states=["selected", "checked", "selectable","focused"], invalid_states=["enabled", "sensitive"])
+
 # BUG513837 - DataGridView:the "checked" check box lack the 'sensitive' and 'enable' state
 #statesCheck(dtgvFrame.treetable[5], "CheckBox", add_states=[ "checked", "selectable"])
 
-# Selecting first textbox
-dtgvFrame.assertSelectionChild(dtgvFrame.treetable, 1)
 # BUG479126 - DataGridView. TextBox cells don't implement SelectionItem
 ##statesCheck(dtgvFrame.treetable[1], "TableCell", add_states=["selected", "selectable"], invalid_states=["enabled", "sensitive"])
 

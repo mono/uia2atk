@@ -20,14 +20,20 @@ class DataGridViewFrame(accessibles.Frame):
 	# the available widgets on the frame
 	COLUMN_CHECKBOX = "COLUMN_CHECKBOX"
 	COLUMN_TEXTBOX = "COLUMN_TEXTBOX"
+	COLUMN_COMBOBOX = "COLUMN_COMBOBOX"
+	COLUMN_BUTTON = "COLUMN_BUTTON"
+	COLUMN_LINK = "COLUMN_LINK"
 
 	def __init__(self, accessible):
 		super(DataGridViewFrame, self).__init__(accessible)
 		self.treetable = self.findTreeTable(None)
 		self.checkbox_column = self.findTableColumnHeader(self.COLUMN_CHECKBOX, checkShowing=False)
 		self.textbox_column = self.findTableColumnHeader(self.COLUMN_TEXTBOX, checkShowing=False)
+		self.combobox_column = self.findTableColumnHeader(self.COLUMN_TEXTBOX ,checkShowing=False)
+		self.button_column = self.findTableColumnHeader(self.COLUMN_BUTTON , checkShowing=False)
+		self.link_column = self.findTableColumnHeader(self.COLUMN_LINK , checkShowing=False)
 		
-		self.columns = [self.checkbox_column, self.textbox_column]
+		self.columns = [self.checkbox_column, self.textbox_column, self.combobox_column, self.button_column, self.link_column ]
 		
 		self.tablecells = self.findAllTableCells(None)
 
@@ -65,9 +71,9 @@ class DataGridViewFrame(accessibles.Frame):
 			index += 1
 
 	#assert Selection implementation
-	def assertSelectionChild(self, accessible, childIndex):
-		procedurelogger.action('selected childIndex %s in "%s"' % (childIndex, accessible))
-		accessible.selectChild(childIndex)
+#	def assertSelectionChild(self, accessible, childIndex):
+#		procedurelogger.action('selected childIndex %s in "%s"' % (childIndex, accessible))
+#		accessible.selectChild(childIndex)
 
 	def assertClearSelection(self, accessible):
 		procedurelogger.action('clear selection in "%s"' % (accessible))
@@ -80,11 +86,21 @@ class DataGridViewFrame(accessibles.Frame):
 		procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
 		assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" % (itable.nRows, itable.nColumns)
 	
-	#assert Click
+	#assert Cell Click Value
 	def assertCellClickValue(self, row, column):
 		new_labelcellclick_value = "CellClick: %s,%s" % (row,column)
-		procedurelogger.action('cell click %s = %s' % (self.label_cellclick.text,new_labelcellclick_value))
+		procedurelogger.action('assert label \"cell click \" \'s value ')
+
+	        procedurelogger.expectedResult('\"cell click \" change to %s, %s' % (row, column))
 		assert self.label_cellclick.text == new_labelcellclick_value
+ 
+	#assert Current Cell Value
+	def assertCurrentCellValue(self, row, column):
+		new_labelcurrentcell_value = "CurrenCellChanged: %s,%s" % (row,column)
+		procedurelogger.action('assert label \"Current cell \" \'s value ')
+
+	        procedurelogger.expectedResult('\"Current cell \" change to %s, %s' % (row, column))
+		assert self.label_currentcellchanged.text == new_labelcurrentcell_value 
  
 	#close application main window after running test
 	def quit(self):
