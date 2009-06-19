@@ -1,3 +1,6 @@
+2009-06-19  Calen Chen <cachen@novell.com>
+
+	* testers/savefiledialog_basic_ops.py: change alias ofdFrame to sfdFrame
 
 2009-06-18  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripbutton_basic_ops.py: add Bug 514300 reference

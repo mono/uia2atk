@@ -42,105 +42,105 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-ofdFrame = app.saveFileDialogFrame
+sfdFrame = app.saveFileDialogFrame
 
 # click "Click me" button to open the "Save As" dialog, and then find all the
 # accessibles of that dialog
-ofdFrame.opendialog_button.click(log=True)
+sfdFrame.opendialog_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.findAllSaveDialogWidgets()
+sfdFrame.findAllSaveDialogWidgets()
 
 # check the default states of all of the accessibles on the "Save As" dialog
-ofdFrame.checkDefaultSaveDialogStates()
+sfdFrame.checkDefaultSaveDialogStates()
 
 # click the button to make a new directory, and then find all of the
 # accessibles of that dialog
-ofdFrame.new_dir_toolbar_button.click(log=True)
+sfdFrame.new_dir_toolbar_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.findAllNewFolderOrFileAccessibles()
+sfdFrame.findAllNewFolderOrFileAccessibles()
 # check the default states of all of the accessibles on the "New Folder Or
 # File" dialog
-ofdFrame.checkDefaultNewFolderOrFileDialogStates()
+sfdFrame.checkDefaultNewFolderOrFileDialogStates()
 
 # close the "New Folder Or File" dialog
-ofdFrame.new_folder_cancel.click(log=True)
-ofdFrame.new_folder_dialog.assertClosed()
+sfdFrame.new_folder_cancel.click(log=True)
+sfdFrame.new_folder_dialog.assertClosed()
 
 # click popUpButton personal to rise focused, there is no "Personal" folder on treetable
-ofdFrame.personal_popup.click(log=True)
+sfdFrame.personal_popup.click(log=True)
 sleep(config.SHORT_DELAY)
 # ensure that the click action had the desired affect on the GUI by making sure
 # the "Personal" menu item is the selected child of the "Save in" combo box.
 # We need to refind the "Save In" combo box accessibles again first, because
 # they reload (and change) when the popup is clicked.
-ofdFrame.findSaveInComboBoxAccessibles()
-ofdFrame.assertSelectedChild(ofdFrame.save_in_combobox,
-                             ofdFrame.personal_menuitem)
-# BUG475082 OpenFileDialog: PopupButton has wrong states -- Everything fixed
+sfdFrame.findSaveInComboBoxAccessibles()
+sfdFrame.assertSelectedChild(sfdFrame.save_in_combobox,
+                             sfdFrame.personal_menuitem)
+# BUG475082 PopupButton has wrong states -- Everything fixed
 # except +/- "focused" state.
-#statesCheck(ofdFrame.personal_menuitem,
+#statesCheck(sfdFrame.personal_menuitem,
 #            "MenuItem",
 #            add_states=["focusable", "focused", "selected"])
 
 # keyUp move focus to desktop_popup
-ofdFrame.keyCombo("Up", grabFocus=False)
+sfdFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
-ofdFrame.findSaveInComboBoxAccessibles()
+sfdFrame.findSaveInComboBoxAccessibles()
 # the selection of the "Save In" combo box shouldn't actually change
-ofdFrame.assertSelectedChild(ofdFrame.save_in_combobox,
-                             ofdFrame.personal_menuitem)
-# BUG475082 OpenFileDialog: PopupButton has wrong states -- Everything fixed
+sfdFrame.assertSelectedChild(sfdFrame.save_in_combobox,
+                             sfdFrame.personal_menuitem)
+# BUG475082 PopupButton has wrong states -- Everything fixed
 # except +/- "focused" state.
-#statesCheck(ofdFrame.personal_menuitem,
+#statesCheck(sfdFrame.personal_menuitem,
 #            "MenuItem",
 #            add_states=["focusable", "focused", "selected"])
 
 # mouseClick move focus to mycomputer_popup
-ofdFrame.mycomputer_popup.mouseClick()
+sfdFrame.mycomputer_popup.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.findSaveInComboBoxAccessibles()
-ofdFrame.assertSelectedChild(ofdFrame.save_in_combobox,
-                             ofdFrame.mycomputer_menuitem)
-# BUG475082 OpenFileDialog: PopupButton has wrong states -- Everything fixed
+sfdFrame.findSaveInComboBoxAccessibles()
+sfdFrame.assertSelectedChild(sfdFrame.save_in_combobox,
+                             sfdFrame.mycomputer_menuitem)
+# BUG475082 PopupButton has wrong states -- Everything fixed
 # except +/- "focused" state.
-#statesCheck(ofdFrame.personal_menuitem,
+#statesCheck(sfdFrame.personal_menuitem,
 #            "MenuItem",
 #            add_states=["focusable", "focused", "selected"])
 
-ofdFrame.cancel_button.click(log=True)
+sfdFrame.cancel_button.click(log=True)
 # this requires a MEDIUM_DELAY because it can take a while to close
 sleep(config.MEDIUM_DELAY)
-ofdFrame.savedialog.assertClosed()
+sfdFrame.savedialog.assertClosed()
 
 # invoke action to save file
-ofdFrame.opendialog_button.click(log=True)
+sfdFrame.opendialog_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.findAllSaveDialogWidgets()
-ofdFrame.a_blank_file_cell.invoke(log=True)
+sfdFrame.findAllSaveDialogWidgets()
+sfdFrame.a_blank_file_cell.invoke(log=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.findSaveConfirmationDialogAccessibles()
+sfdFrame.findSaveConfirmationDialogAccessibles()
 # now close the "Save" confirmation dialog
-ofdFrame.save_confirmation_cancel_button.click(log=True)
+sfdFrame.save_confirmation_cancel_button.click(log=True)
 sleep(config.SHORT_DELAY)
 
 # test view style dropdown menu_items from toolbar button on the top
-ofdFrame.dropDownMenuItemTests()
+sfdFrame.dropDownMenuItemTests()
 
 # TODO: Test context menu when clicking in the TreeTable
 
 # TODO: Test icon view button on the toolbar and test TreeTable with different
 # icons
-ofdFrame.checkImageSize()
+sfdFrame.checkImageSize()
 
 # test accessibles of the save_in_combobox
-ofdFrame.saveInComboBoxAccessiblesTest()
+sfdFrame.saveInComboBoxAccessiblesTest()
 
 # close savedialog window
-ofdFrame.cancel_button.click(log=True)
+sfdFrame.cancel_button.click(log=True)
 # this requires a MEDIUM_DELAY because it can take a while to close
 sleep(config.MEDIUM_DELAY)
 
 #close application frame window
-ofdFrame.quit()
+sfdFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
