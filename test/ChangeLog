@@ -1,3 +1,8 @@
+
+2009-06-22  Felicia Mu <fxmu@novell.com>
+        * testers/tabpage_basic_ops.py ,modify bug511183 and remove bug511516(discuss with 
+          calen the bug is not valid) test case in it
+
 2009-06-22  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: delete click and 
