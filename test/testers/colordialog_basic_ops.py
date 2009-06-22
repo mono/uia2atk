@@ -44,82 +44,86 @@ if app is None:
 # just an alias to make things shorter
 cdFrame = app.colorDialogFrame
 
-#####################################################
-# search for all widgets from color dialog
-#####################################################
-# click button to show colordialog page, then check subwidgets
+#########################################################
+##search for all widgets from color dialog             ##
+#########################################################
+##click button to show colordialog page, then check subwidgets
 cdFrame.openColorDialog()
 cdFrame.findAllColorDialogAccessibles()
 
-# check the states of the default Color dialog
+##check the states of the default Color dialog
 cdFrame.checkColorDialogStates(False)
 
-# mouse click should raise focused state
+##mouse click should raise focused state
 cdFrame.small_color_buttons[-3].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.small_color_buttons[-3], "Button", add_states=["focused"])
 
-# keyTab move focused to the next SmallColorControl
+##keyTab move focused to the next SmallColorControl
 cdFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(cdFrame.small_color_buttons[-4], "Button", add_states=["focused"])
 statesCheck(cdFrame.small_color_buttons[-3], "Button")
 
-# perform click action should raise focused state
-# BUG504593 Button does not receive focus when click action is performed on it
+##perform click action should raise focused state
+##BUG504593 Button does not receive focus when click action is performed on it
 #cdFrame.small_color_buttons[-5].click(log=True)
 #sleep(config.SHORT_DELAY)
 #statesCheck(cdFrame.small_color_buttons[-5], "Button", add_states=["focused"])
 #statesCheck(cdFrame.small_color_buttons[-4], "Button")
 
-# click the "Define Custom Colors" button
+##click the "Define Custom Colors" button
 cdFrame.def_custom_colors_button.click(log=True)
 sleep(config.SHORT_DELAY)
 
-# now check the states of the Color dialog again, this time the custom
-# color accessibles should be visible and showing
+##now check the states of the Color dialog again, this time the custom
+##color accessibles should be visible and showing
 cdFrame.checkColorDialogStates(True)
 
-# assert that SmallColorControls' Text are blank (i.e., "")
+##assert that SmallColorControls' Text are blank (i.e., "")
 cdFrame.assertSmallColorText()
 
-####################################################################
-# Name test for SmallColorControls under Base Colors and User Colors
-####################################################################
-# Depending on how BUG488998 is resolved, we may or may not want to
-# add tests to check the names of the SmallColorControl buttons
+#########################################################yy##################################
+##Name test for SmallColorControls under Base Colors and User Colors
+#########################################################yy##################################
 
-################################################
-# AtkImage test for SmallColorControls
-################################################
+##Depending on how BUG488998 is resolved, we may or may not want to
+##add tests to check the names of the SmallColorControl buttons
+
+#########################################################yy##################################
+##AtkImage test for SmallColorControls
+#########################################################yy##################################
+
 cdFrame.assertImageSize(cdFrame.small_color_buttons[10])
 cdFrame.assertImageSize(cdFrame.small_color_buttons[40])
 
-################################################
-# AtkComponent test for SmallColorControls
-################################################
+#########################################################yy##################################
+##AtkComponent test for SmallColorControls
+#########################################################yy##################################
+
 cdFrame.assertComponentSize(cdFrame.small_color_buttons[10], 25, 23)
 cdFrame.assertComponentSize(cdFrame.small_color_buttons[40], 25, 23)
 
-###########################################################################
-# AtkAction test for SmallColorControls to select color, Label shows which 
-# color is selected
-###########################################################################
+#########################################################yy##################################
+##AtkAction test for SmallColorControls to select color, Label shows which               ##
+##color is selected                                                                      ##
+###########################################################################################
 
-# close the Color dialog
+##close the Color dialog
 cdFrame.color_dialog.altF4()
 
-# click ColorDialog Button to open color dialog again
+#click ColorDialog Button to open color dialog again
 cdFrame.color_dialog_button.click(log=True)
 sleep(config.SHORT_DELAY)
 cdFrame.findAllColorDialogAccessibles()
 cdFrame.checkColorDialogStates(False)
 
-# close dialog
+#close dialog
 cdFrame.cancel_button.click(log=True)
 sleep(config.SHORT_DELAY)
 
-# BUG504655 at-spi 'click' action cannot be used to select a color
+#BUG504655 at-spi 'click' action cannot be used to select a color
+#BUG478541 - ColorDialog:do click action against SmallColorControls are multi selected colors
 #cdFrame.selectColorAndAssertLabelChange(-9, "Color [Yellow]")
 #cdFrame.selectColorAndAssertLabelChange(-10, "Color [Red]")
 

@@ -1,4 +1,8 @@
 
+2009-06-22  Felicia Mu <fxmu@novell.com>
+	* testers/toolbarbutton_basic_ops.py :add bug 478541 reference
+	* testers/colordialog/colordialogframe.py: remove extra print info
+
 2009-06-19  Felicia Mu <fxmu@novell.com>
 	* testers/toolbarbutton_basic_ops.py ,
 	* testers/toolbarbutton/toolbarbuttonframe.py:add assertName method,

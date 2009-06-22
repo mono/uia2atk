@@ -223,7 +223,6 @@ class ColorDialogFrame(accessibles.Frame):
         # click on the SmallColorControl and then click OK
         self.small_color_buttons[small_color_button_index].click(log=True)
         sleep(config.SHORT_DELAY)
-        print "blaalaa"
         self.ok_button.click(log=True)
         sleep(config.MEDIUM_DELAY)
 
