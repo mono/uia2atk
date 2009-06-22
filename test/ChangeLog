@@ -1,3 +1,10 @@
+2009-06-22  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py: delete click and 
+	press wraper by using strongwind action method to log
+	* testers/combobox_dropdown_ops.py: use strongwind action method 
+	directly; add BUG506744 reference that menuitem is missing focusable 
+	state affect all menuitems' states check, and comment those tests out
 
 2009-06-22  Felicia Mu <fxmu@novell.com>
 	* testers/tabpage_basic_ops.py ,

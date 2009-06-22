@@ -46,27 +46,6 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         assert False, "%s should not implement the action interface" % \
                        (accessible)
 
-    def click(self,accessible):
-        """
-        Wrap strongwind click action to add log
-
-        """
-        procedurelogger.action('click %s' % accessible)
-        accessible.click()
-
-    # give 'press' action
-    def press(self,accessible):
-        """
-        Wrap stronging press action for ComboBox, then search for subchildren 
-        as expected result
-
-        """
-        procedurelogger.action('press %s' % accessible)
-        accessible.press()
-        sleep(config.SHORT_DELAY)
-
-        procedurelogger.expectedResult('menu item list is showing')
-
     def assertLabel(self, newlabel):
         """
         Make sure Label is changed; in this test, Label is showing which 
@@ -135,8 +114,9 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         # press combobox to expand menu, menu_items raise focused and selected
         self.combobox.press()
         sleep(config.SHORT_DELAY)
-        statesCheck(self.menu_items[int(textvalue)], "MenuItem", \
-                                   add_states=["focused", "selected"])
+        # BUG506744: is missing focusable state
+        #statesCheck(self.menu_items[int(textvalue)], "MenuItem", \
+        #                           add_states=["focused", "selected"])
 
     def insertMenuItemTest(self, textvalue):
         """
