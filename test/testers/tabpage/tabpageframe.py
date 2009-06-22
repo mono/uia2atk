@@ -27,7 +27,7 @@ class TabPageFrame(accessibles.Frame):
     LABEL2 = "I'm in tab page 2"
     LABEL3 = "I'm in tab page 3"
     BUTTON = "Button"
-    NUM_TAB_PAGES = 7
+    NUM_TAB_PAGES = 10
 
     def __init__(self, accessible):
         super(TabPageFrame, self).__init__(accessible)
@@ -40,6 +40,9 @@ class TabPageFrame(accessibles.Frame):
         self.tab_page_1 = self.tab_pages[1]
         self.tab_page_2 = self.tab_pages[2]
         self.tab_page_3 = self.tab_pages[3]
+        self.tab_page_4 = self.tab_pages[4]
+        self.tab_page_5 = self.tab_pages[5]
+        self.tab_page_6 = self.tab_pages[6]
         # assert the names of tab pages 0-3
         assert self.tab_page_0.name == self.TAB0, \
                                             'Name was "%s", expected "%s"' % \

@@ -1,5 +1,9 @@
 
 2009-06-22  Felicia Mu <fxmu@novell.com>
+	* testers/tabpage_basic_ops.py ,
+	* testers/tabpage/tabpageframe.py: add bug511183 and bug511516 test case in it
+
+2009-06-22  Felicia Mu <fxmu@novell.com>
 	* testers/toolbarbutton_basic_ops.py :add bug 478541 reference
 	* testers/colordialog/colordialogframe.py: remove extra print info
 

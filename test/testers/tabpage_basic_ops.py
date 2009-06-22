@@ -53,6 +53,7 @@ statesCheck(tpFrame.tab_page_3, "TabPage")
 
 # BUG510841: off screen tab page is missing "visible" state 
 #statesCheck(tpFrame.tab_pages[-1], "TabPage", invalid_states=["showing"])
+statesCheck(tpFrame.tab_pages[6], "TabPage")
 
 ###################
 # Test Tab 0
@@ -168,6 +169,24 @@ tpFrame.radiobutton.click(log=True)
 sleep(config.SHORT_DELAY)
 tpFrame.assertLabelText("checked radiobutton")
 
+###################
+# Test Tab 5 and Tab 6
+###################
+#for the "Tab 5" and "Tab 6" which are not showing on TabPage Sameple , they
+#should have not 'showing' state.
+#BUG511516 - TabPage: the off screen tab page should not have the "showing" state
+#tpFrame.keyCombo("Right", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#tpFrame.keyCombo("Right", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#statesCheck(tpFrame.tab_page_5, "TabPage", add_states=["focused", "selected"], invalid_states=["showing"])
+#
+#tpFrame.keyCombo("Right", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#statesCheck(tpFrame.tab_page_6, "TabPage", add_states=["focused", "selected"], invalid_states=["showing"])
 ##############################
 # check AtkText implementation
 ##############################
@@ -176,6 +195,27 @@ tpFrame.assertText(tpFrame.tab_page_1, "Tab 1")
 tpFrame.assertText(tpFrame.tab_page_2, "Tab 2")
 tpFrame.assertText(tpFrame.tab_page_3, "Tab 3")
 
+#BUG511183 - TabPage:the "Tab 0 " page tab always can not be expanded except when the tab page app is launched
+#if BUG511516 is fixed , please uncomment this code "####", other wise only uncomment this code begin with "#" 
+####tpFrame.keyCombo("Left", grabFocus=False)
+####sleep(config.SHORT_DELAY)
+####
+####tpFrame.keyCombo("Left", grabFocus=False)
+####sleep(config.SHORT_DELAY)
+####
+####tpFrame.keyCombo("Left", grabFocus=False)
+####sleep(config.SHORT_DELAY)
+####
+#tpFrame.keyCombo("Left", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#tpFrame.keyCombo("Left", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#tpFrame.keyCombo("Left", grabFocus=False)
+#sleep(config.SHORT_DELAY)
+#
+#tpFrame.findTabPageAccessibles(0)
 # close application frame window
 tpFrame.quit()
 
