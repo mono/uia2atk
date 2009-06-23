@@ -122,6 +122,9 @@ class ToolBarSample(Form):
         if btn == 0:
             self.count += 1
             self.label.Text = "You clicked PushButton %s times" % self.count
+        elif btn == 1:
+            self.count += 1
+            self.label.Text = "You clicked DropDownButton %s times" % self.count
         elif btn == 2:
             if event.Button.Pushed:
                 self.label.Enabled = False
