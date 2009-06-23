@@ -1,3 +1,9 @@
+2009-06-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/tests.py: I removed the LinkLabel test for now.  We need to
+	fix the problems that cause the test to fail after Firefox has been
+	opened.
+
 2009-06-19 Ray Wang <rawang@novell.com>
 
 	* testers/listbox/listboxframe.py,

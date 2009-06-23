@@ -21,7 +21,6 @@ tests_list = [
     "statusbar_basic_ops.py",
     "groupbox_basic_ops.py",
     "picturebox_basic_ops.py",
-    "linklabel_basic_ops.py",
     "progressbar_basic_ops.py",
     "helpprovider_basic_ops.py",
     "pagesetupdialog_basic_ops.py",
