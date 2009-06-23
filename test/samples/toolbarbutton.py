@@ -76,7 +76,8 @@ class ToolBarSample(Form):
         self.toolbar.ImageList = self.imagelist
 
         # setup toolbarbuttons
-        self.count = 0
+        self.push_button_count = 0
+        self.drop_down_button_count = 0
         self.toolbar_btn1 = ToolBarButton()
         self.toolbar_btn1.Text = "PushButton"
         self.toolbar_btn1.ImageIndex = 0
@@ -120,11 +121,14 @@ class ToolBarSample(Form):
     def on_click(self, sender, event):
         btn = self.toolbar.Buttons.IndexOf(event.Button)
         if btn == 0:
-            self.count += 1
-            self.label.Text = "You clicked PushButton %s times" % self.count
+            self.push_button_count += 1
+            self.label.Text = "You clicked PushButton %s times" % \
+                                                         self.push_button_count
         elif btn == 1:
-            self.count += 1
-            self.label.Text = "You clicked DropDownButton %s times" % self.count
+            self.drop_down_button_count += 1
+            self.label.Text = \
+                      "You clicked the DropDownButton push button %s times" % \
+                                                    self.drop_down_button_count
         elif btn == 2:
             if event.Button.Pushed:
                 self.label.Enabled = False
