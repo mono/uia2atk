@@ -13,7 +13,6 @@ from strongwind import *
 
 class ListViewFrame(accessibles.Frame):
     """the profile of the listview_list sample"""
-
     
     CHECKBOX = "MultiSelect"
 
@@ -24,46 +23,42 @@ class ListViewFrame(accessibles.Frame):
         self.treetable = self.findTreeTable(None)
         self.tablecell = dict([(x, self.findTableCell("Item " + str(x))) for x in range(5)]) 
 
-    def click(self, tablecell):
-        """'click' action"""
-        procedurelogger.action('Do click action on %s' % tablecell)
-        tablecell.click()
+    def assertText(self, accessible, expected_text):
+        """assert that the accessible text is equal to the expected text"""
+        procedurelogger.expectedResult('"%s" text is "%s"' % \
+                                                (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                                            'Text was "%s", expected "%s"' % \
+                                            (accessible.text, expected_text)
 
-    def assertText(self, accessible, text):
-        """assert Text implementation for TableCell's role"""
-        procedurelogger.action("Assert the text of %s" % accessible)
-        procedurelogger.expectedResult('%s text is %s' % (accessible, text))
-        assert accessible.text == text, '%s text is not match with "%s"' % \
-                                                (accessible, accessible.text)
-
-    def selectChild(self, accessible, childIndex):
-        """assert Selection implementation"""
-        procedurelogger.action('Select child at index %s in "%s"' % \
-                                                    (childIndex, accessible))
-        accessible.selectChild(childIndex)
-        sleep(config.SHORT_DELAY)
-
-        procedurelogger.expectedResult("child at index %s is selected" % childIndex)
-        assert accessible.getChildAtIndex(childIndex).selected
+    def selectChild(self, accessible, index):
+        """call Strongwind's selectChild(index) on accessible"""
+        procedurelogger.action('Select index %s in "%s"' % (index, accessible))
+        accessible.selectChild(index)
 
     def clearSelection(self, accessible):
         """assert ClearSelection implementation"""
         procedurelogger.action('clear selection in "%s"' % (accessible))
         accessible.clearSelection()
 
-    def assertTable(self, accessible, row=None, col=None):
-        """assert Table implementation"""
+    def assertTable(self, accessible, num_rows, num_cols):
+        """
+        assert Table implementation, make sure row and col's number are expected
+        """
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
-        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % \
-                                                        (accessible, row, col))
-        assert itable.nRows == row and itable.nColumns == col, \
-                                        "Not match Rows %s and Columns %s" % \
-                                        (itable.nRows, itable.nColumns)
-    
-    def changeText(self, accessible, text):
-        """change item's Text"""
-        procedurelogger.action("change %s's text to %s" % (accessible, text))
+        procedurelogger.expectedResult('"%s" has %s row(s) and %s column(s)' %\
+                                              (accessible, num_rows, num_cols))
+
+        assert itable.nRows == num_rows, \
+               "%s rows reported, expected %s" % (itable.nRows, num_rows)
+
+        assert itable.nColumns == num_cols, \
+               "%s columns reported, expected %s" % (itable.nColumns, num_rows)
+
+    def assignText(self, accessible, text):
+        """assign a text to an item"""
+        procedurelogger.action("assign %s's text to %s" % (accessible, text))
         accessible.text = text
         
     # close application main window after running test

@@ -120,7 +120,7 @@ statesCheck(lbFrame.tablecell[10], "TableCell", add_states=["focused", "selected
 lbFrame.selectChildAndCheckStates(lbFrame.treetable, lbFrame.tablecell[0].getIndexInParent(), add_states=["focused", "selected"])
 statesCheck(lbFrame.tablecell[1], "TableCell")
 
-lbFrame.assertClearSelection(lbFrame.treetable)
+lbFrame.clearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 statesCheck(lbFrame.tablecell[0], "TableCell", add_states=["focused"])
@@ -129,7 +129,7 @@ lbFrame.selectChildAndCheckStates(lbFrame.treetable, lbFrame.tablecell[19].getIn
 ## BUG496764: missing visible state
 #statesCheck(lbFrame.tablecell[0], "TableCell", invalid_states=["showing"])
 
-lbFrame.assertClearSelection(lbFrame.treetable)
+lbFrame.clearSelection(lbFrame.treetable)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.treetable, "TreeTable", add_states=["focused"])
 statesCheck(lbFrame.tablecell[19], "TableCell", add_states=["focused"])

@@ -35,22 +35,23 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         procedurelogger.action("click %s" % button)
         button.click()
 
-    def assertImage(self, accessible, width=None, height=None):
-        procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible._accessible.queryImage().getImageSize()
-        procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (accessible, width, height))
+    def assertImage(self, accessible, expected_width, expected_height):
+        procedurelogger.action('assert the image size of "%s"' % accessible)
+        actual_width, actual_height = \
+                             accessible._accessible.queryImage().getImageSize()
+        procedurelogger.expectedResult('"%s" image size is %s x %s' % \
+                                 (accessible, expected_width, expected_height))
 
-        assert width == size[0], "%s (%s), %s (%s)" % \
+        assert actual_width == expected_width, "%s (%s), %s (%s)" % \
                                             ("expected width",
-                                              width,
+                                              expected_width,
                                              "does not match the actual width",
-                                              size[0])
-        assert height == size[1], "%s (%s), %s (%s)" % \
-                                            ("expected height",
-                                              height,
-                                             "does not match the actual height",
-                                              size[1]) 
+                                              actual_width)
+        assert actual_height == expected_height, "%s (%s), %s (%s)" % \
+                                           ("expected height",
+                                            expected_height,
+                                            "does not match the actual height",
+                                            actual_height)
 
     def assertText(self, accessible, expected_text):
         """make sure accessible's text is expected"""

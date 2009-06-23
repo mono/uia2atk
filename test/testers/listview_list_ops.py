@@ -65,7 +65,7 @@ statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 ##############################
 # click tablecell0 to rise selected states, tablecell4 also with 
 # selected states after Ctrl+click tablecell4 because MultiSelect is True
-lvFrame.click(lvFrame.tablecell[0])
+lvFrame.tablecell[0].click(log=True)
 sleep(config.SHORT_DELAY)
 # TODO: BUG487118 focused is missing and doesn't send event to change label 
 # when perform click from accerciser
@@ -75,7 +75,7 @@ statesCheck(lvFrame.tablecell[4], "TableCell", add_states=["editable"])
 
 pyatspi.Registry.generateKeyboardEvent(37, None, pyatspi.KEY_PRESS)
 sleep(config.SHORT_DELAY)
-lvFrame.click(lvFrame.tablecell[4])
+lvFrame.tablecell[4].click(log=True)
 pyatspi.Registry.generateKeyboardEvent(37, None, pyatspi.KEY_RELEASE)
 sleep(config.SHORT_DELAY)
 # TODO: BUG487118 
@@ -90,13 +90,13 @@ statesCheck(lvFrame.tablecell[0], "TableCell", add_states=["selected", "focused"
 lvFrame.checkbox.click()
 sleep(config.SHORT_DELAY)
 
-lvFrame.click(lvFrame.tablecell[1])
+lvFrame.tablecell[1].click(log=True)
 sleep(config.SHORT_DELAY)
 # TODO: BUG487118
 #lvFrame.assertText(lvFrame.label, "Items are: Item 1 ")
 #statesCheck(lvFrame.tablecell[1], "TableCell", add_states=["selected", "focused",  "editable"])
 
-lvFrame.click(lvFrame.tablecell[2])
+lvFrame.tablecell[2].click(log=True)
 sleep(config.SHORT_DELAY)
 # TODO: BUG487118
 #lvFrame.assertText(lvFrame.label, "Items are: Item 2 ")
@@ -177,9 +177,10 @@ lvFrame.tablecell[4].insertText("Item 99")
 sleep(config.SHORT_DELAY)
 lvFrame.assertText(lvFrame.tablecell[4], "Item 99")
 
-lvFrame.changeText(lvFrame.tablecell[3], "Item 99")
+# assign a new text to item in the listview to see the text couldn't be alterd.
+lvFrame.assignText(lvFrame.tablecell[3], "Item 100")
 sleep(config.SHORT_DELAY)
-lvFrame.assertText(lvFrame.tablecell[3], "Item 99")
+lvFrame.assertText(lvFrame.tablecell[3], "Item 100")
 
 ##############################
 # check tablecell's AtkTable

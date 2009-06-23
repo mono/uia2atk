@@ -89,12 +89,12 @@ cbFrame.assertText(cbFrame.tablecells[0], "0")
 #############################
 # test AtkAction
 #############################
-cbFrame.click(cbFrame.tablecells[5])
+cbFrame.tablecells[5].click(log=True)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "5")
 cbFrame.assertLabel("You select 5")
 
-cbFrame.click(cbFrame.tablecells[9])
+cbFrame.tablecells[9].click(log=True)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "9")
 cbFrame.assertLabel("You select 9")

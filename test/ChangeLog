@@ -1,3 +1,26 @@
+2009-06-19 Ray Wang <rawang@novell.com>
+
+	* testers/listbox/listboxframe.py,
+	* testers/listbox_basic_ops.py: Code clean.
+	* testers/combobox_simple/comboboxsimpleframe.py,
+	* testers/combobox_simple_ops.py: Code clean, and make use of click
+	method of strongwind instead of re-implement one.
+	* testers/button/buttonframe.option1.py: Remove useless file.
+	* testers/button/buttonframe.option2.py: Remove useless file.
+	* testers/button/buttonframe.py,
+	* testers/button_basic_ops.py: Code clean.
+	* testers/panel/panelframe.py,
+	* testers/panel_basic_ops.py: Code clean, and make use of click
+	method of strongwind instead of re-implement one.
+	* testers/domainupdown/domainupdownframe.py,
+	* testers/domainupdown_basic_ops.py: Remove bug458607 reference, 
+	since the bug was fixed.
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: Code
+	clean.
+	* testers/listview_list/listviewframe.py,
+	* testers/listview_list_ops.py: Code clean, and make use of click
+	method of strongwind instead of re-implement one.
+
 2009-06-23 Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdownlist_ops.py: add BUG506744 reference: 

@@ -45,7 +45,7 @@ class DomainUpDownFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s text is "%s"' % \
                                                 (accessible, accessible.text))
         actual_text = accessible.text
-        assert  actual_text == expected_text, \
+        assert actual_text == expected_text, \
                                    '%s text is "%s", expected "%s"' % \
                                    (accessible, actual_text, expected_text)
 

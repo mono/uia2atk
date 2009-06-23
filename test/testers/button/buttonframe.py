@@ -20,53 +20,53 @@ class ButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
+    LABEL = "there is nothing now."
     BUTTON_ONE = "button1"
     BUTTON_TWO = "button2"
     BUTTON_TREE = "button3"
     BUTTON_FOUR = "button4"
 
-
     def __init__(self, accessible):
         super(ButtonFrame, self).__init__(accessible)
+        self.label = self.findLabel(self.LABEL)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
         self.button3 = self.findPushButton(self.BUTTON_TREE)
         self.button4 = self.findPushButton(self.BUTTON_FOUR)
  
-    #give 'click' action
-    def click(self,button):
-        button.click()
+    def assertText(self, accessible, expected_text):
+        """make sure accessible's text is expected"""
+        procedurelogger.action("check %s's text" % accessible)
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                            (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                               'actual text is "%s", expected text is "%s"' % \
+                               (accessible.text, expected_text)
 
-    #check the Label text after click button2
-    def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
-        self.findLabel(labelText)
-
-    #rise message frame window after click button1
+    # rise message frame window after click button1
     def assertMessage(self):
         self.message = self.app.findDialog('message')
 
         self.message.findPushButton('OK').click()
 
-    # assert the size of an image in the button
-    def assertImageSize(self, button, width=60, height=38):
-        procedurelogger.action("assert %s's image size" % button)
-        size = button.imageSize
+    def assertImage(self, accessible, expected_width, expected_height):
+        procedurelogger.action('assert the image size of "%s"' % accessible)
+        actual_width, actual_height = \
+                             accessible._accessible.queryImage().getImageSize()
+        procedurelogger.expectedResult('"%s" image size is %s x %s' % \
+                                 (accessible, expected_width, expected_height))
 
-        procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (button, width, height))
-
-        assert width == size[0], "%s (%s), %s (%s)" %\
+        assert actual_width == expected_width, "%s (%s), %s (%s)" % \
                                             ("expected width",
-                                              width,
-                                             "does not match actual width",
-                                              size[0])
-        assert height == size[1], "%s (%s), %s (%s)" %\
-                                            ("expected height",
-                                              height,
-                                             "does not match actual height",
-                                              size[1])    
- 
+                                              expected_width,
+                                             "does not match the actual width",
+                                              actual_width)
+        assert actual_height == expected_height, "%s (%s), %s (%s)" % \
+                                           ("expected height",
+                                            expected_height,
+                                            "does not match the actual height",
+                                            actual_height)
+
     #close application main window after running test
     def quit(self):
         self.altF4()

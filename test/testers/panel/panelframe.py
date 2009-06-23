@@ -42,16 +42,15 @@ class PanelFrame(accessibles.Frame):
         self.label2 = self.findLabel(self.LABEL_TWO)
         self.label3 = self.findLabel(self.LABEL_THREE)
 
-    # give 'click' action
-    def click(self, button):
-        button.click()
+    def assertText(self, accessible, expected_text):
+        """make sure accessible's text is expected"""
+        procedurelogger.action("check %s's text" % accessible)
+        procedurelogger.expectedResult('%s\'s text is "%s"' % \
+                                            (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                               'actual text is "%s", expected text is "%s"' % \
+                               (accessible.text, expected_text)
 
-    # check the Label's text after click button
-    def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to "%s"' 
-                                        % labelText)
-        self.findLabel(labelText)
-    
     # close application main window after running test
     def quit(self):
         self.altF4()

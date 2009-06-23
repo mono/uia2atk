@@ -99,15 +99,13 @@ dudFrame.uneditable_domainupdown.typeText("c")
 sleep(config.SHORT_DELAY)
 dudFrame.assertText(dudFrame.uneditable_domainupdown, "Cambridge")
 
-# TODO: BUG458607 you should not be able to input any words in the uneditable
-# textbox
 # uneditable DomainUpDown
-#dudFrame.uneditable_domainupdown.typeText("z")
-#sleep(config.SHORT_DELAY)
+dudFrame.uneditable_domainupdown.typeText("z")
+sleep(config.SHORT_DELAY)
 # there is no list item that begins with a "z", so the "Cambridge" text
 # should remain in the uneditable DomainUpDown control.  This is the
 # behavior on Windows.
-#dudFrame.assertText(dudFrame.uneditable_domainupdown, "Cambridge")
+dudFrame.assertText(dudFrame.uneditable_domainupdown, "Cambridge")
 
 # check the state of selected item
 # TODO: BUG482285 

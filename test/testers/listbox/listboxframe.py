@@ -23,17 +23,14 @@ class ListBoxFrame(accessibles.Frame):
         self.checkbox = self.findCheckBox(self.CHECKBOX)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
-        self.tablecell = dict([(x, self.findTableCell(str(x))) for x in range(20)])            
-
+        self.tablecell = [self.findTableCell(str(x)) for x in range(20)]            
     def assertLabel(self, itemname):
         """Raise exception if the accessible does not match the given result"""
-
         procedurelogger.expectedResult('item "%s" is selected' % itemname)
         assert self.label.text == "You select %s" % itemname
 
     def assertItemsText(self):
         """assert the text of list items is equal to what we see"""
-
         procedurelogger.action('Check ListItem\'s Text')
 
         for i in range(20):
@@ -59,10 +56,9 @@ class ListBoxFrame(accessibles.Frame):
         statesCheck(accessible.getChildAtIndex(childIndex), "TableCell",\
                                                  invalid_states, add_states)
 
-    def assertClearSelection(self, accessible):
+    def clearSelection(self, accessible):
         """Clear selections"""
-
-        procedurelogger.action('clear selection in "%s"' % accessible)
+        procedurelogger.action('Clear selection in "%s"' % accessible)
         accessible.clearSelection()
 
     # close sample application after running the test

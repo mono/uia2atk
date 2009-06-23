@@ -25,14 +25,10 @@ class ComboBoxSimpleFrame(accessibles.Frame):
         self.tablecells = \
                 [self.findTableCell(str(i)) for i in range(self.NUMTABLECELLS)]
 
-    def click(self,accessible):
-        """'click' action"""
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
-
     def editableTextIsUnimplemented(self, accessible):
         """make sure EditableText of accessible is unimplemented"""
-        procedurelogger.action("check the implementation of %s's text interface" % accessible)
+        procedurelogger.action(
+                "check the implementation of %s's text interface" % accessible)
         procedurelogger.expectedResult("%s's text is uneditable" % accessible)
         try:
             accessible._accessible.queryEditableText()
@@ -62,7 +58,7 @@ class ComboBoxSimpleFrame(accessibles.Frame):
         """
         assert Table implementation, make sure row and col's number are expected
         """
-        procedurelogger.action('check "%s" Table implemetation' % accessible)
+        procedurelogger.action('Check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()
         procedurelogger.expectedResult('"%s" has %s row(s) and %s column(s)' %\
                                               (accessible, num_rows, num_cols))
@@ -75,7 +71,7 @@ class ComboBoxSimpleFrame(accessibles.Frame):
 
     def selectChild(self, accessible, index):
         """assert Selection implementation"""
-        procedurelogger.action('select item%s in "%s"' % (index, accessible))
+        procedurelogger.action('Select item%s in "%s"' % (index, accessible))
         accessible.selectChild(index)
 
     def quit(self):
