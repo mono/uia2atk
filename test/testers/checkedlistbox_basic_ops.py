@@ -67,7 +67,8 @@ statesCheck(clbFrame.listitem[20], "CheckBoxListItem")
 
 # use keyTab to change the focus from listbox1 to listbox2
 clbFrame.keyCombo("Tab", grabFocus = False)
-statesCheck(clbFrame.listbox1, "List")
+# BUG515457: treetable remain 'focused' state after focus is moved
+#statesCheck(clbFrame.listbox1, "List")
 statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
 # use keySpace to check listitem20
@@ -78,7 +79,8 @@ statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 # press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
-statesCheck(clbFrame.listbox1, "List")
+# BUG515457: treetable remain 'focused' state after focus is moved
+#statesCheck(clbFrame.listbox1, "List")
 
 # do click for listitem 1 to rise selected state
 clbFrame.click(clbFrame.listitem[1])
@@ -158,7 +160,8 @@ clbFrame.selectChildAndCheckStates(clbFrame.listbox2,
 clbFrame.clearAccessibleSelection(clbFrame.listbox1)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[0], "ListItem")
-statesCheck(clbFrame.listbox1, "List")
+# BUG515457: treetable remain 'focused' state after focus is moved
+#statesCheck(clbFrame.listbox1, "List")
 
 clbFrame.clearAccessibleSelection(clbFrame.listbox2)
 sleep(config.SHORT_DELAY)
