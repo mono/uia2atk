@@ -1,5 +1,11 @@
 2009-06-23 Calen Chen <cachen@novell.com>
 
+	* testers/combobox_dropdownlist_ops.py: add BUG506744 reference: 
+	menuitem is missing focusable state that affect all menuitems' states 
+	check, and comment those tests out
+
+2009-06-23 Calen Chen <cachen@novell.com>
+
 	* harness/tests_all.py: include all tests of winforms controls into 
 	the list
 
