@@ -86,8 +86,6 @@ tbbFrame.TestBasicPushButtonStyle(tbbFrame.pushbutton_style)
 # test DropDownButton style
 # BUG490105: dropdown_toggle has wrong postion
 # BUG498724: missing AtkText implemented
-
-# BUG514667: DropDown button's 'click'action can't be implemented
 #tbbFrame.TestBasicDropDownButtonStyle()
 
 # test Toggle style
