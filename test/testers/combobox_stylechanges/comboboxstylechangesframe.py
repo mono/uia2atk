@@ -110,7 +110,7 @@ class ComboBoxStyleChangesFrame(accessibles.Frame):
                'Actual text "%s" does not match the expected text "%s"' % \
                (actual_text, expected_text)
 
-    def assertComboBoxItems(self, is_x10=False):
+    def assertComboBoxItems(self, is_x10=False, is_simple_style=False):
         '''
         Ensure that only the correct combo box items are present and that they
         are the only such items in existence
@@ -118,8 +118,10 @@ class ComboBoxStyleChangesFrame(accessibles.Frame):
         procedurelogger.action('Ensure only the correct combo box items exist')
         procedurelogger.expectedResult('Only the %s items exist' %\
                                     ("0-9 x10" if is_x10 else "default (0-9)"))
-        if 
-        items = self.menu.findAllMenuItems(None, checkShowing=False)
+        if is_simple_style:
+            items = self.menu.findAllTableCells(None, checkShowing=False)
+        else:
+            items = self.menu.findAllMenuItems(None, checkShowing=False)
         item_names = [item.name for item in items]
         n_items = len(items)
         assert n_items == 10,\

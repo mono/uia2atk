@@ -60,7 +60,8 @@ cbFrame.startSimpleStyle()
 
 # press 'Toggle x10' button check states, then toggle back and check states
 # again
-cbFrame.assertComboBoxItems(is_simple_style=True)
+# BUG515905: role name of combobox descendants are mixed when style changes
+#cbFrame.assertComboBoxItems(is_simple_style=True)
 cbFrame.x10button.click()
 time.sleep(config.SHORT_DELAY)
 cbFrame.assertComboBoxItems(is_x10=True, is_simple_style=True)
@@ -73,9 +74,11 @@ cbFrame.startDropDownListStyle()
 
 # press 'Toggle x10' button check states, then toggle back and check states
 # again
-cbFrame.assertComboBoxItems()
+# BUG515905: 
+#cbFrame.assertComboBoxItems()
 cbFrame.x10button.click()
 time.sleep(config.SHORT_DELAY)
+
 cbFrame.assertComboBoxItems(is_x10=True)
 cbFrame.x10button.click()
 time.sleep(config.SHORT_DELAY)
