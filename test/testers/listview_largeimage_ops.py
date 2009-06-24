@@ -25,20 +25,20 @@ from os import path
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the listview_largeimage sample application
 try:
-  app = launchListView(app_path)
+    app = launchListView(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 lvliFrame = app.listViewLargeImageFrame
@@ -110,12 +110,12 @@ statesCheck(lvliFrame.listitem[0], "TableCell")
 ###################################
 
 #check list selection implementation
-lvliFrame.assertSelectionChild(lvliFrame.list, 2)
+lvliFrame.selectionChild(lvliFrame.list, 2)
 sleep(config.SHORT_DELAY)
 statesCheck(lvliFrame.listitem[2], "TableCell", add_states=["selected"])
 
 #clear selection
-lvliFrame.assertClearSelection(lvliFrame.list)
+lvliFrame.clearSelection(lvliFrame.list)
 sleep(config.SHORT_DELAY)
 statesCheck(lvliFrame.listitem[2], "TableCell")
 #check listbox state after clear selection

@@ -30,7 +30,7 @@ class ListViewLargeImageFrame(accessibles.Frame):
 
     def assertLabel(self, expected_label):
         """
-        Raise exception if the accessible does not match the given result.
+        Make sure label is change to expected_label.
         mouse click checkbox or do toggle action, label shows which item is 
         checked.
         """            
@@ -53,16 +53,16 @@ class ListViewLargeImageFrame(accessibles.Frame):
                                 "actual text is: %s, expected text is: %s" % \
                                   (accessible.text, expected_text)
 
-    #assert Selection implementation
-    def assertSelectionChild(self, accessible, childIndex):
+    def selectionChild(self, accessible, childIndex):
+        """Selete childIndex for accessible"""
         procedurelogger.action('selecte childIndex %s in "%s"' \
                                         % (childIndex, accessible))
 
         accessible.selectChild(childIndex)
 
-    def assertClearSelection(self, accessible):
+    def clearSelection(self, accessible):
+        """Clear accessible's selection"""
         procedurelogger.action('clear selection in "%s"' % (accessible))
-
         accessible.clearSelection()
 
     def assertImageSize(self, accessible, expected_width=64, expected_height=64):

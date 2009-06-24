@@ -1,5 +1,13 @@
 2009-06-24 Calen Chen <cachen@novell.com>
 
+	* testers/listview_largeimage/listviewlargeimageframe.py,
+	* testers/listview_largeimage_ops.py,
+	* testers/listview_smallimage/listviewsmallimageframe.py,
+	* testers/listview_smallimage_ops.py: rename selectChild and 
+	clearSelection; add blank space behind "#"; update doc strings
+
+2009-06-24 Calen Chen <cachen@novell.com>
+
 	* testers/groupbox/groupboxframe.py: remove click wrapper
 	* testers/groupbox_basic_ops.py: use strongwind click method directly
 
