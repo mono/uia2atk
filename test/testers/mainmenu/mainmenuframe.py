@@ -18,7 +18,8 @@ class MainMenuFrame(accessibles.Frame):
         self.mainmenu = self.findMenuBar(None)
         self.menuitem_file = self.findMenu("File")
         self.menuitem_file_new = self.findMenu("New", checkShowing=False)
-        self.menuitem_file_new_doc = self.findMenuItem("Document", checkShowing=False)
+        self.menuitem_file_new_doc = \
+                            self.findMenuItem("Document", checkShowing=False)
         self.menuitem_file_open = self.findMenuItem("Open", checkShowing=False)
         self.menuitem_file_exit = self.findMenuItem("Exit", checkShowing=False)
 
@@ -27,33 +28,31 @@ class MainMenuFrame(accessibles.Frame):
         self.menuitem_edit_redo = self.findMenuItem("Redo", checkShowing=False)
 
         self.menuitem_help = self.findMenu("Help")
-        self.menuitem_help_about = self.findMenuItem("About", checkShowing=False)
+        self.menuitem_help_about = \
+                            self.findMenuItem("About", checkShowing=False)
 
         self.label = self.findLabel(None)
 
-    def click(self, accessible):
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
-
-    def inputText(self, accessible, text=None):
+    def assertUneditableText(self, accessible, text):
         procedurelogger.action('set %s text to "%s"' % (accessible, text))
         try:
+            # this will call queryEditableText() on the accessible
             accessible.text = text
         except NotImplementedError:
-            pass
+            return
+        assert False, '"%s" text should not be editable' % accessible
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text):
+        """assert that the accessible text is equal to the expected text"""
+        procedurelogger.expectedResult('"%s" text is "%s"' % \
+                                                (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                                            'Text was "%s", expected "%s"' % \
+                                            (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
-        """assert Selection implementation"""
-        procedurelogger.action('select index %s in "%s"' % (index, accessible))
-
+        """call Strongwind's selectChild(index) on accessible"""
+        procedurelogger.action('Select index %s in "%s"' % (index, accessible))
         accessible.selectChild(index)
 
     # close sample application after running the test

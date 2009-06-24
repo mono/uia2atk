@@ -76,8 +76,10 @@ statesCheck(msFrame.menustrip, "MenuStrip")
 statesCheck(msFrame.menuitem_file, "Menu")
 # BUG486335 - MenuItem, ToolStripMenuItem: extraneous "showing" state of menu
 # item when it is not showing
-#statesCheck(msFrame.menuitem_file_new, "Menu", \
-#                                   invalid_states=["showing", "focusable"])
+# according to bnc485515, comment4, we have "File" menu without "focusable", 
+# and "New" menu with "focusable"
+#statesCheck(msFrame.menuitem_file_new, "Menu", invalid_states=["showing"], \
+#                                               add_states=["focusable"])
 #statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", invalid_states=["showing"])
 #statesCheck(msFrame.menuitem_file_open, "MenuItem", invalid_states=["showing"])
 #statesCheck(msFrame.menuitem_edit_copy, "MenuItem", invalid_states=["showing"])
