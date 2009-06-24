@@ -1,5 +1,10 @@
 2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
+	Add Ignore'd CultureTest as a reminder for the future.
+
+2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am:
 	* UIAutomationClient.mdp:
 	* System.Windows.Automation/InternalCondition.cs -> System.Windows.Automation/BoolCondition.cs:

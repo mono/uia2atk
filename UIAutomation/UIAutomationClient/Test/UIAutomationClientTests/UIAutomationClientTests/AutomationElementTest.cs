@@ -124,6 +124,16 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
+		[Ignore ("Not implemented, not sure how to test on Windows")]
+		public void CultureTest ()
+		{
+			// TODO: How to test actual values in Windows?
+			//Assert.AreEqual (new CultureInfo ("en-US"),
+			//        testFormElement.GetCurrentPropertyValue (AEIds.CultureProperty),
+			//        "button1 Culture");
+		}
+
+		[Test]
 		public void FrameworkIdTest ()
 		{
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.FrameworkIdProperty),
