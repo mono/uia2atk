@@ -36,16 +36,12 @@ class GroupBoxFrame(accessibles.Frame):
         self.panel1 = self.findPanel(self.PANEL_ONE)
         self.panel2 = self.findPanel(self.PANEL_TWO)
 
-    #give 'click' action
-    def click(self,button):
-        button.click()
-
-    #check the Label's text after click button
+    # check the Label's text after click button
     def assertLabel(self, labelText):
         procedurelogger.expectedResult('Label text has been changed to "%s"' 
                                         % labelText)
         self.findLabel(labelText)
     
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()
