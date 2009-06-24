@@ -294,21 +294,42 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			if (IsEmpty)
-				return "Empty";
-
-			return String.Format ("{0},{1},{2},{3}",
-					      x, y, width, height);
+			return ToString (null);
 		}
 
 		public string ToString (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return ToString (null, provider);
 		}
 
 		string IFormattable.ToString (string format, IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return ToString (format, provider);
+		}
+
+		private string ToString (string format, IFormatProvider provider)
+		{
+			if (IsEmpty)
+				return "Empty";
+
+			if (provider == null)
+				provider = CultureInfo.CurrentCulture;
+
+			if (format == null)
+				format = string.Empty;
+
+			string separator = ",";
+			NumberFormatInfo numberFormat =
+				provider.GetFormat (typeof (NumberFormatInfo)) as NumberFormatInfo;
+			if (numberFormat != null &&
+			    numberFormat.NumberDecimalSeparator == separator)
+				separator = ";";
+
+			string rectFormat = String.Format (
+				"{{0:{0}}}{1}{{1:{0}}}{1}{{2:{0}}}{1}{{3:{0}}}",
+				format, separator);
+			return String.Format (provider, rectFormat,
+				x, y, width, height);
 		}
 
 		public static Rect Empty { 

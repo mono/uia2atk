@@ -1,3 +1,24 @@
+2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* UIAutomationClient.mdp:
+	* System.Windows.Automation/InternalCondition.cs -> System.Windows.Automation/BoolCondition.cs:
+	Rename InternalCondition to the more-specific internal BoolCondition.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/ConditionTest.cs:
+	Updated unit tests to thoroughly cover PropertyCondition behavior.
+
+	* System.Windows.Automation/Condition.cs:
+	* System.Windows.Automation/Automation.cs:
+	* System.Windows.Automation/OrCondition.cs:
+	* System.Windows.Automation/AndCondition.cs:
+	* System.Windows.Automation/NotCondition.cs:
+	* System.Windows.Automation/PropertyConditon.cs:
+	* System.Windows.Automation/AutomationElement.cs: Update PropertyCondition
+	implementation to match unit tests.  Refactor Element/Condition matching
+	to work via new virtual Condition.AppliesTo method, instead of old
+	AutomationElement.ElementMeetsCondition method.
+
 2009-06-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Test/UIAutomationClientTests/SampleForm/Form1.resx:

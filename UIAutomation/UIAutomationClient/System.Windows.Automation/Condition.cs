@@ -36,12 +36,16 @@ namespace System.Windows.Automation
 		}
 #endregion
 
+#region Internal Abstract Methods
+		internal abstract bool AppliesTo (AutomationElement element);
+#endregion
+
 #region Public Static Fields
 		public static readonly Condition FalseCondition =
-			new InternalCondition ();
+			new BoolCondition (false);
 
 		public static readonly Condition TrueCondition =
-			new InternalCondition ();
+			new BoolCondition (true);
 #endregion
 	}
 }

@@ -27,7 +27,18 @@ using System;
 
 namespace System.Windows.Automation
 {
-	internal class InternalCondition : Condition
+	internal class BoolCondition : Condition
 	{
+		private bool val;
+
+		internal BoolCondition (bool val)
+		{
+			this.val = val;
+		}
+
+		internal override bool AppliesTo (AutomationElement element)
+		{
+			return val;
+		}
 	}
 }

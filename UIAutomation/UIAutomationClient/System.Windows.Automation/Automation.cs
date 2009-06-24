@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 	{
 		static Automation ()
 		{
-			RawViewCondition = new InternalCondition ();
+			RawViewCondition = Condition.TrueCondition;
 			ControlViewCondition =
 				new NotCondition (new PropertyCondition (AEIds.IsControlElementProperty, false));
 			ContentViewCondition =

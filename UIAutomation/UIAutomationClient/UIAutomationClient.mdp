@@ -47,7 +47,7 @@
     <File name="System.Windows.Automation/NotCondition.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/OrCondition.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/DesktopElement.cs" subtype="Code" buildaction="Compile" />
-    <File name="System.Windows.Automation/InternalCondition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/BoolCondition.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/SourceManager.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

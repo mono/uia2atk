@@ -34,6 +34,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/AutomationElementMode.cs \
 	System.Windows.Automation/AutomationFocusChangedEventArgs.cs \
 	System.Windows.Automation/BasePattern.cs \
+	System.Windows.Automation/BoolCondition.cs \
 	System.Windows.Automation/CacheRequest.cs \
 	System.Windows.Automation/Condition.cs \
 	System.Windows.Automation/DesktopElement.cs \
@@ -41,7 +42,6 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/ExpandCollapsePattern.cs \
 	System.Windows.Automation/GridItemPattern.cs \
 	System.Windows.Automation/GridPattern.cs \
-	System.Windows.Automation/InternalCondition.cs \
 	System.Windows.Automation/InvokePattern.cs \
 	System.Windows.Automation/MultipleViewPattern.cs \
 	System.Windows.Automation/NotCondition.cs \

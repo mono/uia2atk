@@ -41,5 +41,10 @@ namespace System.Windows.Automation
 				return condition;
 			}
 		}
+
+		internal override bool AppliesTo (AutomationElement element)
+		{
+			return !condition.AppliesTo (element);
+		}
 	}
 }

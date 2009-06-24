@@ -457,7 +457,7 @@ namespace System.Windows.Automation
 
 			if ((!findFirst || found.Count == 0) &&
 			    (scope & TreeScope.Element) == TreeScope.Element &&
-			    ElementMeetsCondition (this, condition))
+			    condition.AppliesTo (this))
 				found.Add (this);
 
 			if ((!findFirst || found.Count == 0) &&
@@ -480,70 +480,6 @@ namespace System.Windows.Automation
 			return found;
 		}
 
-		private static bool ElementMeetsCondition (AutomationElement element, Condition condition)
-		{
-			PropertyCondition propertyCond = condition as PropertyCondition;
-			if (propertyCond != null) {
-				// TODO: Test caching behavior
-				object currentVal = element.GetCurrentPropertyValue (propertyCond.Property);
-				return ArePropertyValuesEqual (propertyCond.Value, currentVal);
-			}
-
-			NotCondition notCond = condition as NotCondition;
-			if (notCond != null) {
-				return !ElementMeetsCondition (element, notCond.Condition);
-			}
-
-			AndCondition andCond = condition as AndCondition;
-			if (andCond != null) {
-				foreach (Condition cond in andCond.GetConditions ())
-					if (!ElementMeetsCondition (element, cond))
-						return false;
-				return true;
-			}
-
-			OrCondition orCond = condition as OrCondition;
-			if (orCond != null) {
-				foreach (Condition cond in orCond.GetConditions ())
-					if (ElementMeetsCondition (element, cond))
-						return true;
-				return false;
-			}
-
-			return false;
-		}
-
-		private static bool ArePropertyValuesEqual (object val1, object val2)
-		{
-			if (val1 == null || val2 == null)
-				return val1 == val2;
-
-			// Custom equality checking for certain types
-			Array array1 = val1 as Array;
-			Array array2 = val2 as Array;
-			if (array1 != null && array2 != null) {
-				if (array1.Length != array2.Length)
-					return false;
-				// NOTE: Assuming ordering requirement
-				for (int i = 0; i < array1.Length; i++)
-					if (!ArePropertyValuesEqual (array1.GetValue (i), array2.GetValue (i)))
-						return false;
-				return true;
-			}
-
-			return val1.Equals (val2);
-		}
-
-		// Useful for debugging statements, currently unused
-//		private static string PropertyValueToString (AutomationProperty prop, object val)
-//		{
-//			if (val == null)
-//				return "(null)";
-//			if (prop == AEIds.RuntimeIdProperty && val is int [])
-//				return PrintRuntimeId ((int []) val);
-//			return val.ToString ();
-//		}
-//
 //		private static string PrintRuntimeId (int [] runtimeId)
 //		{
 //			string output = "{";

@@ -40,5 +40,13 @@ namespace System.Windows.Automation
 		{
 			return conditions;
 		}
+
+		internal override bool AppliesTo (AutomationElement element)
+		{
+			foreach (Condition cond in conditions)
+				if (!cond.AppliesTo (element))
+					return false;
+			return true;
+		}
 	}
 }
