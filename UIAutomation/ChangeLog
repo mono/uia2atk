@@ -1,5 +1,9 @@
 2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* WindowsBase/System.Windows/Rect.cs: Add missing using statement.
+
+2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* WindowsBase/System.Windows/Rect.cs: Implement ToString methods
 	(proposed fix for bug #516165).
 
