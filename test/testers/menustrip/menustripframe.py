@@ -16,60 +16,56 @@ class MenuStripFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(MenuStripFrame, self).__init__(accessible)
         self.menustrip = self.findMenuBar(None)
+        self.label = self.findLabel(None)
         self.menuitem_file = self.findMenu("File")
         self.menuitem_file_new = self.findMenu("New", checkShowing=False)
-        self.menuitem_file_new_doc = self.findMenuItem("Document", checkShowing=False)
+        self.menuitem_file_new_doc = \
+                              self.findMenuItem("Document", checkShowing=False)
         self.menuitem_file_open = self.findMenuItem("Open", checkShowing=False)
         self.menuitem_edit = self.findMenu("Edit")
         self.menuitem_edit_copy = self.findMenuItem("Copy", checkShowing=False)
-        self.menuitem_edit_paste = self.findMenuItem("Paste", checkShowing=False)
-        self.label = self.findLabel(None)
+        self.menuitem_edit_paste = \
+                                 self.findMenuItem("Paste", checkShowing=False)
 
-    def click(self, accessible):
-        procedurelogger.action("click %s" % accessible)
-        accessible.click()
-
-    def inputText(self, accessible, text=None):
+    def assertUneditableText(self, accessible, text):
         procedurelogger.action('set %s text to "%s"' % (accessible, text))
         try:
+            # this will call queryEditableText() on the accessible
             accessible.text = text
         except NotImplementedError:
-            pass
+            return
+        assert False, '"%s" text should not be editable' % accessible
 
-    def assertText(self, accessible, text=None):
-        """assert text is equal to the input"""
-
-        procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
-        assert accessible.text == text, '%s is not match with "%s"' % \
-                                                (accessible, accessible.text)
+    def assertText(self, accessible, expected_text):
+        """assert that the accessible text is equal to the expected text"""
+        procedurelogger.expectedResult('"%s" text is "%s"' % \
+                                                (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                                            'Text was "%s", expected "%s"' % \
+                                            (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
-        """assert Selection implementation"""
+        """call Strongwind's selectChild(index) on accessible"""
         procedurelogger.action('select index %s in "%s"' % (index, accessible))
-
         accessible.selectChild(index)
 
-    def assertImage(self, accessible, width=None, height=None):
-        procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible._accessible.queryImage().getImageSize()
-        procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (accessible, width, height))
+    def assertImage(self, accessible, expected_width, expected_height):
+        procedurelogger.action('assert the image size of "%s"' % accessible)
+        actual_width, actual_height = \
+                             accessible._accessible.queryImage().getImageSize()
+        procedurelogger.expectedResult('"%s" image size is %s x %s' % \
+                                 (accessible, expected_width, expected_height))
 
-        assert width == size[0], "%s (%s), %s (%s)" % \
+        assert actual_width == expected_width, "%s (%s), %s (%s)" % \
                                             ("expected width",
-                                              width,
+                                              expected_width,
                                              "does not match the actual width",
-                                              size[0])
-        assert height == size[1], "%s (%s), %s (%s)" % \
-                                            ("expected height",
-                                              height,
-                                             "does not match the actual height",
-                                              size[1])
-
-    def clearSelection(self, accessible):
-        procedurelogger.action('clear selection in "%s"' % (accessible))
-        accessible.clearSelection()
+                                              actual_width)
+        assert actual_height == expected_height, "%s (%s), %s (%s)" % \
+                                           ("expected height",
+                                            expected_height,
+                                            "does not match the actual height",
+                                            actual_height)
 
     # close sample application after running the test
     def quit(self):

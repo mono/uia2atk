@@ -18,6 +18,7 @@ from menustrip import *
 from helpers import *
 from states import *
 from sys import argv
+import sys
 
 app_path = None 
 try:
@@ -53,52 +54,80 @@ actionsCheck(msFrame.menuitem_edit_copy, "MenuItem")
 actionsCheck(msFrame.menuitem_edit_paste, "MenuItem")
 
 ##############################
-# check menu item's Text
+# ensure that menu items do not have editable text
 ##############################
-msFrame.inputText(msFrame.menuitem_file, "test")
+msFrame.assertUneditableText(msFrame.menuitem_file, "test")
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.menuitem_file, "File")
 
-msFrame.inputText(msFrame.menuitem_file_new, "test")
+msFrame.assertUneditableText(msFrame.menuitem_file_new, "test")
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.menuitem_file_new, "New")
 
-msFrame.inputText(msFrame.menuitem_file_new_doc, "test")
+msFrame.assertUneditableText(msFrame.menuitem_file_new_doc, "test")
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.menuitem_file_new_doc, "Document")
 
 ##############################
-# check MenuStrip and its children's AtkAccessible
+# check the states of the MenuStrip and all its children
 ##############################
 # check states of menustrip
 statesCheck(msFrame.menustrip, "MenuStrip")
 statesCheck(msFrame.menuitem_file, "Menu")
-statesCheck(msFrame.menuitem_file_new, "Menu", invalid_states=["showing"])
-statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", invalid_states=["showing"])
-statesCheck(msFrame.menuitem_file_open, "MenuItem", invalid_states=["showing"])
+# BUG486335 - MenuItem, ToolStripMenuItem: extraneous "showing" state of menu
+# item when it is not showing
+#statesCheck(msFrame.menuitem_file_new, "Menu", \
+#                                   invalid_states=["showing", "focusable"])
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", invalid_states=["showing"])
+#statesCheck(msFrame.menuitem_file_open, "MenuItem", invalid_states=["showing"])
+#statesCheck(msFrame.menuitem_edit_copy, "MenuItem", invalid_states=["showing"])
+#statesCheck(msFrame.menuitem_edit_paste, "MenuItem", invalid_states=["showing"])
 statesCheck(msFrame.menuitem_edit, "Menu")
-statesCheck(msFrame.menuitem_edit_copy, "MenuItem", invalid_states=["showing"])
-statesCheck(msFrame.menuitem_edit_paste, "MenuItem", invalid_states=["showing"])
 
 ##############################
 # check MenuStrip's AtkSelection
 ##############################
 msFrame.selectChild(msFrame.menustrip, 0)
 sleep(config.SHORT_DELAY)
-# BUG476362, 485524
-#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+# depending on the resolution of some of the bugs in this test, we may
+# not want the "focused" state to be added here.
+statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
 statesCheck(msFrame.menuitem_edit, "Menu")
 
 msFrame.selectChild(msFrame.menustrip, 1)
 sleep(config.SHORT_DELAY)
-# BUG476362, 485524
 statesCheck(msFrame.menuitem_file, "Menu")
-#statesCheck(msFrame.menuitem_edit, "Menu", add_states=["selected", "focused"])
+# depending on the resolution of some of the bugs in this test, we may
+# not want the "focused" state to be added here.
+statesCheck(msFrame.menuitem_edit, "Menu", add_states=["selected", "focused"])
 
-##############################
-# check MenuStrip and its children's AtkComponent
-##############################
-# TODO: BUG476878
+msFrame.selectChild(msFrame.menuitem_edit, 1)
+sleep(config.SHORT_DELAY)
+statesCheck(msFrame.menuitem_edit_copy, "MenuItem")
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
+#statesCheck(msFrame.menuitem_edit_paste, "MenuItem", add_states=["selected", "focused"])
+
+# Press the "Down" key to select/focus on the "Copy" menu item
+msFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG507623 "select" state doesn't go away when selected w/ selectChild
+#statesCheck(msFrame.menuitem_edit_paste, "MenuItem")
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
+#statesCheck(msFrame.menuitem_edit_copy, "MenuItem", add_states=["selected", "focused"])
+
+# Press Enter while on the "Copy" menu item and check the states
+msFrame.keyCombo("Enter", grabFocus=False)
+sleep(config.SHORT_DELAY)
+# BUG486335 - MenuItem, ToolStripMenuItem: extraneous "showing" state of menu
+# item when it is not showing
+#statesCheck(msFrame.menuitem_edit_paste,
+#            "MenuItem",
+#            invalid_states=["showing"])
+#statesCheck(msFrame.menuitem_edit_copy,
+#            "MenuItem",
+#            invalid_states=["showing"],
+#            add_states=["selected"])
+
 msFrame.menustrip.mouseClick()
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.label, "You are clicking ")
@@ -106,61 +135,66 @@ msFrame.assertText(msFrame.label, "You are clicking ")
 # check menu Selection
 msFrame.selectChild(msFrame.menuitem_file, 0)
 sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_file_new, "MenuItem", add_states=["selected"])
-msFrame.clearSelection(msFrame.menuitem_file_new)
-sleep(config.SHORT_DELAY)
+statesCheck(msFrame.menuitem_file_new, "Menu", add_states=["selected", "focusable"])
 
 msFrame.selectChild(msFrame.menuitem_edit, 1)
 sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_edit_paste, "MenuItem", add_states=["selected"])
-msFrame.clearSelection(msFrame.menuitem_file_new)
-sleep(config.SHORT_DELAY)
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
+# BUG508055 - MenuStrip: menu item gets "focused" state from selectChild when
+# menu is collapsed
+#statesCheck(msFrame.menuitem_edit_paste, "MenuItem", add_states=["selected", "focused"])
 
 msFrame.selectChild(msFrame.menuitem_file_new, 0)
 sleep(config.SHORT_DELAY)
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
+# BUG508055 - MenuStrip: menu item gets "focused" state from selectChild when
 #statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
-msFrame.clearSelection(msFrame.menuitem_file_new)
-sleep(config.SHORT_DELAY)
 
-msFrame.menuitem_file.mouseClick()
-sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
-
-msFrame.menuitem_edit.mouseClick()
-sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+# tests using keyboard navigation and the accessible action interface 
+# TODO: it would be nice to add some mouseClick tests here once we figure
+# out why pyatspi.generateMouseEvent is unreliable (see BUG503973)
 
 # check menu item
-msFrame.click(msFrame.menuitem_file)
+msFrame.menuitem_file.click(log=True)
 sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
+statesCheck(msFrame.menuitem_file, "Menu", add_states=["selected", "focused"])
 
 msFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(msFrame.menuitem_file_new, "Menu", add_states=["selected", "focused"])
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
+#statesCheck(msFrame.menuitem_file_new, "Menu", add_states=["selected", "focused", "focusable"])
 
 msFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
+# BUG503725 - Menu, Menu item loses "focusable" state when that item becomes focused
 #statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected", "focused"])
-#statesCheck(msFrame.menuitem_file_new, "Menu")
+# Bug 508257 - MenuStrip: submenu retains "focused" state when a submenu item
+# has focus
+#statesCheck(msFrame.menuitem_file_new, "Menu", add_states=["selected", "focusable"])
 
-msFrame.menuitem_file_new_doc.mouseClick()
+msFrame.keyCombo("Enter", grabFocus=False)
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.label, "You are clicking Document")
-# focused state is remove when you have clicked on a menu item
-#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+# "selected" and "focused" states should be remove when you have clicked on a
+# menu item
+# BUG506959 "selected" state of a menu item persists when the menu item is
+# clicked
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem")
 
-msFrame.click(msFrame.menuitem_edit)
+msFrame.menuitem_edit.click(log=True)
 sleep(config.SHORT_DELAY)
 msFrame.menuitem_edit_copy.mouseClick()
 sleep(config.SHORT_DELAY)
 msFrame.assertText(msFrame.label, "You are clicking Copy")
-#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem", add_states=["selected"])
+# BUG506959 "selected" state of a menu item persists when the menu item is
+# clicked
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem")
+#statesCheck(msFrame.menuitem_edit_copy, "MenuItem")
 
 ##############################
 # check menu item's Image
 ##############################
-# TODO: BUG486290
+# BUG486290 - MenuStrip: menu item's image is not implemented
 #msFrame.assertImage(msFrame.menuitem_file_new_doc, 16, 16)
 
 ##############################

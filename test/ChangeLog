@@ -1,10 +1,16 @@
+2009-06-24 Ray Wang <rawang@novell.com>
+
+	* testers/menustrip/menustripframe.py,
+	* testers/menustrip_basic_ops.py: Commit Brian's review from review 
+	board. (http://reviews.mono-a11y.org/r/246/)
+
 2009-06-23 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: I removed the LinkLabel test for now.  We need to
 	fix the problems that cause the test to fail after Firefox has been
 	opened.
 
-2009-06-19 Ray Wang <rawang@novell.com>
+2009-06-23 Ray Wang <rawang@novell.com>
 
 	* testers/listbox/listboxframe.py,
 	* testers/listbox_basic_ops.py: Code clean.
