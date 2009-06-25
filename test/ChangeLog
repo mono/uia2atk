@@ -1,5 +1,10 @@
 2009-06-25 Calen Chen <cachen@novell.com>
 
+	* harness/tests.py: I sort the tests_list to be more clearly, and add 
+	maskedtextbox_basic_ops.py test into list
+
+2009-06-25 Calen Chen <cachen@novell.com>
+
 	* testers/menustrip_basic_ops.py: add test case to click menu_item when 
 	top level menu is collapsed and add bug508998 reference
 
