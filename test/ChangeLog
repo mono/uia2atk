@@ -1,5 +1,10 @@
 2009-06-25 Calen Chen <cachen@novell.com>
 
+	* testers/menustrip_basic_ops.py: add test case to click menu_item when 
+	top level menu is collapsed and add bug508998 reference
+
+2009-06-25 Calen Chen <cachen@novell.com>
+
 	* testers/linklabel/linklabelframe.py,
 	* testers/linklabel_basic_ops.py:app_name 'Firefox' should be 'firefox'
 	and add checkShowing=False for findApplication, comment out using 

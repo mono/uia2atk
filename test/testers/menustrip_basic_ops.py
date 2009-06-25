@@ -193,6 +193,31 @@ msFrame.assertText(msFrame.label, "You are clicking Copy")
 #statesCheck(msFrame.menuitem_file_new_doc, "MenuItem")
 #statesCheck(msFrame.menuitem_edit_copy, "MenuItem")
 
+#############################
+# check menu_items Action
+#############################
+# click New menu that is first layer of File menu
+msFrame.menuitem_file_new.click(log=True)
+sleep(config.SHORT_DELAY)
+# BUG508998: click action doesn't work for menuitems if its top level menu is 
+# contracted
+#msFrame.assertText(msFrame.label, "You are clicking New")
+# click action won't update New menu's states
+# BUG506959 "selected" state of a menu item persists when the menu item is
+# clicked
+#statesCheck(msFrame.menuitem_file_new, "MenuItem")
+
+# click Document menu_item that is second layer of File menu
+msFrame.menuitem_file_new_doc.click(log=True)
+sleep(config.SHORT_DELAY)
+# BUG508998: click action doesn't work for menuitems if its top level menu is 
+# contracted
+#msFrame.assertText(msFrame.label, "You are clicking Document")
+# click action won't update Document menu_item's states
+# BUG506959 "selected" state of a menu item persists when the menu item is
+# clicked
+#statesCheck(msFrame.menuitem_file_new_doc, "MenuItem")
+
 ##############################
 # check menu item's Image
 ##############################
