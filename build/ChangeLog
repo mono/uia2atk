@@ -1,3 +1,10 @@
+2009-06-25  Ray Wang <rawang@novell.com>
+
+	* debian/*/control: Update Maintainer tag, add Vcs-Svn and
+	Vcs-Browser tag. Rename mono-uiautomation and mono-uiaatkbridge to
+	upstream name.
+	* debian/*/changelog: update timestamp and source name.
+
 2009-06-18  Ray Wang <rawang@novell.com>
 
 	* debian/*/rules: Re-order the build rules.

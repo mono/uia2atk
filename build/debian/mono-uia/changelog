@@ -2,5 +2,4 @@ mono-uia (1.0-1) unstable; urgency=low
 
   * initial release. (Closes: #123456)
 
- -- Ray Wang <rawang@novell.com>  Wed, 03 Jun 2009 15:46:46 +0800
-
+ -- Ray Wang <rawang@novell.com>  Thu, 25 Jun 2009 14:28:31 +0800
