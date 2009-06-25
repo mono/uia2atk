@@ -10,6 +10,7 @@ Version:        2.0.0
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  alsa-devel
+BuildRequires:  bc
 BuildRequires:  bison
 BuildRequires:  gcc-c++
 BuildRequires:  glib2-devel
