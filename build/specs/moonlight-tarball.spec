@@ -6,13 +6,24 @@ License:        LGPL v2.0 only
 Group:          Productivity/Multimedia/Other
 Summary:        Novell Moonlight
 Url:            http://go-mono.com/moonlight/
-Version:        1.0.1
+Version:        2.0.0
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  gtk-sharp2 mono-devel monodoc-core rsvg2-sharp
-BuildRequires:  alsa-devel gcc-c++ gtk2-devel mono-nunit
-BuildRequires:  libpulse-devel bc libGraphicsMagick++2 libMagick++-devel libGraphicsMagick++-devel
-BuildRequires:  libexpat-devel mozilla-xulrunner190-devel
+BuildRequires:  alsa-devel
+BuildRequires:  bison
+BuildRequires:  gcc-c++
+BuildRequires:  glib2-devel
+BuildRequires:  gtk-sharp2
+BuildRequires:  gtk2-devel
+BuildRequires:  mono-devel
+BuildRequires:  monodoc-core
+BuildRequires:  mono-core-moon
+BuildRequires:  rsvg2-sharp
+BuildRequires:  zip
+BuildRequires:  zlib-devel
+BuildRequires:  libpulse-devel
+BuildRequires:  libexpat-devel
+BuildRequires:  mozilla-xulrunner190-devel
 
 %description
 Moonlight is an open source implementation of Microsoft Silverlight for
@@ -29,9 +40,8 @@ Unix systems.
 %doc DUMMY
 
 %prep
-svn co svn://151.155.5.148/source/trunk/mono mono
-svn co svn://151.155.5.148/source/trunk/mcs mcs
 svn co svn://151.155.5.148/source/trunk/moon moon
+mkdir mcs
 
 
 %build
