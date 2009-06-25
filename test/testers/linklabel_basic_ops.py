@@ -69,10 +69,10 @@ llFrame.assertURI(llFrame.link2, 0, GCALCTOOL)
 llFrame.assertURI(llFrame.link3, 0, GMAIL)
 
 # make sure we actually open the links
-llFrame.openLink(llFrame.link1, "Firefox", 0, OPENSUSE, is_url = True)
-llFrame.openLink(llFrame.link1, "Firefox", 1, NOVELLMAIL, is_url = True)
+llFrame.openLink(llFrame.link1, "firefox", 0, OPENSUSE, is_url = True)
+llFrame.openLink(llFrame.link1, "firefox", 1, NOVELLMAIL, is_url = True)
 llFrame.openLink(llFrame.link2, "gcalctool", 0, GCALCTOOL, is_url = False)
-llFrame.openLink(llFrame.link3, "Firefox", 0, GMAIL, is_url = True)
+llFrame.openLink(llFrame.link3, "firefox", 0, GMAIL, is_url = True)
 
 # press down arrow and check the states
 llFrame.keyCombo("Down", grabFocus=False)

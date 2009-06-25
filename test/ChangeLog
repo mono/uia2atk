@@ -1,3 +1,11 @@
+2009-06-25 Calen Chen <cachen@novell.com>
+
+	* testers/linklabel/linklabelframe.py,
+	* testers/linklabel_basic_ops.py:app_name 'Firefox' should be 'firefox'
+	and add checkShowing=False for findApplication, comment out using 
+	_getOpenURL method because firefox is not fully accessible(don't update
+	firefox to 3.0.11 that is not accessible)
+
 2009-06-24 Ray Wang <rawang@novell.com>
 
 	* testers/menustrip_basic_ops.py: Add bnc485515 reference.
