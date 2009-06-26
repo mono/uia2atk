@@ -1,3 +1,8 @@
+2009-06-26 Calen Chen <cachen@novell.com>
+
+	* harness/tests.py,
+	* harness/tests_all.py: use tests_all.py replace tests.py and remove it
+
 2009-06-25 Calen Chen <cachen@novell.com>
 
 	* harness/tests.py: I sort the tests_list to be more clearly, and add 
