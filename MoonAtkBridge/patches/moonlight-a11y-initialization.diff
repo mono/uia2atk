@@ -1,6 +1,6 @@
 Index: m4/mozilla.m4
 ===================================================================
---- m4/mozilla.m4	(revision 136249)
+--- m4/mozilla.m4	(revision 136983)
 +++ m4/mozilla.m4	(working copy)
 @@ -80,6 +80,11 @@
      	MAX_FIREFOX_VERSION="3.5.*"
@@ -16,7 +16,7 @@ Index: m4/mozilla.m4
  	AM_CONDITIONAL(HAVE_MOZILLA, test x$with_mozilla = xyes)
 Index: src/security.c
 ===================================================================
---- src/security.c	(revision 136249)
+--- src/security.c	(revision 136983)
 +++ src/security.c	(working copy)
 @@ -16,6 +16,7 @@
  #if MONO_ENABLE_CORECLR_SECURITY
@@ -106,7 +106,7 @@ Index: src/security.c
  		}
 Index: configure.ac
 ===================================================================
---- configure.ac	(revision 136249)
+--- configure.ac	(revision 136983)
 +++ configure.ac	(working copy)
 @@ -106,6 +106,14 @@
  LOADER_LIBS="$GLIB_LIBS"
@@ -125,7 +125,7 @@ Index: configure.ac
  else
 Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
 ===================================================================
---- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 136249)
+--- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 136983)
 +++ class/tuning/SecurityAttributes/overrides/System.Windows.manual	(working copy)
 @@ -8,3 +8,6 @@
  
@@ -136,12 +136,12 @@ Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
 ++SSC-M: System.IntPtr Mono.A11yHelper::GetAccessible()
 Index: class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc
 ===================================================================
---- class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(revision 136249)
+--- class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(revision 136983)
 +++ class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(working copy)
 @@ -1,7 +1,9 @@
  # [SecuritySafeCritical] needed inside System.Windows to call all [SecurityCritical] methods
--# 462 methods
-+# 464 methods
+-# 463 methods
++# 465 methods
  
  +SSC-M: System.Void Microsoft.Internal.TextBoxView::.ctor()
 ++SSC-M: System.Void Mono.A11yHelper::Initialize()
@@ -151,7 +151,7 @@ Index: class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc
  +SSC-M: System.Void Mono.EasingFunctionWrapper::ReportException(System.Exception)
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136249)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136983)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -162,7 +162,7 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 136249)
+--- class/System.Windows/System.Windows.mdp	(revision 136983)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
 @@ -18,6 +18,7 @@
      <File name="System.Windows/DependencyObject.g.cs" subtype="Code" buildaction="Compile" />
@@ -276,9 +276,15 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +		}
 +	}
 +}
+
+Property changes on: class/System.Windows/Mono/A11yHelper.cs
+___________________________________________________________________
+Added: svn:eol-style
+   + native
+
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136249)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136983)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -294,7 +300,7 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 136249)
+--- class/System.Windows/Makefile.am	(revision 136983)
 +++ class/System.Windows/Makefile.am	(working copy)
 @@ -19,6 +19,12 @@
  
