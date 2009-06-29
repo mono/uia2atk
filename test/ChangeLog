@@ -1,3 +1,8 @@
+2009-06-29 Ray Wang <rawang@novell.com>
+
+	* samples/toolstripstatuslabel_toolstripprogressbar.py,
+	* samples/menustrip_openfiledialog.py: Remove useless samples.
+
 2009-06-26 Calen Chen <cachen@novell.com>
 
 	* harness/tests.py,
