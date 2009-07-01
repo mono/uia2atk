@@ -1,3 +1,39 @@
+2009-07-01  Mike Gorse  <mgorse@novell.com>
+
+	* System.Windows.Automation.Text/TextPatternRange.cs,
+	System.Windows.Automation/ScrollItemPattern.cs,
+	System.Windows.Automation/DockPattern.cs,
+	System.Windows.Automation/TextPattern.cs,
+	System.Windows.Automation/DesktopElement.cs,
+	System.Windows.Automation/InvokePattern.cs,
+	System.Windows.Automation/AutomationElement.cs,
+	System.Windows.Automation/WindowPattern.cs,
+	System.Windows.Automation/TransformPattern.cs,
+	System.Windows.Automation/ValuePattern.cs,
+	System.Windows.Automation/TogglePattern.cs,
+	System.Windows.Automation/SelectionPattern.cs,
+	System.Windows.Automation/GridPattern.cs,
+	System.Windows.Automation/MultipleViewPattern.cs,
+	System.Windows.Automation/TablePattern.cs,
+	System.Windows.Automation/RangeValuePattern.cs,
+	System.Windows.Automation/SourceManager.cs,
+	System.Windows.Automation/ScrollPattern.cs,
+	System.Windows.Automation/ExpandCollapsePattern.cs,
+	System.Windows.Automation/SelectionItemPattern.cs,
+	System.Windows.Automation/GridItemPattern.cs,
+	System.Windows.Automation/TableItemPattern.cs,
+	Test/UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj,
+	Test/UIAutomationClientTests/UIAutomationClientTests/TogglePatternTest.cs,
+	Test/UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs,
+	Test/UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs,
+	Test/UIAutomationClientTests/AtspiUiaClientTests/TogglePatternTest.cs,
+	Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile.am,
+	Test/UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh.in,
+	Test/UIAutomationClientTests/GtkForm/Makefile.am,
+	Test/UIAutomationClientTests/GtkForm/GtkForm.cs,
+	Makefile.am, Test/Makefile.am, Test/UIAutomationClientTests/Makefile.am:
+	: Added pattern infrastructure.
+
 2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Test/UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:

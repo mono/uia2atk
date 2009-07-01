@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,39 +33,41 @@ namespace System.Windows.Automation
 	{
 		public struct GridItemPatternInformation
 		{
+			internal GridItemPatternInformation (GridItemProperties properties)
+			{
+				Row = properties.Row;
+				Column = properties.Column;
+				RowSpan = properties.RowSpan;
+				ColumnSpan = properties.ColumnSpan;
+				ContainingGrid = SourceManager.GetOrCreateAutomationElement (properties.ContainingGrid);
+			}
+
 			public int Row {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int Column {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int RowSpan {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int ColumnSpan {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement ContainingGrid {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal GridItemPattern ()
+		private IGridItemPattern source;
+
+		internal GridItemPattern (IGridItemPattern source)
 		{
+			this.source = source;
 		}
 
 		public GridItemPatternInformation Cached {
@@ -74,7 +78,7 @@ namespace System.Windows.Automation
 
 		public GridItemPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new GridItemPatternInformation (source.Properties);
 			}
 		}
 

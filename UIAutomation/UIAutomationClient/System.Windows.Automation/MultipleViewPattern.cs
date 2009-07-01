@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,20 +33,29 @@ namespace System.Windows.Automation
 	{
 		public struct MultipleViewPatternInformation
 		{
+			private int [] supportedViews;
+
+			internal MultipleViewPatternInformation (MultipleViewProperties properties)
+			{
+				CurrentView = properties.CurrentView;
+				supportedViews = properties.SupportedViews;
+			}
+
 			public int CurrentView {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int [] GetSupportedViews ()
 			{
-				throw new NotImplementedException ();
+				return supportedViews;
 			}
 		}
 
-		internal MultipleViewPattern ()
+		private IMultipleViewPattern source;
+
+		internal MultipleViewPattern (IMultipleViewPattern source)
 		{
+			this.source = source;
 		}
 
 		public MultipleViewPatternInformation Cached {
@@ -55,18 +66,18 @@ namespace System.Windows.Automation
 
 		public MultipleViewPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new MultipleViewPatternInformation (source.Properties);
 			}
 		}
 
 		public string GetViewName (int viewId)
 		{
-			throw new NotImplementedException ();
+			return source.GetViewName (viewId);
 		}
 
 		public void SetCurrentView (int viewId)
 		{
-			throw new NotImplementedException ();
+			source.SetCurrentView (viewId);
 		}
 
 		public static readonly AutomationPattern Pattern;

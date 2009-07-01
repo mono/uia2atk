@@ -40,8 +40,11 @@ namespace MonoTests.System.Windows.Automation
 		#region Setup/Teardown
 
 		protected Process p;
+		protected Dictionary<AutomationPattern, AutomationProperty> patternProperties;
 		protected AutomationElement testFormElement;
+		protected AutomationElement groupBoxElement;
 		protected AutomationElement groupBox1Element;
+		protected AutomationElement groupBox2Element;
 		protected AutomationElement button1Element;
 		protected AutomationElement button2Element;
 		protected AutomationElement button3Element;
@@ -57,6 +60,8 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement tb3verticalScrollBarElement;
 		//protected AutomationElement horizontalMenuStripElement;
 		//protected AutomationElement verticalMenuStripElement;
+		protected AutomationElement checkbox1Element;
+		protected AutomationElement checkbox2Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -71,6 +76,54 @@ namespace MonoTests.System.Windows.Automation
 
 		[TestFixtureSetUp]
 		public void FixtureSetUp ()
+		{
+			patternProperties = new Dictionary<AutomationPattern, AutomationProperty> ();
+			patternProperties.Add (DockPatternIdentifiers.Pattern, AEIds.IsDockPatternAvailableProperty);
+			patternProperties.Add (ExpandCollapsePatternIdentifiers.Pattern, AEIds.IsExpandCollapsePatternAvailableProperty);
+			patternProperties.Add (GridItemPatternIdentifiers.Pattern, AEIds.IsGridItemPatternAvailableProperty);
+			patternProperties.Add (GridPatternIdentifiers.Pattern, AEIds.IsGridPatternAvailableProperty);
+			patternProperties.Add (InvokePatternIdentifiers.Pattern, AEIds.IsInvokePatternAvailableProperty);
+			patternProperties.Add (MultipleViewPatternIdentifiers.Pattern, AEIds.IsMultipleViewPatternAvailableProperty);
+			patternProperties.Add (RangeValuePatternIdentifiers.Pattern, AEIds.IsRangeValuePatternAvailableProperty);
+			patternProperties.Add (ScrollItemPatternIdentifiers.Pattern, AEIds.IsScrollItemPatternAvailableProperty);
+			patternProperties.Add (ScrollPatternIdentifiers.Pattern, AEIds.IsScrollPatternAvailableProperty);
+			patternProperties.Add (SelectionItemPatternIdentifiers.Pattern, AEIds.IsSelectionItemPatternAvailableProperty);
+			patternProperties.Add (SelectionPatternIdentifiers.Pattern, AEIds.IsSelectionPatternAvailableProperty);
+			patternProperties.Add (TableItemPatternIdentifiers.Pattern, AEIds.IsTableItemPatternAvailableProperty);
+			patternProperties.Add (TablePatternIdentifiers.Pattern, AEIds.IsTablePatternAvailableProperty);
+			patternProperties.Add (TextPatternIdentifiers.Pattern, AEIds.IsTextPatternAvailableProperty);
+			patternProperties.Add (TogglePatternIdentifiers.Pattern, AEIds.IsTogglePatternAvailableProperty);
+			patternProperties.Add (TransformPatternIdentifiers.Pattern, AEIds.IsTransformPatternAvailableProperty);
+			patternProperties.Add (ValuePatternIdentifiers.Pattern, AEIds.IsValuePatternAvailableProperty);
+			patternProperties.Add (WindowPatternIdentifiers.Pattern, AEIds.IsWindowPatternAvailableProperty);
+
+			if (Atspi)
+				AtspiSetup ();
+			else
+				SWFSetup ();
+			Assert.IsNotNull (testFormElement);
+			Assert.IsNotNull (groupBox1Element);
+			Assert.IsNotNull (button1Element);
+			Assert.IsNotNull (button2Element);
+			Assert.IsNotNull (button3Element);
+			Assert.IsNotNull (button4Element);
+			Assert.IsNotNull (button5Element);
+			Assert.IsNotNull (button6Element);
+			Assert.IsNotNull (button7Element);
+			Assert.IsNotNull (label1Element);
+			Assert.IsNotNull (textbox1Element);
+			Assert.IsNotNull (textbox2Element);
+			Assert.IsNotNull (textbox3Element);
+			if (!Atspi) {
+				Assert.IsNotNull (tb3horizontalScrollBarElement);
+				Assert.IsNotNull (tb3verticalScrollBarElement);
+			}
+			Assert.IsNotNull (checkbox1Element);
+			//Assert.IsNotNull (horizontalMenuStripElement);
+			//Assert.IsNotNull (verticalMenuStripElement);
+		}
+
+		private void SWFSetup ()
 		{
 			p = StartApplication (@"SampleForm.exe",
 				String.Empty);
@@ -122,30 +175,76 @@ namespace MonoTests.System.Windows.Automation
 			tb3verticalScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.OrientationProperty,
 					OrientationType.Vertical));
+			groupBox2Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"groupBox2"));
+			checkbox1Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.CheckBox));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));
 			//verticalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip2"));
+		}
 
-			Assert.IsNotNull (testFormElement);
-			Assert.IsNotNull (groupBox1Element);
-			Assert.IsNotNull (button1Element);
-			Assert.IsNotNull (button2Element);
-			Assert.IsNotNull (button3Element);
-			Assert.IsNotNull (button4Element);
-			Assert.IsNotNull (button5Element);
-			Assert.IsNotNull (button6Element);
-			Assert.IsNotNull (button7Element);
-			Assert.IsNotNull (label1Element);
-			Assert.IsNotNull (textbox1Element);
-			Assert.IsNotNull (textbox2Element);
-			Assert.IsNotNull (textbox3Element);
-			Assert.IsNotNull (tb3horizontalScrollBarElement);
-			Assert.IsNotNull (tb3verticalScrollBarElement);
-			//Assert.IsNotNull (horizontalMenuStripElement);
-			//Assert.IsNotNull (verticalMenuStripElement);
+		private void AtspiSetup ()
+		{
+			string name = "GtkForm.exe";
+			p = StartApplication (name, String.Empty);
+
+			Thread.Sleep (1000);
+
+				// TODO: Use ProcessId when at-spi supports it
+			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
+					new PropertyCondition (AEIds.NameProperty,
+						"Sample GTK form"));
+			groupBoxElement = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Group));
+			groupBox1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Group));
+			button1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Button));
+			textbox1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
+					new PropertyCondition (AEIds.IsPasswordProperty, false)));
+			textbox2Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
+					new PropertyCondition (AEIds.IsPasswordProperty, true)));
+			label1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Text));
+			button2Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"button2"));
+			button3Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"button3"));
+			button4Element = groupBox1Element.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"button4"));
+			button5Element = groupBox1Element.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"button5"));
+			button6Element = groupBox1Element.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"button6"));
+			button7Element = groupBox1Element.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"button7"));
+			textbox3Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Document));
+			checkbox1Element = groupBoxElement.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.CheckBox));
+			checkbox2Element = groupBoxElement.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"checkbox2"));
 		}
 
 		[TestFixtureTearDown]
@@ -156,5 +255,11 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		#endregion
+
+		public virtual bool Atspi {
+			get {
+				return false;
+			}
+		}
 	}
 }

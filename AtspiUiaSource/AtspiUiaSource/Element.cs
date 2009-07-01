@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Automation;
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
 using Atspi;
 
@@ -138,6 +139,8 @@ namespace AtspiUiaSource
 						return ControlType.Tab;
 					case Role.Panel:
 						return ControlType.Pane;
+					case Role.PasswordText:
+						return ControlType.Edit;
 					case Role.ProgressBar:
 						return ControlType.ProgressBar;
 					case Role.PushButton:
@@ -161,7 +164,9 @@ namespace AtspiUiaSource
 					case Role.TableCell:
 						return (accessible.Parent != null && accessible.Parent.Role == Role.Table? ControlType.DataItem: ControlType.TreeItem);
 					case Role.Text:
-						return ControlType.Edit;
+						return (accessible.StateSet.ContainsState (StateType.MultiLine)? ControlType.Document: ControlType.Edit);
+					case Role.ToggleButton:
+						return ControlType.Button;
 					case Role.ToolBar:
 						return ControlType.ToolBar;
 					case Role.ToolTip:
@@ -171,7 +176,7 @@ namespace AtspiUiaSource
 						// TODO: perhaps return List sometimes
 						return ControlType.Tree;
 					default:
-						Console.WriteLine ("AtSpiUIASource: Unknown role: " + accessible.Role);
+						Log.Debug ("AtSpiUIASource: Unknown role: " + accessible.Role);
 						return ControlType.Custom;
 				}
 			}
@@ -351,6 +356,23 @@ namespace AtspiUiaSource
 			}
 		}
 
+		public object GetCurrentPattern (AutomationPattern pattern)
+		{
+			if (pattern == TogglePatternIdentifiers.Pattern)
+				return (SupportsToggle () ? new ToggleSource (this) : null);
+			return null;
+		}
+
+		public AutomationPattern [] GetSupportedPatterns ()
+		{
+			List<AutomationPattern> patterns = new List<AutomationPattern> ();
+
+			if (SupportsToggle ())
+				patterns.Add (TogglePatternIdentifiers.Pattern);
+
+			return patterns.ToArray ();
+		}
+
 		internal static int GetUniqueRuntimeId ()
 		{
 			return ++id;
@@ -377,6 +399,17 @@ namespace AtspiUiaSource
 			if (!elements.ContainsKey (accessible))
 				elements [accessible] = new Element (accessible);
 			return elements [accessible];
+		}
+
+		internal Accessible Accessible {
+			get {
+				return accessible;
+			}
+		}
+
+		internal bool SupportsToggle ()
+		{
+			return (accessible.Role == Role.CheckBox || accessible.Role == Role.ToggleButton);
 		}
 	}
 }

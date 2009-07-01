@@ -224,6 +224,17 @@ namespace System.Windows.Automation
 				return null;
 			}
 		}
+
+		public object GetCurrentPattern (AutomationPattern pattern)
+		{
+			// TODO: Should this support any patterns?
+			throw new InvalidOperationException ();
+		}
+
+		public AutomationPattern [] GetSupportedPatterns ()
+		{
+			return new AutomationPattern [0];
+		}
 		#endregion
 	}
 }

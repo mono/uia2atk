@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,21 +33,26 @@ namespace System.Windows.Automation
 	{
 		public struct SelectionItemPatternInformation
 		{
+			internal SelectionItemPatternInformation (SelectionItemProperties properties)
+			{
+				IsSelected = properties.IsSelected;
+				SelectionContainer = SourceManager.GetOrCreateAutomationElement (properties.SelectionContainer);
+			}
+
 			public bool IsSelected {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement SelectionContainer {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal SelectionItemPattern ()
+		internal ISelectionItemPattern source;
+
+		internal SelectionItemPattern (ISelectionItemPattern source)
 		{
+			this.source = source;
 		}
 
 		public SelectionItemPatternInformation Cached {
@@ -56,23 +63,23 @@ namespace System.Windows.Automation
 
 		public SelectionItemPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new SelectionItemPatternInformation (source.Properties);
 			}
 		}
 
 		public void Select ()
 		{
-			throw new NotImplementedException ();
+			source.Select ();
 		}
 
 		public void AddToSelection ()
 		{
-			throw new NotImplementedException ();
+			source.AddToSelection ();
 		}
 
 		public void RemoveFromSelection ()
 		{
-			throw new NotImplementedException ();
+			source.RemoveFromSelection ();
 		}
 
 		public static readonly AutomationPattern Pattern;

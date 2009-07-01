@@ -1,0 +1,8 @@
+2009-07-01  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationSource.cs: Fix GetChildren to return children of
+	Applications.
+
+	* Element.cs, ToggleSource.cs, Makefile.am: Add TogglePattern..
+
+	* Element.cs: Add support for some missing roles.

@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using System.Windows.Automation.Provider;
 
 namespace System.Windows.Automation
 {
@@ -31,15 +33,21 @@ namespace System.Windows.Automation
 	{
 		public struct DockPatternInformation
 		{
+			internal DockPatternInformation (DockPosition dockPosition)
+			{
+				DockPosition = dockPosition;
+			}
+
 			public DockPosition DockPosition {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal DockPattern ()
+		private IDockProvider source;
+
+		internal DockPattern (IDockProvider source)
 		{
+			this.source = source;
 		}
 
 		public DockPatternInformation Cached {
@@ -50,13 +58,13 @@ namespace System.Windows.Automation
 
 		public DockPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new DockPatternInformation (source.DockPosition);
 			}
 		}
 
 		public void SetDockPosition (DockPosition dockPosition)
 		{
-			throw new NotImplementedException ();
+			source.SetDockPosition (dockPosition);
 		}
 
 		public static readonly AutomationPattern Pattern;

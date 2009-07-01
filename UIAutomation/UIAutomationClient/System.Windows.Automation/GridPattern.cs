@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,21 +32,26 @@ namespace System.Windows.Automation
 	{
 		public struct GridPatternInformation
 		{
+			internal GridPatternInformation (GridProperties properties)
+			{
+			RowCount = properties.RowCount;
+				ColumnCount = properties.ColumnCount;
+			}
+
 			public int RowCount {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int ColumnCount {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal GridPattern ()
+		private IGridPattern source;
+
+		internal GridPattern (IGridPattern source)
 		{
+			this.source = source;
 		}
 
 		public GridPatternInformation Cached {
@@ -56,13 +62,13 @@ namespace System.Windows.Automation
 
 		public GridPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new GridPatternInformation (source.Properties);
 			}
 		}
 
 		public AutomationElement GetItem (int row, int column)
 		{
-			throw new NotImplementedException ();
+			return SourceManager.GetOrCreateAutomationElement (source.GetItem (row, column));
 		}
 
 		public static readonly AutomationPattern Pattern;

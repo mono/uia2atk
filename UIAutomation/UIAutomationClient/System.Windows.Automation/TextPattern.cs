@@ -21,18 +21,29 @@
 // 
 // Authors: 
 //      Brad Taylor <brad@getcoded.net>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
 using System.Windows.Automation.Text;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
 	public class TextPattern : BasePattern
 	{
+		#region Private Fields
+		private ITextPattern source;
+#endregion
+
 #region Constructor
 		private TextPattern ()
 		{
+		}
+
+		internal TextPattern (ITextPattern source)
+		{
+			this.source = source;
 		}
 #endregion
 
@@ -40,13 +51,13 @@ namespace System.Windows.Automation
 
 		public SupportedTextSelection SupportedTextSelection {
 			get {
-				throw new NotImplementedException ();
+				return source.SupportedTextSelection;
 			}
 		}
 
 		public TextPatternRange DocumentRange {
 			get {
-				throw new NotImplementedException ();
+				return new TextPatternRange (this, source.DocumentRange);
 			}
 		}
 
@@ -55,25 +66,36 @@ namespace System.Windows.Automation
 #region Public Methods
 		public TextPatternRange[] GetSelection ()
 		{
-			throw new NotImplementedException ();
+			return RangeArray (source.GetSelection ());
 		}
 
 		public TextPatternRange[] GetVisibleRanges ()
 		{
-			throw new NotImplementedException ();
+			return RangeArray (source.GetVisibleRanges ());
 		}
 
 		public TextPatternRange RangeFromChild (AutomationElement childElement)
 		{
-			throw new NotImplementedException ();
+			return new TextPatternRange (this, source.RangeFromChild (childElement.SourceElement));
 		}
 
 		public TextPatternRange RangeFromPoint (Point screenLocation)
 		{
-			throw new NotImplementedException ();
+			return new TextPatternRange (this, source.RangeFromPoint (screenLocation));
 		}
 #endregion
 		
+#region Private Methods
+
+		TextPatternRange [] RangeArray (ITextPatternRange [] source)
+		{
+			TextPatternRange [] ret = new TextPatternRange [source.Length];
+			for (int i = 0; i < source.Length; i++)
+				ret [i] = new TextPatternRange (this, source [i]);
+			return ret;
+		}
+#endregion
+
 #region Public Fields
 		public static readonly AutomationTextAttribute AnimationStyleAttribute = TextPatternIdentifiers.AnimationStyleAttribute;
 

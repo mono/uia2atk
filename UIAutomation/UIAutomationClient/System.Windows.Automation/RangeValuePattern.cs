@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,45 +33,46 @@ namespace System.Windows.Automation
 	{
 		public struct RangeValuePatternInformation
 		{
+			internal RangeValuePatternInformation (RangeValueProperties properties)
+			{
+				Value = properties.Value;
+				IsReadOnly = properties.IsReadOnly;
+				Maximum = properties.Maximum;
+				Minimum = properties.Minimum;
+				LargeChange= properties.LargeChange;
+				SmallChange = properties.SmallChange;
+			}
+
 			public double Value {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool IsReadOnly {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double Maximum {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double Minimum {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double LargeChange {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double SmallChange {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal RangeValuePattern ()
+		private IRangeValuePattern source;
+
+		internal RangeValuePattern (IRangeValuePattern source)
 		{
+			this.source = source;
 		}
 
 		public RangeValuePatternInformation Cached {
@@ -80,13 +83,13 @@ namespace System.Windows.Automation
 
 		public RangeValuePatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new RangeValuePatternInformation (source.Properties);
 			}
 		}
 
 		public void SetValue (double value)
 		{
-			throw new NotImplementedException ();
+			source.SetValue (value);
 		}
 
 		public static readonly AutomationPattern Pattern;

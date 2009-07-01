@@ -20,55 +20,28 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
-using System.Windows.Automation.Provider;
+using System.Runtime.InteropServices;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.Source
 {
-	public class TogglePattern : BasePattern
+	public interface IRangeValuePattern
 	{
-		private IToggleProvider source;
+		RangeValueProperties Properties { get; }
 
-		public struct TogglePatternInformation
-		{
-			internal TogglePatternInformation (ToggleState toggleState)
-			{
-				ToggleState = toggleState;
-			}
+		void SetValue (double value);
+	}
 
-			public ToggleState ToggleState {
-				get; private set;
-			}
-		}
-
-		internal TogglePattern (IToggleProvider source)
-		{
-			this.source = source;
-		}
-
-		public TogglePatternInformation Cached {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public TogglePatternInformation Current {
-			get {
-				return new TogglePatternInformation (source.ToggleState);
-			}
-		}
-
-		public void Toggle ()
-		{
-			source.Toggle ();
-		}
-
-		public static readonly AutomationPattern Pattern;
-
-		public static readonly AutomationProperty ToggleStateProperty;
+	public struct RangeValueProperties
+	{
+		public double Value;
+		public bool IsReadOnly;
+		public double Maximum;
+		public double Minimum;
+		public double LargeChange;
+		public double SmallChange;
 	}
 }

@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,45 +33,46 @@ namespace System.Windows.Automation
 	{
 		public struct ScrollPatternInformation
 		{
+			internal ScrollPatternInformation (ScrollProperties properties)
+			{
+				HorizontalScrollPercent = properties.HorizontalScrollPercent;
+				VerticalScrollPercent = properties.VerticalScrollPercent;
+				HorizontalViewSize = properties.HorizontalViewSize;
+				VerticalViewSize = properties.VerticalViewSize;
+				HorizontallyScrollable = properties.HorizontallyScrollable;
+				VerticallyScrollable = properties.VerticallyScrollable;
+			}
+
 			public double HorizontalScrollPercent {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double VerticalScrollPercent {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double HorizontalViewSize {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public double VerticalViewSize {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool HorizontallyScrollable {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool VerticallyScrollable {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal ScrollPattern ()
+		private IScrollPattern source;
+
+		internal ScrollPattern (IScrollPattern source)
 		{
+			this.source = source;
 		}
 
 		public ScrollPatternInformation Cached {
@@ -80,28 +83,28 @@ namespace System.Windows.Automation
 
 		public ScrollPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new ScrollPatternInformation (source.Properties);
 			}
 		}
 
 		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
 		{
-			throw new NotImplementedException ();
+			source.SetScrollPercent (horizontalPercent, verticalPercent);
 		}
 
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			throw new NotImplementedException ();
+			source.Scroll (horizontalAmount, verticalAmount);
 		}
 
 		public void ScrollHorizontal (ScrollAmount amount)
 		{
-			throw new NotImplementedException ();
+			source.Scroll (amount, ScrollAmount.NoAmount);
 		}
 
 		public void ScrollVertical (ScrollAmount amount)
 		{
-			throw new NotImplementedException ();
+			source.Scroll (ScrollAmount.NoAmount, amount);
 		}
 
 		public static readonly AutomationPattern Pattern;

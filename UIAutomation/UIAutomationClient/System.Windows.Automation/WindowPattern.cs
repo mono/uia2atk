@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,45 +33,50 @@ namespace System.Windows.Automation
 	{
 		public struct WindowPatternInformation
 		{
+			internal WindowPatternInformation (WindowProperties properties)
+			{
+				CanMaximize = properties.CanMaximize;
+				CanMinimize = properties.CanMinimize;
+				IsModal = properties.IsModal;
+				IsTopmost = properties.IsTopmost;
+				WindowVisualState = properties.WindowVisualState;
+				WindowInteractionState = properties.WindowInteractionState;
+			}
+
 			public bool CanMaximize {
-				get {
-					throw new NotImplementedException ();
-				}
+					get; private set;
 			}
 
 			public bool CanMinimize {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool IsModal {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool IsTopmost {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public WindowVisualState WindowVisualState {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public WindowInteractionState WindowInteractionState {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
+		private IWindowPattern source;
+
 		internal WindowPattern ()
 		{
+		}
+
+		internal WindowPattern (IWindowPattern source)
+		{
+			this.source = source;
 		}
 
 		public WindowPatternInformation Cached {
@@ -80,7 +87,7 @@ namespace System.Windows.Automation
 
 		public WindowPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new WindowPatternInformation (source.Properties);
 			}
 		}
 
@@ -91,12 +98,12 @@ namespace System.Windows.Automation
 
 		public void Close ()
 		{
-			throw new NotImplementedException ();
+			source.Close ();
 		}
 
 		public void SetWindowVisualState (WindowVisualState state)
 		{
-			throw new NotImplementedException ();
+			source.SetWindowVisualState (state);
 		}
 
 		public static readonly AutomationPattern Pattern;

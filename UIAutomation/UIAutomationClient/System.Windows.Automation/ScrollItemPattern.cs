@@ -21,21 +21,26 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using System.Windows.Automation.Provider;
 
 namespace System.Windows.Automation
 {
 	public class ScrollItemPattern : BasePattern
 	{
-		internal ScrollItemPattern ()
+		private IScrollItemProvider source;
+
+		internal ScrollItemPattern (IScrollItemProvider source)
 		{
+			this.source = source;
 		}
 
 		public void ScrollIntoView ()
 		{
-			throw new NotImplementedException ();
+			source.ScrollIntoView ();
 		}
 
 		public static readonly AutomationPattern Pattern;

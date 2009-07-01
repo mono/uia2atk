@@ -20,55 +20,30 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
 //  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
-using System.Windows.Automation.Provider;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+//using System.Windows;
+using System.Windows.Automation;
 
-namespace System.Windows.Automation
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
+using NUnit.Framework;
+using MonoTests.System.Windows.Automation;
+
+namespace AtspiUiaClientTests
 {
-	public class TogglePattern : BasePattern
+	[TestFixture]
+	public class AtspiTogglePatternTest : TogglePatternTest
 	{
-		private IToggleProvider source;
-
-		public struct TogglePatternInformation
-		{
-			internal TogglePatternInformation (ToggleState toggleState)
-			{
-				ToggleState = toggleState;
-			}
-
-			public ToggleState ToggleState {
-				get; private set;
-			}
-		}
-
-		internal TogglePattern (IToggleProvider source)
-		{
-			this.source = source;
-		}
-
-		public TogglePatternInformation Cached {
+		public override bool Atspi {
 			get {
-				throw new NotImplementedException ();
+				return true;
 			}
 		}
-
-		public TogglePatternInformation Current {
-			get {
-				return new TogglePatternInformation (source.ToggleState);
-			}
-		}
-
-		public void Toggle ()
-		{
-			source.Toggle ();
-		}
-
-		public static readonly AutomationPattern Pattern;
-
-		public static readonly AutomationProperty ToggleStateProperty;
-	}
+}
 }

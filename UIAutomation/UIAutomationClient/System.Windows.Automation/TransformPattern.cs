@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,27 +33,31 @@ namespace System.Windows.Automation
 	{
 		public struct TransformPatternInformation
 		{
+			internal TransformPatternInformation (TransformProperties properties)
+			{
+				CanMove = properties.CanMove;
+				CanResize = properties.CanResize;
+				CanRotate = properties.CanRotate;
+			}
+
 			public bool CanMove {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool CanResize {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool CanRotate {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal TransformPattern ()
+		private ITransformPattern source;
+
+		internal TransformPattern (ITransformPattern source)
 		{
+			this.source = source;
 		}
 
 		public TransformPatternInformation Cached {
@@ -62,23 +68,23 @@ namespace System.Windows.Automation
 
 		public TransformPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new TransformPatternInformation (source.Properties);
 			}
 		}
 
 		public void Move (double x, double y)
 		{
-			throw new NotImplementedException ();
+			source.Move (x, y);
 		}
 
 		public void Resize (double width, double height)
 		{
-			throw new NotImplementedException ();
+			source.Resize (width);
 		}
 
 		public void Rotate (double degrees)
 		{
-			throw new NotImplementedException ();
+			source.Rotate (degrees);
 		}
 
 		public static readonly AutomationPattern Pattern;

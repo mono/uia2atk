@@ -431,6 +431,276 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
+		public void DockPositionTest ()
+		{
+			Assert.AreEqual (DockPosition.None, (DockPosition)AutomationElement.RootElement.GetCurrentPropertyValue (DockPatternIdentifiers.DockPositionProperty), "DockPosition of root element (unsupported)");
+		}
+
+		[Test]
+		public void ExpandCollapseStateTest ()
+		{
+			Assert.AreEqual (ExpandCollapseState.LeafNode, (ExpandCollapseState)AutomationElement.RootElement.GetCurrentPropertyValue (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty), "ExpandCollapseState of root element (unsupported)");
+		}
+
+		[Test]
+		public void ColumnTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (GridItemPatternIdentifiers.ColumnProperty), "Column of root element (unsupported)");
+		}
+
+		[Test]
+		public void ColumnSpanTest ()
+		{
+			Assert.AreEqual (1, AutomationElement.RootElement.GetCurrentPropertyValue (GridItemPatternIdentifiers.ColumnSpanProperty), "ColumnSpan of root element (unsupported)");
+		}
+
+		[Test]
+		public void ContainingGridTest ()
+		{
+			Assert.IsNull (AutomationElement.RootElement.GetCurrentPropertyValue (GridItemPatternIdentifiers.ContainingGridProperty), "ContainingGrid of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (GridItemPatternIdentifiers.RowProperty), "Row of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowSpanTest ()
+		{
+			Assert.AreEqual (1, AutomationElement.RootElement.GetCurrentPropertyValue (GridItemPatternIdentifiers.RowSpanProperty), "RowSpan of root element (unsupported)");
+		}
+
+		[Test]
+		public void ColumnCountTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (GridPatternIdentifiers.ColumnCountProperty), "ColumnCount of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowCountTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (GridPatternIdentifiers.RowCountProperty), "RowCount of root element (unsupported)");
+		}
+
+		[Test]
+		public void CurrentViewTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (MultipleViewPatternIdentifiers.CurrentViewProperty), "CurrentView of root element (unsupported)");
+		}
+
+		[Test]
+		public void SupportedViewsTest ()
+		{
+			Assert.AreEqual (new int [0], AutomationElement.RootElement.GetCurrentPropertyValue (MultipleViewPatternIdentifiers.SupportedViewsProperty), "SupportedViews of root element (unsupported)");
+		}
+
+		[Test]
+		public void RangeValueIsReadOnlyTest ()
+		{
+			Assert.IsTrue ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.IsReadOnlyProperty), "IsReadOnly of root element (unsupported)");
+		}
+
+		[Test]
+		public void LargeChangeTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.LargeChangeProperty), "LargeChange of root element (unsupported)");
+		}
+
+		[Test]
+		public void MaximumTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.MaximumProperty), "Maximum of root element (unsupported)");
+		}
+
+		[Test]
+		public void MinimumTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.MinimumProperty), "Minimum of root element (unsupported)");
+		}
+
+		[Test]
+		public void SmallChangeTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.SmallChangeProperty), "SmallChange of root element (unsupported)");
+		}
+
+		[Test]
+		public void RangeValueValueTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (RangeValuePatternIdentifiers.ValueProperty), "Value of root element (unsupported)");
+		}
+
+		[Test]
+		public void HorizontallyScrollableTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.HorizontallyScrollableProperty), "HorizontallyScrollable of root element (unsupported)");
+		}
+
+		[Test]
+		public void HorizontalScrollPercentTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.HorizontalScrollPercentProperty), "HorizontalScrollPercent of root element (unsupported)");
+		}
+
+		[Test]
+		public void HorizontalViewSizeTest ()
+		{
+			Assert.AreEqual (100, AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.HorizontalViewSizeProperty), "HorizontalViewSize of root element (unsupported)");
+		}
+
+		[Test]
+		public void VerticallyScrollableTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.VerticallyScrollableProperty), "VerticallyScrollable of root element (unsupported)");
+		}
+
+		[Test]
+		public void VerticalScrollPercentTest ()
+		{
+			Assert.AreEqual (0, AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.VerticalScrollPercentProperty), "VerticalScrollPercent of root element (unsupported)");
+		}
+
+		[Test]
+		public void VerticalViewSizeTest ()
+		{
+			Assert.AreEqual (100, AutomationElement.RootElement.GetCurrentPropertyValue (ScrollPatternIdentifiers.VerticalViewSizeProperty), "VerticalViewSize of root element (unsupported)");
+		}
+
+		[Test]
+		public void IsSelectedTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty), "IsSelected of root element (unsupported)");
+		}
+
+		[Test]
+		public void SelectionContainerTest ()
+		{
+			Assert.IsNull (AutomationElement.RootElement.GetCurrentPropertyValue (SelectionItemPatternIdentifiers.SelectionContainerProperty), "SelectionContainer of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanSelectMultipleTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty), "CanSelectMultiple of root element (unsupported)");
+		}
+
+		[Test]
+		public void IsSelectionRequiredTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty), "IsSelectionRequired of root element (unsupported)");
+		}
+
+		[Test]
+		public void SelectionTest ()
+		{
+			Assert.AreEqual (new AutomationElement [0], AutomationElement.RootElement.GetCurrentPropertyValue (SelectionPatternIdentifiers.SelectionProperty), "Selection of root element (unsupported)");
+		}
+
+		[Test]
+		public void ColumnHeaderItemsTest ()
+		{
+			Assert.AreEqual (new AutomationElement [0], AutomationElement.RootElement.GetCurrentPropertyValue (TableItemPatternIdentifiers.ColumnHeaderItemsProperty), "ColumnHeaderItems of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowHeaderItemsTest ()
+		{
+			Assert.AreEqual (new AutomationElement [0], AutomationElement.RootElement.GetCurrentPropertyValue (TableItemPatternIdentifiers.RowHeaderItemsProperty), "ColumnHeaderItems of root element (unsupported)");
+		}
+
+		[Test]
+		public void ColumnHeadersTest ()
+		{
+			Assert.AreEqual (new AutomationElement [0], AutomationElement.RootElement.GetCurrentPropertyValue (TablePatternIdentifiers.ColumnHeadersProperty), "ColumnHeaderItems of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowHeadersTest ()
+		{
+			Assert.AreEqual (new AutomationElement [0], AutomationElement.RootElement.GetCurrentPropertyValue (TablePatternIdentifiers.RowHeadersProperty), "RowHeaders of root element (unsupported)");
+		}
+
+		[Test]
+		public void RowOrColumnMajorTest ()
+		{
+			Assert.AreEqual (RowOrColumnMajor.Indeterminate, AutomationElement.RootElement.GetCurrentPropertyValue (TablePatternIdentifiers.RowOrColumnMajorProperty), "RowOrColumnMajor of root element (unsupported)");
+		}
+
+		[Test]
+		public void ToggleStateTest ()
+		{
+			Assert.AreEqual (ToggleState.Indeterminate, AutomationElement.RootElement.GetCurrentPropertyValue (TogglePatternIdentifiers.ToggleStateProperty), "ToggleState of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanMoveTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (TransformPatternIdentifiers.CanMoveProperty), "CanMove of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanResizeTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (TransformPatternIdentifiers.CanResizeProperty), "CanResize of root element (unsupported)");
+		}
+
+		[Test]
+		public void ValueIsReadOnlyTest ()
+		{
+			Assert.IsTrue ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty), "IsReadOnly of root element (unsupported)");
+		}
+
+		[Test]
+		public void ValueValueTest ()
+		{
+			Assert.AreEqual (String.Empty, AutomationElement.RootElement.GetCurrentPropertyValue (ValuePatternIdentifiers.ValueProperty), "Value of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanMaximizeTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.CanMaximizeProperty), "CanMaximize of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanMinimizeTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.CanMinimizeProperty), "CanMinimize of root element (unsupported)");
+		}
+
+		[Test]
+		public void IsModalTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.IsModalProperty), "IsModal of root element (unsupported)");
+		}
+
+		[Test]
+		public void IsTopmostTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.IsTopmostProperty), "IsTopmost of root element (unsupported)");
+		}
+
+		[Test]
+		public void WindowInteractionStateTest ()
+		{
+			Assert.AreEqual (WindowInteractionState.Running, AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.WindowInteractionStateProperty), "WindowInteractionState of root element (unsupported)");
+		}
+
+		[Test]
+		public void WindowVisualStateTest ()
+		{
+			Assert.AreEqual (WindowVisualState.Normal, AutomationElement.RootElement.GetCurrentPropertyValue (WindowPatternIdentifiers.WindowVisualStateProperty), "WindowVisualState of root element (unsupported)");
+		}
+
+		[Test]
+		public void CanRotateTest ()
+		{
+			Assert.IsFalse ((bool)AutomationElement.RootElement.GetCurrentPropertyValue (TransformPatternIdentifiers.CanRotateProperty), "CanRotate of root element (unsupported)");
+		}
+
+		[Test]
 		public void EqualsTest ()
 		{
 			AutomationElement button1ElementRef2 = testFormElement.FindFirst (TreeScope.Children,
@@ -661,8 +931,15 @@ namespace MonoTests.System.Windows.Automation
 			               "GetNextSibling");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (AutomationElement.RootElement),
 			               "GetPreviousSibling");
+			VerifyPatterns (AutomationElement.RootElement);
 		}
 
+		[Test]
+		public void PatternsTest ()
+		{
+			VerifyPatterns (button1Element,
+				InvokePatternIdentifiers.Pattern);
+			}
 		#endregion
 
 		#region Private Methods
@@ -734,6 +1011,33 @@ namespace MonoTests.System.Windows.Automation
 			return output + "}";
 		}
 
+		private void VerifyPatterns (AutomationElement element, params AutomationPattern [] expected)
+		{
+			List<AutomationPattern> expectedPatterns = new List<AutomationPattern> (expected);
+			List<AutomationPattern> supportedPatterns = new List<AutomationPattern> (element.GetSupportedPatterns ());
+				object pattern1, pattern2;
+
+			foreach (AutomationPattern pattern in patternProperties.Keys) {
+				bool patternProperty = (bool) element.GetCurrentPropertyValue (patternProperties [pattern]);
+				if (expectedPatterns.Contains (pattern)) {
+					pattern1 = element.GetCurrentPattern (pattern);
+					Assert.IsNotNull (pattern1, "GetCurrentPattern should not return null: " + pattern.ProgrammaticName);
+					Assert.IsTrue (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return true: " + pattern.ProgrammaticName);
+					Assert.IsNotNull (pattern2, "TryGetCurrentPattern should not return null: " + pattern.ProgrammaticName);
+					Assert.IsTrue (supportedPatterns.Contains (pattern), "GetSupportedPatterns should return pattern: " + pattern.ProgrammaticName);
+					Assert.IsTrue (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
+				} else {
+					try {
+						pattern1 = element.GetCurrentPattern (pattern);
+						Assert.Fail ("GetCurrentPattern should return an InvalidOperation exception: " + pattern.ProgrammaticName);
+					} catch (InvalidOperationException) { }
+					Assert.IsFalse (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return false: " + pattern.ProgrammaticName);
+					Assert.IsFalse (supportedPatterns.Contains (pattern), "GetSupportedPatterns should not return pattern: " + pattern.ProgrammaticName);
+					Assert.IsFalse (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
+				}
+			}
+
+		}
 		#endregion
 	}
 }

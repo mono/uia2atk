@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,49 +33,56 @@ namespace System.Windows.Automation
 	{
 		public struct TableItemPatternInformation
 		{
+		private AutomationElement [] rowHeaderItems;
+		private AutomationElement [] columnHeaderItems;
+
+			internal TableItemPatternInformation (TableItemProperties properties)
+			{
+				Row = properties.Row;
+				Column = properties.Column;
+				RowSpan = properties.RowSpan;
+				ColumnSpan = properties.ColumnSpan;
+				ContainingGrid = SourceManager.GetOrCreateAutomationElement (properties.ContainingGrid);
+				rowHeaderItems = SourceManager.GetOrCreateAutomationElements (properties.RowHeaderItems);
+				columnHeaderItems = SourceManager.GetOrCreateAutomationElements (properties.ColumnHeaderItems);
+			}
+
 			public int Row {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int Column {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int RowSpan {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public int ColumnSpan {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement ContainingGrid {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement [] GetRowHeaderItems ()
 			{
-				throw new NotImplementedException ();
+				return rowHeaderItems;
 			}
 
 			public AutomationElement [] GetColumnHeaderItems ()
 			{
-				throw new NotImplementedException ();
+				return columnHeaderItems;
 			}
 		}
 
-		internal TableItemPattern ()
+		private ITableItemPattern source;
+
+		internal TableItemPattern (ITableItemPattern source) : base (null)
 		{
+			this.source = source;
 		}
 
 		public new TableItemPatternInformation Cached {
@@ -84,7 +93,7 @@ namespace System.Windows.Automation
 
 		public new TableItemPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new TableItemPatternInformation (source.Properties);
 			}
 		}
 

@@ -272,6 +272,17 @@ namespace Mono.UIAutomation.DbusCoreUiaSource
 			}
 		}
 
+		public object GetCurrentPattern (AutomationPattern pattern)
+		{
+			// TODO: Implement
+			throw new NotSupportedException ();
+		}
+
+		public AutomationPattern [] GetSupportedPatterns ()
+		{
+			// TODO: Implement
+			throw new NotSupportedException ();
+		}
 		#endregion
 
 		#region Public Properties

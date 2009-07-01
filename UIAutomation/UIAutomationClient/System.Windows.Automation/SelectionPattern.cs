@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,26 +33,36 @@ namespace System.Windows.Automation
 	{
 		public struct SelectionPatternInformation
 		{
+			AutomationElement [] selection;
+
+			internal SelectionPatternInformation (SelectionProperties properties)
+			{
+				CanSelectMultiple = properties.CanSelectMultiple;
+				IsSelectionRequired = properties.IsSelectionRequired;
+				selection = new AutomationElement [properties.Selection.Length];
+				for (int i = 0; i < properties.Selection.Length; i++)
+					selection [i] = SourceManager.GetOrCreateAutomationElement (properties.Selection [i]);
+			}
+
 			public bool CanSelectMultiple {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool IsSelectionRequired {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement [] GetSelection ()
 			{
-				throw new NotImplementedException ();
+				return selection;
 			}
 		}
 
-		internal SelectionPattern ()
+		private ISelectionPattern source;
+
+		internal SelectionPattern (ISelectionPattern source)
 		{
+			this.source = source;
 		}
 
 		public SelectionPatternInformation Cached {
@@ -61,7 +73,7 @@ namespace System.Windows.Automation
 
 		public SelectionPatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new SelectionPatternInformation (source.Properties);
 			}
 		}
 

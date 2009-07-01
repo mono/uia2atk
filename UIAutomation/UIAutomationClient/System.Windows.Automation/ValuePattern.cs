@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,21 +33,26 @@ namespace System.Windows.Automation
 	{
 		public struct ValuePatternInformation
 		{
+			internal ValuePatternInformation (ValueProperties properties)
+			{
+				Value = properties.Value;
+				IsReadOnly = properties.IsReadOnly;
+			}
+
 			public string Value {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public bool IsReadOnly {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal ValuePattern ()
+		private IValuePattern source;
+
+		internal ValuePattern (IValuePattern source)
 		{
+			this.source = source;
 		}
 
 		public ValuePatternInformation Cached {
@@ -56,13 +63,13 @@ namespace System.Windows.Automation
 
 		public ValuePatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new ValuePatternInformation (source.Properties);
 			}
 		}
 
 		public void SetValue (string value)
 		{
-			throw new NotImplementedException ();
+			source.SetValue (value);
 		}
 
 		public static readonly AutomationPattern Pattern;

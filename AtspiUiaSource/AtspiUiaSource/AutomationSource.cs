@@ -41,10 +41,13 @@ namespace AtspiUiaSource
 
 		public IElement [] GetRootElements ()
 		{
-			IList<Accessible> children = Desktop.Instance.Children;
-			IElement [] ret = new IElement [children.Count];
+			List<Accessible> elements = new List<Accessible> ();
+			foreach (Accessible element in Desktop.Instance.Children)
+				foreach (Accessible child in element.Children)
+					elements.Add (child);
+			IElement [] ret = new IElement [elements.Count];
 			int i = 0;
-			foreach (Accessible accessible in children)
+			foreach (Accessible accessible in elements)
 				ret [i++] = Element.GetElement (accessible);
 			return ret;
 		}

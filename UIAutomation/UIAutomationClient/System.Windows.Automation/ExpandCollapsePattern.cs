@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using System.Windows.Automation.Provider;
 
 namespace System.Windows.Automation
 {
@@ -31,15 +33,21 @@ namespace System.Windows.Automation
 	{
 		public struct ExpandCollapsePatternInformation
 		{
+			internal ExpandCollapsePatternInformation (ExpandCollapseState expandCollapseState)
+			{
+				ExpandCollapseState = expandCollapseState;
+			}
+
 			public ExpandCollapseState ExpandCollapseState {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 		}
 
-		internal ExpandCollapsePattern ()
+		private IExpandCollapseProvider source;
+
+		internal ExpandCollapsePattern (IExpandCollapseProvider source)
 		{
+			this.source = source;
 		}
 
 		public ExpandCollapsePatternInformation Cached {
@@ -50,18 +58,18 @@ namespace System.Windows.Automation
 
 		public ExpandCollapsePatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new ExpandCollapsePatternInformation (source.ExpandCollapseState);
 			}
 		}
 
 		public void Expand ()
 		{
-			throw new NotImplementedException ();
+			source.Expand ();
 		}
 
 		public void Collapse ()
 		{
-			throw new NotImplementedException ();
+			source.Collapse ();
 		}
 
 		public static readonly AutomationPattern Pattern;

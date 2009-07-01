@@ -20,83 +20,36 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Text;
 
 namespace Mono.UIAutomation.Source
 {
-	public interface IElement
+	public interface ITextPatternRange
 	{
-		bool SupportsProperty (AutomationProperty property);
-
-		string AcceleratorKey { get; }
-
-		string AccessKey { get; }
-
-		string AutomationId { get; }
-
-		Rect BoundingRectangle { get; }
-
-		string ClassName { get; }
-
-		Point ClickablePoint { get; }
-
-		ControlType ControlType { get; }
-
-		string FrameworkId { get; }
-
-		bool HasKeyboardFocus { get; }
-
-		string HelpText { get; }
-
-		bool IsContentElement { get; }
-
-		bool IsControlElement { get; }
-
-		bool IsEnabled { get; }
-
-		bool IsKeyboardFocusable { get; }
-
-		bool IsOffscreen { get; }
-
-		bool IsPassword { get; }
-
-		bool IsRequiredForForm { get; }
-
-		string ItemStatus { get; }
-
-		string ItemType { get; }
-
-		IElement LabeledBy { get; }
-
-		string LocalizedControlType { get; }
-
-		string Name { get; }
-
-		int NativeWindowHandle { get; }
-
-		OrientationType Orientation { get; }
-
-		int ProcessId { get; }
-
-		int [] RuntimeId { get; }
-
-		IElement Parent { get; }
-
-		IElement FirstChild { get; }
-
-		IElement LastChild { get; }
-
-		IElement NextSibling { get; }
-
-		IElement PreviousSibling { get; }
-
-		object GetCurrentPattern (AutomationPattern pattern);
-
-		AutomationPattern [] GetSupportedPatterns ();
+		void AddToSelection ();
+		ITextPatternRange Clone ();
+		bool Compare (ITextPatternRange range);
+		int CompareEndpoints (TextPatternRangeEndpoint endpoint, ITextPatternRange targetRange, TextPatternRangeEndpoint targetEndpoint);
+		void ExpandToEnclosingUnit (TextUnit unit);
+		ITextPatternRange FindAttribute (AutomationTextAttribute attribute, object value, bool backward);
+		ITextPatternRange FindText (string text, bool backward, bool ignoreCase);
+		object GetAttributeValue (AutomationTextAttribute attribute);
+		Rect[] GetBoundingRectangles ();
+		IElement[] GetChildren ();
+		IElement GetEnclosingElement ();
+		string GetText (int maxLength);
+		int Move (TextUnit unit, int count);
+		void MoveEndpointByRange (TextPatternRangeEndpoint endpoint, ITextPatternRange targetRange, TextPatternRangeEndpoint targetEndpoint);
+		int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, TextUnit unit, int count);
+		void RemoveFromSelection ();
+		void ScrollIntoView (bool alignToTop);
+		void Select ();
 	}
 }

@@ -1,3 +1,7 @@
+2009-07-01  Mike Gorse  <mgorse@novell.com>
+
+	* DbusCoreUiaSource/DbusCoreElement.cs: Add stubs for new IElement
+	methods.
 
 2009-06-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 	* NEWS: 

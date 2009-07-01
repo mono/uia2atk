@@ -75,6 +75,14 @@ namespace System.Windows.Automation
 			return element;
 		}
 
+		internal static AutomationElement [] GetOrCreateAutomationElements (IElement [] sourceElements)
+		{
+			AutomationElement [] ret = new AutomationElement [sourceElements.Length];
+			for (int i = 0; i < sourceElements.Length; i++)
+				ret [i] = GetOrCreateAutomationElement (sourceElements [i]);
+			return ret;
+		}
+
 		private static IAutomationSource GetAutomationSource (string sourceAssemblyName)
 		{
 			Assembly sourceAssembly = null;

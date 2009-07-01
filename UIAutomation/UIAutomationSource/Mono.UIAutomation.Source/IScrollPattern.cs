@@ -20,55 +20,30 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
-using System.Windows.Automation.Provider;
+using System.Runtime.InteropServices;
+using System.Windows.Automation;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.Source
 {
-	public class TogglePattern : BasePattern
+	public interface IScrollPattern
 	{
-		private IToggleProvider source;
+		ScrollProperties Properties { get; }
 
-		public struct TogglePatternInformation
-		{
-			internal TogglePatternInformation (ToggleState toggleState)
-			{
-				ToggleState = toggleState;
-			}
+		void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount);
+		void SetScrollPercent (double horizontalPercent, double verticalPercent);
+	}
 
-			public ToggleState ToggleState {
-				get; private set;
-			}
-		}
-
-		internal TogglePattern (IToggleProvider source)
-		{
-			this.source = source;
-		}
-
-		public TogglePatternInformation Cached {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public TogglePatternInformation Current {
-			get {
-				return new TogglePatternInformation (source.ToggleState);
-			}
-		}
-
-		public void Toggle ()
-		{
-			source.Toggle ();
-		}
-
-		public static readonly AutomationPattern Pattern;
-
-		public static readonly AutomationProperty ToggleStateProperty;
+	public struct ScrollProperties
+	{
+		public bool HorizontallyScrollable;
+		public double HorizontalScrollPercent;
+		public double HorizontalViewSize;
+		public bool VerticallyScrollable;
+		public double VerticalScrollPercent;
+		public double VerticalViewSize;
 	}
 }

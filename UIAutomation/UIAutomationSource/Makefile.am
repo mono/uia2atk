@@ -27,7 +27,21 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 PROJECT_SOURCE_FILES =  \
 	Mono.UIAutomation.Source/IAutomationSource.cs \
-	Mono.UIAutomation.Source/IElement.cs
+	Mono.UIAutomation.Source/IElement.cs \
+	Mono.UIAutomation.Source/IGridItemPattern.cs \
+	Mono.UIAutomation.Source/IGridPattern.cs \
+	Mono.UIAutomation.Source/IMultipleViewPattern.cs \
+	Mono.UIAutomation.Source/IRangeValuePattern.cs \
+	Mono.UIAutomation.Source/IScrollPattern.cs \
+	Mono.UIAutomation.Source/ISelectionItemPattern.cs \
+	Mono.UIAutomation.Source/ISelectionPattern.cs \
+	Mono.UIAutomation.Source/ITableItemPattern.cs \
+	Mono.UIAutomation.Source/ITablePattern.cs \
+	Mono.UIAutomation.Source/ITextPattern.cs \
+	Mono.UIAutomation.Source/ITextPatternRange.cs \
+	Mono.UIAutomation.Source/ITransformPattern.cs \
+	Mono.UIAutomation.Source/IValuePattern.cs \
+	Mono.UIAutomation.Source/IWindowPattern.cs
 
 FILES =  \
         AssemblyInfo.cs \

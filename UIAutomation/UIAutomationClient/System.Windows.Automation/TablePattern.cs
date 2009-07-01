@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
@@ -31,37 +33,46 @@ namespace System.Windows.Automation
 	{
 		public struct TablePatternInformation
 		{
-			public int RowCount {
-				get {
-					throw new NotImplementedException ();
-				}
+			private AutomationElement [] rowHeaders;
+			private AutomationElement [] columnHeaders;
+
+			internal TablePatternInformation (TableProperties properties)
+			{
+				RowCount = properties.RowCount;
+				ColumnCount = properties.ColumnCount;
+				RowOrColumnMajor = properties.RowOrColumnMajor;
+				rowHeaders = SourceManager.GetOrCreateAutomationElements (properties.RowHeaders);
+				columnHeaders = SourceManager.GetOrCreateAutomationElements (properties.ColumnHeaders);
 			}
 
-			public int ColumnCount {
-				get {
-					throw new NotImplementedException ();
+			public int RowCount {
+				get; private set;
 				}
+
+			public int ColumnCount {
+				get; private set;
 			}
 
 			public RowOrColumnMajor RowOrColumnMajor {
-				get {
-					throw new NotImplementedException ();
-				}
+				get; private set;
 			}
 
 			public AutomationElement [] GetRowHeaders ()
 			{
-				throw new NotImplementedException ();
+				return rowHeaders;
 			}
 
 			public AutomationElement [] GetColumnHeaders ()
 			{
-				throw new NotImplementedException ();
+				return columnHeaders;
 			}
 		}
 
-		internal TablePattern ()
+		private ITablePattern source;
+
+		internal TablePattern (ITablePattern source) : base (null)
 		{
+			this.source = source;
 		}
 
 		public new TablePatternInformation Cached {
@@ -72,7 +83,7 @@ namespace System.Windows.Automation
 
 		public new TablePatternInformation Current {
 			get {
-				throw new NotImplementedException ();
+				return new TablePatternInformation (source.Properties);
 			}
 		}
 
