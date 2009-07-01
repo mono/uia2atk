@@ -44,143 +44,119 @@ if app is None:
 # just an alias to make things shorter
 ofdFrame = app.openFileDialogFrame
 
-###############################################################################
-# click EnableVisible button to show openfiledialog page, then check HelpButon 
+# click "EnableVisible" button to show open dialog page, then check HelpButon 
 # and ReadOnlyCheckBox are showing up
-###############################################################################
-
 ofdFrame.enable_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-ofdFrame.assertNormalElements()
-ofdFrame.assertVisibleElements()
+ofdFrame.findAllOpenDialogWidgets()
+ofdFrame.testVisibleWidgets(is_visible=True)
 
 # close opendialog window
 ofdFrame.cancel_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
 ofdFrame.opendialog.assertClosed()
 
-############################################################################
-# click OpenDialog button to show openfiledialog page, then check all elements 
-# are showing up
-############################################################################
-
+# click "OpenDialog" button to open the "Open" dialog, and then find all the
+# accessibles of that dialog
 ofdFrame.opendialog_button.click(log=True)
 sleep(config.MEDIUM_DELAY)
-# BUG490105:accessible position and size of ToggleButton is incorrect 
-ofdFrame.assertNormalElements()
-ofdFrame.assertPopUpButtonElements()
-ofdFrame.assertSmallToolBarButtonElements()
-ofdFrame.assertDirComboBoxElements()
+ofdFrame.findAllOpenDialogWidgets()
+ofdFrame.testVisibleWidgets(is_visible=False)
 
-###########################################################
-# search for all widgets from "New Folder or File" dialog,
-# click Cancel button won't create new folder,
-# click OK button will create new folder
-###########################################################
+# check the default states of all of the accessibles on the "Open" dialog
+ofdFrame.checkDefaultOpenDialogStates()
 
-ofdFrame.creatNewFolderTest(is_created=False)
+# click the button to make a new directory, and then find all of the
+# accessibles of that dialog
+ofdFrame.new_dir_toolbar_button.click(log=True)
+sleep(config.MEDIUM_DELAY)
+ofdFrame.findAllNewFolderOrFileAccessibles()
+# check the default states of all of the accessibles on the "New Folder Or
+# File" dialog
+ofdFrame.checkDefaultNewFolderOrFileDialogStates()
 
-ofdFrame.creatNewFolderTest(is_created=True)
+# close the "New Folder Or File" dialog
+ofdFrame.new_folder_cancel.click(log=True)
+ofdFrame.new_folder_dialog.assertClosed()
 
-#####################
-# dirComboBox test
-#####################
+# test view style dropdown menu_items from toolbar button on the top
+ofdFrame.dropDownMenuItemTests()
 
-# check dirComboBox and children' states, dir_menu and menuitems are invisible 
-# and isn't showing
-statesCheck(ofdFrame.dir_combobox, "ComboBox")
-statesCheck(ofdFrame.dir_menu, "Menu", invalid_states=["showing", "visible"])
-statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
-
-# click dirComboBox to expand menu, then check states again
-ofdFrame.dir_combobox.press(log=True)
+# Test context menu when clicking in the TreeTable
+ofdFrame.treetable.mouseClick(button=3)
 sleep(config.SHORT_DELAY)
-statesCheck(ofdFrame.dir_combobox, "ComboBox")
-statesCheck(ofdFrame.dir_menu, "Menu")
-# recentlyused_menuitem on the top of the list, so it is un-showing 
-statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
-# mynetwork_menuitem is shown and visible
-statesCheck(ofdFrame.mynetwork_menuitem, "MenuItem")
-# samples_menuitem is selected and focused by default
-samples_menuitem = ofdFrame.dir_menu.findMenuItem("samples")
-statesCheck(samples_menuitem, "MenuItem", add_states=["focused", "selected"])
+ofdFrame.findContextMenuAccessibles()
+ofdFrame.contextMenuAccessiblesTest()
 
-# click menuitem under dir_menu to check its AtkAction, move focus and selection
-# to recentlyused_menuitem, there is no "ANewFolder" folder on listview
-ofdFrame.recentlyused_menuitem.click(log=True)
+ofdFrame.view_smallicon_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("ANewFolder")
-# search for elements under dirCombobox again
-ofdFrame.assertDirComboBoxElements()
+# BUG514635:menu's descendant menu_item is missing 'focusable' state
+#statesCheck(ofdFrame.view_smallicon_menuitem, "MenuItem", \
+#                           invalid_states=["showing"], add_states=["checked"])
 
-statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", add_states=["focused", "selected"])
+# test accessible's Image by check image size
+ofdFrame.checkImageSize()
 
-# use keyDown move focus and selection to desktop_menuitem
-# BUG499139: SWF has not provide keyUp/Down navigation
-#ofdFrame.recentlyused_menuitem.keyCombo("Down", grabFocus=True)
-#sleep(config.SHORT_DELAY)
-#statesCheck(ofdFrame.desktop_menuitem, "MenuItem", add_states=["focused", "selected"])
-#statesCheck(ofdFrame.recentlyused_menuitem, "MenuItem", invalid_states=["showing"])
+# test accessibles of the look_in_combobox
+ofdFrame.lookInComboBoxAccessiblesTest()
 
-# move focus and selection to mycomputer_menuitem, there is no "My Computer" folder on listview
-ofdFrame.mycomputer_menuitem.click(log=True)
-sleep(config.SHORT_DELAY)
-#ofdFrame.mouseClick()
-#sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("My Computer")
-ofdFrame.assertDirComboBoxElements()
-
-statesCheck(ofdFrame.mycomputer_menuitem, "MenuItem", add_states=["focused", "selected"])
-
-# regression test that click first and last dir menuitem doesn't crash app due to bug474611
-ofdFrame.recentlyused_menuitem.click(log=True)
-sleep(config.SHORT_DELAY)
-ofdFrame.mouseClick()
-sleep(config.SHORT_DELAY)
-ofdFrame.assertDirComboBoxElements()
-
-ofdFrame.mynetwork_menuitem.click(log=True)
-sleep(config.SHORT_DELAY)
-ofdFrame.assertDirComboBoxElements()
-
-# click dirCombobox to contract menu_item list
-ofdFrame.dir_combobox.mouseClick(log=False)
-
-########################################
-# popUpButtonPanel and popUpButton test
-########################################
-# states test blocks by BUG490572 and BUG475082
-
-#statesCheck(ofdFrame.popuptoolbar, "ToolBar")
-#statesCheck(ofdFrame.recentlyused_popup, "MenuItem", add_states=["focusable"])
-#statesCheck(ofdFrame.mynetwork_popup, "MenuItem", add_states=["focusable"])
-
-# click popUpButton personal to rise focused, there is no "Personal" folder on listview
+# click popUpButton personal to rise focused, there is no "Personal" folder on treetable
 ofdFrame.personal_popup.click(log=True)
 sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("Personal")
-#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable", "focused"])
+# ensure that the click action had the desired affect on the GUI by making sure
+# the "Personal" menu item is the selected child of the "Look In" combo box.
+# We need to refind the "Look In" combo box accessibles again first, because
+# they reload (and change) when the popup is clicked.
+ofdFrame.findLookInComboBoxAccessibles()
+ofdFrame.assertSelectedChild(ofdFrame.look_in_combobox,
+                             ofdFrame.personal_menuitem)
+# BUG475082 FileDialog: PopupButton has wrong states -- Everything fixed
+# except +/- "focused" state.
+#statesCheck(ofdFrame.personal_menuitem,
+#            "MenuItem",
+#            add_states=["focusable", "focused", "selected"])
 
-# keyUp move focus to desktop_popup, there is no "Desktop" folder on listview
-ofdFrame.personal_popup.keyCombo("Up", grabFocus=True)
+# keyUp move focus to desktop_popup
+ofdFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("Desktop")
-#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable", "focused"])
-#statesCheck(ofdFrame.personal_popup, "MenuItem", add_states=["focusable"])
+ofdFrame.findLookInComboBoxAccessibles()
+# the selection of the "Look In" combo box shouldn't actually change
+ofdFrame.assertSelectedChild(ofdFrame.look_in_combobox,
+                             ofdFrame.desktop_menuitem)
+# BUG475082 FileDialog: PopupButton has wrong states -- Everything fixed
+# except +/- "focused" state.
+#statesCheck(ofdFrame.personal_menuitem,
+#            "MenuItem",
+#            add_states=["focusable", "focused", "selected"])
 
-# mouseClick move focus to mycomputer_popup, there is no "My Computer" folder on listview
+# mouseClick move focus to mycomputer_popup
 ofdFrame.mycomputer_popup.mouseClick()
 sleep(config.SHORT_DELAY)
-ofdFrame.assertDirChange("My Computer")
-#statesCheck(ofdFrame.mycomputer_popup  , "MenuItem", add_states=["focusable", "focused"])
-#statesCheck(ofdFrame.desktop_popup, "MenuItem", add_states=["focusable"])
+ofdFrame.findLookInComboBoxAccessibles()
+ofdFrame.assertSelectedChild(ofdFrame.look_in_combobox,
+                             ofdFrame.mycomputer_menuitem)
+# BUG475082 FileDialog: PopupButton has wrong states -- Everything fixed
+# except +/- "focused" state.
+#statesCheck(ofdFrame.personal_menuitem,
+#            "MenuItem",
+#            add_states=["focusable", "focused", "selected"])
 
-# close opendialog window
+# close savedialog window
 ofdFrame.cancel_button.click(log=True)
-sleep(config.SHORT_DELAY)
+# this requires a MEDIUM_DELAY because it can take a while to close
+sleep(config.MEDIUM_DELAY)
+
+# invoke 'Open' dialog again
+ofdFrame.opendialog_button.click(log=True)
+sleep(config.MEDIUM_DELAY)
+ofdFrame.findAllOpenDialogWidgets()
+
+# invoke action to open file, open dialog is closed
+ofdFrame.a_blank_file_cell.invoke(log=True)
+sleep(config.MEDIUM_DELAY)
 ofdFrame.opendialog.assertClosed()
 
-# close application frame window
+#close application frame window
 ofdFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
