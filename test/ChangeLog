@@ -1,3 +1,7 @@
+2009-07-01 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtkbutton.py: Add a nop button, to test #504593 in gail.
+
 2009-07-01 Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py,

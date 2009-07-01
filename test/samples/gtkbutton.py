@@ -101,6 +101,12 @@ class ButtonSample:
 	self.window.set_focus(self.button1)
         #button3 with image
 
+        # a button to contain the image widget
+        self.button4 = gtk.Button()
+        self.button4.set_label("nop")
+        self.box1.pack_start(self.button4, True, True, 0)
+	self.button4.show()
+
     def main(self):
         gtk.main()
 
