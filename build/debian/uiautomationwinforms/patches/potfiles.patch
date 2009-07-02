@@ -1,0 +1,20 @@
+Index: uiautomationwinforms-1.0/po/POTFILES.in
+===================================================================
+--- uiautomationwinforms-1.0.orig/po/POTFILES.in	2009-06-17 19:51:10.527137199 +0800
++++ uiautomationwinforms-1.0/po/POTFILES.in	2009-06-17 19:51:45.166501759 +0800
+@@ -44,3 +44,15 @@
+ UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs
+ UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs
+ UIAutomationWinforms/Mono.UIAutomation.Winforms/WebBrowserProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/TrackBar/ButtonInvokeProviderBehavior.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/BaseColorControlProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/ContextMenuProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridViewProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/ListProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/MainMenuProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/MenuItemProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs
++UIAutomationWinforms/Mono.UIAutomation.Winforms/TrackBarProvider.cs
++UIAutomationWinformsTests/BaseProviderTest.cs
++UIAutomationWinformsTests/DataGridProviderTest.cs

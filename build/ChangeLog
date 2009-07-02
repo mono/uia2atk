@@ -1,3 +1,12 @@
+2009-02-02  Ray Wang <rawang@novell.com>
+
+	* debian/uiautomationwinforms/patches: Add one patch to resolve
+	missing files in POTFILES.in.
+	* debian/*/control: Update Standards-Version to 3.8.2.
+	* debian/*/rules: Add a new line, for uiautomationwinfors, add quilt
+	to patch missing files.
+	* debian/*/changelog: Change to corresponding ITP bugs for each package.
+
 2009-06-25  Ray Wang <rawang@novell.com>
 
 	* debian/*/control: Update Maintainer tag, add Vcs-Svn and
