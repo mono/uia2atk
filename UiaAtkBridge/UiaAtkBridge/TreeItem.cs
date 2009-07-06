@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
 		Atk.ImageImplementor, Atk.EditableTextImplementor
 	{
+		const string EXPAND_OR_CONTRACT_ACTION_NAME = "expand or contract";
 		private IInvokeProvider			invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
 		private IExpandCollapseProvider expandCollapseProvider;
@@ -348,8 +349,8 @@ namespace UiaAtkBridge
 			if (expandCollapseProvider == null) 
 				return;
 
-			actionExpert.Add ("expand or contract",
-					  "expand or contract",
+			actionExpert.Add (EXPAND_OR_CONTRACT_ACTION_NAME,
+					  EXPAND_OR_CONTRACT_ACTION_NAME,
 					  "expands or contracts the row in the tree view containing this cell",
 					  DoExpandCollapse);
 		}
@@ -358,12 +359,11 @@ namespace UiaAtkBridge
 		{
 			AddExpandContractAction ();
 		}
-
-		internal void NotifyChildRemoved (Atk.Object child)
+		
+		internal void NotifySomeChildRemoved (Atk.Object childToRemove)
 		{
-			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
-			if (fragment != null && fragment.Navigate (NavigateDirection.FirstChild) != null)
-				actionExpert.Remove ("expand or contract");
+			if (!VirtualChildren)
+				actionExpert.Remove (EXPAND_OR_CONTRACT_ACTION_NAME);
 		}
 
 		public int NSelections {

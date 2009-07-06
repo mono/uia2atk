@@ -150,11 +150,32 @@ namespace UiaAtkBridge
 				AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 		}
 		
+		internal override void AddOneChild (Atk.Object child)
+		{
+			base.AddOneChild (child);
+			
+			Adapter adapter = child as Adapter;
+			if (adapter == null)
+				return;
+			
+			for (int i = 0; i < NAccessibleChildren; i++) {
+				Adapter currentChild = RefAccessibleChild (i) as Adapter;
+				if (adapter.ParentProvider == currentChild.Provider)
+					((TreeItem)currentChild).NotifyChildAdded (adapter);
+			}
+		}
+		
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
 			if (childToRemove == selectedItem)
 				selectedItem = null;
 			base.RemoveChild (childToRemove);
+			
+			for (int i = 0; i < NAccessibleChildren; i++) {
+				TreeItem currentChild = RefAccessibleChild (i) as TreeItem;
+				if (currentChild != null)
+					currentChild.NotifySomeChildRemoved (childToRemove);
+			}
 		}
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)
@@ -243,7 +264,6 @@ namespace UiaAtkBridge
 				// TODO: Handle StructureChangedEvent
 			}
 		}
-
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{

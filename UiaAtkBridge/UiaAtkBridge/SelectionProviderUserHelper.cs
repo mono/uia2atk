@@ -47,12 +47,28 @@ namespace UiaAtkBridge
 		
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
 		                                    ISelectionProvider selectionProvider,
-		                                    IRawElementProviderFragment childrenHolder)
+		                                    bool childrenHolder)
 			: this (provider, selectionProvider)
 		{
-			if (childrenHolder == null)
-				throw new ArgumentNullException ("childrenHolder");
-			this.childrenHolder = childrenHolder;
+			if (childrenHolder)
+				this.childrenHolder = null;
+		}
+
+		private IRawElementProviderFragment ChildrenHolder {
+			get {
+				if (childrenHolder == null) {
+					IRawElementProviderFragment child = 
+						((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
+					while (child != null) {
+						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+						  == ControlType.List.Id) 
+							break;
+						child = child.Navigate (NavigateDirection.NextSibling);
+					}
+					childrenHolder = child;
+				}
+				return childrenHolder;
+			}
 		}
 
 #region Atk.SelectionImplementor
@@ -157,7 +173,7 @@ namespace UiaAtkBridge
 			if (!selectionProvider.CanSelectMultiple)
 				return false;
 
-			var child = childrenHolder.Navigate (NavigateDirection.FirstChild);
+			var child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)child.GetPatternProvider (
@@ -182,7 +198,7 @@ namespace UiaAtkBridge
 		
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
-			Adapter adapter = AutomationBridge.GetAdapterForProviderSemiLazy (childrenHolder).RefAccessibleChild (i) as Adapter;
+			Adapter adapter = AutomationBridge.GetAdapterForProviderSemiLazy (ChildrenHolder).RefAccessibleChild (i) as Adapter;
 			if (adapter == null || adapter.Provider == null)
 				return null;
 			ISelectionItemProvider ret = (ISelectionItemProvider)adapter.Provider.GetPatternProvider
@@ -208,7 +224,7 @@ namespace UiaAtkBridge
 			int count = 0;
 			for (int i = 0; i < elements.Length; i++) {
 				var parent = ((IRawElementProviderFragment)elements [i]).Navigate (NavigateDirection.Parent);
-				if (parent == childrenHolder)
+				if (parent == ChildrenHolder)
 					ret [count++] = elements [i];
 			}
 			Array.Resize<IRawElementProviderSimple> (ref ret, count);

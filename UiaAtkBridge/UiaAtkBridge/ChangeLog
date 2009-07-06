@@ -1,5 +1,21 @@
 2009-07-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Tree.cs: Really make use of the internal Notify* API
+	methods.
+
+	* ComboBox.cs:
+	* SelectionProviderUserHelper.cs: Move the ChildrenHolder
+	introspection to SelectionProviderUserHelper, to be on demand.
+
+	* TreeItem.cs: Fix the check for children in
+	NotifyChildRemoved. Rename it because now it gets fired on
+	every children, not the exact parent of it. Use a const for
+	the action name.
+
+	* Adapter.cs: Add new API needed by the Tree class.
+
+2009-07-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* SelectionProviderUserHelper.cs: Expose bug 505822 in the
 	unit tests.
 
