@@ -221,11 +221,11 @@ namespace Mono.UIAutomation.Winforms
 				children.Insert (index, childProvider);
 			}
 
-			childProvider.InitializeChildControlStructure ();
-
 			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
 			                                              StructureChangeType.ChildAdded, 
 			                                              childProvider, index));
+
+			childProvider.InitializeChildControlStructure ();
 		}
 
 		public virtual void RemoveChildProvider (bool raiseEvent,
