@@ -51,6 +51,8 @@ class Main:
         # perform the actual parsing
         self.parse()
         self.nunit_writer()
+	# Workaround for Issue 2746 (http://bugs.python.org/issue2746)
+	self.clean_xml()
 
     def parse(self):
         
@@ -166,15 +168,24 @@ class Main:
                 if not test.status:
                     failure = ET.SubElement(tc, "failure")
                     message = ET.SubElement(failure, "message")
-                    #message.text = '\<![CDATA[%s]]\>' % test.log
-                    message.text = '%s' % test.log
+		    print "Adding CDATA"
+                    message.text = '<![CDATA[%s]]>' % test.log
 
 
 
-        f = open('testresults.xml', 'w')
+        f = open('TestResults.xml', 'w')
         f.write('<?xml version="1.0" encoding="utf-8" standalone="no"?>')
         ET.ElementTree(root).write(f)
         f.close()
+
+    def clean_xml(self):
+        f = open('TestResults.xml', 'r')
+        c = open('testresults.xml', 'w')
+        text = f.read()
+        f.close()
+        new_line = text.replace("&lt;", "<").replace("&gt;", ">")
+        c.write(new_line)
+        c.close()
 
 if __name__ == '__main__':
     m = Main()
