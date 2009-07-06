@@ -50,16 +50,18 @@ namespace Mono.UIAutomation.Winforms.Events.PopupButton
 	
 		public override void Connect ()
 		{
-			SWF.PopupButtonPanel panel = (SWF.PopupButtonPanel)Provider.Control.Parent;
-			panel.UIAFocusedItemChanged 
-				+= new EventHandler (OnUIAFocusedItemChanged);
+			SWF.PopupButtonPanel panel = Provider.Control.Parent as SWF.PopupButtonPanel;
+			if (panel != null)
+				panel.UIAFocusedItemChanged 
+					+= new EventHandler (OnUIAFocusedItemChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			SWF.PopupButtonPanel panel = (SWF.PopupButtonPanel)Provider.Control.Parent;
-			panel.UIAFocusedItemChanged 
-				-= new EventHandler (OnUIAFocusedItemChanged);
+			SWF.PopupButtonPanel panel = Provider.Control.Parent as SWF.PopupButtonPanel;
+			if (panel != null)
+				panel.UIAFocusedItemChanged 
+					-= new EventHandler (OnUIAFocusedItemChanged);
 		}
 		
 		#endregion

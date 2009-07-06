@@ -1,3 +1,11 @@
+2009-07-06  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Connect base navigation events.
+
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs,
+	Mono.UIAutomation.Winforms.Events/PopupButton/AutomationHasKeyboardFocusPropertyEvent.cs:
+	Test for null parent so that tests pass.
+
 2009-05-12  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: Not focusable.

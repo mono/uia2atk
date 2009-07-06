@@ -74,6 +74,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{	
+			base.InitializeChildControlStructure ();
+
 			toolBar.Buttons.UIACollectionChanged +=
 				new CollectionChangeEventHandler (OnCollectionChanged);
 			
@@ -94,6 +96,8 @@ namespace Mono.UIAutomation.Winforms
 				RemoveChildProvider (buttonProvider);
 			}
 			OnNavigationChildrenCleared ();
+
+			base.FinalizeChildControlStructure ();
 		}
 		
 		#endregion

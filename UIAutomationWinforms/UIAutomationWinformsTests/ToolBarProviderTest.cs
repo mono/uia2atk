@@ -140,6 +140,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (childProvider, "We shouldn't have a child");
+
+			toolBar.Controls.Add (new Button ());
+			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (childProvider, "We should have a child");
+
+			toolBar.Controls.Clear ();
+
+			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (childProvider, "We shouldn't have a child");
 		}
 
 		#endregion
