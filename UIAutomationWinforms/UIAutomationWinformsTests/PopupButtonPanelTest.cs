@@ -62,6 +62,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestLabeledByAndName (false, false);
 		}
 		
+		[Test]
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
+
 		protected override Control GetControlInstance ()
 		{
 			return PopupButtonPanelHelper.CreatePopupButtonPanel ();

@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus;
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-				return (panel.UIAFocusButton == Control);
+				return (panel != null && panel.UIAFocusButton == Control);
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
