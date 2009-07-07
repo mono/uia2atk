@@ -1,7 +1,7 @@
-Source: uiaatkbridge
+Source: mono-uia-atkbridge
 Section: cli-mono
 Priority: optional
-Maintainer: Debian CLI Libraries Team <pkg-cli-libs-team@lists.alioth.debian.org>
+Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 DM-Upload-Allowed: yes
 Uploaders: Ray Wang <rawang@novell.com>
 Build-Depends: debhelper (>= 7),
@@ -12,8 +12,7 @@ Build-Depends: debhelper (>= 7),
     libglib2.0-cil (>= 2.12.8),
     libgtk2.0-cil (>= 2.12.8),
     libmono-uia3.0-cil (>= 1.0),
-    libmono-winfxcore3.0-cil (>= 1.0),
-    libmono-uiautomationwinforms1.0-cil (>= 1.0)
+    libmono-winfxcore3.0-cil (>= 1.0)
 Standards-Version: 3.8.2
 Homepage: http://www.mono-project.com/Accessibility
 Vcs-Svn: http://anonsvn.mono-project.com/source/trunk/uia2atk/UiaAtkBridge/

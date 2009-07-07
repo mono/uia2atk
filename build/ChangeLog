@@ -1,4 +1,19 @@
-2009-02-02  Ray Wang <rawang@novell.com>
+2009-07-07  Ray Wang <rawang@novell.com>
+
+	* debian/uiautomationwinforms/control: Change source name from
+	uiautomationwinforms to mono-uia-winforms; add Depends tag; Change
+	Maintainer to Debian Mono Group.
+	* debian/uiautomationwinforms/changelog: Change source name from 
+	uiautomationwinforms to mono-uia-winforms.
+	* debian/mono-uia/control: Change Maintainer to Debian Mono Group.
+	* debian/uiaatkbridge/control: Change source name from 
+	uiautomationwinforms to mono-uia-winforms; remove
+	libmono-uiautomationwinforms1.0-cil dependency; change Maintainer to
+	Debian Mono Group.
+	* debian/uiaatkbridge/changelog: Change source name from uiaatkbridge 
+	to mono-uia-atkbridge.
+
+2009-07-02  Ray Wang <rawang@novell.com>
 
 	* debian/uiautomationwinforms/patches: Add one patch to resolve
 	missing files in POTFILES.in.

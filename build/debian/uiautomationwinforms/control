@@ -1,9 +1,10 @@
-Source: uiautomationwinforms
+Source: mono-uia-winforms
 Section: cli-mono
 Priority: optional
-Maintainer: Debian CLI Libraries Team <pkg-cli-libs-team@lists.alioth.debian.org>
+Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 DM-Upload-Allowed: yes
 Uploaders: Ray Wang <rawang@novell.com>
+Depends: libmono-uiaatkbridge1.0 (>= 1.0)
 Build-Depends: debhelper (>= 7),
     quilt (>= 0.46-7)
 Build-Depends-Indep: mono-devel (>= 2.4),

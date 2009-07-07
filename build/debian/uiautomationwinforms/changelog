@@ -1,5 +1,5 @@
-uiautomationwinforms (1.0-1) unstable; urgency=low
+mono-uia-winforms (1.0-1) unstable; urgency=low
 
   * initial release. (Closes: #532269)
 
- -- Ray Wang <rawang@novell.com>  Thu, 25 Jun 2009 14:16:32 +0800
+ -- Ray Wang <rawang@novell.com>  Tue, 07 Jul 2009 10:16:03 +0800

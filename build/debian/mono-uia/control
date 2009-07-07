@@ -1,7 +1,7 @@
 Source: mono-uia
 Section: cli-mono
 Priority: optional
-Maintainer: Debian CLI Libraries Team <pkg-cli-libs-team@lists.alioth.debian.org>
+Maintainer: Debian Mono Group <pkg-mono-group@lists.alioth.debian.org>
 DM-Upload-Allowed: yes
 Uploaders: Ray Wang <rawang@novell.com>
 Build-Depends: debhelper (>= 7)
