@@ -1,5 +1,9 @@
+2009-06-23 Marco Skambraks <marco@suse.de>
+	* updated errorprovider, helpprovider and groupbox
+	* added a comment to mono.settings (used orca revision r4277)
+
 2009-06-04 Marco Skambraks <marco@suse.de>
-	- fixed typos in checkbox.py - thanks to Mike Gorse
+	* fixed typos in checkbox.py - thanks to Mike Gorse
 
 2009-05-25 Marco Skambraks <marco@suse.de>
 	* added toolstriptextbox.py and toolstripcombobox.py

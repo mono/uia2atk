@@ -5,8 +5,8 @@ import utils
 
 sequence = MacroSequence()
 
-sequence.append(WaitForWindowActivate("GroupBox with Button",None))
 sequence.append(utils.StartRecordingAction())
+sequence.append(WaitForWindowActivate("GroupBox with Button",None))
 sequence.append(utils.AssertPresentationAction(
     "focus on Button1",
     ["BRAILLE LINE:  'GroupBox with Button Frame'",

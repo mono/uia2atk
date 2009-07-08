@@ -5,8 +5,8 @@ import utils
 
 sequence = MacroSequence()
 
-sequence.append(WaitForWindowActivate("CheckBox control",None))
 sequence.append(utils.StartRecordingAction())
+sequence.append(WaitForWindowActivate("CheckBox control",None))
 sequence.append(WaitForFocus("Bananas", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(utils.AssertPresentationAction(
     "focus on Bananas",
