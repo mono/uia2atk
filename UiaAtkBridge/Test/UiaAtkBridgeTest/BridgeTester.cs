@@ -517,12 +517,17 @@ namespace UiaAtkBridgeTest
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names)
 		{
-			return GetAccessible (type, names, null, true);
+			return GetAccessible (type, names, -1, null, true);
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, int selected, object widget)
+		{
+			return GetAccessible (type, names, selected, widget, true);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, object widget)
 		{
-			return GetAccessible (type, names, widget, true);
+			return GetAccessible (type, names, -1, widget, true);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string name, object widget)
@@ -532,10 +537,10 @@ namespace UiaAtkBridgeTest
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
 		{
-			return GetAccessible (type, names, null, real);
+			return GetAccessible (type, names, -1, null, real);
 		}
 		
-		public Atk.Object GetAccessible (BasicWidgetType type, string [] names, object widget, bool real)
+		public Atk.Object GetAccessible (BasicWidgetType type, string [] names, int selected, object widget, bool real)
 		{
 			Atk.Object accessible = null;
 			
@@ -603,12 +608,11 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ComboBoxDropDownEntry:
 				if (!real)
 					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
-				
+
 				System.ComponentModel.Component comp = null;
 				if (widget != null) {
 					comp = (System.ComponentModel.Component)widget;
-				}
-				else {
+				} else {
 					if (type == BasicWidgetType.ComboBoxDropDownEntry)
 						comp = cbDD;
 					else if (type == BasicWidgetType.ComboBoxDropDownList)
@@ -617,20 +621,34 @@ namespace UiaAtkBridgeTest
 						comp = cbSim;
 				}
 				
+				if (selected != -1) {
+					//not implemented yet
+					if (widget != null || type != BasicWidgetType.ComboBoxDropDownList)
+						throw new NotImplementedException ();
+					
+					//in this case, we need to select an option *before* the combobox is shown/included
+					//in the form so we cannot use the cbDDL
+					comp = new SWF.ComboBox ();
+					((SWF.ComboBox)comp).DropDownStyle = SWF.ComboBoxStyle.DropDownList;
+				}
+				
 				if (comp is SWF.ComboBox) {
 					SWF.ComboBox normalCombo = (SWF.ComboBox)comp;
 					normalCombo.Items.Clear();
 					foreach (string item in names)
 						normalCombo.Items.Add (item);
-				}
-				else if (comp is SWF.ToolStripComboBox) {
+				} else if (comp is SWF.ToolStripComboBox) {
 					SWF.ToolStripComboBox stripCombo = (SWF.ToolStripComboBox)comp;
 					stripCombo.Items.Clear();
 					foreach (string item in names)
 						stripCombo.Items.Add (item);
-				}
-				else
+				} else
 					throw new NotSupportedException ("This kind of ComboBox is not supported: " + comp.GetType ().Name);
+
+				if (selected != -1) {
+					((SWF.ComboBox)comp).SelectedIndex = selected;
+					form.Controls.Add ((SWF.ComboBox)comp);
+				}
 
 				accessible = GetAdapterForWidget (comp);
 				break;

@@ -1,3 +1,7 @@
+2009-07-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Add tests for bug#503281.
+
 2009-05-13  Neville Gao  <nevillegao@gmail.com>
 
 	* BridgeTests.cs: Tested states for ToolBarDropDownButton.

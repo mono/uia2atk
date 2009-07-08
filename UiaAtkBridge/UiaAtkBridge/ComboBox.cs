@@ -28,6 +28,7 @@ using System.Collections.Generic;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
@@ -52,6 +53,10 @@ namespace UiaAtkBridge
 			selectionHelper = 
 				new SelectionProviderUserHelper ((IRawElementProviderFragment)Provider, 
 				                                 selProvider, true);
+			
+			var providersSelected = selProvider.GetSelection ();
+			if (providersSelected != null && providersSelected.Length == 1)
+				Name = (string)providersSelected [0].GetPropertyValue (AEIds.NameProperty.Id);
 		}
 
 		internal static bool IsSimple (IRawElementProviderSimple provider)
@@ -77,7 +82,7 @@ namespace UiaAtkBridge
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)
 		{
-			// We'll manage the name manuallly
+			// We'll manage the name manually
 		}
 
 #region Atk.SelectionImplementor

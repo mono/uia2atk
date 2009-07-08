@@ -362,21 +362,25 @@ namespace UiaAtkBridgeTest
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name)
 		{
-			return GetAccessible (type, name, null, true);
+			return GetAccessible (type, name, -1, null, true);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, bool real)
 		{
-			return GetAccessible (type, name, null, real);
+			return GetAccessible (type, name, -1, null, real);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, object widget)
 		{
-			return GetAccessible (type, name, widget, true);
+			return GetAccessible (type, name, -1, widget, true);
 		}
 
-		
-		private Atk.Object GetAccessible (BasicWidgetType type, string [] name, object widget, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, int selected, object widget)
+		{
+			return GetAccessible (type, name, selected, widget, true);
+		}
+
+		private Atk.Object GetAccessible (BasicWidgetType type, string [] name, int selected, object widget, bool real)
 		{
 			Gtk.Widget gwidget = null;
 			Atk.Object accessible = null;
@@ -389,6 +393,9 @@ namespace UiaAtkBridgeTest
 			
 			switch (type) {
 			case BasicWidgetType.ComboBoxSimple:
+
+				if (selected != -1)
+					throw new NotImplementedException ();
 
 				string treeViewStructure = "<table>";
 				foreach (string item in name)
@@ -413,6 +420,9 @@ namespace UiaAtkBridgeTest
 
 					foreach (string text in name) 
 						((Gtk.ComboBox)widget).AppendText (text);
+
+					if (selected != -1)
+						((Gtk.ComboBox)widget).Active = selected;
 				});
 				
 				break;
