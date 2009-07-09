@@ -102,6 +102,11 @@ namespace UiaAtkBridge
 				return false;
 			return actions [action].DoAction ();
 		}
+		
+		public void Clear ()
+		{
+			actions.Clear ();
+		}
 
 		internal delegate bool ActionDelegate ();
 	

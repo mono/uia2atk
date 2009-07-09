@@ -87,6 +87,7 @@ FILES =  \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
 	Separator.cs \
+	SimpleTreeItem.cs \
 	Slider.cs \
 	Spinner.cs \
 	SplitButton.cs \

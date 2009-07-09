@@ -152,6 +152,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/CategoryInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \

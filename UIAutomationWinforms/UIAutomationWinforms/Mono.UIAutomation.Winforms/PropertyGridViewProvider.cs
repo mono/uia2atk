@@ -39,6 +39,7 @@ using System.Windows.Forms.PropertyGridInternal;
 using Mono.UIAutomation.Winforms.Events.PropertyGrid;
 using Mono.UIAutomation.Winforms.Behaviors.PropertyGrid;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+using PGI = System.Windows.Forms.PropertyGridInternal;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -254,6 +255,13 @@ namespace Mono.UIAutomation.Winforms
 				return;
 			
 			foreach (GridItem cat in root.GridItems) {
+				if (cat is CategoryGridEntry && cat.GridItems != null && cat.GridItems.Count > 0) {
+					var catProvider = new PropertyGridCategoryProvider (this, view, (CategoryGridEntry)cat);
+					catProvider.Initialize ();
+					children.Add (catProvider);
+					AddChildProvider (catProvider);
+				}
+				
 				foreach (GridItem item in cat.GridItems) {
 					PropertyGridListItemProvider itemProvider
 						= (PropertyGridListItemProvider) GetNewItemProvider (
@@ -558,6 +566,34 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.NameProperty.Id)
 				return itemProvider.Value;
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+	}
+	
+	internal class PropertyGridCategoryProvider : PropertyGridListItemProvider
+	{
+		internal PGI.CategoryGridEntry entry;
+		
+		internal PropertyGridCategoryProvider (PropertyGridViewProvider prov, PropertyGridView grid, PGI.CategoryGridEntry entry)
+			: base (prov, grid, entry)
+		{
+			this.entry = entry;
+		}
+		
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			SetBehavior (InvokePatternIdentifiers.Pattern, new CategoryInvokeProviderBehavior (this));
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return entry.Label;
+			else if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.Custom.Id;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

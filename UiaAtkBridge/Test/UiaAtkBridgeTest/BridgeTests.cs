@@ -1453,6 +1453,17 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (accessible.RefAccessibleChild (3).Role, Atk.Role.Panel);
 			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
 
+			//BNC#479113
+			bool a11yFound = false;
+			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
+				var table = accessible.RefAccessibleChild (i).RefAccessibleChild (0);
+				if (table != null && table.Role == Atk.Role.TreeTable)
+					for (int j = 0; j < table.NAccessibleChildren; j++)
+						if (table.RefAccessibleChild (j).Name == "Accessibility")
+							a11yFound = true;
+			}
+			Assert.IsTrue (a11yFound);
+			
 			accessible = FindObjectByRole (accessible.RefAccessibleChild (0), Atk.Role.ScrollBar, true);
 			Assert.IsNotNull (accessible);
 
@@ -1465,7 +1476,7 @@ namespace UiaAtkBridgeTest
 			val.GetCurrentValue (ref value);
 			Assert.AreEqual (value.Val, 2.0);
 		}
-		
+
 		[Test]
 		public void MonthCalendar ()
 		{

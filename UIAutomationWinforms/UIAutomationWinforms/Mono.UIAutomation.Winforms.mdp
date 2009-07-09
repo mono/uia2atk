@@ -1,9 +1,10 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" UseParentDirectoryAsNamespace="True" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Winforms" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../mono-uia.snk" assembly="UIAutomationWinforms" />
       <Build debugmode="True" target="Library" />
       <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <EnvironmentVariables />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
@@ -567,6 +568,14 @@
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemInvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/ToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/CheckboxAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/MonthCalendar/AutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/PopupButton/AutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ToolStripButton/TogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/CategoryInvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

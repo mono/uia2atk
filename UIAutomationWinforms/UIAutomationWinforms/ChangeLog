@@ -1,3 +1,19 @@
+2009-07-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Add new file.
+
+	* Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: Add
+	new PropertyGridCategoryProvider class. Use the new class for
+	the CategoryGridEntry items.
+
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Fix a race
+	exposed by a test.
+
+	* Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/CategoryInvokeProviderBehavior.cs:
+	Invoke behavior for the new PropertyGridCategoryProvider
+	class.
+
 2009-07-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:

@@ -34,13 +34,16 @@ namespace UiaAtkBridge
 	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
 		Atk.ImageImplementor, Atk.EditableTextImplementor
 	{
-		const string EXPAND_OR_CONTRACT_ACTION_NAME = "expand or contract";
-		private IInvokeProvider			invokeProvider;
+		protected const string EXPAND_OR_CONTRACT_ACTION_NAME = "expand or contract";
+		protected const string EXPAND_OR_CONTRACT_ACTION_DESC =
+			"expands or contracts the row in the tree view containing this cell";
+
+		protected IInvokeProvider			invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
-		private IExpandCollapseProvider expandCollapseProvider;
+		private IExpandCollapseProvider		expandCollapseProvider;
 
 		private ITextImplementor textExpert = null;
-		private ActionImplementorHelper actionExpert = null;
+		internal ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
 		private EditableTextImplementorHelper editableTextExpert = null;
 
@@ -351,7 +354,7 @@ namespace UiaAtkBridge
 
 			actionExpert.Add (EXPAND_OR_CONTRACT_ACTION_NAME,
 					  EXPAND_OR_CONTRACT_ACTION_NAME,
-					  "expands or contracts the row in the tree view containing this cell",
+					  EXPAND_OR_CONTRACT_ACTION_DESC,
 					  DoExpandCollapse);
 		}
 

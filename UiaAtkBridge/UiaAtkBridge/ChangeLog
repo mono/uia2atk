@@ -1,3 +1,18 @@
+2009-07-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* SimpleTreeItem.cs: Add a treeitem for the propertygrid
+	header case.
+
+	* TreeItem.cs: Be more inherit-friendly.
+
+	* ActionImplementorHelper.cs: Add Clear() method.
+
+	* AutomationBridge.cs: Handle ControlType.Custom for the
+	propertygrid headers case.
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: Add new file.
+
 2009-07-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs: Set the Name for the case in which the ComboBox
