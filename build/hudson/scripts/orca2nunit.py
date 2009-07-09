@@ -33,6 +33,7 @@ class Test:
         self.status = False
         self.log = ""
         self.num = ""
+        self.stack_trace = []
 
 class Main:
     def main(self):
@@ -63,6 +64,8 @@ class Main:
         # set some regular expressions to match lines in our tests
         test_re = re.compile("^Test [0-9]+ of [0-9]+ [SUCCEEDED|FAILED]")
         test_deliniator_re = re.compile("^======================")
+        test_failure_dumb_re = re.compile("^\[FAILURE WAS")
+        test_failure_dumb_loop = False
 
         for line in self.f:
             if test_deliniator_re.match(line):
@@ -94,9 +97,14 @@ class Main:
                     else:
                         t.status = False
                         OrcaTestRun.total_fail += 1
+                        test_failure_dumb_loop = True
                     t.log = line.split("%s:" % ts.name)[-1]
                     print ("Adding Test Case " + t.num + " to Test Suite " + ts.name )
                     ts.tests.append(t)
+                if test_failure_dumb_loop:
+                    t.stack_trace.append(line)
+                if test_failure_dumb_re.match(line):
+                    test_failure_dumb_loop = False
             else:  
                 # this should always be the last line if it doesn't match the
                 # test_deliniator_re
@@ -170,6 +178,8 @@ class Main:
                     message = ET.SubElement(failure, "message")
 		    print "Adding CDATA"
                     message.text = '<![CDATA[%s]]>' % test.log
+                    stack_trace_xml = ET.SubElement(failure, "stack-trace")
+                    stack_trace_xml.text = ''.join(test.stack_trace)
 
 
 
