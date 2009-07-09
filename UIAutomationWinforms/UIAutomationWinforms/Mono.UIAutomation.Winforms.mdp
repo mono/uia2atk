@@ -463,7 +463,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
@@ -513,7 +513,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ScrollableControlProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/MenuItem/AutomationBoundingRectanglePropertyEvent.cs" subtype="Code" buildaction="Compile" />

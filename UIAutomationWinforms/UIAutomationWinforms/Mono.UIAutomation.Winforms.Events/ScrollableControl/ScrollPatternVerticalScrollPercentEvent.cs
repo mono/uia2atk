@@ -29,11 +29,11 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Winforms.Events.ScrollableControl
 {
-	internal class ScrollPatternVerticalScrollPercent
+	internal class ScrollPatternVerticalScrollPercentEvent
 		: BaseAutomationPropertyEvent
 	{
 #region Constructors
-		public ScrollPatternVerticalScrollPercent (ScrollableControlProvider provider)
+		public ScrollPatternVerticalScrollPercentEvent (ScrollableControlProvider provider)
 			: base (provider, ScrollPatternIdentifiers.VerticalScrollPercentProperty)
 		{
 		}

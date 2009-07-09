@@ -29,14 +29,14 @@ using SWF = System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events.Generic
 {
 	
-	internal class ScrollPatternVerticalScrollPercent<T>
+	internal class ScrollPatternVerticalScrollPercentEvent<T>
 		: BaseAutomationPropertyEvent
 			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
 
-		public ScrollPatternVerticalScrollPercent (T provider)
+		public ScrollPatternVerticalScrollPercentEvent (T provider)
 			: base (provider, 
 			        ScrollPatternIdentifiers.VerticalScrollPercentProperty)
 		{

@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollableControl
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
 			                   new ScrollPatternHorizontalViewSizeEvent ((ScrollableControlProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollPatternVerticalScrollPercent ((ScrollableControlProvider) Provider));
+			                   new ScrollPatternVerticalScrollPercentEvent ((ScrollableControlProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
 			                   new ScrollPatternVerticalViewSizeEvent ((ScrollableControlProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
