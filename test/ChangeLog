@@ -1,3 +1,9 @@
+2009-07-09 Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py,
+	* testers/combobox_dropdown_ops.py: remove bug references: 456341, 
+	505822, add tests for bug503281 and bug520542
+
 2009-07-01 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/gtkbutton.py: Add a nop button, to test #504593 in gail.

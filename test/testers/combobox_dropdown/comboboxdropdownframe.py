@@ -22,15 +22,19 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     LABEL1 = "You select 1"
+    COMBOBOX_NAME = "1"
     N_MENU_ITEMS = 10
 
     def __init__(self, accessible):
         super(ComboBoxDropDownFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
-        self.combobox = self.findComboBox(None)
+        # 1 is default selected, find "1" as name to verify bug503281 
+        self.combobox = self.findComboBox(self.COMBOBOX_NAME)
         self.textbox = self.findText(None)
         self.menu = self.findMenu(None, checkShowing=False)
         self.menu_items = self.menu.findAllMenuItems(None, checkShowing=False)
+        # BUG520542: is missing vscrollbar
+        #self.scrollbar = self.menu.findScrollBar(None)
 
     def assertUnimplementedActionInterface(self, accessible):
         """
@@ -73,11 +77,13 @@ class ComboBoxDropDownFrame(accessibles.Frame):
                                      (self.menu_items[i],str(i)))
             assert self.menu_items[i].text == str(i)
 
-    # assert TextBox's text after click MenuItem
-    def assertText(self, accessible, textvalue):
+    def assertText(self, accessible, expected_text):
+        """ensure accessible's text is expected"""
         procedurelogger.expectedResult('%s is change to %s' % \
-                                                      (accessible, textvalue))
-        assert accessible.text == textvalue
+                                                      (accessible, expected_text))
+        assert accessible.text == expected_text, \
+                       "the actual text:%s, the expected text:%s" % \
+                           (accessible.text, expected_text)
 
     def assertSelectChild(self, parent, childIndex):
         """

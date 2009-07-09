@@ -80,8 +80,12 @@ cbddFrame.combobox.press(log=True)
 
 # check default states of ComboBox, menu and text
 statesCheck(cbddFrame.combobox, "ComboBox")
-statesCheck(cbddFrame.menu, "Menu", add_states=["focused", "showing", "visible"])
-statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selectable"])
+statesCheck(cbddFrame.menu, "Menu", 
+                               add_states=["focused", "showing", "visible"])
+statesCheck(cbddFrame.textbox, "Text", 
+                            add_states=["focused", "selectable", "selected"])
+# uncomment next line if BUG520542 is fixed
+#statesCheck(cbddFrame.scrollbar, "VScrollBar")
 
 # check menu_items0,1's default states
 # BUG506744: is missing focusable state
@@ -133,16 +137,18 @@ sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel("You select 0")
 cbddFrame.assertText(cbddFrame.textbox, "0")
 # BUG506744: is missing focusable state
-#statesCheck(cbddFrame.menu_items[0], "MenuItem", add_states=["focused","selected"])
+#statesCheck(cbddFrame.menu_items[0], "MenuItem", 
+#                                           add_states=["focused","selected"])
 #
-# click menu_items9 to update text value and label and raise selected and focused
-# menu_items0 get rid of selected, showing states
+# click menu_items9 to update text value and label and raise selected and 
+# focused menu_items0 get rid of selected, showing states
 cbddFrame.menu_items[9].click(log=True)
 sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel("You select 9")
 cbddFrame.assertText(cbddFrame.textbox, "9")
 #
-#statesCheck(cbddFrame.menu_items[9], "MenuItem", add_states=["focused", "selected"])
+#statesCheck(cbddFrame.menu_items[9], "MenuItem", 
+#                                       add_states=["focused", "selected"])
 #statesCheck(cbddFrame.menu_items[0], "MenuItem", invalid_states=["showing"])
 
 # close menu, then type '6' into text box to change text and label
@@ -155,28 +161,25 @@ cbddFrame.typeMenuItemTest("6")
 ##############################
 # Selection test
 ##############################
-
 # check combo box selection is implemented
 # set index 0 to select MenuItem 0
-#cbddFrame.assertSelectChild(cbddFrame.combobox, 0)
-#sleep(config.SHORT_DELAY)
-##BUG488474, assertSelectChild called the selection interface's selectChild
-#method, which is not working.
-#cbddFrame.assertText(cbddFrame.textbox, "0")
-##doesn't rise 'selected' state for Menu and Text due to BUG456341
-#statesCheck(cbddFrame.menu, "Menu", add_states=["focused", "selected"])
+cbddFrame.assertSelectChild(cbddFrame.combobox, 0)
+sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, "0")
+statesCheck(cbddFrame.menu, "Menu", add_states=["focused", "selected"])
 
 # set index 1 to select MenuItem 1
-#cbddFrame.assertSelectChild(cbddFrame.combobox, 1)
-#sleep(config.SHORT_DELAY)
-#cbddFrame.assertText(cbddFrame.textbox, 1)
-#statesCheck(cbddFrame.menu, "Menu", add_states=["focused"])
-#statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
+cbddFrame.assertSelectChild(cbddFrame.combobox, 1)
+sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, "1")
+statesCheck(cbddFrame.menu, "Menu", add_states=["focused"])
+statesCheck(cbddFrame.textbox, "Text", \
+                         add_states=["focused", "selected", "selectable"])
 
 # set index 3 to select MenuItem 3
-#cbddFrame.assertSelectChild(cbddFrame.combobox, 3)
-#sleep(config.SHORT_DELAY)
-#cbddFrame.assertText(cbddFrame.textbox, "3")
+cbddFrame.assertSelectChild(cbddFrame.combobox, 3)
+sleep(config.SHORT_DELAY)
+cbddFrame.assertText(cbddFrame.textbox, "3")
 
 # check menu selection is implemented
 # select item3 to rise focused and selected states
