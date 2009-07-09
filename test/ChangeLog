@@ -1,5 +1,10 @@
 2009-07-09 Calen Chen <cachen@novell.com>
 
+	* testers/combobox_simple_ops.py: remove bug references: 456341, 
+	505822, add tests for bug520567
+
+2009-07-09 Calen Chen <cachen@novell.com>
+
 	* testers/combobox_dropdown/comboboxdropdownframe.py,
 	* testers/combobox_dropdown_ops.py: remove bug references: 456341, 
 	505822, add tests for bug503281 and bug520542

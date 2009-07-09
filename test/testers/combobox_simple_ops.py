@@ -102,25 +102,53 @@ cbFrame.assertLabel("You select 9")
 ##############################
 # check Combobox AtkSelection
 ##############################
-# set index 0 to select text
-#cbFrame.selectChild(cbFrame.combobox, 0)
-#sleep(config.SHORT_DELAY)
-# BUG488474, selectChild called the selection interface's selectChild
-# method, which is not working.
-#cbFrame.assertText(cbFrame.textbox, "0")
-## doesn't rise 'selected' state for Menu and Text due to BUG456341
-#statesCheck(cbFrame.textbox, "Text", add_states=["focused", "selected"])
+# selectChild(0) is called from combobox
+cbFrame.selectChild(cbFrame.combobox, 0)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "0")
+cbFrame.assertLabel("You select 0")
+# BUG483225: tree table is missing "manages descendants" state, and reluctant 
+# "focused" state
+# BUG520567: treetable can be selected but is missing selectable state
+#statesCheck(cbFrame.treetable, "TreeTable", \
+#                      add_states=["selected", "selectable"])
+# BUG506744: is missing focusable state
+#statesCheck(cbFrame.tablecells[0], "TableCell", \
+#                                     add_states=["focused", "selected"])
+
+# selectChild(1) is called from combobox
+cbFrame.selectChild(cbFrame.combobox, 1)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "1")
+cbFrame.assertLabel("You select 1")
+statesCheck(cbFrame.textbox, "Text", \
+                           add_states=["focused", "selected", "selectable"])
+# BUG506744: is missing focusable state
+#statesCheck(cbFrame.tablecells[1], "TableCell", \
+#                                     add_states=["focused", "selected"])
+
+# selectChild(2) is called from combobox
+cbFrame.selectChild(cbFrame.combobox, 2)
+sleep(config.SHORT_DELAY)
+cbFrame.assertText(cbFrame.textbox, "2")
+cbFrame.assertLabel("You select 2")
+statesCheck(cbFrame.textbox, "Text", \
+                           add_states=["focused", "selectable"])
+# BUG506744: is missing focusable state
+#statesCheck(cbFrame.tablecells[2], "TableCell", \
+#                                     add_states=["focused", "selected"])
 
 ##############################
 # check "treetable"'s AtkSelection
 ##############################
-# TODO: comment all statesCheck due to BUG483226
+# comment all statesCheck due to BUG483226
 # check AtkSelecton
 cbFrame.selectChild(cbFrame.treetable, 0)
 sleep(config.SHORT_DELAY)
 cbFrame.assertText(cbFrame.textbox, "0")
 cbFrame.assertLabel("You select 0")
-#statesCheck(cbFrame.tablecells[0], "TableCell", add_states=["selected"])
+#statesCheck(cbFrame.tablecells[0], "TableCell", \
+#                                   add_states=["selected", "focused"])
 
 cbFrame.selectChild(cbFrame.treetable, 9)
 sleep(config.SHORT_DELAY)
