@@ -1,3 +1,8 @@
+2009-07-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs:
+	Use the correct property. Fixes bug #516279.
+
 2009-07-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am:
