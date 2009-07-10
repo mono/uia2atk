@@ -53,7 +53,8 @@ class Main:
         self.parse()
         self.nunit_writer()
 	# Workaround for Issue 2746 (http://bugs.python.org/issue2746)
-	self.clean_xml()
+        # there are other <> that cause the xml to appear malformed
+	# self.clean_xml()
 
     def parse(self):
         
@@ -101,10 +102,10 @@ class Main:
                     t.log = line.split("%s:" % ts.name)[-1]
                     print ("Adding Test Case " + t.num + " to Test Suite " + ts.name )
                     ts.tests.append(t)
-                if test_failure_dumb_loop:
-                    t.stack_trace.append(line)
                 if test_failure_dumb_re.match(line):
                     test_failure_dumb_loop = False
+                if test_failure_dumb_loop:
+                    t.stack_trace.append(line)
             else:  
                 # this should always be the last line if it doesn't match the
                 # test_deliniator_re
