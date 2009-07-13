@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
 			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<ListViewProvider> (GenericProvider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercentEvent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
 			                   new ScrollPatternVerticalViewSizeEvent (GenericProvider));
 		}
@@ -65,5 +65,4 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#endregion
 
 	}
-					                      
 }

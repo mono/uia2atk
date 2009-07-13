@@ -54,11 +54,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.PropertyGrid
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
 			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<PropertyGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<PropertyGridViewProvider> (GenericProvider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercentEvent<PropertyGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
 			                   new ScrollGeneric.ScrollPatternVerticalViewSizeEvent<PropertyGridViewProvider> (GenericProvider));
 		}
 #endregion
 	}
-					                      
 }

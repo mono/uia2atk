@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
 			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<DataGridViewProvider> (GenericProvider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercentEvent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
 			                   new ScrollGeneric.ScrollPatternVerticalViewSizeEvent<DataGridViewProvider> (GenericProvider));
 		}
@@ -66,5 +66,4 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		#endregion
 
 	}
-					                      
 }

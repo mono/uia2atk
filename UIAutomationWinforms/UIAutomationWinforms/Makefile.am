@@ -332,7 +332,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
@@ -429,7 +429,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs \
