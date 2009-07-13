@@ -1,3 +1,8 @@
+2009-07-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs: Set the Name for the case in which the ComboBox
+	is born with some pre-selection. Fixes #503281.
+
 2009-07-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Tree.cs: Really make use of the internal Notify* API
@@ -13,6 +18,8 @@
 	the action name.
 
 	* Adapter.cs: Add new API needed by the Tree class.
+
+	This fixes bug 505822, and maybe bug 456341 as well.
 
 2009-07-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

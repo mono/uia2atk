@@ -41,6 +41,9 @@ namespace UiaAtkBridgeTest
 
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string [] name, object widget);
+		
+		public abstract Atk.Object GetAccessible (
+		  BasicWidgetType type, string [] name, int selected, object widget);
 
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string name, object widget);

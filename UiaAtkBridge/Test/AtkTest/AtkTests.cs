@@ -922,6 +922,12 @@ namespace UiaAtkBridgeTest
 			//check the Action impl of a comboboxitem (menuitem role)
 			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
 			InterfaceAction (BasicWidgetType.ComboBoxItem, atkAction, secondComboBoxItem);
+			
+			//bug 503281
+			int selected = 1;
+			names = new string [] { "Test1", "Test2" };
+			accessible = GetAccessible (type, names, selected, widget);
+			Assert.AreEqual (names [selected], accessible.Name, "expected " + names [selected] + ", we got " + accessible.Name);
 		}
 		
 		[Test]
