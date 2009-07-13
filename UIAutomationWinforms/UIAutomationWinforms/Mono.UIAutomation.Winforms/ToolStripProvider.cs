@@ -25,6 +25,7 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -75,7 +76,8 @@ namespace Mono.UIAutomation.Winforms
 			strip.ItemAdded += OnItemAdded;
 			strip.ItemRemoved += OnItemRemoved;
 		
-			foreach (ToolStripItem item in strip.Items) {
+			//clone to avoid IOE:"List has changed"
+			foreach (ToolStripItem item in new ArrayList (strip.Items)) {
 				FragmentControlProvider itemProvider = GetItemProvider (item);
 				if (itemProvider != null)
 					AddChildProvider (itemProvider);

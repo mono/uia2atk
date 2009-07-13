@@ -655,7 +655,8 @@ namespace UiaAtkBridge
 				HandleNewSliderControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Calendar.Id)
 				HandleNewCalendarControlType (simpleProvider, parentAdapter);
-			// TODO: Other providers
+			else if (controlTypeId == ControlType.Custom.Id)
+				HandleNewCustomControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Log.Warn ("AutomationBridge: Unhandled control: {0}",
 				          ControlType.LookupById (controlTypeId).ProgrammaticName);
@@ -1332,6 +1333,18 @@ namespace UiaAtkBridge
 		                                           ParentAdapter parentObject)
 		{
 			var atkContainer = CreateAdapter<Container> (provider);
+			if (atkContainer != null)
+				IncludeNewAdapter (atkContainer, parentObject);
+		}
+		
+		private static void HandleNewCustomControlType (IRawElementProviderSimple provider,
+		                                                ParentAdapter parentObject)
+		{
+			if (parentObject.GetType () != typeof (DataGrid)) {
+				Log.Warn ("AutomationBridge: Unhandled custom control");
+				return;
+			}
+			var atkContainer = CreateAdapter<SimpleTreeItem> (provider);
 			if (atkContainer != null)
 				IncludeNewAdapter (atkContainer, parentObject);
 		}
