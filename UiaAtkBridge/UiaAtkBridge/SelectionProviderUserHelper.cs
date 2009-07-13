@@ -38,18 +38,21 @@ namespace UiaAtkBridge
 		private IRawElementProviderFragment		childrenHolder;
 
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
-		                                    ISelectionProvider selectionProvider) :
-		  this (provider, selectionProvider, null)
+		                                    ISelectionProvider selectionProvider)
 		{
+			this.provider = provider;
+			this.selectionProvider = selectionProvider;
+			this.childrenHolder = provider;
 		}
 		
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
 		                                    ISelectionProvider selectionProvider,
 		                                    IRawElementProviderFragment childrenHolder)
+			: this (provider, selectionProvider)
 		{
-			this.provider = provider;
-			this.selectionProvider = selectionProvider;
-			this.childrenHolder = (childrenHolder != null) ? childrenHolder : provider;
+			if (childrenHolder == null)
+				throw new ArgumentNullException ("childrenHolder");
+			this.childrenHolder = childrenHolder;
 		}
 
 #region Atk.SelectionImplementor
