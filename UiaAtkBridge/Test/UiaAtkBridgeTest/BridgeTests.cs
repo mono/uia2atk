@@ -1445,6 +1445,20 @@ namespace UiaAtkBridgeTest
 			val.GetCurrentValue (ref value);
 			Assert.AreEqual (value.Val, 2.0);
 		}
+		
+ 		[Test] //bug 516279
+		public void PropertyGrid_ExpandCollapse ()
+		{
+			Atk.Object accessible =  GetAdapterForWidget (pgrid);
+			accessible = FindObjectByRole (accessible.RefAccessibleChild (0), Atk.Role.TreeTable, true);
+			Assert.IsNotNull (accessible);
+			
+			for (int j = 0; j < accessible.NAccessibleChildren; j++) {
+				var action = CastToAtkInterface<Atk.Action> (accessible.RefAccessibleChild (j));
+				if (action != null && action.NActions == 1 && action.GetName (0) == "expand or contract")
+					action.DoAction (0);
+			}
+		}
 
 		[Test]
 		public void MonthCalendar ()

@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms.Events.Generic
 
 		public override void Disconnect ()
 		{
-			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null)
+			if (ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar != null)
 				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged -= OnScrollPercentChanged;
 		}
 		
