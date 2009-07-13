@@ -20,7 +20,7 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 Requires:	mono-core >= 2.4
-BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4
+BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4 gtk-sharp2 >= 2.12.8
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
