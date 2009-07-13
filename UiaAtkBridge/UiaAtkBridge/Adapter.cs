@@ -328,6 +328,14 @@ namespace UiaAtkBridge
 		internal Adapter VirtualParent {
 			get { return (Provider == null) ? null : AutomationBridge.GetParentAdapter (Provider); }
 		}
+		
+		internal bool VirtualChildren {
+			get { return (((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild) != null); }
+		}
+		
+		internal IRawElementProviderFragment ParentProvider {
+			get { return (Provider == null) ? null : ((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.Parent); }
+		}
 
 		private void EmitBoundsChanged (System.Windows.Rect rect)
 		{

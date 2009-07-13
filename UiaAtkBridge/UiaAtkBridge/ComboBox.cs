@@ -33,24 +33,6 @@ namespace UiaAtkBridge
 {
 	public class ComboBox : ComponentParentAdapter, Atk.SelectionImplementor
 	{
-		private IRawElementProviderFragment ChildrenHolder {
-			get {
-				if (childrenHolder == null) {
-					IRawElementProviderFragment child = 
-						((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
-					while (child != null) {
-						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
-						  == ControlType.List.Id) 
-							break;
-						child = child.Navigate (NavigateDirection.NextSibling);
-					}
-					childrenHolder = child;
-				}
-				return childrenHolder;
-			}
-		}
-		private IRawElementProviderFragment childrenHolder = null;
-		
 		private ISelectionProvider 					selProvider;
 		
 		private SelectionProviderUserHelper			selectionHelper;
@@ -69,7 +51,7 @@ namespace UiaAtkBridge
 			
 			selectionHelper = 
 				new SelectionProviderUserHelper ((IRawElementProviderFragment)Provider, 
-				                                 selProvider, ChildrenHolder);
+				                                 selProvider, true);
 		}
 
 		internal static bool IsSimple (IRawElementProviderSimple provider)
