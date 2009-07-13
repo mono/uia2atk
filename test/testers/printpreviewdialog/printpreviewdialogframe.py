@@ -22,7 +22,10 @@ class PrintPreviewDialogFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     BUTTON = "PrintPreviewDialog"
-    NUM_TOOLBAR_PANELS = 6
+    NUM_TOOLBAR_PANELS = 7
+    NUM_TOOLBAR_PUSH_BUTTONS = 8
+    NUM_TOOLBAR_LABEL = 1
+    NUM_TOOLBAR_SPINBUTTON = 1
     NUM_TOOLBAR_SEPARATORS = 2
     NUM_TOOLBAR_FILLERS = 1 
     NUM_ZOOM_MENU_OPTIONS = 9
@@ -259,6 +262,50 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         '''
         #BUG508567 PrintPreviewDialog: NumericUpDown control is not accessible
         pass
+
+    def findDialogAccessibles(self):
+        """
+        Find all the accessibles of the lanched PrintPreviewDialog
+        """
+        # find the 'PrintPreviewDialog' dialog
+        self.dialog = self.app.findDialog("PrintPreviewDialog")
+
+        # find tool bar
+        self.toolbar = self.dialog.findToolBar(None)
+
+        # find all the accessibles under tool bar
+        self.filler = self.toolbar.findFiller(None)
+        self.panels = self.toolbar.findAllPanels(None)
+        self.label = self.toolbar.findLabel("Page")
+        self.spinbutton = self.toolbar.findSpinButton(None) 
+        self.close_button = self.toolbar.findPushButton("Close") 
+        self.push_buttons = self.toolbar.findAllPushButtons(None) 
+        self.toggle = self.toolbar.findToggleButton(None) 
+        self.separator_styles = self.toolbar.findAllSeparators(None)  
+ 
+    def assertDialogAccessibles(self):
+        """
+        assert the num of the accessibles which is more than one on 
+        'PrintPreviewDialog' dialog
+        """
+ 
+        # assert num of panel
+        procedurelogger.action("assert the num of the panels")
+        assert len(self.panels) == self.NUM_TOOLBAR_PANELS, \
+                         "actual number of panels:%s, expected: %s" % \
+                                    (len(self.panels), self.NUM_TOOLBAR_PANELS)
+ 
+        # assert num of push button
+        procedurelogger.action("assert the num of the push buttons")
+        assert len(self.push_buttons) == self.NUM_TOOLBAR_PUSH_BUTTONS, \
+                         "actual number of push_buttons:%s, expected: %s" % \
+                        (len(self.push_buttons), self.NUM_TOOLBAR_PUSH_BUTTONS)
+
+        # assert num of separator
+        procedurelogger.action("assert the num of the separators")
+        assert len(self.separator_styles) == self.NUM_TOOLBAR_SEPARATORS, \
+                         "actual number of separators:%s, expected: %s" % \
+                           (len(self.separator_styles), NUM_TOOLBAR_SEPARATORS)
 
     # close application main window after running test
     def quit(self):

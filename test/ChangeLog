@@ -1,5 +1,10 @@
 
 2009-07-13  Felicia Mu <fxmu@novell.com>
+	* testers/printpreviewdialog/printpreviewdialogframe.py,
+	* testers/printpreviewdialog_basic_ops.py: add test case for 
+      close bug 508565 508566 508567 and new bug 521440 
+
+2009-07-13  Felicia Mu <fxmu@novell.com>
 	* testers/propertygrid/propertygridframe.py,
 	* testers/propertygrid_basic_ops.py: remove close bug 479113, 
       bug 516279 reference 

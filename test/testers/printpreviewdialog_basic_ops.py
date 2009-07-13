@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-############################################################################## # Written by:  Cachen Chen <cachen@novell.com> # Date:        01/19/2009
+############################################################################## 
+# Written by:  Cachen Chen <cachen@novell.com> # Date:        01/19/2009
 # Description: Test accessibility of printpreviewdialog widget 
 #              Use the printpreviewdialogframe.py wrapper script
 #              Test the samples/printpreviewdialog.py script
@@ -58,6 +59,32 @@ ppdFrame.checkAllActions()
 
 # need to do a lot of keyboard navigation related tests once the following bugs
 # are resolved: BUG509142, BUG509152 	
+
+# check the all the accessibles on dialog
+ppdFrame.button.click(log=True)
+sleep(config.MEDIUM_DELAY)
+
+ppdFrame.findDialogAccessibles()
+ppdFrame.assertDialogAccessibles()
+
+# close dialog window
+ppdFrame.dialog.altF4()
+
+
+# BUG521440 - PrintPreviewDialog: PrintPreviewDialog dialog 
+# which is reopened twice is not accessible
+# click button to show PrintPreviewDialog dialog
+#ppdFrame.button.click(log=True)
+#sleep(config.MEDIUM_DELAY)
+
+# close dialog window
+#ppdFrame.dialog.altF4()
+
+# click button to show PrintPreviewDialog dialog
+#ppdFrame.button.click(log=True)
+#sleep(config.MEDIUM_DELAY)
+
+#ppdFrame.findDialogAccessibles()
 
 # click all of the buttons
 ppdFrame.clickAllDefaultButtons()
