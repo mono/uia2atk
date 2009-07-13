@@ -1,5 +1,9 @@
 2009-07-09 Calen Chen <cachen@novell.com>
 
+	* samples/propertygrid.py: change label to textbox
+
+2009-07-09 Calen Chen <cachen@novell.com>
+
 	* testers/propertygrid/propertygridframe.py,
 	* testers/propertygrid_basic_ops.py: commit from reivew board 
 	(http://reviews.mono-a11y.org/r/324/)
