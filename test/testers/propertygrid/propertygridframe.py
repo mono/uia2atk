@@ -37,7 +37,7 @@ class PropertyGridFrame(accessibles.Frame):
         self.tree_table = self.findTreeTable(None)
         self.all_table_cells = \
                     self.tree_table.findAllTableCells(None, checkShowing=False)
-        # BUG479113, BUG519409: some table cells are not accessible
+        # BUG519409: some table cells are not accessible
         #assert len(self.all_table_cells) == self.TABLE_CELLS_NUM, \
         #        "actual number of table_cells:%s, expected number is:%s" % 
         #                 (len(self.all_table_cells), self.TABLE_CELLS_NUM)

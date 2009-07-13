@@ -179,8 +179,6 @@ for table_cell in pgFrame.all_table_cells:
 # BUG516398 - PropertyGrid :TreeView table cells with children 
 # should have "expand or contract" action, the 'expandOrContract' method
 # doesn't work
-# BUG516279 - PropertyGrid: contract several table cells will crash the 
-# application
 # pgFrame.testExpandOrContract("Font", "Bold", is_expand=True)
 
 pgFrame.testExpandOrContract("Appearance", "BackColor", is_expand=False)
