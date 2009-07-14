@@ -57,7 +57,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         assert len(self.comboboxs) == self.NUM_COMBOBOXS, \
                      "Found %s combo box accessibles, expected %s" %\
                      (len(self.comboboxes), self.NUM_COMBOBOXES)
-        # give intuitive names to each of the combo box
+        # set variable for each combo box
         self.file_type_combobox = self.comboboxs[0]
         self.file_name_combobox = self.comboboxs[1]
         self.look_in_combobox = self.comboboxs[2]
@@ -99,6 +99,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.winradiobutton_py_cell = \
                           self.treetable.findTableCell("winradiobutton.py",
                                                        checkShowing=False)
+        self.hscrollbar = self.treetable.findScrollBar("Horizontal Scroll Bar")
 
         # find the open dialog toolbars and ensure that we find the expected
         # number of toolbars
@@ -220,6 +221,7 @@ class OpenFileDialogFrame(accessibles.Frame):
                     "TableCell",
                     invalid_states=["showing", "visible"],
                     add_states=["editable"])
+        statesCheck(self.hscrollbar, "HScrollBar")
 
     def lookInComboBoxAccessiblesTest(self):
         '''
