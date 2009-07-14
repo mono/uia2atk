@@ -2,6 +2,7 @@
 # vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Sandy Armstrong <saarmstrong@novell.com>
+#              Calen Chen <cachen@novell.com>
 # Date:        02/23/2009
 # Description: Test accessibility of monthcalendar widget 
 #              Use the monthcalendarframe.py wrapper script
@@ -22,153 +23,293 @@ from monthcalendar import *
 from helpers import *
 from sys import argv
 from os import path
-from datetime import datetime
 
-config.WATCHDOG_TIMEOUT=3600
+#config.WATCHDOG_TIMEOUT=3600
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the MonthCalendar sample application
 try:
-  app = launchMonthCalendar(app_path)
+    app = launchMonthCalendar(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 mcFrame = app.monthCalendarFrame
 
-initialrow = -1
-initialcol = -1
+####################
+# test actions
+####################
+actionsCheck(mcFrame.back_button, "Button")
+actionsCheck(mcFrame.forward_button, "Button")
+# BUG516725: column_header is missing click action
+#for column_header in mcFrame.column_headers:
+#    actionsCheck(column_header, "TableColumnHeader")
+'''
+for table_cell in mcFrame.day_table_cells:
+     actionsCheck(table_cell, "TableCell")
+'''
+####################
+# test states
+####################
+# BUG517218: push buttons have extraneous focused and selectable states
+#statesCheck(mcFrame.back_button, "Button")
+#statesCheck(mcFrame.forward_button, "Button")
+statesCheck(mcFrame.tree_table, "TreeTable", add_states=["focused"])
+# BUG517233: column headers have extraneous 'focused' and 'focusable' states
+#for columnheader in mcFrame.column_headers:
+#    statesCheck(columnheader, "TableColumnHeader")
 
-def checkCells(selectedDateNums=[], checkStates=True, checkActions=True):
-    currentfirstreached = False
-    nextfirstreached = False
-    for r in range(len(mcFrame.tablecells)):
-        for c in range(len(mcFrame.tablecells[r])):
-            day = int(str(mcFrame.tablecells[r][c]))
-            if day == 1 and not currentfirstreached:
-                currentfirstreached = True
-            elif day == 1 and currentfirstreached:
-                nextfirstreached = True
-            addstates = ["focused"] #extraneous: focused
-            if currentfirstreached and not nextfirstreached and day in selectedDateNums:
-                addstates.append("selected")
-                global initialrow
-                global initialcol
-                if initialrow==-1:
-                    initialrow = r
-                if initialcol==-1:
-                    initialcol = c
-            if checkStates:
-                statesCheck(mcFrame.tablecells[r][c], "TableCell", add_states=addstates, pause=False)
-            if checkActions:
-                actionsCheck(mcFrame.tablecells[r][c], "TableCell", pause=False)
-            #TODO: Test treetable selection status
+# NOTE: Sample initializes to 1/23/2008
+mcFrame.testTableCellStates(23)
 
-#check states and actions
-statesCheck(mcFrame.backbutton, "Button", add_states=["selectable","focused"], pause=False) #extraneous: selectable, focused
-actionsCheck(mcFrame.backbutton, "Button", pause=False)
+##############################
+# test Action and navigation
+##############################
+# click next (24) to ensure label is updated and name of tree_table is updated
+# call dayTableCell method to get the index of day 24
+click_day_table_cell = \
+                mcFrame.tree_table.getChildAtIndex(mcFrame.dayTableCell(24))
+click_day_table_cell.click(log=True)
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-24")
+mcFrame.testTableCellStates(24)
+# BUG517682:TableCells have extraneous focused state
+#mcFrame.testTableCellStates(day_table_cell=23, is_selected=False)
 
-statesCheck(mcFrame.forwardbutton, "Button", add_states=["selectable","focused"], pause=False)
-actionsCheck(mcFrame.forwardbutton, "Button", pause=False)
-
-statesCheck(mcFrame.treetable, "TreeTable", pause=False)
-
-for columnheader in mcFrame.columnheaders:
-    statesCheck(columnheader, "TableColumnHeader", add_states=["focusable","focused"], pause=False) #extraneous: focusable,focused
-    actionsCheck(columnheader, "TableColumnHeader", invalid_actions=["click"], pause=False)
-
-#NOTE: Sample initializes to 1/23/2008
-checkCells(selectedDateNums=[23])
-
-# click next (24)
-nextcol = (initialcol+1) % 7
-nextrow = initialrow
-if nextcol < initialcol:
-    nextrow += 1
-mcFrame.click(mcFrame.tablecells[nextrow][nextcol])
-statesCheck(mcFrame.tablecells[nextrow][nextcol], "TableCell", add_states=["focused","selected"])
-statesCheck(mcFrame.tablecells[initialrow][initialcol], "TableCell", add_states=["focused"])
-
-#TODO: Test that name of top-level Filler accessible is always date string (BNC 479130, 479125)
+# TODO: Test that name of top-level Filler accessible is always date string 
+# (BNC 479130, 479125)
+mcFrame.assertName(mcFrame.monthcalendar_filler, "1/24/2008")
 
 # click forward month
-mcFrame.click(mcFrame.forwardbutton)
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="27"
+mcFrame.forward_button.click(log=True)
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[24], checkActions=False)
+mcFrame.findAccessiblesFromTreeTable()
+mcFrame.assertName(mcFrame.day_table_cells[0], "27")
 
-#click back month
-mcFrame.click(mcFrame.backbutton)
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="30"
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[24], checkActions=False)
+mcFrame.testTableCellStates(24)
+# BUG517682:TableCells have extraneous focused state
+#mcFrame.testTableCellStates(day_table_cell=23, is_selected=False)
 
-#click date in next month
-mcFrame.click(mcFrame.tablecells[5][6]) # bottom-right cell
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="27"
+# click back month
+# after BUG520122 is fixed, next line should be moved
+mcFrame.back_button = mcFrame.findPushButton('Back by one month')
+mcFrame.back_button.click(log=True)
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[9], checkActions=False)
-
-#click date in previous month
-mcFrame.click(mcFrame.tablecells[0][0]) # top-left cell
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="30"
+mcFrame.findAccessiblesFromTreeTable()
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[27], checkActions=False)
+mcFrame.assertName(mcFrame.day_table_cells[0], "30")
 
-#up/down/left/right keypresses (within a month)
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(24)
+
+# click date in next month
+mcFrame.day_table_cells[-1].click(log=True) # bottom-right cell
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertName(mcFrame.day_table_cells[0], "27")
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(9)
+
+# click date in previous month
+mcFrame.day_table_cells[0].click(log=True) # top-left cell
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertName(mcFrame.day_table_cells[0], "30")
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(27)
+
+# up/down/left/right keypresses (within a month)
 mcFrame.keyCombo("Up")
-checkCells(selectedDateNums=[20], checkActions=False)
-mcFrame.keyCombo("Down")
-checkCells(selectedDateNums=[27], checkActions=False)
-mcFrame.keyCombo("Left")
-checkCells(selectedDateNums=[26], checkActions=False)
-mcFrame.keyCombo("Right")
-checkCells(selectedDateNums=[27], checkActions=False)
-mcFrame.keyCombo("Right")
-checkCells(selectedDateNums=[28], checkActions=False)
-
-#up/down/left/right keypresses (between months)
-mcFrame.keyCombo("Down")
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="27"
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[4], checkActions=False)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-20")
+mcFrame.testTableCellStates(20)
+
+mcFrame.keyCombo("Down")
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-27")
+mcFrame.testTableCellStates(27)
+
+mcFrame.keyCombo("Left")
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-26")
+mcFrame.testTableCellStates(26)
+
+mcFrame.keyCombo("Right")
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-27")
+mcFrame.testTableCellStates(27)
+
+mcFrame.keyCombo("Right")
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-28")
+mcFrame.testTableCellStates(28)
+
+# up/down/left/right keypresses (between months)
+mcFrame.keyCombo("Down")
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-02-04")
+mcFrame.assertName(mcFrame.day_table_cells[0], "27")
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(4)
+
 for x in range(4):
     mcFrame.keyCombo("Left")
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="30"
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[31], checkActions=False)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-31")
+mcFrame.assertName(mcFrame.day_table_cells[0], "30")
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(31)
 
-#page-up, -down
+# page-up, -down
 mcFrame.keyCombo("PageDown")
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="27"
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[29], checkActions=False) # Because there is no Feb 31st
-mcFrame.keyCombo("PageUp")
-mcFrame.refreshAccessibleRefs()
-assert str(mcFrame.tablecells[0][0])=="30"
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-02-29")
+mcFrame.assertName(mcFrame.day_table_cells[0], "27")
 sleep(config.SHORT_DELAY)
-checkCells(selectedDateNums=[29], checkActions=False)
+mcFrame.testTableCellStates(29) # Because there is no Feb 31st
 
-#TODO: Test multiple selections
+mcFrame.keyCombo("PageUp")
+sleep(config.MEDIUM_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-29")
+mcFrame.assertName(mcFrame.day_table_cells[0], "30")
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(29)
+
+#####################
+# test Component
+#####################
+# mouse click table_cell
+# BUG516721: all accessibles have the same position and size
+'''
+click_day_table_cell = \
+                mcFrame.tree_table.getChildAtIndex(mcFrame.dayTableCell(6))
+click_day_table_cell.mouseClick()
+sleep(config.SHORT_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-06")
+mcFrame.testTableCellStates(6)
+
+click_day_table_cell = \
+                mcFrame.tree_table.getChildAtIndex(mcFrame.dayTableCell(30))
+click_day_table_cell.mouseClick()
+sleep(config.SHORT_DELAY)
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-01-30")
+mcFrame.testTableCellStates(30)
+'''
+
+#####################################
+# test Month ContextMenuStrip accessibles 
+#####################################
+# BUG516717:title_month is not accessible
+'''
+# click title_month cell to expand Month ContextMenu, then find and check 
+# default states for all accessibles
+mcFrame.title_month.mouseClick(button=1)
+sleep(config.SHORT_DELAY)
+mcFrame.findMonthContextMenuAccessibles()
+mcFrame.monthContextMenuAccessiblesTest()
+
+# click menu_item will change label and title_month cell's name, day 30 still is 
+# selected and focused
+mcFrame.month_menu_items['December'].click(log=True)
+sleep(config.SHORT_DELAY)
+mcFrame.assertName(mcFrame.title_month, "December")
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-12-30")
+mcFrame.testTableCellStates(30)
+
+# click title_month cell to expand Month ContextMenu again, then find and check 
+# states for all accessibles
+mcFrame.title_month.mouseClick(button=1)
+sleep(config.SHORT_DELAY)
+mcFrame.findMonthContextMenuAccessibles()
+mcFrame.monthContextMenuAccessiblesTest()
+'''
+
+####################################
+# test Year SpinButton accessible
+####################################
+# BUG516717:title_year is not accessible
+'''
+statesCheck(mcFrame.title_year, "SpinButton")
+
+mcFrame.title_year.mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(mcFrame.title_year, "SpinButton", add_states=["focused"])
+
+mcFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mcFrame.yearSpinButtonValueTest('2009')
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2009-12-30")
+
+mcFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+mcFrame.yearSpinButtonValueTest('2008')
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2008-12-30")
+
+mcFrame.yearSpinButtonValueTest('2007', set_value=True)
+sleep(config.SHORT_DELAY)
+mcFrame.assertText(mcFrame.label, "Your selection is:\n2007-12-30")
+'''
+
+#########################################
+# test Today ContextMenuStrip accessibles
+#########################################
+# BUG516731: contextmenustrip is not accessible
+'''
+mcFrame.mouseClick(button=3)
+sleep(config.SHORT_DELAY)
+mcFrame.findTodayContextMenuAccessibles()
+sleep(config.SHORT_DELAY)
+mcFrame.todayContextMenuAccessiblesTest()
+'''
+
+###########################
+# test Today table_cell
+###########################
+# BUG516719: the cell is showing current day that is not accessible
+'''
+# change daytime from current day to others
+mcFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+# click today_table_cell change to current day
+mcFrame.today_table_cell.click(log=True)
+sleep(config.SHORT_DELAY)
+current_daytime =  mkdate.strftime("%y-%m-%d")
+mcFrame.assertText(mcFrame.label, "Your selection is:\n%s" % current_daytime)
+# the current day table_cell will be focused and selected
+mcFrame.findAccessiblesFromTreeTable()
+sleep(config.SHORT_DELAY)
+mcFrame.testTableCellStates(current_day)
+'''
+# TODO: Test multiple selections
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-#close application frame window
+# close application frame window
 mcFrame.quit()
