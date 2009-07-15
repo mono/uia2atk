@@ -63,6 +63,12 @@ mtbFrame.typeText("01141982")
 sleep(config.MEDIUM_DELAY)
 mtbFrame.assertText(mtbFrame.date_text, "01/14/1982")
 
+# insert letter that doesn't match the mask won't change the date 
+# to verify bug489586
+mtbFrame.date_text.insertText("abc")
+sleep(config.SHORT_DELAY)
+mtbFrame.assertText(mtbFrame.date_text, "01/14/1982")
+
 # tab down to the next MaskedTextBox
 mtbFrame.keyCombo("Tab", grabFocus=False)
 

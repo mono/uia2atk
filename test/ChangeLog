@@ -1,3 +1,7 @@
+2009-07-15 Calen Chen <cachen@novell.com>
+
+	* testers/maskedtextbox_basic_ops.py: add test case for bug489586
+
 2009-07-14 Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py: add tests for 
