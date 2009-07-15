@@ -91,11 +91,11 @@ namespace UiaAtkBridge
 			if (states.ContainsState (Atk.StateType.Showing)) {
 				if (IsFocused) {
 					states.AddState (Atk.StateType.Focused);
-					if (Parent.Role != Atk.Role.Panel && Parent.Role != Atk.Role.ToolBar)
-						states.AddState (Atk.StateType.Selected);
-				} else if (!(Parent is MenuBar)) {
-					states.AddState (Atk.StateType.Focusable);
+					states.AddState (Atk.StateType.Selected);
 				}
+
+				if (!(Parent is MenuBar))
+					states.AddState (Atk.StateType.Focusable);
 			} else {
 				states.RemoveState (Atk.StateType.Focused);
 				states.RemoveState (Atk.StateType.Focusable);

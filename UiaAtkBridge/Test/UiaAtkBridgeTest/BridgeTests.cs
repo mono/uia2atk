@@ -804,10 +804,11 @@ namespace UiaAtkBridgeTest
 					= CastToAtkInterface <Atk.Action> (accessible);
 				atkAction.DoAction (0);
 
-				// Ensure we don't see Focusable or Selected
 				States (accessible,
 					Atk.StateType.Focused,
+					Atk.StateType.Focusable,
 					Atk.StateType.Enabled,
+					Atk.StateType.Selected,
 					Atk.StateType.Selectable,
 					Atk.StateType.Sensitive,
 					Atk.StateType.Showing,
