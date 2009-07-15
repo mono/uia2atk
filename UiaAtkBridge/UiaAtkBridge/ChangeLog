@@ -1,5 +1,9 @@
 2009-07-15  Brad Taylor  <brad@getcoded.net>
 
+	* MenuItem.cs: Remove the conditional as Andres says we don't need it.
+
+2009-07-15  Brad Taylor  <brad@getcoded.net>
+
 	* MenuItem.cs: Ensure that ToolStripMenuItem and similar children get
 	Focusable and Selected when focused.  [Fixes #502972]
 
