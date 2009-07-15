@@ -1,3 +1,7 @@
+2009-07-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TestHelper.cs: Hook on Log.Error events.
+
 2009-07-06  Mike Gorse <mgorse@novell.com>
 
 	* PopupButtonPanelTest.cs: Not keyboard focusable.

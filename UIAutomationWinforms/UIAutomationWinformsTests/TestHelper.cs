@@ -35,6 +35,7 @@ using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Services;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
@@ -42,6 +43,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	{
 		public static MockBridge SetUpEnvironment ()
 		{
+			Log.ErrorHappened += OnError;
+			
 			Type interopProviderType = typeof (AutomationInteropProvider);
 
 			// Set the bridge assembly name to a value that will
@@ -75,6 +78,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			return bridge;
 		}
+		
+		private static void OnError (string message)
+		{
+			Assert.Fail (message);
+		}
 
 		public static void TearDownEnvironment ()
 		{
@@ -86,6 +94,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",
 			                                   string.Empty);
+			
+			Log.ErrorHappened -= OnError;
 		}
 
 		public static void TestAutomationProperty (IRawElementProviderSimple provider,
