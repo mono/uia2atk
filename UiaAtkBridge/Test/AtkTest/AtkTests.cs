@@ -923,6 +923,9 @@ namespace UiaAtkBridgeTest
 			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
 			InterfaceAction (BasicWidgetType.ComboBoxItem, atkAction, secondComboBoxItem);
 			
+			
+			if (widget != null)
+				return;
 			//bug 503281
 			int selected = 1;
 			names = new string [] { "Test1", "Test2" };
