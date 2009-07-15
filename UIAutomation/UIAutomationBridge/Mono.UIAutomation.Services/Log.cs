@@ -56,6 +56,8 @@ namespace Mono.UIAutomation.Services
 				} catch { }
 			}
 		}
+		
+		public static event Action<string> ErrorHappened;
 
 		public static void Info (string message)
 		{
@@ -111,30 +113,34 @@ namespace Mono.UIAutomation.Services
 #region Private Methods
 		private static void PrintMessage (LogLevel level, string message, object[] args)
 		{
-			if ((int)currentLogLevel > (int)level)
-				return;
-
 			// Code from Banshee under the MIT/X11 License
-			Console.Error.Write ("[{0} {1:00}:{2:00}:{3:00}.{4:000}] ",
-			                     GetLogLevelString (level),
-			                     DateTime.Now.Hour, DateTime.Now.Minute,
-			                     DateTime.Now.Second, DateTime.Now.Millisecond); 
-
+			string msg = String.Format ("[{0} {1:00}:{2:00}:{3:00}.{4:000}] ",
+			                            GetLogLevelString (level),
+			                            DateTime.Now.Hour, DateTime.Now.Minute,
+			                            DateTime.Now.Second, DateTime.Now.Millisecond);
+			
 			if (args == null)
-				Console.Error.WriteLine (message);
+				msg += message;
 			else
-				Console.Error.WriteLine (message, args);
+				msg += String.Format (message, args);
+			
+			if ((int)currentLogLevel > (int)level)
+				Console.Error.WriteLine (msg);
+			
+			var handler = ErrorHappened;
+			if (handler != null && level == LogLevel.Error)
+				handler (msg);
 		}
 
 		private static string GetLogLevelString (LogLevel level)
 		{
 			switch (level) {
 			case LogLevel.Information:
-				return "Info ";
+				return "Info";
 			case LogLevel.Debug:
 				return "Debug";
 			case LogLevel.Warning:
-				return "Warn ";
+				return "Warn";
 			case LogLevel.Error:
 				return "Error";
 			}

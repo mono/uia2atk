@@ -116,9 +116,16 @@ namespace UiaAtkBridgeTest
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 		
+		private static void OnError (string message)
+		{
+			Assert.Fail (message);
+		}
+		
 		[TestFixtureSetUp]
 		public virtual void BridgeTesterInit ()
 		{
+			Mono.UIAutomation.Services.Log.ErrorHappened += OnError;
+			
 			InitializeA11y ();
 			
 			form.Show ();
@@ -1247,6 +1254,8 @@ namespace UiaAtkBridgeTest
 			//BridgeTearDown ();
 
 			EventMonitor.Stop ();
+			
+			Mono.UIAutomation.Services.Log.ErrorHappened -= OnError;
 		}
 
 		public static void BridgeTearDown ()
