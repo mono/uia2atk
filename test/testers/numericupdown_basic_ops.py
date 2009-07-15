@@ -71,14 +71,12 @@ nudFrame.assertText(nudFrame.uneditable_numericupdown, "10")
 # input numbers from AtkText
 #############################
 # editable NumericUpDown
-nudFrame.editable_numericupdown.mouseClick()
 nudFrame.enterTextValue(nudFrame.editable_numericupdown, "10")
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 10)
 nudFrame.assertText(nudFrame.editable_numericupdown, "10")
 
 # uneditable NumericUpDown
-nudFrame.uneditable_numericupdown.mouseClick()
 nudFrame.enterTextValue(nudFrame.uneditable_numericupdown, "100")
 nudFrame.keyCombo("Enter", grabFocus=False)
 sleep(config.SHORT_DELAY)
@@ -86,43 +84,34 @@ nudFrame.assertValue(nudFrame.uneditable_numericupdown, 10)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "10")
 
 ############################
-# input 0 from AtkValue
+# change value from AtkValue
 ############################
 # editable NumericUpDown
-nudFrame.editable_numericupdown.mouseClick()
-nudFrame.valueNumericUpDown(nudFrame.editable_numericupdown, 0)
+nudFrame.assignValue(nudFrame.editable_numericupdown, 0)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 0)
 nudFrame.assertText(nudFrame.editable_numericupdown, "0")
 
+nudFrame.assignValue(nudFrame.editable_numericupdown, 100)
+sleep(config.SHORT_DELAY)
+nudFrame.assertValue(nudFrame.editable_numericupdown, 100)
+nudFrame.assertText(nudFrame.editable_numericupdown, "100")
+
 # uneditable NumericUpDown
-nudFrame.uneditable_numericupdown.mouseClick()
-nudFrame.valueNumericUpDown(nudFrame.uneditable_numericupdown, 50)
+nudFrame.assignValue(nudFrame.uneditable_numericupdown, 50)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.uneditable_numericupdown, 50)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "50")
 
 ############################
-# input 100 from AtkValue
-############################
-# set numericupdown's value to 100
-nudFrame.editable_numericupdown.mouseClick()
-nudFrame.valueNumericUpDown(nudFrame.editable_numericupdown, 100)
-sleep(config.SHORT_DELAY)
-nudFrame.assertValue(nudFrame.editable_numericupdown, 100)
-nudFrame.assertText(nudFrame.editable_numericupdown, "100")
-
-############################
 # set value to max
 ############################
 # set numericupdown's value to maximumValue
-nudFrame.editable_numericupdown.mouseClick()
 # enter text value as a float, which is what we get back from
 # queryValue().currentValue
 nudFrame.enterTextValue(nudFrame.editable_numericupdown,
                         str(nudFrame.editableMaximumValue))
-nudFrame.keyCombo("Enter", grabFocus=False)
-sleep(config.SHORT_DELAY)
+nudFrame.mouseClick()
 nudFrame.assertValue(nudFrame.editable_numericupdown,
                      nudFrame.editableMaximumValue)
 nudFrame.assertText(nudFrame.editable_numericupdown,
@@ -130,11 +119,8 @@ nudFrame.assertText(nudFrame.editable_numericupdown,
 
 # try to set the uneditable numericupdown control's text to maximumValue, but
 # ensure that it doesn't change (since it is readonly)
-nudFrame.uneditable_numericupdown.mouseClick()
 nudFrame.enterTextValue(nudFrame.uneditable_numericupdown,
                         str(int(nudFrame.uneditableMaximumValue)))
-nudFrame.keyCombo("Enter", grabFocus=False)
-sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.uneditable_numericupdown, 50)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "50")
 
@@ -142,9 +128,9 @@ nudFrame.assertText(nudFrame.uneditable_numericupdown, "50")
 # set value to max + 1
 ############################
 # set numericupdown's value to maximumValue + 1
-nudFrame.editable_numericupdown.mouseClick()
 nudFrame.enterTextValue(nudFrame.editable_numericupdown,
                         str(int(nudFrame.editableMaximumValue+1)))
+sleep(config.MEDIUM_DELAY)
 nudFrame.keyCombo("Enter", grabFocus=False)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown,
@@ -158,8 +144,6 @@ nudFrame.assertText(nudFrame.editable_numericupdown,
 # set numericupdown's value to minimumValue
 nudFrame.enterTextValue(nudFrame.editable_numericupdown,
                         str(int(nudFrame.editableMinimumValue)))
-nudFrame.keyCombo("Enter", grabFocus=False)
-sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown,
                      nudFrame.editableMinimumValue)
 nudFrame.assertText(nudFrame.editable_numericupdown,
@@ -167,8 +151,6 @@ nudFrame.assertText(nudFrame.editable_numericupdown,
 
 nudFrame.enterTextValue(nudFrame.uneditable_numericupdown,
                         str(int(nudFrame.uneditableMinimumValue)))
-nudFrame.keyCombo("Enter", grabFocus=False)
-sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.uneditable_numericupdown, 50)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "50")
 
@@ -178,6 +160,7 @@ nudFrame.assertText(nudFrame.uneditable_numericupdown, "50")
 #set numericupdown's value to minimumValue-1
 nudFrame.enterTextValue(nudFrame.editable_numericupdown,
                         str(int(nudFrame.editableMinimumValue - 1)))
+sleep(config.MEDIUM_DELAY)
 nudFrame.keyCombo("Enter", grabFocus=False)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown,
@@ -197,7 +180,7 @@ nudFrame.assertValue(nudFrame.editable_numericupdown,
 nudFrame.assertText(nudFrame.editable_numericupdown,
                     str(int(nudFrame.editableMinimumValue + 20)))
 
-# press "Down" on editab_numericupdown
+# press "Down" on editable_numericupdown
 nudFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown,
