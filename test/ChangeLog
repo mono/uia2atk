@@ -1,5 +1,12 @@
 2009-07-15 Calen Chen <cachen@novell.com>
 
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: add 
+	doc string and comment
+	* testers/toolstripdropdownbutton_basic_ops.py: remove BUG485515, 
+	BUG508967, BUG508974 references, add BUG522570 reference
+
+2009-07-15 Calen Chen <cachen@novell.com>
+
 	* testers/numericupdown_basic_ops.py: delete some unnecessary 
 	mouseClick action, add sleep time
 	

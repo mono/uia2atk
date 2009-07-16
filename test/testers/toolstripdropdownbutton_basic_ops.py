@@ -48,26 +48,22 @@ actionsCheck(tsddbFrame.menu1, "Menu")
 actionsCheck(tsddbFrame.menu2, "Menu")
 
 # check states list for menu without click
-# We are unsure about whether these should have "focusable" states or not
-# The resolution of BUG485515 might clear this up
+# we are sure that menu should have "focusable" states according to bug502972
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable"])
 statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable"])
 # move mouse to menu1 to rise focused and selected
-# BUG508967: missing selected states
 panels = tsddbFrame.toolbar.findAllPanels(None)
 panels[0].mouseMove()
 sleep(config.SHORT_DELAY)
-#statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable", "focused", "selected"])
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable", "focusable"])
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable", "focused", "selected"])
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable"])
 # move mouse to menu2 to rise focused and selected
 panels[1].mouseMove()
 sleep(config.SHORT_DELAY)
-#statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable", "focused", "selected"])
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable", "focused", "selected"])
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable"])
 
 # click menu1 to rise selected
-# BUG508967: missing selected states
-'''
 tsddbFrame.menu1.click(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable", "focused", "selected"])
@@ -89,7 +85,6 @@ tsddbFrame.menu2.click(log=True)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.menu2, "Menu", add_states=["focusable", "focused", "selected"])
 statesCheck(tsddbFrame.menu1, "Menu", add_states=["focusable"])
-'''
 
 ##############menu items test##################
 # check states list for menuitems
@@ -121,14 +116,14 @@ actionsCheck(tsddbFrame.item3, "MenuItem")
 # move mouse cursor to blue item may rise focused and selected
 tsddbFrame.blue.mouseMove()
 sleep(config.SHORT_DELAY)
-# BUG508974: focusable is disappeared when menuitem is focused
-#statesCheck(tsddbFrame.blue, "MenuItem", add_states=["focused","selected"])
+statesCheck(tsddbFrame.blue, "MenuItem", add_states=["focused","selected"])
 # press "down" moving focus and selection to green item
 tsddbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
+statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
 
 # click menuitems to select color, label would shows you slected which color
+# BUG522570: after doing click action menu_item shouldn't is showing selected
 tsddbFrame.red.click(log=True)
 sleep(config.SHORT_DELAY)
 tsddbFrame.assertText(tsddbFrame.label, "You selected Red")
@@ -150,16 +145,15 @@ statesCheck(tsddbFrame.blue, "MenuItem")
 
 # test Selection implementation for Menu
 # select menuitem red to rise selected
-# BUG508974: focusable is disappeared when menuitem is focused
 tsddbFrame.menu1.selectChild(0)
 sleep(config.SHORT_DELAY)
 # Gtk adds both focused and selected states when using the selectChild method
-#statesCheck(tsddbFrame.red, "MenuItem", add_states=["focused", "selected"])
+statesCheck(tsddbFrame.red, "MenuItem", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.blue, "MenuItem")
 # select menuitem green to rise selected
 tsddbFrame.menu1.selectChild(2)
 sleep(config.SHORT_DELAY)
-#statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
+statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.red, "MenuItem")
 
 # test Text implementation for Menu and MenuItems

@@ -35,16 +35,18 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
         self.toolbar = self.findToolBar(None)
         self.menu1 = self.findMenu(self.DROPDOWN1)
         self.menu2 = self.findMenu(self.DROPDOWN2)
-        #search menu items in ToolStripDropDownButton1
+        # search menu items in ToolStripDropDownButton1
         self.red = self.menu1.findMenuItem(self.RED, checkShowing=False)
         self.blue = self.menu1.findMenuItem(self.BLUE, checkShowing=False)
         self.green = self.menu1.findMenuItem(self.GREEN, checkShowing=False)
+        # search menu items in ToolStripDropDownButton2
         self.item1 = self.menu2.findMenuItem(self.ITEM1, checkShowing=False)
         self.item2 = self.menu2.findMenuItem(self.ITEM2, checkShowing=False)
         self.item3 = self.menu2.findMenuItem(self.ITEM3, checkShowing=False)
 
     # assert Text implementation for Menu and MenuItem
     def assertText(self, accessible, expected_text):
+        """Make sure accessile's text is expected"""
         procedurelogger.action("check %s's text" % accessible)
 
         procedurelogger.expectedResult("%s's Text is \"%s\"" % \
