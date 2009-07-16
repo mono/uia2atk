@@ -1,4 +1,9 @@
-2009-07-15 Calen Chen <cachen@novell.com>
+2009-07-16 Calen Chen <cachen@novell.com>
+
+	* testers/pagesetupdialog/pagesetupdialogframe.py,
+	* testers/pagesetupdialog_basic_ops.py: expand more test cases
+
+2009-07-16 Calen Chen <cachen@novell.com>
 
 	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: add 
 	doc string and comment
