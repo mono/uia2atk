@@ -38,8 +38,6 @@ class MonthCalendarFrame(accessibles.Frame):
         super(MonthCalendarFrame, self).__init__(accessible)
 
         self.label = self.findLabel(self.LABEL)
-        self.monthcalendar_filler = self.findFiller(self.FILLER_NAME)
-        self.tree_table = self.monthcalendar_filler.findTreeTable(None)
         self.back_button = self.findPushButton('Back by one month')
         self.forward_button = \
                            self.findPushButton('Forward by one month')
@@ -65,6 +63,8 @@ class MonthCalendarFrame(accessibles.Frame):
         #self.title_month = self.monthcalendar_filler.findLabel(self.DEFAULT_MONTH)
         #self.title_year = self.monthcalendar_filler.findPushButton(None)
 
+        self.monthcalendar_filler = self.findFiller(None)
+        self.tree_table = self.monthcalendar_filler.findTreeTable(None)
         # find all week day column_headers with giving Name
         self.week_day_column_headers = [
                               self.tree_table.findTableColumnHeader('Sun'),
@@ -97,32 +97,29 @@ class MonthCalendarFrame(accessibles.Frame):
         # find all day table_cells, we don't give exactly Name because the table 
         # will be refreshed when month or year is changed, the number of Day
         # table_cells is 42
-        self.day_table_cells = self.tree_table.findAllTableCells(None)
-
-        assert len(self.day_table_cells) == self.TABLE_CELLS_NUM, \
+        self.table_cells = [[self.tree_table.getChildAtIndex(7 * r + c + 7) \
+                            for c in range(7)] for r in range(6)]
+        sleep(config.SHORT_DELAY)
+        assert len(self.table_cells * 7) == self.TABLE_CELLS_NUM, \
                           "actual number of table_cells:%s, expected: %s" % \
-                                 (len(self.day_table_cells), self.TABLE_CELLS_NUM)
+                          (len(self.table_cells * 7), self.TABLE_CELLS_NUM)
 
-    def dayTableCell(self, day_table_cell):
+    def dayTableCell(self, day_table_cell, firstReached=True):
         """
         assume day_table_cell is the number of day which we want to do test for, 
         return the index of the day at TreeTable 
         """
-        # the purpose is to count the day's index of day_table_cell,
-        # sometimes there are not only one day named "1" in each month TreeTable
-        # so we should list all of the day that named "1" to day_1, then count 
-        # the index of day_1[0] by using getIndexInParent, day_table_cell is the 
-        # number of day which we want to test for, so subtract 1 from the sum of 
-        # day_1[0] and day_table_cell is what we need day_index
-        day_1 = []
-        for i in self.day_table_cells:
-            if i.name == str(1):
-                day_1.append(i)
-        day_1_index = day_1[0].getIndexInParent()
-        day_index = day_1_index + day_table_cell - 1
-        return day_index
 
-    def testTableCellStates(self, cell_name, is_selected=True):
+        for r in xrange(6):
+            for c in xrange(7):
+                if self.table_cells[r][c].name == str(day_table_cell):
+                    if firstReached is True:
+                        return self.table_cells[r][c]
+                    else:
+                       firstReached = True
+                       continue
+
+    def testTableCellStates(self, day_table_cell, is_selected=True, firstReached=True):
         """
         test day_table_cell's states, if is_selected, the cell should have 
         focused and selected states
@@ -130,15 +127,12 @@ class MonthCalendarFrame(accessibles.Frame):
         # day_table_cell is the table_cell that you want to check the states, 
         # call dayTableCell method to get the day_index of day_table_cell from 
         # its parent tree_table
-        tested_cell = \
-                  self.tree_table.getChildAtIndex(self.dayTableCell(cell_name))
-
         if is_selected:
-            statesCheck(tested_cell, 
-                               "TableCell", add_states=["focused", "selected"])
+            statesCheck(self.dayTableCell(day_table_cell, firstReached), 
+                             "TableCell", add_states=["focused", "selected"])
         else:
-            statesCheck(tested_cell, 
-                             "TableCell")
+            statesCheck(self.dayTableCell(day_table_cell), "TableCell")
+
 
     def assertText(self, accessible, expected_label):
         """Ensure accessible's text is expected"""

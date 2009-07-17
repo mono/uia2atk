@@ -1,3 +1,9 @@
+2009-07-17 Ray Wang <rawang@novell.com>
+
+	* testers/monthcalendar/monthcalendarframe.py: Update dayTableCell
+	method, and use 2-Dimension list of table_cells.
+	* testers/monthcalendar_basic_ops.py: Update test accordingly.
+
 2009-07-17 Calen Chen <cachen@novell.com>
 
 	* testers/openfiledialog/openfiledialogframe.py,
