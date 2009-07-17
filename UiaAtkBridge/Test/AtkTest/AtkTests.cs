@@ -795,7 +795,9 @@ namespace UiaAtkBridgeTest
 			//we check this when the ParentMenu is open (bnc#479397)
 			int j = 0;
 			names.Remove (menuName);
-			CastToAtkInterface <Atk.Action> (accessible).DoAction (0);
+			RunInGuiThread (delegate () {
+				CastToAtkInterface <Atk.Action> (accessible).DoAction (0);
+			});
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 
 			Assert.IsTrue (accessible.RefAccessibleChild (0).RefStateSet ().ContainsState (Atk.StateType.Showing));
@@ -812,6 +814,7 @@ namespace UiaAtkBridgeTest
 				States (accessible.RefAccessibleChild (j),
 				        Atk.StateType.Enabled,
 				        (IsBGO580452Addressed () || j != 0) ? Atk.StateType.Focused : Atk.StateType.Enabled,
+				        IsBGO580452Addressed () ? Atk.StateType.Focusable : Atk.StateType.Enabled,
 				        Atk.StateType.Selected,
 				        Atk.StateType.Selectable,
 				        Atk.StateType.Sensitive,
