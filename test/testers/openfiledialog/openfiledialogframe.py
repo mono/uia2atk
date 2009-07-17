@@ -108,7 +108,7 @@ class OpenFileDialogFrame(accessibles.Frame):
                                 "Found %s tool bar accessibles, expected %s" %\
                                 (len(self.toolbars), self.NUM_TOOLBARS)
 
-        # give an intuitive name to the toolbar in the upper right of the
+        # give an readable name to the toolbar in the upper right of the
         # dialog
         self.small_toolbar = self.toolbars[0]
 
@@ -118,7 +118,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         assert len(self.small_toolbar_buttons) == self.NUM_SMALL_TOOLBAR_BUTTONS, \
                  "Found %s push button bar accessibles, expected %s" %\
                (len(self.small_toolbar_buttons), self.NUM_SMALL_TOOLBAR_BUTTONS)
-        # give intuitive names to each of the small toolbar buttons and find
+        # give readable names to each of the small toolbar buttons and find
         # the single toggle button (that is part of the toolbar button with a
         # drop down menu).
         self.back_toolbar_button = self.small_toolbar_buttons[0]
@@ -127,7 +127,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         self.menu_toolbar_button = self.small_toolbar_buttons[3]
         self.menu_toggle_button = self.small_toolbar.findToggleButton(None)
 
-        # give an intuitive name to the toolbar on the left side of the dialog
+        # give an readable name to the toolbar on the left side of the dialog
         self.popuptoolbar = self.toolbars[1]
         # find the menu item "popup" buttons on the left toolbar
         self.recently_used_popup = \
@@ -274,7 +274,7 @@ class OpenFileDialogFrame(accessibles.Frame):
         # BUG506745: receives "focused" state, but do not have "focusable" state
         #statesCheck(self.look_in_combobox, "ComboBox", \
         #                                 add_states=["focused", "focusable"])
-        statesCheck(self.look_in_menu, "Menu")
+        statesCheck(self.look_in_menu, "Menu", add_states=["selected"])
         #statesCheck(self.desktop_menuitem, "MenuItem", \
         #                                add_states=["focused", "selected"])
 
@@ -391,14 +391,14 @@ class OpenFileDialogFrame(accessibles.Frame):
         #statesCheck(self.details_menuitem, "MenuItem", add_states=["checked"])
         #statesCheck(self.list_menuitem, "MenuItem")        
 
-    def findDropDownMenuItemAccessibles(self):
+    def findDropDownMenuItemAccessibles(self, menu_name=None):
         """
         Find all of the accessibles on the view style window that appears when 
         menu_toggle_button is clicked
         """
         self.view_style_window = self.app.findWindow(None)
         procedurelogger.expectedResult("5 MenuItem under view style window are showing up")
-        self.view_style_menu = self.view_style_window.findMenu(None)
+        self.view_style_menu = self.view_style_window.findMenu(menu_name)
 
         self.smallicon_menuitem = \
            self.view_style_menu.findMenuItem("Small Icon", checkShowing=False)
@@ -416,22 +416,22 @@ class OpenFileDialogFrame(accessibles.Frame):
         Check all ContextMenu accessibles default states
         """
         # check default states
-        statesCheck(self.window, "ContextMenu", add_states=["active"])
-        statesCheck(self.view_menu, "Menu", add_states=["focusable"])
+        statesCheck(self.view_style_window, "ContextMenu", add_states=["active"])
+        statesCheck(self.view_style_menu, "Menu", add_states=["focusable"])
         statesCheck(self.new_menu, "Menu", add_states=["focusable"])
         
         statesCheck(self.show_hidden_menuitem, "MenuItem")
         # BUG514635:menu's descendant menu_item is missing 'focusable' state
         # BUG514647:some unchecked menu items have extraneous "checked" state   
-        #statesCheck(self.view_smallicon_menuitem, "MenuItem", \
+        #statesCheck(self.smallicon_menuitem, "MenuItem", \
         #                   invalid_states=["showing"])
-        #statesCheck(self.view_tiles_menuitem, "MenuItem", \
+        #statesCheck(self.tiles_menuitem, "MenuItem", \
         #                   invalid_states=["showing"])
-        #statesCheck(self.view_largeicon_menuitem, "MenuItem", \
+        #statesCheck(self.largeicon_menuitem, "MenuItem", \
         #                   invalid_states=["showing"])
-        #statesCheck(self.view_list_menuitem, "MenuItem", \
+        #statesCheck(self.list_menuitem, "MenuItem", \
         #                   invalid_states=["showing"], add_states=["checked"])
-        #statesCheck(self.view_details_menuitem, "MenuItem", \
+        #statesCheck(self.details_menuitem, "MenuItem", \
         #                   invalid_states=["showing"])
         #statesCheck(self.new_folder_menuitem, "MenuItem", \
         #                   invalid_states=["showing"])
@@ -442,27 +442,19 @@ class OpenFileDialogFrame(accessibles.Frame):
         button3 is click against table_cells on TreeTable list
         """
         procedurelogger.expectedResult("All of the widgets are found successfully")
-        self.window = self.app.findWindow(None)
-
-        self.view_menu = self.window.findMenu("View")
-        # view_menu has 5 menu_item descendants
-        self.view_smallicon_menuitem = \
-                   self.view_menu.findMenuItem("Small Icon", checkShowing=False)
-        self.view_tiles_menuitem = \
-                        self.view_menu.findMenuItem("Tiles", checkShowing=False)
-        self.view_largeicon_menuitem = \
-                   self.view_menu.findMenuItem("Large Icon", checkShowing=False)
-        self.view_list_menuitem = \
-                         self.view_menu.findMenuItem("List", checkShowing=False)
-        self.view_details_menuitem = \
-                      self.view_menu.findMenuItem("Details", checkShowing=False)
+        self.findDropDownMenuItemAccessibles(menu_name="View")
  
-        self.new_menu = self.window.findMenu("New")
+        self.new_menu = self.view_style_window.findMenu("New")
         # new_menu has 1 menu_item descendant
         self.new_folder_menuitem = \
                    self.new_menu.findMenuItem("New Folder", checkShowing=False)
 
-        self.show_hidden_menuitem = self.window.findMenuItem("Show hidden files")
+        self.show_hidden_menuitem = self.view_style_window.findMenuItem("Show hidden files")
+
+        self.dash_menuitems = self.view_style_window.findAllMenuItems("-")
+        assert len(self.dash_menuitems) == 2, \
+                       'actual number of "-" menuitem:%s, expected:%s' % \
+                            (len(self.dash_menuitems), 2)
 
     def checkImageSize(self):
         """

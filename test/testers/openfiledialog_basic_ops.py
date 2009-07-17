@@ -88,10 +88,10 @@ sleep(config.SHORT_DELAY)
 ofdFrame.findContextMenuAccessibles()
 ofdFrame.contextMenuAccessiblesTest()
 
-ofdFrame.view_smallicon_menuitem.click(log=True)
+ofdFrame.smallicon_menuitem.click(log=True)
 sleep(config.SHORT_DELAY)
 # BUG514635:menu's descendant menu_item is missing 'focusable' state
-#statesCheck(ofdFrame.view_smallicon_menuitem, "MenuItem", \
+#statesCheck(ofdFrame.smallicon_menuitem, "MenuItem", \
 #                           invalid_states=["showing"], add_states=["checked"])
 
 # test accessible's Image by check image size
