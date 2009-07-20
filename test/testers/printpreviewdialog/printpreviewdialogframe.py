@@ -1,7 +1,7 @@
-
-##############################################################################
-# Written by:  Cachen Chen <cachen@novell.com>
-# Date:        01/16/2008
+############################################################################## 
+# Written by:  Cachen Chen <cachen@novell.com> 
+#              Felicia Mu <fxmu@novell.com> 
+# Date:        07/16/2009
 # Description: printpreviewdialog.py wrapper script
 #              Used by the printpreviewdialog-*.py tests
 ##############################################################################$
@@ -22,34 +22,26 @@ class PrintPreviewDialogFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     BUTTON = "PrintPreviewDialog"
-    NUM_TOOLBAR_PANELS = 7
-    NUM_TOOLBAR_PUSH_BUTTONS = 8
-    NUM_TOOLBAR_LABEL = 1
-    NUM_TOOLBAR_SPINBUTTON = 1
-    NUM_TOOLBAR_SEPARATORS = 2
-    NUM_TOOLBAR_FILLERS = 1 
-    NUM_ZOOM_MENU_OPTIONS = 9
+    
+    NUM_DIALOG_PANELS = 7
+    NUM_DIALOG_PUSH_BUTTONS = 8
+    NUM_DIALOG_TOGGLE_BUTTON = 1
+    NUM_DIALOG_LABEL = 1
+    NUM_DIALOG_SPINBUTTON = 1
+    NUM_DIALOG_SEPARATORS = 2
+    NUM_DIALOG_FILLERS = 1 
+    NUM_ZOOM_MENU_ITEMS = 9
 
     def __init__(self, accessible):
         super(PrintPreviewDialogFrame, self).__init__(accessible)
-        self.button = self.findPushButton(self.BUTTON)
 
-    def findAllPrintPreviewDialogAccessibles(self):
+        # find the launched button
+        self.start_button =  self.findPushButton(self.BUTTON)
+
+    def findLaunchedDialogAccessibles(self):
         """
         Find all the accessibles of the PrintPreviewDialog
         """
-
-        # BUG465958 - PrintPreviewControl: printing window is hided that is
-        # inconsistant with Vista does 
-        #printing_frame_unfound = False
-        #try:
-        #    printing_frame = pyatspi.findDescendant(self.app._accessible,
-        #                       lambda x: x.name == 'Printing' and \
-        #                                            x.getRoleName() == 'frame')
-        #except SearchError:
-        #    printing_frame_unfound = True
-        #if printing_frame_unfound == False:
-        #    assert False, 'The "Printing" frame accessible should not exist'
 
         # find the actual PrintPreviewDialog dialog
         self.dialog = self.app.findDialog("PrintPreviewDialog")
@@ -57,256 +49,94 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         # find the panel that has the actual print preview
         self.print_preview_panel = self.dialog.findPanel("")
 
-        # find the toolbar, which has a bunch of children
+        # find the toolbar
         self.toolbar = self.dialog.findToolBar(None)
 
-        # find the toolbar's children
-        self.toolbar_panels = self.toolbar.findAllPanels(None)
-        assert len(self.toolbar_panels) == self.NUM_TOOLBAR_PANELS, \
-                            "Toolbar had %s panel children, expected %s" % \
-                            (len(self.toolbar_panels), self.NUM_TOOLBAR_PANELS)
-        self.toolbar_separators = self.toolbar.findAllSeparators(None)
-        assert len(self.toolbar_separators) == self.NUM_TOOLBAR_SEPARATORS, \
-                    "Toolbar had %s separator children, expected %s" % \
-                    (len(self.toolbar_separators), self.NUM_TOOLBAR_SEPARATORS)
-        self.toolbar_fillers = self.toolbar.findAllFillers(None)
-        assert len(self.toolbar_fillers) == self.NUM_TOOLBAR_FILLERS, \
-                       "Toolbar had %s filler children, expected %s" % \
-                       (len(self.toolbar_fillers), self.NUM_TOOLBAR_FILLERS)
-        self.toolbar_filler = self.toolbar_fillers[0]
+        # find push buttons under the toolbar
+        self.pushbuttons = self.toolbar.findAllPushButtons(None)
+        self.close_button = self.toolbar.findPushButton("Close")
 
-        # assign each of the toolbar panels individually
-        self.print_panel = self.toolbar_panels[0]
-        self.one_page_panel = self.toolbar_panels[1]
-        self.two_pages_panel = self.toolbar_panels[2]
-        self.three_pages_panel = self.toolbar_panels[3]
-        self.four_pages_panel = self.toolbar_panels[4]
-        self.six_pages_panel = self.toolbar_panels[5]
+        # find all the panels under toolbar
+        self.panels = self.toolbar.findAllPanels(None)
 
-        # assign each of the toolbar filler children
-        self.zoom_push_button = self.toolbar_filler.findPushButton("")
-        self.zoom_toggle_button = self.toolbar_filler.findToggleButton("")
+        # find toggle button under the toolbar
+        self.toggle = self.toolbar.findToggleButton(None)
 
-        # assign each of the toolbar panels children
-        self.print_button = self.print_panel.findPushButton("")
-        self.one_page_button = self.one_page_panel.findPushButton("")
-        self.two_pages_button = self.two_pages_panel.findPushButton("")
-        self.three_pages_button = self.three_pages_panel.findPushButton("")
-        self.four_pages_button = self.four_pages_panel.findPushButton("")
-        self.six_pages_button = self.six_pages_panel.findPushButton("")
+        # find spin button under the toolbar
+        self.spinbutton = self.toolbar.findSpinButton(None)
 
-        # some controls of the PrintPreviewDialog are not accessible.  We
-        # should test these controls once the following bugs are resolved:
-        #BUG508567 PrintPreviewDialog: NumericUpDown control is not accessible
-        #BUG508566 PrintPreviewDialog: "Page" label is not accessible
-        #BUG508565 PrintPreviewDialog: "Close" button is not accessible
+        # find separators under the toolbar
+        self.separators = self.toolbar.findAllSeparators(None)
 
-    def checkAllDefaultStates(self):
-        '''Check all the default states of the accessibles'''
+        # find filler under the toolbar
+        self.filler  = self.toolbar.findFiller(None)
 
-        # some controls of the PrintPreviewDialog are not accessible.  We
-        # should check the states of these controls once these bugs are fixed:
-        #BUG508567 PrintPreviewDialog: NumericUpDown control is not accessible
-        #BUG508566 PrintPreviewDialog: "Page" label is not accessible
-        #BUG508565 PrintPreviewDialog: "Close" button is not accessible
-        # Additionally, I think the NumericUpDown control should be "focused"
-        # by default.  See BUGXXX.
+        # find label under the toolbar
+        self.label  = self.toolbar.findLabel(None)
 
-        statesCheck(self.dialog, "Dialog", add_states=["modal"])
-        statesCheck(self.print_preview_panel,
-                    "Panel",
-                    add_states=["focusable"])
-        statesCheck(self.toolbar, "ToolBar")
-        for panel in self.toolbar_panels:
-            statesCheck(panel, "Panel")
-        for separator in self.toolbar_separators:
-            statesCheck(separator, "ToolStripSeparator") 
+        # BUG508593 - PrintPreviewDialog: ToolTips are not accessible   
+        # find all the tooltips 
+        #tooltips = self.app.findAllToolTips(None)
 
-        # check each of the toolbar Button children
-        statesCheck(self.zoom_push_button, "Button")
-        statesCheck(self.zoom_toggle_button, "ToggleButton")
-        statesCheck(self.print_button, "Button")
-        statesCheck(self.one_page_button, "Button")
-        statesCheck(self.two_pages_button, "Button")
-        statesCheck(self.three_pages_button, "Button")
-        statesCheck(self.four_pages_button, "Button")
-        statesCheck(self.six_pages_button, "Button")
 
-    def checkAllActions(self):
-        actionsCheck(self.zoom_push_button, "Button")
-        actionsCheck(self.zoom_toggle_button, "ToggleButton")
-        actionsCheck(self.print_button, "Button")
-        actionsCheck(self.one_page_button, "Button")
-        actionsCheck(self.two_pages_button, "Button")
-        actionsCheck(self.three_pages_button, "Button")
-        actionsCheck(self.four_pages_button, "Button")
-        actionsCheck(self.six_pages_button, "Button")
-        # Need to add an actionsCheck for the "Close" button once BUG508565 is
-        # fixed.  Bug 508565 PrintPreviewDialog: "Close" button is not
-        # accessible.
+    def findPringtingFrameAccessibles(self):
+        """
+        Find the launched priting frame
+        """
+        printing_frame_unfound = False
+        try:
+            printing_frame = pyatspi.findDescendant(self.app._accessible,
+                               lambda x: x.name == 'Printing' and \
+                                                    x.getRoleName() == 'frame')
+        except SearchError:
+            printing_frame_unfound = True
+        if printing_frame_unfound == False:
+            assert False, 'The "Printing" frame accessible should not exist'
 
-    def clickAllDefaultButtons(self):
-        '''
-        Clicks all the accessible buttons available by default on the
-        PrintPreviewDialog, except for the "Close" button, which should be
-        tested separately.
-        '''
-        self.zoom_push_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.zoom_toggle_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.print_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.one_page_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.two_pages_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.three_pages_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.four_pages_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-        self.six_pages_button.click(log=True)
-        sleep(config.SHORT_DELAY)
-    
+
+    def assertNumOfAccessibles(self, accessible, num):
+        """
+        check the number of the accessibles more than one
+        """
+        procedurelogger.action("assert the num of the %s" % accessible[1])
+        procedurelogger.expectedResult("expected number of %s is %s" % (accessible[1], num))
+        
+        assert len(accessible) == num, \
+                            "Found %s ' quatity %s , expected %s" % \
+                           (accessible, len(accessible), num)
+
     def findZoomDropDownAccessibles(self):
-        '''
-        Find all of the accessibles that appear after the zoom toggle button
-        has been clicked.
-        '''
-        # there is a window that contains a menu, which has all of the other
-        # accessibles
-        self.zoom_window = self.app.findWindow(None) 
+        """
+        find all the accessibles on the menu
+        """
+        procedurelogger.action("find all the accessibles on the drop down menu")
+        self.zoom_window = self.app.findWindow(None)
         self.zoom_menu = self.zoom_window.findMenu(None)
         self.zoom_menu_items = self.zoom_menu.findAllMenuItems(None)
-        assert len(self.zoom_menu_items) == self.NUM_ZOOM_MENU_OPTIONS, \
-                           "Found %s zoom menu options, expected %s" % \
-                           (len(self.zoom_menu_items), NUM_ZOOM_MENU_OPTIONS)
-        assert self.zoom_menu_items[0].name == "Auto", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[0].name, "Auto")
-        assert self.zoom_menu_items[1].name == "500%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[1].name, "500%")
-        assert self.zoom_menu_items[2].name == "200%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[2].name, "200%")
-        assert self.zoom_menu_items[3].name == "150%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[3].name, "150%")
-        assert self.zoom_menu_items[4].name == "100%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[4].name, "100%")
-        assert self.zoom_menu_items[5].name == "75%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[5].name, "75%")
-        assert self.zoom_menu_items[6].name == "50%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[6].name, "50%")
-        assert self.zoom_menu_items[7].name == "25%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[7].name, "25%")
-        assert self.zoom_menu_items[8].name == "10%", \
-                                    'Menu item name was %s, expected %s' % \
-                                    (self.zoom_menu_items[8].name, "10%")
 
-    def checkZoomDropDownDefaultStates(self):
-        '''
-        Check the default states of all the accessibles from the zoom drop
-        down menu
-        '''
-        statesCheck(self.zoom_window,
-                    "Form",
-                    invalid_states=["resizable"],
-                    add_states=["active"])
-        ''' here, need to log bugs for this failure'''
-        # BUG509165 PrintPreviewDialog: zoom "menu" accessible has extraneous
-        # "focused" state
-        #statesCheck(self.zoom_menu, "Menu", invalid_states=["selectable"])
-        self.checkZoomMenuItems()
-
-    def checkZoomMenuItems(self, checked_menu_item=None):
-        '''
-        Check the states of the zoom menu items.  If no checked_menu_item is
-        passed, it is assumed that the first menu item is checked.
-        '''
-        if checked_menu_item is None:
-            checked_menu_item = self.zoom_menu_items[0]
-        for menu_item in self.zoom_menu_items:
-            if menu_item is checked_menu_item:
-                statesCheck(menu_item, "MenuItem", add_states=["checked"])
-            else:
-                # Bug 509276 - PrintPreviewDialog: All zoom menu items have the
-                # "checked" state
-                #statesCheck(menu_item, "MenuItem")
-                pass # delete me when uncommenting the statesCheck
-
-    def checkZoomDropDownActions(self):
-        '''
-        Check the actions of all the accessibles from the zoom drop down menu
-        '''
-        for menu_item in self.zoom_menu_items:
-            actionsCheck(menu_item, "MenuItem")
-
-    def assignNumericUpdownValue(self, value): 
+    def assignNumericUpdownValue(self, value):
         '''
         Use the Value interface to set the current value of the NumericUpDown
         accessible.
         '''
-        #BUG508567 PrintPreviewDialog: NumericUpDown control is not accessible
-        pass
+        procedurelogger.action('set %s value to page numericupdown' % (value))
+        self.spinbutton.value = value
 
-    def assertNumericUpdownValue(self, expected_value): 
+    def assertNumericUpdownValue(self, expected_value):
         '''
         Ensure that the current value of the NumericUpDown accessible matches
         the expected_value.
         '''
-        #BUG508567 PrintPreviewDialog: NumericUpDown control is not accessible
-        pass
+        actual_value = self.spinbutton.value
+        procedurelogger.action("Ensure that page spin's value is what we expect")
+        procedurelogger.expectedResult('%s value is %d' % \
+                                        (self.spinbutton, expected_value))
+        assert actual_value == expected_value, \
+                                "%s's value is %d, expected %d" % \
+                                 (self.spinbutton, actual_value, expected_value)
 
-    def findDialogAccessibles(self):
-        """
-        Find all the accessibles of the lanched PrintPreviewDialog
-        """
-        # find the 'PrintPreviewDialog' dialog
-        self.dialog = self.app.findDialog("PrintPreviewDialog")
-
-        # find tool bar
-        self.toolbar = self.dialog.findToolBar(None)
-
-        # find all the accessibles under tool bar
-        self.filler = self.toolbar.findFiller(None)
-        self.panels = self.toolbar.findAllPanels(None)
-        self.label = self.toolbar.findLabel("Page")
-        self.spinbutton = self.toolbar.findSpinButton(None) 
-        self.close_button = self.toolbar.findPushButton("Close") 
-        self.push_buttons = self.toolbar.findAllPushButtons(None) 
-        self.toggle = self.toolbar.findToggleButton(None) 
-        self.separator_styles = self.toolbar.findAllSeparators(None)  
- 
-    def assertDialogAccessibles(self):
-        """
-        assert the num of the accessibles which is more than one on 
-        'PrintPreviewDialog' dialog
-        """
- 
-        # assert num of panel
-        procedurelogger.action("assert the num of the panels")
-        assert len(self.panels) == self.NUM_TOOLBAR_PANELS, \
-                         "actual number of panels:%s, expected: %s" % \
-                                    (len(self.panels), self.NUM_TOOLBAR_PANELS)
- 
-        # assert num of push button
-        procedurelogger.action("assert the num of the push buttons")
-        assert len(self.push_buttons) == self.NUM_TOOLBAR_PUSH_BUTTONS, \
-                         "actual number of push_buttons:%s, expected: %s" % \
-                        (len(self.push_buttons), self.NUM_TOOLBAR_PUSH_BUTTONS)
-
-        # assert num of separator
-        procedurelogger.action("assert the num of the separators")
-        assert len(self.separator_styles) == self.NUM_TOOLBAR_SEPARATORS, \
-                         "actual number of separators:%s, expected: %s" % \
-                           (len(self.separator_styles), NUM_TOOLBAR_SEPARATORS)
-
-    # close application main window after running test
     def quit(self):
+        """
+        close application main window after running test
+        """
         self.altF4()
