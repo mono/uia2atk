@@ -1,4 +1,10 @@
 2009-07-27  Calen Chen <cachen@novell.com>
+	* testers/panel_basic_ops.py: add states check after doing click, add 
+	BUG525428 reference
+	* testers/panel/panelframe.py: find children from panals, assert lens of
+	panels
+
+2009-07-27  Calen Chen <cachen@novell.com>
 	* testers/printpreviewdialog/printpreviewdialogframe.py: remove some unused 
 	constants 
 	* testers/printpreviewdialog_basic_ops.py: remove some unused "#"

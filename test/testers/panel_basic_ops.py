@@ -63,6 +63,7 @@ statesCheck(pFrame.panel2, "Panel")
 ###########################
 # check children's AtkAccessible
 ###########################
+# panel should be focused, but focus on its child
 # check if checkbox and radiobutton in panel still have correct states
 statesCheck(pFrame.check1, "CheckBox", add_states=["focused"])
 statesCheck(pFrame.check2, "CheckBox")
@@ -81,16 +82,24 @@ statesCheck(pFrame.label2, "Label")
 statesCheck(pFrame.label3, "Label")
 
 # click on checkbox which is in panel1 to assert checked state rising
-pFrame.check1.click(log=True)
+pFrame.check2.click(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(pFrame.check1, "CheckBox", add_states=["checked", "focused"])
+# BUG525428 - doing click action doesn't move focus on that control
+#statesCheck(pFrame.check2, "CheckBox", add_states=["checked", "focused"])
 statesCheck(pFrame.check3, "CheckBox", add_states=["checked"])
+
+# doesn't change panel1's state
+statesCheck(pFrame.panel1, "Panel")
 
 # click on radiobutton which is in panel2 to update label
 pFrame.radio2.click(log=True)
 sleep(config.SHORT_DELAY)
 pFrame.assertText(pFrame.label3, 'You are Female')
-statesCheck(pFrame.radio2, "RadioButton", add_states=["checked"])
+# BUG525428 - doing click action doesn't move focus on that control
+#statesCheck(pFrame.radio2, "RadioButton", add_states=["checked", "focused"])
+
+# doesn't change panel2's state
+statesCheck(pFrame.panel2, "Panel")
 
 # close application frame window
 pFrame.quit()
