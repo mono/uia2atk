@@ -215,7 +215,7 @@ ppdFrame.assertNumOfAccessibles(ppdFrame.zoom_menu_items, \
 #    #statesCheck(ppdFrame.zoom_menu_items[i-1], "MenuItem")
   
 ################################################
-###### test numericupdown Accessibles
+# test numericupdown Accessibles
 ################################################
 ppdFrame.assignNumericUpdownValue(5)
 sleep(config.SHORT_DELAY)
@@ -241,7 +241,7 @@ ppdFrame.assertNumericUpdownValue(0)
 # had the expected affects on the GUI?
 
 ################################################
-###### test close and reopen the dialog
+# test close and reopen the dialog
 ################################################
 # test click action for close push button
 ppdFrame.close_button.click(log=True)
@@ -257,7 +257,7 @@ ppdFrame.dialog.assertClosed()
 #ppdFrame.findAllPrintPreviewDialogAccessibles()
   
 # close dialog window
-####ppdFrame.dialog.altF4()
+#ppdFrame.dialog.altF4()
 
 # TODO:
 # Bug 523388 - PrintPreviewDialog:the Printing 

@@ -25,11 +25,7 @@ class PrintPreviewDialogFrame(accessibles.Frame):
     
     NUM_DIALOG_PANELS = 7
     NUM_DIALOG_PUSH_BUTTONS = 8
-    NUM_DIALOG_TOGGLE_BUTTON = 1
-    NUM_DIALOG_LABEL = 1
-    NUM_DIALOG_SPINBUTTON = 1
     NUM_DIALOG_SEPARATORS = 2
-    NUM_DIALOG_FILLERS = 1 
     NUM_ZOOM_MENU_ITEMS = 9
 
     def __init__(self, accessible):
@@ -60,7 +56,7 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         self.panels = self.toolbar.findAllPanels(None)
 
         # find toggle button under the toolbar
-        self.toggle = self.toolbar.findToggleButton(None)
+        self.zoom_toggle = self.toolbar.findToggleButton(None)
 
         # find spin button under the toolbar
         self.spinbutton = self.toolbar.findSpinButton(None)
@@ -77,7 +73,6 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         # BUG508593 - PrintPreviewDialog: ToolTips are not accessible   
         # find all the tooltips 
         #tooltips = self.app.findAllToolTips(None)
-
 
     def findPringtingFrameAccessibles(self):
         """
