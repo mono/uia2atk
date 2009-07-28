@@ -1,5 +1,9 @@
 2009-07-28  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Missing ;
+
+2009-07-28  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am: Updated by Monodevelop.
 	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs: 
 	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Using 
