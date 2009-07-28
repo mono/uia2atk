@@ -42,8 +42,7 @@ except IOError, msg:
 tvFrame = app.treeViewFrame
 
 # check the states of all the accessibles
-statesCheck(tvFrame.tree_table, "TreeTable")
-# BUG476786 TreeView's first table cell is missing focus state when app starts
+statesCheck(tvFrame.tree_table, "TreeTable", add_states=[FOCUSED])
 statesCheck(tvFrame.parent1,
             "TreeViewTableCell",
             add_states=[EXPANDABLE, FOCUSED, SELECTED])
@@ -52,23 +51,23 @@ statesCheck(tvFrame.parent2,
             add_states=[EXPANDABLE])
 # BUG477042 TreeView table cells that are not visible do not have "focusable"
 # state
-statesCheck(tvFrame.child1,
-            "TreeViewTableCell",
-            invalid_states=[SHOWING, VISIBLE])
-statesCheck(tvFrame.child2,
-            "TreeViewTableCell",
-            add_states=[EXPANDABLE],
-            invalid_states=[SHOWING, VISIBLE])
-statesCheck(tvFrame.child3,
-            "TreeViewTableCell",
-            invalid_states=[SHOWING, VISIBLE])
-statesCheck(tvFrame.grandchild,
-            "TreeViewTableCell",
-            add_states=[EXPANDABLE],
-            invalid_states=[SHOWING, VISIBLE])
-statesCheck(tvFrame.great_grandchild,
-            "TreeViewTableCell",
-            invalid_states=[SHOWING, VISIBLE])
+#statesCheck(tvFrame.child1,
+#            "TreeViewTableCell",
+#            invalid_states=[SHOWING, VISIBLE])
+#statesCheck(tvFrame.child2,
+#            "TreeViewTableCell",
+#            add_states=[EXPANDABLE],
+#            invalid_states=[SHOWING, VISIBLE])
+#statesCheck(tvFrame.child3,
+#            "TreeViewTableCell",
+#            invalid_states=[SHOWING, VISIBLE])
+#statesCheck(tvFrame.grandchild,
+#            "TreeViewTableCell",
+#            add_states=[EXPANDABLE],
+#            invalid_states=[SHOWING, VISIBLE])
+#statesCheck(tvFrame.great_grandchild,
+#            "TreeViewTableCell",
+#            invalid_states=[SHOWING, VISIBLE])
 
 # check the actions of all the accessibles
 # BUG475882 TreeView table cells with children should have "expand or contract"
@@ -134,14 +133,20 @@ statesCheck(tvFrame.child2,
 # contract parent 1
 tvFrame.parent1.expandOrContract()
 sleep(config.SHORT_DELAY)
-statesCheck(tvFrame.child1, "TreeViewTableCell")
+# BUG475882 TreeView table cells with children should have "expand or contract"
+# action
+#statesCheck(tvFrame.child1,
+#            "TreeViewTableCell",
+#            invalid_states=[SHOWING, VISIBLE])
 statesCheck(tvFrame.parent1,
             "TreeViewTableCell",
-            add_states=[FOCUSED, SELECTED])
-statesCheck(tvFrame.child2,
-            "TreeViewTableCell",
-            add_states=[EXPANDABLE, EXPANDED],
-            invalid_states=[SHOWING, VISIBLE])	
+            add_states=[FOCUSED, SELECTED, EXPANDABLE])
+# BUG475882 TreeView table cells with children should have "expand or contract"
+# action
+#statesCheck(tvFrame.child2,
+#            "TreeViewTableCell",
+#            add_states=[EXPANDABLE, EXPANDED],
+#            invalid_states=[SHOWING, VISIBLE])	
 
 # TODO:  Possible need to test the activate action, but we may not even
 # implement an activate action.  See BUG475864

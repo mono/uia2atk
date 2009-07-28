@@ -1,5 +1,9 @@
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
+	* tester/treeview_basic_ops.py:
+      remove bug476786 reference, uncomment some codes
+
+2009-07-28  Felicia Mu <fxmu@novell.com>
 	* tester/vscrollbar/vscrollbarframe.py:
       add docstring for the functions in vscrollbarframe.py
 
