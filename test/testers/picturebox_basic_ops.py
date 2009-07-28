@@ -25,61 +25,62 @@ from os import path
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the picturebox sample application
 try:
-  app = launchPictureBox(app_path)
+    app = launchPictureBox(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 sleep(config.SHORT_DELAY)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 pbFrame = app.pictureBoxFrame
 
-#check the actions of button in picturebox
-actionsCheck(pbFrame.button1, "Button")
+# check the actions of button in picturebox
+actionsCheck(pbFrame.button, "Button")
 
-#check the states of button and label in picturebox
-statesCheck(pbFrame.button1, "Button", add_states=["focused"])
+# check the states of button,label and icon in picturebox
+statesCheck(pbFrame.button, "Button", add_states=["focused"])
 statesCheck(pbFrame.label, "Label")
+statesCheck(pbFrame.icon, "Icon")
 
-#click button changing to universi.jpg
-pbFrame.click(pbFrame.button1)
+# click button changing to universi.jpg
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-pbFrame.assertPicture(2)
+pbFrame.assertName(pbFrame.label, "show universe300x400.jpg")
+# BUG525795: Icon's name doesn't update
+#pbFrame.assertName(pbFrame.icon, "show universe300x400.jpg")
 
-#check icon role implementation
-pbFrame.assertIcon()
-#check icon's image size
+# check icon's image size
 pbFrame.assertImageSize(pbFrame.icon, 300, 400)
-#check Icon's states
+# check Icon's states
 statesCheck(pbFrame.icon, "Icon")
 
-#click button changing to desktop-blue_soccer.jpg
-pbFrame.click(pbFrame.button1)
+# click button changing to desktop-blue_soccer.jpg
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-pbFrame.assertPicture(1)
+pbFrame.assertName(pbFrame.label, "show desktop-blue_soccer400x500.jpg")
+# BUG525795: Icon's name doesn't update
+#pbFrame.assertName(pbFrame.icon, "show desktop-blue_soccer400x500.jpg")
 
-#check icon role implementation again
-pbFrame.assertIcon()
-#check icon's image size again
+# check icon's image size again
 pbFrame.assertImageSize(pbFrame.icon, 400, 500)
-#check Icon's states
+# check Icon's states
 statesCheck(pbFrame.icon, "Icon")
 
-#check button's image size
-pbFrame.assertImageSize(pbFrame.button1)
+# check button's image size
+pbFrame.assertImageSize(pbFrame.button, 60, 38)
 
-#close application frame window
+# close application frame window
 pbFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

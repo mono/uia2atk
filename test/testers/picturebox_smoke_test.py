@@ -46,21 +46,21 @@ if app is None:
 pbFrame = app.pictureBoxFrame
 
 #check the actions of button in picturebox
-actionsCheck(pbFrame.button1, "Button")
+actionsCheck(pbFrame.button, "Button")
 
 #check the states of button and label in picturebox
-statesCheck(pbFrame.button1, "Button", add_states=["focused"])
+statesCheck(pbFrame.button, "Button", add_states=["focused"])
 statesCheck(pbFrame.label, "Label")
 
 #click button changing to universi.jpg
-pbFrame.click(pbFrame.button1)
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-pbFrame.assertPicture(2)
+pbFrame.assertName(pbFrame.label, "show universe300x400.jpg")
 
 #click button changing to desktop-blue_soccer.jpg
-pbFrame.click(pbFrame.button1)
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-pbFrame.assertPicture(1)
+pbFrame.assertName(pbFrame.label, "show desktop-blue_soccer400x500.jpg")
 
 #close application frame window
 pbFrame.quit()

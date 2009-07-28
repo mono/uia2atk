@@ -1,11 +1,18 @@
+2009-07-28  Calen Chen <cachen@novell.com>
+	* testers/printpreviewdialog_basic_ops.py: change toggle to zoom_toggle
+	* samples/picturebox.py: shorten label's text
+	* testers/picturebox/pictureboxframe.py: add assertName method, add doc 
+	strings
+	* testers/picturebox_basic_ops.py,
+	* testers/picturebox_smoke_test.py: test accessible's name, add 
+	BUG525795 reference
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
-	* tester/treeview_basic_ops.py:
-      remove bug475882 reference
+	* tester/treeview_basic_ops.py: remove bug475882 reference
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
-	* tester/treeview_basic_ops.py:
-      remove bug476786 reference, uncomment some codes
+	* tester/treeview_basic_ops.py: remove bug476786 reference, uncomment 
+	some codes
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
 	* tester/vscrollbar/vscrollbarframe.py:

@@ -54,7 +54,7 @@ class PictureBoxSample(Form):
         self.label = Label()
         self.label.Location = Point(10, 100)
         self.label.ForeColor = Color.Red
-        self.label.Text = "You are watching %s" % self.path_to_file
+        self.label.Text = "show desktop-blue_soccer400x500.jpg"
         self.label.AutoSize = True
 
         # setup picturebox
@@ -80,12 +80,12 @@ class PictureBoxSample(Form):
             self.toggle = False
             self.path_to_file = "%s/samples/universe300x400.jpg" % uiaqa_path
             self.change_picture()
-            self.label.Text = "You are watching %s" % self.path_to_file
+            self.label.Text = "show universe300x400.jpg"
         else:
             self.toggle = True
             self.path_to_file = "%s/samples/desktop-blue_soccer400x500.jpg" % uiaqa_path
             self.change_picture()
-            self.label.Text = "You are watching %s" % self.path_to_file
+            self.label.Text = "show desktop-blue_soccer400x500.jpg"
 
 # run application
 form = PictureBoxSample()

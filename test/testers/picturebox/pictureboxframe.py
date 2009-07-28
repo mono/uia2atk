@@ -18,63 +18,45 @@ class PictureBoxFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    BUTTON_ONE = "openSUSE"
-    LABEL = ""
+    BUTTON = "openSUSE"
+    LABEL = "show desktop-blue_soccer400x500.jpg"
 
     def __init__(self, accessible):
         super(PictureBoxFrame, self).__init__(accessible)
-        self.button1 = self.findPushButton(self.BUTTON_ONE)
-        self.label = self.findLabel(None)
-        		
-    #give 'click' action
-    def click(self,button):
-        button.click()
+        self.button = self.findPushButton(self.BUTTON)
+        self.label = self.findLabel(self.LABEL)
+        self.icon = self.findIcon(self.LABEL)
 
-    #check the picture after click button
-    def assertPicture(self, picture=None):
-        picture1 = "desktop-blue_soccer400x500.jpg"
-        picture2 = "universe300x400.jpg"
-        def resultMatches():
-            if picture == 1:
-                procedurelogger.expectedResult('picture has been changed to "%s"' % picture1)
-                return self.findLabel("You are watching %s/samples/%s" % (uiaqa_path, picture1))
-            if picture == 2:
-                procedurelogger.expectedResult('picture has been changed to "%s"' % picture2)
-                return self.findLabel("You are watching %s/samples/%s" % (uiaqa_path, picture2))
-        assert retryUntilTrue(resultMatches), "Expected picture: %s" % picture
+    def assertName(self, accessible, expected_name):
+        """Make sure accessible's name is expected"""
+        procedurelogger.action("check %s's name" % accessible.roleName)
+        procedurelogger.expectedResult("%s's name is: %s" % \
+                                       (accessible.roleName, expected_name))
 
-    #check icon implementation
-    def assertIcon(self):
-        procedurelogger.action("search for Icon role")
-        self.icon = self.findIcon(None)
+        actual_name = accessible.name
+        assert actual_name == expected_name, \
+                "actual name is:%s, expected:%s" % (actual_name, expected_name)    
 
-        procedurelogger.expectedResult("shows Icon in accerciser")
-        assert self.icon
-
-    # assert the size of an image
-    def assertImageSize(self, accessible, width=60, height=38):
+    def assertImageSize(self, accessible, expected_width=0, expected_height=0):
+        """Make sure accessible's image size is expected"""
         procedurelogger.action("assert %s's image size" % accessible)
-
-        if accessible == self.icon:
-            size = accessible._accessible.queryImage().getImageSize()
-        else:
-            size = accessible.imageSize
+        size = accessible._accessible.queryImage().getImageSize()
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (accessible, width, height))
+                                 (accessible, expected_width, expected_height))
 
-        assert width == size[0], "%s (%s), %s (%s)" %\
+        assert expected_width == size[0], "%s (%s), %s (%s)" %\
                                             ("expected width",
-                                              width,
+                                              expected_width,
                                              "does not match actual width",
                                               size[0])
-        assert height == size[1], "%s (%s), %s (%s)" %\
+        assert expected_height == size[1], "%s (%s), %s (%s)" %\
                                             ("expected height",
-                                              height,
+                                              expected_height,
                                              "does not match actual height",
                                               size[1])
     
     
-    #close application main window after running test
+    # close application main window after running test
     def quit(self):
         self.altF4()

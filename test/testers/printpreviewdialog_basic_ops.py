@@ -94,8 +94,8 @@ statesCheck(ppdFrame.toolbar, "ToolBar")
 for push_button in ppdFrame.pushbuttons:
     statesCheck(push_button, "Button")
 
-# test toggle button states
-statesCheck(ppdFrame.toggle, "ToggleButton")
+# test zoom_toggle button states
+statesCheck(ppdFrame.zoom_toggle, "ToggleButton")
 
 # test spin button states
 statesCheck(ppdFrame.spinbutton, "Button", add_states=["single line", "editable"])
@@ -119,8 +119,8 @@ statesCheck(ppdFrame.label, "Label")
 for push_button in ppdFrame.pushbuttons:
     actionsCheck(push_button, "Button", add_actions=["click"])
 
-# test toggle button actions
-actionsCheck(ppdFrame.toggle, "ToggleButton", add_actions=["click"])
+# test zoom_toggle button actions
+actionsCheck(ppdFrame.zoom_toggle, "ToggleButton", add_actions=["click"])
 
 # test spin button actions
 actionsCheck(ppdFrame.spinbutton, "Button", add_actions=["activate"], \
@@ -142,19 +142,19 @@ statesCheck(ppdFrame.close_button, "Button", add_states=['focused'])
 #        sleep(config.SHORT_DELAY)
 #        statesCheck(push_button, "Button", add_states=['focused'])
 
-# test toggle button states
+# test zoom_toggle button states
 # BUG522614 - PrintPreviewDialog: the 'toggle button' on 
 # tool bar doesn't rise 'focused' and 'armed', 'checked' states
-#ppdFrame.toggle.mouseClick()
+#ppdFrame.zoom_toggle.mouseClick()
 #sleep(config.SHORT_DELAY)
-#statesCheck(ppdFrame.toggle, "ToggleButton", \
+#statesCheck(ppdFrame.zoom_toggle, "ToggleButton", \
 #                                add_states = ['focused','armed','checked'])
 
 # BUG522636 - Toggle Button(with drop down style): the 
 # "click" action performs different from mouse click action.
-#ppdFrame.toggle.click()
+#ppdFrame.zoom_toggle.click()
 #sleep(config.SHORT_DELAY)
-#statesCheck(ppdFrame.toggle, "ToggleButton", \
+#statesCheck(ppdFrame.zoom_toggle, "ToggleButton", \
 #                                add_states = ['focused','armed','checked'])
 # BUG509344 - PrintPreivewDialog: clicking zoom toggle button 
 # the second time doesn't close the menu
@@ -173,8 +173,8 @@ statesCheck(ppdFrame.spinbutton, "Button", \
 ###########################################
 # test ZoomDropDown Accessibles
 ###########################################
-# click the toggle button to raise the drop down menu
-ppdFrame.toggle.click(log=True)
+# click the zoom_toggle button to raise the drop down menu
+ppdFrame.zoom_toggle.click(log=True)
 sleep(config.SHORT_DELAY)
 
 # find all the accessibles on the the menu
