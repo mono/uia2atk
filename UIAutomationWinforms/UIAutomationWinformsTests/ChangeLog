@@ -1,3 +1,7 @@
+2009-07-28  Mike Gorse <mgorse@novell.com>
+
+	* MenuItemProviderTest.cs: Add IsSelected test.
+
 2009-07-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TestHelper.cs: Hook on Log.Error events.

@@ -33,10 +33,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.MenuItem
 {
 	internal class SelectionItemProviderBehavior : ProviderBehavior, ISelectionItemProvider
 	{
+		private SWF.MenuItem menuItem;
 		
 		public SelectionItemProviderBehavior (MenuItemProvider itemProvider) :
 			base (itemProvider)
 		{
+			menuItem = itemProvider.MenuItem;
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -79,7 +81,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.MenuItem
 		
 		public bool IsSelected {
 			get {
-				return true;
+				return menuItem.Checked;
 			}
 		}
 		

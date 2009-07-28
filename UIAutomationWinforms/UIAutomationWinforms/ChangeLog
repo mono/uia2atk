@@ -1,3 +1,9 @@
+2009-07-28  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/MenuItemProvider.cs,
+	Mono.UIAutomation.Winforms.Behaviors/MenuItem/SelectionItemProviderBehavior.cs:
+	Only set IsSelected if Checked [bug#509276]
+
 2009-07-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs:

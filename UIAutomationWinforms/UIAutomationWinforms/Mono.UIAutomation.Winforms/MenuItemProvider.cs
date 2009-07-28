@@ -145,6 +145,11 @@ namespace Mono.UIAutomation.Winforms
 			this.bounds = bounds;
 		}
 
+		internal SWF.MenuItem MenuItem {
+			get {
+				return menuItem;
+			}
+		}
 		#endregion
 
 		#region Private Methods
