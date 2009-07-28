@@ -1,3 +1,8 @@
+2009-07-28 Marco Skambraks <marco@suse.de>
+	* initial test for savefiledialog and openfiledialog
+	- problem: if the button for open/save is clicked I got no output
+	  during the test run
+	  if I test the application manually I get the correct information
 2009-06-23 Marco Skambraks <marco@suse.de>
 	* updated errorprovider, helpprovider and groupbox
 	* added a comment to mono.settings (used orca revision r4277)
