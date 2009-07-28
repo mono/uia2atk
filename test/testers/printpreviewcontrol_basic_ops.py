@@ -63,11 +63,6 @@ assert printing_window_unfound == true, \
 # find all of the controls on the PrintPreviewControl page
 ppcFrame.findAllPrintPreviewControlAccessibles()
 
-# check the states of the weird "Printing" frame that is not showing
-# Bug 508516 - PrintPreviewControl: "Printing" frame is no longer showing, but
-# still has "active" state
-#statesCheck(ppcFrame.frame, "Form", invalid_states=["showing", "visible"])
-
 # in this example panel should have "focusable" state that is different from 
 # Panel control due to IsKeyboardFocusable is True
 statesCheck(ppcFrame.panel, "Panel", add_states=["focusable"])
