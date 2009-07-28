@@ -51,23 +51,23 @@ statesCheck(tvFrame.parent2,
             add_states=[EXPANDABLE])
 # BUG477042 TreeView table cells that are not visible do not have "focusable"
 # state
-#statesCheck(tvFrame.child1,
-#            "TreeViewTableCell",
-#            invalid_states=[SHOWING, VISIBLE])
-#statesCheck(tvFrame.child2,
-#            "TreeViewTableCell",
-#            add_states=[EXPANDABLE],
-#            invalid_states=[SHOWING, VISIBLE])
-#statesCheck(tvFrame.child3,
-#            "TreeViewTableCell",
-#            invalid_states=[SHOWING, VISIBLE])
-#statesCheck(tvFrame.grandchild,
-#            "TreeViewTableCell",
-#            add_states=[EXPANDABLE],
-#            invalid_states=[SHOWING, VISIBLE])
-#statesCheck(tvFrame.great_grandchild,
-#            "TreeViewTableCell",
-#            invalid_states=[SHOWING, VISIBLE])
+statesCheck(tvFrame.child1,
+            "TreeViewTableCell",
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
+statesCheck(tvFrame.child2,
+            "TreeViewTableCell",
+            add_states=[EXPANDABLE],
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
+statesCheck(tvFrame.child3,
+            "TreeViewTableCell",
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
+statesCheck(tvFrame.grandchild,
+            "TreeViewTableCell",
+            add_states=[EXPANDABLE],
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
+statesCheck(tvFrame.great_grandchild,
+            "TreeViewTableCell",
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
 
 # check the actions of all the accessibles
 actionsCheck(tvFrame.parent1,
@@ -133,18 +133,18 @@ tvFrame.parent1.expandOrContract()
 sleep(config.SHORT_DELAY)
 # BUG477042 TreeView table cells that are not visible do not have "focusable"
 # state
-#statesCheck(tvFrame.child1,
-#            "TreeViewTableCell",
-#            invalid_states=[SHOWING, VISIBLE])
+statesCheck(tvFrame.child1,
+            "TreeViewTableCell",
+            invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
 statesCheck(tvFrame.parent1,
             "TreeViewTableCell",
             add_states=[FOCUSED, SELECTED, EXPANDABLE])
 # BUG477042 TreeView table cells that are not visible do not have "focusable"
 # state
-#statesCheck(tvFrame.child2,
-#            "TreeViewTableCell",
-#            add_states=[EXPANDABLE, EXPANDED],
-#            invalid_states=[SHOWING, VISIBLE])	
+statesCheck(tvFrame.child2,
+            "TreeViewTableCell",
+            add_states=[EXPANDABLE, EXPANDED],
+            invalid_states=[SHOWING, VISIBLE,FOCUSABLE ])	
 
 # TODO:  Possible need to test the activate action, but we may not even
 # implement an activate action.  See BUG475864

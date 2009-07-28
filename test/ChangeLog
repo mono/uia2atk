@@ -1,3 +1,8 @@
+
+2009-07-28  Felicia Mu <fxmu@novell.com>
+	* tester/treeview_basic_ops.py:
+      remove bug477042 reference, update the test cases
+
 2009-07-28  Calen Chen <cachen@novell.com>
 	* testers/printpreviewdialog_basic_ops.py: change toggle to zoom_toggle
 	* samples/picturebox.py: shorten label's text
@@ -8,6 +13,8 @@
 	BUG525795 reference
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
+	* tester/treeview_basic_ops.py:
+      remove bug475882 reference
 	* tester/treeview_basic_ops.py: remove bug475882 reference
 
 2009-07-28  Felicia Mu <fxmu@novell.com>
