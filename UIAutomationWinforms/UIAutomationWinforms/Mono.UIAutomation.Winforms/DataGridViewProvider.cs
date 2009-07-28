@@ -696,7 +696,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return gridProvider.DataGridView.CurrentCell == cell && gridProvider.DataGridView.Focused;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
-					return !Cell.ReadOnly;
+					return ContainerControl.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)

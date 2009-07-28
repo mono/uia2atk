@@ -51,11 +51,13 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 		public override void Connect ()
 		{
 			provider.ItemProvider.DataGridView.CellStateChanged += OnIsReadOnlyProperty;
+			provider.ItemProvider.DataGridView.EnabledChanged += OnEnabledChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			provider.ItemProvider.DataGridView.CellStateChanged -= OnIsReadOnlyProperty;
+			provider.ItemProvider.DataGridView.EnabledChanged -= OnEnabledChanged;	
 		}
 		
 		#endregion
@@ -65,7 +67,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 		private void OnIsReadOnlyProperty (object sender, 
 		                                   SWF.DataGridViewCellStateChangedEventArgs args)
 		{
-			bool newValue = (bool) provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			bool newValue = args.Cell.ReadOnly;
 
 			if (args.Cell.ColumnIndex == provider.Cell.ColumnIndex
 			    && args.Cell.RowIndex == provider.Cell.RowIndex
@@ -73,6 +75,13 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 				isreadonly = newValue;
 				RaiseAutomationPropertyChangedEvent ();
 			}
+		}
+
+		private void OnEnabledChanged (object sender, EventArgs args)
+		{
+			SWF.Control datagrid = (SWF.Control) sender;
+			isreadonly = !datagrid.Enabled;
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion
