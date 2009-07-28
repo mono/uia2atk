@@ -144,6 +144,46 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
+		public void IsSelectedPropertyTest ()
+		{
+			MenuItem menuItem = new MenuItem ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+
+			// Test without children
+			menuItem.Checked = false;
+			menuItem.RadioCheck = false;
+			VerifyIsSelectedProperty (provider, menuItem);
+			
+			menuItem.Checked = true;
+			menuItem.RadioCheck = false;
+			VerifyIsSelectedProperty (provider, menuItem);
+			
+			menuItem.Checked = false;
+			menuItem.RadioCheck = true;
+			VerifyIsSelectedProperty (provider, menuItem);
+			
+			menuItem.Checked = true;
+			menuItem.RadioCheck = true;
+			VerifyIsSelectedProperty (provider, menuItem);
+
+			// TODO: Test with C=F, RC=F, sibling item with RC=T
+
+			// Test with children
+			menuItem.MenuItems.Add (new MenuItem ("child item"));
+
+			// Checked and RadioCheck are still true
+			VerifyIsSelectedProperty (provider, menuItem);
+			
+			menuItem.Checked = true;
+			menuItem.RadioCheck = false;
+			VerifyIsSelectedProperty (provider, menuItem);
+			
+			menuItem.Checked = false;
+			menuItem.RadioCheck = false;
+			VerifyIsSelectedProperty (provider, menuItem);
+		}
+		
+		[Test]
 		public new void IsEnabledPropertyTest ()
 		{
 			MenuItem menuItem = new MenuItem ();
@@ -463,6 +503,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} else
 				Assert.IsNull (expandCollapseProvider,
 				               "Should not support ExpandCollapse Pattern.");
+		}
+
+		private void VerifyIsSelectedProperty (IRawElementProviderSimple provider,
+		                                       MenuItem menuItem)
+		{
+			bool expectPattern = (menuItem.MenuItems.Count == 0 && menuItem.RadioCheck);
+			if (expectPattern)
+				TestProperty (provider,
+				              SelectionItemPatternIdentifiers.IsSelectedProperty,
+				              menuItem.Checked);
+			else
+				TestProperty (provider,
+				              SelectionItemPatternIdentifiers.IsSelectedProperty,
+				              null);
 		}
 
 		protected override Control GetControlInstance ()
