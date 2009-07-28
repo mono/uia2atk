@@ -18,7 +18,7 @@ BuildRequires:  gtk-sharp2
 BuildRequires:  gtk2-devel
 BuildRequires:  mono-devel
 BuildRequires:  monodoc-core
-BuildRequires:  mono-core-moon
+#BuildRequires:  mono-core-moon
 BuildRequires:  rsvg2-sharp
 BuildRequires:  zip
 BuildRequires:  zlib-devel
