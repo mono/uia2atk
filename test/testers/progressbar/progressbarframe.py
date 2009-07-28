@@ -29,13 +29,6 @@ class ProgressBarFrame(accessibles.Frame):
         self.button = self.findPushButton(self.BUTTON)
         self.progressbar = self.findProgressBar(None)
 
-    def click(self, button):
-        """
-        Wrap strongwind click action
-
-        """
-        button.click()
-
     def assertLabel(self, percent):
         """
         Make sure Lable is changed to show how many percent of the progress 
@@ -45,7 +38,8 @@ class ProgressBarFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s percent of progress' % percent)
 
         def resultMatches():
-            return self.findLabel(None).text == "It is %s percent " % percent + "of 100%"
+            return self.findLabel(None).text == "It is %s percent " % \
+                                                          percent + "of 100%"
         assert retryUntilTrue(resultMatches)
 
     def value(self, newValue=None):
@@ -82,10 +76,12 @@ class ProgressBarFrame(accessibles.Frame):
 	be used after click button to change progress
 
         """
-        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % value)
+        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % \
+                                                                         value)
 
         assert accessible.value == value, \
-                       "current value %s not match %s:" % (accessible.value, value)
+                       "current value %s not match %s:" % (accessible.value, 
+                                                                         value)
 
     
     # close application window

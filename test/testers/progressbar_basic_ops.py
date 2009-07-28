@@ -25,20 +25,20 @@ from os import path
 
 app_path = None 
 try:
-  app_path = argv[1]
+    app_path = argv[1]
 except IndexError:
-  pass #expected
+    pass #expected
 
 # open the progressbar sample application
 try:
-  app = launchProgressBar(app_path)
+    app = launchProgressBar(app_path)
 except IOError, msg:
-  print "ERROR:  %s" % msg
-  exit(2)
+    print "ERROR:  %s" % msg
+    exit(2)
 
 # make sure we got the app back
 if app is None:
-  exit(4)
+    exit(4)
 
 # just an alias to make things shorter
 pbFrame = app.progressBarFrame
@@ -48,32 +48,32 @@ statesCheck(pbFrame.progressbar, "ProgressBar")
 
 # click button,label and progressbar's current value is changed
 # value would return to 0 and start again after up to 100
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("40%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 40)
 
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("60%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 60)
 
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("80%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 80)
 
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("100%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 100)
 # start progress again after the value up to 100
-pbFrame.click(pbFrame.button)
+pbFrame.button.click()
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
