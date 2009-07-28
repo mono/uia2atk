@@ -49,8 +49,6 @@ statesCheck(tvFrame.parent1,
 statesCheck(tvFrame.parent2,
             "TreeViewTableCell",
             add_states=[EXPANDABLE])
-# BUG477042 TreeView table cells that are not visible do not have "focusable"
-# state
 statesCheck(tvFrame.child1,
             "TreeViewTableCell",
             invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
@@ -131,23 +129,16 @@ statesCheck(tvFrame.child2,
 # contract parent 1
 tvFrame.parent1.expandOrContract()
 sleep(config.SHORT_DELAY)
-# BUG477042 TreeView table cells that are not visible do not have "focusable"
-# state
 statesCheck(tvFrame.child1,
             "TreeViewTableCell",
             invalid_states=[SHOWING, VISIBLE, FOCUSABLE])
 statesCheck(tvFrame.parent1,
             "TreeViewTableCell",
             add_states=[FOCUSED, SELECTED, EXPANDABLE])
-# BUG477042 TreeView table cells that are not visible do not have "focusable"
-# state
 statesCheck(tvFrame.child2,
             "TreeViewTableCell",
             add_states=[EXPANDABLE, EXPANDED],
             invalid_states=[SHOWING, VISIBLE,FOCUSABLE ])	
-
-# TODO:  Possible need to test the activate action, but we may not even
-# implement an activate action.  See BUG475864
 
 #close application frame window
 tvFrame.quit()
