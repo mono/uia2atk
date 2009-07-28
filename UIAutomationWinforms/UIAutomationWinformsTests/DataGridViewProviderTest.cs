@@ -261,6 +261,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				TestChildPatterns (provider);
 			}
 
+			// Exposes BNC #513476
+			cell.ReadOnly = false;
+			Assert.IsTrue ((bool) dataItem.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+
+			cell.ReadOnly = true;
+			Assert.IsTrue ((bool) dataItem.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+			cell.ReadOnly = false;
+			
+			datagridview.Enabled = false;
+			Assert.IsFalse ((bool) dataItem.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+			
+			datagridview.Enabled = true;
+			Assert.IsTrue ((bool) dataItem.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+
 			return provider;
 		}
 		
@@ -289,7 +303,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if (provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemEditProvider)) {
 				DataGridViewProvider.DataGridViewDataItemEditProvider editProvider 
 					= (DataGridViewProvider.DataGridViewDataItemEditProvider) provider;
-				editProvider.TextBoxCell.ReadOnly = newValue;
+				editProvider.DataGridViewProvider.DataGridView.Enabled = !newValue;
 			} else
 				Assert.Fail ("I don't speak {0}!", provider.GetType ());
 		}

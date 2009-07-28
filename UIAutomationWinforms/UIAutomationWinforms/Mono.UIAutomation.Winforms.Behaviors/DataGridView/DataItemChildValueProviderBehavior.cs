@@ -91,7 +91,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		}
 
 		public bool IsReadOnly {
-			get { return provider.TextBoxCell.ReadOnly; }
+			get { return provider.TextBoxCell.ReadOnly || !provider.ItemProvider.DataGridView.Enabled; }
 		}
 		
 		public string Value {
