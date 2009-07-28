@@ -30,18 +30,26 @@ class VScrollBarFrame(accessibles.Frame):
         self.label = self.findLabel(self.LABEL)
         self.vscrollbar = self.findScrollBar(None)
 
-    # change vscrollbar's value
     def assignScrollBarValue(self, new_value):
+        """
+        change vscrollbar's value
+        """
         procedurelogger.action('set scrollbar value to "%s"' % new_value)
         self.vscrollbar.value = new_value
 
     def assertLabel(self, value):
+        """
+        check the Label text
+        """
         procedurelogger.expectedResult('label\'s value is "%s"' % value)
         expected_label = "Value: %s" % value
         assert self.label.text == expected_label, \
                'Label reads "%s", expected "%s"' % (self.label, expected_label)
 
     def assertMaximumValue(self):
+        """
+        check the vscrollbar's maximum value
+        """
         procedurelogger.action("Ensure that %s's maximum value is what we expect" % self.vscrollbar)
         procedurelogger.expectedResult("%s's maximum value is %s" % \
                                                 (self.vscrollbar, self.MAXVAL))
@@ -52,6 +60,9 @@ class VScrollBarFrame(accessibles.Frame):
                                         (self.maximumValue, self.MAXVAL)
 
     def assertMinimumValue(self):
+        """
+        check the vscrollbar's minimum value
+        """
         procedurelogger.action("Ensure that %s's minimum value is what we expect" % self.vscrollbar)
         procedurelogger.expectedResult("%s's minimum value is %s" % \
                                                 (self.vscrollbar, self.MINVAL))
@@ -62,6 +73,9 @@ class VScrollBarFrame(accessibles.Frame):
                                         (self.minimumValue, self.MAXVAL)
 
     def assertMinimumIncrement(self):
+        """
+        check the vscrollbar's minimum increment value
+        """
         procedurelogger.action("Ensure that %s's minimum increment value is what we expect" % self.vscrollbar)
         procedurelogger.expectedResult("%s's minimum increment value is %s" % \
                                           (self.vscrollbar, self.MININCREMENT))
@@ -72,11 +86,16 @@ class VScrollBarFrame(accessibles.Frame):
                                (self.minimumIncrement, self.MININCREMENT)
 
     def assertScrollBar(self, expected_value):
+        """
+        check the vscrollbar's current value
+        """
         procedurelogger.expectedResult('the scrollbar\'s current value is %s' % expected_value)
         assert self.vscrollbar.value == expected_value, \
                          "scrollbar's current value is %s, expected %s" % \
                          (self.vscrollbar.value, expected_value)
     
-    # close application window
     def quit(self):
+        """
+        close application window
+        """
         self.altF4()
