@@ -70,8 +70,6 @@ statesCheck(tvFrame.parent2,
 #            invalid_states=[SHOWING, VISIBLE])
 
 # check the actions of all the accessibles
-# BUG475882 TreeView table cells with children should have "expand or contract"
-# action
 actionsCheck(tvFrame.parent1,
              "TreeViewTableCell",
              add_actions=[EXPAND_OR_CONTRACT])
@@ -133,16 +131,16 @@ statesCheck(tvFrame.child2,
 # contract parent 1
 tvFrame.parent1.expandOrContract()
 sleep(config.SHORT_DELAY)
-# BUG475882 TreeView table cells with children should have "expand or contract"
-# action
+# BUG477042 TreeView table cells that are not visible do not have "focusable"
+# state
 #statesCheck(tvFrame.child1,
 #            "TreeViewTableCell",
 #            invalid_states=[SHOWING, VISIBLE])
 statesCheck(tvFrame.parent1,
             "TreeViewTableCell",
             add_states=[FOCUSED, SELECTED, EXPANDABLE])
-# BUG475882 TreeView table cells with children should have "expand or contract"
-# action
+# BUG477042 TreeView table cells that are not visible do not have "focusable"
+# state
 #statesCheck(tvFrame.child2,
 #            "TreeViewTableCell",
 #            add_states=[EXPANDABLE, EXPANDED],
