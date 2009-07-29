@@ -29,7 +29,6 @@ BuildRequires:  gtk2-devel
 BuildRequires:  python
 BuildRequires:  update-desktop-files
 Obsoletes:	at-spi
-Obsoletes:	at-spi-devel
 
 %description
 This library, based on ATK, is a general interface for applications to 
@@ -38,11 +37,12 @@ make use of the accessibility toolkit.  This version is based on dbus.
 %package devel
 Group:          Development/Libraries/GNOME
 Summary:        Include Files and Libraries mandatory for Development
-Requires:       %{name} = %{version} 
-Requires:      atk-devel
-Requires:      dbus-1-devel
-Requires:      dbus-1-glib-devel
-Requires:      gtk2-devel
+Requires:	%{name} = %{version} 
+Requires:	atk-devel
+Requires:	dbus-1-devel
+Requires:	dbus-1-glib-devel
+Requires:	gtk2-devel
+Obsoletes:	at-spi-devel
 
 %description devel
 This package contains all necessary include files and libraries needed
