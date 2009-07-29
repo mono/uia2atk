@@ -3,28 +3,41 @@
 #
 
 Name:           at-spi-sharp
-Version:        1.9.0
+Version:        139014
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:	mono-core
+BuildRequires:	mono-devel >= 2.4
+BuildRequires:	mono-uia
+BuildRequires:	ndesk-dbus-glib-devel
+BuildRequires:	pkg-config
 
-Summary:        c# bindings for at-spi
+Summary:        C# bindings for at-spi
 
 %description
-C# bindings for at-spi
+C# mono bindings for at-spi
+
+%package devel
+Group:		Development/Libraries/mono
+Summary:	Devel package for at-spi-sharp mono bindings
+Requires:	%{name} = %{version}
+
+%description devel
+Devel package that contains the pc file for at-spi-sharp
 
 %prep
 %setup -q
 
 %build
-%configure
+%configure --disable-tests
 make %{?_smp_mflags}
 
 %install
-make DESTDIR=%{buildroot} install
+%makeinstall
 
 
 %clean
@@ -32,10 +45,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
+%dir %{_prefix}/lib/mono/gac/at-spi-sharp/
+%{_prefix}/lib/mono/accessibility/at-spi-sharp.dll
+%{_prefix}/lib/mono/gac/at-spi-sharp/*
 
+%files devel
+%defattr(-,root,root)
+%{_libdir}/pkgconfig/at-spi-sharp.pc
 
-%post
-
-%postun
 
 %changelog
