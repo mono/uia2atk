@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi (Version 1.9.0 dbus)
+# spec file for package at-spi2-atk
 #    
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
 # This file and all modifications and additions to the pristine
