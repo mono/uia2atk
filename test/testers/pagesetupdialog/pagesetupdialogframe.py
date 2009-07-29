@@ -14,8 +14,6 @@ class PageSetupDialogFrame(accessibles.Frame):
 
     MARGINS_TEXTS_NUM = 4
     PAPER_COMBOBOXS_NUM = 2
-    SIZE_MENUITEMS_NUM = 27
-    SOURCE_MENUITEMS_NUM = 8
     PRINTER_LABELS_NUM = 9
 
     def __init__(self, accessible):
@@ -70,9 +68,11 @@ class PageSetupDialogFrame(accessibles.Frame):
         #self.size_vscrollbar = \
         #             self.size_menu.findScrollBar(None, checkShowing=False)
         self.size_text = self.size_combobox.findText(None)
+        # we are not sure the exactly menu_item because of the difference 
+        # printer, but we sure the length of size_menu_item > 0
         self.size_menu_items = \
                       self.size_menu.findAllMenuItems(None, checkShowing=False)
-        assert len(self.size_menu_items) == self.SIZE_MENUITEMS_NUM, \
+        assert len(self.size_menu_items) > 0, \
                           "actual number of size menu item:%s, expected:%s" % \
                        (len(self.size_menu_items), self.SIZE_MENUITEMS_NUM)
 
@@ -80,9 +80,11 @@ class PageSetupDialogFrame(accessibles.Frame):
         self.source_menu = \
                       self.source_combobox.findMenu(None, checkShowing=False)
         self.source_text = self.source_combobox.findText(None)
+        # we are not sure the exactly menu_item because of the difference 
+        # printer, but we sure the length of source_menu_item > 0
         self.source_menu_items = \
                      self.source_menu.findAllMenuItems(None, checkShowing=False)
-        assert len(self.source_menu_items) == self.SOURCE_MENUITEMS_NUM, \
+        assert len(self.source_menu_items) > 0, \
                         "actual number of source menu item:%s, expected:%s" % \
                        (len(self.source_menu_items), self.SOURCE_MENUITEMS_NUM)
 
