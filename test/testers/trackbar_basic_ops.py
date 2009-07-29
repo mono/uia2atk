@@ -44,12 +44,14 @@ tbFrame = app.trackBarFrame
 ##############################
 # check TrackBars' AtkAccessible
 ##############################
-statesCheck(tbFrame.trackbar_ver, "TrackBar", add_states=["focused", "vertical"])
+statesCheck(tbFrame.trackbar_ver, "TrackBar", add_states=["focused", \
+                                                                  "vertical"])
 statesCheck(tbFrame.trackbar_hor, "TrackBar", add_states=["horizontal"])
 # switch focus from vertical trackbar to horizontal trackbar
 tbFrame.keyCombo("Tab", grabFocus=False)
 statesCheck(tbFrame.trackbar_ver, "TrackBar", add_states=["vertical"])
-statesCheck(tbFrame.trackbar_hor, "TrackBar", add_states=["focused", "horizontal"])
+statesCheck(tbFrame.trackbar_hor, "TrackBar", add_states=["focused",\
+                                                                "horizontal"])
 
 ##############################
 # check TrackBars' AtkText is editable or not
@@ -75,14 +77,16 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 1)
 # TODO: BUG484189
 #tbFrame.assertText(tbFrame.trackbar_hor, "1")
-tbFrame.assertText(tbFrame.label_hor, "The value of TrackBar(Horizontal) is: 1")
+tbFrame.assertText(tbFrame.label_hor,\
+                                   "The value of TrackBar(Horizontal) is: 1")
 
 tbFrame.assignValue(tbFrame.trackbar_ver, -1)
 sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_ver, 1)
 # TODO: BUG484189
 #tbFrame.assertText(tbFrame.trackbar_ver, "1")
-tbFrame.assertText(tbFrame.label_ver, "The value of TrackBar(Vertical) is: 1")
+tbFrame.assertText(tbFrame.label_ver, \
+                                      "The value of TrackBar(Vertical) is: 1")
 
 # input 101 (greater than max)
 # TODO: BUG484195
@@ -91,7 +95,8 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 1)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_hor, "1")
-tbFrame.assertText(tbFrame.label_hor, "The value of TrackBar(Horizontal) is: 1")
+tbFrame.assertText(tbFrame.label_hor, \
+                                    "The value of TrackBar(Horizontal) is: 1")
 
 tbFrame.assignValue(tbFrame.trackbar_ver, 101)
 sleep(config.SHORT_DELAY)
@@ -106,7 +111,8 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 50)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_hor, "50")
-tbFrame.assertText(tbFrame.label_hor, "The value of TrackBar(Horizontal) is: 50")
+tbFrame.assertText(tbFrame.label_hor, \
+                                   "The value of TrackBar(Horizontal) is: 50")
 
 tbFrame.assignValue(tbFrame.trackbar_ver, 50)
 sleep(config.SHORT_DELAY)
@@ -121,14 +127,16 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 51)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_hor, "51")
-tbFrame.assertText(tbFrame.label_hor, "The value of TrackBar(Horizontal) is: 51")
+tbFrame.assertText(tbFrame.label_hor, \
+                                   "The value of TrackBar(Horizontal) is: 51")
 
 tbFrame.keyCombo("PageDown", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 61)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_hor, "61")
-tbFrame.assertText(tbFrame.label_hor, "The value of TrackBar(Horizontal) is: 61")
+tbFrame.assertText(tbFrame.label_hor, \
+                                   "The value of TrackBar(Horizontal) is: 61")
 
 # switch focuse from horizontal trackbar to vertical trackbar
 tbFrame.keyCombo("Tab", grabFocus=False)
@@ -138,21 +146,24 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_ver, 51)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_ver, "51")
-tbFrame.assertText(tbFrame.label_ver, "The value of TrackBar(Vertical) is: 51")
+tbFrame.assertText(tbFrame.label_ver, \
+                                     "The value of TrackBar(Vertical) is: 51")
 
 tbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_ver, 50)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_ver, "50")
-tbFrame.assertText(tbFrame.label_ver, "The value of TrackBar(Vertical) is: 50")
+tbFrame.assertText(tbFrame.label_ver, \
+                                     "The value of TrackBar(Vertical) is: 50")
 
 tbFrame.keyCombo("PageDown", grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_ver, 40)
 # TODO: BUG484189 - TrackBar: Bad encoding of TrackBar's text
 #tbFrame.assertText(tbFrame.trackbar_ver, "40")
-tbFrame.assertText(tbFrame.label_ver, "The value of TrackBar(Vertical) is: 40")
+tbFrame.assertText(tbFrame.label_ver, \
+                                     "The value of TrackBar(Vertical) is: 40")
 
 ##############################
 # End

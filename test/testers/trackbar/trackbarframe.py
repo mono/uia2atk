@@ -37,6 +37,9 @@ class TrackBarFrame(accessibles.Frame):
         self.label_hor = self.labels[1]
         
     def assignText(self, accessible, text):
+        """
+        set the accessible's text
+        """
         procedurelogger.action('set %s text to "%s"' % (accessible, text))
         try:
             accessible.text = text
@@ -44,11 +47,16 @@ class TrackBarFrame(accessibles.Frame):
             pass
 
     def assignValue(self, accessible, value):
+        """
+        set the accessible's value
+        """
         procedurelogger.action('set %s\'s value to "%s"' % (accessible, value))
         accessible.value = value
 
     def assertValue(self, accessible, expected_value):
-        procedurelogger.action('Assert that the value of %s is what we expect' % accessible)
+        """assert that the actual value """
+        procedurelogger.action('Assert that the value of %s is what we expect'\
+                                                                  % accessible)
         actual_value = accessible.value
         procedurelogger.expectedResult('%s value is %s' % \
                                                 (accessible, expected_value))
@@ -56,9 +64,10 @@ class TrackBarFrame(accessibles.Frame):
                    'Value was %s, expected %s' % (actual_value, expected_value)
     
     def assertText(self, accessible, expected_text):
-        """assert that the actual text is equal to the expected text"""
+        """assert that the actual text """
 
-        procedurelogger.action('Assert that the text of %s is what we expect' % accessible)
+        procedurelogger.action('Assert that the text of %s is what we expect'\
+                                                                  % accessible)
         actual_text = accessible.text
         procedurelogger.expectedResult('%s text is "%s"' % \
                                                 (accessible, expected_text))

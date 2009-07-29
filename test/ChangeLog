@@ -7,6 +7,12 @@
 	* testers/fontdialog/fontdialogframe.py: modify some error
 
 2009-07-29  Felicia Mu <fxmu@novell.com>
+	* tester/trackbar_basic_ops.py,
+	* tester/trackbar/trackbarframe.py:
+      adjust the format to make every line's character less than 80,
+      add the docstring for *frame.py 
+
+2009-07-29  Felicia Mu <fxmu@novell.com>
 	* tester/datagridview_detail_ops.py:
       remove bug513476 reference,update test and adjust the format 
 
