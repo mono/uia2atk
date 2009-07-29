@@ -137,8 +137,9 @@ class FontDialogFrame(accessibles.Frame):
         statesCheck(self.fontstyle_table_cells[0],
                     "TableCell",
                     add_states=["selected"])
-        statesCheck(self.font_table_cells[0], "TableCell", 
-                                                       add_states=["selected"])
+        for i in self.font_table_cells:
+            if i.name == self.font_text.text:
+                statesCheck(i, "TableCell", add_states=["selected"])
         statesCheck(self.size_table_cells[2], "TableCell", 
                                                        add_states=["selected"])
         # BUG506744: combobox menuitems are missing focusable state
@@ -168,8 +169,9 @@ class FontDialogFrame(accessibles.Frame):
                 print "The color combo box menu items have not yet been found"
                 raise
         statesCheck(self.color_combobox, "ComboBox")
+        # because the first menu_item is selected, so menu also have selected state
         statesCheck(self.color_combobox_menu,
-                    "Menu",
+                    "Menu", add_states=["selected"],
                     invalid_states=["visible", "showing"])
         for menuitem in self.color_combobox_menuitems:
             add_states = []
@@ -230,7 +232,7 @@ class FontDialogFrame(accessibles.Frame):
         # the menu should be open (i.e., it should have the default states
         # and menu items that were previously not showing should be showing
         # (i.e., they should also have default states)
-        statesCheck(self.color_combobox_menu, "Menu")
+        statesCheck(self.color_combobox_menu, "Menu", add_states=["selected"])
         # Bug 506744 - Drop-down CombBox menu items receive "focused" state,
         # but do not have "focusable" state
         #statesCheck(self.color_combobox_menuitems[1], "MenuItem")
