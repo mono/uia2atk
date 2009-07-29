@@ -190,10 +190,8 @@ statesCheck(ppdFrame.zoom_window,"Form",invalid_states=["resizable"],\
 for menu_item in ppdFrame.zoom_menu_items:
     if menu_item.name == "Auto":
         statesCheck(menu_item, "MenuItem", add_states=["checked"])
-    # BUG509276 - PrintPreviewDialog: All zoom menu items have the
-    # "checked" state
-    #else:
-    #    statesCheck(menu_item, "MenuItem")
+    else:
+        statesCheck(menu_item, "MenuItem")
 
 # check their default actions
 for menu_item in ppdFrame.zoom_menu_items:
@@ -210,8 +208,6 @@ ppdFrame.assertNumOfAccessibles(ppdFrame.zoom_menu_items, \
 #    #focused and selected states for menu items
 #    #statesCheck(ppdFrame.zoom_menu_items[i], "MenuItem", \
 #    #                         add_states=["checked","focused","selected"])
-#    # BUG509276 - PrintPreviewDialog: All zoom menu items have the
-#    # "checked" state
 #    #statesCheck(ppdFrame.zoom_menu_items[i-1], "MenuItem")
   
 ################################################
