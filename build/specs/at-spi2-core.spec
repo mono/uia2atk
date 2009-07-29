@@ -20,7 +20,7 @@ URL:            http://www.gnome.org/
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:	dbus-1
-Requires:	dubs-1-glib
+Requires:	dbus-1-glib
 Requires:	python
 BuildRequires:  dbus-1-devel
 BuildRequires:  dbus-1-glib-devel
