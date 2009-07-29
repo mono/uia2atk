@@ -93,11 +93,11 @@ for label in pgFrame.labels:
 ######################################
 #check the actions list of all accessibles
 ######################################
-
+'''
 # check child table cells actions 
 for table_cells in pgFrame.child_table_cells:
     actionsCheck(table_cells, "TreeViewTableCell")
-
+'''
 # check parent table cells actions
 # BUG516398 - PropertyGrid :TreeView table cells with children should have 
 # "expand or contract" action
@@ -223,7 +223,7 @@ statesCheck(pgFrame.reset_menu_item, "MenuItem", add_states=["focusable"])
 #                               add_states=["focusable","checked","focused"])
 
 # close ContextMenu for next test
-pgFrame.mouseClick(log=False)
+pgFrame.text_box.mouseClick(log=False)
 sleep(config.SHORT_DELAY)
 
 # check the function of menu_items
@@ -235,6 +235,10 @@ pgFrame.changeText(accessible, "New Text")
 sleep(config.SHORT_DELAY)
 # reset the Text to ""
 pgFrame.testReset(accessible, "")
+
+# close ContextMenu for next test
+pgFrame.text_box.mouseClick(log=False)
+sleep(config.SHORT_DELAY)
 
 # find 'Default' cell and update the text to 'Sound', then reset it to 'Default'
 accessible = pgFrame.findTableCell("Default")
