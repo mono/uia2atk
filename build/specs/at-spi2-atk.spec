@@ -10,15 +10,14 @@
 # norootforbuild 
 # 
 
-Name:          at-spi
-Version:       1.9.0
-Release:       0.git
+Name:          at-spi2-atk
+Version:       0.1.0
+Release:       0
 License:       GPL v2 or later
 Group:         Development/Libraries/GNOME
 URL:           http://www.gnome.org/
 Source0:       %{name}-%{version}.tar.bz2
 BuildRoot:     %{_tmppath}/%{name}-%{version}-build
-AutoReqProv:   on
 Requires:      %{name}-lang = %{version}
 BuildRequires: fdupes bundle-lang-common-en pkg-config python-devel glib2-devel
 BuildRequires: atk-devel >= 1.17.0
