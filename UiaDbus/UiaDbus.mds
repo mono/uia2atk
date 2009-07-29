@@ -1,0 +1,28 @@
+<Combine name="UiaDbus" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaDbusBridge" configuration="Debug" />
+      <Entry build="True" name="UiaDbus" configuration="Debug" />
+      <Entry build="True" name="UiaDbusBridgeTests" configuration="Debug" />
+      <Entry build="True" name="UiaDbusSource" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaDbus" configuration="Release" />
+      <Entry build="True" name="UiaDbusBridge" configuration="Release" />
+      <Entry build="True" name="UiaDbusBridgeTests" configuration="Release" />
+      <Entry build="True" name="UiaDbusSource" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UiaDbusBridge" single="True">
+    <Execute type="None" entry="UiaDbus" />
+    <Execute type="None" entry="UiaDbusBridge" />
+    <Execute type="None" entry="UiaDbusBridgeTests" />
+    <Execute type="None" entry="UiaDbusSource" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UiaDbus/UiaDbus.mdp" />
+    <Entry filename="UiaDbusBridge/UiaDbusBridge.mdp" />
+    <Entry filename="UiaDbusBridgeTests/UiaDbusBridgeTests.mdp" />
+    <Entry filename="UiaDbusSource/UiaDbusSource.mdp" />
+  </Entries>
+</Combine>

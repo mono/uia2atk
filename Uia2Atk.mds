@@ -10,8 +10,7 @@
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="UIAutomationWinforms" configuration="Debug" />
       <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
-      <Entry build="True" name="UiaDbusCoreBridge" configuration="Debug" />
-      <Entry build="True" name="DbusCoreUiaSource" configuration="Debug" />
+      <Entry build="True" name="UiaDbus" configuration="Debug" />
       <Entry build="True" name="UIAutomation" configuration="Debug" />
       <Entry build="True" name="test" configuration="Debug" />
       <Entry build="True" name="MoonAtkBridge" configuration="Debug" />
@@ -19,8 +18,7 @@
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="UIAutomationWinforms" configuration="Release" />
       <Entry build="True" name="UiaAtkBridge" configuration="Release" />
-      <Entry build="True" name="UiaDbusCoreBridge" configuration="Release" />
-      <Entry build="True" name="DbusCoreUiaSource" configuration="Release" />
+      <Entry build="True" name="UiaDbus" configuration="Release" />
       <Entry build="True" name="UIAutomation" configuration="Release" />
       <Entry build="True" name="test" configuration="Release" />
       <Entry build="True" name="MoonAtkBridge" configuration="Release" />
@@ -29,8 +27,7 @@
   <StartMode startupentry="UIAutomationWinforms" single="True">
     <Execute type="None" entry="UIAutomationWinforms" />
     <Execute type="None" entry="UiaAtkBridge" />
-    <Execute type="None" entry="UiaDbusCoreBridge" />
-    <Execute type="None" entry="DbusCoreUiaSource" />
+    <Execute type="None" entry="UiaDbus" />
     <Execute type="None" entry="UIAutomation" />
     <Execute type="None" entry="test" />
     <Execute type="None" entry="MoonAtkBridge" />
@@ -38,8 +35,7 @@
   <Entries>
     <Entry filename="UIAutomationWinforms/UIAutomationWinforms.mds" />
     <Entry filename="UiaAtkBridge/UiaAtkBridge.mds" />
-    <Entry filename="UiaDbusCoreBridge/UiaDbusCoreBridge.mds" />
-    <Entry filename="DbusCoreUiaSource/DbusCoreUiaSource.mds" />
+    <Entry filename="UiaDbus/UiaDbus.mds" />
     <Entry filename="UIAutomation/UIAutomation.mds" />
     <Entry filename="test/test.mdp" />
     <Entry filename="MoonAtkBridge/MoonAtkBridge.mds" />

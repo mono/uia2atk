@@ -1,3 +1,8 @@
+2009-07-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation/SourceManager.cs:
+	DbusCoreUiaSource -> UiaDbusSource.
+
 2009-07-01  Mike Gorse  <mgorse@novell.com>
 
 	* System.Windows.Automation.Text/TextPatternRange.cs,

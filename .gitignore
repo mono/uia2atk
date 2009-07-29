@@ -262,71 +262,55 @@
 /UiaAtkBridge/samples/unmanaged/atkHelloWorld/*.d
 /UiaAtkBridge/samples/unmanaged/atkHelloWorld/.prec
 
-# /UiaDbusCoreBridge/
-/UiaDbusCoreBridge/bin
-/UiaDbusCoreBridge/*.pidb
-/UiaDbusCoreBridge/*.userprefs
-/UiaDbusCoreBridge/Makefile
-/UiaDbusCoreBridge/Makefile.in
-/UiaDbusCoreBridge/configure
-/UiaDbusCoreBridge/config.*
-/UiaDbusCoreBridge/autom4te.cache
-/UiaDbusCoreBridge/missing
-/UiaDbusCoreBridge/aclocal.m4
-/UiaDbusCoreBridge/install-sh
-/UiaDbusCoreBridge/depcomp
-/UiaDbusCoreBridge/libtool
-/UiaDbusCoreBridge/ltmain.sh
+# /UiaDbus/
+/UiaDbus/bin
+/UiaDbus/*.pidb
+/UiaDbus/*.userprefs
+/UiaDbus/Makefile
+/UiaDbus/Makefile.in
+/UiaDbus/configure
+/UiaDbus/config.*
+/UiaDbus/autom4te.cache
+/UiaDbus/missing
+/UiaDbus/aclocal.m4
+/UiaDbus/install-sh
+/UiaDbus/depcomp
+/UiaDbus/libtool
+/UiaDbus/ltmain.sh
 
-# /UiaDbusCoreBridge/data/
-/UiaDbusCoreBridge/data/Makefile
-/UiaDbusCoreBridge/data/Makefile.in
-/UiaDbusCoreBridge/data/mono-uia-dbuscore.pc
-/UiaDbusCoreBridge/data/mono-uia-dbuscore.pc.in
+# /UiaDbus/data/
+/UiaDbus/data/Makefile
+/UiaDbus/data/Makefile.in
+/UiaDbus/data/mono-uia-dbus.pc
+/UiaDbus/data/mono-uia-dbus.pc.in
 
-# /UiaDbusCoreBridge/UiaDbusCoreBridge/
-/UiaDbusCoreBridge/UiaDbusCoreBridge/bin
-/UiaDbusCoreBridge/UiaDbusCoreBridge/*.pidb
-/UiaDbusCoreBridge/UiaDbusCoreBridge/*.pc
-/UiaDbusCoreBridge/UiaDbusCoreBridge/Makefile
-/UiaDbusCoreBridge/UiaDbusCoreBridge/Makefile.in
+# /UiaDbus/UiaDbus/
+/UiaDbus/UiaDbus/bin
+/UiaDbus/UiaDbus/*.pidb
+/UiaDbus/UiaDbus/*.pc
+/UiaDbus/UiaDbus/Makefile
+/UiaDbus/UiaDbus/Makefile.in
 
-# /UiaDbusCoreBridge/DbusCore/
-/UiaDbusCoreBridge/DbusCore/bin
-/UiaDbusCoreBridge/DbusCore/*.pidb
-/UiaDbusCoreBridge/DbusCore/*.pc
-/UiaDbusCoreBridge/DbusCore/Makefile
-/UiaDbusCoreBridge/DbusCore/Makefile.in
+# /UiaDbus/UiaDbusBridge/
+/UiaDbus/UiaDbusBridge/bin
+/UiaDbus/UiaDbusBridge/*.pidb
+/UiaDbus/UiaDbusBridge/*.pc
+/UiaDbus/UiaDbusBridge/Makefile
+/UiaDbus/UiaDbusBridge/Makefile.in
 
-# /UiaDbusCoreBridge/UiaDbusCoreBridgeTests/
-/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/bin
-/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/*.pidb
-/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/Makefile
-/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/Makefile.in
-/UiaDbusCoreBridge/UiaDbusCoreBridgeTests/dbuscorebridgetest.sh
+# /UiaDbus/UiaDbusBridgeTests/
+/UiaDbus/UiaDbusBridgeTests/bin
+/UiaDbus/UiaDbusBridgeTests/*.pidb
+/UiaDbus/UiaDbusBridgeTests/Makefile
+/UiaDbus/UiaDbusBridgeTests/Makefile.in
+/UiaDbus/UiaDbusBridgeTests/dbusbridgetest.sh
 
-# /DbusCoreUiaSource/
-/DbusCoreUiaSource/bin
-/DbusCoreUiaSource/*.pidb
-/DbusCoreUiaSource/*.userprefs
-/DbusCoreUiaSource/Makefile
-/DbusCoreUiaSource/Makefile.in
-/DbusCoreUiaSource/configure
-/DbusCoreUiaSource/config.*
-/DbusCoreUiaSource/autom4te.cache
-/DbusCoreUiaSource/missing
-/DbusCoreUiaSource/aclocal.m4
-/DbusCoreUiaSource/install-sh
-/DbusCoreUiaSource/depcomp
-/DbusCoreUiaSource/libtool
-/DbusCoreUiaSource/ltmain.sh
-
-# /DbusCoreUiaSource/DbusCoreUiaSource/
-/DbusCoreUiaSource/DbusCoreUiaSource/bin
-/DbusCoreUiaSource/DbusCoreUiaSource/*.pidb
-/DbusCoreUiaSource/DbusCoreUiaSource/*.pc
-/DbusCoreUiaSource/DbusCoreUiaSource/Makefile
-/DbusCoreUiaSource/DbusCoreUiaSource/Makefile.in
+# /UiaDbus/UiaDbusSource/
+/UiaDbus/UiaDbusSource/bin
+/UiaDbus/UiaDbusSource/*.pidb
+/UiaDbus/UiaDbusSource/*.pc
+/UiaDbus/UiaDbusSource/Makefile
+/UiaDbus/UiaDbusSource/Makefile.in
 
 # /build/hudson/scripts/
 /build/hudson/scripts/.mktarball.py.swp

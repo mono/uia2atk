@@ -121,8 +121,8 @@ namespace System.Windows.Automation.Provider
 	{
 		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		private static string UiaDbusCoreBridgeAssembly =
-			"UiaDbusCoreBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+		private static string UiaDbusBridgeAssembly =
+			"UiaDbusBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 
 		public static IList<IAutomationBridge> GetAutomationBridges ()
 		{
@@ -134,7 +134,7 @@ namespace System.Windows.Automation.Provider
 
 			if (string.IsNullOrEmpty (bridgeAssemblyNames))
 				bridgeAssemblyNames =
-					UiaAtkBridgeAssembly + ";" + UiaDbusCoreBridgeAssembly;
+					UiaAtkBridgeAssembly + ";" + UiaDbusBridgeAssembly;
 			
 			foreach (string bridgeAssembly in bridgeAssemblyNames.Split (';')) {
 				if (string.IsNullOrEmpty (bridgeAssembly))

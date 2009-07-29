@@ -36,8 +36,8 @@ namespace System.Windows.Automation
 	{
 		private const string AtspiUiaSourceAssembly =
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		private const string DbusCoreUiaSourceAssembly =
-			"DbusCoreUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+		private const string UiaDbusSourceAssembly =
+			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		private static Dictionary<IElement, AutomationElement> elementMapping =
 			new Dictionary<IElement, AutomationElement> ();
 
@@ -51,7 +51,7 @@ namespace System.Windows.Automation
 
 			if (string.IsNullOrEmpty (sourceAssemblyNames))
 				sourceAssemblyNames =
-					DbusCoreUiaSourceAssembly + ";" + AtspiUiaSourceAssembly;
+					UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
 
 			foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
 				if (string.IsNullOrEmpty (sourceAssembly))
