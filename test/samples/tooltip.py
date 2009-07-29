@@ -29,7 +29,8 @@ class ToolTipApp(Form):
         self.Controls.Add(self.mainLabel1)
 
         self.mainLabel2 = Label()
-        self.mainLabel2.Text = "Hover your mouse over button and checkbox to see tooltips"
+        self.mainLabel2.Text = "Hover your mouse over button and checkbox \
+                                                              to see tooltips"
         self.mainLabel2.Location = Point(10,40)
         self.mainLabel2.AutoSize = True
         self.Controls.Add(self.mainLabel2)
@@ -46,7 +47,7 @@ class ToolTipApp(Form):
         self.checkbox1.AutoSize = True
         self.Controls.Add(self.checkbox1)
 
-##set ToolTip and link to button1 and checkbox1
+        # set ToolTip and link to button1 and checkbox1
         self.tooltip1 = ToolTip()
         self.tooltip1.AutoPopDelay = 10000
         self.tooltip1.InitialDelay = 300

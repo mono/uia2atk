@@ -29,23 +29,32 @@ class ToolTipFrame(accessibles.Frame):
         self.checkbox = self.findCheckBox(self.CHECKBOX)
         self.label1 = self.findLabel("Examples for: ToolTip")
 
-    #assert tooltip appear
     def assertTooltip(self, tooltiplabel):
+        """
+        assert tooltip appear
+        """
         procedurelogger.action('Check if "%s" is present' % tooltiplabel)
-        procedurelogger.expectedResult('Tooltip "%s" is present' % tooltiplabel)
+        procedurelogger.expectedResult('Tooltip "%s" is present' % \
+                                                                 tooltiplabel)
         self.tooltip = self.app.findToolTip(tooltiplabel)
 
         assert self.tooltip
 
     def assertNoTooltip(self, tooltiplabel):
+        """
+        assert tooltip disappear
+        """
         procedurelogger.action('Check if "%s" is present' % tooltiplabel)
-        procedurelogger.expectedResult('Tooltip "%s" is not present' % tooltiplabel)
+        procedurelogger.expectedResult('Tooltip "%s" is not present' % \
+                                                                 tooltiplabel)
         try:
             self.app.findToolTip(tooltiplabel)
         except errors.SearchError:
             return
         assert False, 'Tooltip "%s" should not be present' 
              
-    #close application main window after running test
     def quit(self):
+        """
+        close application main window after running test
+        """
         self.altF4()
