@@ -1,5 +1,10 @@
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
+	* testers/toolstripseparator_basic_ops.py:
+	* samples/toolstripseparator.py
+      modify some little mistakes.
+
+2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripprogressbar/toolstripprogressbarframe.py:
       adjust the format to make every line's character less than 80,
       add the docstring for *frame.py

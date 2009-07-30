@@ -52,7 +52,7 @@ class RunApp(Form):
         self.tsl3 = ToolStripLabel("Color:")
         self.ts.Items.Add(self.tsl3)
 
-	# ToolStripSeparator3
+    	# ToolStripSeparator3
         self.toolstripseparator3 = ToolStripSeparator()
         self.ts.Items.Add(self.toolstripseparator3)
 

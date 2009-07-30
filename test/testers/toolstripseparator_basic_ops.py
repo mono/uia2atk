@@ -47,7 +47,8 @@ tssFrame = app.toolStripSeparatorFrame
 
 # check separators' states
 # the first sepatator is not enabled and sensitived
-statesCheck(tssFrame.separators[0], "ToolStripSeparator", invalid_states=["enabled", "sensitive"])
+statesCheck(tssFrame.separators[0], "ToolStripSeparator", \
+                                      invalid_states=["enabled", "sensitive"])
 
 statesCheck(tssFrame.separators[1], "ToolStripSeparator")
 
