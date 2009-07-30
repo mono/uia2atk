@@ -3,39 +3,41 @@
 #
 
 Name:           atspiuiasource
-Version:        1.9.0
+Version:        137194
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-
-Summary:        at-spi uia source
+Summary:        At-spi uia source
+BuildRequires:	at-spi-sharp-devel
+BuildRequires:	glib-sharp2
+BuildRequires:	mono-devel
+BuildRequires:	mono-uia-devel
+BuildRequires:	pkg-config
 
 %description
-At-spi uia source
+At-spi uia source client side
 
 %prep
 %setup -q
 
 %build
-%configure
+%configure --disable-tests
 make %{?_smp_mflags}
 
 %install
-make DESTDIR=%{buildroot} install
-
+%makeinstall
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-
-%post
-
-%postun
+%dir %{_prefix}/lib/mono/gac/AtspiUiaSource
+%{_prefix}/lib/mono/gac/AtspiUiaSource/*
+%dir %{_libdir}/atspiuiasource
+%{_libdir}/atspiuiasource/*
 
 %changelog
-* Thu Apr 09 2009 <sshaw@decriptor.com>
