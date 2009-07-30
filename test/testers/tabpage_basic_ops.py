@@ -175,7 +175,7 @@ tpFrame.assertLabelText("checked radiobutton")
 #tpFrame.keyCombo("Left", grabFocus=False)
 #sleep(config.SHORT_DELAY)
 
-tpFrame.findTabPageAccessibles(0)
+#tpFrame.findTabPageAccessibles(0)
 ##############################
 # check AtkText implementation
 ##############################

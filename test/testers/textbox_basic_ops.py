@@ -100,7 +100,6 @@ statesCheck(tbFrame.textbox_nonedit,
 ##
 ## Single line TextBox
 ## 
-# TODO: Move cursor: text-caret-moved 
 # Insert a character: text-changed:insert, text-caret-moved
 tbFrame.textbox_normal.typeText("test")
 sleep(config.SHORT_DELAY)
@@ -120,10 +119,6 @@ text_len = len(tbFrame.textbox_normal.text)
 tbFrame.textbox_normal.insertText(" test", text_len) 
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox_normal, "single line textbox test")
-
-# Select a character: text-caret-moved, text-selection-changed 
-# TODO: select error
-#tbFrame.textbox_normal.assertSelectedText("test", text_len - 4)
 
 # Delete a character: text-changed:delete, text-caret-moved 
 # delete text from end (delete "test")
@@ -205,7 +200,6 @@ tbFrame.assertEditableText(tbFrame.textbox_mline, mline_content2)
 ## Password TextBox
 ## 
 tbFrame.textbox_passwd.mouseClick()
-# Move cursor: text-caret-moved 
 # Insert a character: text-changed:insert, text-caret-moved
 tbFrame.textbox_passwd.typeText("test")
 sleep(config.SHORT_DELAY)

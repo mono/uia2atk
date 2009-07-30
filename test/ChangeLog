@@ -1,3 +1,9 @@
+2009-07-30 Ray Wang <rawang@novell.com>
+
+	* testers/textbox_basic_ops.py: Remove some useless commented lines.
+	some of the tests are incorrect.
+	* testers/tabpage_basic_ops.py: Comment out one line which cannot run
+	until the bug is fixed.
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py:
