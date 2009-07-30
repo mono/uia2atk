@@ -37,8 +37,10 @@ class ToolStripProgressBarFrame(accessibles.Frame):
         # is fixed.$
         self.progressbar = self.findProgressBar(None)
 
-    # assert the toolstripprogress's percent after click button
     def assertLabel(self, expected_text):
+        """
+        assert the toolstripprogress's percent after click button
+        """
         procedurelogger.expectedResult('label shows "%s"' % expected_text)
 
         actual_text = self.label.text
@@ -47,14 +49,19 @@ class ToolStripProgressBarFrame(accessibles.Frame):
         assert retryUntilTrue(resultMatches), \
             'Label text was "%s", expected "%s"' % (actual_text, expected_text)
 
-    # insert value
     def assignValue(self, new_value):
+        """
+        insert value
+        """
         procedurelogger.action('set ProgressBar value to "%s"' % new_value)
         self.progressbar.value = new_value
 
-    # assert maximumValue and minimumValue
     def assertMaximumValue(self):
-        procedurelogger.action('Ensure that the maximum value of the progress bar is what we expect')
+        """
+        assert maximumValue 
+        """
+        procedurelogger.action('Ensure that the maximum value of \
+                                          the progress bar is what we expect')
         actual_max_value = \
                          self.progressbar._accessible.queryValue().maximumValue
         procedurelogger.expectedResult('maximum value is 100')
@@ -62,20 +69,29 @@ class ToolStripProgressBarFrame(accessibles.Frame):
                    "actual value was %s, expected %s" % (actual_max_value, 100)
 
     def assertMinimumValue(self):
-        procedurelogger.action('Ensure that the minimum value of the progress bar is what we expect')
+        """
+        assert minimumValue
+        """
+        procedurelogger.action('Ensure that the minimum value of the progress\
+                                                       bar is what we expect')
         actual_min_value = \
                          self.progressbar._accessible.queryValue().minimumValue
         procedurelogger.expectedResult('minimum value is 0')
         assert actual_min_value == 0, \
                    "actual value was %s, expected %s" % (actual_min_value, 0)
 
-    # assert progressbar's value
     def assertCurrentValue(self, accessible, value):
-        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % value)
+        """
+        assert progressbar's  Current value
+        """
+        procedurelogger.expectedResult('ProgressBar\'s current value is \
+                                                                 "%s"' % value)
 
         assert accessible.value == value, \
                        "progressbar's current value is %s:" % accessible.value
 
-    # close application window
     def quit(self):
+        """
+        close application window
+        """
         self.altF4()
