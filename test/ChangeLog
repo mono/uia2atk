@@ -1,5 +1,9 @@
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py:
+      modify some little mistakes, add docstring.
+
+2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripseparator_basic_ops.py:
 	* samples/toolstripseparator.py
       modify some little mistakes.

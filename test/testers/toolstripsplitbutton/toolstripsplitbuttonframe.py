@@ -36,6 +36,9 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         button.click()
 
     def assertImage(self, accessible, expected_width, expected_height):
+        """
+        assert the image size of the accessible
+        """
         procedurelogger.action('assert the image size of "%s"' % accessible)
         actual_width, actual_height = \
                              accessible._accessible.queryImage().getImageSize()
@@ -54,7 +57,9 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
                                             actual_height)
 
     def assertText(self, accessible, expected_text):
-        """make sure accessible's text is expected"""
+        """
+        make sure accessible's text is expected
+        """
         procedurelogger.action("check %s's text" % accessible)
         procedurelogger.expectedResult('%s\'s text is "%s"' % \
                                             (accessible, expected_text))
@@ -63,16 +68,18 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
                                (accessible.text, expected_text)
 
     def selectChild(self, accessible, index):
-        """assert Selection implementation"""
+        """
+        assert Selection implementation
+        """
         procedurelogger.action('select index %s in "%s"' % \
                                         (index, accessible))
         accessible.selectChild(index)
 
     def assertDifferentAbsolutePositions(self, accessible1, accessible2):
-        '''
+        """
         Assert that accessible1 and accessible2 have different absolute
         positions.
-        '''
+        """
         # get the (x,y) position of accessible1
         position1 = accessible1._accessible.queryComponent().getPosition(0) 
         # get the (x,y) position of accessible1
@@ -82,4 +89,8 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
                         (accessible1, accessible2, position1)
 
     def quit(self):
+        """
+        close the application
+        """
+         
         self.altF4()
