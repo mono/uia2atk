@@ -1,22 +1,6 @@
-Index: m4/mozilla.m4
-===================================================================
---- m4/mozilla.m4	(revision 136983)
-+++ m4/mozilla.m4	(working copy)
-@@ -80,6 +80,11 @@
-     	MAX_FIREFOX_VERSION="3.5.*"
-   	fi
- 
-+	#a11y only works on Firefox trunk
-+	if test x$MOON_A11Y_INTERNAL_HACK = x1; then
-+		MAX_FIREFOX_VERSION="3.6.*"
-+	fi
-+
- 	AC_SUBST([MIN_FIREFOX_VERSION])
- 	AC_SUBST([MAX_FIREFOX_VERSION])
- 	AM_CONDITIONAL(HAVE_MOZILLA, test x$with_mozilla = xyes)
 Index: src/security.c
 ===================================================================
---- src/security.c	(revision 136983)
+--- src/security.c	(revision 139022)
 +++ src/security.c	(working copy)
 @@ -16,6 +16,7 @@
  #if MONO_ENABLE_CORECLR_SECURITY
@@ -26,7 +10,33 @@ Index: src/security.c
  
  const static char* platform_code_assemblies [] = {
  	"mscorlib.dll",
-@@ -40,6 +41,8 @@
+@@ -34,12 +35,34 @@
+ #endif
+ };
+ 
++void
++a11y_stat_init (char *platform_dir)
++{
++	//please keep this lookup pattern in sync with the one in A11yHelper.cs (Initiailize() method)
++	const char* moonlight_at_novell = g_strrstr (platform_dir, "moonlight@novell.com");
++	if (moonlight_at_novell != NULL) {
++		const char* after = g_strdup ("moonlight-a11y@novell.com/components");
++		const char* before = g_strndup (platform_dir, 
++		                                strlen (platform_dir) - strlen (moonlight_at_novell));
++		const char* platform_a11y_dir = g_strconcat (before, after, NULL);
++
++		memset (&platform_a11y_stat, 0, sizeof (platform_a11y_stat));
++		stat (platform_a11y_dir, &platform_a11y_stat);
++		g_free (platform_a11y_dir);
++		g_free (before);
++		g_free (after);
++		moonlight_at_novell = NULL;
++	}
++}
++
+ static gboolean
+ determine_platform_image (const char *image_name)
+ {
  	struct stat info;
  	gchar *dir, *name;
  	unsigned int i;
@@ -35,7 +45,7 @@ Index: src/security.c
  
  	if (!image_name)
  		return FALSE;
-@@ -51,20 +54,35 @@
+@@ -51,20 +74,35 @@
  		return FALSE;
  	}
  
@@ -78,35 +88,23 @@ Index: src/security.c
  	for (i = 0; i < G_N_ELEMENTS (platform_code_assemblies); i++) {
  		if (g_ascii_strcasecmp (name, platform_code_assemblies [i]) == 0) {
  			g_free (name);
-@@ -88,7 +106,25 @@
+@@ -88,7 +126,13 @@
  			   "you're doing!");
  	} else if (g_path_is_absolute (platform_dir)) {
  		memset (&platform_stat, 0, sizeof (platform_stat));
 +
  		if (stat (platform_dir, &platform_stat) == 0) {
 +
-+			const char* moonlight_at_novell = g_strrstr (platform_dir, "moonlight@novell.com");
-+			if (moonlight_at_novell != NULL) {
-+				const char* after = g_strdup ("moonlight-a11y@novell.com/components");
-+
-+				const char* before = g_strndup (platform_dir, 
-+				                                strlen(platform_dir) - strlen(moonlight_at_novell));
-+				const char* platform_a11y_dir = g_strconcat (before, after, NULL);
-+
-+				memset (&platform_a11y_stat, 0, sizeof (platform_a11y_stat));
-+				stat (platform_a11y_dir, &platform_a11y_stat);
-+				g_free (platform_a11y_dir);
-+				g_free (before);
-+				g_free (after);
-+				moonlight_at_novell = NULL;
-+			}
++#if MOON_A11Y_INTERNAL_HACK_ENABLED
++			a11y_stat_init (platform_dir);
++#endif
 +
  			mono_security_enable_core_clr ();
  			mono_security_set_core_clr_platform_callback (determine_platform_image);
  		}
 Index: configure.ac
 ===================================================================
---- configure.ac	(revision 136983)
+--- configure.ac	(revision 139022)
 +++ configure.ac	(working copy)
 @@ -106,6 +106,14 @@
  LOADER_LIBS="$GLIB_LIBS"
@@ -125,33 +123,21 @@ Index: configure.ac
  else
 Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
 ===================================================================
---- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 136983)
+--- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 139022)
 +++ class/tuning/SecurityAttributes/overrides/System.Windows.manual	(working copy)
-@@ -8,3 +8,6 @@
+@@ -8,3 +8,9 @@
  
  # this method reflects into GCHandle to avoid creating an exception every time we try a invalid handle
  +SC-M: System.Boolean Mono.Helper::GCHandleInDomain(System.IntPtr)
 +
 +# this method is called by the embedding API from moon
 ++SSC-M: System.IntPtr Mono.A11yHelper::GetAccessible()
-Index: class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc
-===================================================================
---- class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(revision 136983)
-+++ class/tuning/SecurityAttributes/automatic/System.Windows.auto.ssc	(working copy)
-@@ -1,7 +1,9 @@
- # [SecuritySafeCritical] needed inside System.Windows to call all [SecurityCritical] methods
--# 463 methods
-+# 465 methods
- 
- +SSC-M: System.Void Microsoft.Internal.TextBoxView::.ctor()
++# this is called by the initialization of System.Windows assembly
 ++SSC-M: System.Void Mono.A11yHelper::Initialize()
-++SSC-M: System.Void Mono.A11yHelper::Launch(System.String)
- +SSC-M: Mono.Xaml.ManagedXamlLoader Mono.ApplicationLauncher::CreateXamlLoader(System.IntPtr,System.IntPtr,System.IntPtr,System.String,System.String)
- +SSC-M: System.Void Mono.DispatcherTimer::.ctor()
- +SSC-M: System.Void Mono.EasingFunctionWrapper::ReportException(System.Exception)
++
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 136983)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 139022)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -162,9 +148,9 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 136983)
+--- class/System.Windows/System.Windows.mdp	(revision 139022)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
-@@ -18,6 +18,7 @@
+@@ -19,6 +19,7 @@
      <File name="System.Windows/DependencyObject.g.cs" subtype="Code" buildaction="Compile" />
      <File name="Assembly/MonoTODOAttribute.cs" subtype="Code" buildaction="Compile" />
      <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
@@ -172,22 +158,16 @@ Index: class/System.Windows/System.Windows.mdp
      <File name="Mono/DispatcherTimer.cs" subtype="Code" buildaction="Compile" />
      <File name="Mono/EventHandlerList.cs" subtype="Code" buildaction="Compile" />
      <File name="Mono/Events.cs" subtype="Code" buildaction="Compile" />
-@@ -514,4 +515,4 @@
-     <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-     <ProjectReference type="Gac" localcopy="True" refto="System.Core" />
-   </References>
--</Project>
-\ No newline at end of file
-+</Project>
 Index: class/System.Windows/Mono/A11yHelper.cs
 ===================================================================
 --- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
 +++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
-@@ -0,0 +1,92 @@
+@@ -0,0 +1,101 @@
 +//
 +// A11yHelper.cs
 +//
 +// Contact:
++//   Mono-A11Y List (mono-a11y@forge.novell.com)
 +//   Moonlight List (moonlight-list@lists.ximian.com)
 +//
 +// Copyright 2009 Novell, Inc.
@@ -225,66 +205,68 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +
 +		internal static void Initialize ()
 +		{
++#if MOON_A11Y_INTERNAL_HACK
 +			string current_assembly_location = Assembly.GetExecutingAssembly ().Location;
++			
++			//please keep this lookup pattern in sync with the one in security.c (security_enable_coreclr() method)
 +			int pos = current_assembly_location.IndexOf ("moonlight@novell");
-+			if (pos > 0) {
-+				string load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
-+				if (Directory.Exists (load_location)) {
-+					load_location = Path.Combine (Path.Combine (load_location, "components"), BRIDGE_ASM_NAME);
-+					Launch (load_location);
-+				}
-+			}
-+		}
++			if (pos < 0)
++				return;
 +
-+		internal static void Launch (string location)
-+		{
++			string load_location = Path.Combine (current_assembly_location.Substring (0, pos), "moonlight-a11y@novell.com");
++			if (!Directory.Exists (load_location))
++				return;
++
++			load_location = Path.Combine (Path.Combine (load_location, "components"), BRIDGE_ASM_NAME);
++
 +			Assembly bridge_asm;
 +			try {
-+				bridge_asm = Assembly.LoadFrom (location);
++				bridge_asm = Assembly.LoadFrom (load_location);
 +			} catch (Exception e) {
 +				return;
 +			}
 +
 +			bridge_type = bridge_asm.GetType (BRIDGE_FULL_NAME);
-+			if (bridge_type == null)
++			if (bridge_type == null) {
++				Console.Error.WriteLine (String.Format ("Could not find type {0} in assembly {1}", BRIDGE_FULL_NAME, BRIDGE_ASM_NAME));
 +				return;
++			}
 +
 +			automation_bridge = bridge_type.GetMethod (
 +				"CreateAutomationBridge",
-+				BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
++				BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
 +				.Invoke (null, null);
 +
-+			accessibilityEnabled = (bool) bridge_type.GetMethod (
++			accessibility_enabled = (bool) bridge_type.GetMethod (
 +				"IsAccessibilityEnabled",
-+				BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
++				BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
 +				.Invoke (null, null);
 +		}
 +		
 +		private static Type bridge_type;
 +		private static object automation_bridge;
-+		private static bool accessibilityEnabled = false;
++		private static bool accessibility_enabled = false;
++		private static IntPtr accessible;
 +		
 +		public static IntPtr GetAccessible ()
 +		{
-+			if (!accessibilityEnabled || automation_bridge == null)
++			if (!accessibility_enabled || automation_bridge == null)
 +				return IntPtr.Zero;
 +
-+			return (IntPtr) bridge_type.GetMethod (
-+				"GetAccessibleHandle",
-+				BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod)
-+				.Invoke (automation_bridge, null);
++			if (accessible == IntPtr.Zero)
++				accessible =  (IntPtr) bridge_type.GetMethod ("GetAccessibleHandle",
++				                                               BindingFlags.Instance | 
++				                                               BindingFlags.NonPublic | 
++				                                               BindingFlags.InvokeMethod)
++				                                               .Invoke (automation_bridge, null);
++			return accessible;
++#endif
 +		}
 +	}
 +}
-
-Property changes on: class/System.Windows/Mono/A11yHelper.cs
-___________________________________________________________________
-Added: svn:eol-style
-   + native
-
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 136983)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 139022)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -300,7 +282,7 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 136983)
+--- class/System.Windows/Makefile.am	(revision 139022)
 +++ class/System.Windows/Makefile.am	(working copy)
 @@ -19,6 +19,12 @@
  
