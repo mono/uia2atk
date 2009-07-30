@@ -1,21 +1,21 @@
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py:
-      modify some little mistakes, add docstring.
+	modify some little mistakes, add docstring.
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripseparator_basic_ops.py:
-	* samples/toolstripseparator.py
-      modify some little mistakes.
+	* samples/toolstripseparator.py:
+	modify some little mistakes.
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstripprogressbar/toolstripprogressbarframe.py:
-      adjust the format to make every line's character less than 80,
-      add the docstring for *frame.py
+	adjust the format to make every line's character less than 80,
+	add the docstring for *frame.py
 
 2009-07-30  Felicia Mu <fxmu@novell.com>
 	* testers/toolstriplabel_basic_ops.py:
-      remove extra info
+	remove extra info
 
 2009-07-29  Calen Chen <cachen@novell.com>
 	* testers/propertygrid_basic_ops.py: add step to solve error:  
@@ -23,13 +23,13 @@
 
 2009-07-29  Felicia Mu <fxmu@novell.com>
 	* testers/printpreviewdialog_basic_ops.py:
-      remove BUG509276 reference
+	remove BUG509276 reference
 
 2009-07-29  Felicia Mu <fxmu@novell.com>
 	* samples/tooltip.py :
 	* testers/tooltip/tooltipframe.py :
-    adjust the format to make every line's character less than 80,
-    add the docstring for *frame.py
+	adjust the format to make every line's character less than 80,
+	add the docstring for *frame.py
 
 2009-07-29  Calen Chen <cachen@novell.com>
 	* testers/pagesetupdialog/pagesetupdialogframe.py: make sure if 
@@ -42,8 +42,8 @@
 2009-07-29  Felicia Mu <fxmu@novell.com>
 	* tester/trackbar_basic_ops.py,
 	* tester/trackbar/trackbarframe.py:
-      adjust the format to make every line's character less than 80,
-      add the docstring for *frame.py 
+	adjust the format to make every line's character less than 80,
+	add the docstring for *frame.py 
 
 2009-07-29  Felicia Mu <fxmu@novell.com>
 	* tester/datagridview_detail_ops.py:
