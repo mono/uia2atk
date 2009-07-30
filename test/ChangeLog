@@ -1,3 +1,11 @@
+2009-07-30  Calen Chen <cachen@novell.com>
+	* testers/splitter_vertical/splitterframe.py,
+	* testers/splitter_vertical.py,
+	* testers/splitter_horizontal/splitterframe.py,
+	* testers/splitter_horizontal.py: remove BUG470831 reference, expand 
+	some wrapers to test split pane's Value impelmentation, add BUG526806 
+	reference
+
 2009-07-30 Ray Wang <rawang@novell.com>
 
 	* testers/textbox_basic_ops.py: Remove some useless commented lines.

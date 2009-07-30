@@ -33,6 +33,37 @@ class SplitterFrame(accessibles.Frame):
         self.label3 = self.findLabel(self.LABEL3)
         self.label4 = self.findLabel(self.LABEL4)
 
-    #close Splitter window
+    def assignValue(self, expected_value):
+        """Assign expected value for split pane"""
+        procedurelogger.action('set split pane to value %s' %  expected_value)
+        self.split_pane.value = expected_value
+
+    def assertValue(self, expected_value):
+        """Make sure split pane's value is expected"""
+        actual_value = self.split_pane.value
+
+        procedurelogger.expectedResult("split pane's value is %s" % \
+                                                                expected_value)
+        assert actual_value == expected_value, \
+                                "actual value:%s, expected:%s" % \
+                                 (actual_value, expected_value)
+
+    def assertSplitterMoved(self, accessible, expected_height):
+        """
+        Make sure assign value will move the split pane by checking size of  
+        accessible that is the first node's width is expected height
+        """
+        new_size = accessible._accessible.queryComponent().getSize()
+        actual_height = new_size[1]
+
+        procedurelogger.expectedResult("width of %s is changed to %s" % \
+                                                  (accessible, expected_height))
+        assert actual_height == expected_height, \
+                       "acutal width of tree_table:%s, expected:%s" % \
+                           (actual_height, expected_height)
+
     def quit(self):
+        """
+        Close the application window
+        """
         self.altF4()
