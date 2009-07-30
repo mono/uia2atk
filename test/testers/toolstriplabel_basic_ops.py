@@ -54,7 +54,7 @@ tslFrame.assertText(tslFrame.toolstriplabel_image, "ToolStripLabel with image")
 ##############################
 # check toolstriplabel_image's image interface
 ##############################
-# TODO: BUG482714, should check the label's icon information
+# BUG482714, should check the label's icon information
 #tslFrame.assertImage(tslFrame.toolstriplabel_image, 16, 16)
 
 ##############################
