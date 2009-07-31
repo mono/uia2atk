@@ -256,12 +256,10 @@ ppdFrame.dialog.assertClosed()
 #ppdFrame.dialog.altF4()
 
 # TODO:
-# Bug 523388 - PrintPreviewDialog:the Printing 
-# frame has the wrong position and size
-# Bug 508599 - PrintPreviewDialog: Default control focus is not consistent
-# 509114 - PrintPreviewDialog: Zoom drop-down menu stays open even when 
+# BUG508599 - PrintPreviewDialog: Default control focus is not consistent
+# BUG509114 - PrintPreviewDialog: Zoom drop-down menu stays open even when 
 # other buttons are clicked
-# Bug 509127 - PrintPreviewDialog: Zoom drop-down "window" accessible 
+# BUG509127 - PrintPreviewDialog: Zoom drop-down "window" accessible 
 # has wacky component interface info
 
 # close application frame window
