@@ -310,7 +310,9 @@ class SaveFileDialogFrame(accessibles.Frame):
         # BUG506745: receives "focused" state, but do not have "focusable" state
         #statesCheck(self.save_in_combobox, "ComboBox", \
         #                                 add_states=["focused", "focusable"])
-        statesCheck(self.save_in_menu, "Menu")
+        # first menu_item is selected so menu also raise selected state because
+        # Selection is implemented for combobox
+        statesCheck(self.save_in_menu, "Menu", add_states=["selected"])
         #statesCheck(self.desktop_menuitem, "MenuItem", \
         #                                add_states=["focused", "selected"])
 

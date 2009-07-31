@@ -1,3 +1,7 @@
+2009-07-31  Calen Chen <cachen@novell.com>
+	* testers/savefiledialog/savefiledialogframe.py: solve an error for 
+	testing menu status
+
 2009-07-30  Calen Chen <cachen@novell.com>
 	* testers/splitter_vertical/splitterframe.py,
 	* testers/splitter_vertical.py,
