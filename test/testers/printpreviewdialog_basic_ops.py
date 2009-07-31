@@ -109,7 +109,7 @@ statesCheck(ppdFrame.label, "Label")
 
 # test tooltips states
 # if BUG508593 is fixed , please uncomment the following codes
-#for tooltip in ppdFrame.tooltips:
+#ppdFrame.findTooltips()
 #statesCheck(tooltip, "ToolTip")
 
 ####################################################

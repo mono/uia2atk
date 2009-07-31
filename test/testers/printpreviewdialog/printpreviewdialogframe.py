@@ -71,8 +71,12 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         self.label  = self.toolbar.findLabel(None)
 
         # BUG508593 - PrintPreviewDialog: ToolTips are not accessible   
-        # find all the tooltips 
-        #tooltips = self.app.findAllToolTips(None)
+        # find all the tooltips
+        # for button in self.pushbuttons:
+        #    if button.name != "Close":
+        #       button.mouseMove()
+        #       sleep(config.SHORT_DELAY) 
+        #       tooltip = self.app.findToolTip(None)
 
     def findPringtingFrameAccessibles(self):
         """
