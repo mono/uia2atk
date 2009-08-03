@@ -1,3 +1,9 @@
+2009-08-03 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/001_gtk-sharp_target-smcs.diff: Remove Makefile.include
+	modifications, as they were not needed anymore (since 20090605) and
+	they didn't apply cleanly on gtk-sharp trunk.
+
 2009-07-30 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight-a11y-initialization.diff: Updated to the last
