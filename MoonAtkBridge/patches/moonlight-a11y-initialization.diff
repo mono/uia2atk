@@ -248,6 +248,10 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +		private static bool accessibility_enabled = false;
 +		private static IntPtr accessible;
 +		
++		public static bool AccessibilityEnabled {
++			get { return accessibility_enabled; }			
++		}
++		
 +		public static IntPtr GetAccessible ()
 +		{
 +			if (!accessibility_enabled || automation_bridge == null)

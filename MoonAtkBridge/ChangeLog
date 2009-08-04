@@ -1,3 +1,8 @@
+2009-08-04 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-initialization.diff: Add new property 
+	requested by Mario.
+
 2009-08-03 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/001_gtk-sharp_target-smcs.diff: Remove Makefile.include
