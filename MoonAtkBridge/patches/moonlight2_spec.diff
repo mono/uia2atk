@@ -1,0 +1,24 @@
+Index: moonlight2.spec
+===================================================================
+--- moonlight2.spec	(revision 139356)
++++ moonlight2.spec	(working copy)
+@@ -15,7 +15,8 @@
+ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+ Source0:        moonlight-%{version}.tar.bz2
+ Source1:	mono-139349.tar.bz2
+-#Patch0:		libmoon_libdir_fix.patch
++Patch0:		moonlight-a11y-initialization.diff
++Patch1:		moonlight-a11y-slot-tree.diff
+ BuildRequires:  alsa-devel
+ BuildRequires:  bison
+ BuildRequires:  gcc-c++
+@@ -159,7 +160,8 @@
+ %prep
+ %setup -q
+ %setup -b 1
+-#%patch0 -p 0
++%patch0 -p 0
++%patch1 -p 0
+ cd ../mono-*
+ %configure
+ make PROFILE=net_2_1_raw
