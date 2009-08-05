@@ -30,7 +30,6 @@ PROJECT_SOURCE_FILES =  \
 	Mono.UIAutomation.Source/IElement.cs \
 	Mono.UIAutomation.Source/IGridItemPattern.cs \
 	Mono.UIAutomation.Source/IGridPattern.cs \
-	Mono.UIAutomation.Source/IInvokePattern.cs \
 	Mono.UIAutomation.Source/IMultipleViewPattern.cs \
 	Mono.UIAutomation.Source/IRangeValuePattern.cs \
 	Mono.UIAutomation.Source/IScrollPattern.cs \
