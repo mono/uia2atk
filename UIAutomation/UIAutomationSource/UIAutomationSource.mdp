@@ -16,6 +16,21 @@
   <Contents>
     <File name="Mono.UIAutomation.Source/IAutomationSource.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Source/IElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IGridItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IGridPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IMultipleViewPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IRangeValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IScrollPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ISelectionItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ISelectionPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ITableItemPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ITablePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ITextPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ITextPatternRange.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/ITransformPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IWindowPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Source/IInvokePattern.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />

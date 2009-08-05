@@ -171,7 +171,7 @@ namespace System.Windows.Automation
 			else if (pattern == GridPatternIdentifiers.Pattern)
 				return new GridPattern ((IGridPattern)source);
 			else if (pattern == InvokePatternIdentifiers.Pattern)
-				return new InvokePattern ((IInvokeProvider)source);
+				return new InvokePattern ((IInvokePattern)source);
 			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
 				return new MultipleViewPattern ((IMultipleViewPattern)source);
 			else if (pattern == RangeValuePatternIdentifiers.Pattern)

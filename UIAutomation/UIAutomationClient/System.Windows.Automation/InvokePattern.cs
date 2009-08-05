@@ -25,15 +25,15 @@
 // 
 
 using System;
-using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
 {
 	public class InvokePattern : BasePattern
 	{
-		private IInvokeProvider source;
+		private IInvokePattern source;
 
-		internal InvokePattern (IInvokeProvider source)
+		internal InvokePattern (IInvokePattern source)
 		{
 			this.source = source;
 		}

@@ -1,3 +1,8 @@
+2009-08-05  Matt Guo  <matt@mattguo.com>
+
+	* Add client test for InvokePattern
+	* Change the type of InvokePattern.source from IInvokeProvider to IInvokePattern
+
 2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* WindowsBase/System.Windows/Rect.cs: Add missing using statement.
