@@ -47,7 +47,7 @@ namespace UiaAtkBridge
 		public bool HasImage {
 			get {
 				if (embeddedImageProvider == null) {
-					Log.Info ("ImageImplementorHelper: Your provider implementation does not have unofficial IEmbeddedImage support");
+					Log.Info ("ImageImplementorHelper: Your provider implementation does not have unofficial EmbeddedImagePattern support");
 					return false;
 				} 
 
