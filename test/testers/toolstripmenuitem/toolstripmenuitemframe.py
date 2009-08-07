@@ -40,14 +40,14 @@ class ToolStripMenuItemFrame(accessibles.Frame):
         self.help_menu = self.findMenu(self.HELP_MENU)
         self.file_menu = self.findMenu(self.FILE_MENU)
         self.edit_menu = self.findMenu(self.EDIT_MENU)
-        self.create_menu_item = self.findMenuItem(self.CREATE_ITEM)
-        self.write_menu_item = self.findMenuItem(self.WRITE_ITEM)
-        self.financial_menu_item = self.findMenuItem(self.FINANCIAL_ITEM)
-        self.medical_menu_item = self.findMenuItem(self.MEDICAL_ITEM)
-        self.new_menu_item = self.findMenuItem(self.NEW_ITEM)
-        self.open_menu_item = self.findMenuItem(self.OPEN_ITEM)
-        self.copy_this_menu_item = self.findMenuItem(self.COPY_THIS_ITEM)
-        self.paste_that_menu_item = self.findMenuItem(self.PASTE_THAT_ITEM)
+        self.create_menu_item = self.findMenuItem(self.CREATE_ITEM, checkShowing=False)
+        self.write_menu_item = self.findMenuItem(self.WRITE_ITEM, checkShowing=False)
+        self.financial_menu_item = self.findMenuItem(self.FINANCIAL_ITEM, checkShowing=False)
+        self.medical_menu_item = self.findMenuItem(self.MEDICAL_ITEM, checkShowing=False)
+        self.new_menu_item = self.findMenuItem(self.NEW_ITEM, checkShowing=False)
+        self.open_menu_item = self.findMenuItem(self.OPEN_ITEM, checkShowing=False)
+        self.copy_this_menu_item = self.findMenuItem(self.COPY_THIS_ITEM, checkShowing=False)
+        self.paste_that_menu_item = self.findMenuItem(self.PASTE_THAT_ITEM, checkShowing=False)
         print "Found all accessibles"
 
     # make sure we find a MessageBox was clicked with the specified title
@@ -58,7 +58,7 @@ class ToolStripMenuItemFrame(accessibles.Frame):
         mb = self.app.findDialog(title)
 
     def assertText(self, expected_text):
-        procedurelogger.action('Verify that the text area contains the text we expecte')
+        procedurelogger.action('Verify that the text area contains the text we expected')
         procedurelogger.expectedResult('The text area contains "%s"' % \
                                                                  expected_text)
         actual_text = self.text_area.text 

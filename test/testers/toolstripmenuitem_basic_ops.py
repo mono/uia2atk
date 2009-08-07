@@ -63,23 +63,25 @@ actionsCheck(tsmiFrame.paste_that_menu_item, "MenuItem")
 # check states
 # We are unsure about whether these should have "focusable" states or not
 # The resolution of BUG485515 might clear this up
-# statesCheck(tsmiFrame.view_menu, "Menu")
-# statesCheck(tsmiFrame.help_menu, "Menu")
+#statesCheck(tsmiFrame.view_menu, "Menu")
+#statesCheck(tsmiFrame.help_menu, "Menu")
 statesCheck(tsmiFrame.file_menu, "Menu")
 statesCheck(tsmiFrame.edit_menu, "Menu")
-statesCheck(tsmiFrame.create_menu_item, "MenuItem")
-statesCheck(tsmiFrame.write_menu_item, "MenuItem")
-statesCheck(tsmiFrame.financial_menu_item, "MenuItem")
-statesCheck(tsmiFrame.medical_menu_item, "MenuItem")
-statesCheck(tsmiFrame.new_menu_item, "MenuItem")
-statesCheck(tsmiFrame.open_menu_item, "MenuItem")
-statesCheck(tsmiFrame.copy_this_menu_item, "MenuItem")
-statesCheck(tsmiFrame.paste_that_menu_item, "MenuItem")
+# BUG486335: MenuItem, ToolStripMenuItem: extraneous "showing" state of 
+# menu item when it is not showing
+#statesCheck(tsmiFrame.create_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.write_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.financial_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.medical_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.new_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.open_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.copy_this_menu_item, "MenuItem", invalid_states=["showing"])
+#statesCheck(tsmiFrame.paste_that_menu_item, "MenuItem", invalid_states=["showing"])
 
 # use the action interface to open the "view" menu and click on "create"
-tsmiFrame.view_menu.click()
+tsmiFrame.view_menu.click(log=True)
 sleep(config.SHORT_DELAY)
-tsmiFrame.create_menu_item.click()
+tsmiFrame.create_menu_item.click(log=True)
 sleep(config.SHORT_DELAY)
 tsmiFrame.assertMessageBoxAppeared("Create Clicked")
 # press enter to close the dialog
@@ -88,10 +90,56 @@ tsmiFrame.keyCombo("Enter", grabFocus=False)
 # make sure the text area is blank like we expect
 tsmiFrame.assertText("")
 
+# use accelerator to access menu
+tsmiFrame.keyCombo("<Alt>V", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.keyCombo("Enter", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.assertMessageBoxAppeared("Create Clicked")
+# press enter to close the dialog
+tsmiFrame.keyCombo("Enter", grabFocus=False)
+
+# make sure the text area is blank like we expect
+tsmiFrame.assertText("")
+
+tsmiFrame.keyCombo("<Alt>V", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.keyCombo("Enter", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.assertText("Write Clicked\n")
+sleep(config.SHORT_DELAY)
+
+tsmiFrame.clearTextArea()
+sleep(config.SHORT_DELAY)
+
+tsmiFrame.help_menu.click(log=True)
+sleep(config.SHORT_DELAY)
+tsmiFrame.financial_menu_item.click(log=True)
+sleep(config.SHORT_DELAY)
+tsmiFrame.assertText("Have some money\n")
+sleep(config.SHORT_DELAY)
+
+tsmiFrame.clearTextArea()
+sleep(config.SHORT_DELAY)
+
+tsmiFrame.keyCombo("<Alt>H", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.keyCombo("Enter", grabFocus=False)
+sleep(config.SHORT_DELAY)
+tsmiFrame.assertText("Here is a bandage\n")
+sleep(config.SHORT_DELAY)
+
+tsmiFrame.clearTextArea()
+sleep(config.SHORT_DELAY)
+
 # click on the "Copy This" menu item without opening its parent menu
 tsmiFrame.copy_this_menu_item.click(log=True)
 # Bug 501074 - Cannot perform action on accessible that is not visible
-# tsmiFrame.assertText("Copy Clicked")
+# tsmiFrame.assertText("Copy Clicked\n")
 
 # clear out the text area by using the keyboard to navigate to "New"
 tsmiFrame.keyCombo("<Alt>F", grabFocus=False)
@@ -146,8 +194,9 @@ tsmiFrame.keyCombo("Enter", grabFocus=False)
 # will always succeed while this bug is open
 #tsmiFrame.assertEditMenuOpen()
 # BUG503973 
-#tsmiFrame.assertText("Paste Clicked")
+#tsmiFrame.assertText("Paste Clicked\n")
 
+sleep(config.SHORT_DELAY)
 tsmiFrame.clearTextArea()
 tsmiFrame.keyCombo("<Alt>E", grabFocus=False)
 sleep(config.SHORT_DELAY)
@@ -174,9 +223,9 @@ sleep(config.SHORT_DELAY)
 #statesCheck(tsmiFrame.paste_this_menu_item, "MenuItem")
 tsmiFrame.assertText("Paste Clicked\n")
 
-# when some of these bugs are cleared up (especially BUG503973 or BUG503663),
-# we should write some more tests for the "View" and "Help" menus on the
-# ToolStrip
+# TODO: when some of these bugs are cleared up (especially BUG503973 or 
+# BUG503663), we should write some more tests for the "View" and "Help" 
+# menus on the ToolStrip
 
 #close main window
 tsmiFrame.quit()
