@@ -1,3 +1,8 @@
+2009-08-10  Brad Taylor  <brad@getcoded.net>
+
+	* patches/ff-plugin-a11y.patch: Add latest firefox plugin accessibility
+	patch from BMO #480317.
+
 2009-08-10 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: Use non-raw Moonlight references, to make latest
