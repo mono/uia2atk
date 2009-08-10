@@ -48,7 +48,7 @@ def launchAddress(uri, browser='firefox', profile='dev'):
 
     # TODO: Remove this when we have linking steps set up
     env = os.environ
-    env['MOON_DISABLE_SECURITY_PREVIEW_5'] = '1'
+    env['MOON_DISABLE_SECURITY_PREVIEW_7'] = '1'
     
     logString = 'Launch %s.' % name
 
