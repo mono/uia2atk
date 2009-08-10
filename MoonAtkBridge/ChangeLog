@@ -1,5 +1,10 @@
 2009-08-10 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am: Use non-raw Moonlight references, to make latest
+	changes on the tuner effective.
+
+2009-08-10 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am: Latest changes in gtk-sharp trunk broke our patches,
 	so use an old version for now.
 

@@ -96,7 +96,7 @@ $(ASSEMBLY_CONFIG): stage $(GTK_SHARP) $(CONFIG_FILES)
 
 $(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG)
 	mkdir -p bin/raw/
-	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/raw/
+	cp ../../moon/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
 	$(SMCS) /t:exe DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:bin/raw/DummyEntryPoint.exe
 	cd bin/raw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
