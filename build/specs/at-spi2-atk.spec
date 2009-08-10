@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi-atk
+# spec file for package at-spi2-atk
 #    
 # Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
 # This file and all modifications and additions to the pristine
@@ -10,7 +10,7 @@
 # norootforbuild 
 # 
 
-Name:           at-spi-atk
+Name:           at-spi2-atk
 Version:        2.0.0
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - dbus
