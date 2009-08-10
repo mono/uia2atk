@@ -1,3 +1,8 @@
+2009-08-10 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am: Latest changes in gtk-sharp trunk broke our patches,
+	so use an old version for now.
+
 2009-08-04 Stephen G. Shaw  <sshaw@decriptor.com>
 
 	* patches/moonlight2_spec.diff: removed the patches dir from patchX:

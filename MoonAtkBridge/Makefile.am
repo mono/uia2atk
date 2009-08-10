@@ -27,7 +27,7 @@ all-am: $(ASSEMBLY_STAGE_PATH) tests-build
 
 #FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):
-	svn export http://anonsvn.mono-project.com/source/trunk/gtk-sharp $(GTK_SHARP)
+	svn export http://anonsvn.mono-project.com/source/trunk/gtk-sharp $(GTK_SHARP) -r 139599
 
 	## Apply patches to gtk-sharp to add moonlight targets
 	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p;)
