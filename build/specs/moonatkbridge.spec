@@ -3,7 +3,7 @@
 #
 
 Name:           moonatkbridge
-Version:        1.9.0
+Version:        139443
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -38,5 +38,4 @@ rm -rf %{buildroot}
 %postun
 
 %changelog
-* Thu Apr 09 2009 <sshaw@decriptor.com>
 
