@@ -225,7 +225,9 @@ namespace Moonlight.AtkBridge
 
 				ConstructorInfo ctor
 					= item.Key.GetConstructor (
-						new Type [] { typeof (AutomationPeer) });
+						BindingFlags.NonPublic | BindingFlags.Instance,
+						null, new Type [] { typeof (AutomationPeer) },
+						null);
 				if (ctor == null) {
 					Log.Error ("Implementor {0} does not have an AutomationPeer ctor",
 					           item.Key);
@@ -240,11 +242,16 @@ namespace Moonlight.AtkBridge
 
 			// Implement methods and properties for the interfaces
 			// implemented by our implementors
+
+			// Moonlight security magically changes public members
+			// to private
+			BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+
 			foreach (Type impl in implementors) {
 				foreach (Type i in atkInterfaces) {
 					Dictionary<MethodInfo, MethodBuilder> methodMapping
 						= new Dictionary<MethodInfo, MethodBuilder> ();
-					foreach (MethodInfo mi in i.GetMethods ()) {
+					foreach (MethodInfo mi in i.GetMethods (flags)) {
 						ParameterInfo [] paramInfos = mi.GetParameters ();
 						Type [] paramTypes
 							= paramInfos.Select (p => p.ParameterType)
