@@ -67,7 +67,9 @@ CSCFLAGS = \
 	-keyfile:mono-uia.snk -target:library $(GTK_SHARP_FLAGS) \
 	-out:bin/raw/$(ASSEMBLY)
 
-DUMMY_REFERENCES = /r:bin/raw/mscorlib.dll /r:bin/raw/MoonAtkBridge.dll
+DUMMY_REFERENCES = /r:mscorlib.dll /r:MoonAtkBridge.dll
+DUMMY_COMPILATION = $(SMCS) /t:exe ../../DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:DummyEntryPoint.exe
+
 
 REFERENCES = \
 	System \
@@ -94,17 +96,29 @@ $(ASSEMBLY_CONFIG): stage $(GTK_SHARP) $(CONFIG_FILES)
 	cat $(CONFIG_FILES) | grep -v configuration | sort | uniq >> $@
 	echo "</configuration>" >> $@
 
+# bin/raw/ dir contains MoonAtkBridge.dll without sec attrs, plus moonlight assemblies with sec attrs
+# bin/ dir contains MoonAtkBridge.dll with sec attrs and with internalized API
 $(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG)
 	mkdir -p bin/raw/
 	cp ../../moon/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
-	$(SMCS) /t:exe DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:bin/raw/DummyEntryPoint.exe
+	cd bin/raw/ && $(DUMMY_COMPILATION)
 	cd bin/raw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yAssemblyStep,Mono.Tuner
 	rm bin/raw/DummyEntryPoint.exe
 	rm bin/*.exe
 	cp bin/*.dll stage/components/
 
+# bin/fullraw/ dir contains MoonAtkBridge.dll and moonlight assemblies without sec attrs
+descriptors: $(ASSEMBLY_STAGE_PATH)
+	mkdir -p bin/fullraw/
+	cp ./bin/raw/MoonAtkBridge.dll ./bin/fullraw/
+	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/fullraw/
+	cd bin/fullraw/ && $(DUMMY_COMPILATION)
+	cd bin/fullraw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe -c link -a ./DummyEntryPoint.exe \
+		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner > ../../descriptors.xml
+
+# stage contains bin/ assemblies plus the files needed for XPI generation
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
 

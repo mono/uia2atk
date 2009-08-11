@@ -1,3 +1,8 @@
+2009-08-11 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am: Added new 'descriptors' target, to generate the
+	files for API stripping prevention at moon build.
+
 2009-08-10  Brad Taylor  <brad@getcoded.net>
 
 	* install.rdf.in: Our files are actually noarch.
