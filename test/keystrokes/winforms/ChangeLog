@@ -1,3 +1,6 @@
+2009-08-11 Marco Skambraks <marco@suse.de>
+	* added test for combobox_dropdown.py and combobox_dropdownlist.py
+		- see Bug 530008
 2009-08-10 Marco Skambraks <marco@suse.de>
 	* textbox.py - finished
 		- no cursor update when cursor has moved - Bug #528408
