@@ -1,6 +1,6 @@
 Index: src/security.c
 ===================================================================
---- src/security.c	(revision 139022)
+--- src/security.c	(revision 139773)
 +++ src/security.c	(working copy)
 @@ -16,6 +16,7 @@
  #if MONO_ENABLE_CORECLR_SECURITY
@@ -104,7 +104,7 @@ Index: src/security.c
  		}
 Index: configure.ac
 ===================================================================
---- configure.ac	(revision 139022)
+--- configure.ac	(revision 139773)
 +++ configure.ac	(working copy)
 @@ -106,6 +106,14 @@
  LOADER_LIBS="$GLIB_LIBS"
@@ -123,7 +123,7 @@ Index: configure.ac
  else
 Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
 ===================================================================
---- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 139022)
+--- class/tuning/SecurityAttributes/overrides/System.Windows.manual	(revision 139773)
 +++ class/tuning/SecurityAttributes/overrides/System.Windows.manual	(working copy)
 @@ -8,3 +8,9 @@
  
@@ -137,7 +137,7 @@ Index: class/tuning/SecurityAttributes/overrides/System.Windows.manual
 +
 Index: class/System.Windows/Assembly/AssemblyInfo.cs
 ===================================================================
---- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 139022)
+--- class/System.Windows/Assembly/AssemblyInfo.cs	(revision 139773)
 +++ class/System.Windows/Assembly/AssemblyInfo.cs	(working copy)
 @@ -101,3 +101,6 @@
  [assembly: InternalsVisibleTo ("System.Windows.Browser, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
@@ -148,7 +148,7 @@ Index: class/System.Windows/Assembly/AssemblyInfo.cs
 +#endif
 Index: class/System.Windows/System.Windows.mdp
 ===================================================================
---- class/System.Windows/System.Windows.mdp	(revision 139022)
+--- class/System.Windows/System.Windows.mdp	(revision 139773)
 +++ class/System.Windows/System.Windows.mdp	(working copy)
 @@ -19,6 +19,7 @@
      <File name="System.Windows/DependencyObject.g.cs" subtype="Code" buildaction="Compile" />
@@ -162,7 +162,7 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 ===================================================================
 --- class/System.Windows/Mono/A11yHelper.cs	(revision 0)
 +++ class/System.Windows/Mono/A11yHelper.cs	(revision 0)
-@@ -0,0 +1,101 @@
+@@ -0,0 +1,106 @@
 +//
 +// A11yHelper.cs
 +//
@@ -268,9 +268,10 @@ Index: class/System.Windows/Mono/A11yHelper.cs
 +		}
 +	}
 +}
++
 Index: class/System.Windows/Mono/ApplicationLauncher.cs
 ===================================================================
---- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 139022)
+--- class/System.Windows/Mono/ApplicationLauncher.cs	(revision 139773)
 +++ class/System.Windows/Mono/ApplicationLauncher.cs	(working copy)
 @@ -44,6 +44,11 @@
  	/// </summary>	
@@ -286,9 +287,9 @@ Index: class/System.Windows/Mono/ApplicationLauncher.cs
  		/// </summary>
 Index: class/System.Windows/Makefile.am
 ===================================================================
---- class/System.Windows/Makefile.am	(revision 139022)
+--- class/System.Windows/Makefile.am	(revision 139773)
 +++ class/System.Windows/Makefile.am	(working copy)
-@@ -19,6 +19,12 @@
+@@ -29,6 +29,12 @@
  
  CSCFLAGS = /codepage:65001 -d:SANITY -d:NET_1_1 -d:NET_2_0 -d:MOONLIGHT -debug+ -noconfig -r:System -r:System.Core -r:System.Xml -d:AGCLR -unsafe
  
@@ -298,10 +299,10 @@ Index: class/System.Windows/Makefile.am
 +CSCFLAGS += -define:MOON_A11Y_INTERNAL_HACK
 +endif
 +
- GMCS = gmcs $(CSCFLAGS) -lib:../lib/moonlight -d:NET_3_0
- SMCS = MONO_PATH="../lib/2.1:$$MONO_PATH" mono --runtime=moonlight --security=temporary-smcs-hack ../lib/2.1/smcs.exe -r:System.Net $(CSCFLAGS)
+ GMCS = MONO_PATH="../lib/moonlight:../lib/moonlight-bootstrap:$$MONO_PATH" gmcs $(CSCFLAGS) -lib:../lib/moonlight,../lib/moonlight-bootstrap -d:NET_3_0
+ SMCS = MONO_PATH="../lib/2.1:../lib/2.1-bootstrap:$$MONO_PATH" mono --runtime=moonlight --security=temporary-smcs-hack ../lib/2.1/smcs.exe -r:System.Net $(CSCFLAGS)
  GACUTIL = gacutil /gacdir $(DESTDIR)$(prefix)/lib /root $(DESTDIR)$(prefix)/lib
-@@ -38,6 +44,7 @@
+@@ -48,6 +54,7 @@
  	$(srcdir)/MS.Internal/Dummy.cs	\
  	$(srcdir)/System.Windows.Hosting/Dummy.cs	\
  	$(srcdir)/System.IO/SimpleUnmanagedMemoryStream.cs			\

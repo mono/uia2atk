@@ -1,3 +1,8 @@
+2009-08-12 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-initialization.diff: Update to avoid
+	conflicts.
+
 2009-08-11 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: Added new 'descriptors' target, to generate the
