@@ -1,3 +1,8 @@
+2009-08-12  Matt Guo  <matt@mattguo.com>
+
+	* System.Windows.Automation/StructureChangedEventArgsTest.cs: Test added,
+	tests StructureChangedEvetintArgs.EventId.
+
 2008-10-27  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/TableItemPatternIdentifiersTest.cs: Test added,

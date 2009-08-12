@@ -17,37 +17,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Calvin Gaisford <calvinrg@gmail.com>
+//      Matt Guo <matt@mattguo.com>
 // 
 
 using System;
+using System.Windows.Automation;
+using NUnit.Framework;
 
-namespace System.Windows.Automation
+namespace MonoTests.System.Windows.Automation
 {
-	public sealed class StructureChangedEventArgs : AutomationEventArgs
+	[TestFixture]
+	public class StructureChangedEventArgsTest
 	{
-		private StructureChangeType structureChangeType;
-		private int[] runtimeId;
-		
-		public StructureChangeType StructureChangeType { 
-			get {
-				return structureChangeType;
-			}
-		}
-
-		public StructureChangedEventArgs (StructureChangeType structureChangeType, int[] runtimeId) :
-			base (AutomationElementIdentifiers.StructureChangedEvent)
+		[Test]
+		public void ValuesTest ()
 		{
-			this.structureChangeType = structureChangeType;
-			this.runtimeId = runtimeId;
-		}
-
-		public int[] GetRuntimeId ()
-		{
-			return runtimeId;
+			int[] fakeRuntimeId = { 0 };
+			StructureChangeType sct = StructureChangeType.ChildrenBulkAdded;
+			StructureChangedEventArgs args =
+				new StructureChangedEventArgs (sct, fakeRuntimeId);
+			Assert.AreEqual (AutomationElementIdentifiers.StructureChangedEvent, args.EventId, "Check Event Id");
+			Assert.AreEqual (sct, args.StructureChangeType, "Check StructureChangeType member");
 		}
 	}
 }
