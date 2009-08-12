@@ -89,7 +89,8 @@ namespace UiaAtkBridgeTest
 		StatusBarPanel,
 		TreeView,
 		DateTimePicker,
-		ToolbarButton,
+		ToolBarPushButton,
+		ToolBarDropDownButton,
 		MonthCalendar,
 		ContextMenuDeprecated
 	}

@@ -90,7 +90,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
 		protected SWF.ToolBar toolBar = new SWF.ToolBar ();
-		protected SWF.ToolBarButton toolBarButton = new SWF.ToolBarButton ("Test");
+		protected SWF.ToolBarButton toolBarButton1 = new SWF.ToolBarButton ("TestPushButton");
+		protected SWF.ToolBarButton toolBarButton2 = new SWF.ToolBarButton ("TestDropDownButton");
 		protected SWF.ToolBarButton toolBarButtonWithImage = new SWF.ToolBarButton ("TestIMG");
 		protected SWF.TabControl tabControl = new SWF.TabControl ();
 		protected SWF.TreeView treeView = new SWF.TreeView ();
@@ -121,7 +122,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[TestFixtureSetUp]
-		public virtual void BridgeTesterInit () 
+		public virtual void BridgeTesterInit ()
 		{
 			Mono.UIAutomation.Services.Log.ErrorHappened += OnError;
 			
@@ -172,7 +173,11 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripTextBox1);
 			toolStrip.Items.Add (toolStripTextBox2);
 			form.Controls.Add (toolStrip);
-			toolBar.Buttons.Add (toolBarButton);
+
+			toolBar.Buttons.Add (toolBarButton1);
+			toolBarButton1.Style = System.Windows.Forms.ToolBarButtonStyle.PushButton;
+			toolBar.Buttons.Add (toolBarButton2);
+			toolBarButton2.Style = System.Windows.Forms.ToolBarButtonStyle.DropDownButton;
 			toolBar.Buttons.Add (toolBarButtonWithImage);
 			toolBarButtonWithImage.ImageIndex = 0;
 			form.Controls.Add (toolBar);
@@ -728,16 +733,24 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = GetAdapterForWidget (but);
 				break;
-				
-			case BasicWidgetType.ToolbarButton:
+
+			case BasicWidgetType.ToolBarDropDownButton:
 				if (!real)
 					throw new NotSupportedException ("No unreal support for ToolbarButton");
 
-				SWF.ToolBarButton theButton = (embeddedImage) ? toolBarButtonWithImage : toolBarButton;
+				toolBarButton2.Text = name;
+				accessible = GetAdapterForWidget (toolBarButton2);
+				break;
+				
+			case BasicWidgetType.ToolBarPushButton:
+				if (!real)
+					throw new NotSupportedException ("No unreal support for ToolbarButton");
+
+				SWF.ToolBarButton theButton = (embeddedImage) ? toolBarButtonWithImage : toolBarButton1;
 				theButton.Text = name;
 				accessible = GetAdapterForWidget (theButton);
 				break;
-				
+
 			case BasicWidgetType.ToolStripButton:
 				if (!real)
 					throw new NotSupportedException ("No unreal support for ToolbarButton");
