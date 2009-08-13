@@ -34,9 +34,16 @@ using System.Windows.Forms;
 
 namespace SampleForm {
 	public partial class Form1 : Form {
+
 		public Form1 ()
 		{
 			InitializeComponent ();
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Console.WriteLine ("*** button1_click ***");
+			label1.Text = "button1_click";
 		}
 	}
 }

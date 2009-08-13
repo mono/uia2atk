@@ -20,31 +20,46 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using Mono.UIAutomation.Source;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows.Automation;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+using NUnit.Framework;
+using MonoTests.System.Windows.Automation;
 
-namespace System.Windows.Automation
+namespace MonoTests.System.Windows.Automation
 {
-	public class InvokePattern : BasePattern
+
+	[TestFixture]
+	public class InvokePatternTest : BaseTest
 	{
-		private IInvokePattern source;
+		#region Test Methods
 
-		internal InvokePattern (IInvokePattern source)
+		[Test]
+		public void InvokeTest ()
 		{
-			this.source = source;
+			InvokePattern pattern = (InvokePattern) button1Element.GetCurrentPattern (InvokePatternIdentifiers.Pattern);
+			pattern.Invoke ();
+			Assert.AreEqual ("button1_click",
+				label1Element.GetCurrentPropertyValue (AEIds.NameProperty),
+				"lable1's text is modified after button1 is clicked");
+
+			// TODO: Add test for InvokedEvent
 		}
 
-		public void Invoke ()
+		[Test]
+		[ExpectedException("System.Windows.Automation.ElementNotEnabledException")]
+		public void NotEnabledTest ()
 		{
-			source.Invoke ();
+			InvokePattern pattern = (InvokePattern) button3Element.GetCurrentPattern (InvokePatternIdentifiers.Pattern);
+			pattern.Invoke ();
 		}
 
-		public static readonly AutomationPattern Pattern;
-
-		public static readonly AutomationEvent InvokedEvent;
+		#endregion
 	}
 }

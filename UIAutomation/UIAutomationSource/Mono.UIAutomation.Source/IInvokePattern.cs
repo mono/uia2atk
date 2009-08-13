@@ -20,31 +20,15 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//      Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using Mono.UIAutomation.Source;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.Source
 {
-	public class InvokePattern : BasePattern
+	public interface IInvokePattern
 	{
-		private IInvokePattern source;
-
-		internal InvokePattern (IInvokePattern source)
-		{
-			this.source = source;
-		}
-
-		public void Invoke ()
-		{
-			source.Invoke ();
-		}
-
-		public static readonly AutomationPattern Pattern;
-
-		public static readonly AutomationEvent InvokedEvent;
+		void Invoke ();
 	}
 }

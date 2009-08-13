@@ -1,3 +1,15 @@
+2009-08-13  Matt Guo  <matt@mattguo.com>
+
+	* System.Windows.Automation/InvokePattern.cs,
+	System.Windows.Automation/AutomationElement.cs:
+	Support InvokePattern (fix bug#489370)
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj,
+	Test/UIAutomationClientTests/SampleForm/Form1.Designer.cs,
+	Test/UIAutomationClientTests/SampleForm/Form1.cs,
+	Test/UIAutomationClientTests/UIAutomationClientTests/InvokePatternTest.cs:
+	Add test cases for bug#489370
+	
 2009-07-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation/SourceManager.cs:

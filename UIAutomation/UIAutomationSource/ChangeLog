@@ -1,3 +1,8 @@
+2009-08-13  Matt Guo  <matt@mattguo.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Source/IInvokePattern.cs: Replace the originally used IInvokeProvider
+
 2009-06-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Source/IElement.cs: Add SupportsProperty. 
