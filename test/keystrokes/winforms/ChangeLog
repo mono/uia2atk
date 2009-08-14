@@ -1,3 +1,6 @@
+2009-08-14 Marco Skambraks <marco@suse.de>
+	* updated and hopefully completed containercontrol.py
+
 2009-08-11 Marco Skambraks <marco@suse.de>
 	* added test for combobox_dropdown.py and combobox_dropdownlist.py
 		- see Bug 530008
