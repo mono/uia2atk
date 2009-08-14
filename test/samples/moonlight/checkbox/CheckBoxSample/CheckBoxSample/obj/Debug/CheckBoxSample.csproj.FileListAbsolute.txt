@@ -1,0 +1,12 @@
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\Bin\Debug\AppManifest.xaml
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\Bin\Debug\CheckBoxSample.dll
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\Bin\Debug\CheckBoxSample.pdb
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\Bin\Debug\CheckBoxSample.xap
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\Bin\Debug\TestPage.html
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\ResolveAssemblyReference.cache
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\App.g.cs
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\Page.g.cs
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\CheckBoxSample.g.resources
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\CheckBoxSample.dll
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\CheckBoxSample.pdb
+D:\Visual Studio 2008\Projects\CheckBoxSample\CheckBoxSample\obj\Debug\XapCacheFile.xml

@@ -1,0 +1,12 @@
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\Bin\Debug\AppManifest.xaml
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\Bin\Debug\CanvasSample.dll
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\Bin\Debug\CanvasSample.pdb
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\Bin\Debug\CanvasSample.xap
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\Bin\Debug\TestPage.html
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\ResolveAssemblyReference.cache
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\App.g.cs
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\Page.g.cs
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\CanvasSample.g.resources
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\CanvasSample.dll
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\CanvasSample.pdb
+D:\Visual Studio 2008\Projects\CanvasSample\CanvasSample\obj\Debug\XapCacheFile.xml

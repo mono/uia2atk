@@ -1,3 +1,9 @@
+2009-08-14  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/: add directory for moonlight samples
+	* samples/moonlight/canvas/: add moonlight canvas example
+	* samples/moonlight/checkbox/: add moonlight checkbox example
+
 2009-08-07 Ray Wang <rawang@novell.com>
 
 	* testers/toolstripmenuitem/toolstripmenuitemframe.py: Fix a typo and 
