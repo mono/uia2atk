@@ -124,7 +124,7 @@ namespace Mono.UIAutomation.Services
 			else
 				msg += String.Format (message, args);
 			
-			if ((int)currentLogLevel > (int)level)
+			if ((int)currentLogLevel <= (int)level)
 				Console.Error.WriteLine (msg);
 			
 			var handler = ErrorHappened;
