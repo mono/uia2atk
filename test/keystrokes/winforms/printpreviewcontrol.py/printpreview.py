@@ -10,7 +10,7 @@ sequence.append(WaitForWindowActivate("PrintPreviewControl control",None))
 sequence.append(utils.AssertPresentationAction(
     "button focus",
     ["BRAILLE LINE:  'PrintPreviewControl control Frame'",
-     "     VISIBLE:  'PrintPreviewControl control Frame', cursor=1",
+     "     VISIBLE:  'PrintPreviewControl control Fram', cursor=1",
      "BRAILLE LINE:  'Button Button'",
      "     VISIBLE:  'Button Button', cursor=1",
      "SPEECH OUTPUT: 'PrintPreviewControl control frame'",

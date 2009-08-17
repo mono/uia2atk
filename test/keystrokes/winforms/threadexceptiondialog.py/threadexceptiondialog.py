@@ -10,7 +10,7 @@ sequence.append(WaitForWindowActivate("ThreadExceptionDialog control",None))
 sequence.append(utils.AssertPresentationAction(
     "app active",
     ["BRAILLE LINE:  'ThreadExceptionDialog control Frame'",
-     "     VISIBLE:  'ThreadExceptionDialog control Frame', cursor=1",
+     "     VISIBLE:  'ThreadExceptionDialog control Fr', cursor=1",
      "BRAILLE LINE:  'Raise an Exception Button'",
      "     VISIBLE:  'Raise an Exception Button', cursor=1",
      "SPEECH OUTPUT: 'ThreadExceptionDialog control frame'",

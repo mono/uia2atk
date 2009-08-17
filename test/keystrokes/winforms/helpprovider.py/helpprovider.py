@@ -10,7 +10,7 @@ sequence.append(WaitForWindowActivate("Help Provider Demonstration",None))
 sequence.append(utils.AssertPresentationAction(
     "helpprovider frame active",
     ["BRAILLE LINE:  'Help Provider Demonstration Frame'",
-     "     VISIBLE:  'Help Provider Demonstration Frame', cursor=1",
+     "     VISIBLE:  'Help Provider Demonstration Fram', cursor=1",
      "BRAILLE LINE:  '1800 S Novell Place'",
      "     VISIBLE:  '1800 S Novell Place', cursor=1",
      "SPEECH OUTPUT: 'Help Provider Demonstration frame'",
