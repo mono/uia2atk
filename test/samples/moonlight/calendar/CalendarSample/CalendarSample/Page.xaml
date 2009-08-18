@@ -1,0 +1,35 @@
+﻿<UserControl xmlns:basics="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"  x:Class="CalendarSample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="600">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="label" Text="Calendar Demonstration" Grid.Row="0" Margin="0,20,10,20" FontFamily="Verdana" FontSize="18" FontWeight="Bold" Foreground="#FF5C9AC9" />
+        
+        <!-- A label to show Calendar mode -->
+        <TextBlock x:Name="label1" Text="A basic Calendar with Month CalendarMode:" Grid.Row="1" />
+        <!-- Calendar1 -->
+        <basics:Calendar x:Name="calendar1" Grid.Row="2" SelectionMode="SingleDate" HorizontalAlignment="Left"></basics:Calendar>
+        <!-- CheckBox to select SelectionMode -->
+        <CheckBox x:Name="multiselect" Grid.Row="3" Content="MultiSelected" Checked="HandleChecked" Unchecked="HandleUnchecked" Margin="0,10,0,0" />
+        <!-- label to show DisplayDateChange and SelectedDateChange -->
+        <TextBlock x:Name="label2" Grid.Row="4" Margin="0,10,0,0" />
+
+        <!-- A label to show Calendar mode -->
+        <TextBlock x:Name="label3" Text="A basic Calendar with Year CalendarMode:" Grid.Row="5" Margin="0,30,0,0"/>
+        <!-- Calendar2 -->
+        <basics:Calendar x:Name="calendar2" Grid.Row="6" IsTodayHighlighted="True" DisplayMode="Year" SelectionMode="SingleDate" HorizontalAlignment="Left"></basics:Calendar>
+        <!-- CheckBox to select SelectionMode -->
+        <CheckBox x:Name="decade" Grid.Row="7" Content="DecadeMode" Checked="HandleChecked" Unchecked="HandleUnchecked" Margin="0,10,0,0" />
+
+    </Grid>
+</UserControl>
