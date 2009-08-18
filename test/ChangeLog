@@ -1,3 +1,13 @@
+2009-08-18  Neville Gao  <nevillegao@gmail.com>
+
+	* tester/moonlight/:
+	* tester/gtk/:
+	* tester/winforms/:
+	* tester/uiaclient/:
+	* samples/gtk/:
+	* samples/winforms/: Added directories for moonlight, gtk, winforms and
+	uiaclient, and moved original test scrips and samples to winforms dir.
+
 2009-08-14  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/: add directory for moonlight samples
