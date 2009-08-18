@@ -1,3 +1,16 @@
+2009-08-18 Marco Skambraks <marco@suse.de>
+	* added datetimepicker_dropdown.py
+	  - in some cases the braille output is displyed twice
+	  - cannot navigate-to/see the checkbox with left/right navigation only
+	  in flat-review see bug #532078
+
+2009-08-17 Marco Skambraks <marco@suse.de>
+	* cut the visible braille lines to 32 chars:
+		./toolstripprogressbar.py/toolstripprogressbar.py
+		./printpreviewcontrol.py/printpreview.py
+		./threadexceptiondialog.py/threadexceptiondialog.py
+		./helpprovider.py/helpprovider.py
+
 2009-08-14 Marco Skambraks <marco@suse.de>
 	* updated and hopefully completed containercontrol.py
 
