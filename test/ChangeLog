@@ -1,5 +1,10 @@
 2009-08-18  Neville Gao  <nevillegao@gmail.com>
 
+	* tester/gtk/:
+	* tester/winforms/: Modified __init__.py files to match the new hierarchy.
+
+2009-08-18  Neville Gao  <nevillegao@gmail.com>
+
 	* tester/moonlight/:
 	* tester/gtk/:
 	* tester/winforms/:

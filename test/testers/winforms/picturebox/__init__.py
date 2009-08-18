@@ -22,7 +22,7 @@ def launchPictureBox(exe=None):
 
     if exe is None:
         # make sure we can find the sample application
-        exe = '%s/samples/picturebox.py' % uiaqa_path
+        exe = '%s/samples/winforms/picturebox.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

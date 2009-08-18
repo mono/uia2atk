@@ -20,7 +20,7 @@ def launchMaskedTextBox(exe=None):
         harness_dir = path[0]
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
-        exe = '%s/samples/maskedtextbox.py' % uiaqa_path
+        exe = '%s/samples/winforms/maskedtextbox.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

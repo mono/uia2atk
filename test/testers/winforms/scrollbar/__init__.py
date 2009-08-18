@@ -26,7 +26,7 @@ def launchScrollBar(exe=None):
                          "full path or set the\nUIAQA_HOME environment "\
                          "variable."
 
-        exe = '%s/samples/scrollbar.py' % uiaqa_path
+        exe = '%s/samples/winforms/scrollbar.py' % uiaqa_path
    
     if not os.path.exists(exe):
       raise IOError, "%s does not exist" % exe
