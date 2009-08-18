@@ -1,3 +1,7 @@
+2009-08-18  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/calendar/: add moonlight calendar example
+
 2009-08-18  Neville Gao  <nevillegao@gmail.com>
 
 	* tester/gtk/:
