@@ -20,7 +20,8 @@ def launchScrollBar(exe=None):
         # make sure we can find the sample application
         harness_dir = path[0]
         i = harness_dir.rfind("/")
-        uiaqa_path = harness_dir[:i]
+        j = harness_dir[:i].rfind("/")
+        uiaqa_path = harness_dir[:j]
         if uiaqa_path is None:
           raise IOError, "When launching an application you must provide the "\
                          "full path or set the\nUIAQA_HOME environment "\

@@ -20,8 +20,9 @@ def launchForm(exe=None):
         # make sure we can find the sample application
         harness_dir = path[0]
         i = harness_dir.rfind("/")
-        uiaqa_path = harness_dir[:i]
-        exe = '%s/samples/winforms/gtkform.py' % uiaqa_path
+        j = harness_dir[:i].rfind("/")
+        uiaqa_path = harness_dir[:j]
+        exe = '%s/samples/gtk/gtkform.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

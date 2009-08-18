@@ -5,7 +5,7 @@
 # Date:        08/11/2008
 # Description: Test accessibility of form widget 
 #              Use the formframe.py wrapper script
-#              Test the samples/winforms/form.py script
+#              Test the samples/gtk/form.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

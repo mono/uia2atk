@@ -6,7 +6,7 @@
 # Date:        May 23 2008
 # Description: Test accessibility of gtk checkbutton widget 
 #              Use the gtkcheckbuttonframe.py wrapper script
-#              Test the samples/winforms/gtkcheckbutton.py script
+#              Test the samples/gtk/gtkcheckbutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

@@ -5,7 +5,7 @@
 # Date:        06/27/2008
 # Description: Test accessibility of gtk button widget 
 #              Use the gtkbuttonframe.py wrapper script
-#              Test the samples/winforms/gtkbutton.py script
+#              Test the samples/gtk/gtkbutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

@@ -5,7 +5,7 @@
 # Date:        09/08/2008
 # Description: Test accessibility of numericupdown widget 
 #              Use the numericupdownframe.py wrapper script
-#              Test the samples/winforms/numericupdown.py script
+#              Test the samples/gtk/numericupdown.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

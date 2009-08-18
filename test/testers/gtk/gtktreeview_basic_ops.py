@@ -5,7 +5,7 @@
 # Date:        06/18/2008
 # Description: Test accessibility of gtk TreeView widget 
 #              Use the gtktreeviewframe.py wrapper script
-#              Test the samples/winforms/gtktreeview.py script
+#              Test the samples/gtk/gtktreeview.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file
