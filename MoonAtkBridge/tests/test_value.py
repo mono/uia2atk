@@ -133,9 +133,9 @@ class ValueTextBox(unittest.TestCase):
                          (' World', 5, 11))
 
         self.assertEqual(t.getTextAfterOffset(8, pyatspi.TEXT_BOUNDARY_WORD_START), \
-                         ('World!', 6, 12))
+                         ('', 12, 12))
         self.assertEqual(t.getTextAfterOffset(12, pyatspi.TEXT_BOUNDARY_WORD_END), \
-                         (' World', 5, 11))
+                         ('', 12, 12))
 
     def test_get_text_at_offset(self):
         t = self.textbox_text
@@ -195,7 +195,7 @@ class ValueTextBox(unittest.TestCase):
         self.assertEqual(t.getTextBeforeOffset(8, pyatspi.TEXT_BOUNDARY_WORD_START), \
                          ('Hello ', 0, 6))
         self.assertEqual(t.getTextBeforeOffset(12, pyatspi.TEXT_BOUNDARY_WORD_END), \
-                         ('Hello', 0, 5))
+                         (' World', 5, 11))
 
     def test_remove_selection(self):
         self.assertFalse(self.textbox_text.removeSelection(0))

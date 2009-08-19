@@ -179,7 +179,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 					else if (endOffset + 1 <= text.Length)
 						endOffset++;
 
-					return ReturnTextWrtOffset (startOffset);
+					return ReturnTextWrtOffset (startOffset, endOffset);
 
 				case Atk.TextBoundary.LineEnd:
 					ForwardToNextSeparator (newLineSeparators, offset, out startOffset, out endOffset);
@@ -287,10 +287,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 						endOffset = text.Length;
 					}
 					else if (offset >= text.Length)
-						endOffset = offset;
+						startOffset = endOffset = text.Length;
 					else
 						endOffset = offset + 1;
-					return ReturnTextWrtOffset (offset);
+					return ReturnTextWrtOffset (startOffset, endOffset);
 
 				default:
 					throw GetNotSupportedBoundary (boundaryType);
@@ -333,9 +333,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 					return ReturnTextWrtOffset (startOffset, endOffset);
 
 				case Atk.TextBoundary.Char:
-					startOffset = offset - 1;
-					endOffset = offset;
-					return ReturnTextWrtOffset (startOffset);
+					offset = Clamp (offset, 0, Text.Length);
+					startOffset = Clamp (offset - 1, 0, Text.Length);
+					endOffset = Clamp (offset, 0, Text.Length);
+					return ReturnTextWrtOffset (startOffset, endOffset);
 
 				case Atk.TextBoundary.SentenceEnd:
 					endOffset = BackwardToNextSeparator (sentenceSeparators, offset, false);
@@ -396,15 +397,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			return Text.Substring (startOffset, endOffset - startOffset);
 		}
 
-		// endOffset == startOffset + 1
-		private string ReturnTextWrtOffset (int startOffset)
-		{
-			//TODO: optimize?
-			if ((startOffset < 0) || (startOffset > Text.Length))
-				return String.Empty;
-			return new String (new char[] { GetCharacterAtOffset (startOffset) });
-		}
-
 		private void ForwardToNextSeparator (char[] seps,
 		                                     int startOffset,
 		                                     out int stopEarlyOffset,
@@ -423,7 +415,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			string text = Text;
 			int retOffset = startOffset;
 			bool anyNonSeparator = false;
-			while (true) {
+			while (retOffset < text.Length) {
 				bool isSep = CharEqualsAny (text [retOffset], seps);
 				if (!isSep)
 					anyNonSeparator = true;
@@ -565,11 +557,16 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 			return (startOff > endOff);
 		}
+
+		private int Clamp (int val, int min, int max)
+		{
+			return Math.Min (Math.Max (val, min), max);
+		}
 #endregion
 
 #region Private Fields
 		//TODO: use regexp?
-		private static char [] wordSeparators = new char [] { ' ', '\n', '\r', '.', '\t' };
+		private static char [] wordSeparators = new char [] { ' ', '\n', '\r', '.', '!', ',', '?', '\t' };
 		private static char [] newLineSeparators = new char [] { '\n', '\r' };
 		private static char [] sentenceSeparators = new char [] { '\n', '\r', '.' };
 		private static char [] softSentenceSeparators = new char [] { '.', ':'};

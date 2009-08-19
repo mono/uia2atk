@@ -28,7 +28,7 @@ import signal
 
 from strongwind import *
 
-def launchAddress(uri, browser='firefox', profile='dev'):
+def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
     """
     Launch a browser with the selected uri and return a Browser object.
     """
@@ -42,39 +42,46 @@ def launchAddress(uri, browser='firefox', profile='dev'):
     else:
         print "** MOON_A11Y_BROWSER_PROFILE environment variable not found.  Defaulting to '%s'." % profile
 
+    if os.environ.has_key('MOON_A11Y_BROWSER_NAME'):
+        name = os.environ['MOON_A11Y_BROWSER_NAME']
+    else:
+        print "** MOON_A11Y_BROWSER_NAME environment variable not found.  Defaulting to '%s'." % name
+
     cwd = os.path.dirname(browser)
     args = [browser, '-no-remote', '-P', profile, uri]
-    name = 'Minefield'
 
     # TODO: Remove this when we have linking steps set up
     env = os.environ
     env['MOON_DISABLE_SECURITY_PREVIEW_7'] = '1'
-    
+
     logString = 'Launch %s.' % name
 
     (app, proc) = cache.launchApplication(args=args, name=name, cwd=cwd,
-                                          find=re.compile('^Minefield$'),
+                                          find=re.compile('^%s$' % name),
                                           wait=config.LONG_DELAY, cache=True,
                                           env=env, logString=logString)
-    browser = MinefieldBrowser(app, proc)
+    browser = FirefoxBrowser(name, app, proc)
     cache.addApplication(browser)
     return browser
 
 
-# TODO: What if we want to test with Firefox, not Minefield?
-class MinefieldBrowser(accessibles.Application):
+class FirefoxBrowser(accessibles.Application):
     logName = 'Mozilla Firefox'
+    appNameRegex = '^(.*) - %s$'
 
-    def __init__(self, accessible, subproc):
+    def __init__(self, name, accessible, subproc):
         """
         Get a refrence to the main browser window.
         """
-        super(MinefieldBrowser, self).__init__(accessible, subproc)
-        
+        super(FirefoxBrowser, self).__init__(accessible, subproc)
+
         self.proc = subproc
 
-        self.findFrame(re.compile('^(.*) - Minefield$'), logName='Main')
+        self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
         self.slControl = self.mainFrame.findFiller('Silverlight Control')
 
     def kill(self):
-        os.killpg(self.proc.pid, signal.SIGKILL)
+        try:
+            os.killpg(self.proc.pid, signal.SIGKILL)
+        except:
+            print "Unable to send pid %d SIGKILL..." % self.proc.pid

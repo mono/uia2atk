@@ -344,3 +344,15 @@
 /MoonAtkBridge/tests/assets/Makefile.in
 /MoonAtkBridge/tests/assets/ValueTest/Makefile
 /MoonAtkBridge/tests/assets/ValueTest/Makefile.in
+/MoonAtkBridge/tests/assets/ValueTest/*.g.cs
+/MoonAtkBridge/tests/assets/ValueTest/*.dll
+/MoonAtkBridge/tests/assets/ValueTest/*.mdb
+/MoonAtkBridge/tests/assets/ValueTest/*.g.resources
+/MoonAtkBridge/tests/assets/ValueTest/*.html
+/MoonAtkBridge/tests/assets/ValueTest/*.xap
+/MoonAtkBridge/tests/assets/ValueTest/AppManifest.xaml
+/MoonAtkBridge/gtk-sharp/
+/MoonAtkBridge/stage/
+/MoonAtkBridge/bin/
+/MoonAtkBridge/install.rdf
+/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs

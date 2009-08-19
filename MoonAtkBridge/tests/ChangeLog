@@ -1,3 +1,18 @@
+2009-08-19  Brad Taylor  <brad@getcoded.net>
+
+	* moonlight/browser/__init__.py: Make the harness support Namoroka
+	(FF 3.6) by default, and work with a configurable browser name.
+
+	* assets/RootbeerMaze/RootbeerMaze.xap: 
+	* assets/RootbeerMaze/RootbeerMaze.html: Import the Rootbeer Maze
+	example. 
+
+	* test_adapter.py: 
+	* test_expandcollapsetoggleinvoke.py: Reference the local Rootbeer
+	Maze, and get both working with Moonlight changes.
+
+	* test_value.py: Fix several test bugs.
+
 2009-08-10  Brad Taylor  <brad@getcoded.net>
 
 	* tests/moonlight/browser/__init__.py: Moonlight is now at preview 7.

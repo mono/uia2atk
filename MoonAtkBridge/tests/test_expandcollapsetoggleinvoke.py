@@ -28,6 +28,8 @@
 from moonlight import *
 from strongwind import *
 
+from time import sleep
+from os.path import abspath
 import pyatspi
 import unittest
 
@@ -38,13 +40,17 @@ class ExpandCollapseToggleInvokeButton(unittest.TestCase):
     """
     @classmethod
     def setup_class(cls):
-        # TODO: Host test apps in SVN
-        cls.app = launchAddress('http://www.rootbeergames.com/games/rootbeerMaze/')
+        cls.app = launchAddress(abspath('assets/RootbeerMaze/RootbeerMaze.html'))
 
-        # TODO: change this when buttons have a correct Name property
-        cls.buttons = cls.app.slControl.findAllPushButtons('')
-        cls.easy_button = cls.buttons[0]
+        # Wait until the RootbeerMaze ad has gone away
+        sleep(config.LONG_DELAY);
+
+        cls.easy_button = cls.app.slControl.findPushButton('Easy')
         cls.easy_button_actions = cls.easy_button._accessible.queryAction()
+
+    @classmethod
+    def teardown_class(cls):
+        cls.app.kill()
 
     def test_actions_basic(self):
         act = self.easy_button_actions

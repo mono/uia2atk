@@ -1,5 +1,10 @@
 2009-08-19  Brad Taylor  <brad@getcoded.net>
 
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: Fix several issues
+	that were causing test failures with test_value.py.
+
+2009-08-19  Brad Taylor  <brad@getcoded.net>
+
 	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: 
 	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Generate all
 	possible combinations of PatternImplementors at compile time instead of

@@ -28,6 +28,8 @@
 from moonlight import *
 from strongwind import *
 
+from time import sleep
+from os.path import abspath
 import pyatspi
 import unittest
 
@@ -37,12 +39,12 @@ class Adapter(unittest.TestCase):
     """
     @classmethod
     def setup_class(cls):
-        # TODO: Host test apps in SVN
-        cls.app = launchAddress('http://www.rootbeergames.com/games/rootbeerMaze/')
+        cls.app = launchAddress(abspath('assets/RootbeerMaze/RootbeerMaze.html'))
 
-        # TODO: change this when buttons have a correct Name property
-        cls.buttons = cls.app.slControl.findAllPushButtons('')
-        cls.easy_button = cls.buttons[0]
+        # Wait until the RootbeerMaze ad has gone away
+        sleep(config.LONG_DELAY);
+
+        cls.easy_button = cls.app.slControl.findPushButton('Easy')
         cls.easy_button_component = cls.easy_button._accessible.queryComponent()
 
     @classmethod
@@ -73,7 +75,7 @@ class Adapter(unittest.TestCase):
         self.assertFalse(com.contains(0, 0, pyatspi.DESKTOP_COORDS))
         self.assertFalse(com.contains(0, 0, pyatspi.WINDOW_COORDS))
 
-        # (132,264)        
+        # (132,264)
         #      +---------------+
         #      |               |
         #      |               |
