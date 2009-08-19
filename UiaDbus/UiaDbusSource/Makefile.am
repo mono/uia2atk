@@ -44,8 +44,10 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	AssemblyInfo.cs \
+	DbusExceptionTranslator.cs \
 	UiaDbusAutomationSource.cs \
-	UiaDbusElement.cs
+	UiaDbusElement.cs \
+	UiaDbusInvokePattern.cs
 
 DATA_FILES = 
 

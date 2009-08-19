@@ -49,6 +49,7 @@ FILES =  \
 	Constants.cs \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
+	Interfaces/IInvokePattern.cs \
 	Point.cs \
 	Rect.cs 
 

@@ -20,23 +20,36 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbus
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public static class Constants
+	public class UiaDbusInvokePattern : IInvokePattern
 	{
-		public const string ApplicationPath = "/org/mono/UIAutomation/Application";
-		public const string Namespace = "org.mono.UIAutomation";
-		public const string AutomationElementInterfaceName = Namespace + ".AutomationElement";
-		public const string ApplicationInterfaceName = Namespace + ".Application";
-		public const string AutomationElementBasePath = "/org/mono/UIAutomation/Element/";
+		private DCI.IInvokePattern pattern;
 
-		public const string InvokePatternInterfaceName = Namespace + ".InvokePattern";
+		public UiaDbusInvokePattern (DCI.IInvokePattern pattern)
+		{
+			this.pattern = pattern;
+		}
 
-		public const string InvokePatternSubPath = "Invoke";
+		public void Invoke ()
+		{
+			try {
+				pattern.Invoke ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+		}
 	}
 }

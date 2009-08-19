@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -39,28 +40,29 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 	internal class ProviderElementWrapper : IAutomationElement
 	{
 #region Private Static Fields
-		
+
 		private static volatile int idCount = 0;
 		private static object syncRoot = new object ();
 
 #endregion
 
 #region Private Fields
-		
+
 		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragment fragment;
 		private int pathId;
 		private Bus bus;
+		private Dictionary<int, string> patternPathMapping = new Dictionary<int, string> ();
 
 #endregion
 
 #region Constructor
-		
+
 		public ProviderElementWrapper (IRawElementProviderSimple provider)
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
-			
+
 			this.provider = provider;
 			fragment = provider as IRawElementProviderFragment;
 			lock (syncRoot)
@@ -416,12 +418,39 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
+		public string GetCurrentPatternPath (int patternId)
+		{
+			object patternProvider = provider.GetPatternProvider (patternId);
+			if (patternProvider == null)
+				return string.Empty;
+
+			string patternPath;
+			if (patternPathMapping.TryGetValue (patternId, out patternPath))
+				return patternPath;
+
+			patternPath = this.Path + "/";
+			object patternObject = null;
+
+			if (patternId == InvokePatternIdentifiers.Pattern.Id) {
+				patternPath += DC.Constants.InvokePatternSubPath;
+				patternObject = new InvokePatternWrapper ((IInvokeProvider)patternProvider);
+			} /*else if (patternId == ...) {
+			} */else
+				throw new InvalidOperationException ();
+
+			if (bus == null)
+				throw new ElementNotAvailableException ();
+
+			bus.Register (new ObjectPath (patternPath), patternObject);
+			patternPathMapping.Add(patternId, patternPath);
+			return patternPath;
+		}
+
 #endregion
 
 #region Public Methods and Properties
-		
-		public string Path
-		{
+
+		public string Path {
 			get { return DC.Constants.AutomationElementBasePath + pathId.ToString (); }
 		}
 
@@ -435,8 +464,19 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public void Unregister ()
 		{
 			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()));
+			foreach (string patternPath in patternPathMapping.Values)
+				bus.Unregister (new ObjectPath (patternPath));
+			patternPathMapping.Clear ();
 		}
 
+		public void UnregisterPattern (int patternId)
+		{
+			string patternPath;
+			if (patternPathMapping.TryGetValue (patternId, out patternPath)) {
+				patternPathMapping.Remove (patternId);
+				bus.Unregister (new ObjectPath (patternPath));
+			}
+		}
 #endregion
 	}
 }

@@ -46,6 +46,7 @@ FILES =  \
 	Application.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
+	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs 
 
 DATA_FILES = 

@@ -32,6 +32,8 @@ using Mono.UIAutomation.Source;
 using DC = Mono.UIAutomation.UiaDbus;
 using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
+using NDesk.DBus;
+
 namespace Mono.UIAutomation.UiaDbusSource
 {
 	public class UiaDbusElement : IElement
@@ -274,8 +276,24 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
-			// TODO: Implement
-			throw new NotSupportedException ();
+			if (pattern == null)
+				throw new InvalidOperationException ();
+
+			string patternPath = dbusElement.GetCurrentPatternPath (pattern.Id);
+			if (string.IsNullOrEmpty (patternPath))
+				throw new InvalidOperationException ();
+
+			object ret = null;
+
+			if (pattern.Id == InvokePatternIdentifiers.Pattern.Id) {
+				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
+				ret = new UiaDbusInvokePattern (invokePattern);
+			} /*else if (pattern.Id == ...) {
+			}*/ else
+				throw new InvalidOperationException ();
+
+			return ret;
 		}
 
 		public AutomationPattern [] GetSupportedPatterns ()

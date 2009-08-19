@@ -104,12 +104,61 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		{
 			// TODO
 		}
-		
+
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
-			// TODO
+			IRawElementProviderSimple simpleProvider =
+				element as IRawElementProviderSimple;
+
+			ProviderElementWrapper wrapper = null;
+			if (!providerWrapperMapping.TryGetValue (simpleProvider, out wrapper))
+				return;
+
+			if (e.NewValue != null && e.NewValue.Equals (false)) {
+				int patternId = -1;
+
+				if (e.Property == AutomationElementIdentifiers.IsDockPatternAvailableProperty)
+					patternId = DockPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty)
+					patternId = ExpandCollapsePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsGridItemPatternAvailableProperty)
+					patternId = GridItemPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsGridPatternAvailableProperty)
+					patternId = GridPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsInvokePatternAvailableProperty)
+					patternId = InvokePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty)
+					patternId = MultipleViewPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty)
+					patternId = RangeValuePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty)
+					patternId = ScrollItemPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsScrollPatternAvailableProperty)
+					patternId = ScrollPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty)
+					patternId = SelectionItemPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsSelectionPatternAvailableProperty)
+					patternId = SelectionPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsTableItemPatternAvailableProperty)
+					patternId = TableItemPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsTablePatternAvailableProperty)
+					patternId = TablePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsTextPatternAvailableProperty)
+					patternId = TextPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty)
+					patternId = TogglePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsTransformPatternAvailableProperty)
+					patternId = TransformPatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsValuePatternAvailableProperty)
+					patternId = ValuePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsWindowPatternAvailableProperty)
+					patternId = WindowPatternIdentifiers.Pattern.Id;
+
+				if (patternId != -1)
+					wrapper.UnregisterPattern (patternId);
+			}
 		}
-		
+
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			IRawElementProviderSimple simpleProvider =

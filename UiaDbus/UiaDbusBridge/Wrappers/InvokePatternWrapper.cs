@@ -20,23 +20,47 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
+using SW = System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.UiaDbus
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public static class Constants
+
+	public class InvokePatternWrapper : IInvokePattern
 	{
-		public const string ApplicationPath = "/org/mono/UIAutomation/Application";
-		public const string Namespace = "org.mono.UIAutomation";
-		public const string AutomationElementInterfaceName = Namespace + ".AutomationElement";
-		public const string ApplicationInterfaceName = Namespace + ".Application";
-		public const string AutomationElementBasePath = "/org/mono/UIAutomation/Element/";
+#region Private Fields
 
-		public const string InvokePatternInterfaceName = Namespace + ".InvokePattern";
+		private IInvokeProvider provider;
 
-		public const string InvokePatternSubPath = "Invoke";
+#endregion
+
+#region Constructor	
+
+		public InvokePatternWrapper (IInvokeProvider provider)
+		{
+			this.provider = provider;
+		}
+
+#endregion
+
+#region IInvokePattern Members
+
+		public void Invoke ()
+		{
+			provider.Invoke ();
+		}
+
+#endregion
 	}
 }

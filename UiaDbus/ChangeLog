@@ -1,3 +1,21 @@
+2009-08-19  Matt Guo <matt@mattguo.com>
+
+	* UiaDbus/Constants.cs, UiaDbus/Interfaces/IInvokePattern.cs,
+	* UiaDbus/Interfaces/IAutomationElement.cs,
+	* UiaDbus/Makefile.am,
+	* UiaDbus/UiaDbus.mdp,
+	* UiaDbusBridge/AutomationBridge.cs,
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs,
+	* UiaDbusBridge/Wrappers/InvokePatternWrapper.cs,
+	* UiaDbusBridge/UiaDbusBridge.mdp,
+	* UiaDbusBridge/Makefile.am,
+	* UiaDbusSource/Makefile.am,
+	* UiaDbusSource/UiaDbusElement.cs,
+	* UiaDbusSource/UiaDbusInvokePattern.cs,
+	* UiaDbusSource/UiaDbusSource.mdp: support for InvokePattern
+
+	* UiaDbusSource/DbusExceptionTranslator.cs: support for exception propagation
+
 2009-07-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* *: Rename DbusCore->UiaDbus, UiaDbusCoreBridge*->UiaDbusBridge*,
