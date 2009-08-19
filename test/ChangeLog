@@ -1,3 +1,9 @@
+2009-08-19 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/remote_run.py:  Added --nodeps and --force options to the
+	help text.  Fixed copy and paste bug to properly update the packages
+	when the --update option is used.
+
 2009-08-19  Calen Chen <cachen@novell.com>
 
 	* harness/smoke_tests.py,

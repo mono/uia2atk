@@ -91,6 +91,8 @@ class Settings(object):
     output("  -l | --log=    Where the log(s) should be stored.")
     output("  -s | --smoke   Run only smoke tests.")
     output("  -u | --update  Update packages on remote machines")
+    output("  -n | --nodeps  Ingore dependencies on remote package update")
+    output("  -f | --force   Force install of remote package update")
     output("  -e | --email=  Send e-mail results to comma delineated recipients")
 
 class Ping(threading.Thread):
@@ -117,7 +119,7 @@ class Kickoff(threading.Thread):
 
   def run(self):
     smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
-    update_option = lambda: Settings.is_smoke == True and "--update" or ""
+    update_option = lambda: Settings.should_update == True and "--update" or ""
     force_option = lambda: Settings.is_force == True and "--force" or ""
     nodeps_option = lambda: Settings.is_nodeps == True and "--nodeps" or ""
     if self.pkg_status == 0:
