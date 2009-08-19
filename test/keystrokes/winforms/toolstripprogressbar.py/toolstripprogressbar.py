@@ -10,7 +10,7 @@ sequence.append(WaitForWindowActivate("ToolStripProgressBar control",None))
 sequence.append(utils.AssertPresentationAction(
     "button focus",
     ["BRAILLE LINE:  'ToolStripProgressBar control Fram'",
-     "     VISIBLE:  'ToolStripProgressBar control Frame', cursor=1",
+     "     VISIBLE:  'ToolStripProgressBar control Fram', cursor=1",
      "BRAILLE LINE:  'button1 Button'",
      "     VISIBLE:  'button1 Button', cursor=1",
      "SPEECH OUTPUT: 'ToolStripProgressBar control frame'",

@@ -17,6 +17,14 @@ sequence.append(utils.AssertPresentationAction(
      "SPEECH OUTPUT: ''",
      "SPEECH OUTPUT: 'Click me button'"]))
 
+
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("Return"))
+sequence.append(utils.AssertPresentationAction(
+    "trigger button",
+    ["BRAILLE LINE:  'FontDialog control Frame'"]))
+    
+    
 sequence.append(utils.AssertionSummaryAction())
 
 sequence.start()
