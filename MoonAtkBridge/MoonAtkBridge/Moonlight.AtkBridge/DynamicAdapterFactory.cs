@@ -27,7 +27,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Collections.Generic;
 
 using System.Windows;
@@ -112,8 +111,7 @@ namespace Moonlight.AtkBridge
 			implementors.Sort ((a, b) => a.Name.CompareTo (b.Name));
 
 			// Concat the type names together
-			string typeName = implementors.Aggregate (String.Empty, (s, t) => s + t.Name)
-			                  + "Adapter";
+			string typeName = implementors.Aggregate (String.Empty, (s, t) => s + t.Name);
 
 			// If we're not implementing anything, just
 			// short-circuit the process
@@ -125,23 +123,28 @@ namespace Moonlight.AtkBridge
 			}
 
 			// See if we've created the type already
-			Type dynamicType;
-			if (!dynamicAdapterTypes.TryGetValue (typeName,
-			                                  out dynamicType)) {
-				dynamicType = CreateDynamicType (
-					typeName, implementors.ToArray ()
+			Type adapterType;
+			if (!adapterTypes.TryGetValue (typeName,
+			                               out adapterType)) {
+				Assembly asm = Assembly.GetCallingAssembly ();
+				adapterType = asm.GetType (
+					String.Format ("Moonlight.AtkBridge.Adapters.{0}",
+					               typeName),
+					false
 				);
-				dynamicAdapterTypes [typeName] = dynamicType;
+
+				if (adapterType != null)
+					adapterTypes [typeName] = adapterType;
 			}
 
-			if (dynamicType == null)
+			if (adapterType == null)
 				return null;
 
 			Log.Debug ("Creating new instance of {0} for {1}",
-			           dynamicType, peer.GetType ());
+			           adapterType, peer.GetType ());
 
 			adapter = (Adapter) Activator.CreateInstance (
-				dynamicType, new object [] { peer }
+				adapterType, new object [] { peer }
 			);
 			
 			activeAdapters [peer] = adapter;
@@ -175,177 +178,11 @@ namespace Moonlight.AtkBridge
 
 			return implementors.ToArray ();
 		}
-
-		public Type CreateDynamicType (string typeName,
-		                               Type [] implementors)
-		{
-			Log.Debug ("Generating dynamic adapter type {0}", typeName);
-
-			Type [] atkInterfaces
-				= implementors.SelectMany (i => i.GetInterfaces ())
-			                      .Where (i => i.Namespace == "Atk")
-			                      .Distinct ().ToArray ();
-
-			TypeBuilder tb = moduleBuilder.DefineType (
-				GENERATED_NAMESPACE + "." + typeName,
-				TypeAttributes.Class | TypeAttributes.Public,
-				typeof (Adapter), atkInterfaces
-			);
-
-			// Define a field for each of our implementors
-			Dictionary<Type, FieldBuilder> fields
-				= new Dictionary<Type, FieldBuilder> ();
-			foreach (Type impl in implementors) {
-				fields [impl] = tb.DefineField (
-					CamelCaseType (impl), impl,
-					FieldAttributes.Private
-				);
-			}
-
-			// Default ctor
-			ConstructorBuilder cb = tb.DefineConstructor (
-				MethodAttributes.Public, CallingConventions.Standard,
-				new Type [] { typeof (AutomationPeer) });
-
-			ILGenerator ilgen = cb.GetILGenerator ();
-
-			// Chain up our base ctor
-			ilgen.Emit (OpCodes.Ldarg_0);
-			ilgen.Emit (OpCodes.Ldarg_1);
-
-			ilgen.Emit (OpCodes.Call, typeof (Adapter).GetConstructor (
-				new Type [] { typeof (AutomationPeer) }));
-
-			// Initialize all of our implementor fields
-			foreach (KeyValuePair<Type, FieldBuilder> item
-			         in fields) {
-				// field = new TField (peer);
-				ilgen.Emit (OpCodes.Ldarg_0);
-				ilgen.Emit (OpCodes.Ldarg_1);
-
-				ConstructorInfo ctor
-					= item.Key.GetConstructor (
-						BindingFlags.NonPublic | BindingFlags.Instance,
-						null, new Type [] { typeof (AutomationPeer) },
-						null);
-				if (ctor == null) {
-					Log.Error ("Implementor {0} does not have an AutomationPeer ctor",
-					           item.Key);
-					continue;
-				}
-
-				ilgen.Emit (OpCodes.Newobj, ctor);
-				ilgen.Emit (OpCodes.Stfld, item.Value);
-			}
-
-			ilgen.Emit (OpCodes.Ret);
-
-			// Implement methods and properties for the interfaces
-			// implemented by our implementors
-
-			// Moonlight security magically changes public members
-			// to private
-			BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-
-			foreach (Type impl in implementors) {
-				foreach (Type i in atkInterfaces) {
-					Dictionary<MethodInfo, MethodBuilder> methodMapping
-						= new Dictionary<MethodInfo, MethodBuilder> ();
-					foreach (MethodInfo mi in i.GetMethods (flags)) {
-						ParameterInfo [] paramInfos = mi.GetParameters ();
-						Type [] paramTypes
-							= paramInfos.Select (p => p.ParameterType)
-						                    .ToArray ();
-
-						// We're always overriding an Atk interface method
-						MethodAttributes attrs = MethodAttributes.Public
-							| MethodAttributes.HideBySig
-							| MethodAttributes.Virtual
-							| MethodAttributes.Final;
-
-						// Set the right attrs for property methods
-						if ((mi.Attributes & MethodAttributes.SpecialName) != 0)
-							attrs |= MethodAttributes.SpecialName;
-
-						MethodBuilder mb = tb.DefineMethod (
-							mi.Name, attrs, mi.CallingConvention,
-							mi.ReturnType, paramTypes
-						);
-						methodMapping [mi] = mb;
-
-						// Preserve out semantics
-						for (int j = 0; j < paramInfos.Length; j++) {
-							mb.DefineParameter (j + 1,
-								paramInfos [j].IsOut ? ParameterAttributes.Out
-								                    : ParameterAttributes.None,
-								paramInfos [j].Name
-							);
-						}
-
-						ilgen = mb.GetILGenerator ();
-
-						// this.<field>.<MethodName> (<params>)
-						ilgen.Emit (OpCodes.Ldarg_0);
-						ilgen.Emit (OpCodes.Ldfld, fields [impl]);
-
-						for (int j = 0; j < paramTypes.Length; j++) {
-							switch (j) {
-							case 0:
-								ilgen.Emit (OpCodes.Ldarg_1);
-								break;
-							case 1:
-								ilgen.Emit (OpCodes.Ldarg_2);
-								break;
-							case 2:
-								ilgen.Emit (OpCodes.Ldarg_3);
-								break;
-							default:
-								ilgen.Emit (OpCodes.Ldarg_S, j + 1);
-								break;
-							}
-						}
-
-						ilgen.Emit (OpCodes.Callvirt, mi);
-						ilgen.Emit (OpCodes.Ret);
-					}
-
-					// Create a property definition for
-					// each of the properties in the
-					// interface.
-					foreach (PropertyInfo pi in i.GetProperties ()) {
-						PropertyBuilder pb = tb.DefineProperty (
-							pi.Name, pi.Attributes, pi.PropertyType, null
-						);
-
-						// Use our methodMapping to attach getters and setters.
-						MethodInfo getMi = pi.GetGetMethod ();
-						if (getMi != null && methodMapping.ContainsKey (getMi))
-							pb.SetGetMethod (methodMapping [getMi]);
-
-						MethodInfo setMi = pi.GetSetMethod ();
-						if (setMi != null && methodMapping.ContainsKey (setMi))
-							pb.SetSetMethod (methodMapping [setMi]);
-					}
-				}
-			}
-
-			return tb.CreateType ();
-		}
 #endregion
 
 #region Private Methods
 		private DynamicAdapterFactory ()
 		{
-			AssemblyName an = new AssemblyName ();
-			an.Version = new Version (0, 0, 0, 1);
-			an.Name = GENERATED_ASM_NAME;
-
-			assemblyBuilder
-				= AppDomain.CurrentDomain.DefineDynamicAssembly (
-						an, AssemblyBuilderAccess.Run);
-
-			moduleBuilder = assemblyBuilder.DefineDynamicModule (GENERATED_ASM_NAME);
-
 			RegisterPatternImplementors ();
 		}
 
@@ -356,6 +193,9 @@ namespace Moonlight.AtkBridge
 				object [] attrs = t.GetCustomAttributes (
 					typeof (ImplementsPatternAttribute),
 					false);
+
+				if (!t.IsSubclassOf (typeof (Adapter)))
+					continue;
 
 				foreach (Attribute attr in attrs) {
 					ImplementsPatternAttribute ipa
@@ -421,20 +261,13 @@ namespace Moonlight.AtkBridge
 			= new Dictionary<Type, List<Type>> ();
 
 		// Maps generated type name to the generated adapter type
-		private Dictionary<string, Type> dynamicAdapterTypes
+		private Dictionary<string, Type> adapterTypes
 			= new Dictionary<string, Type> ();
 
 		private Dictionary<AutomationPeer, Adapter> activeAdapters
 			= new Dictionary<AutomationPeer, Adapter> ();
 
 		private RootVisualAdapter rootVisualAdapter;
-
-		private ModuleBuilder moduleBuilder;
-		private AssemblyBuilder assemblyBuilder;
-
-		private const char TYPE_SEPARATOR = '_';
-		private const string GENERATED_ASM_NAME = "DynamicAtkTypes";
-		private const string GENERATED_NAMESPACE = "Moonlight.AtkBridge.DynamicAdapters";
 #endregion
 	}
 }

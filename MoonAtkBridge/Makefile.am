@@ -96,12 +96,21 @@ $(ASSEMBLY_CONFIG): stage $(GTK_SHARP) $(CONFIG_FILES)
 	cat $(CONFIG_FILES) | grep -v configuration | sort | uniq >> $@
 	echo "</configuration>" >> $@
 
+T4_EXE=$(srcdir)/t4/TextTransform.exe
+T4_GENERATOR=$(srcdir)/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt
+T4_OUT=$(srcdir)/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs
+T4_REFERENCES = \
+	-r=$(shell pkg-config cecil --variable Libraries) \
+	-r=System.Core
+
 # bin/raw/ dir contains MoonAtkBridge.dll without sec attrs, plus moonlight assemblies with sec attrs
 # bin/ dir contains MoonAtkBridge.dll with sec attrs and with internalized API
-$(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG)
+$(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR)
 	mkdir -p bin/raw/
 	cp ../../moon/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
+	$(MONO) $(T4_EXE) $(T4_GENERATOR) $(T4_REFERENCES) -o $(T4_OUT)
+	$(SMCS) $(CSCFLAGS) $(build_sources) $(T4_OUT) $(build_references)
 	cd bin/raw/ && $(DUMMY_COMPILATION)
 	cd bin/raw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yAssemblyStep,Mono.Tuner

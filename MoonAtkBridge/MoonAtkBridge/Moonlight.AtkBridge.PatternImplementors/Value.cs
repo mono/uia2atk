@@ -34,7 +34,7 @@ using System.Windows.Automation.Provider;
 
 using Moonlight.AtkBridge;
 
-namespace Moonlight.AtkBridge.ProviderImplementors
+namespace Moonlight.AtkBridge.PatternImplementors
 {
 	[ImplementsPattern (PatternInterface.Value)]
 	public class Value : Atk.TextImplementor

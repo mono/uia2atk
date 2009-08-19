@@ -1,3 +1,8 @@
+2009-08-19  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: Add additional compile steps caused by the new
+	compile-time adapter generation.
+
 2009-08-12 Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight-a11y-initialization.diff: Update to avoid

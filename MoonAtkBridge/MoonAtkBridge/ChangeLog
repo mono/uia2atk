@@ -1,3 +1,16 @@
+2009-08-19  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: 
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Generate all
+	possible combinations of PatternImplementors at compile time instead of
+	at runtime.  This sidesteps the issue for the dynamically generated
+	assembly to be a "friend" assembly to MoonAtkBridge.dll.
+	[Fixes #530393]
+
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs: Typo.
+	
+
 2009-08-10  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Fix NRE caused by
