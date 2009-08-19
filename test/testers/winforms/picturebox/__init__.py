@@ -10,13 +10,11 @@
 
 from strongwind import *
 
-from os.path import exists
+from os.path import exists, dirname
 from sys import path
 
-harness_dir = path[0]
-i = harness_dir.rfind("/")
-        j = harness_dir[:i].rfind("/")
-uiaqa_path = harness_dir[:j]
+init_dir = path[0]
+uiaqa_path = dirname(dirname(init_dir))
 
 def launchPictureBox(exe=None):
     'Launch picturebox with accessibility enabled and return a picturebox object.  Log an error and return None if something goes wrong'
