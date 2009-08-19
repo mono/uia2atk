@@ -31,87 +31,77 @@ using Mono.UIAutomation.Services;
 
 namespace System.Windows.Automation
 {
-	public sealed class TreeWalker
+	public sealed partial class TreeWalker
 	{
 		#region Private Fields
 		private static IList<IAutomationSource> automationSources;
 
-		private Condition condition;
-		private List<AutomationElement> directChildren =
-			new List<AutomationElement> ();
+		private List<AutomationElement> directChildren;
 		#endregion
 
 		#region Static Constructor
 		static TreeWalker ()
 		{
 			automationSources = SourceManager.GetAutomationSources ();
-			RawViewWalker = new TreeWalker (null);
+			RawViewWalker = new TreeWalker (Automation.RawViewCondition);
+			RawViewWalker.directChildren = new List<AutomationElement> ();
 			foreach (IAutomationSource source in automationSources)
 				foreach (IElement sourceElement in source.GetRootElements ())
 					RawViewWalker.directChildren.Add (new AutomationElement (sourceElement));
+
+			ControlViewWalker = new TreeWalker (Automation.ControlViewCondition);
+			ContentViewWalker = new TreeWalker (Automation.ContentViewCondition);
 		}
 		#endregion
 
 		#region Public Constructor
 		public TreeWalker (Condition condition)
 		{
-			this.condition = condition;
+			if (condition == null)
+				throw new ArgumentNullException ("condition");
+			Condition = condition;
 		}
 		#endregion
 
 		#region Public Methods
 		public AutomationElement GetParent (AutomationElement element)
 		{
-			if (element == AutomationElement.RootElement)
-				return null;
-			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+			return new TreeIterator (Condition).GetParent (element);
 		}
 
 		public AutomationElement GetFirstChild (AutomationElement element)
 		{
-			if (element == AutomationElement.RootElement)
-				return RawViewWalker.directChildren.Count > 0 ?
-					RawViewWalker.directChildren [0] :
-					null;
-			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.FirstChild);
+			return new TreeIterator (Condition).GetFirstChild (element);
 		}
 
 		public AutomationElement GetLastChild (AutomationElement element)
 		{
-			if (element == AutomationElement.RootElement)
-				return RawViewWalker.directChildren.Count > 0 ?
-					RawViewWalker.directChildren [RawViewWalker.directChildren.Count - 1] :
-					null;
-			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.LastChild);
+			return new TreeIterator (Condition).GetLastChild (element);
 		}
 
 		public AutomationElement GetNextSibling (AutomationElement element)
 		{
-			if (element == AutomationElement.RootElement)
-				return null;
-
-			int elementIndex = RawViewWalker.directChildren.IndexOf (element);
-			if (elementIndex >= 0 && elementIndex < (RawViewWalker.directChildren.Count - 1))
-				return RawViewWalker.directChildren [elementIndex + 1];
-
-			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.NextSibling);
+			return new TreeIterator (Condition).GetNextSibling (element);
 		}
 
 		public AutomationElement GetPreviousSibling (AutomationElement element)
 		{
-			if (element == AutomationElement.RootElement)
-				return null;
-
-			int elementIndex = RawViewWalker.directChildren.IndexOf (element);
-			if (elementIndex > 0)
-				return RawViewWalker.directChildren [elementIndex - 1];
-
-			return SourceManager.GetOrCreateAutomationElement (element.SourceElement.PreviousSibling);
+			return new TreeIterator (Condition).GetPreviousSibling (element);
 		}
 
 		public AutomationElement Normalize (AutomationElement element)
 		{
-			throw new NotImplementedException ();
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			if (Condition.AppliesTo (element))
+				return element;
+			if (element == AutomationElement.RootElement)
+				// LAMESPEC: This is according to MSDN:
+				// http://msdn.microsoft.com/en-us/library/system.windows.automation.treewalker.normalize.aspx
+//				return element;
+				// This is matching Microsoft's actual implementation:
+				return null;
+			return Normalize (RawViewWalker.GetParent (element));
 		}
 
 		public AutomationElement GetParent (AutomationElement element, CacheRequest request)
@@ -146,11 +136,7 @@ namespace System.Windows.Automation
 		#endregion
 
 		#region Public Properties
-		public Condition Condition {
-			get {
-				return condition;
-			}
-		}
+		public Condition Condition { get; private set; }
 		#endregion
 
 		#region Public Static Fields

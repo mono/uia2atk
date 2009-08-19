@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Automation;
+using SWA = System.Windows.Automation;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
@@ -41,11 +42,35 @@ namespace MonoTests.System.Windows.Automation
 		#region Test Methods
 
 		[Test]
+		public void ControlViewWalkerTest ()
+		{
+			Assert.AreEqual (SWA.Automation.ControlViewCondition,
+				TreeWalker.ControlViewWalker.Condition,
+				"Condition");
+		}
+
+		[Test]
+		public void ContentViewWalkerTest ()
+		{
+			Assert.AreEqual (SWA.Automation.ContentViewCondition,
+				TreeWalker.ContentViewWalker.Condition,
+				"Condition");
+		}
+
+		[Test]
+		public void RawViewWalkerTest ()
+		{
+			Assert.AreEqual (SWA.Automation.RawViewCondition,
+				TreeWalker.RawViewWalker.Condition,
+				"Condition");
+		}
+
+		[Test]
 		public void ConditionTest ()
 		{
 			bool exceptionRaised = false;
 			try {
-				TreeWalker nullConditionWalker = new TreeWalker (null);
+				new TreeWalker (null);
 			} catch (ArgumentNullException) {
 				exceptionRaised = true;
 			}
@@ -112,6 +137,23 @@ namespace MonoTests.System.Windows.Automation
 
 			// Check that there are still more siblings (just without groupBox1Element as parent)
 			VerifyGetNextSibling (buttonWalker, button2Element, button1Element);
+
+			// TODO: Test how for buttonWalker, GetNextSibling
+			//       eventually gets all buttons on the entire
+			//       desktop?
+
+			// Elements whose parents (not the desktop) are also in
+			// the tree run out of siblings as expected.
+			Condition groupCondition = new AndCondition (
+				new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Group),
+				new PropertyCondition (AEIds.ProcessIdProperty, p.Id));
+			TreeWalker groupWalker = new TreeWalker (groupCondition);
+
+			VerifyGetNextSibling (groupWalker, groupBox3Element, groupBox2Element);
+			VerifyGetNextSibling (groupWalker, groupBox2Element, null);
+
+			// When only other matching thing in tree is child (TODO: Hangs)
+			//VerifyGetNextSibling (groupWalker, groupBox1Element, groupBox2Element);
 		}
 
 		[Test]
@@ -135,6 +177,18 @@ namespace MonoTests.System.Windows.Automation
 			VerifyGetPreviousSibling (buttonWalker, button4Element, button5Element);
 			VerifyGetPreviousSibling (buttonWalker, button3Element, button4Element);
 			VerifyGetPreviousSibling (buttonWalker, button2Element, button3Element);
+
+			// TODO: Test how for buttonWalker, GetPreviousSibling
+			//       eventually gets all buttons on the entire
+			//       desktop?
+
+			// Elements whose parents (not the desktop) are also in
+			// the tree run out of siblings as expected.
+			Condition groupCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Group);
+			TreeWalker groupWalker = new TreeWalker (groupCondition);
+
+			VerifyGetPreviousSibling (groupWalker, groupBox3Element, null);
+			VerifyGetPreviousSibling (groupWalker, groupBox2Element, groupBox3Element);
 		}
 
 		[Test]
@@ -152,6 +206,70 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
 
 			VerifyGetParent (buttonWalker, button7Element, null);
+
+			Condition groupCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Group);
+			TreeWalker groupWalker = new TreeWalker (groupCondition);
+
+			// Test where applicable ancestor is parent
+			VerifyGetParent (groupWalker, checkBox1Element, groupBox2Element);
+			VerifyGetParent (groupWalker, groupBox3Element, groupBox1Element);
+			VerifyGetParent (groupWalker, groupBox1Element, null);
+
+			VerifyGetParent (TreeWalker.RawViewWalker, testFormElement, AutomationElement.RootElement);
+
+			// Test where applicable ancestor is not direct parent
+			Condition windowCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window);
+			TreeWalker windowWalker = new TreeWalker (windowCondition);
+
+			VerifyGetParent (windowWalker, groupBox3Element, testFormElement);
+		}
+
+		[Test]
+		public void NormalizeTest ()
+		{
+			Condition groupCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Group);
+			TreeWalker groupWalker = new TreeWalker (groupCondition);
+
+			bool exceptionRaised = false;
+			try {
+				groupWalker.Normalize (null);
+			} catch (ArgumentNullException) {
+				exceptionRaised = true;
+			}
+			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+
+			Assert.AreEqual (groupBox1Element,
+				groupWalker.Normalize (groupBox1Element),
+				"If element matches, return it");
+
+			Assert.AreEqual (groupBox1Element,
+				groupWalker.Normalize (button2Element),
+				"When element does not match, return first matching ancestor");
+
+			// This is according to MSDN:
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.treewalker.normalize.aspx
+			//Assert.AreEqual (AutomationElement.RootElement,
+			//        groupWalker.Normalize (button1Element),
+			//        "When neither elment nor ancestors match, return RootElement");
+
+			// This is how Microsoft actually implemented it:
+			Assert.IsNull (groupWalker.Normalize (button1Element),
+				"When neither element nor ancestors match, return null");
+
+			Condition noNameCondition = new PropertyCondition (AEIds.NameProperty, string.Empty);
+			TreeWalker noNameWalker = new TreeWalker (noNameCondition);
+
+			Assert.AreEqual (AutomationElement.RootElement,
+				noNameWalker.Normalize (button1Element),
+				"When RootElement matches, it should be returned");
+
+			Assert.AreEqual (AutomationElement.RootElement,
+				TreeWalker.RawViewWalker.Normalize (AutomationElement.RootElement),
+				"When RootElement matches, it should be returned");
+
+			Assert.AreEqual (null,
+				new TreeWalker (Condition.FalseCondition).Normalize (AutomationElement.RootElement),
+				"When RootElement does not match, null should be returned");
 		}
 
 		#endregion

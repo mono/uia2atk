@@ -42,11 +42,20 @@
 /UIAutomation/UIAutomationClient/*.userprefs
 
 # /UIAutomation/UIAutomationClient/Test
+/UIAutomation/UIAutomationClient/Test/Makefile
+/UIAutomation/UIAutomationClient/Test/Makefile.in
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/Makefile
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/Makefile.in
 /UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/*.userprefs
 /UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/bin
 /UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/*.pidb
 /UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/bin
 /UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/*.pidb
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile.in
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/GtkForm/Makefile
+/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/GtkForm/Makefile.in
 
 # /UIAutomation/UIAutomationSource/
 /UIAutomation/UIAutomationSource/Makefile
@@ -315,3 +324,23 @@
 # /build/hudson/scripts/
 /build/hudson/scripts/.mktarball.py.swp
 /build/hudson/scripts/.xml_example.py.swp
+
+# /MoonAtkBridge
+/MoonAtkBridge/Makefile
+/MoonAtkBridge/Makefile.in
+/MoonAtkBridge/configure
+/MoonAtkBridge/config.*
+/MoonAtkBridge/autom4te.cache
+/MoonAtkBridge/missing
+/MoonAtkBridge/aclocal.m4
+/MoonAtkBridge/install-sh
+/MoonAtkBridge/depcomp
+/MoonAtkBridge/libtool
+/MoonAtkBridge/ltmain.sh
+/MoonAtkBridge/MoonAtkBridge/*.pidb
+/MoonAtkBridge/tests/Makefile
+/MoonAtkBridge/tests/Makefile.in
+/MoonAtkBridge/tests/assets/Makefile
+/MoonAtkBridge/tests/assets/Makefile.in
+/MoonAtkBridge/tests/assets/ValueTest/Makefile
+/MoonAtkBridge/tests/assets/ValueTest/Makefile.in

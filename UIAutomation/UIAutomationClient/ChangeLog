@@ -1,3 +1,19 @@
+2009-08-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* UIAutomationClient.mdp:
+	* System.Windows.Automation/TreeWalker.cs: 
+	* System.Windows.Automation/TreeWalker.TreeIterator.cs:
+	Complete most of TreeWalker (bug #513989). Break iteration
+	implementation out into a private inner class called TreeIterator.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs:
+	* Test/UIAutomationClientTests/UIAutomationClientTests/TreeWalkerTest.cs:
+	Thorough tests of TreeWalker behavior.
+
+	* Test/UIAutomationClientTests/UIAutomationClientTests/swfclienttest.sh.in:
+	Client test runner script.
+
 2009-08-13  Matt Guo  <matt@mattguo.com>
 
 	* System.Windows.Automation/InvokePattern.cs,

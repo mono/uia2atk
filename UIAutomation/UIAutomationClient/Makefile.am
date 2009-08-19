@@ -65,6 +65,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/TogglePattern.cs \
 	System.Windows.Automation/TransformPattern.cs \
 	System.Windows.Automation/TreeWalker.cs \
+	System.Windows.Automation/TreeWalker.TreeIterator.cs \
 	System.Windows.Automation/ValuePattern.cs \
 	System.Windows.Automation/WindowPattern.cs
 

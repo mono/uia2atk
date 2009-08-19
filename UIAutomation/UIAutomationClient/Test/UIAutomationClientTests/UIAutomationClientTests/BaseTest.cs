@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining 
+// Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the 
 // "Software"), to deal in the Software without restriction, including 
 // without limitation the rights to use, copy, modify, merge, publish, 
@@ -45,6 +45,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement groupBoxElement;
 		protected AutomationElement groupBox1Element;
 		protected AutomationElement groupBox2Element;
+		protected AutomationElement groupBox3Element;
 		protected AutomationElement button1Element;
 		protected AutomationElement button2Element;
 		protected AutomationElement button3Element;
@@ -52,6 +53,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement button5Element;
 		protected AutomationElement button6Element;
 		protected AutomationElement button7Element;
+		protected AutomationElement checkBox1Element;
 		protected AutomationElement label1Element;
 		protected AutomationElement textbox1Element;
 		protected AutomationElement textbox2Element;
@@ -115,6 +117,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (textbox2Element);
 			Assert.IsNotNull (textbox3Element);
 			if (!Atspi) {
+				Assert.IsNotNull (groupBox2Element);
+				Assert.IsNotNull (groupBox3Element);
 				Assert.IsNotNull (tb3horizontalScrollBarElement);
 				Assert.IsNotNull (tb3verticalScrollBarElement);
 			}
@@ -136,6 +140,12 @@ namespace MonoTests.System.Windows.Automation
 			groupBox1Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Group));
+			groupBox2Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"groupBox2"));
+			groupBox3Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"groupBox3"));
 			button1Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Button));
@@ -166,6 +176,9 @@ namespace MonoTests.System.Windows.Automation
 			button7Element = groupBox1Element.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"button7"));
+			checkBox1Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"checkBox1"));
 			textbox3Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Document));

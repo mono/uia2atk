@@ -1,0 +1,61 @@
+#!/bin/bash
+
+DLL=UIAutomationClientTests.dll
+
+TEST_DISPLAY=:99
+NUNIT_FLAGS="-nothread -noshadow"
+
+while getopts xd:lf:t: o
+do case "$o" in
+    x)  xephyr="yes";;
+    d)  optdisplay="$OPTARG" && xephyr="yes";;
+    l)  labels="yes";;
+    f)  fixture="$OPTARG";;
+    t)  runtest="$OPTARG" && test "x$fixture" != "x";;
+    \?)  echo "Usage: $0 -x -l -d <display> -c <control>" && exit 1;;
+esac
+done
+
+if [ "x$optdisplay" != "x" ]; then
+	TEST_DISPLAY=:$optdisplay
+fi
+
+# Reset $@
+shift `echo $OPTIND-1 | bc`
+NUNIT_ARGS=$*
+
+if [ "x$xephyr" == "xyes" ]; then
+	Xephyr -ac -screen 800x600 -br -reset -terminate $TEST_DISPLAY &
+	xephyr_pid=$!
+
+	export DISPLAY=$TEST_DISPLAY
+
+	gnome-session &
+	metacity &
+	metacity_pid=$!
+fi
+
+if [ "x$fixture" != "x" ]; then
+	echo "Running only the unit tests for fixture $fixture..."
+	echo
+
+	NUNIT_ARGS="--fixture=MonoTests.System.Windows.Automation.${fixture}"
+fi
+
+if [ "x$runtest" != "x" ]; then
+	echo "Running only the unit test $runtest from $fixture"
+	echo
+
+	NUNIT_ARGS="${NUNIT_ARGS} --run=MonoTests.System.Windows.Automation.${fixture}.${runtest}"
+fi
+
+if [ "x$labels" == "xyes" ]; then
+	NUNIT_FLAGS="${NUNIT_FLAGS} -labels"
+fi
+
+(cd bin/Debug; \
+	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
+
+if [ "x$xephyr" == "xyes" ]; then
+	kill $metacity_pid $xephyr_pid
+fi

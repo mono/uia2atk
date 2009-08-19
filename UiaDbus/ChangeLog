@@ -1,3 +1,8 @@
+2009-08-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs:
+	Never return self as parent element.
+
 2009-08-19  Matt Guo <matt@mattguo.com>
 
 	* UiaDbus/Constants.cs, UiaDbus/Interfaces/IInvokePattern.cs,

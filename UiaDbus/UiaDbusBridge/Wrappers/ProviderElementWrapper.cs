@@ -348,7 +348,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (fragment == null)
 					return string.Empty;
 				var parent = fragment.Navigate (NavigateDirection.Parent);
-				if (parent == null)
+				if (parent == null || parent == fragment)
 					return string.Empty;
 				ProviderElementWrapper parentWrapper =
 					AutomationBridge.Instance.GetProviderWrapper (parent);

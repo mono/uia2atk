@@ -26,6 +26,7 @@
     <File name="System.Windows.Automation.Text/TextPatternRange.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/AutomationFocusChangedEventArgs.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/TreeWalker.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TreeWalker.TreeIterator.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/DockPattern.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/SelectionPattern.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/WindowPattern.cs" subtype="Code" buildaction="Compile" />
