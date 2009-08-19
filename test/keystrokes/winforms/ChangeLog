@@ -1,3 +1,8 @@
+2009-08-19 Marco Skambraks <marco@suse.de>
+	* added test for splitcontainer vertical and horizontal
+	* fixed a typo in printpreview
+
+
 2009-08-18 Marco Skambraks <marco@suse.de>
 	* added datetimepicker_dropdown.py
 	  - in some cases the braille output is displyed twice
