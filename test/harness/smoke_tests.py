@@ -7,7 +7,7 @@
 # only add finished tests that should execute successfully to this list
 
 tests_list = [
-  "picturebox_smoke_test.py",
-  "label_smoke_test.py",
-  "statusbar_smoke_test.py"
+  "winforms/picturebox_smoke_test.py",
+  "winforms/label_smoke_test.py",
+  "winforms/statusbar_smoke_test.py"
 ]

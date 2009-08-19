@@ -1,3 +1,9 @@
+2009-08-19  Calen Chen <cachen@novell.com>
+
+	* harness/smoke_tests.py,
+	* harness/tests.py: add 'winforms/' for each tests since directory 
+	of test suit is updated
+
 2009-08-18  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/calendar/: add moonlight calendar example
