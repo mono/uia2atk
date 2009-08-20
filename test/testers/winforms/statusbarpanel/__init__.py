@@ -23,7 +23,7 @@ def launchStatusBarPanel(exe=None):
         j = harness_dir[:i].rfind("/")
         uiaqa_path = harness_dir[:j]
 
-        exe = '%s/samples/winforms/winforms/statusbarpanel.py' % uiaqa_path
+        exe = '%s/samples/winforms/statusbarpanel.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   
