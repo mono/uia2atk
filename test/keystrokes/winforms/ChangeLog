@@ -1,3 +1,5 @@
+2009-08-20 Marco Skambraks <marco@suse.de>
+	* updated datetimepicker_dropdown to use datetimepicker_dropdown_fixeddate
 2009-08-19 Marco Skambraks <marco@suse.de>
 	* added test for splitcontainer vertical and horizontal
 	* fixed a typo in printpreview
