@@ -19,6 +19,7 @@
     <File name="System.Windows.Automation/AutomationElementCollection.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/AutomationElement.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/AutomationElementMode.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationElement.AutomationElementInformation.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/BasePattern.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/CacheRequest.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/Condition.cs" subtype="Code" buildaction="Compile" />

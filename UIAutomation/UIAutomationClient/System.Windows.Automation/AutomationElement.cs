@@ -35,7 +35,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace System.Windows.Automation
 {
-	public sealed class AutomationElement
+	public sealed partial class AutomationElement
 	{
 #region Private Members
 		private AutomationElementInformation current;
@@ -102,15 +102,7 @@ namespace System.Windows.Automation
 			if (null == obj)
 				return false;
 
-			// MSDN says to compare runtime IDs
-			int [] thisId = GetRuntimeId ();
-			int [] otherId = other.GetRuntimeId ();
-			if (thisId.Length != otherId.Length)
-				return false;
-			for (int i = 0; i < thisId.Length; i++)
-				if (thisId [i] != otherId [i])
-					return false;
-			return true;
+			return Automation.Compare (this, other);
 		}
 
 		public AutomationElementCollection FindAll (TreeScope scope, Condition condition)
@@ -535,135 +527,6 @@ namespace System.Windows.Automation
 //			}
 //			return output + "}";
 //		}
-#endregion
-
-#region public structures
-		public struct AutomationElementInformation
-		{
-			internal AutomationElementInformation (IElement sourceElement)
-			{
-				this.AcceleratorKey = sourceElement.AcceleratorKey;
-				this.AccessKey = sourceElement.AccessKey;
-				this.AutomationId = sourceElement.AutomationId;
-				this.BoundingRectangle = sourceElement.BoundingRectangle;
-				this.ClassName = sourceElement.ClassName;
-				this.ControlType = sourceElement.ControlType;
-				this.FrameworkId = sourceElement.FrameworkId;
-				this.HasKeyboardFocus = sourceElement.HasKeyboardFocus;
-				this.HelpText = sourceElement.HelpText;
-				this.IsContentElement = sourceElement.IsContentElement;
-				this.IsControlElement = sourceElement.IsControlElement;
-				this.IsEnabled = sourceElement.IsEnabled;
-				this.IsKeyboardFocusable = sourceElement.IsKeyboardFocusable;
-				this.IsOffscreen = sourceElement.IsOffscreen;
-				this.IsPassword = sourceElement.IsPassword;
-				this.IsRequiredForForm = sourceElement.IsRequiredForForm;
-				this.ItemStatus = sourceElement.ItemStatus;
-				this.ItemType = sourceElement.ItemType;
-				this.LabeledBy = SourceManager.GetOrCreateAutomationElement (sourceElement.LabeledBy);
-				this.LocalizedControlType = sourceElement.LocalizedControlType;
-				this.Name = sourceElement.Name;
-				this.NativeWindowHandle = sourceElement.NativeWindowHandle;
-				this.Orientation = sourceElement.Orientation;
-				this.ProcessId = sourceElement.ProcessId;
-			}
-
-			public string AcceleratorKey {
-				get; private set;
-			}
-
-			public string AccessKey {
-				get; private set;
-			}
-
-			public string AutomationId {
-				get; private set;
-			}
-
-			public Rect BoundingRectangle {
-				get; private set;
-			}
-
-			public string ClassName {
-				get; private set;
-			}
-
-			public ControlType ControlType {
-				get; private set;
-			}
-
-			public string FrameworkId {
-				get; private set;
-			}
-
-			public bool HasKeyboardFocus {
-				get; private set;
-			}
-
-			public string HelpText {
-				get; private set;
-			}
-
-			public bool IsContentElement {
-				get; private set;
-			}
-
-			public bool IsControlElement {
-				get; private set;
-			}
-
-			public bool IsEnabled {
-				get; private set;
-			}
-
-			public bool IsKeyboardFocusable {
-				get; private set;
-			}
-
-			public bool IsOffscreen {
-				get; private set;
-			}
-
-			public bool IsPassword {
-				get; private set;
-			}
-
-			public bool IsRequiredForForm {
-				get; private set;
-			}
-
-			public string ItemStatus {
-				get; private set;
-			}
-
-			public string ItemType {
-				get; private set;
-			}
-
-			public AutomationElement LabeledBy {
-				get; private set;
-			}
-
-			public string LocalizedControlType {
-				get; private set;
-			}
-
-			public string Name {
-				get; private set;
-			}
-
-			public int NativeWindowHandle {
-				get; private set;
-			}
-
-			public OrientationType Orientation {
-				get; private set;
-			}
-
-			public int ProcessId {
-				get; private set;
-			}
-		}
 #endregion
 
 #region Public Static ReadOnly Fields

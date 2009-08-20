@@ -61,7 +61,8 @@ namespace System.Windows.Automation
 				throw new ArgumentNullException ("el1");
 			if (el2 == null)
 				throw new ArgumentNullException ("el2");
-			return el1.Equals (el2);
+			return Compare (el1.GetRuntimeId (),
+			                el2.GetRuntimeId ());
 		}
 
 		public static string PatternName (AutomationPattern pattern)

@@ -35,6 +35,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation.Text/TextPatternRange.cs \
 	System.Windows.Automation/AndCondition.cs \
 	System.Windows.Automation/Automation.cs \
+	System.Windows.Automation/AutomationElement.AutomationElementInformation.cs \
 	System.Windows.Automation/AutomationElement.cs \
 	System.Windows.Automation/AutomationElementCollection.cs \
 	System.Windows.Automation/AutomationElementMode.cs \

@@ -2,6 +2,16 @@
 
 	* Makefile.am:
 	* UIAutomationClient.mdp:
+	* System.Windows.Automation/Automation.cs:
+	* System.Windows.Automation/AutomationElement.cs:
+	* System.Windows.Automation/AutomationElement.AutomationElementInformation.cs:
+	Simplify AutomationElement comparison methods, and split
+	AutomationElement.AutomationElementInformation out into its own file.
+
+2009-08-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* UIAutomationClient.mdp:
 	* System.Windows.Automation/TreeWalker.cs: 
 	* System.Windows.Automation/TreeWalker.TreeIterator.cs:
 	Complete most of TreeWalker (bug #513989). Break iteration
