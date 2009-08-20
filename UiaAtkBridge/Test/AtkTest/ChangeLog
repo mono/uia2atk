@@ -1,3 +1,9 @@
+2009-08-19  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs: Test states of ComboBoxDropDown window.
+	Test that we don't fire erroneous winodw:active events when selecting
+	in a ComboBoxDropDown.
+
 2009-08-12  Neville Gao  <nevillegao@gmail.com>
 
 	* AtkTester.cs:

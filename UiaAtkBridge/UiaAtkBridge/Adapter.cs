@@ -67,6 +67,10 @@ namespace UiaAtkBridge
 						focusWindow = (Window)container;
 						TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow (focusWindow);
 						break;
+					} else if (container is Adapter) {
+						focusWindow = ((Adapter)container).PrivateWindow;
+						if (focusWindow != null)
+							break;
 					}
 					container = container.Parent;
 				}
@@ -345,6 +349,12 @@ namespace UiaAtkBridge
 			atkRect.Width = (int)rect.Width;
 			atkRect.Height = (int)rect.Height;
 			GLib.Signal.Emit (this, "bounds_changed", atkRect);
+		}
+
+		internal virtual Window PrivateWindow {
+			get {
+				return null;
+			}
 		}
 	}
 }

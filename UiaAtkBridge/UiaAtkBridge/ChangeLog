@@ -1,3 +1,13 @@
+2009-08-19  Mike Gorse  <mgorse@novell.com>
+
+	* ComboBoxDropDown.cs: Fix typo.
+
+	* ComboBoxDropDown.cs: Add class for fake window to give correct states
+	[Fixes bug#493094]
+
+	* ComboBoxDropDown.cs, Window.cs, Adapter.cs: Fix firing of
+	window activate events when in a ComboBoxDropDown.
+
 2009-07-15  Brad Taylor  <brad@getcoded.net>
 
 	* MenuItem.cs: Ensure that ToolStripMenuItem and similar children get
