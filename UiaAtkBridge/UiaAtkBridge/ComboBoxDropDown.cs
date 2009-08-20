@@ -39,7 +39,7 @@ namespace UiaAtkBridge
 		private string actionName = "press";
 		
 		private IRawElementProviderFragmentRoot 	provider;
-		private IExpandCollapseProvider			expandColapseProvider;
+		private IExpandCollapseProvider			expandCollapseProvider;
 		
 		private ComboBoxOptions InnerMenu {
 			get { return (ComboBoxOptions)RefAccessibleChild (MENU_ELEMENT_POS_INSIDE_COMBOBOX); }
@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 			if (this.provider == null)
 				throw new ArgumentException ("Provider should be IRawElementProviderFragmentRoot");
 			
-			expandColapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			expandCollapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 		}
 
 		public bool IsEditable {
@@ -82,10 +82,10 @@ namespace UiaAtkBridge
 			if (i != 0)
 				return false;
 			try {
-				switch (expandColapseProvider.ExpandCollapseState) {
+				switch (expandCollapseProvider.ExpandCollapseState) {
 				case ExpandCollapseState.Collapsed:
 					try {
-						expandColapseProvider.Expand ();
+						expandCollapseProvider.Expand ();
 					} catch (ElementNotEnabledException e) {
 						Log.Debug (e);
 						return false;
@@ -93,7 +93,7 @@ namespace UiaAtkBridge
 					break;
 				case ExpandCollapseState.Expanded:
 					try {
-						expandColapseProvider.Collapse ();
+						expandCollapseProvider.Collapse ();
 					} catch (ElementNotEnabledException e) {
 						Log.Debug (e);
 						return false;
@@ -108,7 +108,7 @@ namespace UiaAtkBridge
 		}
 
 		internal ExpandCollapseState ExpandCollapseState {
-			get { return expandColapseProvider.ExpandCollapseState; }
+			get { return expandCollapseProvider.ExpandCollapseState; }
 		}
 
 		public string GetDescription (int i)
@@ -163,7 +163,7 @@ namespace UiaAtkBridge
 			ExpandCollapseState newState = (ExpandCollapseState)e.NewValue;
 			if (newState == ExpandCollapseState.Expanded) {
 				if (fakeWindow == null) {
-					fakeWindow = new Window ();
+					fakeWindow = new DropDownWindow ();
 					fakeWindow.AddOneChild ((Adapter)RefAccessibleChild (0));
 				}
 				TopLevelRootItem.Instance.AddOneChild (fakeWindow);
@@ -184,6 +184,27 @@ namespace UiaAtkBridge
 		{
 			// TODO
 			base.RaiseStructureChangedEvent (provider, e);
+		}
+
+		internal override Window PrivateWindow {
+			get {
+				return (expandCollapseProvider != null && expandCollapseProvider.ExpandCollapseState == ExpandCollapseState.Expanded? fakeWindow: null);
+			}
+		}
+	}
+
+	public class DropDownWindow : Window
+	{
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			if (active) {
+				states.AddState (Atk.StateType.Enabled);
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Showing);
+				states.AddState (Atk.StateType.Visible);
+			}
+			return states;
 		}
 	}
 }

@@ -153,7 +153,7 @@ namespace UiaAtkBridge
 			get { return -1; }
 		}
 
-		private bool active = false;
+		protected bool active = false;
 		private bool needStateChange = false;
 		
 		protected override Atk.StateSet OnRefStateSet ()

@@ -1,3 +1,13 @@
+2009-08-19  Mike Gorse  <mgorse@novell.com>
+
+	* ComboBoxDropDown.cs: Fix typo.
+
+	* ComboBoxDropDown.cs: Add class for fake window to give correct states
+	[Fixes bug#493094]
+
+	* ComboBoxDropDown.cs, Window.cs, Adapter.cs: Fix firing of
+	window activate events when in a ComboBoxDropDown.
+
 2009-08-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ImageImplementorHelper.cs: Correcting leftover from

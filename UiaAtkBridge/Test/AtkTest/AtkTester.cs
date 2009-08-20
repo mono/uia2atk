@@ -334,6 +334,13 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
+				States (newWindow,
+					Atk.StateType.Active,
+					Atk.StateType.Enabled,
+					Atk.StateType.Sensitive,
+					Atk.StateType.Showing,
+					Atk.StateType.Visible);
+
 				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, type, false);
 
 				Atk.Object menu = accessible.RefAccessibleChild (0);
@@ -522,9 +529,12 @@ namespace UiaAtkBridgeTest
 					val = i;
 				}
 				bool? selected = null;
+				StartEventMonitor ();
 				RunInGuiThread (delegate () {
 					selected = implementor.AddSelection (val);
 				});
+				// for ComboBox tests
+				ExpectEvents (0, Atk.Role.Frame, "window:activate");
 
 				Assert.IsTrue (selected.Value, "AddSelection(" + i + "), we got:" + selected.Value);
 				
