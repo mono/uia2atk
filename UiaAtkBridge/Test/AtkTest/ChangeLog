@@ -4,10 +4,10 @@
 	Test that we don't fire erroneous winodw:active events when selecting
 	in a ComboBoxDropDown.
 
-2009-08-12  Neville Gao  <nevillegao@gmail.com>
+2009-07-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* AtkTester.cs:
-	* BasicWidgetType.cs: Backport from r139745.
+	* AtkTests.cs: Fix ParentMenu_ChildrenStates that got broken
+	in r138002.
 
 2009-07-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
@@ -22,6 +22,10 @@
 
 	* AtkTester.cs: Refactoring: var not needed because its value
 	is always constant.
+
+2009-05-13  Neville Gao  <nevillegao@gmail.com>
+
+	* AtkTester.cs: Treated ToolBarDropDownButton as Filler.
 
 2009-05-12  Mike Gorse  <mgorse@novell.com>
 
@@ -46,6 +50,11 @@
 	Atk object.
 	Test that RefRelationSet doesn't return an exception after an object
 	is disposed [bug 491053].
+
+2009-05-06  Neville Gao  <nevillegao@gmail.com>
+
+	* BasicWidgetType.cs:
+	* AtkTester.cs: Split ToolBarButton into two styles. [Fixes Bug #481362]
 
 2009-05-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
@@ -78,7 +87,7 @@
 	* AtkTester.cs: Add a Focus() variant to optionally not test the state.
 
 2009-04-16  Brad Taylor  <brad@getcoded.net>
-	
+
 	* AtkTests.cs: Verify that Visible and Showing states are present on
 	inactive tabs.  [Fixes #495043]
 

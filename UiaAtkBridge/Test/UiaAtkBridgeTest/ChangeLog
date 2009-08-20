@@ -1,8 +1,3 @@
-2009-08-12  Neville Gao  <nevillegao@gmail.com>
-
-	* BridgeTests.cs:
-	* BridgeTester.cs: Backport from r139745.
-
 2009-07-15  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Reverse the decision of #457990 and add Focusable and
@@ -23,6 +18,10 @@
 2009-07-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Add tests for bug#503281.
+
+2009-05-13  Neville Gao  <nevillegao@gmail.com>
+
+	* BridgeTests.cs: Tested states for ToolBarDropDownButton.
 
 2009-05-12  Mike Gorse  <mgorse@novell.com>
 
@@ -53,6 +52,11 @@
 
 	* DialogTester.cs: Expect 5 PopupButtonPanel children, not 6.
 
+2009-05-06  Neville Gao  <nevillegao@gmail.com>
+
+	* BridgeTests.cs: Tested ToolBarDropDownButton.
+	* BridgeTester.cs: Added DropDown style ToolBarButton. [Fixes Bug #48136]
+	
 2009-04-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Focus menuitems that don't have children
