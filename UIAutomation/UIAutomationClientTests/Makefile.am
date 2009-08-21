@@ -1,0 +1,1 @@
+SUBDIRS = SampleForm UIAutomationClientTests GtkForm AtspiUiaClientTests

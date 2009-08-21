@@ -1,3 +1,9 @@
+2009-08-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* configure.ac: Move UIAutomationClient/Test to
+	UIAutomationClientTests, enable in build.
+
 2009-06-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* WindowsBase/System.Windows/Rect.cs: Add missing using statement.

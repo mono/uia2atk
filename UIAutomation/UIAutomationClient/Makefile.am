@@ -1,12 +1,6 @@
 
 EXTRA_DIST =  
 
-if ENABLE_TESTS
- SUBDIRS = Test
-else
- SUBDIRS =
-endif
-
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../bin -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -d:NET_2_0
 

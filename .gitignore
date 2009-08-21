@@ -1,3 +1,4 @@
+
 # Global ignores
 *~
 *.pyc
@@ -41,21 +42,28 @@
 /UIAutomation/UIAutomationClient/*.usertasks
 /UIAutomation/UIAutomationClient/*.userprefs
 
-# /UIAutomation/UIAutomationClient/Test
-/UIAutomation/UIAutomationClient/Test/Makefile
-/UIAutomation/UIAutomationClient/Test/Makefile.in
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/Makefile
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/Makefile.in
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/*.userprefs
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/bin
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/SampleForm/*.pidb
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/bin
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/UIAutomationClientTests/*.pidb
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile.in
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/GtkForm/Makefile
-/UIAutomation/UIAutomationClient/Test/UIAutomationClientTests/GtkForm/Makefile.in
+# /UIAutomation/UIAutomationClientTests
+/UIAutomation/UIAutomationClientTests/Makefile
+/UIAutomation/UIAutomationClientTests/Makefile.in
+/UIAutomation/UIAutomationClientTests/*.userprefs
+/UIAutomation/UIAutomationClientTests/SampleForm/bin
+/UIAutomation/UIAutomationClientTests/SampleForm/Makefile
+/UIAutomation/UIAutomationClientTests/SampleForm/Makefile.in
+/UIAutomation/UIAutomationClientTests/SampleForm/*.pidb
+/UIAutomation/UIAutomationClientTests/SampleForm/*.resources
+/UIAutomation/UIAutomationClientTests/SampleForm/Properties/*.resources
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/bin
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/Makefile
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/Makefile.in
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/*.pidb
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/swfclienttest.sh
+/UIAutomation/UIAutomationClientTests/AtspiUiaClientTests/bin
+/UIAutomation/UIAutomationClientTests/AtspiUiaClientTests/Makefile
+/UIAutomation/UIAutomationClientTests/AtspiUiaClientTests/Makefile.in
+/UIAutomation/UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh
+/UIAutomation/UIAutomationClientTests/GtkForm/bin
+/UIAutomation/UIAutomationClientTests/GtkForm/Makefile
+/UIAutomation/UIAutomationClientTests/GtkForm/Makefile.in
 
 # /UIAutomation/UIAutomationSource/
 /UIAutomation/UIAutomationSource/Makefile

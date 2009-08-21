@@ -37,7 +37,10 @@ if test "x$SN" = "xno" ; then
 	AC_MSG_ERROR([No sn tool found])
 fi
 
-AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
+AC_ARG_ENABLE(tests,
+	AC_HELP_STRING([--disable-tests],
+		[Do not build unit tests [default=no]]),
+		enable_tests=no, enable_tests=yes)
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
@@ -91,11 +94,13 @@ UIAutomationBridge/AssemblyInfo.cs
 UIAutomationSource/Makefile
 UIAutomationSource/AssemblyInfo.cs
 UIAutomationClient/Makefile
-UIAutomationClient/Test/Makefile
-UIAutomationClient/Test/UIAutomationClientTests/Makefile
-UIAutomationClient/Test/UIAutomationClientTests/GtkForm/Makefile
-UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/Makefile
-UIAutomationClient/Test/UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh
+UIAutomationClientTests/Makefile
+UIAutomationClientTests/GtkForm/Makefile
+UIAutomationClientTests/AtspiUiaClientTests/Makefile
+UIAutomationClientTests/AtspiUiaClientTests/atspiuiaclienttest.sh
+UIAutomationClientTests/SampleForm/Makefile
+UIAutomationClientTests/UIAutomationClientTests/Makefile
+UIAutomationClientTests/UIAutomationClientTests/swfclienttest.sh
 UIAutomationClient/AssemblyInfo.cs
 UIAutomationProvider/Makefile
 UIAutomationProvider/AssemblyInfo.cs

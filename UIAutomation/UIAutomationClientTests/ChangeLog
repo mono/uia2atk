@@ -1,0 +1,7 @@
+2009-08-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* SampleForm/Makefile.am:
+	* AtspiUiaClientTests/Makefile.am:
+	* UIAutomationClientTests/Makefile.am: Add and update makefiles
+	so that Client unit tests are included in build.
