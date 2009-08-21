@@ -56,6 +56,11 @@ class Settings(object):
   is_force = False
   is_nodeps = False
 
+  # any applications that are run from our tests should be listed here.
+  # this is so we can clean them up if they don't get closed due to a
+  # test failure
+  third_party_apps = ["gcalctool","firefox","gnome-calculator"]
+
   def __init__(self):
       self.argument_parser()
       self.set_uiaqa_home()
@@ -337,6 +342,7 @@ class Test(object):
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
         self.status = 1
+        self.cleanup()
       else:
         # if the test was successful prefix the file with a 0, so we can
         # easily tell that the test was successful based on this log
@@ -475,16 +481,32 @@ class Test(object):
         return
       output("WARNING:  Could not kill process: %s" % pid)
 
-  def cleanup(self):
-    output("INFO:  Cleaning up:")
+  def cleanup(self, final=False):
+    if final:
+      output("INFO:  Checking for any rogue processes...")
+      # hack to kill any third part applications we open with our tests, it
+      # would be nice to do this more intelligently
+      FNULL = open('/dev/null')
+      for app in Settings.third_party_apps:
+        s.Popen(["killall","%s" % app], stderr=FNULL, stdout=FNULL)
+      FNULL.close()
+    else:
+      output("INFO:  Cleaning up failed test:")
     search = "%s/%s" % (Settings.uiaqa_home, "samples")
     # execute the following command to get a pid and a path of the tests
     # that might be running still
     # ps -ax | grep /home/a11y/code/uia2atk/test/samples | awk '{print $1,$6}'
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
-    p3 = s.Popen(["awk", "{print $1}"], stdin=p2.stdout, stdout=s.PIPE)
-    for pid in p3.stdout.read().strip().split():
+    p3 = s.Popen(["grep", "-v", "grep"], stdin=p2.stdout, stdout=s.PIPE)
+    p4 = s.Popen(["awk", "{print $1, $7}"], stdin=p3.stdout, stdout=s.PIPE)
+    processes = dict(line.strip().split() for line in p4.stdout)
+    if final and len(processes) > 0:
+      output("WARNING:  The following processes never exited:")
+      for pid in processes:
+        print "  %s (%s)" % (pid, processes[pid])
+      output("WARNING:  The above processes will now be killed.")
+    for pid in processes:
       self.kill_process(pid)
   
 class InconceivableError(Exception): pass
@@ -500,7 +522,7 @@ class Main(object):
     # or we're not updating packages run the tests
     if r is None or r == 0:
       r = t.run()
-      t.cleanup()
+      t.cleanup(True)
     if Settings.log_path:
       output("INFO:  Logging to:  %s" % Settings.log_path)
     output("INFO:  EXITING %s" % os.path.basename(__file__))

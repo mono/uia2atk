@@ -1,3 +1,9 @@
+2009-08-21 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: Important update to properly handle processes
+	that don't exit as expected during the tests.
+	* harness/remote_run.py: More informative output.
+
 2009-08-20 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/winforms/statusbarpanel/__init__.py: Fixed incorrect path

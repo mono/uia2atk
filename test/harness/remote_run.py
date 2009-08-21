@@ -191,7 +191,9 @@ class Test(object):
     s = ""
     if Settings.is_smoke:
       s = "smoke "
-    output("Kicking off remote %stests..." % s)
+    # if they aren't smoke tests we don't want the extra white space
+    output("Kicking off remote %stests." % s)
+    output("Real-time logs can be found at %s" % Settings.local_log_path)
     test_list = []
     failed_machines = []
     good_machines = []
@@ -223,7 +225,7 @@ class Test(object):
       for dead_thread in dead_threads:
         test_list.remove(dead_thread)
       time.sleep(1)
-       
+
     if len(failed_machines) > 0:
       output("WARNING:  %i/%i failed"\
               % (len(failed_machines), len(self.up_machines)))
