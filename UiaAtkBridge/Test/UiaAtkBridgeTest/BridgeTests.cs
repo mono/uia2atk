@@ -51,6 +51,13 @@ namespace UiaAtkBridgeTest
 		public void ListBox ()
 		{
 			ListBox (false);
+
+			// bug 515457
+			Atk.Object lb1Adapter = GetAdapterForWidget (lb1);
+			lb1.Focus ();
+			Assert.IsTrue (lb1Adapter.RefStateSet().ContainsState (Atk.StateType.Focused), "ListBox should have Fous after focused");
+			butWithImage.Focus ();
+			Assert.IsFalse (lb1Adapter.RefStateSet().ContainsState (Atk.StateType.Focused), "ListBox should lose Focusable after it is unfocused");
 		}
 
 		private void ListBox (bool listView)

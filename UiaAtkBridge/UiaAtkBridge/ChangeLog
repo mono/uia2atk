@@ -1,3 +1,8 @@
+2009-08-24  Mike Gorse  <mgorse@novell.com>
+
+	* tree.cs: Have a TreeView track its focus.
+	[Fixes bug#515457]
+
 2009-08-19  Mike Gorse  <mgorse@novell.com>
 
 	* ComboBoxDropDown.cs: Fix typo.
