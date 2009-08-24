@@ -1,3 +1,13 @@
+2009-08-24  Matt Guo  <matt@mattguo.com>
+
+	* System.Windows.Automation/ValuePattern.cs:
+	To support ValuePattern
+	* System.Windows.Automation/InvokePattern.cs:
+	Initialize InvokePattern.Pattern/InvokePattern.InvokedEvent
+	* System.Windows.Automation/AutomationElement.cs:
+	Fix TryGetCurrentPattern
+
+
 2009-08-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Test/ is now its own project directly under

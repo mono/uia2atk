@@ -20,33 +20,20 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using Mono.UIAutomation.Source;
+using NDesk.DBus;
+using System.Windows.Automation;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public class InvokePattern : BasePattern
+	[Interface (Constants.ValuePatternInterfaceName)]
+	public interface IValuePattern
 	{
-		private IInvokePattern source;
-
-		internal InvokePattern (IInvokePattern source)
-		{
-			this.source = source;
-		}
-
-		public void Invoke ()
-		{
-			source.Invoke ();
-		}
-
-		public static readonly AutomationPattern Pattern
-			= InvokePatternIdentifiers.Pattern;
-
-		public static readonly AutomationEvent InvokedEvent
-			= InvokePatternIdentifiers.InvokedEvent;
+		void SetValue (string value);
+		bool IsReadOnly { get; }
+		string Value { get; }
 	}
 }

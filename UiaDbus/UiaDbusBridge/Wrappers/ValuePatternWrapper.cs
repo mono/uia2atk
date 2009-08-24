@@ -20,65 +20,58 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
-using Mono.UIAutomation.Source;
+using SW = System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace System.Windows.Automation
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePattern : BasePattern
+	public class ValuePatternWrapper : IValuePattern
 	{
-		public struct ValuePatternInformation
+#region Private Fields
+
+		private IValueProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public ValuePatternWrapper (IValueProvider provider)
 		{
-			internal ValuePatternInformation (ValueProperties properties)
-			{
-				Value = properties.Value;
-				IsReadOnly = properties.IsReadOnly;
-			}
-
-			public string Value {
-				get; private set;
-			}
-
-			public bool IsReadOnly {
-				get; private set;
-			}
+			this.provider = provider;
 		}
 
-		private IValuePattern source;
+#endregion
 
-		internal ValuePattern (IValuePattern source)
-		{
-			this.source = source;
-		}
-
-		public ValuePatternInformation Cached {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ValuePatternInformation Current {
-			get {
-				return new ValuePatternInformation (source.Properties);
-			}
-		}
+#region IValuePattern Members
 
 		public void SetValue (string value)
 		{
-			source.SetValue (value);
+			provider.SetValue (value);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= ValuePatternIdentifiers.Pattern;
+		public bool IsReadOnly {
+			get {
+				return provider.IsReadOnly;
+			}
+		}
 
-		public static readonly AutomationProperty ValueProperty
-			= ValuePatternIdentifiers.ValueProperty;
+		public string Value {
+			get {
+				return provider.Value;
+			}
+		}
 
-		public static readonly AutomationProperty IsReadOnlyProperty
-			= ValuePatternIdentifiers.IsReadOnlyProperty;
+#endregion
 	}
 }

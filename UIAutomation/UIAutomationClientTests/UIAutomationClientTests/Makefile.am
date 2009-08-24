@@ -59,7 +59,8 @@ FILES =  \
 	InvokePatternTest.cs \
 	Properties/AssemblyInfo.cs \
 	TogglePatternTest.cs \
-	TreeWalkerTest.cs 
+	TreeWalkerTest.cs \
+	ValuePatternTest.cs 
 
 DATA_FILES = 
 

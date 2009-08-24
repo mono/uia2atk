@@ -443,7 +443,7 @@ namespace System.Windows.Automation
 		                                  out Object patternObject)
 		{
 			try {
-				patternObject = sourceElement.GetCurrentPattern (pattern);
+				patternObject = GetCurrentPattern (pattern);
 				return true;
 			} catch (Exception) {
 				patternObject = null;

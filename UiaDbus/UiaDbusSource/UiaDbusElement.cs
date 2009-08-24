@@ -278,19 +278,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			if (pattern == null)
 				throw new InvalidOperationException ();
-
 			string patternPath = dbusElement.GetCurrentPatternPath (pattern.Id);
 			if (string.IsNullOrEmpty (patternPath))
 				throw new InvalidOperationException ();
-
 			object ret = null;
 
 			if (pattern.Id == InvokePatternIdentifiers.Pattern.Id) {
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
-			} /*else if (pattern.Id == ...) {
-			}*/ else
+			} else if (pattern.Id == ValuePatternIdentifiers.Pattern.Id) {
+				DCI.IValuePattern valuePattern = Bus.Session.GetObject<DCI.IValuePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ValuePatternSubPath));
+				ret = new UiaDbusValuePattern (valuePattern);
+			} else
 				throw new InvalidOperationException ();
 
 			return ret;
@@ -304,6 +305,13 @@ namespace Mono.UIAutomation.UiaDbusSource
 		#endregion
 
 		#region Public Properties
+
+		public string BusName
+		{
+			get {
+				return busName;
+			}
+		}
 
 		public string DbusPath {
 			get {

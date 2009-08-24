@@ -1,10 +1,24 @@
+2009-08-24  Matt Guo <matt@mattguo.com>
+	* UiaDbus/Constants.cs,
+	* UiaDbus/Interfaces/IValuePattern.cs,
+	* UiaDbus/Makefile.am,
+	* UiaDbus/UiaDbus.mdp,
+	* UiaDbusBridge/Wrappers/ValuePatternWrapper.cs,
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs,
+	* UiaDbusBridge/UiaDbusBridge.mdp,
+	* UiaDbusBridge/Makefile.am,
+	* UiaDbusSource/Makefile.am,
+	* UiaDbusSource/UiaDbusElement.cs,
+	* UiaDbusSource/UiaDbusValuePattern.cs,
+	* UiaDbusSource/UiaDbusSource.mdp:
+	Support for ValuePattern
+
 2009-08-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs:
 	Never return self as parent element.
 
 2009-08-19  Matt Guo <matt@mattguo.com>
-
 	* UiaDbus/Constants.cs, UiaDbus/Interfaces/IInvokePattern.cs,
 	* UiaDbus/Interfaces/IAutomationElement.cs,
 	* UiaDbus/Makefile.am,

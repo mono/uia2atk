@@ -50,6 +50,7 @@ FILES =  \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
 	Interfaces/IInvokePattern.cs \
+	Interfaces/IValuePattern.cs \
 	Point.cs \
 	Rect.cs 
 

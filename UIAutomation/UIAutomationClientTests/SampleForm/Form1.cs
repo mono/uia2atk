@@ -40,10 +40,39 @@ namespace SampleForm {
 			InitializeComponent ();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void button1_Click (object sender, EventArgs e)
 		{
-			Console.WriteLine ("*** button1_click ***");
+			textBox1.Text = "button1_click";
 			label1.Text = "button1_click";
+			Console.WriteLine ("textbox1 & label1's texts are modified.");
+		}
+
+		private void button2_Click (object sender, EventArgs e)
+		{
+			button1.PerformClick ();
+		}
+		
+		private void btnAddTextbox_Click (object sender, EventArgs e)
+		{
+			TextBox box = new TextBox();
+			box.Width = 30;
+			box.Left = 10;
+			box.Top = panel1.Controls.Count * 25;
+			panel1.Controls.Add(box);
+		}
+
+		private void btnRemoveTextbox_Click (object sender, EventArgs e)
+		{
+			if (panel1.Controls.Count <= 2)
+				throw new Exception ("No more child control to delete");
+			Control controlToDelete = null;
+			foreach (Control c in panel1.Controls)
+			{
+				if (controlToDelete == null || controlToDelete.Top < c.Top)
+					controlToDelete = c;
+			}
+			if (controlToDelete != null)
+				panel1.Controls.Remove (controlToDelete);
 		}
 	}
 }

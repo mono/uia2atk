@@ -63,6 +63,7 @@
     <Compile Include="TogglePatternTest.cs" />
     <Compile Include="TreeWalkerTest.cs" />
     <Compile Include="InvokePatternTest.cs" />
+    <Compile Include="ValuePatternTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

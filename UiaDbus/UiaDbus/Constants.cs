@@ -35,8 +35,39 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string ApplicationInterfaceName = Namespace + ".Application";
 		public const string AutomationElementBasePath = "/org/mono/UIAutomation/Element/";
 
+		public const string DockPatternInterfaceName = Namespace + ".DockPattern";
+		public const string ExpandCollapsePatternInterfaceName = Namespace + ".ExpandCollapsePattern";
+		public const string GridItemPatternInterfaceName = Namespace + ".GridItemPattern";
+		public const string GridPatternInterfaceName = Namespace + ".GridPattern";
 		public const string InvokePatternInterfaceName = Namespace + ".InvokePattern";
+		public const string MultipleViewPatternInterfaceName = Namespace + ".MultipleViewPattern";
+		public const string RangeValuePatternInterfaceName = Namespace + ".RangeValuePattern";
+		public const string ScrollItemPatternInterfaceName = Namespace + ".ScrollItemPattern";
+		public const string ScrollPatternInterfaceName = Namespace + ".ScrollPattern";
+		public const string SelectionItemPatternInterfaceName = Namespace + ".SelectionItemPattern";
+		public const string SelectionPatternInterfaceName = Namespace + ".SelectionPattern";
+		public const string TextPatternInterfaceName = Namespace + ".TextPattern";
+		public const string TogglePatternInterfaceName = Namespace + ".TogglePattern";
+		public const string TransformPatternInterfaceName = Namespace + ".TransformPattern";
+		public const string ValuePatternInterfaceName = Namespace + ".ValuePattern";
+		public const string WindowPatternInterfaceName = Namespace + ".WindowPattern";
 
+		public const string DockPatternSubPath = "Dock";
+		public const string ExpandCollapsePatternSubPath = "ExpandCollapse";
+		public const string GridItemPatternSubPath = "GridItem";
+		public const string GridPatternSubPath = "Grid";
 		public const string InvokePatternSubPath = "Invoke";
+		public const string MultipleViewPatternSubPath = "MultipleView";
+		public const string RangeValuePatternSubPath = "RangeValue";
+		public const string ScrollItemPatternSubPath = "ScrollItem";
+		public const string ScrollPatternSubPath = "Scroll";
+		public const string SelectionItemPatternSubPath = "SelectionItem";
+		public const string SelectionPatternSubPath = "Selection";
+		public const string TextPatternSubPath = "Text";
+		public const string TogglePatternSubPath = "Toggle";
+		public const string TransformPatternSubPath = "Transform";
+		public const string ValuePatternSubPath = "Value";
+		public const string WindowPatternSubPath = "Window";
+
 	}
 }

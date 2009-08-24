@@ -433,9 +433,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 			if (patternId == InvokePatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.InvokePatternSubPath;
-				patternObject = new InvokePatternWrapper ((IInvokeProvider)patternProvider);
-			} /*else if (patternId == ...) {
-			} */else
+				patternObject = new InvokePatternWrapper ((IInvokeProvider) patternProvider);
+			} else if (patternId == ValuePatternIdentifiers.Pattern.Id) {
+				patternPath += DC.Constants.ValuePatternSubPath;
+				patternObject = new ValuePatternWrapper ((IValueProvider) patternProvider);
+			} else
 				throw new InvalidOperationException ();
 
 			if (bus == null)

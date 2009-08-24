@@ -1,3 +1,14 @@
+2009-08-24  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/UIAutomationClientTests.csproj,
+	* UIAutomationClientTests/Makefile.am,
+	* UIAutomationClientTests/ValuePatternTest.cs:
+	Add ValuePatternTests.
+	* SampleForm/Form1.Designer.cs,
+	* SampleForm/Form1.cs:
+	Set some textbox propeies, and add a panel in right-bottom corner to
+	dynamically add/remove child controls.
+
 2009-08-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

@@ -47,7 +47,8 @@ FILES =  \
 	DbusExceptionTranslator.cs \
 	UiaDbusAutomationSource.cs \
 	UiaDbusElement.cs \
-	UiaDbusInvokePattern.cs
+	UiaDbusInvokePattern.cs \
+	UiaDbusValuePattern.cs
 
 DATA_FILES = 
 

@@ -20,65 +20,51 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
-//  Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePattern : BasePattern
+	public class UiaDbusValuePattern : IValuePattern
 	{
-		public struct ValuePatternInformation
+		private DCI.IValuePattern pattern;
+
+		public UiaDbusValuePattern (DCI.IValuePattern pattern)
 		{
-			internal ValuePatternInformation (ValueProperties properties)
-			{
-				Value = properties.Value;
-				IsReadOnly = properties.IsReadOnly;
-			}
-
-			public string Value {
-				get; private set;
-			}
-
-			public bool IsReadOnly {
-				get; private set;
-			}
-		}
-
-		private IValuePattern source;
-
-		internal ValuePattern (IValuePattern source)
-		{
-			this.source = source;
-		}
-
-		public ValuePatternInformation Cached {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ValuePatternInformation Current {
-			get {
-				return new ValuePatternInformation (source.Properties);
-			}
+			this.pattern = pattern;
 		}
 
 		public void SetValue (string value)
 		{
-			source.SetValue (value);
+			try {
+				pattern.SetValue (value);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
-		public static readonly AutomationPattern Pattern
-			= ValuePatternIdentifiers.Pattern;
+		public ValueProperties Properties {
+			get {
 
-		public static readonly AutomationProperty ValueProperty
-			= ValuePatternIdentifiers.ValueProperty;
-
-		public static readonly AutomationProperty IsReadOnlyProperty
-			= ValuePatternIdentifiers.IsReadOnlyProperty;
+				try {
+					ValueProperties properties = new ValueProperties() {
+						IsReadOnly = pattern.IsReadOnly,
+						Value = pattern.Value
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
 	}
 }
