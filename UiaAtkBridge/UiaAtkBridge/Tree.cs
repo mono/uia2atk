@@ -282,6 +282,9 @@ namespace UiaAtkBridge
 			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
 				Log.Error ("Tree: Toggle events should not land here (should not be reached)");
+			} else if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
+				hasFocus = (bool)e.NewValue;
+				base.RaiseAutomationPropertyChangedEvent (e);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}

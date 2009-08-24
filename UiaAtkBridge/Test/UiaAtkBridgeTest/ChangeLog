@@ -1,3 +1,7 @@
+2009-08-24  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Test that a ListBox tracks its focus.
+
 2009-07-15  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Reverse the decision of #457990 and add Focusable and
