@@ -1,3 +1,8 @@
+2009-08-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AutomationBridge.cs:
+	* TableImplementorHelper.cs: Cosmetic.
+
 2009-08-24  Mike Gorse  <mgorse@novell.com>
 
 	* Tree.cs: Have a TreeView track its focus.

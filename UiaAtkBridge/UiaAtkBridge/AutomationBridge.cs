@@ -1243,7 +1243,9 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
 				return;
-			for (IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling))
+			for (IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+			     child != null;
+			     child = child.Navigate (NavigateDirection.NextSibling))
 				HandleElementAddition (child);
 		}
 

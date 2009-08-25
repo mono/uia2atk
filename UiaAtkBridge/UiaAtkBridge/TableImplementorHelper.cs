@@ -38,7 +38,7 @@ namespace UiaAtkBridge
 		{
 			this.resource = resource;
 			
-			tableProvider = (ITableProvider) resource.Provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);;
+			tableProvider = (ITableProvider) resource.Provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);
 		}
 
 		private Adapter							resource;
