@@ -1,3 +1,8 @@
+2009-08-26  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/combobox/: update MainPage.xaml.cs for combobox1 to 
+	perform selection
+
 2009-08-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* samples/gtk/gtktreeview.py: Make it a bit more complex, with at
