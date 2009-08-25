@@ -111,7 +111,8 @@ namespace Moonlight.AtkBridge
 			implementors.Sort ((a, b) => a.Name.CompareTo (b.Name));
 
 			// Concat the type names together
-			string typeName = implementors.Aggregate (String.Empty, (s, t) => s + t.Name);
+			string typeName = implementors.Aggregate (String.Empty, (s, t) => s + t.Name)
+				+ "Adapter";
 
 			// If we're not implementing anything, just
 			// short-circuit the process
@@ -194,7 +195,7 @@ namespace Moonlight.AtkBridge
 					typeof (ImplementsPatternAttribute),
 					false);
 
-				if (!t.IsSubclassOf (typeof (Adapter)))
+				if (t.IsSubclassOf (typeof (Adapter)))
 					continue;
 
 				foreach (Attribute attr in attrs) {

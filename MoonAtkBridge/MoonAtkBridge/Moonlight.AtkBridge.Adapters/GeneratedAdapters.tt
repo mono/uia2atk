@@ -287,6 +287,8 @@ foreach (HashSet<string> impls in combinations) {
 				paramDef += "in ";
 			} else if (param.IsOut) {
 				paramDef += "out ";
+			} else if (param.ParameterType.FullName.Contains ("&")) {
+				paramDef += "ref ";
 			}
 
 			if (withTypes)

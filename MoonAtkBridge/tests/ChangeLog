@@ -1,3 +1,15 @@
+2009-08-25  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am: 
+	* assets/RangeValueTest/App.xaml: 
+	* assets/RangeValueTest/Page.xaml: 
+	* assets/RangeValueTest/App.xaml.cs: 
+	* assets/RangeValueTest/Makefile.am: 
+	* assets/RangeValueTest/Page.xaml.cs: Add a RangeValue sample for
+	test_rangevalue.py.
+
+	* test_rangevalue.py: Add new RangeValue test.
+
 2009-08-19  Brad Taylor  <brad@getcoded.net>
 
 	* moonlight/browser/__init__.py: Make the harness support Namoroka

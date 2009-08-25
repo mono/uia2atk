@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="RangeValueTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel>
+            <Slider x:Name="slider"></Slider>
+            <ScrollViewer MaxHeight="250">
+                <TextBlock TextWrapping="Wrap">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie, nulla ut tempus porta, mi lectus fringilla sapien, in posuere turpis orci semper nunc. Cras auctor hendrerit metus, eu sollicitudin leo congue id. Curabitur mattis semper augue, at pulvinar justo posuere ut. Proin mollis eleifend hendrerit. Quisque ac diam et erat dapibus consequat nec quis est. Praesent ultrices tempor consequat. Praesent nec sapien sed erat tempor tincidunt eu non augue. Sed risus felis, aliquam eget sodales eget, adipiscing vel leo. Nam nec ante nec libero feugiat sagittis at et nisl. In accumsan lobortis dictum. Quisque scelerisque diam non lacus pulvinar placerat. Nulla faucibus scelerisque enim, sed dapibus leo congue in. Pellentesque vitae eleifend erat. Donec est enim, laoreet a scelerisque eget, elementum vel quam. Fusce urna justo, pulvinar ut tristique id, porttitor vel velit. Maecenas tincidunt consectetur varius. Aliquam vulputate dolor viverra nunc gravida vitae pellentesque massa accumsan.
+                    
+                    Nulla facilisi. Pellentesque vel nibh et lectus pretium scelerisque. Suspendisse id turpis nisi. Quisque adipiscing aliquet urna ac viverra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus egestas lacus quis elit convallis condimentum. In dictum ultricies ligula sed dignissim. Sed semper varius fringilla. Ut aliquam, nisl vel congue laoreet, mi eros pellentesque sem, non viverra lacus eros ornare magna. Praesent et faucibus urna. Aliquam scelerisque odio non lacus adipiscing nec venenatis dui euismod. Aliquam felis risus, pulvinar vitae faucibus a, tempus a nulla. Nam tristique convallis arcu id varius. Vivamus ultricies facilisis nisl quis volutpat. Proin aliquam eros faucibus tellus accumsan euismod. Donec quis nunc odio, id vehicula turpis.
+                </TextBlock>
+            </ScrollViewer>
+            <ProgressBar Value="5" Maximum="20" Height="30"></ProgressBar>
+        </StackPanel>
+    </Grid>
+</UserControl>

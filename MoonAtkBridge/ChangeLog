@@ -1,3 +1,7 @@
+2009-08-25  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add new RangeValue test asset.
+
 2009-08-19  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Add additional compile steps caused by the new

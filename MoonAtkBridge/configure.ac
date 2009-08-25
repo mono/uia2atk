@@ -130,6 +130,7 @@ install.rdf
 tests/Makefile
 tests/assets/Makefile
 tests/assets/ValueTest/Makefile
+tests/assets/RangeValueTest/Makefile
 ])
 
 AC_OUTPUT

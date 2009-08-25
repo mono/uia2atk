@@ -1,3 +1,14 @@
+2009-08-25  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge.sources: 
+	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs: 
+	Add new RangeValue pattern implementor.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Fix a few small bugs.
+
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Properly generate
+	ref parameter types.
+
 2009-08-19  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge.PatternImplementors/Value.cs: Fix several issues

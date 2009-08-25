@@ -1,2 +1,3 @@
 SUBDIRS = \
-	ValueTest
+	ValueTest \
+	RangeValueTest
