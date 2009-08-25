@@ -48,6 +48,7 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 {
+	#region Mocks
 	internal class MockProvider : IRawElementProviderSimple
 	{
 		private Dictionary<int, object> properties =
@@ -86,6 +87,56 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 		}
 	}
 	
+	internal class MockFragmentProvider : MockProvider, IRawElementProviderFragment
+	{
+		private Dictionary<NavigateDirection, IRawElementProviderFragment> connections =
+			new Dictionary<NavigateDirection, IRawElementProviderFragment> ();
+
+		#region IRawElementProviderFragment implementation
+		public IRawElementProviderSimple [] GetEmbeddedFragmentRoots ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public int [] GetRuntimeId ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public IRawElementProviderFragment Navigate (NavigateDirection direction)
+		{
+			IRawElementProviderFragment connection = null;
+			if (connections.TryGetValue (direction, out connection))
+				return connection;
+			return null;
+		}
+
+		public void SetFocus ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public SW.Rect BoundingRectangle {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public IRawElementProviderFragmentRoot FragmentRoot {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+		#endregion
+
+		public void SetConnection (IRawElementProviderFragment provider,
+		                           NavigateDirection direction)
+		{
+			connections [direction] = provider;
+		}
+	}
+	#endregion
+
 	[TestFixture]
 	public class ProviderElementWrapperTest
 	{
@@ -703,6 +754,74 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 			Assert.AreEqual (testVal,
 			                 windowElement.RuntimeId,
 			                 "Set value");
+		}
+
+		[Test]
+		public void NavigationTest ()
+		{
+			MockFragmentProvider mockWindow = new MockFragmentProvider ();
+			mockWindow.SetPropertyValue (AEIds.ControlTypeProperty.Id,
+			                             ControlType.Window.Id);
+			mockWindow.SetPropertyValue (AEIds.NativeWindowHandleProperty.Id,
+			                             new IntPtr (1234));
+
+			string labelText = "label text";
+			MockFragmentProvider mockLabel = new MockFragmentProvider ();
+			mockLabel.SetPropertyValue (AEIds.ControlTypeProperty.Id,
+			                             ControlType.Text.Id);
+			mockLabel.SetPropertyValue (AEIds.NameProperty.Id,
+			                             labelText);
+			mockLabel.SetConnection (mockWindow, NavigateDirection.Parent);
+			mockWindow.SetConnection (mockLabel, NavigateDirection.FirstChild);
+
+			MockFragmentProvider mockButton = new MockFragmentProvider ();
+			mockButton.SetPropertyValue (AEIds.ControlTypeProperty.Id,
+			                             ControlType.Button.Id);
+			mockButton.SetConnection (mockWindow, NavigateDirection.Parent);
+			mockWindow.SetConnection (mockButton, NavigateDirection.LastChild);
+
+			// Sibling stuff
+			mockLabel.SetConnection (mockButton, NavigateDirection.NextSibling);
+			mockButton.SetConnection (mockLabel, NavigateDirection.PreviousSibling);
+
+			AddProvider (mockWindow);
+			AddProvider (mockLabel);
+			AddProvider (mockButton);
+
+			string windowPath = "/org/mono/UIAutomation/Element/1";
+			string labelPath = "/org/mono/UIAutomation/Element/2";
+			string buttonPath = "/org/mono/UIAutomation/Element/3";
+
+			string ourBus = TestHelper.CurrentBus;
+
+			IAutomationElement windowElement = TestHelper.GetElement (ourBus, windowPath);
+			IAutomationElement labelElement = TestHelper.GetElement (ourBus, labelPath);
+			IAutomationElement buttonElement = TestHelper.GetElement (ourBus, buttonPath);
+
+			// Parent
+			Assert.AreEqual (string.Empty, windowElement.ParentElementPath, "window has no parent");
+			Assert.AreEqual (windowPath, labelElement.ParentElementPath, "label parent is window");
+			Assert.AreEqual (windowPath, buttonElement.ParentElementPath, "button parent is window");
+
+			// FirstChild
+			Assert.AreEqual (labelPath, windowElement.FirstChildElementPath, "window first child is label");
+			Assert.AreEqual (string.Empty, labelElement.FirstChildElementPath, "label has no children");
+			Assert.AreEqual (string.Empty, buttonElement.FirstChildElementPath, "button has no children");
+
+			// LastChild
+			Assert.AreEqual (buttonPath, windowElement.LastChildElementPath, "window first child is button");
+			Assert.AreEqual (string.Empty, labelElement.LastChildElementPath, "label has no children");
+			Assert.AreEqual (string.Empty, buttonElement.LastChildElementPath, "button has no children");
+
+			// NextSibling
+			Assert.AreEqual (string.Empty, windowElement.NextSiblingElementPath, "window has no siblings");
+			Assert.AreEqual (buttonPath, labelElement.NextSiblingElementPath, "label next sibling is button");
+			Assert.AreEqual (string.Empty, buttonElement.NextSiblingElementPath, "button has no next sibling");
+
+			// PreviousSibling
+			Assert.AreEqual (string.Empty, windowElement.PreviousSiblingElementPath, "window has no siblings");
+			Assert.AreEqual (string.Empty, labelElement.PreviousSiblingElementPath, "label has no prev sibling");
+			Assert.AreEqual (labelPath, buttonElement.PreviousSiblingElementPath, "button prev sibling is label");
 		}
 
 		private IAutomationElement SetupBasicWindowElement (MockProvider mockWindow)
