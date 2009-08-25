@@ -1,5 +1,5 @@
 2009-08-25 Marco Skambraks <marco@suse.de>
-	* completed splitter_horizontal.py
+	* completed splitter_horizontal.py and splitter_vertical.py
 2009-08-21 Marco Skambraks <marco@suse.de>
 	* added datetimepicker_showupdown_fixeddate.py
 
