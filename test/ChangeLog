@@ -1,3 +1,7 @@
+2009-08-25  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/combobox/: Added Moonlight ComboBox sample
+
 2009-08-24  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/button/: Added Moonlight Button sample.
@@ -23,6 +27,11 @@
 	* harness/remote_run.py:  Added --nodeps and --force options to the
 	help text.  Fixed copy and paste bug to properly update the packages
 	when the --update option is used.
+
+2009-08-19  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/picturebox/__init__.py: correct indentation error, 
+	update the new method of finding the uiaqa_path
 
 2009-08-19  Calen Chen <cachen@novell.com>
 
