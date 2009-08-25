@@ -36,7 +36,10 @@ namespace ComboBoxSample
 
         void AddButton_click(object sender, RoutedEventArgs e)
         {
-            combobox1.Items.Add(textbox1.Text);
+            ComboBoxItem new_item = new ComboBoxItem();
+            combobox1.Items.Add(new_item);
+            new_item.Content = textbox1.Text;
+            new_item.Name = "Box1_" + textbox1.Text;
         }
 
         void DeleteButton_click(object sender, RoutedEventArgs e)
@@ -51,6 +54,7 @@ namespace ComboBoxSample
             Box1_ItemsList = new ComboBoxItem[] { Box1_Item0, Box1_Item1, Box1_Item2, Box1_Item3, Box1_Item4, Box1_Item5, Box1_Item6, Box1_Item7, Box1_Item8, Box1_Item9 };
             foreach (ComboBoxItem box_items in Box1_ItemsList)
                 combobox1.Items.Add(box_items);
+            combobox1.SelectedIndex = 0;
         }
 
         void Item_Checked(object sender, RoutedEventArgs e)
@@ -67,11 +71,14 @@ namespace ComboBoxSample
 
          void combobox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (combobox1 != null)
-           // {
-           //     String combobox = (combobox1.SelectedItem as ComboBoxItem).Content.ToString();
-           //     label1.Text = "Selected: " + combobox;
-          //  }
+             if (combobox1 != null)
+             {
+                 if (combobox1.SelectedItem != null)
+                 {
+                     String selected_item = (combobox1.SelectedItem as ComboBoxItem).Name.ToString();
+                     label1.Text = "Selected: " + selected_item;
+                 }
+             }
         }
 
          void combobox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
