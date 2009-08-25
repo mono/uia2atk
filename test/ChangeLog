@@ -1,3 +1,8 @@
+2009-08-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* samples/gtk/gtktreeview.py: Make it a bit more complex, with at
+	least 2 level of children (grandchildren), for testing purposes.
+
 2009-08-25  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/combobox/: Added Moonlight ComboBox sample

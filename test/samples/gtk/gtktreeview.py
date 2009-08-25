@@ -34,9 +34,13 @@ class BasicTreeview(MainWindow):
         # we'll add some data now - 4 rows with 3 child rows each
         for parent in range(4):
             piter = self.treestore.append(None, ['parent %i' % parent])
+            firstchild = True
             for child in range(3):
-                self.treestore.append(piter, ['child %i of parent %i' %
-                                              (child, parent)])
+                child = self.treestore.append(piter, ['child %i of parent %i' %
+                                                     (child, parent)])
+                if firstchild:
+                    firstchild = False
+                    self.treestore.append(child, ['unique grandchild of grandparent %i' % parent])
 
         # create the TreeView using treestore
         self.treeview = gtk.TreeView(self.treestore)
