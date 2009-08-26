@@ -1,3 +1,8 @@
+2009-08-26 Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-initialization.diff: Removed, committed
+	in r140707.
+
 2009-08-25  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add new RangeValue test asset.
