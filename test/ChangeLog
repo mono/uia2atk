@@ -1,5 +1,9 @@
 2009-08-26 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/machines.py:  Oops, I left off a comma.
+
+2009-08-26 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/local_run.py: Fix a problem where the incorrect status of the
 	test could be returned to the console
 	* harness/remote_run.py: Change some strings and comments for the sake
