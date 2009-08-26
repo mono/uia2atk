@@ -1,5 +1,9 @@
 2009-08-26  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/datepicker/: add Moonlight DatePicker sample
+
+2009-08-26  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/combobox/: update MainPage.xaml.cs for combobox1 to 
 	perform selection
 
