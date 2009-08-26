@@ -1,3 +1,11 @@
+2009-08-26 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: Fix a problem where the incorrect status of the
+	test could be returned to the console
+	* harness/remote_run.py: Change some strings and comments for the sake
+	of clarity
+	* harness/machines.py:  Add suse64v0 to the default list of machines
+
 2009-08-26  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/datepicker/: add Moonlight DatePicker sample

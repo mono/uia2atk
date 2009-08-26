@@ -105,12 +105,12 @@ class Ping(threading.Thread):
    def run(self):
       self.status = os.system("ping -q -c2 %s > /dev/null" % self.ip)
 
-class Kickoff(threading.Thread):
+class Test(threading.Thread):
 
   package_failed_machines = []
   test_failed_machines = []
     
-  def __init__ (self,name,ip):
+  def __init__ (self, name, ip):
     threading.Thread.__init__(self)
     self.ip = ip
     self.test_status = 0
@@ -134,9 +134,9 @@ class Kickoff(threading.Thread):
                            Settings.local_log_path,
                            self.name))
       if self.test_status != 0:
-        Kickoff.test_failed_machines.append(self.name)
+        Test.test_failed_machines.append(self.name)
 
-class Test(object):
+class TestHandler(object):
 
   def __init__(self):
     self.machines = machines.machines_dict
@@ -199,7 +199,7 @@ class Test(object):
     good_machines = []
     lock = threading.Lock()
     for up_machine in self.up_machines:
-      t = Kickoff(up_machine, self.machines[up_machine][0])
+      t = Test(up_machine, self.machines[up_machine][0])
       test_list.append(t)
       t.start()
 
@@ -213,10 +213,10 @@ class Test(object):
           output("  TEST COMPLETE:  %-12s (%10s) ==>" % (t.name, t.ip), False) 
           if t.pkg_status == 0 and t.test_status == 0:
             good_machines.append(t.name)
-            output("OK")
+            output("PERFECT")
           else:
             failed_machines.append(t.name)
-            output("FAILED")
+            output("FAILURES")
           lock.release()
         else:
           one_alive_thread = True
@@ -260,29 +260,29 @@ class Test(object):
     import urllib
 
     test_type = lambda: Settings.is_smoke == True and "smoke tests" or "tests"
-    status = lambda: len(Kickoff.package_failed_machines) + \
-                    len(Kickoff.test_failed_machines) > 0 \
+    status = lambda: len(Test.package_failed_machines) + \
+                    len(Test.test_failed_machines) > 0 \
                     and "failed" or "succeeded"
   
     revisions = urllib.urlopen("http://build1.sled.lab.novell.com/uia/current/rpm_revs").read()
 
     # mathematic union of the failed machines, we will use this to grab
     # the local logs we want to include in the e-mail
-    failed_machines = list(set(Kickoff.package_failed_machines + \
-                                                Kickoff.test_failed_machines))
+    failed_machines = list(set(Test.package_failed_machines + \
+                                                Test.test_failed_machines))
 
     # summary message for the first part of the e-mail
     self.summary_message = []
 
-    if (len(Kickoff.test_failed_machines) > 0):
+    if (len(Test.test_failed_machines) > 0):
       self.summary_message.append("%s\n%s\n\n" % \
                 ("Strongwind tests failed for the following device(s):\n",
                 "\n".join(failed_machines)))
 
-    if (len(Kickoff.package_failed_machines) > 0):
+    if (len(Test.package_failed_machines) > 0):
       self.summary_message.append("%s\n%s\n\n" % \
                 ("Package updates failed for the following device(s):\n",
-                "\n".join(Kickoff.package_failed_machines)))
+                "\n".join(Test.package_failed_machines)))
 
     self.summary_message.append("The above %s %s for the following packages:\n\n%s\n\n" % (test_type(), status(), revisions))
 
@@ -318,8 +318,8 @@ class Test(object):
     else:
       subject = "[Regression Tests] "
 
-    if len(Kickoff.test_failed_machines) + \
-                                   len(Kickoff.package_failed_machines) <= 0:
+    if len(Test.test_failed_machines) + \
+                                   len(Test.package_failed_machines) <= 0:
       subject += "PASS!"
     else:
       subject += "FAIL!"
@@ -346,8 +346,8 @@ class Test(object):
 class Main(object):
 
   def main(self, argv=None):
-    t = Test()
-    r = t.run()
+    th = TestHandler()
+    r = th.run()
     if Settings.email_addresses is not None:
       if Settings.is_log_ok:
         t.compose_mail_message()

@@ -327,9 +327,9 @@ class Test(object):
     # execute the tests
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
+    # set the initial status to 0 (good)
+    self.status = 0
     for test in found_tests:
-      # set the initial status to 0 (good)
-      self.status = 0
       self.set_test_file_info(test)
       file_path = os.path.join(Settings.log_path, test_type, self.control_name)
       self.write_top_portion(file_path)
@@ -341,6 +341,7 @@ class Test(object):
       r = t.poll()
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
+        # if any tests fail, set the status to 1 (bad)
         self.status = 1
         self.cleanup()
       else:
