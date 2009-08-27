@@ -1,3 +1,8 @@
+2009-08-27  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/datepicker/: delete old sample which was builded by 
+	Silverlight 3.0, add new one
+
 2009-08-26 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/machines.py:  Oops, I left off a comma.
