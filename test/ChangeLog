@@ -1,5 +1,10 @@
 2009-08-27  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/combobox/: delete old sample which was builded by 
+	Silverlight 3.0, add new one
+
+2009-08-27  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/datepicker/: delete old sample which was builded by 
 	Silverlight 3.0, add new one
 
