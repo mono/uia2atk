@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="ComboBoxSample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <!--ComboBox 1-->
+        <TextBlock x:Name="label1" Grid.Row="0" Text="ComboBox 1:" Margin="10,10,0,0" />
+        <TextBox x:Name="textbox1" Grid.Row="1" Grid.Column="0" Margin="10,10,0,0"/>
+        <Button x:Name="button_add" Content="Add Item" Grid.Row="1" Grid.Column="1" Margin="10,10,0,0" Click="AddButton_click"  />
+        <Button x:Name="button_delete" Content="Delete Item" Grid.Row="1" Grid.Column="2" Margin="10,10,0,0" Click="DeleteButton_click"  />
+        <Button x:Name="button_reset" Content="Reset Item" Grid.Row="1" Grid.Column="3" Margin="10,10,0,0" Click="ResetButton_click"  />
+        <ComboBox x:Name="combobox1" Grid.Row="2" Margin="10,10,0,0" SelectionChanged="combobox1_SelectionChanged">
+            <ComboBox.Items>
+                <ComboBoxItem x:Name="Box1_Item0" Content="Item 0" IsSelected="True" />
+                <ComboBoxItem x:Name="Box1_Item1" Content="Item 1" />
+                <ComboBoxItem x:Name="Box1_Item2" Content="Item 2" />
+                <ComboBoxItem x:Name="Box1_Item3" Content="Item 3" />
+                <ComboBoxItem x:Name="Box1_Item4" Content="Item 4" />
+                <ComboBoxItem x:Name="Box1_Item5" Content="Item 5" />
+                <ComboBoxItem x:Name="Box1_Item6" Content="Item 6" />
+                <ComboBoxItem x:Name="Box1_Item7" Content="Item 7" />
+                <ComboBoxItem x:Name="Box1_Item8" Content="Item 8" />
+                <ComboBoxItem x:Name="Box1_Item9" Content="Item 9" />
+            </ComboBox.Items>
+        </ComboBox>
+        <!--ComboBox 2-->
+        <TextBlock x:Name="label2" Grid.Row="3" Text="ComboBox 2:" Margin="10,50,0,0" />
+        <ComboBox x:Name="combobox2" Grid.Row="4" Width="100" Margin="10,10,0,0" HorizontalAlignment="Left" SelectionChanged="combobox2_SelectionChanged" >
+            <ComboBox.Items>
+                <ComboBoxItem x:Name="Item0" Content="Item 0" />
+                <!--Item 1 is currently selected-->
+                <ComboBoxItem x:Name="Item1" Content="Item 1" IsSelected="True" />
+                <ComboBoxItem x:Name="Item2" Content="Item 2" />
+                <!--Add Item with CheckBox-->
+                <ComboBoxItem x:Name="Item3">
+                    <ComboBoxItem.Content>
+                        <CheckBox Name="item3_checkbox" Checked="Item_Checked" Unchecked="Item_Unchecked">
+                            <TextBlock Text="Item 3" />
+                        </CheckBox>
+                    </ComboBoxItem.Content>
+                </ComboBoxItem>
+                <ComboBoxItem x:Name="Item4" Content="Item 4" />
+                <!--Add Item with Image-->
+                <ComboBoxItem x:Name="Item5">
+                    <ComboBoxItem.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="30" Source="Image/apple-red.png" />
+                            <TextBlock Text="Item 5" />
+                        </StackPanel>
+                    </ComboBoxItem.Content>
+                </ComboBoxItem>
+                <ComboBoxItem x:Name="Item6" Content="Item 6" />
+            </ComboBox.Items>
+        </ComboBox>
+        <!--ComboBox 3-->
+        <TextBlock x:Name="label3" Grid.Row="5" Margin="10,50,0,0" Text="ComboBox 3:" />
+        <ComboBox x:Name="combobox3" Grid.Row="6" Margin="10,10,0,0" SelectionChanged="combobox3_SelectionChanged" />
+    </Grid>
+</UserControl>
