@@ -1,5 +1,9 @@
 2009-08-28  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/gridsplitter/: add SL2 GridSplitter sample
+
+2009-08-28  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/checkbox/: add SL2 checkbox sample to replace SL3
 	* samples/moonlight/calendar/: add SL2 calendar sample to replace SL3
 
