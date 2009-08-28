@@ -55,6 +55,8 @@ class Settings(object):
   distro_version = None
   is_force = False
   is_nodeps = False
+  # this is returned to the console.  it will get set to 1 if any tests fail
+  return_code = 0
 
   # any applications that are run from our tests should be listed here.
   # this is so we can clean them up if they don't get closed due to a
@@ -327,9 +329,13 @@ class Test(object):
     # execute the tests
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
-    # set the initial status to 0 (good)
-    self.status = 0
+    # the status of all tests.  this is set to 1 if one or more tests fail.
+    # this is the value that is returned by the function.  If 0 is returned,
+    # it indicates that all tests ran successfully (i.e., a perfect run!)
+    self.status_all = 0
     for test in found_tests:
+      # the status of a single test.  initial status is 0 (good)
+      self.status = 0
       self.set_test_file_info(test)
       file_path = os.path.join(Settings.log_path, test_type, self.control_name)
       self.write_top_portion(file_path)
@@ -341,8 +347,9 @@ class Test(object):
       r = t.poll()
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
-        # if any tests fail, set the status to 1 (bad)
+        # if any tests fail, set the status and status_all to 1
         self.status = 1
+        self.status_all = 1
         self.cleanup()
       else:
         # if the test was successful prefix the file with a 0, so we can
@@ -365,7 +372,7 @@ class Test(object):
       except InconceivableError, msg:
         output(msg)
         return 1
-    return self.status 
+    return self.status_all
 
   def write_top_portion(self, file_path):
     '''Create the top portion of the summary text log file.  This portion
