@@ -1,3 +1,10 @@
+2009-08-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* SampleForm/Form1.resx:
+	* SampleForm/Form1.Designer.cs: Add TreeView to SampleForm, and
+	rearrange some buttons added in the last commit to unbreak
+	TreeWalker unit tests.
+
 2009-08-24  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/UIAutomationClientTests.csproj,
