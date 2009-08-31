@@ -1,3 +1,9 @@
+2009-08-31  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/button/TestPage.html,
+	* samples/moonlight/button/ButtonSample.html: rename TestPage.html to 
+	ButtonSample.html
+
 2009-08-28 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: Fix a problem with my previous change, that
@@ -7,6 +13,10 @@
 2009-08-28  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/button/: Added SL2 Button sample.
+
+2009-08-28  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/hyperlinkbutton/: add SL2 hyperlinkbutton sample
 
 2009-08-28  Calen Chen <cachen@novell.com>
 
