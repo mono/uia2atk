@@ -1,5 +1,9 @@
 2009-09-01  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/mediaelement/: add SL2 MediaElement sample
+
+2009-09-01  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/image/: add SL2 Image sample
 
 2009-08-31  Calen Chen <cachen@novell.com>
