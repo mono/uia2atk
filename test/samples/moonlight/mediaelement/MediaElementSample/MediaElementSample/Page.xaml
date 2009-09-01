@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="MediaElementSample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="450" Height="400">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <!-- Label -->
+        <Grid Grid.Row="0" HorizontalAlignment="Left" Margin="10,10,0,0">
+            <TextBlock x:Name="label1" Text="WMV media:" />
+        </Grid>
+
+        <!-- Media element -->
+        <Grid Grid.Row="1" Background="Black" Margin="10,10,0,0">
+            <MediaElement x:Name="VideoElement" Source="media.wmv" />
+        </Grid>
+
+        <!-- Video controls -->
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <ToggleButton x:Name="btnPlayPause" Content="Pause" Width="75" Height="25" />
+
+            <Slider x:Name="sliderScrubber" Width="250" Minimum="0" Maximum="1" Margin="5,0,0,0" />
+
+            <TextBlock x:Name="txtVideoPosition" Margin="5,0,0,0" />
+
+        </StackPanel>
+    </Grid>
+</UserControl>
