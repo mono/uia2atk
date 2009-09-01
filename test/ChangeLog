@@ -1,5 +1,9 @@
 2009-09-01 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/winforms/menustrip_basic_ops.py: Clarify two minor comments	
+
+2009-09-01 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/winforms/progressbar_basic_ops.py,
 	* testers/winforms/progressbar/progressbarframe.py: Commit long lost
 	patch from initial review on review board.

@@ -43,7 +43,7 @@ if app is None:
 msFrame = app.menuStripFrame
 
 ##############################
-# check menu item's action
+# check Text of menu items
 ##############################
 actionsCheck(msFrame.menuitem_file, "Menu")
 actionsCheck(msFrame.menuitem_file_new, "Menu")
@@ -219,7 +219,7 @@ sleep(config.SHORT_DELAY)
 #statesCheck(msFrame.menuitem_file_new_doc, "MenuItem")
 
 ##############################
-# check menu item's Image
+# check Image of menu items
 ##############################
 # BUG486290 - MenuStrip: menu item's image is not implemented
 #msFrame.assertImage(msFrame.menuitem_file_new_doc, 16, 16)
