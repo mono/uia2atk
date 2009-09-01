@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="PasswordBox.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <TextBlock x:Name="textBlock" Height="30" Margin="30,50,0,0" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="pwdBox" Height="30" Margin="30,100,30,0" VerticalAlignment="Top" MaxLength="64" PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged"/>
+    </Grid>
+</UserControl>
