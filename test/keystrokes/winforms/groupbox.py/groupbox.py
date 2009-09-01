@@ -23,6 +23,7 @@ sequence.append(utils.AssertPresentationAction(
     "switch focus to Button2",
     ["BRAILLE LINE:  'button2 Button'",
     "     VISIBLE:  'button2 Button', cursor=1",
+    "SPEECH OUTPUT: ''",
     "SPEECH OUTPUT: 'button2 button'"]))
 
 

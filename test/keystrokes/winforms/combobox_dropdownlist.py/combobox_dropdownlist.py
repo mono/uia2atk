@@ -30,7 +30,7 @@ sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_Enter"))
 sequence.append(utils.AssertPresentationAction(
     "control info (kp_enter)",
-    ["BRAILLE LINE:  '0'"
+    ["BRAILLE LINE:  '0'",
      "     VISIBLE:  '0', cursor=1",
      "SPEECH OUTPUT: 'combo box'",
      "SPEECH OUTPUT: '0'",

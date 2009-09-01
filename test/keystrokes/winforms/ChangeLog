@@ -1,4 +1,6 @@
 2009-08-28 Marco Skambraks <marco@suse.de>
+	* updated groupbox.py, panel.py and combobox_dropdownlist.py
+2009-08-28 Marco Skambraks <marco@suse.de>
 	* added toolbar.py
 
 2009-08-25 Marco Skambraks <marco@suse.de>

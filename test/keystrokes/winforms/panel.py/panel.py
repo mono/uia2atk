@@ -68,12 +68,8 @@ sequence.append(KeyComboAction("Tab"))
 sequence.append(WaitForFocus("Male", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "focus on Male radiobutton",
-    ["BRAILLE LINE:  'Panel control Frame'",
-     "     VISIBLE:  'Panel control Frame', cursor=1",
-     "BRAILLE LINE:  '&=y Male RadioButton'",
+    ["BRAILLE LINE:  '&=y Male RadioButton'",
      "     VISIBLE:  '&=y Male RadioButton', cursor=1",
-     "SPEECH OUTPUT: ''",
-     "SPEECH OUTPUT: 'Panel control frame'",
      "SPEECH OUTPUT: ''",
      "SPEECH OUTPUT: 'Male selected radio button'"]))
      
