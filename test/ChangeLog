@@ -1,3 +1,9 @@
+2009-09-01 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/winforms/progressbar_basic_ops.py,
+	* testers/winforms/progressbar/progressbarframe.py: Commit long lost
+	patch from initial review on review board.
+
 2009-09-01  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/listbox/:

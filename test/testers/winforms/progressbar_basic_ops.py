@@ -48,61 +48,61 @@ statesCheck(pbFrame.progressbar, "ProgressBar")
 
 # click button,label and progressbar's current value is changed
 # value would return to 0 and start again after up to 100
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("40%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 40)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 40)
 
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("60%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 60)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 60)
 
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("80%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 80)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 80)
 
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("100%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 100)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 100)
 # start progress again after the value up to 100
-pbFrame.button.click()
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
 # current value doesn't changed by using acc.value
-pbFrame.value(10)
+pbFrame.assignValue(10)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
-pbFrame.value(100)
+pbFrame.assignValue(100)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
-pbFrame.value(-1)
+pbFrame.assignValue(-1)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
-pbFrame.value(101)
+pbFrame.assignValue(101)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
-pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+pbFrame.assertCurrentValue(pbFrame.progressbar, 20)
 
 # maximumValue is 100 and minimumValue is 0
-pbFrame.assertValueImplemented("maximumValue")
+pbFrame.assertMaximumValue()
 
-pbFrame.assertValueImplemented("minimumValue")
+pbFrame.assertMinimumValue()
 
 # check progressbar's states list again
 statesCheck(pbFrame.progressbar, "ProgressBar")
