@@ -1,5 +1,9 @@
 2009-09-02  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/togglebutton/: add ToggleButton SL2 sample
+
+2009-09-02  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/radiobutton/: add RadioButton SL2 sample
 
 2009-09-02  Calen Chen <cachen@novell.com>
