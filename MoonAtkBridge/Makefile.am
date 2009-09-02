@@ -139,7 +139,7 @@ tests-build:
 ## Generate XPI
 ##
 
-xpi: stage/install.rdf novell-moonlight-a11y.xpi
+xpi: $(ASSEMBLY_STAGE_PATH) stage/install.rdf novell-moonlight-a11y.xpi
 
 novell-moonlight-a11y.xpi: 
 	cd stage/ && zip -r9 ../novell-moonlight-a11y.xpi *

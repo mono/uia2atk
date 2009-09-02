@@ -38,7 +38,7 @@ def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
         print "** MOON_A11Y_BROWSER environment variable not found.  Defaulting to '%s'." % browser
 
     if os.environ.has_key('MOON_A11Y_BROWSER_PROFILE'):
-        dev = os.environ['MOON_A11Y_BROWSER_PROFILE']
+        profile = os.environ['MOON_A11Y_BROWSER_PROFILE']
     else:
         print "** MOON_A11Y_BROWSER_PROFILE environment variable not found.  Defaulting to '%s'." % profile
 
@@ -48,18 +48,17 @@ def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
         print "** MOON_A11Y_BROWSER_NAME environment variable not found.  Defaulting to '%s'." % name
 
     cwd = os.path.dirname(browser)
-    args = [browser, '-no-remote', '-P', profile, uri]
+    if cwd == '':
+        cwd = None
 
-    # TODO: Remove this when we have linking steps set up
-    env = os.environ
-    env['MOON_DISABLE_SECURITY_PREVIEW_7'] = '1'
+    args = [browser, '-no-remote', '-P', profile, uri]
 
     logString = 'Launch %s.' % name
 
     (app, proc) = cache.launchApplication(args=args, name=name, cwd=cwd,
                                           find=re.compile('^%s$' % name),
                                           wait=config.LONG_DELAY, cache=True,
-                                          env=env, logString=logString)
+                                          logString=logString, setpgid=True)
     browser = FirefoxBrowser(name, app, proc)
     cache.addApplication(browser)
     return browser

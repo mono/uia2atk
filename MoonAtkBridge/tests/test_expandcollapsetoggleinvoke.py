@@ -54,7 +54,7 @@ class ExpandCollapseToggleInvokeButton(unittest.TestCase):
 
     def test_actions_basic(self):
         act = self.easy_button_actions
-        self.assertEqual(act.nActions(), 1)
+        self.assertEqual(act.nActions, 1)
 
         self.assertEqual(act.getName(0), "click")
         self.assertEqual(act.getName(1), "")
