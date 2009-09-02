@@ -1,3 +1,13 @@
+2009-09-02 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/qamon.py: Fix argument/option parser.  It should now
+	parse options and arguments as expected.  Options should come before
+	the argument.  For example, the following command will monitor for
+	new files in /var/qa/logs and store the generated dashboard files in
+	/var/qa/dashboard.  The -q option indicated "quiet mode."
+
+	qamon.py -q --dashboard=/var/qa/dashboard /var/qa/logs
+
 2009-09-02  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/togglebutton/: add ToggleButton SL2 sample

@@ -30,7 +30,8 @@ class Settings(object):
         opts = []
         args = []
         try:
-          opts, args = getopt.getopt(sys.argv[2:],"hqd:",["help","quiet","dashboard="])
+          opts, args = getopt.getopt(sys.argv[1:],"hqd:",["help","quiet","dashboard="])
+
         except getopt.GetoptError:
           self.help()
           sys.exit(1)
@@ -46,7 +47,7 @@ class Settings(object):
             Settings.dashboard_path = a
 
         try:
-            Settings.monitor_path = sys.argv[1]
+            Settings.monitor_path = args[0]
         except IndexError, e:
             output("Error: directory to monitor argument is required")
             self.help()
