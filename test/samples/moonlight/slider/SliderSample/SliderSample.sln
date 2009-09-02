@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliderSample", "SliderSample\SliderSample.csproj", "{2D3D2BE0-AB4D-414A-BCC7-E983E6207589}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliderSample.Web", "SliderSample.Web\SliderSample.Web.csproj", "{327D584C-A260-4D24-8BED-8DC0807ED2C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D3D2BE0-AB4D-414A-BCC7-E983E6207589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3D2BE0-AB4D-414A-BCC7-E983E6207589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3D2BE0-AB4D-414A-BCC7-E983E6207589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3D2BE0-AB4D-414A-BCC7-E983E6207589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327D584C-A260-4D24-8BED-8DC0807ED2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{327D584C-A260-4D24-8BED-8DC0807ED2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{327D584C-A260-4D24-8BED-8DC0807ED2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{327D584C-A260-4D24-8BED-8DC0807ED2C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
