@@ -1,3 +1,11 @@
+2009-09-02  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/mediaelement/MediaElementSample.xap:
+	* samples/moonlight/mediaelement/media.wmv: Moved resources out of
+	ClientBin dir.
+	* samples/moonlight/mediaelement/MediaElementSample.html: Modified path of
+	MediaElementSample.xap.
+
 2009-09-01 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/winforms/menustrip_basic_ops.py: Clarify two minor comments	
