@@ -1,5 +1,9 @@
 2009-09-02  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/radiobutton/: add RadioButton SL2 sample
+
+2009-09-02  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/slider/: add Slider SL2 sample
 
 2009-09-02  Neville Gao  <nevillegao@gmail.com>
