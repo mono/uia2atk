@@ -1,5 +1,10 @@
 2009-09-02  Neville Gao  <nevillegao@gmail.com>
 
+	* harness/local_run.py: Stored test reports in separate dir for each
+	machine.
+
+2009-09-02  Neville Gao  <nevillegao@gmail.com>
+
 	* samples/moonlight/mediaelement/MediaElementSample.xap:
 	* samples/moonlight/mediaelement/media.wmv: Moved resources out of
 	ClientBin dir.

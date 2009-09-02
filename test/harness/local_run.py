@@ -337,7 +337,11 @@ class Test(object):
       # the status of a single test.  initial status is 0 (good)
       self.status = 0
       self.set_test_file_info(test)
-      file_path = os.path.join(Settings.log_path, test_type, self.control_name)
+      file_dir_path = os.path.join(Settings.log_path, test_type, self.control_name)
+      if not os.path.exists(file_dir_path):
+        os.mkdir(os.path.join(file_dir_path))
+        time.sleep(5)  # XXX: waiting for cifs :( use a better method
+      file_path = os.path.join(file_dir_path, HOSTNAME)
       self.write_top_portion(file_path)
       t = s.Popen(["python", "-u", test], stdout=s.PIPE, stderr=s.STDOUT)
       s.Popen(["tee", "-a", file_path], stdin=t.stdout, stderr=t.stderr)
@@ -443,8 +447,7 @@ class Test(object):
 
     self.control_dir = os.path.join(Settings.log_path, self.filename)
     # try to build a useful dir name that will be unique, not y3k compliant :)
-    self.log_dir = os.path.join(self.control_dir,"%s_%s" %\
-                                  (HOSTNAME, time.strftime("%m%d%y_%H%M%S")))
+    self.log_dir = os.path.join(self.control_dir, HOSTNAME, time.strftime("%m%d%y_%H%M%S"))
 
   def log(self, test):
     if not os.path.exists(self.control_dir):
@@ -463,7 +466,7 @@ class Test(object):
         raise InconceivableError,\
                 "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
     
-    os.mkdir(self.log_dir)
+    os.makedirs(self.log_dir)
     time.sleep(5) # XXX: waiting for cifs, but use a better method
 
     # copy over the resource files
