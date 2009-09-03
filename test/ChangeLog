@@ -1,3 +1,8 @@
+2009-09-02  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/progressbar/:
+	* samples/moonlight/scrollbar/: Added SL2 samples.
+
 2009-09-02  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/repeatbutton/: add RepeatButton SL2 sample
