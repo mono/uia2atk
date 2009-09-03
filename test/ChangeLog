@@ -1,3 +1,7 @@
+2009-09-02  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/repeatbutton/: add RepeatButton SL2 sample
+
 2009-09-02 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/qamon.py: Fix argument/option parser.  It should now
