@@ -11,6 +11,8 @@ sequence.append(utils.AssertPresentationAction(
     "app active",
     ["BRAILLE LINE:  'ToolBar control Frame'",
      "     VISIBLE:  'ToolBar control Frame', cursor=1",
+     "BRAILLE LINE:  ' Combo'",
+     "     VISIBLE:  ' Combo', cursor=1",
      "SPEECH OUTPUT: 'ToolBar control frame'",
      "SPEECH OUTPUT: ''",
      "SPEECH OUTPUT: 'combo box'"]))
