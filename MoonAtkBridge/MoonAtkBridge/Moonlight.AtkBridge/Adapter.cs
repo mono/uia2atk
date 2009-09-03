@@ -211,7 +211,7 @@ namespace Moonlight.AtkBridge
 			case AutomationControlType.Edit:
 				return Role.Text;
 			case AutomationControlType.Hyperlink:
-				return Role.Text;
+				return Role.Label;
 			case AutomationControlType.Image:
 				return Role.Image;
 			case AutomationControlType.ListItem:
@@ -241,7 +241,7 @@ namespace Moonlight.AtkBridge
 			case AutomationControlType.TabItem:
 				return Role.PageTab;
 			case AutomationControlType.Text:
-				return Role.Text;
+				return Role.Label;
 			case AutomationControlType.ToolBar:
 				return Role.ToolBar;
 			case AutomationControlType.ToolTip:

@@ -1,3 +1,8 @@
+2009-09-03  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs: Correct the roles table
+	to reflect updated Moonlight functional specification.
+
 2009-08-25  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge.sources: 
@@ -49,7 +54,7 @@
 
 2009-06-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-        * MoonAtkBridge.mdp: Add.
+	* MoonAtkBridge.mdp: Add.
 
 2009-06-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
