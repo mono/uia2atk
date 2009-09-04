@@ -17,9 +17,9 @@ sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_8"))
 sequence.append(utils.AssertPresentationAction(
     "(kp_8)",
-            ["BRAILLE LINE:  'Accessibility ToolStripLabel with image'",
-             "     VISIBLE:  'Accessibility ToolStripLabel wit', cursor=1",
-             "SPEECH OUTPUT: 'Accessibility ToolStripLabel with image'"]))
+            ["BRAILLE LINE:  'Mono Accessibility ToolStripLabel with image'",
+             "     VISIBLE:  'Mono Accessibility ToolStripLabe', cursor=1",
+             "SPEECH OUTPUT: 'Mono Accessibility ToolStripLabel with image'"]))
 
 sequence.append(utils.AssertionSummaryAction())
 
