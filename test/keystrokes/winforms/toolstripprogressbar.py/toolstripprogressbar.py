@@ -9,11 +9,11 @@ sequence.append(utils.StartRecordingAction())
 sequence.append(WaitForWindowActivate("ToolStripProgressBar control",None))
 sequence.append(utils.AssertPresentationAction(
     "button focus",
-    ["BRAILLE LINE:  'ToolStripProgressBar control Fram'",
-     "     VISIBLE:  'ToolStripProgressBar control Fram', cursor=1",
+    ["BRAILLE LINE:  'ToolStripProgressBar Sample Frame'",
+     "     VISIBLE:  'ToolStripProgressBar Sample Fram', cursor=1",
      "BRAILLE LINE:  'button1 Button'",
      "     VISIBLE:  'button1 Button', cursor=1",
-     "SPEECH OUTPUT: 'ToolStripProgressBar control frame'",
+     "SPEECH OUTPUT: 'ToolStripProgressBar Sample frame'",
      "SPEECH OUTPUT: ''",
      "SPEECH OUTPUT: 'button1 button'"]))
 sequence.append(utils.StartRecordingAction())
