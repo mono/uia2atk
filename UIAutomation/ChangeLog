@@ -1,3 +1,10 @@
+2009-09-04  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
+	* UIAutomationClient/System.Windows.Automation/SourceManager.cs: 
+	* UIAutomationSource/Mono.UIAutomation.Source/IAutomationSource.cs:
+	Support for automation events.
+
 2009-08-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

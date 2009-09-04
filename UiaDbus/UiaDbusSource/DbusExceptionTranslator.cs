@@ -67,9 +67,9 @@ namespace Mono.UIAutomation.UiaDbusSource
 			Type type = Type.GetType (typeName);
 			if (type != null)
 				return type;
-			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies ();
+			Assembly [] assemblies = AppDomain.CurrentDomain.GetAssemblies ();
 			for (int i = 0; i != assemblies.Length; i++) {
-				type = assemblies[i].GetType (typeName);
+				type = assemblies [i].GetType (typeName);
 				if (type != null)
 					return type;
 			}

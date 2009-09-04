@@ -22,6 +22,7 @@
     <File name="UiaDbusAutomationSource.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusInvokePattern.cs" subtype="Code" buildaction="Compile" />
     <File name="DbusExceptionTranslator.cs" subtype="Code" buildaction="Compile" />
+    <File name="EventHandlerManager.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusValuePattern.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

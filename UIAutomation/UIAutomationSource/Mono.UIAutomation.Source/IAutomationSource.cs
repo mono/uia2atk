@@ -36,5 +36,31 @@ namespace Mono.UIAutomation.Source
 		IElement [] GetRootElements ();
 
 		bool IsAccessibilityEnabled { get; }
+
+		void AddAutomationEventHandler (AutomationEvent eventId,
+		                           IElement element,
+		                           TreeScope scope,
+		                           AutomationEventHandler eventHandler);
+
+		void AddAutomationPropertyChangedEventHandler (IElement element,
+		                                               TreeScope scope,
+		                                               AutomationPropertyChangedEventHandler eventHandler,
+		                                               AutomationProperty [] properties);
+
+		void AddStructureChangedEventHandler (IElement element,
+		                                      TreeScope scope,
+		                                      StructureChangedEventHandler eventHandler);
+
+		void RemoveAutomationEventHandler (AutomationEvent eventId,
+		                                   IElement element,
+		                                   AutomationEventHandler eventHandler);
+
+		void RemoveAutomationPropertyChangedEventHandler (IElement element,
+		                                                  AutomationPropertyChangedEventHandler eventHandler);
+
+		void RemoveStructureChangedEventHandler (IElement element,
+		                                         StructureChangedEventHandler eventHandler);
+
+		void RemoveAllEventHandlers ();
 	}
 }

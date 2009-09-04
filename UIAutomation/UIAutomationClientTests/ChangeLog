@@ -1,3 +1,13 @@
+2009-09-04  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/ValuePatternTest.cs: 
+	* UIAutomationClientTests/InvokePatternTest.cs: 
+	* UIAutomationClientTests/AutomationEventTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests.csproj: Add event 
+	tests for sturcture changes and existing pattern TestFixtures.
+
 2009-08-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* SampleForm/Form1.resx:

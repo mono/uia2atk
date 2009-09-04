@@ -45,6 +45,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	AssemblyInfo.cs \
 	DbusExceptionTranslator.cs \
+	EventHandlerManager.cs \
 	UiaDbusAutomationSource.cs \
 	UiaDbusElement.cs \
 	UiaDbusInvokePattern.cs \

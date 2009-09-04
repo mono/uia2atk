@@ -24,13 +24,31 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using NDesk.DBus;
 
 namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
+	public delegate void AutomationEventHandler (int handlerId, int eventId, string providerPath);
+	public delegate void AutomationPropertyChangedHandler (int handlerId, int eventId, string providerPath, int propertyId, object oldValue, object newValue);
+	public delegate void StructureChangedHandler (int handlerId, int eventId, string providerPath, StructureChangeType changeType);
+
 	[Interface (Constants.ApplicationInterfaceName)]
 	public interface IApplication
 	{
 		string [] GetRootElementPaths ();
+
+		void AddAutomationEventHandler (int eventId, int [] elementRuntimeId, TreeScope scope, int handlerId);
+		void AddAutomationPropertyChangedEventHandler (int [] elementRuntimeId, TreeScope scope, int handlerId, int[] properties);
+		void AddStructureChangedEventHandler (int [] elementRuntimeId, TreeScope scope, int handlerId);
+
+		void RemoveAutomationEventHandler (int eventId, int [] elementRuntimeId, int handlerId);
+		void RemoveAutomationPropertyChangedEventHandler (int [] elementRuntimeId, int handlerId);
+		void RemoveStructureChangedEventHandler (int [] elementRuntimeId, int handlerId);
+		void RemoveAllEventHandlers (int handlerIdMask);
+
+		event AutomationEventHandler AutomationEvent;
+		event AutomationPropertyChangedHandler AutomationPropertyChanged;
+		event StructureChangedHandler StructureChanged;
 	}
 }

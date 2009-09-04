@@ -44,13 +44,40 @@ namespace MonoTests.System.Windows.Automation
 			string magicStr = "Hello, ValuePatternTest.ValueTest!";
 			ValuePattern pattern = (ValuePattern) textbox1Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
 			pattern.SetValue (magicStr);
-			//We may add the following sleep to make sure the test passes, since
+			//We add following sleep to make sure the test passes, since
 			//"pattern.SetValue (magicStr)" may execute in another thread.
-			//Thread.Sleep (1000);
+			Thread.Sleep (500);
 			string str1 = pattern.Current.Value;
 			string str2 = (string)(textbox1Element.GetCurrentPropertyValue (ValuePatternIdentifiers.ValueProperty));
 			Assert.AreEqual (magicStr, str1, "Check pattern.Current.Value.");
 			Assert.AreEqual (magicStr, str2, "Check ValuePatternIdentifiers.ValueProperty.");
+		}
+
+		[Test]
+		public void PropertyEventTest ()
+		{
+			int eventCount = 0;
+			string magicStr1 = "ValuePatternTest.PropertyEventTest.m1";
+			string magicStr2 = "ValuePatternTest.PropertyEventTest.m2";
+			ValuePattern pattern = (ValuePattern) textbox1Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
+			pattern.SetValue (magicStr1);
+			AutomationPropertyChangedEventHandler handler = delegate (object sender, AutomationPropertyChangedEventArgs args) {
+				Assert.AreEqual (textbox1Element, sender, "Check event sender");
+				Assert.AreEqual (magicStr1, args.OldValue, "Check old Value");
+				Assert.AreEqual (magicStr2, args.NewValue, "Check new Value");
+				eventCount++;
+			};
+			At.AddAutomationPropertyChangedEventHandler (textbox1Element, TreeScope.Element, handler,
+				new AutomationProperty [] {ValuePattern.ValueProperty, ValuePattern.IsReadOnlyProperty}
+			);
+			pattern.SetValue (magicStr2);
+			Thread.Sleep (500);
+			Assert.AreEqual (1, eventCount, "AutomationPropertyChangedEvent is fired.");
+
+			At.RemoveAutomationPropertyChangedEventHandler (textbox1Element, handler);
+			pattern.SetValue (magicStr1);
+			Thread.Sleep (500);
+			Assert.AreEqual (1, eventCount, "AutomationPropertyChangedEvent is not fired.");
 		}
 
 		[Test]

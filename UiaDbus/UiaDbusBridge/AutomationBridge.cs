@@ -99,10 +99,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			pointerProviderMapping.TryGetValue (hwnd, out provider);
 			return provider;
 		}
-		
+
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{
-			// TODO
+			app.RaiseAutomationEvent (eventId, provider, e);
 		}
 
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
@@ -157,6 +157,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				if (patternId != -1)
 					wrapper.UnregisterPattern (patternId);
 			}
+			app.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
@@ -185,16 +186,22 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					if (isWindow)
 						app.AddRootElement (element);
 				}
+				//The event shall be raised after the provider is added to providerWrapperMapping
+				app.RaiseStructureChangedEvent (provider, e);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
+				//The event shall be raised before the provider is deleted from providerWrapperMapping
+				app.RaiseStructureChangedEvent (provider, e);
 				HandleTotalElementRemoval (simpleProvider);
+			} else {
+				app.RaiseStructureChangedEvent (provider, e);
 			}
 		}
-		
+
 		public void Initialize ()
 		{
 			CheckMainLoop ();
 		}
-		
+
 		public void Terminate ()
 		{
 			lock (syncRoot) {
@@ -234,7 +241,26 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return instance;
 			}
 		}
-				
+
+		internal IRawElementProviderSimple FindProviderByRuntimeId (int [] runtimeId)
+		{
+			foreach (var provider in providerWrapperMapping.Keys)
+			{
+				int [] rid = (int []) provider.GetPropertyValue (
+					AutomationElementIdentifiers.RuntimeIdProperty.Id);
+				if (Automation.Compare (rid, runtimeId))
+					return provider;
+			}
+			return null;
+		}
+
+		internal ProviderElementWrapper FindWrapperByPovider (IRawElementProviderSimple provider)
+		{
+			ProviderElementWrapper wrapper;
+			if (providerWrapperMapping.TryGetValue (provider, out wrapper))
+				return wrapper;
+			return null;
+		}
 
 		#endregion
 
@@ -294,10 +320,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				windowProviderCount--;
 				if (windowProviderCount == 0)
 					lastWindowProvider = true;
-		 	}
-			
+			}
 			element.Unregister ();
 			providerWrapperMapping.Remove (provider);
+			app.RemoveProvider (provider);
 
 			return lastWindowProvider;
 		}

@@ -53,6 +53,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	AutomationElementTest.cs \
+	AutomationEventTest.cs \
 	AutomationTest.cs \
 	BaseTest.cs \
 	ConditionTest.cs \

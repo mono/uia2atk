@@ -40,27 +40,29 @@ namespace System.Windows.Automation
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		private static Dictionary<IElement, AutomationElement> elementMapping =
 			new Dictionary<IElement, AutomationElement> ();
+		private static List<IAutomationSource> sources = null;
 
-		public static IList<IAutomationSource> GetAutomationSources ()
+		internal static IList<IAutomationSource> GetAutomationSources ()
 		{
-			List<IAutomationSource> sources = new List<IAutomationSource> ();
+			if (sources == null) {
+				sources = new List<IAutomationSource> ();
 
-			// Let MONO_UIA_SOURCE env var override default source
-			string sourceAssemblyNames =
-				Environment.GetEnvironmentVariable ("MONO_UIA_SOURCE");
+				// Let MONO_UIA_SOURCE env var override default source
+				string sourceAssemblyNames =
+					Environment.GetEnvironmentVariable ("MONO_UIA_SOURCE");
 
-			if (string.IsNullOrEmpty (sourceAssemblyNames))
-				sourceAssemblyNames =
-					UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
+				if (string.IsNullOrEmpty (sourceAssemblyNames))
+					sourceAssemblyNames =
+						UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
 
-			foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
-				if (string.IsNullOrEmpty (sourceAssembly))
-					continue;
-				IAutomationSource source = GetAutomationSource (sourceAssembly);
-				if (source != null)
-					sources.Add (source);
+				foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
+					if (string.IsNullOrEmpty (sourceAssembly))
+						continue;
+					IAutomationSource source = GetAutomationSource (sourceAssembly);
+					if (source != null)
+						sources.Add (source);
+				}
 			}
-
 			return sources;
 		}
 

@@ -1,3 +1,15 @@
+2009-09-04  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbusSource/UiaDbusSource.mdp: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbus/Interfaces/IApplication.cs: 
+	* UiaDbusSource/EventHandlerManager.cs: 
+	* UiaDbusSource/DbusExceptionTranslator.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs: Add support for automation
+	events. 
+
 2009-08-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusBridgeTests/ProviderElementWrapperTest.cs: Implement

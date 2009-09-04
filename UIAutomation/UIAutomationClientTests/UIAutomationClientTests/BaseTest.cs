@@ -64,6 +64,9 @@ namespace MonoTests.System.Windows.Automation
 		//protected AutomationElement verticalMenuStripElement;
 		protected AutomationElement checkbox1Element;
 		protected AutomationElement checkbox2Element;
+		protected AutomationElement panel1Element;
+		protected AutomationElement btnAddTextboxElement;
+		protected AutomationElement btnRemoveTextboxElement;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -123,6 +126,9 @@ namespace MonoTests.System.Windows.Automation
 				Assert.IsNotNull (tb3verticalScrollBarElement);
 			}
 			Assert.IsNotNull (checkbox1Element);
+			Assert.IsNotNull (panel1Element);
+			Assert.IsNotNull (btnAddTextboxElement);
+			Assert.IsNotNull (btnRemoveTextboxElement);
 			//Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
 		}
@@ -132,7 +138,7 @@ namespace MonoTests.System.Windows.Automation
 			p = StartApplication (@"SampleForm.exe",
 				String.Empty);
 
-			Thread.Sleep (1000);
+			Thread.Sleep (2000);
 
 			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ProcessIdProperty,
@@ -194,6 +200,15 @@ namespace MonoTests.System.Windows.Automation
 			checkbox1Element = groupBox2Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.CheckBox));
+			panel1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Pane));
+			btnAddTextboxElement = panel1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"Add"));
+			btnRemoveTextboxElement = panel1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"Remove"));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));
