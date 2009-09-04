@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="Thumb.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Canvas x:Name="canvas" Width="100" Height="100" Background="Green" SizeChanged="canvas_SizeChanged">
+        <TextBlock x:Name="textBlock" Canvas.Left="0" Canvas.Top="0" Foreground="OrangeRed" Text="Size: 100, 100"/>
+        <Thumb x:Name="thumb" Canvas.Left="80" Canvas.Top="80" Width="20" Height="20"
+               DragDelta="thumb_DragDelta" DragStarted="thumb_DragStarted" DragCompleted="thumb_DragCompleted"/>
+    </Canvas>
+</UserControl>

@@ -3,7 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     Width="400" Height="300">
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock x:Name="textBlock" Height="30" Margin="30,50,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="pwdBox" Height="30" Margin="30,100,30,0" VerticalAlignment="Top" MaxLength="64" PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged"/>
+        <TextBlock x:Name="textBlock1" Height="30" Margin="30,50,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock2" Height="30" Margin="30,100,0,0" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="pwdBox" Height="30" Margin="30,150,30,0" VerticalAlignment="Top" MaxLength="16" 
+                     PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged"/>
     </Grid>
 </UserControl>

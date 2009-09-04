@@ -17,15 +17,20 @@ namespace PasswordBox
         public Page()
         {
             InitializeComponent();
+
+            textBlock1.Text = "You changed 0 times.";
+            textBlock2.Text = "Your password is: ";
         }
 
         private int pwdChanges = 0;
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            int count = ++pwdChanges;
-            string s = count == 1 ? "" : "s";
-            textBlock.Text = string.Format("You changed {0} time{1}.", Convert.ToString(count), s);
+            textBlock1.Text = string.Format("You changed {0} times.", ++pwdChanges);
+            textBlock2.Text = string.Format("Your password is: {0}", pwdBox.Password);
+
+            if (pwdBox.Password.Length == pwdBox.MaxLength)
+                MessageBox.Show("You've entered the maximum characters.");
         }
     }
 }

@@ -1,3 +1,12 @@
+2009-09-05  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/thumb/: Added SL2 Thumb sample.
+	* samples/moonlight/passwordbox/PasswordBox/PasswordBox/Page.xaml:
+	* samples/moonlight/passwordbox/PasswordBox/PasswordBox/Page.xaml.cs:
+	* samples/moonlight/passwordbox/PasswordBox.xap:
+	* samples/moonlight/passwordbox/PasswordBox/PasswordBox.suo: Added
+	"Password" property to sample.
+
 2009-09-04  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/textblock: add TextBlock SL2 sample
