@@ -466,8 +466,8 @@ class Test(object):
         raise InconceivableError,\
                 "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
     
-    os.makedirs(self.log_dir)
-    time.sleep(5) # XXX: waiting for cifs, but use a better method
+    # os.makedirs() does not work here because cifs is slow
+    self.makedirs(self.log_dir)
 
     # copy over the resource files
     # XXX: change the log files to reference the resources from 
@@ -519,6 +519,30 @@ class Test(object):
       output("WARNING:  The above processes will now be killed.")
     for pid in processes:
       self.kill_process(pid)
+
+  def makedirs(self, name, mode=0777):
+    """
+    Super-mkdir; create a leaf directory and all intermediate ones.
+    Works like mkdir, except that any intermediate path segment (not
+    just the rightmost) will be created if it does not exist.  This is
+    recursive.  This is stolen from Python's os module, with short sleep
+    added after each individual mkdir to account for CIFS/NFS being slow
+    """
+    head, tail = os.path.split(name)
+    if not tail:
+        head, tail = os.path.split(head)
+    if head and tail and not os.path.exists(head):
+        try:
+            self.makedirs(head, mode)
+        except OSError, e:
+            # be happy if someone already created the path
+            if e.errno != errno.EEXIST:
+                raise
+        if tail == os.curdir:        # xxx/newdir/. exists if xxx/newdir exists
+            return
+    os.mkdir(name, mode)
+    # XXX: Waiting for CIFS, use a better method
+    time.sleep(5)
   
 class InconceivableError(Exception): pass
 

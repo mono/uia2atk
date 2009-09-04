@@ -1,3 +1,12 @@
+2009-09-04 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: Add and use a custom makedirs method that
+	mimics os.makedirs.  This solves a problem that would crash tests
+	because of a "Permission Denied" error.  This error occurred because
+	CIFS could not handle the speed of the recursive makdirs method.  The
+	new custom makedirs method added to this file sleeps for five seconds
+	after each individual directory is created (via os.mkdir)
+
 2009-09-05  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/thumb/: Added SL2 Thumb sample.
