@@ -1,5 +1,9 @@
 2009-09-04  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/textblock: add TextBlock SL2 sample
+
+2009-09-04  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/tabcontrol: add TabControl and TabItem SL2 sample
 
 2009-09-02  Neville Gao  <nevillegao@gmail.com>
