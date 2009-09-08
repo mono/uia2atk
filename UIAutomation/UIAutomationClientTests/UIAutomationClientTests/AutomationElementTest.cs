@@ -369,7 +369,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("button1",
 				button1Element.Current.Name,
 				"button1");
-			Assert.AreEqual ("label1",
+			Assert.AreEqual (label1Element.Current.Name,
 				textbox1Element.Current.Name,
 				"textbox1");
 			Assert.AreEqual (String.Empty,
@@ -939,7 +939,23 @@ namespace MonoTests.System.Windows.Automation
 		{
 			VerifyPatterns (button1Element,
 				InvokePatternIdentifiers.Pattern);
-			}
+		}
+
+		[Test]
+		public void CurrentTest ()
+		{
+			var current = label1Element.Current;
+			Assert.AreEqual ("label1",
+				current.Name,
+				"check label1's original text");
+			InvokePattern pattern = (InvokePattern) button1Element.GetCurrentPattern (InvokePattern.Pattern);
+			pattern.Invoke ();
+			Thread.Sleep (500);
+			Assert.AreEqual ("button1_click",
+				current.Name,
+				"label1's text is modified after button1 is clicked");
+		}
+
 		#endregion
 
 		#region Private Methods

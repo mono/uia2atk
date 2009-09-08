@@ -1,4 +1,11 @@
+2009-09-08  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/AutomationElement.AutomationElementInformation.cs:
+	Fix bug#530418 
+
 2009-09-04  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/AutomationElement.AutomationElementInformation.cs: 
 
 	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
 	* UIAutomationClient/System.Windows.Automation/SourceManager.cs: 

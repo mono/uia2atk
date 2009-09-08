@@ -33,128 +33,107 @@ namespace System.Windows.Automation
 	{
 		public struct AutomationElementInformation
 		{
+			private IElement sourceElement;
+
 			internal AutomationElementInformation (IElement sourceElement)
 			{
-				this.AcceleratorKey = sourceElement.AcceleratorKey;
-				this.AccessKey = sourceElement.AccessKey;
-				this.AutomationId = sourceElement.AutomationId;
-				this.BoundingRectangle = sourceElement.BoundingRectangle;
-				this.ClassName = sourceElement.ClassName;
-				this.ControlType = sourceElement.ControlType;
-				this.FrameworkId = sourceElement.FrameworkId;
-				this.HasKeyboardFocus = sourceElement.HasKeyboardFocus;
-				this.HelpText = sourceElement.HelpText;
-				this.IsContentElement = sourceElement.IsContentElement;
-				this.IsControlElement = sourceElement.IsControlElement;
-				this.IsEnabled = sourceElement.IsEnabled;
-				this.IsKeyboardFocusable = sourceElement.IsKeyboardFocusable;
-				this.IsOffscreen = sourceElement.IsOffscreen;
-				this.IsPassword = sourceElement.IsPassword;
-				this.IsRequiredForForm = sourceElement.IsRequiredForForm;
-				this.ItemStatus = sourceElement.ItemStatus;
-				this.ItemType = sourceElement.ItemType;
-				this.LabeledBy = SourceManager.GetOrCreateAutomationElement (sourceElement.LabeledBy);
-				this.LocalizedControlType = sourceElement.LocalizedControlType;
-				this.Name = sourceElement.Name;
-				this.NativeWindowHandle = sourceElement.NativeWindowHandle;
-				this.Orientation = sourceElement.Orientation;
-				this.ProcessId = sourceElement.ProcessId;
+				this.sourceElement = sourceElement;
 			}
 
 			public string AcceleratorKey {
-				get; private set;
+				get { return sourceElement.AcceleratorKey; }
 			}
 
 			public string AccessKey {
-				get; private set;
+				get { return sourceElement.AccessKey; }
 			}
 
 			public string AutomationId {
-				get; private set;
+				get { return sourceElement.AutomationId; }
 			}
 
 			public Rect BoundingRectangle {
-				get; private set;
+				get { return sourceElement.BoundingRectangle; }
 			}
 
 			public string ClassName {
-				get; private set;
+				get { return sourceElement.ClassName; }
 			}
 
 			public ControlType ControlType {
-				get; private set;
+				get { return sourceElement.ControlType; }
 			}
 
 			public string FrameworkId {
-				get; private set;
+				get { return sourceElement.FrameworkId; }
 			}
 
 			public bool HasKeyboardFocus {
-				get; private set;
+				get { return sourceElement.HasKeyboardFocus; }
 			}
 
 			public string HelpText {
-				get; private set;
+				get { return sourceElement.HelpText; }
 			}
 
 			public bool IsContentElement {
-				get; private set;
+				get { return sourceElement.IsContentElement; }
 			}
 
 			public bool IsControlElement {
-				get; private set;
+				get { return sourceElement.IsControlElement; }
 			}
 
 			public bool IsEnabled {
-				get; private set;
+				get { return sourceElement.IsEnabled; }
 			}
 
 			public bool IsKeyboardFocusable {
-				get; private set;
+				get { return sourceElement.IsKeyboardFocusable; }
 			}
 
 			public bool IsOffscreen {
-				get; private set;
+				get { return sourceElement.IsOffscreen; }
 			}
 
 			public bool IsPassword {
-				get; private set;
+				get { return sourceElement.IsPassword; }
 			}
 
 			public bool IsRequiredForForm {
-				get; private set;
+				get { return sourceElement.IsRequiredForForm; }
 			}
 
 			public string ItemStatus {
-				get; private set;
+				get { return sourceElement.ItemStatus; }
 			}
 
 			public string ItemType {
-				get; private set;
+				get { return sourceElement.ItemType; }
 			}
 
 			public AutomationElement LabeledBy {
-				get; private set;
+				get { return SourceManager.GetOrCreateAutomationElement (sourceElement.LabeledBy); }
 			}
 
 			public string LocalizedControlType {
-				get; private set;
+				get { return sourceElement.LocalizedControlType; }
 			}
 
 			public string Name {
-				get; private set;
+				get { return sourceElement.Name; }
 			}
 
 			public int NativeWindowHandle {
-				get; private set;
+				get { return sourceElement.NativeWindowHandle; }
 			}
 
 			public OrientationType Orientation {
-				get; private set;
+				get { return sourceElement.Orientation; }
 			}
 
 			public int ProcessId {
-				get; private set;
+				get { return sourceElement.ProcessId; }
 			}
 		}
 	}
