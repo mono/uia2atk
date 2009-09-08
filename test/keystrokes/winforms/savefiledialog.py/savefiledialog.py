@@ -22,7 +22,10 @@ sequence.append(KeyComboAction("Return"))
 sequence.append(WaitForWindowActivate("Save",None))
 sequence.append(utils.AssertPresentationAction(
     "open the dialog",
-        ["BRAILLE LINE:  '...'"]))
+        ["BRAILLE LINE:  'Save As Dialog'",
+         "     VISIBLE:  'Save As Dialog', cursor=1",
+         "SPEECH OUTPUT: ''",
+         "SPEECH OUTPUT: 'Save As Save in: File name: Save as type:'"]))
 
 sequence.append(utils.AssertionSummaryAction())
 

@@ -76,7 +76,6 @@ sequence.append(utils.AssertPresentationAction(
     
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Down"))
-sequence.append(WaitForFocus("Female", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "focus on Female radiobutton",
     ["BRAILLE LINE:  '&=y Female RadioButton'",
