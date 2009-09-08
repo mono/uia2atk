@@ -1,3 +1,11 @@
+2009-09-08  Brad Taylor  <brad@getcoded.net>
+
+	* testers/winforms/eventlistener.py: 
+	* testers/winforms/textbox_basic_ops.py: 
+	* testers/winforms/propertygrid_basic_ops.py:
+	* testers/winforms/datagridview_detail_ops.py: Remove eventlistener
+	(now in Strongwind), and unused references to it.
+
 2009-09-08  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/multiscaleimage: add SL2 MultiScaleImage sample

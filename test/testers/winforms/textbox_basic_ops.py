@@ -18,7 +18,6 @@ from textbox import *
 from helpers import *
 from actions import *
 from states import *
-from eventlistener import *
 from sys import argv
 
 app_path = None 

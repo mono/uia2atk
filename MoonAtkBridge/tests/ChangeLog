@@ -1,3 +1,15 @@
+2009-09-08  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am: 
+	* assets/SelectionTest/App.xaml: 
+	* assets/SelectionTest/Page.xaml: 
+	* assets/SelectionTest/App.xaml.cs: 
+	* assets/SelectionTest/Makefile.am: 
+	* assets/SelectionTest/Page.xaml.cs: Add a Selection sample for
+	test_selection.py.
+
+	* test_selection.py: Add new Selection test.
+
 2009-09-02  Brad Taylor  <brad@getcoded.net>
 
 	* moonlight/browser/__init__.py: Fix typos, remove security disabling

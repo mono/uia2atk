@@ -37,7 +37,7 @@ using Moonlight.AtkBridge;
 namespace Moonlight.AtkBridge.PatternImplementors
 {
 	[ImplementsPattern (PatternInterface.Value)]
-	public class Value : Atk.TextImplementor
+	public sealed class Value : BasePatternImplementor, Atk.TextImplementor
 	{
 #region Public Properties
 		public int CaretOffset {
@@ -62,9 +62,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 #endregion
 
 #region Public Methods
-		public Value (AutomationPeer peer)
+		public Value (Adapter adapter, AutomationPeer peer)
+			: base (adapter, peer)
 		{
-			this.peer = peer;
 			this.valueProvider = (IValueProvider) peer.GetPattern (
 				PatternInterface.Value);
 		}
@@ -377,19 +377,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		}
 #endregion
 
-#region Protected Properties
-		protected string Text {
-			get { return valueProvider.Value; }
-		}
-#endregion
-
-#region Protected Fields
-		protected int selectionStartOffset = 0;
-		protected int selectionEndOffset = 0;
-
-		protected AutomationPeer peer;
-#endregion
-
 #region Private Methods
 		private string ReturnTextWrtOffset (int startOffset, int endOffset)
 		{
@@ -564,6 +551,12 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		}
 #endregion
 
+#region Private Properties
+		private string Text {
+			get { return valueProvider.Value; }
+		}
+#endregion
+
 #region Private Fields
 		//TODO: use regexp?
 		private static char [] wordSeparators = new char [] { ' ', '\n', '\r', '.', '!', ',', '?', '\t' };
@@ -574,6 +567,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		private IValueProvider valueProvider;
 		private int caretOffset;
 		private string deleteHack = null;
+
+		private int selectionStartOffset = 0;
+		private int selectionEndOffset = 0;
 #endregion
 	}
 }

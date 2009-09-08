@@ -1,3 +1,4 @@
 SUBDIRS = \
 	ValueTest \
-	RangeValueTest
+	RangeValueTest \
+	SelectionTest

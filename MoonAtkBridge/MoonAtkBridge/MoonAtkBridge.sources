@@ -4,7 +4,10 @@ Moonlight.AtkBridge/AutomationBridge.cs
 Moonlight.AtkBridge/DynamicAdapterFactory.cs
 Moonlight.AtkBridge/ImplementsPatternAttribute.cs
 Moonlight.AtkBridge/Log.cs
-Moonlight.AtkBridge/RootVisualAdapter.cs
+Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
 Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
-Moonlight.AtkBridge.PatternImplementors/Value.cs
 Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
+Moonlight.AtkBridge.PatternImplementors/Selection.cs
+Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs
+Moonlight.AtkBridge.PatternImplementors/Value.cs
+Moonlight.AtkBridge/RootVisualAdapter.cs

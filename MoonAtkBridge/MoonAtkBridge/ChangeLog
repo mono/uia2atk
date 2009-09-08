@@ -1,3 +1,25 @@
+2009-09-08  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge.sources: 
+	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs: Add
+	Selection and SelectionItem pattern implementors.
+
+	* Moonlight.AtkBridge/Adapter.cs: Add selection states.  Raise events
+	internally so they can be attached to by pattern implementors.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Support pattern
+	implementors that don't implement Atk interfaces.
+
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Explicity
+	implement interfaces to avoid method name collision.
+
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs: 
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs: 
+	Make all pattern implementors extend from BasePatternImplementor.
+
 2009-09-03  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs: Correct the roles table

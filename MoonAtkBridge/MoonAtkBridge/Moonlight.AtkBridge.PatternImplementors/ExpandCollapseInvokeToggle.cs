@@ -39,7 +39,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 	[ImplementsPattern (PatternInterface.ExpandCollapse)]
 	[ImplementsPattern (PatternInterface.Invoke)]
 	[ImplementsPattern (PatternInterface.Toggle)]
-	public class ExpandCollapseInvokeToggle : Atk.ActionImplementor
+	public class ExpandCollapseInvokeToggle : BasePatternImplementor, Atk.ActionImplementor
 	{
 #region Public Properties
 		public int NActions {
@@ -52,10 +52,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 #endregion
 
 #region Public Methods
-		public ExpandCollapseInvokeToggle (AutomationPeer peer)
+		public ExpandCollapseInvokeToggle (Adapter adapter, AutomationPeer peer)
+			: base (adapter, peer)
 		{
-			this.peer = peer;
-
 			// TODO: also do this in response to patterns being
 			// added/removed
 			RefreshActions ();
@@ -176,8 +175,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		private List<ActionDescriptor> actions
 			= new List<ActionDescriptor> ();
-
-		private AutomationPeer peer;
 #endregion
 	}
 }

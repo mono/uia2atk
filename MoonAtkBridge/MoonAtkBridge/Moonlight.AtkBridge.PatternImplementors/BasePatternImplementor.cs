@@ -20,7 +20,6 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//      Mike Gorse <mgorse@novell.com>
 //      Brad Taylor <brad@getcoded.net>
 //
 
@@ -36,65 +35,19 @@ using Moonlight.AtkBridge;
 
 namespace Moonlight.AtkBridge.PatternImplementors
 {
-	[ImplementsPattern (PatternInterface.RangeValue)]
-	public sealed class RangeValue : BasePatternImplementor, Atk.ValueImplementor
+	public abstract class BasePatternImplementor
 	{
-#region Public Properties
-		IntPtr GLib.IWrapper.Handle {
-			get { return IntPtr.Zero; }
-		}
-#endregion
-
 #region Public Methods
-		public RangeValue (Adapter adapter, AutomationPeer peer)
-			: base (adapter, peer)
+		public BasePatternImplementor (Adapter adapter, AutomationPeer peer)
 		{
-			this.rangeValueProvider = (IRangeValueProvider) peer.GetPattern (
-				PatternInterface.RangeValue);
-		}
-
-		public void GetMinimumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.Minimum);
-		}
-
-		public void GetMaximumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.Maximum);
-		}
-
-		public void GetMinimumIncrement (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.SmallChange);
-		}
-
-		public void GetCurrentValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.Value);
-		}
-
-		public bool SetCurrentValue (GLib.Value value)
-		{
-			double v = (double)value.Val;
-			if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
-				return false;
-
-			try {
-				rangeValueProvider.SetValue (v);
-			} catch (ArgumentOutOfRangeException e) {
-				Log.Debug (e);
-				return false;
-			} catch (ElementNotEnabledException e) {
-				Log.Debug (e);
-				return false;
-			}
-
-			return true;
+			this.adapter = adapter;
+			this.peer = peer;
 		}
 #endregion
 
-#region Private Fields
-		private IRangeValueProvider rangeValueProvider;
+#region Protected Fields
+		protected Adapter adapter;
+		protected AutomationPeer peer;
 #endregion
 	}
 }

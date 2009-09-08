@@ -20,7 +20,6 @@ import os
 from strongwind import *
 from datagridview import *
 from helpers import *
-from eventlistener import *
 from sys import argv
 from os import path
 import pyatspi

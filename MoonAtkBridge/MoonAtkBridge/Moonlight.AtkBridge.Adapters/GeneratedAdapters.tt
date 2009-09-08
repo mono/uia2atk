@@ -133,7 +133,7 @@ foreach (HashSet<string> impls in combinations) {
 		if (!typeDefinitions.TryGetValue (impl, out type))
 			continue;
 #>
-			<#= ToFieldName (impl) #> = new <#= type.FullName #> (peer);
+			<#= ToFieldName (impl) #> = new <#= type.FullName #> (this, peer);
 <# 	} #>
 		}
 <#
@@ -165,8 +165,13 @@ foreach (HashSet<string> impls in combinations) {
 				properties[prop].Add (meth);
 				continue;
 			}
+
+			TypeDefinition iface = GetImplementingInterface (type, meth);
+			if (iface == null)
+				continue;
+
 #>
-		public <#= meth.ReturnType.ReturnType.FullName #> <#= meth.Name #> (<#= BuildParamList (meth.Parameters, true) #>)
+		<#= meth.ReturnType.ReturnType.FullName #> <#= iface.FullName #>.<#= meth.Name #> (<#= BuildParamList (meth.Parameters, true) #>)
 		{
 <#
 			string ret = "return ";
@@ -183,8 +188,12 @@ foreach (HashSet<string> impls in combinations) {
 				continue;
 
 			MethodDefinition defaultMethod = prop.Value[0];
+
+			TypeDefinition iface = GetImplementingInterface (type, defaultMethod);
+			if (iface == null)
+				continue;
 #>
-		public <#= defaultMethod.ReturnType.ReturnType.FullName #> <#= prop.Key #> {
+		<#= defaultMethod.ReturnType.ReturnType.FullName #> <#= iface.FullName #>.<#= prop.Key #> {
 <#
 			foreach (MethodDefinition meth in prop.Value) {
 				if (meth.IsGetter) {
@@ -199,7 +208,9 @@ foreach (HashSet<string> impls in combinations) {
 		}
 
 <# 		} #>
+#pragma warning disable 0414
 		private <#= type.FullName #> <#= ToFieldName (impl) #>;
+#pragma warning restore 0414
 #endregion
 <# 	} #>
 	}
@@ -334,5 +345,25 @@ foreach (HashSet<string> impls in combinations) {
 				hash ^= o.GetHashCode ();
 			return hash;
 		}
+	}
+
+	// Find out which interface this method belongs to.
+	public TypeDefinition GetImplementingInterface (TypeDefinition type, MethodDefinition meth)
+	{
+		// XXX: This is going to be very inefficient
+		TypeDefinition iface = null;
+		foreach (TypeDefinition i in type.Interfaces) {
+			foreach (MethodDefinition m in i.Methods) {
+				if (m.Name == meth.Name) {
+					iface = i;
+					break;
+				}
+			}
+
+			if (iface != null)
+				break;
+		}
+
+		return iface;
 	}
 #>

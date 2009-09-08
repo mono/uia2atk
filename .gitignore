@@ -368,6 +368,15 @@
 /MoonAtkBridge/tests/assets/RangeValueTest/*.html
 /MoonAtkBridge/tests/assets/RangeValueTest/*.xap
 /MoonAtkBridge/tests/assets/RangeValueTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/SelectionTest/Makefile
+/MoonAtkBridge/tests/assets/SelectionTest/Makefile.in
+/MoonAtkBridge/tests/assets/SelectionTest/*.g.cs
+/MoonAtkBridge/tests/assets/SelectionTest/*.dll
+/MoonAtkBridge/tests/assets/SelectionTest/*.mdb
+/MoonAtkBridge/tests/assets/SelectionTest/*.g.resources
+/MoonAtkBridge/tests/assets/SelectionTest/*.html
+/MoonAtkBridge/tests/assets/SelectionTest/*.xap
+/MoonAtkBridge/tests/assets/SelectionTest/AppManifest.xaml
 /MoonAtkBridge/gtk-sharp/
 /MoonAtkBridge/stage/
 /MoonAtkBridge/bin/

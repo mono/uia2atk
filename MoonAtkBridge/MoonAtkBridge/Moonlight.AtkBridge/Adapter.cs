@@ -29,6 +29,7 @@ using System;
 using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Moonlight.AtkBridge
@@ -316,6 +317,22 @@ namespace Moonlight.AtkBridge
 			else
 				states.RemoveState (Atk.StateType.Focused);
 
+			// Selection PatternImplementor specific states
+			ISelectionItemProvider selectionItem
+				= Peer.GetPattern (PatternInterface.SelectionItem)
+					as ISelectionItemProvider;
+			if (selectionItem != null) {
+				states.AddState (Atk.StateType.Selectable);
+
+				if (selectionItem.IsSelected)
+					states.AddState (Atk.StateType.Selected);
+				else
+					states.RemoveState (Atk.StateType.Selected);
+			} else {
+				states.RemoveState (Atk.StateType.Selectable);
+				states.RemoveState (Atk.StateType.Selected);
+			}
+
 			return states;
 		}
 
@@ -373,11 +390,14 @@ namespace Moonlight.AtkBridge
 			= new Dictionary<AutomationPeer, Atk.Object> ();
 #endregion
 
+#region Internal Events
+		internal event EventHandler<AutomationPropertyChangedEventArgs> AutomationPropertyChanged;
+		internal event EventHandler<AutomationEventEventArgs> AutomationEventRaised;
+#endregion
+
 #region Internal Methods
 		internal void HandleAutomationPropertyChanged (AutomationPropertyChangedEventArgs args)
 		{
-Console.WriteLine ("************* {0}: Got {1}", Name, args.Property);
-
 			if (args.Property == AEIds.HasKeyboardFocusProperty) {
 				bool focused = (bool) args.NewValue;
 				NotifyFocused (focused);
@@ -398,11 +418,15 @@ Console.WriteLine ("************* {0}: Got {1}", Name, args.Property);
 			} else if (args.Property == AEIds.NameProperty) {
 				// TODO: Emit name changed signal
 			}
+
+			if (AutomationPropertyChanged != null)
+				AutomationPropertyChanged (args.Peer, args);
 		}
 
 		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
 		{
-Console.WriteLine ("************* {0}: Got {1}", Name, args.Event);
+			if (AutomationEventRaised != null)
+				AutomationEventRaised (args.Peer, args);
 		}
 
 		internal void WindowToScreen (ref int x, ref int y)
@@ -413,6 +437,16 @@ Console.WriteLine ("************* {0}: Got {1}", Name, args.Event);
 		internal void ScreenToWindow (ref int x, ref int y)
 		{
 			ConvertCoords (ref x, ref y, false);
+		}
+
+		internal void NotifyStateChange (Atk.StateType state)
+		{
+			NotifyStateChange (state, RefStateSet ().ContainsState (state));
+		}
+
+		internal void EmitSignal (string signal)
+		{
+			GLib.Signal.Emit (this, signal);
 		}
 #endregion
 

@@ -21,7 +21,6 @@ import os
 from strongwind import *
 from propertygrid import *
 from helpers import *
-from eventlistener import *
 from sys import argv
 from os import path
 import pyatspi

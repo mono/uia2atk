@@ -94,6 +94,14 @@ namespace Moonlight.AtkBridge
 			foreach (Type impl in potentialImpls) {
 				Type [] ifaces = impl.GetInterfaces ();
 
+				// If the implementor doesn't implement any Atk
+				// interfaces, go ahead and add it to our list
+				// of implementors.
+				if (ifaces.Length == 0) {
+					implementors.Add (impl);
+					continue;
+				}
+
 				foreach (Type i in ifaces) {
 					if (i.Namespace != "Atk")
 						continue;
