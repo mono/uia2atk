@@ -1,3 +1,7 @@
+2009-09-08  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/multiscaleimage: add SL2 MultiScaleImage sample
+
 2009-09-04 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: Add and use a custom makedirs method that
