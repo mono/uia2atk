@@ -27,9 +27,6 @@ namespace SampleForm {
 		{
 			this.button1 = new System.Windows.Forms.Button ();
 			this.groupBox1 = new System.Windows.Forms.GroupBox ();
-			this.panel1 = new System.Windows.Forms.Panel ();
-			this.btnRemoveTextbox = new System.Windows.Forms.Button ();
-			this.btnAddTextbox = new System.Windows.Forms.Button ();
 			this.groupBox3 = new System.Windows.Forms.GroupBox ();
 			this.button7 = new System.Windows.Forms.Button ();
 			this.button6 = new System.Windows.Forms.Button ();
@@ -39,15 +36,20 @@ namespace SampleForm {
 			this.button4 = new System.Windows.Forms.Button ();
 			this.button3 = new System.Windows.Forms.Button ();
 			this.button2 = new System.Windows.Forms.Button ();
+			this.panel1 = new System.Windows.Forms.Panel ();
+			this.btnRemoveTextbox = new System.Windows.Forms.Button ();
+			this.btnAddTextbox = new System.Windows.Forms.Button ();
 			this.label1 = new System.Windows.Forms.Label ();
 			this.textBox1 = new System.Windows.Forms.TextBox ();
 			this.textBox2 = new System.Windows.Forms.TextBox ();
 			this.textBox3 = new System.Windows.Forms.TextBox ();
 			this.treeView1 = new System.Windows.Forms.TreeView ();
+			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown ();
 			this.groupBox1.SuspendLayout ();
-			this.panel1.SuspendLayout ();
 			this.groupBox3.SuspendLayout ();
 			this.groupBox2.SuspendLayout ();
+			this.panel1.SuspendLayout ();
+			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown1 ) ).BeginInit ();
 			this.SuspendLayout ();
 			// 
 			// button1
@@ -72,35 +74,6 @@ namespace SampleForm {
 			this.groupBox1.TabIndex = 1;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "groupBox1";
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add (this.btnRemoveTextbox);
-			this.panel1.Controls.Add (this.btnAddTextbox);
-			this.panel1.Location = new System.Drawing.Point (338, 26);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size (130, 50);
-			this.panel1.TabIndex = 4;
-			// 
-			// btnRemoveTextbox
-			// 
-			this.btnRemoveTextbox.Location = new System.Drawing.Point (62, 9);
-			this.btnRemoveTextbox.Name = "btnRemoveTextbox";
-			this.btnRemoveTextbox.Size = new System.Drawing.Size (63, 25);
-			this.btnRemoveTextbox.TabIndex = 1;
-			this.btnRemoveTextbox.Text = "Remove";
-			this.btnRemoveTextbox.UseVisualStyleBackColor = true;
-			this.btnRemoveTextbox.Click += new System.EventHandler (this.btnRemoveTextbox_Click);
-			// 
-			// btnAddTextbox
-			// 
-			this.btnAddTextbox.Location = new System.Drawing.Point (6, 9);
-			this.btnAddTextbox.Name = "btnAddTextbox";
-			this.btnAddTextbox.Size = new System.Drawing.Size (50, 25);
-			this.btnAddTextbox.TabIndex = 0;
-			this.btnAddTextbox.Text = "Add";
-			this.btnAddTextbox.UseVisualStyleBackColor = true;
-			this.btnAddTextbox.Click += new System.EventHandler (this.btnAddTextbox_Click);
 			// 
 			// groupBox3
 			// 
@@ -195,6 +168,35 @@ namespace SampleForm {
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler (this.button2_Click);
 			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add (this.btnRemoveTextbox);
+			this.panel1.Controls.Add (this.btnAddTextbox);
+			this.panel1.Location = new System.Drawing.Point (338, 26);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size (130, 50);
+			this.panel1.TabIndex = 4;
+			// 
+			// btnRemoveTextbox
+			// 
+			this.btnRemoveTextbox.Location = new System.Drawing.Point (62, 9);
+			this.btnRemoveTextbox.Name = "btnRemoveTextbox";
+			this.btnRemoveTextbox.Size = new System.Drawing.Size (63, 25);
+			this.btnRemoveTextbox.TabIndex = 1;
+			this.btnRemoveTextbox.Text = "Remove";
+			this.btnRemoveTextbox.UseVisualStyleBackColor = true;
+			this.btnRemoveTextbox.Click += new System.EventHandler (this.btnRemoveTextbox_Click);
+			// 
+			// btnAddTextbox
+			// 
+			this.btnAddTextbox.Location = new System.Drawing.Point (6, 9);
+			this.btnAddTextbox.Name = "btnAddTextbox";
+			this.btnAddTextbox.Size = new System.Drawing.Size (50, 25);
+			this.btnAddTextbox.TabIndex = 0;
+			this.btnAddTextbox.Text = "Add";
+			this.btnAddTextbox.UseVisualStyleBackColor = true;
+			this.btnAddTextbox.Click += new System.EventHandler (this.btnAddTextbox_Click);
+			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
@@ -239,11 +241,19 @@ namespace SampleForm {
 			this.treeView1.Size = new System.Drawing.Size (121, 97);
 			this.treeView1.TabIndex = 8;
 			// 
+			// numericUpDown1
+			// 
+			this.numericUpDown1.Location = new System.Drawing.Point (102, 110);
+			this.numericUpDown1.Name = "numericUpDown1";
+			this.numericUpDown1.Size = new System.Drawing.Size (120, 20);
+			this.numericUpDown1.TabIndex = 9;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF (6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size (587, 530);
+			this.Controls.Add (this.numericUpDown1);
 			this.Controls.Add (this.treeView1);
 			this.Controls.Add (this.panel1);
 			this.Controls.Add (this.textBox3);
@@ -255,10 +265,11 @@ namespace SampleForm {
 			this.Name = "Form1";
 			this.Text = "TestForm1";
 			this.groupBox1.ResumeLayout (false);
-			this.panel1.ResumeLayout (false);
 			this.groupBox3.ResumeLayout (false);
 			this.groupBox2.ResumeLayout (false);
 			this.groupBox2.PerformLayout ();
+			this.panel1.ResumeLayout (false);
+			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown1 ) ).EndInit ();
 			this.ResumeLayout (false);
 			this.PerformLayout ();
 
@@ -285,6 +296,7 @@ namespace SampleForm {
 		private System.Windows.Forms.Button btnRemoveTextbox;
 		private System.Windows.Forms.Button btnAddTextbox;
 		private System.Windows.Forms.TreeView treeView1;
+		private System.Windows.Forms.NumericUpDown numericUpDown1;
 	}
 }
 

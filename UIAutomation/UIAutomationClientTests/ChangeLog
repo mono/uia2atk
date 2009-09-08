@@ -1,3 +1,7 @@
+2009-09-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* SampleForm/Form1.Designer.cs: Add NumericUpDown.
+
 2009-09-08  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/AutomationElementTest.cs:  Fix bug#530418
