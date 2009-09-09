@@ -1,3 +1,8 @@
+2009-09-09  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/datagrid/:
+	* samples/moonlight/scrollviewer/: Add SL samples.
+
 2009-09-08  Brad Taylor  <brad@getcoded.net>
 
 	* testers/winforms/eventlistener.py: 
