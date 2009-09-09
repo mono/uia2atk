@@ -1,3 +1,11 @@
+2009-09-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DummyEntryPoint.cs: Reference IsAccessibilityEnabled to be
+	inspected by the tuner.
+
+	* Makefile.am: Make the 'descriptors' target work with latest
+	tuner.
+
 2009-09-02  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Make sure we build the app is built before we try to

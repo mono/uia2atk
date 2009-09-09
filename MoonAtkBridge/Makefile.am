@@ -123,6 +123,7 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 	mkdir -p bin/fullraw/
 	cp ./bin/raw/MoonAtkBridge.dll ./bin/fullraw/
 	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/fullraw/
+	cp ../../moon/class/tuning/masterinfos/*.info ./bin/fullraw/
 	cd bin/fullraw/ && $(DUMMY_COMPILATION)
 	cd bin/fullraw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe -c link -a ./DummyEntryPoint.exe \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner > ../../descriptors.xml
