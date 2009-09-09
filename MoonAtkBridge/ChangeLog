@@ -1,5 +1,9 @@
 2009-09-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am: Track latest tuner behaviour wrt output.
+
+2009-09-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* DummyEntryPoint.cs: Reference IsAccessibilityEnabled to be
 	inspected by the tuner.
 

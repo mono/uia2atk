@@ -125,8 +125,10 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/fullraw/
 	cp ../../moon/class/tuning/masterinfos/*.info ./bin/fullraw/
 	cd bin/fullraw/ && $(DUMMY_COMPILATION)
-	cd bin/fullraw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe -c link -a ./DummyEntryPoint.exe \
-		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner > ../../descriptors.xml
+	cd bin/fullraw/ && time $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe \
+		-c link -a ./DummyEntryPoint.exe \
+		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
+	cp bin/fullraw/output/descriptors.xml .
 
 # stage contains bin/ assemblies plus the files needed for XPI generation
 stage/install.rdf: stage install.rdf
