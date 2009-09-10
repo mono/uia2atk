@@ -92,10 +92,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		public Rect BoundingRectangle {
 			get {
 				DC.Rect dbusRect = dbusElement.BoundingRectangle;
-				return new Rect (dbusRect.x,
-				                 dbusRect.y,
-				                 dbusRect.width,
-				                 dbusRect.height);
+				return dbusRect.ToSWRect ();
 			}
 		}
 

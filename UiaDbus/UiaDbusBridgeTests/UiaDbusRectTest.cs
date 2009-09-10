@@ -87,7 +87,7 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 			                 nonEmptyCoreRect.height,
 			                 "height set manually");
 		}
-		
+
 		[Test]
 		public void IsEmptyTest ()
 		{
@@ -98,6 +98,16 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 			                "Non-empty rect should not be considered empty");
 			Assert.IsTrue (new DC.Rect (emptyRect).IsEmpty,
 			               "Empty rect should be considered empty");
+		}
+
+		[Test]
+		public void ToSWRectTest ()
+		{
+			SW.Rect nonEmptyRect = new SW.Rect (1,2,3,4);
+			DC.Rect nonEmptyDCRect= new DC.Rect (nonEmptyRect);
+			Assert.AreEqual (nonEmptyDCRect.ToSWRect (), nonEmptyRect, "Convert non-empty rect");
+			DC.Rect emptyDCRect= new DC.Rect (SW.Rect.Empty);
+			Assert.AreEqual (emptyDCRect.ToSWRect (), SW.Rect.Empty, "Convert empty rect");
 		}
 
 		[Test]

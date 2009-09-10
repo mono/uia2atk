@@ -24,6 +24,7 @@
 // 
 
 using System;
+using SW = System.Windows;
 
 namespace Mono.UIAutomation.UiaDbus
 {
@@ -34,7 +35,7 @@ namespace Mono.UIAutomation.UiaDbus
 		public double width;
 		public double height;
 
-		public Rect (System.Windows.Rect rect)
+		public Rect (SW.Rect rect)
 		{
 			x = rect.X;
 			y = rect.Y;
@@ -50,7 +51,7 @@ namespace Mono.UIAutomation.UiaDbus
 			return String.Format ("{0},{1},{2},{3}",
 					      x, y, width, height);
 		}
-		
+
 		public bool IsEmpty { 
 			get {
 				return (x == Double.PositiveInfinity &&
@@ -58,6 +59,14 @@ namespace Mono.UIAutomation.UiaDbus
 					width == Double.NegativeInfinity &&
 					height == Double.NegativeInfinity);
 			}
+		}
+
+		public SW.Rect ToSWRect ()
+		{
+			if (IsEmpty)
+				return SW.Rect.Empty;
+			else
+				return new SW.Rect (x, y, width, height);
 		}
 	}
 }

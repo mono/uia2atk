@@ -1,3 +1,10 @@
+2009-09-10  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Rect.cs: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusBridgeTests/UiaDbusRectTest.cs: Add conversion from DC.Rect to
+	SW.Rect
+
 2009-09-04  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusSource/Makefile.am: 
