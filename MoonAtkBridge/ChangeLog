@@ -1,5 +1,9 @@
 2009-09-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am: unbreak the build.
+
+2009-09-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am: call the descriptors target on the stage phase.
 	Download upstream descriptors to compare with the local ones,
 	fail in case there are differences.
