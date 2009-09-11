@@ -22,12 +22,17 @@ ATK_API_FILE=$(GAPI_PARSER_PATH)$(ATK_FILENAME)
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 TUNER_FLAGS=-a ./DummyEntryPoint.exe -d ./ -o ../ -l none -b true
+ANONSVN_TRUNK=http://anonsvn.mono-project.com/source/trunk/
+DESC_FILE_UPSTREAM=a11y.xml
+DESC_FILE_LOCAL=descriptors.xml
+ANONSVN_DESCRIPTORS=$(ANONSVN_TRUNK)moon/class/tuning/Descriptors/$(DESC_FILE_UPSTREAM)
+ANONSVN_GTKSHARP=$(ANONSVN_TRUNK)gtk-sharp
 
 all-am: $(ASSEMBLY_STAGE_PATH) tests-build
 
 #FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):
-	svn export http://anonsvn.mono-project.com/source/trunk/gtk-sharp $(GTK_SHARP) -r 139599
+	svn export $(ANONSVN_GTKSHARP) $(GTK_SHARP) -r 139599
 
 	## Apply patches to gtk-sharp to add moonlight targets
 	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p;)
@@ -38,7 +43,7 @@ $(GTK_SHARP):
 
 	## Give the parser the correct API definitions for 2.8
 	cp $(GTK_SHARP_28_SOURCES_FILE) $(GTK_SHARP_28_SRCDIR)
-	wget $(ATK_XML_URL) --output-document=$(ATK_API_FILE)
+	$(WGET) $(ATK_XML_URL) --output-document=$(ATK_API_FILE)
 	cd $(GAPI_PARSER_PATH) && tar -xvf $(ATK_FILENAME)
 	cd $(GAPI_PARSER_PATH) && $(MAKE) \
 		&& PATH=.:$$PATH $(MONO) --debug gapi-parser.exe $(GTK_SHARP_28_SOURCES_FILE)
@@ -50,7 +55,7 @@ $(GTK_SHARP):
 	cd $(GAPI_GENERATOR_PATH) && $(MAKE)
 	cd $(ATK_SHARP_PATH) && $(MAKE) 
 
-stage:
+stage: descriptors
 	mkdir -p stage/components/
 
 ##
@@ -69,6 +74,10 @@ CSCFLAGS = \
 
 DUMMY_REFERENCES = /r:mscorlib.dll /r:MoonAtkBridge.dll
 DUMMY_COMPILATION = $(SMCS) /t:exe ../../DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:DummyEntryPoint.exe
+
+# check if there are differences between moon upstream and local
+# (if there are, build will fail until you commit the new file)
+COMPARE_DESCS = $(DIFF) -q $(DESC_FILE_UPSTREAM) $(DESC_FILE_LOCAL)
 
 
 REFERENCES = \
@@ -128,7 +137,9 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 	cd bin/fullraw/ && time $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe \
 		-c link -a ./DummyEntryPoint.exe \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
-	cp bin/fullraw/output/descriptors.xml .
+	cp bin/fullraw/output/$(DESC_FILE_LOCAL) .
+	$(WGET) $(ANONSVN_DESCRIPTORS)
+	$(COMPARE_DESCS)
 
 # stage contains bin/ assemblies plus the files needed for XPI generation
 stage/install.rdf: stage install.rdf

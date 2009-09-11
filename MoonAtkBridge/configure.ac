@@ -48,6 +48,16 @@ if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found])
 fi
 
+AC_PATH_PROG(WGET, wget, no)
+if test "x$WGET" = "xno" ; then
+	AC_MSG_ERROR([No wget tool found])
+fi
+
+AC_PATH_PROG(DIFF, diff, no)
+if test "x$DIFF" = "xno" ; then
+	AC_MSG_ERROR([No diff tool found])
+fi
+
 AC_ARG_ENABLE(tests,
 	AC_HELP_STRING([--disable-tests],
 		[Do not build unit tests [default=no]]),
