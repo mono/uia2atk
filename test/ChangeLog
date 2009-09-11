@@ -1,3 +1,10 @@
+2009-09-10  Calen Chen <cachen@novell.com>
+
+	* tester/moonlight/checkbox,
+	* tester/moonlight/checkbox/__init__.py,
+	* tester/moonlight/checkbox/checkboxframe.py,
+	* tester/moonlight/checkbox_basic_ops.py: add test for Moonlight
+
 2009-09-09  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/datagrid/:
