@@ -1,3 +1,10 @@
+2009-09-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AtspiUiaClientTests/Makefile.am:
+	* UIAutomationClientTests/Makefile.am: Use system-installed WindowsBase
+	when using Mono >= 2.5 (bug #538542). Also, make sure to copy
+	UIAutomationSource and UIAutomationProvider along with other UIA DLLs.
+
 2009-09-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* SampleForm/Form1.Designer.cs: Add NumericUpDown.

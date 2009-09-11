@@ -1,3 +1,11 @@
+2009-09-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* configure.ac: If building with Mono >= 2.5, expect system-installed
+	WindowsBase.  Only use bundled version for Mono < 2.5 (bug #538542).
+
+	* expansions.m4: Borrow GAC assembly search macros from Banshee.
+
 2009-09-08  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/System.Windows.Automation/AutomationElement.AutomationElementInformation.cs:
