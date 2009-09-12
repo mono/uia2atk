@@ -66,6 +66,15 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 
 PKG_CHECK_MODULES([MONO], [mono >= 2.0])
+if pkg-config --atleast-version=2.5 mono; then
+	SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([
+		WindowsBase
+	])
+	WINDOWSBASE_LIBS=-r:WindowsBase
+	AC_SUBST(WINDOWSBASE_LIBS)
+	has_mono_2_5=yes
+fi
+AM_CONDITIONAL(HAS_MONO_2_5, test "x$has_mono_2_5" = "xyes")
 
 AC_CONFIG_FILES([
 WindowsBase/Makefile
