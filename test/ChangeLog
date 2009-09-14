@@ -1,3 +1,17 @@
+2009-09-14  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/button/ButtonSample.html:
+	* samples/moonlight/calendar/CalendarSample.html:
+	* samples/moonlight/checkbox/CheckBoxSample.html:
+	* samples/moonlight/combobox/ComboBoxSample.html:
+	* samples/moonlight/datepicker/DatePickerSample.html:
+	* samples/moonlight/gridsplitter/GridSplitterSample.html:
+	* samples/moonlight/hyperlinkbutton/HyperlinkButtonSample.html:
+	* samples/moonlight/image/ImageSample.html:
+	* samples/moonlight/listbox/ListBoxSample.html:
+	* samples/moonlight/mediaelement/MediaElementSample.html: Renamed files to
+	a universal name TestPage.html.
+
 2009-09-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* test.mdp: Update.
