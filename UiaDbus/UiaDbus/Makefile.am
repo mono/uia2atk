@@ -1,11 +1,8 @@
 
 EXTRA_DIST =  
 
-# Warning: This is an automatically generated file, do not edit!
-
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -unsafe -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk
 
 ASSEMBLY = bin/Debug/UiaDbus.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -16,22 +13,6 @@ PACKAGE_FLAG = /package accessibility
 
 UIADBUS_DLL_MDB_SOURCE=bin/Debug/UiaDbus.dll.mdb
 UIADBUS_DLL_MDB=$(BUILD_DIR)/UiaDbus.dll.mdb
-
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -keyfile:$(top_srcdir)/mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
-ASSEMBLY = bin/Release/UiaDbus.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release
-PACKAGE_FLAG = /package accessibility
-
-UIADBUS_DLL_MDB=
-
-endif
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=UiaDbus.resources.dll
@@ -44,7 +25,13 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
-FILES =  \
+if ENABLE_EXTERNAL_NDESK_DBUS
+NDESK_DBUS_FILES =
+else
+NDESK_DBUS_FILES = $(top_srcdir)/ndesk-dbus/*.cs
+endif
+
+SOURCE_FILES =  \
 	AssemblyInfo.cs \
 	Constants.cs \
 	Interfaces/IApplication.cs \
@@ -53,6 +40,10 @@ FILES =  \
 	Interfaces/IValuePattern.cs \
 	Point.cs \
 	Rect.cs 
+
+FILES =  \
+	$(SOURCE_FILES) \
+	$(NDESK_DBUS_FILES)
 
 DATA_FILES = 
 

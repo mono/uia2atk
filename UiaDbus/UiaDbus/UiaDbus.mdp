@@ -35,7 +35,7 @@
     <ProjectReference type="Gac" localcopy="True" refto="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
   </References>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="..">
-    <BuildFilesVar Sync="True" Name="FILES" />
+    <BuildFilesVar Sync="True" Name="SOURCE_FILES" />
     <DeployFilesVar />
     <ResourcesVar Sync="True" Name="RESOURCES" />
     <OthersVar />

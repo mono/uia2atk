@@ -1,3 +1,15 @@
+2009-09-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* COPYING: Credit Alp Toker for use of his ndesk-dbus library.
+	* configure.ac: Add --enable-external-ndesk-dbus configure option.
+	* UiaDbus/Makefile.am:
+	* UiaDbus/UiaDbus.mdp:
+	* UiaDbus/AssemblyInfo.cs:
+	* ndesk-dbus/*: Bundle ndesk-dbus directly into UiaDbus.dll, share
+	with UiaDbus*.dll via InternalsVisibleTo. The bundled source is
+	0.6.0 with two patches from Matt Guo applied, and all public API
+	changed to be internal. This fixes bug #534625.
+
 2009-09-10  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbus/Rect.cs: 
