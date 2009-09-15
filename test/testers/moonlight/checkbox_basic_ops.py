@@ -27,7 +27,7 @@ app_path = None
 try:
     app_path = argv[1]
 except IndexError:
-    pass #expected
+    pass  #expected
 
 # open the treeview sample application
 try:
@@ -62,8 +62,8 @@ statesCheck(cbFrame.check2, "CheckBox")
 # checked, click action should grab focus to check1 to raise "focused" state
 cbFrame.check1.click(log=True)
 sleep(config.SHORT_DELAY)
+assertText(cbFrame.text1, "Two state CheckBox checked")s
 statesCheck(cbFrame.check1, "CheckBox", add_states=["checked", "focused"])
-cbFrame.assertLabel(cbFrame.text1, "Two state CheckBox checked")
 # check2 shows default states
 statesCheck(cbFrame.check2, "CheckBox")
 
@@ -71,8 +71,8 @@ statesCheck(cbFrame.check2, "CheckBox")
 # check1 still is focused
 cbFrame.check1.click(log=True)
 sleep(config.SHORT_DELAY)
+assertText(cbFrame.text1, "Two state CheckBox unchecked")
 statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
-cbFrame.assertLabel(cbFrame.text1, "Two state CheckBox unchecked")
 # check2 shows default states
 statesCheck(cbFrame.check2, "CheckBox")
 
@@ -82,8 +82,8 @@ statesCheck(cbFrame.check2, "CheckBox")
 # click check2 to raise "checked" state, text2 is updated check2 is focused
 cbFrame.check2.click(log=True)
 sleep(config.SHORT_DELAY)
+assertText(cbFrame.text2, "Three state CheckBox checked")
 statesCheck(cbFrame.check2, "CheckBox", add_states=["checked", "focused"])
-cbFrame.assertLabel(cbFrame.text2, "Three state CheckBox checked")
 # check1 shows default states
 statesCheck(cbFrame.check1, "CheckBox")
 
@@ -91,8 +91,8 @@ statesCheck(cbFrame.check1, "CheckBox")
 # to show indeterminate
 cbFrame.check2.click(log=True)
 sleep(config.SHORT_DELAY)
+assertText(cbFrame.text2, "Three state CheckBox indeterminate")
 statesCheck(cbFrame.check2, "CheckBox", add_states=["indeterminate", "focused"])
-cbFrame.assertLabel(cbFrame.text2, "Three state CheckBox indeterminate")
 # check1 shows default states
 statesCheck(cbFrame.check1, "CheckBox")
 
@@ -100,8 +100,8 @@ statesCheck(cbFrame.check1, "CheckBox")
 # but still focused
 cbFrame.check2.click(log=True)
 sleep(config.SHORT_DELAY)
+assertText(cbFrame.text2, "Three state CheckBox unchecked")
 statesCheck(cbFrame.check2, "CheckBox", add_states=["focused"])
-cbFrame.assertLabel(cbFrame.text2, "Three state CheckBox unchecked")
 # check1 shows default states
 statesCheck(cbFrame.check1, "CheckBox")
 
@@ -148,4 +148,4 @@ statesCheck(cbFrame.check2, "CheckBox", add_states=["focused"])
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
 #close application frame window
-cbFrame.quit()
+quit(cbFrame)

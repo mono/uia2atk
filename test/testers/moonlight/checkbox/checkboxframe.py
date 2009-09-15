@@ -30,22 +30,3 @@ class CheckBoxFrame(accessibles.Frame):
         self.check2 = self.frame.findCheckBox(self.CHECK_TWO)
         self.text1 = self.frame.findLabel(self.TEXT_ONE)
         self.text2 = self.frame.findLabel(self.TEXT_TWO)
-
-    def assertLabel(self, accessible, expected_text):
-        """
-        Make sure the accessible's label is expected. Click action may update 
-        label's text to expected_text
-        """
-        procedurelogger.expectedResult('update Label\'s text to "%s"' % \
-                                                                     new_label)
-
-        actual_text = accessible.text
-        assert actual_text == expected_text, \
-                                    "actual text is %s, expected text is %s" % \
-                                    (actual_text, expected_text)
-    
-    def quit(self):
-        """
-        Close the application
-        """
-        self.altF4()

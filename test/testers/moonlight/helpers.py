@@ -109,4 +109,45 @@ def statesCheck(accessible, control, invalid_states=[],
                                           "Extraneous actual states: ",
                                            extra_states)
 
+# check Text is updated
+def assertText(accessible, expected_text):
+    """
+    Make sure the accessible's text is expected
+    """
+    procedurelogger.expectedResult('update %s\'s text to "%s"' % \
+                                                       (accessible, new_label))
+
+    actual_text = accessible.text
+    assert actual_text == expected_text, \
+                                "actual text is %s, expected text is %s" % \
+                                (actual_text, expected_text)
+
+# check image size is expected
+def assertImageSize(accessible, expected_width=-1, expected_height=-1):
+    """
+    Make sure the accessible's image size has expected width and height
+    """
+    procedurelogger.action("assert %s's image size" % accessible)
+    size = accessible._accessible.queryImage().getImageSize()
+
+    procedurelogger.expectedResult('"%s" image size is %s x %s' %
+                                (accessible, expected_width, expected_height))
+
+    assert expected_width == size[0], "%s (%s), %s (%s)" %\
+                                            ("expected width",
+                                              expected_width,
+                                             "does not match actual width",
+                                              size[0])
+    assert expected_height == size[1], "%s (%s), %s (%s)" %\
+                                            ("expected height",
+                                              expected_height,
+                                             "does not match actual height",
+                                              size[1])
+    
+def quit(accessible):
+    """
+    Close the application
+    """
+    accessible.altF4()
+
 
