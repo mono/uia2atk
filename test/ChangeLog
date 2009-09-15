@@ -1,3 +1,22 @@
+2009-09-15 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/winforms/*.py: I renamed all of the tests to meet a new
+	naming convention.  I encountered a problem when working with the
+	dashboard, because it was hard to programmatically determine the name
+	of the control and the style of the control from other text in the file
+	name.  For example, there were file names such as
+	"combobox_simple_basic_ops.py", "splitter_vertical.py", and
+	"datetimepicker_showupdown_ops.py".  The new naming convention makes
+	it much easier to determine the control and the style of control (if
+	applicable).  For example, the above file names were renamed to
+	"combobox_simple-regression.py", "splitter_vertical-regression.py", and
+	"datetimepicker_showupdown-regression.py" respectively.  This makes it
+	very easy to determine what part of the file name actually refers to
+	the name of the control and the control style.  That is, anything
+	preceding the dash ("-") is what we care about.  I will also update the
+	Testing Howto wiki with this information.
+	* harness/tests.py: Update the list of tests with the new test names.
+
 2009-09-15  Neville Gao  <nevillegao@gmail.com>
 
 	* tester/moonlight/checkbox_basic_ops.py: Removed two unused imports.
