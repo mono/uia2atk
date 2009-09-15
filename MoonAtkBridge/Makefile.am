@@ -28,7 +28,9 @@ DESC_FILE_LOCAL=descriptors.xml
 ANONSVN_DESCRIPTORS=$(ANONSVN_TRUNK)moon/class/tuning/Descriptors/$(DESC_FILE_UPSTREAM)
 ANONSVN_GTKSHARP=$(ANONSVN_TRUNK)gtk-sharp
 
-all-am: descriptors tests-build
+# Disable descriptors for now
+#all-am: descriptors tests-build
+all-am: $(ASSEMBLY_STAGE_PATH) tests-build
 
 #FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):

@@ -1,3 +1,8 @@
+2009-09-15  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: Temporarily disable descriptor generation until it's
+	ready for primetime.
+
 2009-09-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: unbreak the build.
