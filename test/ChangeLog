@@ -1,13 +1,17 @@
+2009-09-15  Neville Gao  <nevillegao@gmail.com>
+
+	* tester/moonlight/checkbox_basic_ops.py: Removed two unused imports.
+
 2009-09-15  Calen Chen <cachen@novell.com>
 
-	* helpers.py: add assertText, assertImageSize and quit method move from 
+	* tester/moonlight/helpers.py: add assertText, assertImageSize and quit method move from 
 	frame wraper
-	* checkbox_basic_ops.py: clean code
-	* checkbox/checkboxframe.py: remove assertLabel and quit method
-	* radiobutton,
-	* radiobutton_basic_ops.py,
-	* radiobutton/__init__.py,
-	* radiobutton/radiobuttonframe.py: add test for Moonlight
+	* tester/moonlight/checkbox_basic_ops.py: clean code
+	* tester/moonlight/checkbox/checkboxframe.py: remove assertLabel and quit method
+	* tester/moonlight/radiobutton,
+	* tester/moonlight/radiobutton_basic_ops.py,
+	* tester/moonlight/radiobutton/__init__.py,
+	* tester/moonlight/radiobutton/radiobuttonframe.py: add test for Moonlight
 
 2009-09-14  Neville Gao  <nevillegao@gmail.com>
 

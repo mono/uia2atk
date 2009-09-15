@@ -14,12 +14,10 @@ Test accessibility of checkbox widget
 """
 
 # imports
-import sys
-import os
-
 from strongwind import *
 from checkbox import *
 from helpers import *
+
 from sys import argv
 from os import path
 
