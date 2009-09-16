@@ -44,6 +44,7 @@ class Adapter(unittest.TestCase):
         # Wait until the RootbeerMaze ad has gone away
         sleep(config.LONG_DELAY);
 
+        cls.slAccessible = cls.app.slControl._accessible
         cls.easy_button = cls.app.slControl.findPushButton('Easy')
         cls.easy_button_component = cls.easy_button._accessible.queryComponent()
 
@@ -57,11 +58,35 @@ class Adapter(unittest.TestCase):
         self.assertTrue(self.easy_button.sensitive)
         self.assertTrue(self.easy_button.enabled)
 
-        # TODO: This property isn't working in the peer yet.
+        # TODO: This property isn't working in the peer yet
         # self.assertTrue(self.easy_button.focusable)
 
     def test_role(self):
         self.assertEqual(self.easy_button.roleName, "push button")
+
+    def test_get_index_in_parent(self):
+        self.assertEqual(self.slAccessible.getIndexInParent(), 0)
+
+        # RootbeerMaze is only ever two accessibles deep
+        for i in xrange(0, self.slAccessible.childCount):
+            child = self.slAccessible.getChildAtIndex(i)
+            self.assertEqual(child.getIndexInParent(), i)
+
+            for j in xrange(0, child.childCount):
+                grandchild = child.getChildAtIndex(j)
+                self.assertEqual(grandchild.getIndexInParent(), j)
+
+    def test_parent(self):
+        self.assertTrue(self.slAccessible.parent is not None)
+
+        # RootbeerMaze is only ever two accessibles deep
+        for i in xrange(0, self.slAccessible.childCount):
+            child = self.slAccessible.getChildAtIndex(i)
+            self.assertEqual(child.parent, self.slAccessible)
+
+            for j in xrange(0, child.childCount):
+                grandchild = child.getChildAtIndex(j)
+                self.assertEqual(grandchild.parent, child)
 
     def test_alpha(self):
         self.assertEqual(self.easy_button_component.getAlpha(), 1.0)
@@ -109,3 +134,27 @@ class Adapter(unittest.TestCase):
         self.easy_button_component.grabFocus()
 
         self.assertTrue(self.easy_button.focused)
+
+    def test_get_accessible_at_point(self):
+        slComponent = self.slAccessible.queryComponent()
+        acc = slComponent.getAccessibleAtPoint(0, 0, pyatspi.WINDOW_COORDS)
+        self.assertEqual(acc, self.slAccessible)
+
+        acc = slComponent.getAccessibleAtPoint(140, 280, pyatspi.WINDOW_COORDS)
+        self.assertEqual(acc, self.easy_button._accessible)
+
+        acc = slComponent.getAccessibleAtPoint(197, 285, pyatspi.WINDOW_COORDS)
+        self.assertEqual(acc, self.easy_button._accessible)
+
+        acc = self.easy_button_component.getAccessibleAtPoint(0, 0, pyatspi.WINDOW_COORDS)
+        self.assertTrue(acc is None)
+
+        acc = self.easy_button_component.getAccessibleAtPoint(200, 325, pyatspi.WINDOW_COORDS)
+        self.assertTrue(acc is None)
+
+        acc = self.easy_button_component.getAccessibleAtPoint(140, 280, pyatspi.WINDOW_COORDS)
+        self.assertEqual(acc, self.easy_button._accessible)
+
+        acc = self.easy_button_component.getAccessibleAtPoint(197, 285, pyatspi.WINDOW_COORDS)
+        self.assertTrue(acc.getRoleName(), "label")
+        self.assertTrue(acc.name, "Easy")

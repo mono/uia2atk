@@ -1,3 +1,9 @@
+2009-09-16  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: 
+	* Moonlight.AtkBridge/RootVisualAdapter.cs: Implement Parent,
+	IndexInParent and RefAccessibleAtPoint.
+
 2009-09-08  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge.sources: 

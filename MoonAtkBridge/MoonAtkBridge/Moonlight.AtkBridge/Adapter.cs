@@ -161,7 +161,23 @@ namespace Moonlight.AtkBridge
 		public Atk.Object RefAccessibleAtPoint (int x, int y,
 		                                        CoordType coordType)
 		{
-			return null;
+			CacheChildren ();
+
+			lock (ChildrenLock) {
+				if (Children != null) {
+					foreach (AutomationPeer peer in Children) {
+						Adapter adapter = DynamicAdapterFactory
+							.Instance.GetAdapter (peer);
+						if (adapter == null)
+							continue;
+
+						if (adapter.Contains (x, y, coordType))
+							return adapter;
+					}
+				}
+			}
+
+			return Contains (x, y, coordType) ? this : null;
 		}
 
 		public void RemoveFocusHandler (uint handlerId)
@@ -340,26 +356,29 @@ namespace Moonlight.AtkBridge
 		{
 			CacheChildren ();
 
-			return (Children != null) ? Children.Count
-			                          : 0;
+			lock (ChildrenLock) {
+				return (Children != null) ? Children.Count : 0;
+			}
 		}
 
 		protected override Atk.Object OnRefChild (int i)
 		{
 			CacheChildren ();
 
-			if (Children == null || i < 0 || i > Children.Count)
-				return null;
+			lock (ChildrenLock) {
+				if (Children == null || i < 0 || i > Children.Count)
+					return null;
 
-			AutomationPeer child = Children[i];
-			if (child == null)
-				return null;
+				AutomationPeer child = Children[i];
+				if (child == null)
+					return null;
 
-			if (!Adapters.ContainsKey (child))
-				Adapters[child] = DynamicAdapterFactory
-					.Instance.GetAdapter (child);
+				if (!Adapters.ContainsKey (child))
+					Adapters[child] = DynamicAdapterFactory
+						.Instance.GetAdapter (child);
 
-			return Adapters[child];
+				return Adapters[child];
+			}
 		}
 
 		protected override Atk.RelationSet OnRefRelationSet ()
@@ -367,12 +386,44 @@ namespace Moonlight.AtkBridge
 			return base.OnRefRelationSet ();
 		}
 
+		protected override Atk.Object OnGetParent ()
+		{
+			AutomationPeer parent = Peer.GetParent ();
+
+			// XXX: This is a huge hack.
+			// ScrollViewer is implemented so that its children
+			// appear as the children of its parent.  This gives us
+			// a bit of a headache as the ScrollViewer is never
+			// available in the Atk hierarchy, and an adapter is
+			// never created for it.  Thus we pretend it doesn't
+			// exist.
+			if (parent is ScrollViewerAutomationPeer
+			    && Peer is ItemAutomationPeer)
+				parent = parent.GetParent ();
+
+			if (parent == null)
+				return DynamicAdapterFactory.Instance.RootVisualAdapter;
+
+			return DynamicAdapterFactory.Instance.GetAdapter (parent);
+		}
+
+		protected override int OnGetIndexInParent ()
+		{
+			Adapter parent = Parent as Adapter;
+			if (parent == null)
+				return -1;
+
+			return parent.GetIndexOfChild (this);
+		}
+
 		protected virtual void CacheChildren ()
 		{
-			if (Children != null)
-				return;
+			lock (ChildrenLock) {
+				if (Children != null)
+					return;
 
-			Children = Peer.GetChildren ();
+				Children = Peer.GetChildren ();
+			}
 		}
 
 		protected void NotifyFocused (bool focused)
@@ -386,6 +437,7 @@ namespace Moonlight.AtkBridge
 
 #region Protected Fields
 		protected List<AutomationPeer> Children = null;
+		protected object ChildrenLock = new object ();
 		protected Dictionary<AutomationPeer, Atk.Object> Adapters
 			= new Dictionary<AutomationPeer, Atk.Object> ();
 #endregion
@@ -396,6 +448,21 @@ namespace Moonlight.AtkBridge
 #endregion
 
 #region Internal Methods
+		internal int GetIndexOfChild (Adapter child)
+		{
+			CacheChildren ();
+
+			if (Children == null || child == null)
+				return -1;
+
+			// Intentionally use Children list instead of
+			// Peer.GetChildren () as we're concerned with what is
+			// currently displayed to the user
+			lock (ChildrenLock) {
+				return Children.IndexOf (child.Peer);
+			}
+		}
+
 		internal void HandleAutomationPropertyChanged (AutomationPropertyChangedEventArgs args)
 		{
 			if (args.Property == AEIds.HasKeyboardFocusProperty) {

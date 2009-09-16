@@ -47,6 +47,29 @@ namespace Moonlight.AtkBridge
 			// TODO: I18N
 			return "Silverlight Control";
 		}
+
+		protected override int OnGetIndexInParent ()
+		{
+			// Our object will always be the only child of the
+			// plugin host's parent.
+			return 0;
+		}
+
+		protected override Atk.Object OnGetParent ()
+		{
+			return parent;
+		}
+
+		protected override void OnSetParent (Atk.Object parent)
+		{
+			// Allow the web browser's plugin host to set our
+			// parent
+			this.parent = parent;
+		}
+#endregion
+
+#region Private Fields
+		private Atk.Object parent = null;
 #endregion
 	}
 }
