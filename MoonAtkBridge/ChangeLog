@@ -1,3 +1,7 @@
+2009-09-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am: Reinclude descriptor generation in the build.
+
 2009-09-15  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Temporarily disable descriptor generation until it's
