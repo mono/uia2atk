@@ -87,14 +87,14 @@ class PTmp(ProcessEvent):
         if os.path.isdir(event.pathname):
             Settings.wdd = Settings.wm.add_watch(event.pathname, Settings.mask)
         elif os.path.basename(event.pathname) == "procedures.xml":
-            # print "INFO: New procedures.xml!"
+            print "INFO: New procedures.xml!"
             output(event.pathname)
             # no longer watch the the parent directory
             dir = os.path.dirname(event.pathname)
             # print "INFO: Removing watch from %s" % dir
-            Settings.wm.rm_watch(Settings.wdd[dir])
+            # Settings.wm.rm_watch(Settings.wdd[dir])
             # print "INFO: Removed"
-            # print "INFO: Buildling dashboard..."
+            print "INFO: Building dashboard..."
             # build the dashboard
             # TODO:  Only call the dashboard module's update method when
             # available, instead of rebuilding the table from scratch for
@@ -102,6 +102,7 @@ class PTmp(ProcessEvent):
             self.build_dashboard()
         elif pkg_status_re.match(os.path.basename(event.pathname)):
             print "INFO: new package status file %s" % event.pathname
+            print "INFO: Building dashboard..."
             self.build_dashboard()
 
     def build_dashboard(self):
@@ -111,7 +112,9 @@ class PTmp(ProcessEvent):
                                            Settings.dashboard_path)
             else:
                 pb = dashboard.PageBuilder(Settings.monitor_path)
-            pb.build_all()
+            pb.build_regression()
+            pb.build_smoke()
+            pb.build_main()
 
 if __name__ == "__main__":
     s = Settings()

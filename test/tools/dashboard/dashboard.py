@@ -16,11 +16,11 @@ except ImportError:
         import elementtree.ElementTree as ET # fallback on regular ElementTree
 
 def output(s, newline=True):
-  if not Settings.is_quiet:
-    if newline:
-      print s
-    else:
-      print s,
+    if not Settings.is_quiet:
+        if newline:
+            print s
+        else:
+            print s,
 
 def abort(s):
     sys.exit(s)
@@ -53,7 +53,7 @@ class Settings(object):
                 sys.exit(0)
             if o in ("-o","--output"):
                 Settings.output_path = a
- 
+
 
         try:
             Settings.log_dir = args[0]
@@ -85,110 +85,159 @@ class PageBuilder(object):
             Settings.output_path = output_dir
         Settings.log_dir = log_dir
         self.xmlp = XMLParser(Settings.log_dir)
+        # a list of every unique machines that has been tested
+        self.all_tested_machines = []
         self.controls = ("Button",
-                         "CheckBox",
-                         "CheckedListBox",
-                         "ComboBox",
-                         "DomainUpDown",
-                         "ErrorProvider",
-                         "Form",
-                         "GroupBox",
-                         "HelpProvider",
-                         "HScrollBar",
-                         "Label",
-                         "LinkLabel",
-                         "ListBox",
-                         "ListView",
-                         "MainMenu",
-                         "MaskedTextBox",
-                         "MenuItem",
-                         "NumericUpDown",
-                         "Panel",
-                         "PictureBox",
-                         "ProgressBar",
-                         "RadioButton",
-                         "RichTextBox",
-                         "ScrollBar",
-                         "StatusBar",
-                         "StatusBarPanel",
-                         "StatusStrip",
-                         "TextBox",
-                         "ToolStrip",
-                         "ToolStripComboBox",
-                         "ToolStripDropDownButton",
-                         "ToolStripLabel",
-                         "ToolStripMenuItem",
-                         "ToolStripProgressBar",
-                         "ToolStripSplitButton",
-                         "ToolStripTextBox",
-                         "ToolTip",
-                         "VScrollBar",
-                         "WebBrowser")
+                        "Checkbox",
+                        "CheckedListBox",
+                        "ColorDialog",
+                        "ColumnHeader",
+                        "Combobox_DropDownList",
+                        "Combobox_DropDown",
+                        "Combobox_Simple",
+                        "Combobox_StyleChanges",
+                        "ContainerControl",
+                        "ContextMenu",
+                        "ContextMenuStrip",
+                        "DataGridBoolColumn",
+                        "DataGridComboboxColumn",
+                        "DataGrid",
+                        "DataGridTextBoxColumn",
+                        "DataGridView_Detail",
+                        "DateTimePicker_DropDown",
+                        "DateTimePicker_ShowUpDown",
+                        "DomainUpDown",
+                        "ErrorProvider",
+                        "FlowLayoutPanel",
+                        "FontDialog",
+                        "Form",
+                        "GroupBox",
+                        "HelpProvider",
+                        "HScrollBar",
+                        "Label",
+                        "LinkLabel",
+                        "ListBox",
+                        "ListView_LargeImage",
+                        "ListView_List",
+                        "ListView",
+                        "ListView_SmallImage",
+                        "MainMenu",
+                        "MaskedTextBox",
+                        "MenuStrip",
+                        "MonthCalendar",
+                        "NotifyIcon",
+                        "NumericUpdown",
+                        "OpenFileDialog",
+                        "PageSetupDialog",
+                        "Panel",
+                        "Picturebox",
+                        "PrintPreviewControl",
+                        "PrintPreviewDialog",
+                        "ProgressBar",
+                        "PropertyGrid",
+                        "RadioButton",
+                        "RichTextBox",
+                        "SaveFileDialog",
+                        "ScrollBar",
+                        "Splitter_Horizontal",
+                        "Splitter_Vertical",
+                        "StatusBarPanel",
+                        "StatusBar",
+                        "StatusStrip",
+                        "TabControl",
+                        "TableLayoutPanel",
+                        "TabPage",
+                        "TextBox",
+                        "ThreadExceptionDialog",
+                        "ToolBarButton",
+                        "ToolBar",
+                        "ToolStripButton",
+                        "ToolStripComboBox",
+                        "ToolStripDropDownButton",
+                        "ToolStripLabel",
+                        "ToolStripMenuItem",
+                        "ToolStripProgressBar",
+                        "ToolStrip",
+                        "ToolStripSeparator",
+                        "ToolStripSplitButton",
+                        "ToolStripTextBox",
+                        "ToolTip",
+                        "TrackBar",
+                        "TreeView",
+                        "VScrollBar")
 
         tmp_test_dirs = os.listdir(Settings.log_dir)
         # take out directories that aren't really for tests, like .svn
-        self.test_dirs = [s for s in tmp_test_dirs if "_" in s]
-        self.controls_tested = [s[:s.find("_")].lower() for s in self.test_dirs]
-        # dashboard's keys are control names and each value is a list
-        # of the most recent log files for the tests associates with each
-        # control
-        self.dashboard = {}
+        self.test_dirs = [s for s in tmp_test_dirs if "-" in s]
+        self.controls_tested = \
+                             [s[:s.find("-")].lower() for s in self.test_dirs]
+
         self.dashboard_smoke = {}
         self.dashboard_regression = {}
+        self.reports = {}
         self.update_statuses = {}
         self.newest_dirs = {}
-        self.reports = {}
         self.set_update_statuses()
+
         for control in self.controls:
             if control.lower() in self.controls_tested:
-                test_names = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
-                test_paths = [os.path.join(Settings.log_dir, dir) for dir in test_names]
+                # dashboard's keys are control names and each value is a list
+                # of the most recent log files for the tests associates with
+                # each control
+                self.dashboard_smoke[control] = {}
+                self.dashboard_regression[control] = {}
+                self.reports[control] = {}
 
+                test_names = [dir for dir in self.test_dirs if dir.startswith("%s-" % control.lower())]
+                test_paths = \
+                    [os.path.join(Settings.log_dir, dir) for dir in test_names]
                 new_to_old_dirs = []
                 for dir in test_paths:
-                    newest_subdirs = self.get_newest_subdirs(dir)
+                    self.machines = os.listdir(dir)
+                    assert len(self.machines) > 0
+
+                    #newest_subdir = self.get_newest_subdir(dir)
                     newest_smoke_subdirs = \
-                     [dir for dir in newest_subdirs if "smoke_test" in dir]
+                                       self.get_newest_subdirs(dir, smoke=True)
                     newest_regression_subdirs = \
-                     [dir for dir in newest_subdirs if "smoke_test" not in dir]
-                    try:
-                        # get the newest subdirs for each test directory and
-                        # add them to the dashboard dictionary
-                        self.dashboard[control] += newest_subdirs
-                    except KeyError:
-                        self.dashboard[control] = newest_subdirs
-                    # do the same thing but create separate dashboard
-                    # dictionaries for smoke tests and regression tests
-                    if len(newest_smoke_subdirs) > 0:
-                        try:
-                            self.dashboard_smoke[control] += \
-                                                           newest_smoke_subdirs
-                        except KeyError:
-                            self.dashboard_smoke[control] = \
-                                                           newest_smoke_subdirs
-                    if len(newest_regression_subdirs) > 0:
-                        try:
-                            self.dashboard_regression[control] += \
-                                                      newest_regression_subdirs
-                        except KeyError:
-                            self.dashboard_regression[control] = \
-                                                      newest_regression_subdirs
-                    new_to_old_dirs.append(self.get_new_to_old_subdirs(dir))
-                # done buildling list of the most recent log directorie(s), now
-                # add the list to the dashboard for each control.
-                self.reports[control] = new_to_old_dirs
-        #for key in self.reports:
-        #    for path in self.reports[key]:
-        #        print path
+                                       self.get_newest_subdirs(dir, smoke=False)
+
+                    for machine in self.machines:
+                        # first, add the machine to the list of all tested
+                        # machines if it is not already there
+                        if machine not in self.all_tested_machines:
+                            self.all_tested_machines.append(machine)
+                        # get the newest subdir for each test directory and
+                        # add them to the dashboard dictionaries
+                        if newest_smoke_subdirs is not None and \
+                                                  len(newest_smoke_subdirs) > 0:
+                            try:
+                                self.dashboard_smoke[control][machine] += \
+                                    newest_smoke_subdirs[machine]
+                            except KeyError:
+                                self.dashboard_smoke[control][machine] = \
+                                    newest_smoke_subdirs[machine]
+                        if newest_regression_subdirs is not None and \
+                                            len(newest_regression_subdirs) > 0:
+                            try:
+                                self.dashboard_regression[control][machine] += \
+                                             newest_regression_subdirs[machine]
+                            except KeyError:
+                                self.dashboard_regression[control][machine] = \
+                                             newest_regression_subdirs[machine]
+                        new_to_old_dirs.append(self.get_new_to_old_subdirs(dir))
+                    # done buildling list of the most recent log directorie(s),
+                    # now add the list to the dashboard for each control.
+                    self.reports[control][machine] = new_to_old_dirs
 
     def update_newest_dirs(self, machine, time_path):
-            try:
-                self.newest_dirs[machine].append(time_path)
-            except KeyError:
-                self.newest_dirs[machine] = [time_path]
+        try:
+            self.newest_dirs[machine].append(time_path)
+        except KeyError:
+            self.newest_dirs[machine] = [time_path]
     
     def set_update_statuses(self):
-        reg = re.compile("[a-z]+(32|64)v[0-9]+_package_status")
+        reg = re.compile(".+_package_status")
         log_dir_ls = os.listdir(Settings.log_dir)
         update_status_files = \
              [file for file in log_dir_ls if reg.match(file)]
@@ -199,16 +248,20 @@ class PageBuilder(object):
             self.update_statuses[machine] = status
             f.close()
     
-    def get_newest_subdirs(self, dir):
-        '''update dashboard with the newest subdirs of the string dir for
+    def get_newest_subdirs(self, dir, smoke=False):
+        '''update dashboard with the newest subdir of the string dir for
         each unique machine'''
-        machine_dirs = c.getoutput("ls %s" % dir).split()
-        # get a list of each machine in the log directory
-        machines = list(set([m[:m.find("_")] for m in machine_dirs]))
-        # create a list of the time paths for each machine
-        newest_subdirs = []
-        for machine in machines:
-            times = c.getoutput("find %s* -name time" % os.path.join(dir,machine)).split()
+        newest_subdirs = {}
+        for machine in self.machines:
+            if smoke:
+                times = c.getoutput("find %s* -name time | grep smoke" % \
+                                              os.path.join(dir,machine)).split()
+            else:
+                times = \
+                    c.getoutput("find %s* -name time | grep -v smoke" % \
+                                            os.path.join(dir,machine)).split()
+            if not len(times) > 0:
+                return {}
             newest_time = 0
             for time_path in times:
                 f = open(time_path)
@@ -220,7 +273,7 @@ class PageBuilder(object):
             # dashboard
             test_path = os.path.dirname(newest_time_path)
             self.update_newest_dirs(machine, test_path)
-            newest_subdirs.append(test_path)
+            newest_subdirs[machine] = test_path
         return newest_subdirs
 
     def get_new_to_old_subdirs(self, dir):
@@ -234,57 +287,200 @@ class PageBuilder(object):
             new_to_old_subdirs[i] = os.path.join(dir, new_to_old_subdirs[i])
         return new_to_old_subdirs
 
-    def get_status(self, control, is_smoke=False):
+    def get_status(self, machine, control, is_smoke=False):
         '''get the status of the most recent tests for control and return 0
         (success), 1 (fail), or -1 (not run)'''
-        status_codes = []
-
         # get the list of the most recent log directorie(s) for each control
         # if the control is not found in dashboard, then the test has
         # not been run, so return -1
-        new_dirs = None
+        new_dir = None
         if is_smoke:
             try:
-                new_dirs = self.dashboard_smoke[control]
+                new_dir = self.dashboard_smoke[control][machine]
             except KeyError:
                 return -1
         else:
             try:
-                new_dirs = self.dashboard_regression[control]
+                new_dir = self.dashboard_regression[control][machine]
             except KeyError:
                 return -1
-        for dir in new_dirs:
-            f = open("%s/status" % dir)
-            status_codes.append(int(f.read(1)))
-            f.close()
-        if sum(status_codes) == 0:
-            return 0
-        else:
-            return 1
+        assert new_dir is not None
+        assert os.path.exists("%s/status" % new_dir)
+        f = open("%s/status" % new_dir)
+        status_code = int(f.read(1))
+        f.close()
+        return status_code
         
-    def get_time(self, control, is_smoke=False):
+    def get_time(self, machine, control, is_smoke=False):
         # get the list of the most recent log directorie(s) for each control
         # if the control is not found in dashboard, then the test has
         # not been run, so return -1
-        new_dirs = None
+        new_dir = None
         if is_smoke:
             try:
-                new_dirs = self.dashboard_smoke[control]
+                new_dir = self.dashboard_smoke[control][machine]
             except KeyError:
                 return -1
         else:
             try:
-                new_dirs = self.dashboard_regression[control]
+                new_dir = self.dashboard_regression[control][machine]
             except KeyError:
                 return -1
-        procedures_logs = [os.path.join(log,"procedures.xml") for log in new_dirs]
-        times = [self.xmlp.get_time(log) for log in procedures_logs]
-        return round(sum(times),1)
+        assert new_dir is not None
+        procedures_log = os.path.join(new_dir,"procedures.xml")
+        assert os.path.exists(procedures_log)
+        time = self.xmlp.get_time(procedures_log)
+        return round(time,1)
 
     def build_report(self, control):
         raise NotImplementedError
 
-    def build_all(self):
+    def make_directory(self, path):
+        '''
+        Attempt to make a directory and ignore any errors if the directory
+        already exists
+        '''
+        try:
+            os.mkdir(path)
+        except OSError, err:
+            # Errno 17 is "File exists", which is fine
+            if not err.errno == 17:
+                raise
+
+    def build_regression(self):
+        self.regression_time = {}
+        self.regression_status = {}
+        for control in self.controls:
+            regression_status = 0
+            regression = ET.Element('regression')
+            ET.SubElement(regression, 'controlName').text = control
+            ET.SubElement(regression, 'timeAndDate').text = \
+                ' '.join(t.asctime().split()[:-1]+[t.tzname[t.daylight]])
+
+            for machine_name in self.all_tested_machines:
+                elapsed_time = 0.0
+                status = self.get_status(machine_name, control)
+                if status != -1:
+                    regression_status |= status
+                    # self.regression_status is used by the main page to
+                    # display the status of the test.  We the main page to
+                    # ignore any not run tests iff at least one machine has run
+                    # the test
+                    self.regression_status[control] = regression_status
+                else:
+                    regression_status = -1
+                time = self.get_time(machine_name, control)
+                if time > 0 and status == 0:
+                    elapsed_time += time
+
+                machine = ET.SubElement(regression, 'machine')
+                ET.SubElement(machine, 'name').text = machine_name
+                ET.SubElement(machine, 'status').text = str(status)
+                ET.SubElement(machine, 'time').text = str(time)
+
+            ET.SubElement(regression, 'elapsedTime').text = str(elapsed_time)
+            self.regression_time[control] = elapsed_time
+
+            # if self.regression_status was never set, then we need to set it
+            # as not run
+            if not self.regression_status.has_key(control):
+                    self.regression_status[control] = -1
+
+            # if an output path was not provided, we'll just stick
+            # everything in the current working directory.  otherwise we want
+            # to store the output in the specific output path.
+            f = None
+            if Settings.output_path is None:
+                try:
+                    self.make_directory('regression')
+                except OSError:
+                    output("ERROR: Could not store output for %s" % control)
+                f = open('regression/%s.xml' % control, 'w')
+            else:
+                self.make_directory('%s/regression' % Settings.output_path)
+                assert os.path.exists('%s/regression' % Settings.output_path)
+                try:
+                    f = open('%s/regression/%s.xml' % (Settings.output_path, control), 'w')
+                except IOError:
+                    output('WARN: Failed to save output to %s/regression/%s.xml, saving to current working directory instead.' % (Settings.output_path, control))
+                    try:
+                        self.make_directory('regression')
+                    except OSError:
+                        output("ERROR: Could not store output for %s" % \
+                                                                       control)
+            if f is not None:
+                f.write('<?xml version="1.0" encoding="UTF-8"?>')
+                f.write('<?xml-stylesheet type="text/xsl" href="../regression.xsl"?>')
+                ET.ElementTree(regression).write(f)
+                f.close()
+
+    def build_smoke(self):
+        self.smoke_time = {}
+        self.smoke_status = {}
+        for control in self.controls:
+            smoke_status = 0
+            smoke = ET.Element('smoke')
+            ET.SubElement(smoke, 'controlName').text = control
+            ET.SubElement(smoke, 'timeAndDate').text = \
+                ' '.join(t.asctime().split()[:-1]+[t.tzname[t.daylight]])
+
+            for machine_name in self.all_tested_machines:
+                elapsed_time = 0.0
+                status = self.get_status(machine_name, control, is_smoke=True)
+                if status != -1:
+                    smoke_status |= status
+                    # self.smoke_status is used by the main page to display the
+                    # status of the test.  We the main page to ignore any not
+                    # run tests iff at least one machine has run the test
+                    self.smoke_status[control] = smoke_status
+                else:
+                    smoke_status = -1
+                time = self.get_time(machine_name, control, is_smoke=True)
+                if time > 0 and status == 0:
+                    elapsed_time += time
+
+                machine = ET.SubElement(smoke, 'machine')
+                ET.SubElement(machine, 'name').text = machine_name
+                ET.SubElement(machine, 'status').text = str(status)
+                ET.SubElement(machine, 'time').text = str(time)
+
+            ET.SubElement(smoke, 'elapsedTime').text = str(elapsed_time)
+            self.smoke_time[control] = elapsed_time
+
+            # if self.smoke_status was never set, then we need to set it as
+            # not run
+            if not self.smoke_status.has_key(control):
+                    self.smoke_status[control] = -1
+
+            # if an output path was not provided, we'll just stick
+            # everything in the current working directory.  otherwise we want
+            # to store the output in the specific output path.
+            f = None
+            if Settings.output_path is None:
+                try:
+                    self.make_directory('smoke')
+                except OSError:
+                    output("ERROR: Could not store output for %s" % control)
+                f = open('smoke/%s.xml' % control, 'w')
+            else:
+                self.make_directory('%s/smoke' % Settings.output_path)
+                assert os.path.exists('%s/smoke' % Settings.output_path)
+                try:
+                    f = open('%s/smoke/%s.xml' % (Settings.output_path, control), 'w')
+                except IOError:
+                    output('WARN: Failed to save output to %s/smoke/%s.xml, saving to current working directory instead.' % (Settings.output_path, control))
+                    try:
+                        self.make_directory('smoke')
+                    except OSError:
+                        output("ERROR: Could not store output for %s" % \
+                                                                       control)
+            if f is not None:
+                f.write('<?xml version="1.0" encoding="UTF-8"?>')
+                f.write('<?xml-stylesheet type="text/xsl" href="../smoke.xsl"?>')
+                ET.ElementTree(smoke).write(f)
+                f.close()
+
+    def build_main(self):
         smoke_time = 0.0
         smoke_num_passed = 0.0
         smoke_num_tests = 0.0
@@ -303,15 +499,11 @@ class PageBuilder(object):
             smoke_num_tests += 1
             control = ET.SubElement(smoke, "control")
             ET.SubElement(control, "name").text = control_name
-            control_status = self.get_status(control_name, is_smoke=True)
+            control_status = self.smoke_status[control_name]
             if control_status == 0:
                 smoke_num_passed += 1
-            else:
-                # build the report for control_name
-                # self.build_report(control_name)
-                pass
             ET.SubElement(control, "status").text = str(control_status)
-            time = self.get_time(control_name, is_smoke=True)
+            time = self.smoke_time[control_name]
             # keep track of the total time for successful tests
             if time > 0 and control_status == 0:
                 smoke_time += time
@@ -319,8 +511,8 @@ class PageBuilder(object):
         ET.SubElement(smoke, "numTests").text = str(smoke_num_tests)
         ET.SubElement(smoke, "numPassed").text = str(smoke_num_passed)
         ET.SubElement(smoke, "percentPassed").text = "%s%s" % \
-                       (str(round((smoke_num_passed / smoke_num_tests)*100,1)),
-                        "%")
+                   (str(round((smoke_num_passed / smoke_num_tests)*100,1)),
+                   "%")
         ET.SubElement(smoke, "elapsedTime").text = str(smoke_time)
 
         # regression test portion of XML dashboard file
@@ -329,22 +521,18 @@ class PageBuilder(object):
             regression_num_tests += 1
             control = ET.SubElement(regression, "control")
             ET.SubElement(control, "name").text = control_name
-            control_status = self.get_status(control_name)
+            control_status = self.regression_status[control_name]
             if control_status == 0:
                 regression_num_passed += 1
-            else:
-                # build the report for control_name
-                # self.build_report(control_name)
-                pass
             ET.SubElement(control, "status").text = str(control_status)
-            time = self.get_time(control_name)
+            time = self.regression_time[control_name]
             # keep track of the total time for successful tests
             if time > 0 and control_status == 0:
                 regression_time += time
             ET.SubElement(control, "time").text = str(time)
         ET.SubElement(regression, "numTests").text = str(regression_num_tests)
         ET.SubElement(regression, "numPassed").text = \
-                                                    str(regression_num_passed)
+                                str(regression_num_passed)
         ET.SubElement(regression, "percentPassed").text = "%s%s" % \
              (str(round((regression_num_passed / regression_num_tests)*100,1)),
               "%")
@@ -356,7 +544,7 @@ class PageBuilder(object):
             machine = ET.SubElement(updates, "machine")
             ET.SubElement(machine, "name").text = str(machine_name)
             ET.SubElement(machine, "status").text = \
-                                        str(self.update_statuses[machine_name])
+                        str(self.update_statuses[machine_name])
 
         # write the dashboard file to disk; try to store in
         # Settings.output_path if it exists, if it doesn't exist or if it
@@ -367,9 +555,9 @@ class PageBuilder(object):
             try:
                 f = open('%s/dashboard.xml' % Settings.output_path, 'w')
             except IOError:
-                output("WARN:  Failed to save output to %s, saving to current working directory instead.")
+                output("WARN:  Failed to save output to %s/dashboard.xml, saving to current working directory instead." % Settings.output_path)
                 f = open('dashboard.xml', 'w')
-                
+            
         f.write('<?xml version="1.0" encoding="UTF-8"?>')
         f.write('<?xml-stylesheet type="text/xsl" href="dashboard.xsl"?>')
         ET.ElementTree(root).write(f)
@@ -385,7 +573,9 @@ class Dashboard(object):
         pass
 
     def update_all(self):
-        self.pb.build_all()
+        self.pb.build_regression()
+        self.pb.build_smoke()
+        self.pb.build_main()
         
 if __name__ == "__main__":
     s = Settings()

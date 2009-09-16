@@ -1,3 +1,17 @@
+2009-09-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/qamon.py: Uncomment some print statements
+	* tools/dashboard/smoke.xsl: New stylesheet for smoke tests
+	* tools/dashboard/regression.xsl: New stylesheet for regression tests
+	* tools/dashboard/dashboard.py: We now support reporting test results
+	for multiple machines.
+	* tools/dashboard/dashboard.xsl: Update some strings to refer to new
+	values.
+	* harness/local_run.py: Update to handle the name changes of all of the
+	tests yesterday.
+	* harness/tests.py: Update the list will all of our tests and the test
+	name changes from yesterday.
+
 2009-09-15  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/button_basic_ops.py:

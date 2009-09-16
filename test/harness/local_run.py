@@ -438,7 +438,7 @@ class Test(object):
 
   def set_test_file_info(self, test):
     self.filename = os.path.basename(test)
-    self.control_name = os.path.basename(test).split("_")[0]
+    self.control_name = os.path.basename(test).split("-")[0]
 
     # take off the file exension
     dot_index = self.filename.rfind(".")

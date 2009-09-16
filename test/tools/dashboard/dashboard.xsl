@@ -52,7 +52,7 @@
           <span id="percentPassed">Passed: </span>
           <xsl:value-of select="dashboard/smoke/percentPassed"/>
           <br/>
-          <span id="regressionTime">Smoke Test Time: </span>
+          <span id="regressionTime">Approximate Test Time: </span>
           <xsl:if test="$numDays > 0">
               <span id="days"><xsl:value-of select="$numDays"/></span>
             <xsl:choose>
@@ -112,14 +112,14 @@
           <th id="controlNumber"></th>
           <th id="controlName">Control</th>
           <th id="status">Status</th>
-          <th id="time">Elapsed Time</th>
+          <th id="time">Average Time</th>
         </tr>
         <xsl:for-each select="dashboard/smoke/control">
           <tr>
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="../../logs/smoke/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
+            <td><a href="../../dashboard/smoke/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
@@ -161,7 +161,7 @@
           <span id="percentPassed">Passed: </span>
           <xsl:value-of select="dashboard/regression/percentPassed"/>
           <br/>
-          <span id="regressionTime">Regression Test Time: </span>
+          <span id="regressionTime">Approximate Test Time: </span>
           <xsl:if test="$numDays > 0">
               <span id="days"><xsl:value-of select="$numDays"/></span>
             <xsl:choose>
@@ -221,14 +221,14 @@
           <th id="controlNumber"></th>
           <th id="controlName">Control</th>
           <th id="status">Status</th>
-          <th id="time">Elapsed Time</th>
+          <th id="time">Average Time</th>
         </tr>
         <xsl:for-each select="dashboard/regression/control">
           <tr>
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="../../logs/regression/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
+            <td><a href="../../dashboard/regression/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
