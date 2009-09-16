@@ -1,5 +1,9 @@
 2009-09-16 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/control.css: Add css for new dashboard
+
+2009-09-16 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/dashboard/qamon.py: Uncomment some print statements
 	* tools/dashboard/smoke.xsl: New stylesheet for smoke tests
 	* tools/dashboard/regression.xsl: New stylesheet for regression tests
