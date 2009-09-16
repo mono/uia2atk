@@ -1,3 +1,10 @@
+2009-09-15  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/button_basic_ops.py:
+	* testers/moonlight/button/__init__.py:
+	* testers/moonlight/button/buttonframe.py: Modified files following
+	ReviewBoard (http://reviews.mono-a11y.org/r/448/).
+
 2009-09-15 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/winforms/*.py: I renamed all of the tests to meet a new
