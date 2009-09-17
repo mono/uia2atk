@@ -76,8 +76,11 @@ FILES =  \
 	AutomationTest.cs \
 	BaseTest.cs \
 	ConditionTest.cs \
+	ExpandCollapsePatternTest.cs \
 	InvokePatternTest.cs \
 	Properties/AssemblyInfo.cs \
+	RangeValuePatternTest.cs \
+	SelectionPatternTest.cs \
 	TogglePatternTest.cs \
 	TreeWalkerTest.cs \
 	ValuePatternTest.cs 

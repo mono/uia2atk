@@ -46,6 +46,11 @@ FILES =  \
 	AssemblyInfo.cs \
 	AutomationSource.cs \
 	Element.cs \
+	GridItemSource.cs \
+	GridSource.cs \
+	InvokeSource.cs \
+	TableItemSource.cs \
+	TableSource.cs \
 	ToggleSource.cs
 
 DATA_FILES = 

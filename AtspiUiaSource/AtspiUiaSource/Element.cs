@@ -164,7 +164,7 @@ namespace AtspiUiaSource
 					case Role.TableCell:
 						return (accessible.Parent != null && accessible.Parent.Role == Role.Table? ControlType.DataItem: ControlType.TreeItem);
 					case Role.Text:
-						return (accessible.StateSet.ContainsState (StateType.MultiLine)? ControlType.Document: ControlType.Edit);
+						return (accessible.StateSet.Contains (StateType.MultiLine)? ControlType.Document: ControlType.Edit);
 					case Role.ToggleButton:
 						return ControlType.Button;
 					case Role.ToolBar:
@@ -192,7 +192,7 @@ namespace AtspiUiaSource
 
 		public virtual bool HasKeyboardFocus {
 			get {
-				return accessible.StateSet.ContainsState (StateType.Focused);
+				return accessible.StateSet.Contains (StateType.Focused);
 			}
 		}
 
@@ -218,20 +218,20 @@ namespace AtspiUiaSource
 
 		public virtual bool IsEnabled {
 			get {
-				return accessible.StateSet.ContainsState (StateType.Enabled);
+				return accessible.StateSet.Contains (StateType.Enabled);
 			}
 		}
 
 		public virtual bool IsKeyboardFocusable {
 			get {
-				return accessible.StateSet.ContainsState (StateType.Focusable);
+				return accessible.StateSet.Contains (StateType.Focusable);
 			}
 		}
 
 		public virtual bool IsOffscreen {
 			get {
 				// TODO: Figure out if it's scrolled into view
-				return !(accessible.StateSet.ContainsState (StateType.Showing));
+				return !(accessible.StateSet.Contains (StateType.Showing));
 			}
 		}
 
@@ -291,9 +291,9 @@ namespace AtspiUiaSource
 
 		public virtual OrientationType Orientation {
 			get {
-				if (accessible.StateSet.ContainsState (StateType.Vertical))
+				if (accessible.StateSet.Contains (StateType.Vertical))
 					return (accessible.Role == Role.SplitPane? OrientationType.Horizontal: OrientationType.Vertical);
-				if (accessible.StateSet.ContainsState (StateType.Horizontal))
+				if (accessible.StateSet.Contains (StateType.Horizontal))
 					return (accessible.Role == Role.SplitPane? OrientationType.Vertical: OrientationType.Horizontal);
 				return OrientationType.None;
 			}
@@ -358,8 +358,22 @@ namespace AtspiUiaSource
 
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
-			if (pattern == TogglePatternIdentifiers.Pattern)
+			//if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
+				//return (SupportsExpandCollapse () ? new ExpandCollapseSource (this) : null);
+			if (pattern == GridItemPatternIdentifiers.Pattern)
+				return (SupportsGridItem () ? new GridItemSource (this) : null);
+			else if (pattern == GridPatternIdentifiers.Pattern)
+				return (SupportsGrid () ? new GridSource (this) : null);
+			else if (pattern == InvokePatternIdentifiers.Pattern)
+				return (SupportsInvoke () ? new InvokeSource (this) : null);
+			else if (pattern == TableItemPatternIdentifiers.Pattern)
+				return (SupportsTableItem () ? new TableItemSource (this) : null);
+			else if (pattern == TablePatternIdentifiers.Pattern)
+				return (SupportsTable () ? new TableSource (this) : null);
+			else if (pattern == TogglePatternIdentifiers.Pattern)
 				return (SupportsToggle () ? new ToggleSource (this) : null);
+			//else if (pattern == ValuePatternIdentifiers.Pattern)
+				//return (SupportsValue () ? new ValueSource (this) : null);
 			return null;
 		}
 
@@ -394,6 +408,8 @@ namespace AtspiUiaSource
 
 		internal static Element GetElement (Accessible accessible)
 		{
+			if (accessible == null)
+				return null;
 			if (elements == null)
 				elements = new Dictionary<Accessible, Element> ();
 			if (!elements.ContainsKey (accessible))
@@ -407,9 +423,56 @@ namespace AtspiUiaSource
 			}
 		}
 
+		internal bool SupportsExpandCollapse ()
+		{
+			return (accessible.StateSet.Contains (StateType.Expandable));
+		}
+
+		internal bool SupportsGridItem ()
+		{
+			return (accessible.Parent != null
+				&& accessible.Parent.QueryTable () != null);
+		}
+
+		internal bool SupportsGrid ()
+		{
+			return (accessible.QueryTable () != null);
+		}
+
+		internal bool SupportsInvoke ()
+		{
+			Atspi.Action action = accessible.QueryAction ();
+			if (action == null)
+				return false;
+			ActionDescription [] actions = action.Actions;
+			for (int i = 0; i < actions.Length; i++)
+				if (actions [i].Name == "activate" || actions [i].Name == "invoke" || actions [i].Name == "click")
+					return true;
+			return false;
+		}
+
+		internal bool SupportsTableItem ()
+		{
+			// TODO: Only enable if no headers?
+			return SupportsGridItem ();
+		}
+
+		internal bool SupportsTable ()
+		{
+			// TODO: Only enable if no headers?
+			return SupportsGrid ();
+		}
+
 		internal bool SupportsToggle ()
 		{
 			return (accessible.Role == Role.CheckBox || accessible.Role == Role.ToggleButton);
+		}
+
+		internal bool SupportsValue ()
+		{
+			return (( accessible.QueryEditableText () != null)
+                             && (!accessible.StateSet.Contains (StateType.MultiLine))
+                                ? true : false);
 		}
 	}
 }

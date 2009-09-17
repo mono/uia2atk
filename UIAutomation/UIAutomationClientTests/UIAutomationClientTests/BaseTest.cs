@@ -55,6 +55,8 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement button7Element;
 		protected AutomationElement checkBox1Element;
 		protected AutomationElement label1Element;
+		protected AutomationElement numericUpDown1Element;
+		protected AutomationElement numericUpDown2Element;
 		protected AutomationElement textbox1Element;
 		protected AutomationElement textbox2Element;
 		protected AutomationElement textbox3Element;
@@ -67,6 +69,8 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement panel1Element;
 		protected AutomationElement btnAddTextboxElement;
 		protected AutomationElement btnRemoveTextboxElement;
+		protected AutomationElement treeView1Element;
+		protected AutomationElement table1Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -129,6 +133,11 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (panel1Element);
 			Assert.IsNotNull (btnAddTextboxElement);
 			Assert.IsNotNull (btnRemoveTextboxElement);
+			Assert.IsNotNull (numericUpDown1Element);
+			Assert.IsNotNull (treeView1Element);
+			// Enabling only for Atspi until we have a DataGrid
+			if (Atspi)
+				Assert.IsNotNull (table1Element);
 			//Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
 		}
@@ -209,6 +218,15 @@ namespace MonoTests.System.Windows.Automation
 			btnRemoveTextboxElement = panel1Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"Remove"));
+			treeView1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Tree));
+			numericUpDown1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Spinner));
+			table1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.DataGrid));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));
@@ -273,6 +291,38 @@ namespace MonoTests.System.Windows.Automation
 			checkbox2Element = groupBoxElement.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"checkbox2"));
+			btnAddTextboxElement = groupBoxElement.FindFirst (TreeScope.Descendants,
+				new PropertyCondition (AEIds.NameProperty,
+					"Add"));
+			panel1Element = TreeWalker.RawViewWalker.GetParent (btnAddTextboxElement);
+			btnRemoveTextboxElement = panel1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"Remove"));
+			AutomationElementCollection collection;
+			collection = groupBoxElement.FindAll (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Tree));
+			treeView1Element = collection [0];
+			table1Element = collection [1];
+			numericUpDown1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Slider));
+		}
+
+		protected void DisableControls ()
+		{
+			InvokePattern pattern = (InvokePattern) button4Element.GetCurrentPattern (InvokePatternIdentifiers.Pattern);
+			pattern.Invoke ();
+			if (Atspi)
+				Thread.Sleep (2000);
+		}
+
+		protected void EnableControls ()
+		{
+			InvokePattern pattern = (InvokePattern) button4Element.GetCurrentPattern (InvokePatternIdentifiers.Pattern);
+			pattern.Invoke ();
+			if (Atspi)
+				Thread.Sleep (2000);
 		}
 
 		[TestFixtureTearDown]

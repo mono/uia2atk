@@ -38,6 +38,30 @@ namespace SampleForm {
 		public Form1 ()
 		{
 			InitializeComponent ();
+
+			this.button4.Click += new System.EventHandler (this.button4_Click);
+
+			TreeNode node = new TreeNode ("item 1");
+			node.Nodes.Add (new TreeNode ("item 1a"));
+			treeView1.Nodes.Add (node);
+
+			DataTable table = new DataTable ("DataTable");
+			DataColumn column = new DataColumn ("column1");
+			column.DataType = typeof (string);
+			column.DefaultValue = "";
+			table.Columns.Add (column);
+			column = new DataColumn ("column2");
+			column.DataType = typeof (string);
+			column.DefaultValue = "";
+			table.Columns.Add (column);
+			// Enable this when we have a table
+			//dataGrid1.DataSource = table;
+			table.Rows.Add (table.NewRow ());
+			table.Rows.Add (table.NewRow ());
+			table.Rows [0] ["column1"] = "item1";
+			table.Rows [0] ["column2"] = "item2";
+			table.Rows [1] ["column1"] = "item3";
+			table.Rows [1] ["column2"] = "item4";
 		}
 
 		private void button1_Click (object sender, EventArgs e)
@@ -52,6 +76,12 @@ namespace SampleForm {
 			button1.PerformClick ();
 		}
 		
+		private void button4_Click (object sender, EventArgs e)
+		{
+			numericUpDown1.Enabled = !numericUpDown1.Enabled;
+			treeView1.Enabled = !treeView1.Enabled;
+		}
+
 		private void btnAddTextbox_Click (object sender, EventArgs e)
 		{
 			TextBox box = new TextBox();

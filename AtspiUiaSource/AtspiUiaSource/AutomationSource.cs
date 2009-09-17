@@ -82,5 +82,52 @@ namespace AtspiUiaSource
 				return enabled;
  			}
  		}
+
+		public void AddAutomationEventHandler (AutomationEvent eventId,
+		                                       IElement element,
+		                                       TreeScope scope,
+		                                       AutomationEventHandler eventHandler)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: AddAutomationEventHandler");
+		}
+
+		public void AddAutomationPropertyChangedEventHandler (IElement element,
+		                                                      TreeScope scope,
+		                                                      AutomationPropertyChangedEventHandler eventHandler,
+		                                                      AutomationProperty [] properties)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: AddAutomationPropertyChangedEventHandler");
+		}
+
+		public void AddStructureChangedEventHandler (IElement element,
+		                                             TreeScope scope,
+		                                             StructureChangedEventHandler eventHandler)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: AddStructureChangedEventHandler");
+		}
+
+		public void RemoveAutomationEventHandler (AutomationEvent eventId,
+		                                          IElement element,
+		                                          AutomationEventHandler eventHandler)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: RemoveAutomationEventHandler");
+		}
+
+		public void RemoveAutomationPropertyChangedEventHandler (IElement element,
+		                                                         AutomationPropertyChangedEventHandler eventHandler)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: RemoveAutomationPropertyChangedEventHandler");
+		}
+
+		public void RemoveStructureChangedEventHandler (IElement element,
+		                                                StructureChangedEventHandler eventHandler)
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: RemoveStructureChangedEventHandler");
+		}
+
+		public void RemoveAllEventHandlers ()
+		{
+			Console.WriteLine ("AtspiUiaSource: TODO: RemoveAllEventHandlers");
+		}
 	}
 }

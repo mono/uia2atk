@@ -70,7 +70,7 @@ namespace System.Windows.Automation
 
 		private ITablePattern source;
 
-		internal TablePattern (ITablePattern source) : base (null)
+		internal TablePattern (ITablePattern source) : base (source)
 		{
 			this.source = source;
 		}

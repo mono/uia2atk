@@ -7,7 +7,12 @@ ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../bin -lib:@expa
 ASSEMBLY = ../bin/UIAutomationClient.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =  \
+	../bin/UIAutomationBridge.dll \
+	../bin/UIAutomationTypes.dll \
+	../bin/UIAutomationSource.dll \
+	../bin/UIAutomationProvider.dll
+
 BUILD_DIR = ../bin
 PACKAGE_FLAG = /package accessibility
 
@@ -75,11 +80,7 @@ RESOURCES =
 
 REFERENCES =  \
 	WindowsBase \
-	System \
-	UIAutomationBridge \
-	UIAutomationTypes \
-	UIAutomationSource \
-	UIAutomationProvider
+	System
 
 DLL_REFERENCES = 
 

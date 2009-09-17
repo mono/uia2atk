@@ -46,6 +46,8 @@ namespace MonoTests.System.Windows.Automation
 		{
 			InvokePattern pattern = (InvokePattern) button1Element.GetCurrentPattern (InvokePattern.Pattern);
 			pattern.Invoke ();
+			if (Atspi)
+				Thread.Sleep (200);
 			Assert.AreEqual ("button1_click",
 				textbox1Element.GetCurrentPropertyValue (ValuePatternIdentifiers.ValueProperty),
 				"textBox1's text is modified after button1 is clicked");

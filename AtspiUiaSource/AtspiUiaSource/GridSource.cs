@@ -35,37 +35,41 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class ToggleSource : IToggleProvider
+	public class GridSource : IGridPattern
 	{
-		private Accessible accessible;
-		private Atspi.Action action;
+		protected Accessible accessible;
+		protected Atspi.Table table;
 
-		public ToggleSource (Element element)
+		public GridSource (Element element)
 		{
 			accessible = element.Accessible;
-			action = accessible.QueryAction ();
+			table = accessible.QueryTable ();
 		}
 
-		public ToggleState ToggleState {
-			get {
-				return (accessible.StateSet.Contains (StateType.Checked) ? ToggleState.On : ToggleState.Off);
-			}
-		}
-
-		public void Toggle ()
+		public IElement GetItem (int row, int column)
 		{
-			if (!accessible.StateSet.Contains (StateType.Enabled))
-				throw new ElementNotEnabledException ();
+			return Element.GetElement (table.GetAccessibleAt (row, column));
+		}
 
-			ActionDescription [] actions = action.Actions;
-			for (int i = 0; i < actions.Length; i++) {
-				if (actions [i].Name == "toggle") {
-					action.DoAction (i);
-					return;
-				}
+		public int RowCount {
+			get {
+				return table.NRows;
 			}
-			Log.Debug ("Toggle: Couldn't find a toggle action");
-			action.DoAction (0);
+		}
+
+		public int ColumnCount {
+			get {
+				return table.NColumns;
+			}
+		}
+
+		public GridProperties Properties {
+			get {
+				GridProperties p = new GridProperties ();
+				p.RowCount = RowCount;
+				p.ColumnCount = ColumnCount;
+				return p;
+			}
 		}
 	}
 }

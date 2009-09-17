@@ -35,37 +35,53 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class ToggleSource : IToggleProvider
+	public class TableItemSource : GridItemSourceBase, ITableItemPattern
 	{
-		private Accessible accessible;
-		private Atspi.Action action;
-
-		public ToggleSource (Element element)
+		public TableItemSource (Element element) : base (element)
 		{
-			accessible = element.Accessible;
-			action = accessible.QueryAction ();
 		}
 
-		public ToggleState ToggleState {
+		public IElement [] GetRowHeaderItems ()
+		{
+			Accessible header = table.GetRowHeader (accessible.IndexInParent);
+			if (header == null)
+				return new Element [0];
+			Element [] elements = new Element [1];
+			elements [0] = Element.GetElement (header);
+			return elements;
+		}
+
+		public IElement [] GetColumnHeaderItems ()
+		{
+			Accessible header = table.GetColumnHeader (accessible.IndexInParent);
+			if (header == null)
+				return new Element [0];
+			Element [] elements = new Element [1];
+			elements [0] = Element.GetElement (header);
+			return elements;
+		}
+
+		public TableItemProperties Properties {
 			get {
-				return (accessible.StateSet.Contains (StateType.Checked) ? ToggleState.On : ToggleState.Off);
-			}
-		}
-
-		public void Toggle ()
-		{
-			if (!accessible.StateSet.Contains (StateType.Enabled))
-				throw new ElementNotEnabledException ();
-
-			ActionDescription [] actions = action.Actions;
-			for (int i = 0; i < actions.Length; i++) {
-				if (actions [i].Name == "toggle") {
-					action.DoAction (i);
-					return;
+				TableItemProperties p = new TableItemProperties ();
+				int row, col, rowExtents, colExtents;
+				bool isSelected;
+				if (table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected)) {
+					p.Row = row;
+					p.Column = col;
+					p.RowSpan = rowExtents;
+					p.ColumnSpan = colExtents;
+				} else {
+					p.Row = -1;
+					p.Column = -1;
+					p.RowSpan = 1;
+					p.ColumnSpan = 1;
 				}
+				p.ContainingGrid = ContainingGrid;
+				p.RowHeaderItems = GetRowHeaderItems ();
+				p.ColumnHeaderItems = GetColumnHeaderItems ();
+				return p;
 			}
-			Log.Debug ("Toggle: Couldn't find a toggle action");
-			action.DoAction (0);
 		}
 	}
 }

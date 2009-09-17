@@ -61,9 +61,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutomationTest.cs" />
     <Compile Include="ConditionTest.cs" />
+    <Compile Include="ExpandCollapsePatternTest.cs" />
+    <Compile Include="SelectionPatternTest.cs" />
     <Compile Include="TogglePatternTest.cs" />
     <Compile Include="TreeWalkerTest.cs" />
     <Compile Include="InvokePatternTest.cs" />
+    <Compile Include="RangeValuePatternTest.cs" />
     <Compile Include="ValuePatternTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,26 @@
+2009-09-16  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/BaseTest.cs,
+	UIAutomationClientTests/ExpandCollapsePatternTest.cs,
+	UIAutomationClientTests/RangeValuePatternTest.cs,
+	UIAutomationClientTests/SelectionPatternTest.cs,
+	UIAutomationClientTests/UIAutomationClientTests.csproj,
+	UIAutomationClientTests/Makefile.am,
+	AtspiUiaClientTests/TablePatternTest.cs,
+	AtspiUiaClientTests/InvokePatternTest.cs,
+	AtspiUiaClientTests/ValuePatternTest.cs,
+	AtspiUiaClientTests/Makefile.am: Added some tests.
+
+	* UIAutomationClientTests/InvokePatternTest.cs: Add sleep for at-spi.
+
+	* UIAutomationClientTests/BaseTest.cs: Add NumericUpDown and TreeView.
+	Add TextBox-related buttons to AtspiSetup.
+	Add EnableControls and DisableControls.
+
+	* SampleForm/Form1.cs, GtkForm/GtkForm.cs: Enable TreeView.
+	Add button to enable/disable controls.
+	Add some missing widgets to gtk form.
+
 2009-09-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* AtspiUiaClientTests/Makefile.am:

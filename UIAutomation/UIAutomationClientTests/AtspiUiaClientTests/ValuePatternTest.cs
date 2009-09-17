@@ -20,26 +20,30 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//  Mike Gorse <mgorse@novell.com>
 // 
 
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+//using System.Windows;
 using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Source
-{
-public interface ITablePattern : IGridPattern
-	{
-		new TableProperties Properties { get; }
-	}
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-	public struct TableProperties
+using NUnit.Framework;
+using MonoTests.System.Windows.Automation;
+
+namespace AtspiUiaClientTests
+{
+	[TestFixture]
+	public class AtspiValuePatternTest : ValuePatternTest
 	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
-	}
+		public override bool Atspi {
+			get {
+				return true;
+			}
+		}
+}
 }

@@ -35,36 +35,30 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class ToggleSource : IToggleProvider
+	public class InvokeSource : IInvokePattern
 	{
 		private Accessible accessible;
 		private Atspi.Action action;
 
-		public ToggleSource (Element element)
+		public InvokeSource (Element element)
 		{
 			accessible = element.Accessible;
 			action = accessible.QueryAction ();
 		}
 
-		public ToggleState ToggleState {
-			get {
-				return (accessible.StateSet.Contains (StateType.Checked) ? ToggleState.On : ToggleState.Off);
-			}
-		}
-
-		public void Toggle ()
+		public void Invoke ()
 		{
 			if (!accessible.StateSet.Contains (StateType.Enabled))
 				throw new ElementNotEnabledException ();
 
 			ActionDescription [] actions = action.Actions;
 			for (int i = 0; i < actions.Length; i++) {
-				if (actions [i].Name == "toggle") {
+				if (actions [i].Name == "activate" || actions [i].Name == "invoke" || actions [i].Name == "click") {
 					action.DoAction (i);
 					return;
 				}
 			}
-			Log.Debug ("Toggle: Couldn't find a toggle action");
+			Log.Debug ("Invoke: Couldn't find an activate, invoke, or click action");
 			action.DoAction (0);
 		}
 	}
