@@ -1,5 +1,12 @@
 2009-09-17  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/togglebutton_basic_ops.py,
+	* testers/moonlight/togglebutton/togglebuttonframe.py,
+	* testers/moonlight/togglebutton/__init__.py,
+	* testers/moonlight/togglebutton: add moonlight togglebutton test
+
+2009-09-17  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/image,
 	* testers/moonlight/image/imageframe.py,
 	* testers/moonlight/image/__init__.py,
