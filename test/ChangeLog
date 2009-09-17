@@ -1,3 +1,10 @@
+2009-09-17  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/image,
+	* testers/moonlight/image/imageframe.py,
+	* testers/moonlight/image/__init__.py,
+	* testers/moonlight/image_basic_ops.py: add moonlight image test
+
 2009-09-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/control.css: Add css for new dashboard
