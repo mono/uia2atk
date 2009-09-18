@@ -149,6 +149,7 @@ namespace UiaAtkBridgeTest
 		public static string LookForParentDir (string pattern) {
 			//FIXME: it seems we should use this when bnc#450433 is fixed:
 			//string imgDir = System.IO.Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().CodeBase));
+			
 			string imgDir = System.IO.Directory.GetCurrentDirectory ();
 			
 			while (imgDir != "/"){
@@ -158,7 +159,7 @@ namespace UiaAtkBridgeTest
 				else
 					break;
 				
-				string samples = System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples");
+				string samples = System.IO.Path.Combine (System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples"), "winforms");
 				if (System.IO.Directory.Exists (samples)) { 
 					if (System.IO.Directory.GetFiles (samples, pattern).Length > 0) {
 						imgDir = System.IO.Path.GetFullPath (samples);
