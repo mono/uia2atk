@@ -1,3 +1,9 @@
+2009-09-17  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/*_basic_ops.py: Renamed to *-regression.py to meet
+	Brian's new naming convention.
+	* testers/moonlight/button-regression.py: Trivial changes for comments.
+
 2009-09-17  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/togglebutton_basic_ops.py,

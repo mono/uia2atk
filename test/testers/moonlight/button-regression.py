@@ -8,7 +8,7 @@
 #              Test the Moonlight Button sample
 ##############################################################################
 
-# The docstring below  is used in the generated log file
+# The docstring below is used in the generated log file
 """
 Test accessibility of checkbox widget
 """
@@ -27,7 +27,7 @@ try:
 except IndexError:
     pass  #expected
 
-# open the treeview sample application
+# open the button sample application
 try:
     app = launchButton(app_path)
 except IOError, msg:
