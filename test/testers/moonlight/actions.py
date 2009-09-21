@@ -82,3 +82,8 @@ class TableCell(object):
 
     actions = (CLICK, )
 
+class TabPage(object):
+    CLICK = "click"
+
+    actions = (CLICK, )
+
