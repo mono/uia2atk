@@ -21,7 +21,7 @@ class ToggleButtonFrame(accessibles.Frame):
     TEXE_TWO  = "Three State:"
 
     def __init__(self, accessible):
-        super(ToggleFrame, self).__init__(accessible)
+        super(ToggleButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("ToggleButtonSample")
         self.toggle1 = self.frame.findPushButton(self.TOGGLEBUTTON_ONE)
         self.toggle2 = self.frame.findPushButton(self.TOGGLEBUTTON_TWO)
