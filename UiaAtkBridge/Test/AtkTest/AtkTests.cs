@@ -1256,9 +1256,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (item4Index == group2Index, "Child should have a different index from its group");
 			Assert.AreEqual (5, atkTable.GetRowAtIndex (item4Index), "child row");
 
-			// For some reason, the next line would cause crashes
-			// in later tests.
-			//Relation (Atk.RelationType.NodeChildOf, item4, group2);
+			Relation (Atk.RelationType.NodeChildOf, item4, group2);
 
 			item4 = null;
 			CollapseTreeView (accessible);

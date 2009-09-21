@@ -1,3 +1,9 @@
+2009-09-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Enable Relations sub-test in TreeView.
+
+	* AtkTester.cs: Use RunInGuiThread for Relation().
+
 2009-09-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BasicWidgetType.cs: Fix img dir according to new folder

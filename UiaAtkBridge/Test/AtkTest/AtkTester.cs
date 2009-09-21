@@ -2073,14 +2073,16 @@ namespace UiaAtkBridgeTest
 		
 		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)
 		{
-			Atk.RelationSet set = source.RefRelationSet ();
-			Atk.Relation relation = set.GetRelationByType (type);
-			Assert.IsNotNull (relation, "Relation (" + type + ")");
-			Atk.Object [] target = relation.Target;
-			foreach (Atk.Object obj in expectedTarget)
-				Assert.IsTrue (Array.IndexOf (target, obj, 0) >= 0, "Missing relation target");
-			foreach (Atk.Object obj in target)
-				Assert.IsTrue (Array.IndexOf (expectedTarget, obj, 0) >= 0, "Superfluous relation target");
+			RunInGuiThread (delegate () {
+				Atk.RelationSet set = source.RefRelationSet ();
+				Atk.Relation relation = set.GetRelationByType (type);
+				Assert.IsNotNull (relation, "Relation (" + type + ")");
+				Atk.Object [] target = relation.Target;
+				foreach (Atk.Object obj in expectedTarget)
+					Assert.IsTrue (Array.IndexOf (target, obj, 0) >= 0, "Missing relation target");
+				foreach (Atk.Object obj in target)
+					Assert.IsTrue (Array.IndexOf (expectedTarget, obj, 0) >= 0, "Superfluous relation target");
+			});
 		}
 
 		protected Atk.Object FindObjectByName (Atk.Object parent, string name)
