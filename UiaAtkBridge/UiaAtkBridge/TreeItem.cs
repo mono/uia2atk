@@ -27,6 +27,7 @@ using System;
 using System.Windows.Automation;
 using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
+using SCG = System.Collections.Generic;
 
 namespace UiaAtkBridge
 {
@@ -429,6 +430,55 @@ namespace UiaAtkBridge
 				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
 			}
 		}
+		
+		protected override Atk.RelationSet OnRefRelationSet ()
+		{
+			bool already_found = false;
+			Atk.RelationSet relSet = base.OnRefRelationSet ();
+			if (relSet == null)
+				relSet = new Atk.RelationSet ();
+			else {
+
+				SCG.List<Atk.Relation> relsToRemove = new SCG.List<Atk.Relation> ();
+				for (int i = 0; i < relSet.NRelations; i++) {
+					Atk.Relation rel = relSet.GetRelation (i);
+					if (relSet.GetRelation (i).RelationType == Atk.RelationType.NodeChildOf) {
+						if (VirtualParent != null && 
+						    relSet.GetRelation (i).Target.Length == 1 &&
+						    relSet.GetRelation (i).Target [0] == VirtualParent)
+							already_found = true;
+						else
+							relsToRemove.Add (rel);
+					}
+				}
+				foreach (Atk.Relation relation in relsToRemove)
+					relSet.Remove (relation);
+			}
+			
+			if (VirtualParent != null && !already_found) {
+				Atk.Object[] parents = new Atk.Object [1];
+				parents [0] = VirtualParent;
+				var rel = new Atk.Relation (parents, 
+				                            Atk.RelationType.NodeChildOf);
+				relSet.Add (rel);
+			}
+			return relSet;
+		}
+
+		internal override Adapter VirtualParent {
+			get {
+				//FIXME: this should be the real implementation of VirtualParent in the Adapter class, and later each class should
+				//override the special cases, not the other way around (so the AutomationBridge.GetParentAdapter method gets OOP)
+				IRawElementProviderFragment frag = Provider as IRawElementProviderFragment;
+				if (frag == null)
+					return null;
+				frag = frag.Navigate (NavigateDirection.Parent);
+				if (frag != null)
+					return AutomationBridge.GetAdapterForProviderSemiLazy (frag);
+				return null;
+			}
+		}
+
 
 		#region Atk.ImageImplementor implementation 
 		

@@ -1,3 +1,9 @@
+2009-09-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	[Fixes BNC#534100]
+	* TreeItem.cs: Expose NodeChildOf relations.
+	* Adapter.cs: Allow VirtualParent to be redefined.
+
 2009-08-24  Mike Gorse  <mgorse@novell.com>
 
 	* tree.cs: Have a TreeView track its focus.

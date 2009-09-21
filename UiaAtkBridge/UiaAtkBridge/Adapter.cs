@@ -329,7 +329,7 @@ namespace UiaAtkBridge
 			}
 		}
 
-		internal Adapter VirtualParent {
+		internal virtual Adapter VirtualParent {
 			get { return (Provider == null) ? null : AutomationBridge.GetParentAdapter (Provider); }
 		}
 		
