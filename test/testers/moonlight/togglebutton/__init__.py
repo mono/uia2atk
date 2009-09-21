@@ -45,8 +45,8 @@ def launchToggleButton(exe=None):
 class ToggleButton(accessibles.Application):
     #checkShowing=False
     def __init__(self, accessible, subproc=None):
-        'Get a reference to the RadioButton window'
-        super(RadioButton, self).__init__(accessible, subproc)
+        'Get a reference to the ToggleButton window'
+        super(ToggleButton, self).__init__(accessible, subproc)
         
         self.findFrame(re.compile('^ToggleButtonSample'), logName='Toggle Button')
 
