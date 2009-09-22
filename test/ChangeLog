@@ -1,3 +1,9 @@
+2009-09-22  Calen Chen <cachen@novell.com>
+	* testers/moonlight/tabcontrol/__init__.py,
+	* testers/moonlight/tabcontrol/tabcontrolframe.py,
+	* testers/moonlight/tabcontrol-regression.py,
+	* testers/moonlight/tabcontrol: add moonlight TabControl test
+
 2009-09-21  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/actions.py: add TabPage class
