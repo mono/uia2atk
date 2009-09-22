@@ -1,3 +1,12 @@
+2009-09-22  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/progressbar/__init__.py:
+	* testers/moonlight/progressbar/progressbarframe.py:
+	* testers/moonlight/progressbar-regression.py: Added Moonlight ProgressBar
+	test script.
+	* testers/moonlight/passwordbox-regression.py: Deleted actions test for
+	Label, as it has no action.
+
 2009-09-22  Calen Chen <cachen@novell.com>
 	* testers/moonlight/textblock/textblockframe.py,
 	* testers/moonlight/textblock/__init__.py,

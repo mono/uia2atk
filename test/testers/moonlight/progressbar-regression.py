@@ -2,20 +2,20 @@
 
 ##############################################################################
 # Written by:  Neville Gao  <nevillegao@gmail.com>
-# Date:        2009/09/16
-# Description: Test accessibility of passwordbox widget
-#              Use the passwordboxframe.py wrapper script
-#              Test the Moonlight PasswordBox sample
+# Date:        2009/09/21
+# Description: Test accessibility of progressbar widget
+#              Use the progressbarframe.py wrapper script
+#              Test the Moonlight ProgressBar sample
 ##############################################################################
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of passwordbox widget
+Test accessibility of progressbar widget
 """
 
 # imports
 from strongwind import *
-from passwordbox import *
+from progressbar import *
 from helpers import *
 
 from sys import argv
@@ -27,9 +27,9 @@ try:
 except IndexError:
     pass  #expected
 
-# open the passwordbox sample application
+# open the progressbar sample application
 try:
-    app = launchPasswordBox(app_path)
+    app = launchProgressBar(app_path)
 except IOError, msg:
     print  "ERROR:  %s" % msg
     exit(2)
@@ -39,28 +39,30 @@ if app is None:
     exit(4)
 
 # just an alias to make things shorter
-pbFrame = app.passwordBoxFrame
+pbFrame = app.progressBarFrame
 
 ################
 # Check Actions
 ################
-actionsCheck(pbFrame.pwdBox, 'Text')
+actionsCheck(pbFrame.button, 'Button')
 
 #######################
 # Check default States
 #######################
-statesCheck(pbFrame.label1, 'Label')
-statesCheck(pbFrame.label2, 'Label')
-statesCheck(pbFrame.pwdBox2, 'Text')
+statesCheck(pbFrame.label, 'Label')
+statesCheck(pbFrame.button, 'Button')
+statesCheck(pbFrame.progressBar, 'ProgressBar')
 
-# test PasswordBox.Text property
-PWD = 'secretwords'
-pbFrame.pwdBox.enterText(PWD)
+# click button to assert label if value of progressBar is correct
+pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-assertText(pbFrame.pwdBox, PWD)
+assertText(pbFrame.label, 'It is 20 out of 100\%')
+pbFrame.assertValue(20)
 
-# test PasswordBox.PasswordChanged event
-assertText(pbFrame.label1, 'You changed %s times.' % str(len(PWD)))
+pbFrame.setValue(50)
+sleep(config.SHORT_DELAY)
+assertText(pbFrame.label, 'It is 50 out of 100\%')
+pbFrame.assertValue(50)
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
