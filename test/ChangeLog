@@ -1,3 +1,9 @@
+2009-09-21  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/actions.py: add TabPage class
+	* testers/moonlight/states.py: modify states list in TabPage and 
+	TabControl class
+
 2009-09-17  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/*_basic_ops.py: Renamed to *-regression.py to meet
