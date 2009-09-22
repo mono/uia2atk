@@ -1,4 +1,4 @@
-2009-09-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+2009-09-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight2.spec: Remove references to 
 	moonlight-a11y-initialization.diff as it was already committed
