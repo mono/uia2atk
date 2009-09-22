@@ -1,4 +1,10 @@
 2009-09-22  Calen Chen <cachen@novell.com>
+	* testers/moonlight/textblock/textblockframe.py,
+	* testers/moonlight/textblock/__init__.py,
+	* testers/moonlight/textblock-regression.py,
+	* testers/moonlight/textblock: add moonlight TextBlock test
+
+2009-09-22  Calen Chen <cachen@novell.com>
 	* testers/moonlight/tabcontrol/__init__.py,
 	* testers/moonlight/tabcontrol/tabcontrolframe.py,
 	* testers/moonlight/tabcontrol-regression.py,
