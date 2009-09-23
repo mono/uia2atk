@@ -1,3 +1,13 @@
+2009-09-23  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: Update gtk-sharp to r142364 to include a fix for
+	bridge segfault on exit.
+
+	* patches/001_gtk-sharp_target-smcs.diff: 
+	* patches/002_gtk-sharp_private-api.diff: 
+	* patches/003_gtk-sharp_remove-glue-dep.diff: Update patches to
+	gtk-sharp r142364.
+
 2009-09-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight2.spec: Remove references to 

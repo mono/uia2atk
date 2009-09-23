@@ -1,3 +1,8 @@
+2009-09-23  Brad Taylor  <brad@getcoded.net>
+
+	* test_bug537507.py: Add test to ensure that the Bridge doesn't
+	segfault on exit.
+
 2009-09-16  Brad Taylor  <brad@getcoded.net>
 
 	* test_adapter.py: Add tests for getAccessibleAtPoint, parent and

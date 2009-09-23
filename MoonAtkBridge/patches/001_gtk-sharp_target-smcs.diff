@@ -1,6 +1,6 @@
 Index: atk/Makefile.am
 ===================================================================
---- atk/Makefile.am	(revision 135472)
+--- atk/Makefile.am	(revision 142361)
 +++ atk/Makefile.am	(working copy)
 @@ -21,4 +21,7 @@
  
@@ -12,9 +12,9 @@ Index: atk/Makefile.am
  include ../Makefile.include
 Index: glib/Object.cs
 ===================================================================
---- glib/Object.cs	(revision 135472)
+--- glib/Object.cs	(revision 142361)
 +++ glib/Object.cs	(working copy)
-@@ -437,7 +437,10 @@
+@@ -503,7 +503,10 @@
  
  		Hashtable before_signals;
  		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
@@ -26,7 +26,7 @@ Index: glib/Object.cs
  			get {
  				if (before_signals == null)
  					before_signals = new Hashtable ();
-@@ -447,7 +450,10 @@
+@@ -513,7 +516,10 @@
  
  		Hashtable after_signals;
  		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
@@ -38,7 +38,7 @@ Index: glib/Object.cs
  			get {
  				if (after_signals == null)
  					after_signals = new Hashtable ();
-@@ -455,6 +461,7 @@
+@@ -521,6 +527,7 @@
  			}
  		}
  
@@ -46,15 +46,15 @@ Index: glib/Object.cs
  		EventHandlerList before_handlers;
  		[Obsolete ("Replaced by GLib.Signal marshaling mechanism.")]
  		protected EventHandlerList BeforeHandlers {
-@@ -474,6 +481,7 @@
+@@ -540,6 +547,7 @@
  				return after_handlers;
  			}
  		}
 +#endif
  
- 		[CDeclCallback]
+ 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
  		delegate void NotifyDelegate (IntPtr handle, IntPtr pspec, IntPtr gch);
-@@ -532,7 +540,12 @@
+@@ -598,7 +606,12 @@
  			return Handle.GetHashCode ();
  		}
  
@@ -68,7 +68,7 @@ Index: glib/Object.cs
  			get { 
  				if (data == null)
  					data = new Hashtable ();
-@@ -542,7 +555,12 @@
+@@ -608,7 +621,12 @@
  		}
  
  		Hashtable persistent_data;
@@ -84,7 +84,7 @@ Index: glib/Object.cs
  					persistent_data = new Hashtable ();
 Index: glib/Value.cs
 ===================================================================
---- glib/Value.cs	(revision 135472)
+--- glib/Value.cs	(revision 142361)
 +++ glib/Value.cs	(working copy)
 @@ -44,8 +44,10 @@
  		}
@@ -99,7 +99,7 @@ Index: glib/Value.cs
  
 Index: glib/SignalCallback.cs
 ===================================================================
---- glib/SignalCallback.cs	(revision 135472)
+--- glib/SignalCallback.cs	(revision 142361)
 +++ glib/SignalCallback.cs	(working copy)
 @@ -20,6 +20,8 @@
  // Boston, MA 02111-1307, USA.
@@ -117,11 +117,11 @@ Index: glib/SignalCallback.cs
 +#endif
 Index: glib/Makefile.am
 ===================================================================
---- glib/Makefile.am	(revision 135472)
+--- glib/Makefile.am	(revision 142361)
 +++ glib/Makefile.am	(working copy)
-@@ -98,6 +98,9 @@
- GAPI_CDECL_INSERT=
- endif
+@@ -92,6 +92,9 @@
+ AssemblyInfo.cs: $(top_builddir)/AssemblyInfo.cs
+ 	cp $(top_builddir)/AssemblyInfo.cs .
  
 +list-sources:
 +	@echo $(sources)
@@ -131,7 +131,7 @@ Index: glib/Makefile.am
  	$(CSC) $(CSFLAGS) -unsafe -nowarn:0169,0612,0618 -out:$(ASSEMBLY) -target:library $(references) $(build_sources)
 Index: bootstrap-generic
 ===================================================================
---- bootstrap-generic	(revision 135472)
+--- bootstrap-generic	(revision 142361)
 +++ bootstrap-generic	(working copy)
 @@ -23,11 +23,7 @@
      -e "s/@POLICY_VERSIONS@/$POLICY_VERSIONS/" \
@@ -147,15 +147,15 @@ Index: bootstrap-generic
  chmod +x bootstrap.status
 Index: Makefile.am
 ===================================================================
---- Makefile.am	(revision 135472)
+--- Makefile.am	(revision 142361)
 +++ Makefile.am	(working copy)
 @@ -1,4 +1,4 @@
--SUBDIRS = sources generator parser glib gio cairo pango atk gdk gtk glade gtkdotnet sample doc
+-SUBDIRS = sources generator parser gapi glib gio cairo pango atk gdk gtk glade gtkdotnet sample doc
 +SUBDIRS = sources generator parser glib atk
  
  EXTRA_DIST = 			\
  	mono.snk		\
-@@ -21,7 +21,7 @@
+@@ -20,7 +20,7 @@
  	candle.exe gtk-sharp-2.0-dev.wxs
  	light.exe gtk-sharp-2.0-dev.wixobj
  

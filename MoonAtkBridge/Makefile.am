@@ -8,7 +8,8 @@ PATCH_STAMP = patch.stamp
 
 GTK_SHARP_PATCHES = \
 	patches/001_gtk-sharp_target-smcs.diff \
-	patches/002_gtk-sharp_private-api.diff
+	patches/002_gtk-sharp_private-api.diff \
+	patches/003_gtk-sharp_remove-glue-dep.diff
 
 ATK_VERSION=1.10.3
 ATK_FILENAME=atk-$(ATK_VERSION).tar.bz2
@@ -32,7 +33,7 @@ all-am: descriptors tests-build
 
 #FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
 $(GTK_SHARP):
-	svn export $(ANONSVN_GTKSHARP) $(GTK_SHARP) -r 139599
+	svn export $(ANONSVN_GTKSHARP) $(GTK_SHARP) -r142364
 
 	## Apply patches to gtk-sharp to add moonlight targets
 	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p;)
@@ -114,7 +115,7 @@ T4_REFERENCES = \
 
 # bin/raw/ dir contains MoonAtkBridge.dll without sec attrs, plus moonlight assemblies with sec attrs
 # bin/ dir contains MoonAtkBridge.dll with sec attrs and with internalized API
-$(ASSEMBLY_STAGE_PATH): stage $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR)
+$(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR)
 	mkdir -p bin/raw/
 	cp ../../moon/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
@@ -138,6 +139,7 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 		-c link -a ./DummyEntryPoint.exe \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
 	cp bin/fullraw/output/$(DESC_FILE_LOCAL) .
+	rm -f $(DESC_FILE_UPSTREAM)
 	$(WGET) $(ANONSVN_DESCRIPTORS)
 	$(COMPARE_DESCS)
 

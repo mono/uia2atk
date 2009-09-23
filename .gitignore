@@ -345,6 +345,8 @@
 /MoonAtkBridge/depcomp
 /MoonAtkBridge/libtool
 /MoonAtkBridge/ltmain.sh
+/MoonAtkBridge/a11y.xml
+/MoonAtkBridge/descriptors.xml
 /MoonAtkBridge/MoonAtkBridge/*.pidb
 /MoonAtkBridge/tests/Makefile
 /MoonAtkBridge/tests/Makefile.in
@@ -382,3 +384,4 @@
 /MoonAtkBridge/bin/
 /MoonAtkBridge/install.rdf
 /MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs
+
