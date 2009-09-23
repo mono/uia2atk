@@ -25,7 +25,8 @@ At-spi uia source client side
 
 %build
 %configure --disable-tests
-make %{?_smp_mflags}
+#make %{?_smp_mflags}
+make
 
 %install
 %makeinstall
