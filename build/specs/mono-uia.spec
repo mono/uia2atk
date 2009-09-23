@@ -12,15 +12,19 @@
 
 
 Name:           mono-uia
-Version:        1.0
+Version:        142091
 Release:        1
 License:        MIT/X11
 Group:          System/Libraries
-URL:		http://www.mono-project.com/Accessibility
+URL:            http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-Requires:	mono-core >= 2.4
-BuildRequires:	mono-core >= 2.4 mono-devel >= 2.4 mono-nunit >= 2.4 gtk-sharp2 >= 2.12.8
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Requires:       mono-core >= 2.5 mono-winfxcore
+BuildRequires:  gtk-sharp2 >= 2.12.8
+BuildRequires:  mono-core >= 2.5 
+BuildRequires:  mono-devel >= 2.5
+BuildRequires:  mono-nunit >= 2.5
+BuildRequires:  mono-winfxcore
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
@@ -34,15 +38,6 @@ Requires:	mono-uia == %{version}-%{release}
 
 %description devel
 Implementations of the members and interfaces based on MS UIA API
-
-%package -n mono-winfxcore
-License:	MIT
-Summary:	Parts of winfx
-Group:		Development/Languages
-Requires:	mono-core >= 2.4
-
-%description -n mono-winfxcore
-WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %prep
 %setup -q
@@ -76,11 +71,6 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root,-)
 %{_libdir}/pkgconfig/*.pc
-
-%files -n mono-winfxcore
-%defattr(-, root, root)
-%{_prefix}/lib/mono/gac/WindowsBase
-%{_prefix}/lib/mono/2.0/WindowsBase.dll
 
 %changelog
 
