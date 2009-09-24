@@ -1,3 +1,11 @@
+2009-09-24  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/ClientAPI/: Renamed to uiaclient.
+	* testers/moonlight/scrollbar/scrollbarframe.py:
+	* testers/moonlight/scrollbar/__init__.py:
+	* testers/moonlight/scrollbar-regression.py: Added Moonlight ScrollBar
+	test script.
+
 2009-09-22  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/progressbar/__init__.py:
