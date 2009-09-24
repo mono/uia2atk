@@ -6,6 +6,9 @@
 	* testers/moonlight/scrollbar-regression.py: Added Moonlight ScrollBar
 	test script.
 
+2009-09-24  Felicia Mu  <fxmu@novell.com>
+	* samples/ClientAPI/DockProviderTest.cs: Add the DockProviderTest to cover the DockPattern and the rotate method in TransformPattern.
+
 2009-09-22  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/progressbar/__init__.py:
