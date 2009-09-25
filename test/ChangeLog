@@ -1,3 +1,6 @@
+2009-09-25  Felicia Mu  <fxmu@novell.com>
+	* samples/ClientAPI/TransformProviderTest.cs: Add the TransformProviderTest.cs to cover the rotate method in TransformPattern.
+
 2009-09-24  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/ClientAPI/: Renamed to uiaclient.
