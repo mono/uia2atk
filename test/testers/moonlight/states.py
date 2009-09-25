@@ -339,8 +339,8 @@ class Dialog(object):
 class ToolStripSeparator(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
-class TrackBar(object):
-    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)
+class Slider(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class ContainerControl(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE, FOCUSABLE)
@@ -356,3 +356,6 @@ class ContextMenu(MenuStrip):
 
 class ContextMenuStrip(ContextMenu):
 	pass
+
+class Thumb(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
