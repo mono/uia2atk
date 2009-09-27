@@ -1,5 +1,18 @@
+2009-09-27  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/slider-regression.py,
+	* testers/moonlight/slider/__init__.py,
+	* testers/moonlight/slider/sliderframe.py,
+	* testers/moonlight/slider: add Slider tests
+
+2009-09-25  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/states.py: add Thumb class, move focusable to Thumb
+	from Slider refer to UISpy
+
 2009-09-25  Felicia Mu  <fxmu@novell.com>
-	* samples/ClientAPI/TransformProviderTest.cs: Add the TransformProviderTest.cs to cover the rotate method in TransformPattern.
+
+	* samples/uiaclient/TransformProviderTest.cs: Add the TransformProviderTest.cs to cover the rotate method in TransformPattern.
 
 2009-09-24  Neville Gao  <nevillegao@gmail.com>
 
