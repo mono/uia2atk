@@ -1,5 +1,11 @@
 2009-09-27  Neville Gao  <nevillegao@gmail.com>
 
+	* tester/moonlight/thumb/thumbframe.py:
+	* tester/moonlight/thumb/__init__.py:
+	* tester/moonlight/thumb-regression.py: Added Moonlight Thumb test script.
+
+2009-09-27  Neville Gao  <nevillegao@gmail.com>
+
 	* testers/moonlight/scrollbar/scrollbarframe.py:
 	* testers/moonlight/scrollbar-regression.py: Fixed typo due to upper/lower
 	case.
