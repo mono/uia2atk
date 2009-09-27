@@ -2,12 +2,12 @@
 ##############################################################################
 # Written by:  Neville Gao  <nevillegao@gmail.com>
 # Date:        2009/09/22
-# Description: scrollBar.py wrapper script
-#              Used by the scrollBar-*.py tests
+# Description: scrollbar.py wrapper script
+#              Used by the scrollbar-*.py tests
 ##############################################################################
 
 from strongwind import *
-from scrollBar import *
+from scrollbar import *
 
 # class to represent the main window.
 class ScrollBarFrame(accessibles.Frame):

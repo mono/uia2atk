@@ -4,7 +4,7 @@
 # Written by:  Neville Gao  <nevillegao@gmail.com>
 # Date:        2009/09/22
 # Description: Test accessibility of scrollBar widget
-#              Use the scrollBarframe.py wrapper script
+#              Use the scrollbarframe.py wrapper script
 #              Test the Moonlight ScrollBar sample
 ##############################################################################
 
@@ -16,7 +16,7 @@ Test accessibility of scrollBar widget
 # imports
 from pyatspi import *
 from strongwind import *
-from scrollBar import *
+from scrollbar import *
 from helpers import *
 
 from sys import argv
