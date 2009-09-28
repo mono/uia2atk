@@ -1,5 +1,9 @@
 2009-09-29  Neville Gao  <nevillegao@gmail.com>
 
+	* samples/moonlight/: Deleted VS2008 project related files.
+
+2009-09-29  Neville Gao  <nevillegao@gmail.com>
+
 	* samples/moonlight/: Moved source codes (*.xaml, *.cs) to each
 	control's parent dir.
 
