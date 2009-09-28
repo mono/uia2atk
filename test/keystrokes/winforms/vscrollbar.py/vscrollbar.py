@@ -33,7 +33,8 @@ sequence.append(utils.AssertPresentationAction(
      "BRAILLE LINE:  'Value: 20'",
     "     VISIBLE:  'Value: 20', cursor=1",
     "BRAILLE LINE:  'Value: vertical ScrollBar 16%'",
-    "     VISIBLE:  'Value: vertical ScrollBar 16%', cursor=8"]))
+    "     VISIBLE:  'Value: vertical ScrollBar 16%', cursor=8",
+    "SPEECH OUTPUT: 'vertical scroll bar 16 percent.'"]))
 
 
 sequence.append(utils.AssertionSummaryAction())

@@ -17,9 +17,9 @@ sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_9"))
 sequence.append(utils.AssertPresentationAction(
     "flatreview lndn (kp_9)",
-        ["BRAILLE LINE:  'Please Select one Font Size from the ComboxBox'",
+        ["BRAILLE LINE:  'Please Select one Font Size from the ComboBox'",
          "     VISIBLE:  'Please Select one Font Size from', cursor=1",
-         "SPEECH OUTPUT: 'Please Select one Font Size from the ComboxBox'"]))
+         "SPEECH OUTPUT: 'Please Select one Font Size from the ComboBox'"]))
         
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("KP_7"))

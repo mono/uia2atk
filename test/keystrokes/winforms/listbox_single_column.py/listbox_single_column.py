@@ -62,8 +62,11 @@ sequence.append(utils.AssertPresentationAction(
     "ask: which item and how many",
     ["BRAILLE LINE:  '5'",
      "     VISIBLE:  '5', cursor=1",
+     "SPEECH OUTPUT: 'tree table'",
+     "SPEECH OUTPUT: 'cell'",
      "SPEECH OUTPUT: '5'",
-     "SPEECH OUTPUT: 'item 6 of 20'"]))
+     "SPEECH OUTPUT: 'column 1 of 1'",
+     "SPEECH OUTPUT: 'row 6 of 20'"]))
 
 
 

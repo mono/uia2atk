@@ -1,3 +1,5 @@
+2009-09-26 Marco Skambraks <marco@suse.de>
+	* updated toolstripcombobox, vscrollbar, listbox_single_column
 2009-08-28 Marco Skambraks <marco@suse.de>
 	* updated groupbox.py, panel.py and combobox_dropdownlist.py
 2009-08-28 Marco Skambraks <marco@suse.de>
