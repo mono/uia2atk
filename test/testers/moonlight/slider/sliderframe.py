@@ -2,8 +2,8 @@
 ##############################################################################
 # Written by:  Calen Chen  <cachen@gmail.com>
 # Date:        2009/09/23
-# Description: progressbar.py wrapper script
-#              Used by the progressbar-*.py tests
+# Description: slider.py wrapper script
+#              Used by the slider-*.py tests
 ##############################################################################
 
 from strongwind import *
