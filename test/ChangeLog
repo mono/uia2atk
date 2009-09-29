@@ -1,3 +1,8 @@
+2009-09-29  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/slider/sliderframe.py,
+	* testers/moonlight/thumb/thumbframe.py:Thumb role should be pushbutton
+
 2009-09-29  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/: Renamed control name as Class name.

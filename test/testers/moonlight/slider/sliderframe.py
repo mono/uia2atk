@@ -32,10 +32,10 @@ class SliderFrame(accessibles.Frame):
                  (len(self.sliders), self.SLIDER_NUM)
         # find horizontal slider and thumb
         self.horizontal_slider = self.sliders[0]
-        self.horizontal_thumb = self.horizontal_slider.findThumb(None)
+        self.horizontal_thumb = self.horizontal_slider.findPushButton(None)
         # find vertical slider and thumb
         self.vertical_slider = self.sliders[1]
-        self.vertical_thumb = self.vertical_slider.findThumb(None)
+        self.vertical_thumb = self.vertical_slider.findPushButton(None)
 
     def assertValue(self, accessible, expected_value):
         """
