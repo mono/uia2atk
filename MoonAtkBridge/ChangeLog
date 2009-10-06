@@ -1,3 +1,8 @@
+2009-10-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonAtkBridge.mds: Add a python project for the
+	MoonAtkBridge tests.
+
 2009-09-23  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Update gtk-sharp to r142364 to include a fix for

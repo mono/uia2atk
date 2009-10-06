@@ -1,40 +1,20 @@
 <Combine name="MoonAtkBridge" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
-      <Entry build="True" name="MoonAtkBridge" configuration="Debug">
-        <Entries>
-          <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-        </Entries>
-      </Entry>
-      <Entries>
-        <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-      </Entries>
+      <Entry build="True" name="MoonAtkBridge" configuration="Debug" />
+      <Entry build="True" name="tests" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
-      <Entry build="True" name="MoonAtkBridge" configuration="Release">
-        <Entries>
-          <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-        </Entries>
-      </Entry>
-      <Entries>
-        <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-      </Entries>
+      <Entry build="True" name="MoonAtkBridge" configuration="Release" />
+      <Entry build="True" name="tests" configuration="Release" />
     </Configuration>
-    <Entries>
-      <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-    </Entries>
   </Configurations>
   <StartMode startupentry="MoonAtkBridge" single="True">
-    <Execute type="None" entry="MoonAtkBridge">
-      <Entries>
-        <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-      </Entries>
-    </Execute>
-    <Entries>
-      <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
-    </Entries>
+    <Execute type="None" entry="MoonAtkBridge" />
+    <Execute type="None" entry="tests" />
   </StartMode>
   <Entries>
     <Entry filename="MoonAtkBridge/MoonAtkBridge.mdp" />
+    <Entry filename="tests/tests.mdp" />
   </Entries>
 </Combine>
