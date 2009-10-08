@@ -487,5 +487,321 @@ namespace MonoTests.System.Windows.Automation
 			SWA.NotCondition rawViewNotCond = rawViewCond as SWA.NotCondition;
 			Assert.IsNull (rawViewNotCond, "RawViewCondition is not a NotCondition");
 		}
+
+		[Test]
+		public void PatternMemeberTest ()
+		{
+						Assert.AreEqual (SWA.DockPattern.Pattern, SWA.DockPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.DockPattern.Pattern);
+
+			Assert.AreEqual (SWA.DockPattern.DockPositionProperty, SWA.DockPatternIdentifiers.DockPositionProperty);
+			Assert.IsNotNull (SWA.DockPattern.DockPositionProperty);
+
+			Assert.AreEqual (SWA.ExpandCollapsePattern.Pattern, SWA.ExpandCollapsePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.ExpandCollapsePattern.Pattern);
+
+			Assert.AreEqual (SWA.ExpandCollapsePattern.ExpandCollapseStateProperty, SWA.ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty);
+			Assert.IsNotNull (SWA.ExpandCollapsePattern.ExpandCollapseStateProperty);
+
+			Assert.AreEqual (SWA.GridItemPattern.Pattern, SWA.GridItemPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.GridItemPattern.Pattern);
+
+			Assert.AreEqual (SWA.GridItemPattern.RowProperty, SWA.GridItemPatternIdentifiers.RowProperty);
+			Assert.IsNotNull (SWA.GridItemPattern.RowProperty);
+
+			Assert.AreEqual (SWA.GridItemPattern.ColumnProperty, SWA.GridItemPatternIdentifiers.ColumnProperty);
+			Assert.IsNotNull (SWA.GridItemPattern.ColumnProperty);
+
+			Assert.AreEqual (SWA.GridItemPattern.RowSpanProperty, SWA.GridItemPatternIdentifiers.RowSpanProperty);
+			Assert.IsNotNull (SWA.GridItemPattern.RowSpanProperty);
+
+			Assert.AreEqual (SWA.GridItemPattern.ColumnSpanProperty, SWA.GridItemPatternIdentifiers.ColumnSpanProperty);
+			Assert.IsNotNull (SWA.GridItemPattern.ColumnSpanProperty);
+
+			Assert.AreEqual (SWA.GridItemPattern.ContainingGridProperty, SWA.GridItemPatternIdentifiers.ContainingGridProperty);
+			Assert.IsNotNull (SWA.GridItemPattern.ContainingGridProperty);
+
+			Assert.AreEqual (SWA.GridPattern.Pattern, SWA.GridPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.GridPattern.Pattern);
+
+			Assert.AreEqual (SWA.GridPattern.RowCountProperty, SWA.GridPatternIdentifiers.RowCountProperty);
+			Assert.IsNotNull (SWA.GridPattern.RowCountProperty);
+
+			Assert.AreEqual (SWA.GridPattern.ColumnCountProperty, SWA.GridPatternIdentifiers.ColumnCountProperty);
+			Assert.IsNotNull (SWA.GridPattern.ColumnCountProperty);
+
+			Assert.AreEqual (SWA.InvokePattern.Pattern, SWA.InvokePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.InvokePattern.Pattern);
+
+			Assert.AreEqual (SWA.InvokePattern.InvokedEvent, SWA.InvokePatternIdentifiers.InvokedEvent);
+			Assert.IsNotNull (SWA.InvokePattern.InvokedEvent);
+
+			Assert.AreEqual (SWA.MultipleViewPattern.Pattern, SWA.MultipleViewPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.MultipleViewPattern.Pattern);
+
+			Assert.AreEqual (SWA.MultipleViewPattern.CurrentViewProperty, SWA.MultipleViewPatternIdentifiers.CurrentViewProperty);
+			Assert.IsNotNull (SWA.MultipleViewPattern.CurrentViewProperty);
+
+			Assert.AreEqual (SWA.MultipleViewPattern.SupportedViewsProperty, SWA.MultipleViewPatternIdentifiers.SupportedViewsProperty);
+			Assert.IsNotNull (SWA.MultipleViewPattern.SupportedViewsProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.Pattern, SWA.RangeValuePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.RangeValuePattern.Pattern);
+
+			Assert.AreEqual (SWA.RangeValuePattern.ValueProperty, SWA.RangeValuePatternIdentifiers.ValueProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.ValueProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.IsReadOnlyProperty, SWA.RangeValuePatternIdentifiers.IsReadOnlyProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.IsReadOnlyProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.MinimumProperty, SWA.RangeValuePatternIdentifiers.MinimumProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.MinimumProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.MaximumProperty, SWA.RangeValuePatternIdentifiers.MaximumProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.MaximumProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.LargeChangeProperty, SWA.RangeValuePatternIdentifiers.LargeChangeProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.LargeChangeProperty);
+
+			Assert.AreEqual (SWA.RangeValuePattern.SmallChangeProperty, SWA.RangeValuePatternIdentifiers.SmallChangeProperty);
+			Assert.IsNotNull (SWA.RangeValuePattern.SmallChangeProperty);
+
+			Assert.AreEqual (SWA.ScrollItemPattern.Pattern, SWA.ScrollItemPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.ScrollItemPattern.Pattern);
+
+			Assert.AreEqual (SWA.ScrollPattern.Pattern, SWA.ScrollPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.ScrollPattern.Pattern);
+
+			Assert.AreEqual (SWA.ScrollPattern.HorizontalScrollPercentProperty, SWA.ScrollPatternIdentifiers.HorizontalScrollPercentProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.HorizontalScrollPercentProperty);
+
+			Assert.AreEqual (SWA.ScrollPattern.VerticalScrollPercentProperty, SWA.ScrollPatternIdentifiers.VerticalScrollPercentProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.VerticalScrollPercentProperty);
+
+			Assert.AreEqual (SWA.ScrollPattern.HorizontalViewSizeProperty, SWA.ScrollPatternIdentifiers.HorizontalViewSizeProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.HorizontalViewSizeProperty);
+
+			Assert.AreEqual (SWA.ScrollPattern.VerticalViewSizeProperty, SWA.ScrollPatternIdentifiers.VerticalViewSizeProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.VerticalViewSizeProperty);
+
+			Assert.AreEqual (SWA.ScrollPattern.HorizontallyScrollableProperty, SWA.ScrollPatternIdentifiers.HorizontallyScrollableProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.HorizontallyScrollableProperty);
+
+			Assert.AreEqual (SWA.ScrollPattern.VerticallyScrollableProperty, SWA.ScrollPatternIdentifiers.VerticallyScrollableProperty);
+			Assert.IsNotNull (SWA.ScrollPattern.VerticallyScrollableProperty);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.Pattern, SWA.SelectionItemPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.SelectionItemPattern.Pattern);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.IsSelectedProperty, SWA.SelectionItemPatternIdentifiers.IsSelectedProperty);
+			Assert.IsNotNull (SWA.SelectionItemPattern.IsSelectedProperty);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.SelectionContainerProperty, SWA.SelectionItemPatternIdentifiers.SelectionContainerProperty);
+			Assert.IsNotNull (SWA.SelectionItemPattern.SelectionContainerProperty);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.ElementAddedToSelectionEvent, SWA.SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent);
+			Assert.IsNotNull (SWA.SelectionItemPattern.ElementAddedToSelectionEvent);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.ElementRemovedFromSelectionEvent, SWA.SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent);
+			Assert.IsNotNull (SWA.SelectionItemPattern.ElementRemovedFromSelectionEvent);
+
+			Assert.AreEqual (SWA.SelectionItemPattern.ElementSelectedEvent, SWA.SelectionItemPatternIdentifiers.ElementSelectedEvent);
+			Assert.IsNotNull (SWA.SelectionItemPattern.ElementSelectedEvent);
+
+			Assert.AreEqual (SWA.SelectionPattern.Pattern, SWA.SelectionPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.SelectionPattern.Pattern);
+
+			Assert.AreEqual (SWA.SelectionPattern.SelectionProperty, SWA.SelectionPatternIdentifiers.SelectionProperty);
+			Assert.IsNotNull (SWA.SelectionPattern.SelectionProperty);
+
+			Assert.AreEqual (SWA.SelectionPattern.CanSelectMultipleProperty, SWA.SelectionPatternIdentifiers.CanSelectMultipleProperty);
+			Assert.IsNotNull (SWA.SelectionPattern.CanSelectMultipleProperty);
+
+			Assert.AreEqual (SWA.SelectionPattern.IsSelectionRequiredProperty, SWA.SelectionPatternIdentifiers.IsSelectionRequiredProperty);
+			Assert.IsNotNull (SWA.SelectionPattern.IsSelectionRequiredProperty);
+
+			Assert.AreEqual (SWA.SelectionPattern.InvalidatedEvent, SWA.SelectionPatternIdentifiers.InvalidatedEvent);
+			Assert.IsNotNull (SWA.SelectionPattern.InvalidatedEvent);
+
+			Assert.AreEqual (SWA.TableItemPattern.Pattern, SWA.TableItemPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.TableItemPattern.Pattern);
+
+			Assert.AreEqual (SWA.TableItemPattern.RowHeaderItemsProperty, SWA.TableItemPatternIdentifiers.RowHeaderItemsProperty);
+			Assert.IsNotNull (SWA.TableItemPattern.RowHeaderItemsProperty);
+
+			Assert.AreEqual (SWA.TableItemPattern.ColumnHeaderItemsProperty, SWA.TableItemPatternIdentifiers.ColumnHeaderItemsProperty);
+			Assert.IsNotNull (SWA.TableItemPattern.ColumnHeaderItemsProperty);
+
+			Assert.AreEqual (SWA.TablePattern.Pattern, SWA.TablePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.TablePattern.Pattern);
+
+			Assert.AreEqual (SWA.TablePattern.RowHeadersProperty, SWA.TablePatternIdentifiers.RowHeadersProperty);
+			Assert.IsNotNull (SWA.TablePattern.RowHeadersProperty);
+
+			Assert.AreEqual (SWA.TablePattern.ColumnHeadersProperty, SWA.TablePatternIdentifiers.ColumnHeadersProperty);
+			Assert.IsNotNull (SWA.TablePattern.ColumnHeadersProperty);
+
+			Assert.AreEqual (SWA.TablePattern.RowOrColumnMajorProperty, SWA.TablePatternIdentifiers.RowOrColumnMajorProperty);
+			Assert.IsNotNull (SWA.TablePattern.RowOrColumnMajorProperty);
+
+			Assert.AreEqual (SWA.TextPattern.AnimationStyleAttribute, SWA.TextPatternIdentifiers.AnimationStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.AnimationStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.BackgroundColorAttribute, SWA.TextPatternIdentifiers.BackgroundColorAttribute);
+			Assert.IsNotNull (SWA.TextPattern.BackgroundColorAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.BulletStyleAttribute, SWA.TextPatternIdentifiers.BulletStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.BulletStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.CapStyleAttribute, SWA.TextPatternIdentifiers.CapStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.CapStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.CultureAttribute, SWA.TextPatternIdentifiers.CultureAttribute);
+			Assert.IsNotNull (SWA.TextPattern.CultureAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.FontNameAttribute, SWA.TextPatternIdentifiers.FontNameAttribute);
+			Assert.IsNotNull (SWA.TextPattern.FontNameAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.FontSizeAttribute, SWA.TextPatternIdentifiers.FontSizeAttribute);
+			Assert.IsNotNull (SWA.TextPattern.FontSizeAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.FontWeightAttribute, SWA.TextPatternIdentifiers.FontWeightAttribute);
+			Assert.IsNotNull (SWA.TextPattern.FontWeightAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.ForegroundColorAttribute, SWA.TextPatternIdentifiers.ForegroundColorAttribute);
+			Assert.IsNotNull (SWA.TextPattern.ForegroundColorAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.HorizontalTextAlignmentAttribute, SWA.TextPatternIdentifiers.HorizontalTextAlignmentAttribute);
+			Assert.IsNotNull (SWA.TextPattern.HorizontalTextAlignmentAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IndentationFirstLineAttribute, SWA.TextPatternIdentifiers.IndentationFirstLineAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IndentationFirstLineAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IndentationLeadingAttribute, SWA.TextPatternIdentifiers.IndentationLeadingAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IndentationLeadingAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IndentationTrailingAttribute, SWA.TextPatternIdentifiers.IndentationTrailingAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IndentationTrailingAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IsHiddenAttribute, SWA.TextPatternIdentifiers.IsHiddenAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IsHiddenAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IsItalicAttribute, SWA.TextPatternIdentifiers.IsItalicAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IsItalicAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IsReadOnlyAttribute, SWA.TextPatternIdentifiers.IsReadOnlyAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IsReadOnlyAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IsSubscriptAttribute, SWA.TextPatternIdentifiers.IsSubscriptAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IsSubscriptAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.IsSuperscriptAttribute, SWA.TextPatternIdentifiers.IsSuperscriptAttribute);
+			Assert.IsNotNull (SWA.TextPattern.IsSuperscriptAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.MarginBottomAttribute, SWA.TextPatternIdentifiers.MarginBottomAttribute);
+			Assert.IsNotNull (SWA.TextPattern.MarginBottomAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.MarginLeadingAttribute, SWA.TextPatternIdentifiers.MarginLeadingAttribute);
+			Assert.IsNotNull (SWA.TextPattern.MarginLeadingAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.MarginTopAttribute, SWA.TextPatternIdentifiers.MarginTopAttribute);
+			Assert.IsNotNull (SWA.TextPattern.MarginTopAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.MarginTrailingAttribute, SWA.TextPatternIdentifiers.MarginTrailingAttribute);
+			Assert.IsNotNull (SWA.TextPattern.MarginTrailingAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.MixedAttributeValue, SWA.TextPatternIdentifiers.MixedAttributeValue);
+			Assert.IsNotNull (SWA.TextPattern.MixedAttributeValue);
+
+			Assert.AreEqual (SWA.TextPattern.OutlineStylesAttribute, SWA.TextPatternIdentifiers.OutlineStylesAttribute);
+			Assert.IsNotNull (SWA.TextPattern.OutlineStylesAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.OverlineColorAttribute, SWA.TextPatternIdentifiers.OverlineColorAttribute);
+			Assert.IsNotNull (SWA.TextPattern.OverlineColorAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.OverlineStyleAttribute, SWA.TextPatternIdentifiers.OverlineStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.OverlineStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.Pattern, SWA.TextPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.TextPattern.Pattern);
+
+			Assert.AreEqual (SWA.TextPattern.StrikethroughColorAttribute, SWA.TextPatternIdentifiers.StrikethroughColorAttribute);
+			Assert.IsNotNull (SWA.TextPattern.StrikethroughColorAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.StrikethroughStyleAttribute, SWA.TextPatternIdentifiers.StrikethroughStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.StrikethroughStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.TabsAttribute, SWA.TextPatternIdentifiers.TabsAttribute);
+			Assert.IsNotNull (SWA.TextPattern.TabsAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.TextFlowDirectionsAttribute, SWA.TextPatternIdentifiers.TextFlowDirectionsAttribute);
+			Assert.IsNotNull (SWA.TextPattern.TextFlowDirectionsAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.UnderlineColorAttribute, SWA.TextPatternIdentifiers.UnderlineColorAttribute);
+			Assert.IsNotNull (SWA.TextPattern.UnderlineColorAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.UnderlineStyleAttribute, SWA.TextPatternIdentifiers.UnderlineStyleAttribute);
+			Assert.IsNotNull (SWA.TextPattern.UnderlineStyleAttribute);
+
+			Assert.AreEqual (SWA.TextPattern.TextChangedEvent, SWA.TextPatternIdentifiers.TextChangedEvent);
+			Assert.IsNotNull (SWA.TextPattern.TextChangedEvent);
+
+			Assert.AreEqual (SWA.TextPattern.TextSelectionChangedEvent, SWA.TextPatternIdentifiers.TextSelectionChangedEvent);
+			Assert.IsNotNull (SWA.TextPattern.TextSelectionChangedEvent);
+
+			Assert.AreEqual (SWA.TogglePattern.Pattern, SWA.TogglePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.TogglePattern.Pattern);
+
+			Assert.AreEqual (SWA.TogglePattern.ToggleStateProperty, SWA.TogglePatternIdentifiers.ToggleStateProperty);
+			Assert.IsNotNull (SWA.TogglePattern.ToggleStateProperty);
+
+			Assert.AreEqual (SWA.TransformPattern.Pattern, SWA.TransformPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.TransformPattern.Pattern);
+
+			Assert.AreEqual (SWA.TransformPattern.CanMoveProperty, SWA.TransformPatternIdentifiers.CanMoveProperty);
+			Assert.IsNotNull (SWA.TransformPattern.CanMoveProperty);
+
+			Assert.AreEqual (SWA.TransformPattern.CanResizeProperty, SWA.TransformPatternIdentifiers.CanResizeProperty);
+			Assert.IsNotNull (SWA.TransformPattern.CanResizeProperty);
+
+			Assert.AreEqual (SWA.TransformPattern.CanRotateProperty, SWA.TransformPatternIdentifiers.CanRotateProperty);
+			Assert.IsNotNull (SWA.TransformPattern.CanRotateProperty);
+
+			Assert.AreEqual (SWA.ValuePattern.Pattern, SWA.ValuePatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.ValuePattern.Pattern);
+
+			Assert.AreEqual (SWA.ValuePattern.ValueProperty, SWA.ValuePatternIdentifiers.ValueProperty);
+			Assert.IsNotNull (SWA.ValuePattern.ValueProperty);
+
+			Assert.AreEqual (SWA.ValuePattern.IsReadOnlyProperty, SWA.ValuePatternIdentifiers.IsReadOnlyProperty);
+			Assert.IsNotNull (SWA.ValuePattern.IsReadOnlyProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.Pattern, SWA.WindowPatternIdentifiers.Pattern);
+			Assert.IsNotNull (SWA.WindowPattern.Pattern);
+
+			Assert.AreEqual (SWA.WindowPattern.CanMaximizeProperty, SWA.WindowPatternIdentifiers.CanMaximizeProperty);
+			Assert.IsNotNull (SWA.WindowPattern.CanMaximizeProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.CanMinimizeProperty, SWA.WindowPatternIdentifiers.CanMinimizeProperty);
+			Assert.IsNotNull (SWA.WindowPattern.CanMinimizeProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.IsModalProperty, SWA.WindowPatternIdentifiers.IsModalProperty);
+			Assert.IsNotNull (SWA.WindowPattern.IsModalProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.IsTopmostProperty, SWA.WindowPatternIdentifiers.IsTopmostProperty);
+			Assert.IsNotNull (SWA.WindowPattern.IsTopmostProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.WindowVisualStateProperty, SWA.WindowPatternIdentifiers.WindowVisualStateProperty);
+			Assert.IsNotNull (SWA.WindowPattern.WindowVisualStateProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.WindowInteractionStateProperty, SWA.WindowPatternIdentifiers.WindowInteractionStateProperty);
+			Assert.IsNotNull (SWA.WindowPattern.WindowInteractionStateProperty);
+
+			Assert.AreEqual (SWA.WindowPattern.WindowOpenedEvent, SWA.WindowPatternIdentifiers.WindowOpenedEvent);
+			Assert.IsNotNull (SWA.WindowPattern.WindowOpenedEvent);
+
+			Assert.AreEqual (SWA.WindowPattern.WindowClosedEvent, SWA.WindowPatternIdentifiers.WindowClosedEvent);
+			Assert.IsNotNull (SWA.WindowPattern.WindowClosedEvent);
+		}
 	}
 }

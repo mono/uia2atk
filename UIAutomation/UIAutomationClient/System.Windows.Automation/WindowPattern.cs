@@ -106,22 +106,31 @@ namespace System.Windows.Automation
 			source.SetWindowVisualState (state);
 		}
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern
+			= WindowPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty CanMaximizeProperty;
+		public static readonly AutomationProperty CanMaximizeProperty
+			= WindowPatternIdentifiers.CanMaximizeProperty;
 
-		public static readonly AutomationProperty CanMinimizeProperty;
+		public static readonly AutomationProperty CanMinimizeProperty
+			= WindowPatternIdentifiers.CanMinimizeProperty;
 
-		public static readonly AutomationProperty IsModalProperty;
+		public static readonly AutomationProperty IsModalProperty
+			= WindowPatternIdentifiers.IsModalProperty;
 
-		public static readonly AutomationProperty IsTopmostProperty;
+		public static readonly AutomationProperty IsTopmostProperty
+			= WindowPatternIdentifiers.IsTopmostProperty;
 
-		public static readonly AutomationProperty WindowVisualStateProperty;
+		public static readonly AutomationProperty WindowVisualStateProperty
+			= WindowPatternIdentifiers.WindowVisualStateProperty;
 
-		public static readonly AutomationProperty WindowInteractionStateProperty;
+		public static readonly AutomationProperty WindowInteractionStateProperty
+			= WindowPatternIdentifiers.WindowInteractionStateProperty;
 
-		public static readonly AutomationEvent WindowOpenedEvent;
+		public static readonly AutomationEvent WindowOpenedEvent
+			= WindowPatternIdentifiers.WindowOpenedEvent;
 
-		public static readonly AutomationEvent WindowClosedEvent;
+		public static readonly AutomationEvent WindowClosedEvent
+			= WindowPatternIdentifiers.WindowClosedEvent;
 	}
 }

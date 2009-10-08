@@ -71,10 +71,13 @@ namespace System.Windows.Automation
 			return SourceManager.GetOrCreateAutomationElement (source.GetItem (row, column));
 		}
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern
+			= GridPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty RowCountProperty;
+		public static readonly AutomationProperty RowCountProperty
+			= GridPatternIdentifiers.RowCountProperty;
 
-		public static readonly AutomationProperty ColumnCountProperty;
+		public static readonly AutomationProperty ColumnCountProperty
+			= GridPatternIdentifiers.ColumnCountProperty;
 	}
 }

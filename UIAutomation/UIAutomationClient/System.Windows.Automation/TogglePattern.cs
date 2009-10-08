@@ -67,8 +67,10 @@ namespace System.Windows.Automation
 			source.Toggle ();
 		}
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern
+			= TogglePatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty ToggleStateProperty;
+		public static readonly AutomationProperty ToggleStateProperty
+			= TogglePatternIdentifiers.ToggleStateProperty;
 	}
 }

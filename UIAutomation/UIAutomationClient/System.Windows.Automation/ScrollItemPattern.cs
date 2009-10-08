@@ -43,6 +43,7 @@ namespace System.Windows.Automation
 			source.ScrollIntoView ();
 		}
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern
+			= ScrollItemPatternIdentifiers.Pattern;
 	}
 }

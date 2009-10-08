@@ -77,14 +77,19 @@ namespace System.Windows.Automation
 			}
 		}
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern
+			= SelectionPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty SelectionProperty;
+		public static readonly AutomationProperty SelectionProperty
+			= SelectionPatternIdentifiers.SelectionProperty;
 
-		public static readonly AutomationProperty CanSelectMultipleProperty;
+		public static readonly AutomationProperty CanSelectMultipleProperty
+			= SelectionPatternIdentifiers.CanSelectMultipleProperty;
 
-		public static readonly AutomationProperty IsSelectionRequiredProperty;
+		public static readonly AutomationProperty IsSelectionRequiredProperty
+			= SelectionPatternIdentifiers.IsSelectionRequiredProperty;
 
-		public static readonly AutomationEvent InvalidatedEvent;
+		public static readonly AutomationEvent InvalidatedEvent
+			= SelectionPatternIdentifiers.InvalidatedEvent;
 	}
 }
