@@ -38,6 +38,7 @@ namespace SampleForm {
 		public Form1 ()
 		{
 			InitializeComponent ();
+			txtCommand.AccessibleName = "txtCommand";
 
 			this.button4.Click += new System.EventHandler (this.button4_Click);
 
@@ -71,11 +72,6 @@ namespace SampleForm {
 			Console.WriteLine ("textbox1 & label1's texts are modified.");
 		}
 
-		private void button2_Click (object sender, EventArgs e)
-		{
-			button1.PerformClick ();
-		}
-		
 		private void button4_Click (object sender, EventArgs e)
 		{
 			numericUpDown1.Enabled = !numericUpDown1.Enabled;
@@ -103,6 +99,25 @@ namespace SampleForm {
 			}
 			if (controlToDelete != null)
 				panel1.Controls.Remove (controlToDelete);
+		}
+
+		private void btnRun_Click (object sender, EventArgs e)
+		{
+			const string sampleText = "Lorem ipsum dolor sit amet";
+
+			string cmd = txtCommand.Text;
+			if (cmd == "click button1")
+				button1.PerformClick ();
+			else if (cmd == "set textbox3 text")
+				textBox3.Text = sampleText;
+			else if (cmd == "select textbox3") {
+				if (textBox3.Text.Length < 4)
+					textBox3.Text = sampleText;
+				if (textBox3.SelectionLength == 3)
+					textBox3.Select (0, 4);
+				else
+					textBox3.Select (0, 3);
+			}
 		}
 	}
 }

@@ -284,6 +284,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
+			} else if (pattern.Id == TextPatternIdentifiers.Pattern.Id) {
+				DCI.ITextPattern textPattern = Bus.Session.GetObject<DCI.ITextPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TextPatternSubPath));
+				ret = new UiaDbusTextPattern (textPattern, busName, source);
 			} else if (pattern.Id == ValuePatternIdentifiers.Pattern.Id) {
 				DCI.IValuePattern valuePattern = Bus.Session.GetObject<DCI.IValuePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ValuePatternSubPath));

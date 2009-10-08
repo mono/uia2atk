@@ -60,7 +60,6 @@ namespace MonoTests.System.Windows.Automation
 		public void InvokeEventTest ()
 		{
 			int eventCount = 0;
-			InvokePattern pattern = (InvokePattern) button2Element.GetCurrentPattern (InvokePattern.Pattern);
 			AutomationEventHandler handler = delegate (object sender, AutomationEventArgs args) {
 				eventCount++; };
 			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
@@ -70,30 +69,25 @@ namespace MonoTests.System.Windows.Automation
 			                                 button1Element, handler);
 			//Shall have no effect.
 			At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent, testFormElement, handler);
-			pattern.Invoke ();
-			Thread.Sleep (1000);
+			RunCommand ("click button1");
 			Assert.AreEqual (1, eventCount, "Invoke event fired");
 
 			eventCount = 0;
 			At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent, button1Element, handler);
-			pattern.Invoke ();
-			Thread.Sleep (1000);
+			RunCommand ("click button1");
 			Assert.AreEqual (0, eventCount, "Invoke event not fired");
-
 			eventCount = 0;
 			//Test for add the same handler again.
 			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
 			                              TreeScope.Element, handler);
 			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
 			                              TreeScope.Element, handler);
-			pattern.Invoke ();
-			Thread.Sleep (1000);
+			RunCommand ("click button1");
 			Assert.AreEqual (2, eventCount, "Invoke event fired");
 
 			eventCount = 0;
 			At.RemoveAllEventHandlers ();
-			pattern.Invoke ();
-			Thread.Sleep (1000);
+			RunCommand ("click button1");
 			Assert.AreEqual (0, eventCount, "Invoke event not fired");
 		}
 

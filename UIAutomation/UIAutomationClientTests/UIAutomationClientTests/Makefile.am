@@ -81,6 +81,7 @@ FILES =  \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \
+	TextPatternTest.cs \
 	TogglePatternTest.cs \
 	TreeWalkerTest.cs \
 	ValuePatternTest.cs 

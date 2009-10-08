@@ -163,9 +163,11 @@ namespace System.Windows.Automation
 
 		public static readonly AutomationTextAttribute UnderlineStyleAttribute = TextPatternIdentifiers.UnderlineStyleAttribute;
 
-		public static readonly AutomationEvent TextChangedEvent;
+		public static readonly AutomationEvent TextChangedEvent =
+			TextPatternIdentifiers.TextChangedEvent;
 
-		public static readonly AutomationEvent TextSelectionChangedEvent;
+		public static readonly AutomationEvent TextSelectionChangedEvent =
+			TextPatternIdentifiers.TextSelectionChangedEvent;
 #endregion
 	}
 }

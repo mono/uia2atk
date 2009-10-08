@@ -1,3 +1,15 @@
+2009-10-09  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/SampleForm/Form1.Designer.cs: 
+	* UIAutomationClient/System.Windows.Automation/TextPattern.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/TextPatternTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/InvokePatternTest.cs: 
+	* UIAutomationClient/System.Windows.Automation.Text/TextPatternRange.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj: Implementing TextPattern 
+
 2009-09-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

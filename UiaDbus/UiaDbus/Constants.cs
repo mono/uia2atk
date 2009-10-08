@@ -47,6 +47,7 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string SelectionItemPatternInterfaceName = Namespace + ".SelectionItemPattern";
 		public const string SelectionPatternInterfaceName = Namespace + ".SelectionPattern";
 		public const string TextPatternInterfaceName = Namespace + ".TextPattern";
+		public const string TextPatternRangeInterfaceName = Namespace + ".TextPatternRange";
 		public const string TogglePatternInterfaceName = Namespace + ".TogglePattern";
 		public const string TransformPatternInterfaceName = Namespace + ".TransformPattern";
 		public const string ValuePatternInterfaceName = Namespace + ".ValuePattern";

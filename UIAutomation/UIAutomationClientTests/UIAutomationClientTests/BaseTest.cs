@@ -69,6 +69,8 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement panel1Element;
 		protected AutomationElement btnAddTextboxElement;
 		protected AutomationElement btnRemoveTextboxElement;
+		protected AutomationElement txtCommandElement;
+		protected AutomationElement btnRunElement;
 		protected AutomationElement treeView1Element;
 		protected AutomationElement table1Element;
 
@@ -84,7 +86,7 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[TestFixtureSetUp]
-		public void FixtureSetUp ()
+		public virtual void FixtureSetUp ()
 		{
 			patternProperties = new Dictionary<AutomationPattern, AutomationProperty> ();
 			patternProperties.Add (DockPatternIdentifiers.Pattern, AEIds.IsDockPatternAvailableProperty);
@@ -133,6 +135,9 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (panel1Element);
 			Assert.IsNotNull (btnAddTextboxElement);
 			Assert.IsNotNull (btnRemoveTextboxElement);
+
+			Assert.IsNotNull (txtCommandElement);
+			Assert.IsNotNull (btnRunElement);
 			Assert.IsNotNull (numericUpDown1Element);
 			Assert.IsNotNull (treeView1Element);
 			// Enabling only for Atspi until we have a DataGrid
@@ -147,7 +152,7 @@ namespace MonoTests.System.Windows.Automation
 			p = StartApplication (@"SampleForm.exe",
 				String.Empty);
 
-			Thread.Sleep (2000);
+			Thread.Sleep (4000);
 
 			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ProcessIdProperty,
@@ -218,6 +223,13 @@ namespace MonoTests.System.Windows.Automation
 			btnRemoveTextboxElement = panel1Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"Remove"));
+
+			txtCommandElement = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "txtCommand"));
+
+			btnRunElement = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "Run"));
+
 			treeView1Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Tree));
@@ -333,6 +345,16 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		#endregion
+
+		protected void RunCommand (string command)
+		{
+			ValuePattern cmd = (ValuePattern) txtCommandElement.GetCurrentPattern (ValuePattern.Pattern);
+			cmd.SetValue (command);
+			Thread.Sleep (500);
+			InvokePattern run = (InvokePattern) btnRunElement.GetCurrentPattern (InvokePattern.Pattern);
+			run.Invoke ();
+			Thread.Sleep (500);
+		}
 
 		public virtual bool Atspi {
 			get {

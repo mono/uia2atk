@@ -49,6 +49,8 @@ FILES =  \
 	UiaDbusAutomationSource.cs \
 	UiaDbusElement.cs \
 	UiaDbusInvokePattern.cs \
+	UiaDbusTextPattern.cs \
+	UiaDbusTextPatternRange.cs \
 	UiaDbusValuePattern.cs
 
 DATA_FILES = 

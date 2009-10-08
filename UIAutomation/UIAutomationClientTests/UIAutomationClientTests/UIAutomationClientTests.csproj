@@ -67,6 +67,7 @@
     <Compile Include="TreeWalkerTest.cs" />
     <Compile Include="InvokePatternTest.cs" />
     <Compile Include="RangeValuePatternTest.cs" />
+    <Compile Include="TextPatternTest.cs" />
     <Compile Include="ValuePatternTest.cs" />
   </ItemGroup>
   <ItemGroup>

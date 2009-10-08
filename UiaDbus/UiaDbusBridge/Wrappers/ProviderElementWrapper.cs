@@ -46,13 +46,56 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 #endregion
 
-#region Private Fields
+#region Private Fields and Types
 
 		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragment fragment;
 		private int pathId;
 		private Bus bus;
-		private Dictionary<int, string> patternPathMapping = new Dictionary<int, string> ();
+		private Dictionary<int, PatternInfo> patternMapping = new Dictionary<int, PatternInfo> ();
+
+		private struct PatternInfo
+		{
+			public string Path;
+			public object Provider;
+			public object ProviderWrapper;
+		}
+
+		private delegate object CreateWrapperFromProvider (object provider);
+
+#endregion
+
+#region Private Methods
+
+		private PatternInfo GetOrCreatePatternInfo (int id, object provider,
+		                                     string path,
+		                                     CreateWrapperFromProvider wrapperCreator)
+		{
+			PatternInfo oldInfo;
+			if (patternMapping.TryGetValue (id, out oldInfo)) {
+				if (oldInfo.Provider == provider)
+					return oldInfo;
+			}
+
+			object wrapper = wrapperCreator (provider);
+			PatternInfo newInfo = new PatternInfo {
+				Path = path,
+				Provider = provider,
+				ProviderWrapper = wrapper
+			};
+			patternMapping [id] = newInfo;
+			bus.Register (new ObjectPath (path), wrapper);
+
+			return newInfo;
+		}
+
+		private void PerformUnregisterPattern (PatternInfo info)
+		{
+			bus.Unregister (new ObjectPath (info.Path));
+			var disposable = info.ProviderWrapper as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+		}
 
 #endregion
 
@@ -420,31 +463,33 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public string GetCurrentPatternPath (int patternId)
 		{
+			if (bus == null)
+				throw new ElementNotAvailableException ();
+
 			object patternProvider = provider.GetPatternProvider (patternId);
 			if (patternProvider == null)
 				return string.Empty;
 
-			string patternPath;
-			if (patternPathMapping.TryGetValue (patternId, out patternPath))
-				return patternPath;
-
-			patternPath = this.Path + "/";
-			object patternObject = null;
+			string patternPath = this.Path + "/";
 
 			if (patternId == InvokePatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.InvokePatternSubPath;
-				patternObject = new InvokePatternWrapper ((IInvokeProvider) patternProvider);
+				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+					delegate (object p) {
+						return new InvokePatternWrapper ((IInvokeProvider) p); });
 			} else if (patternId == ValuePatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.ValuePatternSubPath;
-				patternObject = new ValuePatternWrapper ((IValueProvider) patternProvider);
+				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+					delegate (object p) {
+						return new ValuePatternWrapper ((IValueProvider) p); });
+			} else if (patternId == TextPatternIdentifiers.Pattern.Id) {
+				patternPath += DC.Constants.TextPatternSubPath;
+				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+					delegate (object p) {
+						return new TextPatternWrapper ((ITextProvider) p, bus, patternPath); });
 			} else
 				throw new InvalidOperationException ();
 
-			if (bus == null)
-				throw new ElementNotAvailableException ();
-
-			bus.Register (new ObjectPath (patternPath), patternObject);
-			patternPathMapping.Add(patternId, patternPath);
 			return patternPath;
 		}
 
@@ -466,19 +511,20 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public void Unregister ()
 		{
 			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()));
-			foreach (string patternPath in patternPathMapping.Values)
-				bus.Unregister (new ObjectPath (patternPath));
-			patternPathMapping.Clear ();
+			foreach (PatternInfo info in patternMapping.Values)
+				PerformUnregisterPattern (info);
+			patternMapping.Clear ();
 		}
 
 		public void UnregisterPattern (int patternId)
 		{
-			string patternPath;
-			if (patternPathMapping.TryGetValue (patternId, out patternPath)) {
-				patternPathMapping.Remove (patternId);
-				bus.Unregister (new ObjectPath (patternPath));
+			PatternInfo info;
+			if (patternMapping.TryGetValue (patternId, out info)) {
+				PerformUnregisterPattern (info);
+				patternMapping.Remove (patternId);
 			}
 		}
+
 #endregion
 	}
 }

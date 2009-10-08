@@ -92,6 +92,8 @@ namespace System.Windows.Automation.Text
 		                                       Object @value, bool backward)
 		{
 			ITextPatternRange range = source.FindAttribute (attribute, value, backward);
+			if (range == null)
+				return null;
 			return new TextPatternRange (TextPattern, range);
 		}
 
@@ -99,6 +101,8 @@ namespace System.Windows.Automation.Text
 		                                  bool ignoreCase)
 		{
 			ITextPatternRange range = source.FindText (text, backward, ignoreCase);
+			if (range == null)
+				return null;
 			return new TextPatternRange (TextPattern, range);
 		}
 

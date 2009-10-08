@@ -44,6 +44,8 @@ namespace SampleForm {
 			this.textBox2 = new System.Windows.Forms.TextBox ();
 			this.textBox3 = new System.Windows.Forms.TextBox ();
 			this.treeView1 = new System.Windows.Forms.TreeView ();
+			this.txtCommand = new System.Windows.Forms.TextBox();
+            this.btnRun = new System.Windows.Forms.Button();
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown ();
 			this.groupBox1.SuspendLayout ();
 			this.groupBox3.SuspendLayout ();
@@ -166,7 +168,6 @@ namespace SampleForm {
 			this.button2.TabIndex = 0;
 			this.button2.Text = "button2";
 			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler (this.button2_Click);
 			// 
 			// panel1
 			// 
@@ -195,7 +196,6 @@ namespace SampleForm {
 			this.btnAddTextbox.TabIndex = 0;
 			this.btnAddTextbox.Text = "Add";
 			this.btnAddTextbox.UseVisualStyleBackColor = true;
-			this.btnAddTextbox.Click += new System.EventHandler (this.btnAddTextbox_Click);
 			// 
 			// label1
 			// 
@@ -241,6 +241,24 @@ namespace SampleForm {
 			this.treeView1.Size = new System.Drawing.Size (121, 97);
 			this.treeView1.TabIndex = 8;
 			// 
+			// txtCommand
+			// 
+			this.txtCommand.Location = new System.Drawing.Point(44, 432);
+			this.txtCommand.Name = "txtCommand";
+			this.txtCommand.Size = new System.Drawing.Size(120, 21);
+			this.txtCommand.TabIndex = 9;
+			this.txtCommand.Text = "command";
+			// 
+			// btnRun
+			// 
+			this.btnRun.Location = new System.Drawing.Point(170, 432);
+			this.btnRun.Name = "btnRun";
+			this.btnRun.Size = new System.Drawing.Size(45, 23);
+			this.btnRun.TabIndex = 10;
+			this.btnRun.Text = "Run";
+			this.btnRun.UseVisualStyleBackColor = true;
+			this.btnRun.Click += new System.EventHandler (this.btnRun_Click);
+			// 
 			// numericUpDown1
 			// 
 			this.numericUpDown1.Location = new System.Drawing.Point (102, 110);
@@ -253,6 +271,8 @@ namespace SampleForm {
 			this.AutoScaleDimensions = new System.Drawing.SizeF (6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size (587, 530);
+			this.Controls.Add(this.btnRun);
+			this.Controls.Add(this.txtCommand);
 			this.Controls.Add (this.numericUpDown1);
 			this.Controls.Add (this.treeView1);
 			this.Controls.Add (this.panel1);
@@ -296,6 +316,8 @@ namespace SampleForm {
 		private System.Windows.Forms.Button btnRemoveTextbox;
 		private System.Windows.Forms.Button btnAddTextbox;
 		private System.Windows.Forms.TreeView treeView1;
+		private System.Windows.Forms.TextBox txtCommand;
+		private System.Windows.Forms.Button btnRun;
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
 	}
 }

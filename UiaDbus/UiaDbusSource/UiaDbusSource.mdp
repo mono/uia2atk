@@ -24,6 +24,8 @@
     <File name="DbusExceptionTranslator.cs" subtype="Code" buildaction="Compile" />
     <File name="EventHandlerManager.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusValuePattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="UiaDbusTextPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="UiaDbusTextPatternRange.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

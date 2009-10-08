@@ -48,6 +48,8 @@ FILES =  \
 	AutomationBridge.cs \
 	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \
+	Wrappers/TextPatternRangeWrapper.cs \
+	Wrappers/TextPatternWrapper.cs \
 	Wrappers/ValuePatternWrapper.cs 
 
 DATA_FILES = 

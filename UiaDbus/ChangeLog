@@ -1,3 +1,22 @@
+2009-10-09  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Makefile.am: 
+	* UiaDbus/UiaDbus.mdp: 
+	* UiaDbus/Constants.cs: 
+	* UiaDbusBridge/Makefile.am: 
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/UiaDbusBridge.mdp: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusSource/UiaDbusSource.mdp: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbus/Interfaces/ITextPattern.cs: 
+	* UiaDbusSource/UiaDbusTextPattern.cs: 
+	* UiaDbus/Interfaces/ITextPatternRange.cs: 
+	* UiaDbusSource/UiaDbusTextPatternRange.cs: 
+	* UiaDbusBridge/Wrappers/TextPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: 
+	* UiaDbusBridge/Wrappers/TextPatternRangeWrapper.cs: Implementing TextPattern
+
 2009-09-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* COPYING: Credit Alp Toker for use of his ndesk-dbus library.

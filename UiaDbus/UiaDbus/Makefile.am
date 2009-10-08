@@ -37,6 +37,8 @@ SOURCE_FILES =  \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
 	Interfaces/IInvokePattern.cs \
+	Interfaces/ITextPattern.cs \
+	Interfaces/ITextPatternRange.cs \
 	Interfaces/IValuePattern.cs \
 	Point.cs \
 	Rect.cs 

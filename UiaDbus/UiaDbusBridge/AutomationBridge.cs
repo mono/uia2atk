@@ -242,6 +242,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
+		internal IRawElementProviderSimple FindProviderByPath (string path)
+		{
+			foreach (var entry in providerWrapperMapping)
+			{
+				if (entry.Value.Path == path)
+						return entry.Key;
+			}
+			return null;
+		}
+
 		internal IRawElementProviderSimple FindProviderByRuntimeId (int [] runtimeId)
 		{
 			foreach (var provider in providerWrapperMapping.Keys)
