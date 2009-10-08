@@ -3,6 +3,27 @@
 	* UIAutomationClient/System.Windows.Automation/DockPattern.cs: 
 	* UIAutomationClient/System.Windows.Automation/GridPattern.cs: 
 	* UIAutomationClient/System.Windows.Automation/TablePattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/ValuePattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/InvokePattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/ScrollPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/TogglePattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/WindowPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/GridItemPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/SelectionPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/TableItemPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/TransformPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/RangeValuePattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/ScrollItemPattern.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationTest.cs: 
+	* UIAutomationClient/System.Windows.Automation/MultipleViewPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/SelectionItemPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/ExpandCollapsePattern.cs: Modify formats to follow the coding standard. 
+
+2009-10-09  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/DockPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/GridPattern.cs: 
+	* UIAutomationClient/System.Windows.Automation/TablePattern.cs: 
 	* UIAutomationClient/System.Windows.Automation/ScrollPattern.cs: 
 	* UIAutomationClient/System.Windows.Automation/TogglePattern.cs: 
 	* UIAutomationClient/System.Windows.Automation/WindowPattern.cs: 
