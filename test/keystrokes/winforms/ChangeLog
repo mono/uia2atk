@@ -1,5 +1,6 @@
 2009-10-08 Marco Skambraks <marco@suse.de>
-	* added checkedlistbox.py
+	* added checkedlistbox.py and scrollbar.py
+
 2009-09-26 Marco Skambraks <marco@suse.de>
 	* updated toolstripcombobox, vscrollbar, listbox_single_column
 2009-08-28 Marco Skambraks <marco@suse.de>
