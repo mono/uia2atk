@@ -489,9 +489,9 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
-		public void PatternMemeberTest ()
+		public void PatternMemberTest ()
 		{
-						Assert.AreEqual (SWA.DockPattern.Pattern, SWA.DockPatternIdentifiers.Pattern);
+			Assert.AreEqual (SWA.DockPattern.Pattern, SWA.DockPatternIdentifiers.Pattern);
 			Assert.IsNotNull (SWA.DockPattern.Pattern);
 
 			Assert.AreEqual (SWA.DockPattern.DockPositionProperty, SWA.DockPatternIdentifiers.DockPositionProperty);

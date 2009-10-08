@@ -87,16 +87,16 @@ namespace System.Windows.Automation
 			source.Rotate (degrees);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= TransformPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			TransformPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty CanMoveProperty
-			= TransformPatternIdentifiers.CanMoveProperty;
+		public static readonly AutomationProperty CanMoveProperty =
+			TransformPatternIdentifiers.CanMoveProperty;
 
-		public static readonly AutomationProperty CanResizeProperty
-			= TransformPatternIdentifiers.CanResizeProperty;
+		public static readonly AutomationProperty CanResizeProperty =
+			TransformPatternIdentifiers.CanResizeProperty;
 
-		public static readonly AutomationProperty CanRotateProperty
-			= TransformPatternIdentifiers.CanRotateProperty;
+		public static readonly AutomationProperty CanRotateProperty =
+			TransformPatternIdentifiers.CanRotateProperty;
 	}
 }

@@ -72,10 +72,10 @@ namespace System.Windows.Automation
 			source.Collapse ();
 		}
 
-		public static readonly AutomationPattern Pattern
-			= ExpandCollapsePatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			ExpandCollapsePatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty ExpandCollapseStateProperty
-			= ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty;
+		public static readonly AutomationProperty ExpandCollapseStateProperty =
+			ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty;
 	}
 }

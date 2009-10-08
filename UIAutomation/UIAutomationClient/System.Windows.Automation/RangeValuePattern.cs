@@ -92,25 +92,25 @@ namespace System.Windows.Automation
 			source.SetValue (value);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= RangeValuePatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			RangeValuePatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty ValueProperty
-			= RangeValuePatternIdentifiers.ValueProperty;
+		public static readonly AutomationProperty ValueProperty =
+			RangeValuePatternIdentifiers.ValueProperty;
 
-		public static readonly AutomationProperty IsReadOnlyProperty
-			= RangeValuePatternIdentifiers.IsReadOnlyProperty;
+		public static readonly AutomationProperty IsReadOnlyProperty =
+			RangeValuePatternIdentifiers.IsReadOnlyProperty;
 
-		public static readonly AutomationProperty MinimumProperty
-			= RangeValuePatternIdentifiers.MinimumProperty;
+		public static readonly AutomationProperty MinimumProperty =
+			RangeValuePatternIdentifiers.MinimumProperty;
 
-		public static readonly AutomationProperty MaximumProperty
-			= RangeValuePatternIdentifiers.MaximumProperty;
+		public static readonly AutomationProperty MaximumProperty =
+			RangeValuePatternIdentifiers.MaximumProperty;
 
-		public static readonly AutomationProperty LargeChangeProperty
-			= RangeValuePatternIdentifiers.LargeChangeProperty;
+		public static readonly AutomationProperty LargeChangeProperty =
+			RangeValuePatternIdentifiers.LargeChangeProperty;
 
-		public static readonly AutomationProperty SmallChangeProperty
-			= RangeValuePatternIdentifiers.SmallChangeProperty;
+		public static readonly AutomationProperty SmallChangeProperty =
+			RangeValuePatternIdentifiers.SmallChangeProperty;
 	}
 }

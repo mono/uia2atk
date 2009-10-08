@@ -80,13 +80,13 @@ namespace System.Windows.Automation
 			source.SetCurrentView (viewId);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= MultipleViewPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			MultipleViewPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty CurrentViewProperty
-			= MultipleViewPatternIdentifiers.CurrentViewProperty;
+		public static readonly AutomationProperty CurrentViewProperty =
+			MultipleViewPatternIdentifiers.CurrentViewProperty;
 
-		public static readonly AutomationProperty SupportedViewsProperty
-			= MultipleViewPatternIdentifiers.SupportedViewsProperty;
+		public static readonly AutomationProperty SupportedViewsProperty =
+			MultipleViewPatternIdentifiers.SupportedViewsProperty;
 	}
 }

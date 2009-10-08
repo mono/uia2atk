@@ -82,22 +82,22 @@ namespace System.Windows.Automation
 			source.RemoveFromSelection ();
 		}
 
-		public static readonly AutomationPattern Pattern
-			= SelectionItemPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			SelectionItemPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty IsSelectedProperty
-			= SelectionItemPatternIdentifiers.IsSelectedProperty;
+		public static readonly AutomationProperty IsSelectedProperty =
+			SelectionItemPatternIdentifiers.IsSelectedProperty;
 
-		public static readonly AutomationProperty SelectionContainerProperty
-			= SelectionItemPatternIdentifiers.SelectionContainerProperty;
+		public static readonly AutomationProperty SelectionContainerProperty =
+			SelectionItemPatternIdentifiers.SelectionContainerProperty;
 
-		public static readonly AutomationEvent ElementAddedToSelectionEvent
-			= SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
+		public static readonly AutomationEvent ElementAddedToSelectionEvent =
+			SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
 
-		public static readonly AutomationEvent ElementRemovedFromSelectionEvent
-			= SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
+		public static readonly AutomationEvent ElementRemovedFromSelectionEvent =
+			SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
 
-		public static readonly AutomationEvent ElementSelectedEvent
-			= SelectionItemPatternIdentifiers.ElementSelectedEvent;
+		public static readonly AutomationEvent ElementSelectedEvent =
+			SelectionItemPatternIdentifiers.ElementSelectedEvent;
 	}
 }

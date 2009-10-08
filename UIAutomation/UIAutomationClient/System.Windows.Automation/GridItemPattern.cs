@@ -82,22 +82,22 @@ namespace System.Windows.Automation
 			}
 		}
 
-		public static readonly AutomationPattern Pattern
-			= GridItemPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			GridItemPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty RowProperty
-			= GridItemPatternIdentifiers.RowProperty;
+		public static readonly AutomationProperty RowProperty =
+			GridItemPatternIdentifiers.RowProperty;
 
-		public static readonly AutomationProperty ColumnProperty
-			= GridItemPatternIdentifiers.ColumnProperty;
+		public static readonly AutomationProperty ColumnProperty =
+			GridItemPatternIdentifiers.ColumnProperty;
 
-		public static readonly AutomationProperty RowSpanProperty
-			= GridItemPatternIdentifiers.RowSpanProperty;
+		public static readonly AutomationProperty RowSpanProperty =
+			GridItemPatternIdentifiers.RowSpanProperty;
 
-		public static readonly AutomationProperty ColumnSpanProperty
-			= GridItemPatternIdentifiers.ColumnSpanProperty;
+		public static readonly AutomationProperty ColumnSpanProperty =
+			GridItemPatternIdentifiers.ColumnSpanProperty;
 
-		public static readonly AutomationProperty ContainingGridProperty
-			= GridItemPatternIdentifiers.ContainingGridProperty;
+		public static readonly AutomationProperty ContainingGridProperty =
+			GridItemPatternIdentifiers.ContainingGridProperty;
 	}
 }

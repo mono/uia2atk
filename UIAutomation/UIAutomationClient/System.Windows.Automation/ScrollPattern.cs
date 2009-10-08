@@ -107,26 +107,26 @@ namespace System.Windows.Automation
 			source.Scroll (ScrollAmount.NoAmount, amount);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= ScrollPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			ScrollPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty HorizontalScrollPercentProperty
-			= ScrollPatternIdentifiers.HorizontalScrollPercentProperty;
+		public static readonly AutomationProperty HorizontalScrollPercentProperty =
+			ScrollPatternIdentifiers.HorizontalScrollPercentProperty;
 
-		public static readonly AutomationProperty VerticalScrollPercentProperty
-			= ScrollPatternIdentifiers.VerticalScrollPercentProperty;
+		public static readonly AutomationProperty VerticalScrollPercentProperty =
+			ScrollPatternIdentifiers.VerticalScrollPercentProperty;
 
-		public static readonly AutomationProperty HorizontalViewSizeProperty
-			= ScrollPatternIdentifiers.HorizontalViewSizeProperty;
+		public static readonly AutomationProperty HorizontalViewSizeProperty =
+			ScrollPatternIdentifiers.HorizontalViewSizeProperty;
 
-		public static readonly AutomationProperty VerticalViewSizeProperty
-			= ScrollPatternIdentifiers.VerticalViewSizeProperty;
+		public static readonly AutomationProperty VerticalViewSizeProperty =
+			ScrollPatternIdentifiers.VerticalViewSizeProperty;
 
-		public static readonly AutomationProperty HorizontallyScrollableProperty
-			= ScrollPatternIdentifiers.HorizontallyScrollableProperty;
+		public static readonly AutomationProperty HorizontallyScrollableProperty =
+			ScrollPatternIdentifiers.HorizontallyScrollableProperty;
 
-		public static readonly AutomationProperty VerticallyScrollableProperty
-			= ScrollPatternIdentifiers.VerticallyScrollableProperty;
+		public static readonly AutomationProperty VerticallyScrollableProperty =
+			ScrollPatternIdentifiers.VerticallyScrollableProperty;
 
 		public const double NoScroll = -1;
 	}

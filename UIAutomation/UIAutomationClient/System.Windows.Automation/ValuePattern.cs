@@ -72,13 +72,13 @@ namespace System.Windows.Automation
 			source.SetValue (value);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= ValuePatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			ValuePatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty ValueProperty
-			= ValuePatternIdentifiers.ValueProperty;
+		public static readonly AutomationProperty ValueProperty =
+			ValuePatternIdentifiers.ValueProperty;
 
-		public static readonly AutomationProperty IsReadOnlyProperty
-			= ValuePatternIdentifiers.IsReadOnlyProperty;
+		public static readonly AutomationProperty IsReadOnlyProperty =
+			ValuePatternIdentifiers.IsReadOnlyProperty;
 	}
 }

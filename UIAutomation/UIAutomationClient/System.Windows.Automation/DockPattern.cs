@@ -67,10 +67,10 @@ namespace System.Windows.Automation
 			source.SetDockPosition (dockPosition);
 		}
 
-		public static readonly AutomationPattern Pattern
-			= DockPatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			DockPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty DockPositionProperty
-			= DockPatternIdentifiers.DockPositionProperty;
+		public static readonly AutomationProperty DockPositionProperty =
+			DockPatternIdentifiers.DockPositionProperty;
 	}
 }

@@ -97,13 +97,13 @@ namespace System.Windows.Automation
 			}
 		}
 
-		public new static readonly AutomationPattern Pattern
-			= TableItemPatternIdentifiers.Pattern;
+		public new static readonly AutomationPattern Pattern =
+			TableItemPatternIdentifiers.Pattern;
 
-		public static readonly AutomationProperty RowHeaderItemsProperty
-			= TableItemPatternIdentifiers.RowHeaderItemsProperty;
+		public static readonly AutomationProperty RowHeaderItemsProperty =
+			TableItemPatternIdentifiers.RowHeaderItemsProperty;
 
-		public static readonly AutomationProperty ColumnHeaderItemsProperty
-			= TableItemPatternIdentifiers.ColumnHeaderItemsProperty;
+		public static readonly AutomationProperty ColumnHeaderItemsProperty =
+			TableItemPatternIdentifiers.ColumnHeaderItemsProperty;
 	}
 }

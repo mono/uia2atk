@@ -43,10 +43,10 @@ namespace System.Windows.Automation
 			source.Invoke ();
 		}
 
-		public static readonly AutomationPattern Pattern
-			= InvokePatternIdentifiers.Pattern;
+		public static readonly AutomationPattern Pattern =
+			InvokePatternIdentifiers.Pattern;
 
-		public static readonly AutomationEvent InvokedEvent
-			= InvokePatternIdentifiers.InvokedEvent;
+		public static readonly AutomationEvent InvokedEvent =
+			InvokePatternIdentifiers.InvokedEvent;
 	}
 }
