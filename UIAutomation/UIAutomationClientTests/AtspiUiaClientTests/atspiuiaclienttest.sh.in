@@ -9,9 +9,10 @@ while getopts c:xd:t:l o
 do case "$o" in
     x)  xephyr="yes";;
     d)  optdisplay="$OPTARG" && xephyr="yes";;
-    t)  runtest="$OPTARG";;
+    f)  fixture="$OPTARG";;
+    t)  runtest="$OPTARG" && test "x$fixture" != "x";;
     l)  labels="yes";;
-    \?)  echo "Usage: $0 -x -l -d <display> -c <control>" && exit 1;;
+    \?)  echo "Usage: $0 -x -l -d <display> -f <fixture> -t <test>" && exit 1;;
 esac
 done
 
@@ -23,11 +24,18 @@ fi
 shift `echo $OPTIND-1 | bc`
 NUNIT_ARGS=$*
 
-if [ "x$runtest" != "x" ]; then
-	echo "Running only the unit test $runtest"
+if [ "x$fixture" != "x" ]; then
+	echo "Running only the unit tests for fixture $fixture..."
 	echo
 
-	NUNIT_ARGS="${NUNIT_ARGS} --run=AtspiUiaClientTest.${runtest}"
+	NUNIT_ARGS="--fixture=AtspiUiaClientTests.Atspi${fixture}"
+fi
+
+if [ "x$runtest" != "x" ]; then
+	echo "Running only the unit test $runtest from $fixture"
+	echo
+
+	NUNIT_ARGS="${NUNIT_ARGS} --run=AtspiUiaClientTests.Atspi${fixture}.${runtest}"
 fi
 
 if [ "x$xephyr" == "xyes" ]; then

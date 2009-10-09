@@ -12,7 +12,7 @@ do case "$o" in
     l)  labels="yes";;
     f)  fixture="$OPTARG";;
     t)  runtest="$OPTARG" && test "x$fixture" != "x";;
-    \?)  echo "Usage: $0 -x -l -d <display> -c <control>" && exit 1;;
+    \?)  echo "Usage: $0 -x -l -d <display> -f <fixture> -t <test>" && exit 1;;
 esac
 done
 
