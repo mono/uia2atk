@@ -1,3 +1,9 @@
+2009-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-slot-tree.diff: add the change
+	about MAX_FIREFOX_VERSION, now that it has been reverted
+	from moon upstream.
+
 2009-10-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MoonAtkBridge.mds: Add a python project for the

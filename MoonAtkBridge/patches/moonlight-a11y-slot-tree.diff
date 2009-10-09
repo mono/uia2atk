@@ -1,24 +1,22 @@
-Index: plugin/moz-sdk/npapi.h
+Index: m4/mozilla.m4
 ===================================================================
---- plugin/moz-sdk/npapi.h	(revision 135062)
-+++ plugin/moz-sdk/npapi.h	(working copy)
-@@ -370,8 +370,10 @@
+--- m4/mozilla.m4	(revisión: 143818)
++++ m4/mozilla.m4	(copia de trabajo)
+@@ -77,7 +77,7 @@
+ 	elif test x$with_ff3 = xyes; then
+    		with_mozilla=yes
+     	MIN_FIREFOX_VERSION="2.9.*"
+-    	MAX_FIREFOX_VERSION="3.5.*"
++	#actually it doesn't work with latest 3.6, only r29558 and before
++    	MAX_FIREFOX_VERSION="3.6.*"
+   	fi
  
-   NPNVSupportsWindowless = 17,
- 
--  NPNVSupportsWindowlessCursors = 18
-+  NPNVSupportsWindowlessCursors = 18,
- 
-+  NPNVNativeAccessible = 21
-+
- #ifdef XP_MACOSX
-   /* Used for negotiating drawing models */
-   , NPNVpluginDrawingModel = 1000
+ 	AC_SUBST([MIN_FIREFOX_VERSION])
 Index: plugin/plugin.cpp
 ===================================================================
---- plugin/plugin.cpp	(revision 135062)
-+++ plugin/plugin.cpp	(working copy)
-@@ -1697,6 +1697,26 @@
+--- plugin/plugin.cpp	(revisión: 143818)
++++ plugin/plugin.cpp	(copia de trabajo)
+@@ -1997,6 +1997,26 @@
  	return (MoonlightScriptControlObject*)rootobject;
  }
  
@@ -45,11 +43,27 @@ Index: plugin/plugin.cpp
  NPP
  PluginInstance::GetInstance ()
  {
+Index: plugin/moz-sdk/npapi.h
+===================================================================
+--- plugin/moz-sdk/npapi.h	(revisión: 143818)
++++ plugin/moz-sdk/npapi.h	(copia de trabajo)
+@@ -370,8 +370,10 @@
+ 
+   NPNVSupportsWindowless = 17,
+ 
+-  NPNVSupportsWindowlessCursors = 18
++  NPNVSupportsWindowlessCursors = 18,
+ 
++  NPNVNativeAccessible = 21
++
+ #ifdef XP_MACOSX
+   /* Used for negotiating drawing models */
+   , NPNVpluginDrawingModel = 1000
 Index: plugin/plugin.h
 ===================================================================
---- plugin/plugin.h	(revision 135062)
-+++ plugin/plugin.h	(working copy)
-@@ -114,6 +114,7 @@
+--- plugin/plugin.h	(revisión: 143818)
++++ plugin/plugin.h	(copia de trabajo)
+@@ -127,6 +127,7 @@
  	BrowserBridge *GetBridge () { return bridge; }
  	
  	MoonlightScriptControlObject *GetRootObject ();
@@ -59,9 +73,9 @@ Index: plugin/plugin.h
  	/* @GenerateCBinding,GeneratePInvoke */
 Index: plugin/plugin-glue.cpp
 ===================================================================
---- plugin/plugin-glue.cpp	(revision 135062)
-+++ plugin/plugin-glue.cpp	(working copy)
-@@ -163,6 +163,7 @@
+--- plugin/plugin-glue.cpp	(revisión: 143818)
++++ plugin/plugin-glue.cpp	(copia de trabajo)
+@@ -160,6 +160,7 @@
  NPP_GetValue (NPP instance, NPPVariable variable, void *result)
  {
  	NPError err = NPERR_NO_ERROR;
@@ -69,7 +83,7 @@ Index: plugin/plugin-glue.cpp
  
  	switch (variable) {
  	case NPPVpluginNeedsXEmbed:
-@@ -174,11 +175,15 @@
+@@ -171,11 +172,15 @@
  	case NPPVpluginDescriptionString:
  		*((char **)result) = (char *) PLUGIN_DESCRIPTION;
  		break;
