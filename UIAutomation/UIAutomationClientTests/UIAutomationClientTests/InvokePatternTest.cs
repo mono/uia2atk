@@ -60,8 +60,7 @@ namespace MonoTests.System.Windows.Automation
 		public void InvokeEventTest ()
 		{
 			int eventCount = 0;
-			AutomationEventHandler handler = delegate (object sender, AutomationEventArgs args) {
-				eventCount++; };
+			AutomationEventHandler handler = (o, e) => eventCount++;
 			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
 			                              TreeScope.Element, handler);
 			//Shall have no effect.

@@ -712,8 +712,7 @@ namespace MonoTests.System.Windows.Automation
 		public void TextChangedEvent ()
 		{
 			int eventCount = 0;
-			AutomationEventHandler handler = delegate (object sender, AutomationEventArgs args) {
-				eventCount++; };
+			AutomationEventHandler handler = (o, e) => eventCount++;
 			At.AddAutomationEventHandler (TextPattern.TextChangedEvent, textbox3Element,
 			                              TreeScope.Element, handler);
 			RunCommand ("set textbox3 text");
@@ -727,8 +726,7 @@ namespace MonoTests.System.Windows.Automation
 		public void TextSelectionChangedEvent ()
 		{
 			int eventCount = 0;
-			AutomationEventHandler handler = delegate (object sender, AutomationEventArgs args) {
-				eventCount++; };
+			AutomationEventHandler handler = (o, e) => eventCount++;
 			At.AddAutomationEventHandler (TextPattern.TextSelectionChangedEvent, textbox3Element,
 			                              TreeScope.Element, handler);
 			RunCommand ("select textbox3");

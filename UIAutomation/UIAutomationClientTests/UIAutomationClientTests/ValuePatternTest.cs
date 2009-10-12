@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -56,28 +57,36 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void PropertyEventTest ()
 		{
-			int eventCount = 0;
+			var automationEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var automationEvents = automationEventsArray.ToList ();
+			automationEvents.Clear ();
+
 			string magicStr1 = "ValuePatternTest.PropertyEventTest.m1";
 			string magicStr2 = "ValuePatternTest.PropertyEventTest.m2";
 			ValuePattern pattern = (ValuePattern) textbox1Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
 			pattern.SetValue (magicStr1);
-			AutomationPropertyChangedEventHandler handler = delegate (object sender, AutomationPropertyChangedEventArgs args) {
-				Assert.AreEqual (textbox1Element, sender, "Check event sender");
-				Assert.AreEqual (magicStr1, args.OldValue, "Check old Value");
-				Assert.AreEqual (magicStr2, args.NewValue, "Check new Value");
-				eventCount++;
-			};
-			At.AddAutomationPropertyChangedEventHandler (textbox1Element, TreeScope.Element, handler,
-				new AutomationProperty [] {ValuePattern.ValueProperty, ValuePattern.IsReadOnlyProperty}
-			);
+
+			AutomationPropertyChangedEventHandler handler = 
+				(o, e) => automationEvents.Add (new { Sender = o, Args = e });
+
+			At.AddAutomationPropertyChangedEventHandler (textbox1Element,
+				TreeScope.Element, handler,
+				ValuePattern.ValueProperty,
+				ValuePattern.IsReadOnlyProperty );
+
 			pattern.SetValue (magicStr2);
 			Thread.Sleep (500);
-			Assert.AreEqual (1, eventCount, "AutomationPropertyChangedEvent is fired.");
+			Assert.AreEqual (1, automationEvents.Count, "event count");
+			Assert.AreEqual (textbox1Element, automationEvents [0].Sender, "event sender");
+			Assert.AreEqual (magicStr1, automationEvents [0].Args.OldValue, "old Value");
+			Assert.AreEqual (magicStr2, automationEvents [0].Args.NewValue, "new Value");
+			automationEvents.Clear ();
 
 			At.RemoveAutomationPropertyChangedEventHandler (textbox1Element, handler);
 			pattern.SetValue (magicStr1);
 			Thread.Sleep (500);
-			Assert.AreEqual (1, eventCount, "AutomationPropertyChangedEvent is not fired.");
+			Assert.AreEqual (0, automationEvents.Count, "event count");
 		}
 
 		[Test]

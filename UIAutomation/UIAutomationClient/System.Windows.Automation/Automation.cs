@@ -325,7 +325,7 @@ namespace System.Windows.Automation
 		public static void AddAutomationPropertyChangedEventHandler (AutomationElement element,
 		                                                      TreeScope scope,
 		                                                      AutomationPropertyChangedEventHandler eventHandler,
-		                                                      AutomationProperty [] properties)
+		                                                      params AutomationProperty [] properties)
 		{
 			//todo handle root element event
 			if (element == AutomationElement.RootElement)
