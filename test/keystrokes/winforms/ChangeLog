@@ -1,4 +1,7 @@
 2009-10-08 Marco Skambraks <marco@suse.de>
+	* added domainupdown.py
+
+2009-10-08 Marco Skambraks <marco@suse.de>
 	* added checkedlistbox.py and scrollbar.py
 
 2009-09-26 Marco Skambraks <marco@suse.de>
