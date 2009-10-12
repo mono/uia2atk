@@ -66,6 +66,7 @@ namespace MonoTests.System.Windows.Automation
 			string magicStr2 = "ValuePatternTest.PropertyEventTest.m2";
 			ValuePattern pattern = (ValuePattern) textbox1Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
 			pattern.SetValue (magicStr1);
+			Thread.Sleep (500);
 
 			AutomationPropertyChangedEventHandler handler = 
 				(o, e) => automationEvents.Add (new { Sender = o, Args = e });
