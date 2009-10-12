@@ -1,3 +1,9 @@
+2009-10-12  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/HyperLinkButton/,
+	* samples/moonlight/HyperlinkButton/: rename the folder
+	* testers/moonlight/states.py: add Thumb class
+
 2009-09-29  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/slider/sliderframe.py,

@@ -201,7 +201,7 @@ ANIMATED = "animated"
 VISITED = "visited"
 
 
-#list Button's all states
+# list Button's all states
 class Button(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
@@ -352,10 +352,10 @@ class Alert(object):
     states = (ENABLED, MODAL, SENSITIVE, SHOWING, VISIBLE)
 
 class ContextMenu(MenuStrip):
-	pass
+    pass
 
 class ContextMenuStrip(ContextMenu):
-	pass
+    pass
 
-class Thumb(object):
-    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+class Thumb(Button):
+    pass

@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="HyperlinkButtonSample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <HyperlinkButton x:Name="hyperlink_blank" TargetName="_blank" Content="Click here to open OpenSUSE in New Window" NavigateUri="http://www.opensuse.org/en/" Canvas.Top="40" Canvas.Left="30"></HyperlinkButton>
+        <HyperlinkButton x:Name="hyperlink_parent" TargetName="_parent" Content="Click here to open OpenSUSE in Parent Window" NavigateUri="http://www.opensuse.org/en/" Canvas.Top="80" Canvas.Left="30"></HyperlinkButton>
+    </Canvas>
+</UserControl>
