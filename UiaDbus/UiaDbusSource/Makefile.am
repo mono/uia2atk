@@ -51,6 +51,7 @@ FILES =  \
 	UiaDbusInvokePattern.cs \
 	UiaDbusTextPattern.cs \
 	UiaDbusTextPatternRange.cs \
+	UiaDbusTransformPattern.cs \
 	UiaDbusValuePattern.cs
 
 DATA_FILES = 

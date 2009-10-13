@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Source
 
 		void Move (double x, double y);
 
-		void Resize (double width);
+		void Resize (double width, double height);
 
 		void Rotate (double degrees);
 	}

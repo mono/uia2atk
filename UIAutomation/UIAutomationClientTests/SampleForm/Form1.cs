@@ -23,7 +23,7 @@
 //  Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -117,6 +117,18 @@ namespace SampleForm {
 					textBox3.Select (0, 4);
 				else
 					textBox3.Select (0, 3);
+			} else if (cmd == "MoveTo.Origin") {
+				Location = new Point (0, 0);
+			} else if (cmd == "Toggle.Transform.CanMove") {
+				if (WindowState == FormWindowState.Normal)
+					WindowState = FormWindowState.Maximized;
+				else
+					WindowState = FormWindowState.Normal;
+			} else if (cmd == "Toggle.Transform.CanResize") {
+				if (FormBorderStyle == FormBorderStyle.Sizable)
+					FormBorderStyle = FormBorderStyle.FixedSingle;
+				else
+					FormBorderStyle = FormBorderStyle.Sizable;
 			}
 		}
 	}

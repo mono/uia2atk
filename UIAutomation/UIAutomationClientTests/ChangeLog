@@ -1,3 +1,14 @@
+
+2009-10-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* SampleForm/Form1.cs:
+	* UIAutomationClientTests/Makefile.am:
+	* UIAutomationClientTests/AutomationTest.cs:
+	* UIAutomationClientTests/TransformPatternTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Add TransformPattern tests, move some property verification
+	tests from AutomationTest to TransformPatternTest.
+
 2009-09-16  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/BaseTest.cs,

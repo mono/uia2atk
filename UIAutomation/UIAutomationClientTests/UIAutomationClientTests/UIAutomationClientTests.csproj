@@ -69,6 +69,7 @@
     <Compile Include="RangeValuePatternTest.cs" />
     <Compile Include="TextPatternTest.cs" />
     <Compile Include="ValuePatternTest.cs" />
+    <Compile Include="TransformPatternTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

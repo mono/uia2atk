@@ -50,6 +50,7 @@ FILES =  \
 	Wrappers/ProviderElementWrapper.cs \
 	Wrappers/TextPatternRangeWrapper.cs \
 	Wrappers/TextPatternWrapper.cs \
+	Wrappers/TransformPatternWrapper.cs \
 	Wrappers/ValuePatternWrapper.cs 
 
 DATA_FILES = 

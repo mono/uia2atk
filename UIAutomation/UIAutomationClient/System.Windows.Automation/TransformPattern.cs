@@ -79,7 +79,7 @@ namespace System.Windows.Automation
 
 		public void Resize (double width, double height)
 		{
-			source.Resize (width);
+			source.Resize (width, height);
 		}
 
 		public void Rotate (double degrees)

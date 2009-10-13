@@ -39,6 +39,7 @@ SOURCE_FILES =  \
 	Interfaces/IInvokePattern.cs \
 	Interfaces/ITextPattern.cs \
 	Interfaces/ITextPatternRange.cs \
+	Interfaces/ITransformPattern.cs \
 	Interfaces/IValuePattern.cs \
 	Point.cs \
 	Rect.cs 

@@ -83,6 +83,7 @@ FILES =  \
 	SelectionPatternTest.cs \
 	TextPatternTest.cs \
 	TogglePatternTest.cs \
+	TransformPatternTest.cs \
 	TreeWalkerTest.cs \
 	ValuePatternTest.cs 
 

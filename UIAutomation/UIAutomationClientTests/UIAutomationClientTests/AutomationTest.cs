@@ -755,18 +755,6 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (SWA.TogglePattern.ToggleStateProperty, SWA.TogglePatternIdentifiers.ToggleStateProperty);
 			Assert.IsNotNull (SWA.TogglePattern.ToggleStateProperty);
 
-			Assert.AreEqual (SWA.TransformPattern.Pattern, SWA.TransformPatternIdentifiers.Pattern);
-			Assert.IsNotNull (SWA.TransformPattern.Pattern);
-
-			Assert.AreEqual (SWA.TransformPattern.CanMoveProperty, SWA.TransformPatternIdentifiers.CanMoveProperty);
-			Assert.IsNotNull (SWA.TransformPattern.CanMoveProperty);
-
-			Assert.AreEqual (SWA.TransformPattern.CanResizeProperty, SWA.TransformPatternIdentifiers.CanResizeProperty);
-			Assert.IsNotNull (SWA.TransformPattern.CanResizeProperty);
-
-			Assert.AreEqual (SWA.TransformPattern.CanRotateProperty, SWA.TransformPatternIdentifiers.CanRotateProperty);
-			Assert.IsNotNull (SWA.TransformPattern.CanRotateProperty);
-
 			Assert.AreEqual (SWA.ValuePattern.Pattern, SWA.ValuePatternIdentifiers.Pattern);
 			Assert.IsNotNull (SWA.ValuePattern.Pattern);
 

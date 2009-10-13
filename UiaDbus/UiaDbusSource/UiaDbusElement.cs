@@ -292,6 +292,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.IValuePattern valuePattern = Bus.Session.GetObject<DCI.IValuePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ValuePatternSubPath));
 				ret = new UiaDbusValuePattern (valuePattern);
+			} else if (pattern.Id == TransformPatternIdentifiers.Pattern.Id) {
+				DCI.ITransformPattern transformPattern = Bus.Session.GetObject<DCI.ITransformPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TransformPatternSubPath));
+				ret = new UiaDbusTransformPattern (transformPattern);
 			} else
 				throw new InvalidOperationException ();
 

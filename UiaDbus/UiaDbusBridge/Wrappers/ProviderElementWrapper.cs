@@ -487,6 +487,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
 					delegate (object p) {
 						return new TextPatternWrapper ((ITextProvider) p, bus, patternPath); });
+			} else if (patternId == TransformPatternIdentifiers.Pattern.Id) {
+				patternPath += DC.Constants.TransformPatternSubPath;
+				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+					delegate (object p) {
+						return new TransformPatternWrapper ((ITransformProvider) p); });
 			} else
 				throw new InvalidOperationException ();
 

@@ -17,6 +17,7 @@
     </Configuration>
   </Configurations>
   <Contents>
+    <File subtype="Code" buildaction="Compile" name="Interfaces/ITransformPattern.cs" />
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="Constants.cs" subtype="Code" buildaction="Compile" />
     <File name="Interfaces/IApplication.cs" subtype="Code" buildaction="Compile" />
