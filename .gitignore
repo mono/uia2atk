@@ -385,3 +385,23 @@
 /MoonAtkBridge/install.rdf
 /MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs
 
+# /AtspiUiaSource
+/AtspiUiaSource/Makefile
+/AtspiUiaSource/Makefile.in
+/AtspiUiaSource/configure
+/AtspiUiaSource/config.*
+/AtspiUiaSource/autom4te.cache
+/AtspiUiaSource/missing
+/AtspiUiaSource/aclocal.m4
+/AtspiUiaSource/install-sh
+/AtspiUiaSource/depcomp
+/AtspiUiaSource/libtool
+/AtspiUiaSource/ltmain.sh
+/AtspiUiaSource/AtspiUiaSource/Makefile
+/AtspiUiaSource/AtspiUiaSource/Makefile.in
+/AtspiUiaSource/AtspiUiaSource/bin
+/AtspiUiaSource/AtspiUiaSourceTests/Makefile
+/AtspiUiaSource/AtspiUiaSourceTests/Makefile.in
+/AtspiUiaSource/AtspiUiaSourceTests/bin
+/AtspiUiaSource/AtspiUiaSourceTests/atspiuiasourcetest.sh
+
