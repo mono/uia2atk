@@ -1,5 +1,28 @@
 2009-10-15  Neville Gao  <nevillegao@gmail.com>
 
+	* samples/moonlight/Thumb/App.xaml:
+	* samples/moonlight/Thumb/Page.xaml.cs:
+	* samples/moonlight/Thumb/App.xaml.cs:
+	* samples/moonlight/Thumb/Page.xaml:
+	* samples/moonlight/ScrollViewer/App.xaml:
+	* samples/moonlight/ScrollViewer/Page.xaml.cs:
+	* samples/moonlight/ScrollViewer/App.xaml.cs:
+	* samples/moonlight/ScrollViewer/Page.xaml:
+	* samples/moonlight/ScrollBar/App.xaml:
+	* samples/moonlight/ScrollBar/Page.xaml.cs:
+	* samples/moonlight/ScrollBar/App.xaml.cs:
+	* samples/moonlight/ScrollBar/Page.xaml:
+	* samples/moonlight/ProgressBar/App.xaml:
+	* samples/moonlight/ProgressBar/Page.xaml.cs:
+	* samples/moonlight/ProgressBar/App.xaml.cs:
+	* samples/moonlight/ProgressBar/Page.xaml:
+	* samples/moonlight/PasswordBox/App.xaml:
+	* samples/moonlight/PasswordBox/Page.xaml.cs:
+	* samples/moonlight/PasswordBox/App.xaml.cs:
+	* samples/moonlight/PasswordBox/Page.xaml: Modified sample namespace to avoid conflict.
+
+2009-10-15  Neville Gao  <nevillegao@gmail.com>
+
 	* samples/moonlight/DataGrid/Makefile:
 	* samples/moonlight/Thumb/Makefile:
 	* samples/moonlight/ScrollViewer/Makefile:
