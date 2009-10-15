@@ -1,3 +1,30 @@
+2009-10-15  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/DataGrid/Makefile:
+	* samples/moonlight/Thumb/Makefile:
+	* samples/moonlight/ScrollViewer/Makefile:
+	* samples/moonlight/Image/Makefile:
+	* samples/moonlight/Slider/Makefile:
+	* samples/moonlight/ScrollBar/Makefile:
+	* samples/moonlight/ListBox/Makefile:
+	* samples/moonlight/CheckBox/Makefile:
+	* samples/moonlight/ProgressBar/Makefile:
+	* samples/moonlight/MediaElement/Makefile:
+	* samples/moonlight/RadioButton/Makefile:
+	* samples/moonlight/TextBlock/Makefile:
+	* samples/moonlight/HyperlinkButton/Makefile:
+	* samples/moonlight/MultiScaleImage/Makefile:
+	* samples/moonlight/TabControl/Makefile:
+	* samples/moonlight/ComboBox/Makefile:
+	* samples/moonlight/Calendar/Makefile:
+	* samples/moonlight/PasswordBox/Makefile:
+	* samples/moonlight/DatePicker/Makefile:
+	* samples/moonlight/Button/Makefile:
+	* samples/moonlight/RepeatButton/Makefile:
+	* samples/moonlight/GridSplitter/Makefile:
+	* samples/moonlight/ToggleButton/Makefile:
+	* samples/moonlight/Makefile: Added Makefile to build Moonlight samples easily.
+
 2009-10-14  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/ListBox/Page.xaml:
