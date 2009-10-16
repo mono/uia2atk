@@ -87,3 +87,8 @@ class TabPage(object):
 
     actions = (CLICK, )
 
+class HyperlinkButton(object):
+    JUMP = "jump"
+
+    actions = (JUMP, )
+

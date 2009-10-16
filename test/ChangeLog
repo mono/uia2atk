@@ -1,3 +1,22 @@
+2009-10-16  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/actions.py: add HyperLinkButton class
+
+2009-10-16  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/combobox,
+	* testers/moonlight/combobox/__init__.py,
+	* testers/moonlight/combobox/comboboxframe.py,
+	* testers/moonlight/combobox-regression.py,
+	* testers/moonlight/gridsplitter,
+	* testers/moonlight/gridsplitter/__init__.py,
+	* testers/moonlight/gridsplitter/gridsplitterframe.py,
+	* testers/moonlight/gridsplitter-regression.py,
+	* testers/moonlight/hyperlinkbutton,
+	* testers/moonlight/hyperlinkbutton/__init__.py,
+	* testers/moonlight/hyperlinkbutton/hyperlinkbuttonframe.py,
+	* testers/moonlight/hyperlinkbutton-regression.py: add tests
+
 2009-10-15  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/Thumb/App.xaml:
