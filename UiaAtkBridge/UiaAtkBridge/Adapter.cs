@@ -248,18 +248,33 @@ namespace UiaAtkBridge
 				//   because we are ignoring this parent (either ListItem or DataItem).
 				int controlType 
 					= (int) parentAdapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-
 				if (controlType == ControlType.ListItem.Id
 				    || controlType == ControlType.DataItem.Id)
 					parentAdapter = parentAdapter.VirtualParent;
 				else if (controlType != ControlType.DataGrid.Id
 				         && controlType != ControlType.Table.Id
-				         && controlType != ControlType.Group.Id)
+				         && controlType != ControlType.Group.Id
+				         && controlType != ControlType.Tree.Id
+				         && controlType != ControlType.TreeItem.Id)
 					return relationSet;
-				
-				if (parentAdapter != null)
-					relationSet.AddRelationByType (Atk.RelationType.NodeChildOf, 
-					                               parentAdapter);
+
+				if (parentAdapter != null) {
+					bool already_found = false;
+
+					if (relationSet == null)
+						relationSet = new Atk.RelationSet ();
+
+					for (int i = 0; i < relationSet.NRelations; i++) {
+						Atk.Relation rel = relationSet.GetRelation (i);
+						if (rel.RelationType == Atk.RelationType.NodeChildOf &&
+						    rel.Target.Length == 1 &&
+						    rel.Target [0] == parentAdapter)
+							already_found = true;
+					}
+
+					if (!already_found)
+						relationSet.AddRelationByType (Atk.RelationType.NodeChildOf, parentAdapter);
+				}
 			}
 
 			return relationSet;

@@ -1,3 +1,11 @@
+2009-10-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs:
+	* TreeItem.cs: Rework the way relations are handled in a more
+	general adapter to avoid redundancies. Also avoid returning
+	same relation (which was a bug in previous impl). Fix for
+	BNC#546909 and rework fix for BNC#534100.
+
 2009-09-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	[Fixes BNC#534100]
