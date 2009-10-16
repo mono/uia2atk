@@ -1,5 +1,10 @@
 2009-10-16  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/MultiScaleImage/: uper 'imagebin' from ClientBin,
+	delete ClientBin folder	
+
+2009-10-16  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/actions.py: add HyperLinkButton class
 
 2009-10-16  Calen Chen <cachen@novell.com>
