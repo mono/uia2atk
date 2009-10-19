@@ -2,4 +2,4 @@ all:
 	mxap --application-name=CheckBoxSample
 
 clean:
-	mxap --clean
+	mxap --application-name=CheckBoxSample --clean

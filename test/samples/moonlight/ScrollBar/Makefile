@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ScrollBarSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ScrollBarSample --clean

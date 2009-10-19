@@ -2,4 +2,4 @@ all:
 	mxap --application-name=CalendarSample
 
 clean:
-	mxap --clean
+	mxap --application-name=CalendarSample --clean

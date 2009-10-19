@@ -2,4 +2,4 @@ all:
 	mxap --application-name=SliderSample
 
 clean:
-	mxap --clean
+	mxap --application-name=SliderSample --clean

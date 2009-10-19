@@ -2,4 +2,4 @@ all:
 	mxap --application-name=TabControlSample
 
 clean:
-	mxap --clean
+	mxap --application-name=TabControlSample --clean

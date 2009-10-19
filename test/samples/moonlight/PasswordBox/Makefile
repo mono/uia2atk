@@ -2,4 +2,4 @@ all:
 	mxap --application-name=PasswordBoxSample
 
 clean:
-	mxap --clean
+	mxap --application-name=PasswordBoxSample --clean

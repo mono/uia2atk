@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ScrollViewerSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ScrollViewerSample --clean

@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ListBoxSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ListBoxSample --clean

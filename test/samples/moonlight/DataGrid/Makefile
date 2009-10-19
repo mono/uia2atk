@@ -2,4 +2,4 @@ all:
 	mxap --application-name=DataGridSample
 
 clean:
-	mxap --clean
+	mxap --application-name=DataGridSample --clean

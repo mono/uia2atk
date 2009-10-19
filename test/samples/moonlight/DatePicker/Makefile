@@ -2,4 +2,4 @@ all:
 	mxap --application-name=DatePickerSample
 
 clean:
-	mxap --clean
+	mxap --application-name=DatePickerSample --clean

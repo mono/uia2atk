@@ -2,4 +2,4 @@ all:
 	mxap --application-name=RepeatButtonSample
 
 clean:
-	mxap --clean
+	mxap --application-name=RepeatButtonSample --clean

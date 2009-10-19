@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ImageSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ImageSample --clean

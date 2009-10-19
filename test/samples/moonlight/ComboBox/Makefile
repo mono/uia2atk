@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ComboBoxSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ComboBoxSample --clean

@@ -2,4 +2,4 @@ all:
 	mxap --application-name=MediaElementSample
 
 clean:
-	mxap --clean
+	mxap --application-name=MediaElementSample --clean

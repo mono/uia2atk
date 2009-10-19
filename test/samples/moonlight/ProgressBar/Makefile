@@ -2,4 +2,4 @@ all:
 	mxap --application-name=ProgressBarSample
 
 clean:
-	mxap --clean
+	mxap --application-name=ProgressBarSample --clean
