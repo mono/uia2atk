@@ -1,5 +1,11 @@
 2009-10-19  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/ScrollViewer/Page.xaml.cs,
+	* samples/moonlight/ScrollViewer/Page.xaml: add buttons and events to 
+	change ScrollBarVisibility property
+
+2009-10-19  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/DataGrid/Makefile,
 	* samples/moonlight/Thumb/Makefile,
 	* samples/moonlight/ScrollViewer/Makefile,
