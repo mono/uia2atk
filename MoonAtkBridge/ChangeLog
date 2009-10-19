@@ -1,3 +1,9 @@
+2009-10-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* patches/moonlight-a11y-slot-tree.diff: regenerate for the
+	mozilla.m4 part of the patch, trying to fix decriptor's
+	problem.
+
 2009-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* patches/moonlight-a11y-slot-tree.diff: add the change
