@@ -1,3 +1,12 @@
+2009-10-19  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/repeatbutton/__init__.py:
+	* testers/moonlight/repeatbutton/repeatbuttonframe.py:
+	* testers/moonlight/repeatbutton-regression.py: Added Moonlight
+	RepeatButton test script.
+	* samples/moonlight/Makefile: Commented out controls which is now no need
+	to test.
+
 2009-10-16  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/MultiScaleImage/: uper 'imagebin' from ClientBin,

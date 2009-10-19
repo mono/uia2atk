@@ -1,10 +1,10 @@
 SUBDIRS = \
 	Button \
-	Calendar \
+	#Calendar
 	CheckBox \
 	ComboBox \
-	DataGrid \
-	DatePicker \
+	#DataGrid
+	#DatePicker
 	GridSplitter \
 	HyperlinkButton \
 	Image \
@@ -18,7 +18,7 @@ SUBDIRS = \
 	ScrollBar \
 	ScrollViewer \
 	Slider \
-	TabControl \
+	#TabControl
 	TextBlock \
 	Thumb \
 	ToggleButton
