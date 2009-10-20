@@ -44,7 +44,7 @@ namespace ScrollViewerSample
                 else
                 {
                     ScrollViewer1.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    button.Content = "Hidden Vertical";
+                    button.Content = "Hidden Horizontal";
                 }
             }
             else
