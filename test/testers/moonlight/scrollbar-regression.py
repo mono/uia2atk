@@ -47,17 +47,17 @@ sbFrame = app.scrollBarFrame
 #######################
 statesCheck(sbFrame.hlabel, 'Label')
 statesCheck(sbFrame.vlabel, 'Label')
-statesCheck(sbFrame.hscrollBar, 'ScrollBar')
-statesCheck(sbFrame.vscrollBar, 'ScrollBar')
+statesCheck(sbFrame.hscrollBar, 'ScrollBar', add_states=['horizontal'])
+statesCheck(sbFrame.vscrollBar, 'ScrollBar', add_states=['vertical'])
 
 # set scrollBar's value and assert label's text
 sbFrame.setValue(sbFrame.hscrollBar, 20)
 sleep(config.SHORT_DELAY)
-assertText(hlabel, 'Value of Horizontal: 20')
+assertText(sbFrame.hlabel, 'Value of Horizontal: 20')
 
 sbFrame.setValue(sbFrame.vscrollBar, 20)
 sleep(config.SHORT_DELAY)
-assertText(vlabel, 'Value of Vertical: 20')
+assertText(sbFrame.vlabel, 'Value of Vertical: 20')
 
 # test scrollBar's minValue and maxValue
 hminValue = sbFrame.hscrollBar._accessible.queryValue().minimumValue

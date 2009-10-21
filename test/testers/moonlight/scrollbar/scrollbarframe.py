@@ -17,8 +17,13 @@ class ScrollBarFrame(accessibles.Frame):
         self.frame = self.findDocumentFrame('ScrollBarSample')
         self.hlabel = self.frame.findLabel('Value of Horizontal: 0')
         self.vlabel = self.frame.findLabel('Value of Vertical: 0')
-        self.hscrollBar = self.frame.findScrollBar('')
-        self.vscrollBar = self.frame.findScrollBar('')
+
+        scrollBars = self.frame.findAllScrollBars(None)
+        for scrollBar in scrollBars:
+            if scrollBar.vertical:
+                self.vscrollBar = scrollBar
+            else:
+                self.hscrollBar = scrollBar
 
     def setValue(self, accessible, value):
         """
