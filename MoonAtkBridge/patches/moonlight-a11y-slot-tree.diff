@@ -1,7 +1,7 @@
 Index: m4/mozilla.m4
 ===================================================================
---- m4/mozilla.m4	(revisión: 143818)
-+++ m4/mozilla.m4	(copia de trabajo)
+--- m4/mozilla.m4	(revision 144543)
++++ m4/mozilla.m4	(working copy)
 @@ -66,6 +66,7 @@
  	dnl Put it all together
  	dnl
@@ -23,16 +23,21 @@ Index: m4/mozilla.m4
  	AC_SUBST([MIN_FIREFOX_VERSION])
 Index: plugin/plugin.cpp
 ===================================================================
---- plugin/plugin.cpp	(revisión: 143818)
-+++ plugin/plugin.cpp	(copia de trabajo)
-@@ -1997,6 +1997,26 @@
- 	return (MoonlightScriptControlObject*)rootobject;
+--- plugin/plugin.cpp	(revision 144543)
++++ plugin/plugin.cpp	(working copy)
+@@ -2139,6 +2139,31 @@
+ 	return rootobject;
  }
  
 +gpointer
 +PluginInstance::GetRootAccessible ()
 +{
-+	system_windows_assembly = mono_assembly_load_with_partial_name ("System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e", NULL);
++	MonoAssembly *system_windows_assembly;
++	
++	system_windows_assembly = mono_assembly_load_with_partial_name (
++		"System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
++		NULL);
++
 +	if (!system_windows_assembly)
 +		return NULL;
 +
@@ -43,7 +48,7 @@ Index: plugin/plugin.cpp
 +
 +	image = mono_assembly_get_image (system_windows_assembly);
 +	a11y_helper = mono_class_from_name (image, "Mono", "A11yHelper");
-+	get_accessible = MonoGetMethodFromName (a11y_helper, "GetAccessible", 0);
++	get_accessible = mono_class_get_method_from_name (a11y_helper, "GetAccessible", 0);
 +	atk_obj_ptr = mono_runtime_invoke (get_accessible, NULL, NULL, NULL);
 +
 +	return *(gpointer*) mono_object_unbox (atk_obj_ptr);
@@ -54,8 +59,8 @@ Index: plugin/plugin.cpp
  {
 Index: plugin/moz-sdk/npapi.h
 ===================================================================
---- plugin/moz-sdk/npapi.h	(revisión: 143818)
-+++ plugin/moz-sdk/npapi.h	(copia de trabajo)
+--- plugin/moz-sdk/npapi.h	(revision 144543)
++++ plugin/moz-sdk/npapi.h	(working copy)
 @@ -370,8 +370,10 @@
  
    NPNVSupportsWindowless = 17,
@@ -70,9 +75,9 @@ Index: plugin/moz-sdk/npapi.h
    , NPNVpluginDrawingModel = 1000
 Index: plugin/plugin.h
 ===================================================================
---- plugin/plugin.h	(revisión: 143818)
-+++ plugin/plugin.h	(copia de trabajo)
-@@ -127,6 +127,7 @@
+--- plugin/plugin.h	(revision 144543)
++++ plugin/plugin.h	(working copy)
+@@ -111,6 +111,7 @@
  	BrowserBridge *GetBridge () { return bridge; }
  	
  	MoonlightScriptControlObject *GetRootObject ();
@@ -82,8 +87,8 @@ Index: plugin/plugin.h
  	/* @GenerateCBinding,GeneratePInvoke */
 Index: plugin/plugin-glue.cpp
 ===================================================================
---- plugin/plugin-glue.cpp	(revisión: 143818)
-+++ plugin/plugin-glue.cpp	(copia de trabajo)
+--- plugin/plugin-glue.cpp	(revision 144543)
++++ plugin/plugin-glue.cpp	(working copy)
 @@ -160,6 +160,7 @@
  NPP_GetValue (NPP instance, NPPVariable variable, void *result)
  {
