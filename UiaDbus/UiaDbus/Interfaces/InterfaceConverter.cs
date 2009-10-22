@@ -20,64 +20,90 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using Mono.UIAutomation.Source;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public class GridPattern : BasePattern
+	public static class InterfaceConverter
 	{
-		public struct GridPatternInformation
+		public static IGridPattern Table2Grid (ITablePattern pattern)
 		{
-			internal GridPatternInformation (GridProperties properties)
-			{
-				RowCount = properties.RowCount;
-				ColumnCount = properties.ColumnCount;
-			}
-
-			public int RowCount {
-				get; private set;
-			}
-
-			public int ColumnCount {
-				get; private set;
-			}
+			return new GridProxy (pattern);
 		}
 
-		private IGridPattern source;
-
-		internal GridPattern (IGridPattern source)
+		public static IGridItemPattern TableItem2GridItem (ITableItemPattern pattern)
 		{
-			this.source = source;
+			return new GridItemProxy (pattern);
+		}
+	}
+
+	internal class GridProxy : IGridPattern
+	{
+		private ITablePattern pattern;
+
+		public GridProxy (ITablePattern pattern)
+		{
+			this.pattern = pattern;
 		}
 
-		public GridPatternInformation Cached {
+		public string GetItemPath (int row, int column)
+		{
+			return pattern.GetItemPath (row, column);
+		}
+
+		public int ColumnCount {
 			get {
-				throw new NotImplementedException ();
+				return pattern.ColumnCount;
 			}
 		}
 
-		public GridPatternInformation Current {
+		public int RowCount {
 			get {
-				return new GridPatternInformation (source.Properties);
+				return pattern.RowCount;
+			}
+		}
+	}
+
+	internal class GridItemProxy : IGridItemPattern
+	{
+		private ITableItemPattern pattern;
+
+		public GridItemProxy (ITableItemPattern pattern)
+		{
+			this.pattern = pattern;
+		}
+
+		public int Column {
+			get {
+				return pattern.Column;
 			}
 		}
 
-		public AutomationElement GetItem (int row, int column)
-		{
-			return SourceManager.GetOrCreateAutomationElement (source.GetItem (row, column));
+		public int ColumnSpan {
+			get {
+				return pattern.ColumnSpan;
+			}
 		}
 
-		public static readonly AutomationPattern Pattern =
-			GridPatternIdentifiers.Pattern;
+		public int Row {
+			get {
+				return pattern.Row;
+			}
+		}
 
-		public static readonly AutomationProperty RowCountProperty =
-			GridPatternIdentifiers.RowCountProperty;
+		public int RowSpan {
+			get {
+				return pattern.RowSpan;
+			}
+		}
 
-		public static readonly AutomationProperty ColumnCountProperty =
-			GridPatternIdentifiers.ColumnCountProperty;
+		public string ContainingGridPath {
+			get {
+				return pattern.ContainingGridPath;
+			}
+		}
 	}
 }

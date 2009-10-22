@@ -35,6 +35,8 @@ using System.Windows.Forms;
 namespace SampleForm {
 	public partial class Form1 : Form {
 
+		private DataTable table = new DataTable ();
+
 		public Form1 ()
 		{
 			InitializeComponent ();
@@ -46,23 +48,23 @@ namespace SampleForm {
 			node.Nodes.Add (new TreeNode ("item 1a"));
 			treeView1.Nodes.Add (node);
 
-			DataTable table = new DataTable ("DataTable");
-			DataColumn column = new DataColumn ("column1");
-			column.DataType = typeof (string);
-			column.DefaultValue = "";
-			table.Columns.Add (column);
-			column = new DataColumn ("column2");
-			column.DataType = typeof (string);
-			column.DefaultValue = "";
-			table.Columns.Add (column);
-			// Enable this when we have a table
-			//dataGrid1.DataSource = table;
-			table.Rows.Add (table.NewRow ());
-			table.Rows.Add (table.NewRow ());
-			table.Rows [0] ["column1"] = "item1";
-			table.Rows [0] ["column2"] = "item2";
-			table.Rows [1] ["column1"] = "item3";
-			table.Rows [1] ["column2"] = "item4";
+			table.Columns.Add ("Gender", typeof (bool));
+			table.Columns.Add ("Name", typeof (string));
+			table.Columns.Add ("Age", typeof (uint));
+			DataRow tableRow;
+			tableRow = table.NewRow ();
+			tableRow [0] = false;
+			tableRow [1] = "Alice";
+			tableRow [2] = 24;
+			table.Rows.Add (tableRow);
+			tableRow = table.NewRow ();
+			tableRow [0] = true;
+			tableRow [1] = "Bob";
+			tableRow [2] = 28;
+			table.Rows.Add (tableRow);
+
+			dataGridView1.DataSource = table;
+			dataGridView1.AccessibleName = "dataGridView1";
 		}
 
 		private void button1_Click (object sender, EventArgs e)
@@ -129,7 +131,10 @@ namespace SampleForm {
 					FormBorderStyle = FormBorderStyle.FixedSingle;
 				else
 					FormBorderStyle = FormBorderStyle.Sizable;
-			}
+			} else if (cmd == "add table row")
+ 				table.Rows.Add (true, "Mallory", 40);
+ 			else if (cmd == "add table column")
+ 				table.Columns.Add("More");
 		}
 	}
 }

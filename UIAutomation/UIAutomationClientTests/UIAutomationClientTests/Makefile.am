@@ -81,6 +81,7 @@ FILES =  \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \
+	TableTest.cs \
 	TextPatternTest.cs \
 	TogglePatternTest.cs \
 	TransformPatternTest.cs \

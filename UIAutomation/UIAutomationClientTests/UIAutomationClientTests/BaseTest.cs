@@ -140,9 +140,17 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (btnRunElement);
 			Assert.IsNotNull (numericUpDown1Element);
 			Assert.IsNotNull (treeView1Element);
-			// Enabling only for Atspi until we have a DataGrid
-			if (Atspi)
-				Assert.IsNotNull (table1Element);
+			Assert.IsNotNull (table1Element);
+			/* Todo, why selection pattern will fail on a DataGridView?
+			 Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
+			               (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty),
+			               "Selection Pattern should be available");*/
+			Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
+			               (AutomationElementIdentifiers.IsGridPatternAvailableProperty),
+			               "Grid Pattern should be available");
+			Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
+			               (AutomationElementIdentifiers.IsTablePatternAvailableProperty),
+			               "Table Pattern should be available");
 			//Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
 		}
@@ -237,8 +245,8 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Spinner));
 			table1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.DataGrid));
+				new PropertyCondition (AEIds.NameProperty,
+					"dataGridView1"));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));

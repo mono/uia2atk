@@ -242,6 +242,14 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
+		internal string [] GetElementPaths (IRawElementProviderSimple[] elements)
+		{
+			string [] paths = new string [elements.Length];
+			for (int i = 0; i < elements.Length; i++)
+				paths [i] = FindWrapperByPovider (elements [i]).Path;
+			return paths;
+		}
+
 		internal IRawElementProviderSimple FindProviderByPath (string path)
 		{
 			foreach (var entry in providerWrapperMapping)

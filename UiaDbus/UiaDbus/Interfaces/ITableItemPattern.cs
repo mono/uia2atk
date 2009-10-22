@@ -20,26 +20,30 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using System.Runtime.InteropServices;
-using System.Windows.Automation;
+using NDesk.DBus;
 
-namespace Mono.UIAutomation.Source
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public interface ITablePattern : IGridPattern
+	//Todo, about why not let ITableItemPattern inherits IGridItemPattern
+	// see the comment on ITablePattern interface.
+	[Interface (Constants.TableItemPatternInterfaceName)]
+	public interface ITableItemPattern
 	{
-		new TableProperties Properties { get; }
-	}
+#region IGridItemPattern members
 
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		int Column { get; }
+		int ColumnSpan { get; }
+		int Row { get; }
+		int RowSpan { get; }
+		string ContainingGridPath { get; }
+
+#endregion
+
+		string [] GetColumnHeaderItemPaths();
+		string [] GetRowHeaderItemPaths();
 	}
 }

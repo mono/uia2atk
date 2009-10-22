@@ -280,10 +280,26 @@ namespace Mono.UIAutomation.UiaDbusSource
 				throw new InvalidOperationException ();
 			object ret = null;
 
-			if (pattern.Id == InvokePatternIdentifiers.Pattern.Id) {
+			if (pattern.Id == GridPatternIdentifiers.Pattern.Id) {
+				DCI.IGridPattern gridPattern = Bus.Session.GetObject<DCI.IGridPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.GridPatternSubPath));
+				ret = new UiaDbusGridPattern (gridPattern, busName, source);
+			} else if (pattern.Id == GridItemPatternIdentifiers.Pattern.Id) {
+				DCI.IGridItemPattern gridItemPattern = Bus.Session.GetObject<DCI.IGridItemPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.GridItemPatternSubPath));
+				ret = new UiaDbusGridItemPattern (gridItemPattern, busName, source);
+			} else if (pattern.Id == InvokePatternIdentifiers.Pattern.Id) {
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
+			} else if (pattern.Id == TablePatternIdentifiers.Pattern.Id) {
+				DCI.ITablePattern tablePattern = Bus.Session.GetObject<DCI.ITablePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TablePatternSubPath));
+				ret = new UiaDbusTablePattern (tablePattern, busName, source);
+			} else if (pattern.Id == TableItemPatternIdentifiers.Pattern.Id) {
+				DCI.ITableItemPattern tableItemPattern = Bus.Session.GetObject<DCI.ITableItemPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TableItemPatternSubPath));
+				ret = new UiaDbusTableItemPattern (tableItemPattern, busName, source);
 			} else if (pattern.Id == TextPatternIdentifiers.Pattern.Id) {
 				DCI.ITextPattern textPattern = Bus.Session.GetObject<DCI.ITextPattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TextPatternSubPath));

@@ -20,64 +20,58 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//  Sandy Armstrong <sanfordarmstrong@gmail.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class GridPattern : BasePattern
+	public class UiaDbusGridPattern : IGridPattern
 	{
-		public struct GridPatternInformation
+		private DCI.IGridPattern pattern;
+		private string busName;
+		private UiaDbusAutomationSource source;
+
+		public UiaDbusGridPattern (DCI.IGridPattern pattern, string busName,
+		                           UiaDbusAutomationSource source)
 		{
-			internal GridPatternInformation (GridProperties properties)
-			{
-				RowCount = properties.RowCount;
-				ColumnCount = properties.ColumnCount;
-			}
-
-			public int RowCount {
-				get; private set;
-			}
-
-			public int ColumnCount {
-				get; private set;
-			}
-		}
-
-		private IGridPattern source;
-
-		internal GridPattern (IGridPattern source)
-		{
+			this.pattern = pattern;
+			this.busName = busName;
 			this.source = source;
 		}
 
-		public GridPatternInformation Cached {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public GridPatternInformation Current {
-			get {
-				return new GridPatternInformation (source.Properties);
-			}
-		}
-
-		public AutomationElement GetItem (int row, int column)
+		public IElement GetItem(int row, int column)
 		{
-			return SourceManager.GetOrCreateAutomationElement (source.GetItem (row, column));
+			string elementPath = null;
+			try {
+				elementPath = pattern.GetItemPath (row, column);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+			return source.GetOrCreateElement (busName, elementPath);
 		}
 
-		public static readonly AutomationPattern Pattern =
-			GridPatternIdentifiers.Pattern;
+		public GridProperties Properties {
+			get {
 
-		public static readonly AutomationProperty RowCountProperty =
-			GridPatternIdentifiers.RowCountProperty;
-
-		public static readonly AutomationProperty ColumnCountProperty =
-			GridPatternIdentifiers.ColumnCountProperty;
+				try {
+					GridProperties properties = new GridProperties() {
+						ColumnCount = pattern.ColumnCount,
+						RowCount = pattern.RowCount
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
 	}
 }

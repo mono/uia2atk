@@ -1,4 +1,4 @@
-<Project name="UiaDbusSource" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.UiaDbusSource" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
+<Project name="UiaDbusSource" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.UiaDbusSource" language="C#" releaseVersion="" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
   <Policies>
     <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedFlat" ResourceNamePolicy="FileFormatDefault" />
   </Policies>

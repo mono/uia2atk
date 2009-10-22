@@ -48,7 +48,11 @@ FILES =  \
 	EventHandlerManager.cs \
 	UiaDbusAutomationSource.cs \
 	UiaDbusElement.cs \
+	UiaDbusGridItemPattern.cs \
+	UiaDbusGridPattern.cs \
 	UiaDbusInvokePattern.cs \
+	UiaDbusTableItemPattern.cs \
+	UiaDbusTablePattern.cs \
 	UiaDbusTextPattern.cs \
 	UiaDbusTextPatternRange.cs \
 	UiaDbusTransformPattern.cs \

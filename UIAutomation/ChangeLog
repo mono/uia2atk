@@ -1,3 +1,14 @@
+2009-10-22  Matt Guo  <matt@mattguo.com>
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/SampleForm/Form1.Designer.cs: 
+	* UIAutomationClient/System.Windows.Automation/GridPattern.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/TableTest.cs: 
+	* UIAutomationSource/Mono.UIAutomation.Source/ITablePattern.cs: 
+	* UIAutomationSource/Mono.UIAutomation.Source/ITableItemPattern.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj: Implementation/Tests for [Grid|GridItem|Table|TableItem]Pattern
+
 2009-10-12  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/System.Windows.Automation/Automation.cs: 

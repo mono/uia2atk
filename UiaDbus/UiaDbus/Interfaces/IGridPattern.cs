@@ -20,26 +20,19 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using System.Runtime.InteropServices;
-using System.Windows.Automation;
+using NDesk.DBus;
 
-namespace Mono.UIAutomation.Source
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public interface ITablePattern : IGridPattern
+	[Interface (Constants.GridPatternInterfaceName)]
+	public interface IGridPattern
 	{
-		new TableProperties Properties { get; }
-	}
-
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		string GetItemPath (int row, int column);
+		int ColumnCount { get; }
+		int RowCount { get; }
 	}
 }

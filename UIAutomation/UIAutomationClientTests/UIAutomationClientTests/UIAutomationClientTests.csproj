@@ -70,6 +70,7 @@
     <Compile Include="TextPatternTest.cs" />
     <Compile Include="ValuePatternTest.cs" />
     <Compile Include="TransformPatternTest.cs" />
+    <Compile Include="TableTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

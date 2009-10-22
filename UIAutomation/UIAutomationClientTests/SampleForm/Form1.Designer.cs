@@ -51,6 +51,8 @@ namespace SampleForm {
 			this.groupBox3.SuspendLayout ();
 			this.groupBox2.SuspendLayout ();
 			this.panel1.SuspendLayout ();
+			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			( (System.ComponentModel.ISupportInitialize) (this.dataGridView1 ) ).BeginInit ();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown1 ) ).BeginInit ();
 			this.SuspendLayout ();
 			// 
@@ -264,7 +266,15 @@ namespace SampleForm {
 			this.numericUpDown1.Location = new System.Drawing.Point (102, 110);
 			this.numericUpDown1.Name = "numericUpDown1";
 			this.numericUpDown1.Size = new System.Drawing.Size (120, 20);
-			this.numericUpDown1.TabIndex = 9;
+			this.numericUpDown1.TabIndex = 11;
+			// 
+			// dataGridView1
+			// 
+			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.Location = new System.Drawing.Point (200, 364);
+			this.dataGridView1.Name = "dataGridView1";
+			this.dataGridView1.Size = new System.Drawing.Size (240, 150);
+			this.dataGridView1.TabIndex = 12;
 			// 
 			// Form1
 			// 
@@ -282,6 +292,7 @@ namespace SampleForm {
 			this.Controls.Add (this.label1);
 			this.Controls.Add (this.groupBox1);
 			this.Controls.Add (this.button1);
+			this.Controls.Add (this.dataGridView1);
 			this.Name = "Form1";
 			this.Text = "TestForm1";
 			this.groupBox1.ResumeLayout (false);
@@ -290,6 +301,7 @@ namespace SampleForm {
 			this.groupBox2.PerformLayout ();
 			this.panel1.ResumeLayout (false);
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown1 ) ).EndInit ();
+			( (System.ComponentModel.ISupportInitialize) ( this.dataGridView1 ) ).EndInit ();
 			this.ResumeLayout (false);
 			this.PerformLayout ();
 
@@ -319,6 +331,7 @@ namespace SampleForm {
 		private System.Windows.Forms.TextBox txtCommand;
 		private System.Windows.Forms.Button btnRun;
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.DataGridView dataGridView1;
 	}
 }
 

@@ -20,26 +20,50 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.Source
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public interface ITablePattern : IGridPattern
+	public class UiaDbusGridItemPattern : IGridItemPattern
 	{
-		new TableProperties Properties { get; }
-	}
+		private DCI.IGridItemPattern pattern;
+		private string busName;
+		private UiaDbusAutomationSource source;
 
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		public UiaDbusGridItemPattern (DCI.IGridItemPattern pattern, string busName,
+		                           UiaDbusAutomationSource source)
+		{
+			this.pattern = pattern;
+			this.busName = busName;
+			this.source = source;
+		}
+
+		public GridItemProperties Properties {
+			get {
+
+				try {
+					GridItemProperties properties = new GridItemProperties() {
+						Column = pattern.Column,
+						ColumnSpan = pattern.ColumnSpan,
+						Row = pattern.Row,
+						RowSpan = pattern.RowSpan,
+						ContainingGrid = source.GetOrCreateElement (busName, pattern.ContainingGridPath)
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
 	}
 }

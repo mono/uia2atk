@@ -20,26 +20,54 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
-using System.Runtime.InteropServices;
+using SW = System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.Source
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public interface ITablePattern : IGridPattern
+	public class TableItemPatternWrapper: GridItemPatternWrapper, ITableItemPattern
 	{
-		new TableProperties Properties { get; }
-	}
+#region Private Fields
 
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		private ITableItemProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public TableItemPatternWrapper (ITableItemProvider provider)
+			: base (provider)
+		{
+			this.provider = provider;
+		}
+
+#endregion
+
+#region ITableItemPattern Members
+
+		public string [] GetColumnHeaderItemPaths()
+		{
+			return AutomationBridge.Instance.
+				GetElementPaths (provider.GetColumnHeaderItems ());
+		}
+
+		public string [] GetRowHeaderItemPaths()
+		{
+			return AutomationBridge.Instance.
+				GetElementPaths (provider.GetRowHeaderItems ());
+		}
+
+#endregion
 	}
 }

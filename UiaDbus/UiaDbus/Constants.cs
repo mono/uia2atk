@@ -46,6 +46,8 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string ScrollPatternInterfaceName = Namespace + ".ScrollPattern";
 		public const string SelectionItemPatternInterfaceName = Namespace + ".SelectionItemPattern";
 		public const string SelectionPatternInterfaceName = Namespace + ".SelectionPattern";
+		public const string TableItemPatternInterfaceName = Namespace + ".TableItemPattern";
+		public const string TablePatternInterfaceName = Namespace + ".TablePattern";
 		public const string TextPatternInterfaceName = Namespace + ".TextPattern";
 		public const string TextPatternRangeInterfaceName = Namespace + ".TextPatternRange";
 		public const string TogglePatternInterfaceName = Namespace + ".TogglePattern";
@@ -64,6 +66,8 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string ScrollPatternSubPath = "Scroll";
 		public const string SelectionItemPatternSubPath = "SelectionItem";
 		public const string SelectionPatternSubPath = "Selection";
+		public const string TableItemPatternSubPath = "TableItem";
+		public const string TablePatternSubPath = "Table";
 		public const string TextPatternSubPath = "Text";
 		public const string TogglePatternSubPath = "Toggle";
 		public const string TransformPatternSubPath = "Transform";

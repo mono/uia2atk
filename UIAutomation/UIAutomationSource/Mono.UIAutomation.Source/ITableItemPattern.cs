@@ -28,9 +28,9 @@ using System.Runtime.InteropServices;
 
 namespace Mono.UIAutomation.Source
 {
-	public interface ITableItemPattern
+	public interface ITableItemPattern : IGridItemPattern
 	{
-		TableItemProperties Properties { get; }
+		new TableItemProperties Properties { get; }
 	}
 
 	public struct TableItemProperties

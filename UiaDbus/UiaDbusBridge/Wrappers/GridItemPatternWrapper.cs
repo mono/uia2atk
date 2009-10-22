@@ -20,26 +20,73 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
-using System.Runtime.InteropServices;
+using SW = System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.Source
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public interface ITablePattern : IGridPattern
-	{
-		new TableProperties Properties { get; }
-	}
 
-	public struct TableProperties
+	public class GridItemPatternWrapper : IGridItemPattern
 	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+#region Private Fields
+
+		private IGridItemProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public GridItemPatternWrapper (IGridItemProvider provider)
+		{
+			this.provider = provider;
+		}
+
+#endregion
+
+#region IGridItemPattern Members
+
+		public int Column {
+			get {
+				return provider.Column;
+			}
+		}
+
+		public int ColumnSpan {
+			get {
+				return provider.ColumnSpan;
+			}
+		}
+
+		public int Row {
+			get {
+				return provider.Row;
+			}
+		}
+
+		public int RowSpan {
+			get {
+				return provider.RowSpan;
+			}
+		}
+
+		public string ContainingGridPath {
+			get {
+				var element = provider.ContainingGrid;
+				return AutomationBridge.Instance.FindWrapperByPovider (element).Path;
+			}
+		}
+
+#endregion
 	}
 }

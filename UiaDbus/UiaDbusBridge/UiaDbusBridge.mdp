@@ -26,6 +26,10 @@
     <File name="Wrappers/ValuePatternWrapper.cs" subtype="Code" buildaction="Compile" />
     <File name="Wrappers/TextPatternWrapper.cs" subtype="Code" buildaction="Compile" />
     <File name="Wrappers/TextPatternRangeWrapper.cs" subtype="Code" buildaction="Compile" />
+    <File name="Wrappers/GridPatternWrapper.cs" subtype="Code" buildaction="Compile" />
+    <File name="Wrappers/GridItemPatternWrapper.cs" subtype="Code" buildaction="Compile" />
+    <File name="Wrappers/TableItemPatternWrapper.cs" subtype="Code" buildaction="Compile" />
+    <File name="Wrappers/TablePatternWrapper.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

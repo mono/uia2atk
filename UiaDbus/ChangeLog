@@ -1,3 +1,31 @@
+2009-10-22  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Makefile.am: 
+	* UiaDbus/UiaDbus.mdp: 
+	* UiaDbus/Constants.cs: 
+	* UiaDbusBridge/Makefile.am: 
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/UiaDbusBridge.mdp: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusSource/UiaDbusSource.mdp: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbus/Interfaces/IGridPattern.cs: 
+	* UiaDbus/Interfaces/ITablePattern.cs: 
+	* UiaDbusSource/UiaDbusGridPattern.cs: 
+	* UiaDbusSource/UiaDbusTablePattern.cs: 
+	* UiaDbus/Interfaces/IGridItemPattern.cs: 
+	* UiaDbus/Interfaces/ITableItemPattern.cs: 
+	* UiaDbusSource/UiaDbusGridItemPattern.cs: 
+	* UiaDbus/Interfaces/InterfaceConverter.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs: 
+	* UiaDbusSource/UiaDbusTableItemPattern.cs: 
+	* UiaDbusBridge/Wrappers/GridPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/TablePatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/GridItemPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: 
+	* UiaDbusBridge/Wrappers/TableItemPatternWrapper.cs:
+	Implement [Grid|GridItem|Table|TableItem]Pattern
+
 2009-10-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbus/Makefile.am:

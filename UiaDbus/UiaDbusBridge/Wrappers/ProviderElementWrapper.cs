@@ -472,28 +472,40 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 			string patternPath = this.Path + "/";
 
-			if (patternId == InvokePatternIdentifiers.Pattern.Id) {
-				patternPath += DC.Constants.InvokePatternSubPath;
-				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
-					delegate (object p) {
-						return new InvokePatternWrapper ((IInvokeProvider) p); });
-			} else if (patternId == ValuePatternIdentifiers.Pattern.Id) {
-				patternPath += DC.Constants.ValuePatternSubPath;
-				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
-					delegate (object p) {
-						return new ValuePatternWrapper ((IValueProvider) p); });
-			} else if (patternId == TextPatternIdentifiers.Pattern.Id) {
-				patternPath += DC.Constants.TextPatternSubPath;
-				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
-					delegate (object p) {
-						return new TextPatternWrapper ((ITextProvider) p, bus, patternPath); });
-			} else if (patternId == TransformPatternIdentifiers.Pattern.Id) {
-				patternPath += DC.Constants.TransformPatternSubPath;
-				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
-					delegate (object p) {
-						return new TransformPatternWrapper ((ITransformProvider) p); });
-			} else
-				throw new InvalidOperationException ();
+			if (patternId == GridPatternIdentifiers.Pattern.Id) {
+ 				patternPath += DC.Constants.GridPatternSubPath;
+ 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new GridPatternWrapper ((IGridProvider) p));
+ 			} else if (patternId == GridItemPatternIdentifiers.Pattern.Id) {
+ 				patternPath += DC.Constants.GridItemPatternSubPath;
+ 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new GridItemPatternWrapper ((IGridItemProvider) p));
+ 			} else if (patternId == InvokePatternIdentifiers.Pattern.Id) {
+  				patternPath += DC.Constants.InvokePatternSubPath;
+  				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new InvokePatternWrapper ((IInvokeProvider) p));
+  			} else if (patternId == ValuePatternIdentifiers.Pattern.Id) {
+  				patternPath += DC.Constants.ValuePatternSubPath;
+  				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new ValuePatternWrapper ((IValueProvider) p));
+ 			} else if (patternId == TablePatternIdentifiers.Pattern.Id) {
+ 				patternPath += DC.Constants.TablePatternSubPath;
+ 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new TablePatternWrapper ((ITableProvider) p));
+ 			} else if (patternId == TableItemPatternIdentifiers.Pattern.Id) {
+ 				patternPath += DC.Constants.TableItemPatternSubPath;
+ 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new TableItemPatternWrapper ((ITableItemProvider) p));
+  			} else if (patternId == TextPatternIdentifiers.Pattern.Id) {
+  				patternPath += DC.Constants.TextPatternSubPath;
+  				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new TextPatternWrapper ((ITextProvider) p, bus, patternPath));
+  			} else if (patternId == TransformPatternIdentifiers.Pattern.Id) {
+  				patternPath += DC.Constants.TransformPatternSubPath;
+  				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+ 				                        p => new TransformPatternWrapper ((ITransformProvider) p));
+  			} else
+  				throw new InvalidOperationException ();
 
 			return patternPath;
 		}

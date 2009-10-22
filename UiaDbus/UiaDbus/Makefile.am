@@ -36,7 +36,12 @@ SOURCE_FILES =  \
 	Constants.cs \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
+	Interfaces/IGridItemPattern.cs \
+	Interfaces/IGridPattern.cs \
 	Interfaces/IInvokePattern.cs \
+	Interfaces/InterfaceConverter.cs \
+	Interfaces/ITableItemPattern.cs \
+	Interfaces/ITablePattern.cs \
 	Interfaces/ITextPattern.cs \
 	Interfaces/ITextPatternRange.cs \
 	Interfaces/ITransformPattern.cs \

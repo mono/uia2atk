@@ -20,26 +20,60 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
-using System.Runtime.InteropServices;
+using SW = System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.Source
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public interface ITablePattern : IGridPattern
-	{
-		new TableProperties Properties { get; }
-	}
 
-	public struct TableProperties
+	public class GridPatternWrapper : IGridPattern
 	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+#region Private Fields
+
+		private IGridProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public GridPatternWrapper (IGridProvider provider)
+		{
+			this.provider = provider;
+		}
+
+#endregion
+
+#region IGridPattern Members
+
+		public string GetItemPath (int row, int column)
+		{
+			var element = provider.GetItem (row, column);
+			return AutomationBridge.Instance.FindWrapperByPovider (element).Path;
+		}
+
+		public int ColumnCount {
+			get {
+				return provider.ColumnCount;
+			}
+		}
+
+		public int RowCount {
+			get {
+				return provider.RowCount;
+			}
+		}
+
+#endregion
 	}
 }

@@ -322,6 +322,15 @@ namespace Mono.UIAutomation.UiaDbusSource
 			return element;
 		}
 
+		internal UiaDbusElement [] GetOrCreateElements (string busName, string [] paths)
+		{
+			var elements = new UiaDbusElement [paths.Length];
+			for (int i = 0; i < paths.Length; i++) {
+				elements [i] = this.GetOrCreateElement (busName, paths [i]);
+			}
+			return elements;
+		}
+
 		#endregion
 
 		#region Private Methods

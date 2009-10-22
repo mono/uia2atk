@@ -20,26 +20,31 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
+//  Matt Guo <matt@mattguo.com>
 // 
 
 using System;
-using System.Runtime.InteropServices;
-using System.Windows.Automation;
+using SWA = System.Windows.Automation;
+using NDesk.DBus;
 
-namespace Mono.UIAutomation.Source
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public interface ITablePattern : IGridPattern
+	//Todo, if we let ITablePattern inherits IGridPattern,
+	// then all IGridPattern members such as ColumnCount will not be exposed
+	// through dbus, is this a ndesk.dbus bug?
+	[Interface (Constants.TablePatternInterfaceName)]
+	public interface ITablePattern
 	{
-		new TableProperties Properties { get; }
-	}
+#region IGridPattern members
 
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		string GetItemPath (int row, int column);
+		int ColumnCount { get; }
+		int RowCount { get; }
+
+#endregion
+
+		string [] GetColumnHeaderPaths();
+		string [] GetRowHeaderPaths();
+		SWA.RowOrColumnMajor RowOrColumnMajor { get; }
 	}
 }

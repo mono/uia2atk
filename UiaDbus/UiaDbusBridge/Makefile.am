@@ -46,8 +46,12 @@ FILES =  \
 	Application.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
+	Wrappers/GridItemPatternWrapper.cs \
+	Wrappers/GridPatternWrapper.cs \
 	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \
+	Wrappers/TableItemPatternWrapper.cs \
+	Wrappers/TablePatternWrapper.cs \
 	Wrappers/TextPatternRangeWrapper.cs \
 	Wrappers/TextPatternWrapper.cs \
 	Wrappers/TransformPatternWrapper.cs \

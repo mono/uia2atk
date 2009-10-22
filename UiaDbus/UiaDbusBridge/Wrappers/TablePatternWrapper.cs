@@ -20,26 +20,59 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Mike Gorse <mgorse@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
 
 using System;
-using System.Runtime.InteropServices;
+using SW = System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-namespace Mono.UIAutomation.Source
+using DC = Mono.UIAutomation.UiaDbus;
+using Mono.UIAutomation.UiaDbus.Interfaces;
+
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public interface ITablePattern : IGridPattern
+	public class TablePatternWrapper: GridPatternWrapper, ITablePattern
 	{
-		new TableProperties Properties { get; }
-	}
+#region Private Fields
 
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		private ITableProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public TablePatternWrapper (ITableProvider provider)
+			: base (provider)
+		{
+			this.provider = provider;
+		}
+
+#endregion
+
+#region ITablePattern Members
+
+		public string [] GetColumnHeaderPaths()
+		{
+			return AutomationBridge.Instance.GetElementPaths (provider.GetColumnHeaders ());
+		}
+
+
+		public string [] GetRowHeaderPaths()
+		{
+			return AutomationBridge.Instance.GetElementPaths (provider.GetRowHeaders ());
+		}
+
+		public RowOrColumnMajor RowOrColumnMajor {
+			get {
+				return provider.RowOrColumnMajor;
+			}
+		}
+
+#endregion
 	}
 }
