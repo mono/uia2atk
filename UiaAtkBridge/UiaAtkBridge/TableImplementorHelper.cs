@@ -25,10 +25,9 @@
 
 using System;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Services;
 using System.Collections.Generic;
-
-using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
@@ -41,9 +40,9 @@ namespace UiaAtkBridge
 			tableProvider = (ITableProvider) resource.Provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);
 		}
 
-		private Adapter							resource;
-		private ITableProvider					tableProvider = null;
-		private TableGroupAggregator aggregator = null;
+		private Adapter						resource;
+		private ITableProvider				tableProvider = null;
+		private IGridProvider				gridProvider = null;
 		private Atk.Object caption = null;
 		private Atk.Object summary = null;
 
@@ -51,14 +50,9 @@ namespace UiaAtkBridge
 			get {
 				if (tableProvider != null)
 					return tableProvider;
-				IGridProvider grid = (IGridProvider) resource.Provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-				if (grid != null)
-					return grid;
-				if (aggregator == null) {
-					IRawElementProviderFragment fragment = resource.Provider as IRawElementProviderFragment;
-					aggregator = new TableGroupAggregator (fragment);
-				}
-				return aggregator;
+				if (gridProvider == null)
+					gridProvider = (IGridProvider) resource.Provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+				return gridProvider;
 			}
 		}
 
@@ -117,9 +111,9 @@ namespace UiaAtkBridge
 
 			// Map from Atk's 1-based system to UIA's 0-based
 			// indicies
-			index -= 1;
+			index--;
 
-			Adapter child = resource.RefAccessibleChild (index) as Adapter;
+			Adapter child = RefProviderChildByDepthSearch (index);
 			if (child != null && child.Provider != null) {
 				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 				if (g == null)	// ie, if a group header
@@ -136,7 +130,7 @@ namespace UiaAtkBridge
 
 			// Map from Atk's 1-based system to UIA's 0-based
 			// indicies
-			index -= 1;
+			index--;
 
 			int ret = 0;
 			if (tableProvider != null) {
@@ -148,7 +142,7 @@ namespace UiaAtkBridge
 				}
 			}
 
-			Adapter child = resource.RefAccessibleChild (index) as Adapter;
+			Adapter child = RefProviderChildByDepthSearch (index);
 			if (child != null && child.Provider != null) {
 				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 				if (g != null)
@@ -156,6 +150,39 @@ namespace UiaAtkBridge
 				return ret + RowAdjustment (child.Provider);
 			}
 			return -1;
+		}
+
+		//this kind of search will work regardless of the technique used for the hierarchy layout used for
+		//the children (mono-level or multi-level), because in the provider side it's multi-level always
+		private Adapter RefProviderChildByDepthSearch (int pos)
+		{
+			Adapter adapter = null;
+			var frag = resource.Provider as IRawElementProviderFragment;
+			var parent = frag;
+
+			while (pos >= 0) {
+				if (frag == null)
+					return null;
+				frag = frag.Navigate (NavigateDirection.FirstChild);
+				if (frag == null)
+					frag = parent.Navigate (NavigateDirection.NextSibling);
+
+				if (frag != null)
+					parent = frag;
+				else {
+					if (parent != resource.Provider) {
+						parent = parent.Navigate (NavigateDirection.Parent);
+						frag = parent.Navigate (NavigateDirection.NextSibling);
+					} else
+						return null;
+				}
+
+				adapter = AutomationBridge.GetAdapterForProviderSemiLazy (frag);
+				//we need this check because there are some children providers that don't have an Adapter
+				if (adapter != null)
+					pos--;
+			}
+			return adapter;
 		}
 
 		public int NColumns
@@ -205,9 +232,6 @@ namespace UiaAtkBridge
 				return -1;
 			}
 
-			int controlTypeId = (int) item.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.Group.Id)
-				return NColumns;
 			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 			if (g != null)
 				return g.ColumnSpan;
@@ -249,8 +273,7 @@ namespace UiaAtkBridge
 			return 1;
 		}
 
-		public Atk.Object Caption
-		{
+		public Atk.Object Caption {
 			get { return caption; }
 			set { caption = value; }
 		}
@@ -271,7 +294,7 @@ namespace UiaAtkBridge
 		{
 			if (tableProvider == null)
 				return null;
-			
+
 			IRawElementProviderSimple [] items = tableProvider.GetColumnHeaders ();
 			if (column < 0 || column >= items.Length)
 				return null;
@@ -294,15 +317,14 @@ namespace UiaAtkBridge
 		{
 			if (tableProvider == null)
 				return null;
-			
+
 			IRawElementProviderSimple [] items = tableProvider.GetRowHeaders ();
 			if (row < 0 || row >= items.Length)
 				return null;
 			return AutomationBridge.GetAdapterForProviderLazy (items [row]);
 		}
 
-		public Atk.Object Summary
-		{
+		public Atk.Object Summary {
 			get { return summary; }
 			set { summary = value; }
 		}
@@ -360,8 +382,7 @@ namespace UiaAtkBridge
 			return selectedItems.Count;
 		}
 
-		// The below two functions should go away as soon as the
-		// atk-sharp api is fixed.
+		// The below function should go away as soon as the atk-sharp api is fixed (BNC#512477)
 		public int GetSelectedColumns (out int selected)
 		{
 			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
@@ -369,6 +390,7 @@ namespace UiaAtkBridge
 			return 0;
 		}
 
+		// The below function should go away as soon as the atk-sharp api is fixed (BNC#512477)
 		public int GetSelectedRows (out int selected)
 		{
 			// TODO: Logic should be the same as GetSelectedRows (out int [] selected)
@@ -475,6 +497,7 @@ namespace UiaAtkBridge
 			
 			IRawElementProviderSimple item;
 			try {
+				// UIA doesn't support row selection, so we select the first cell
 				item = GridProvider.GetItem (row, 0);
 			} catch (ArgumentOutOfRangeException e) {
 				Log.Debug (e);
@@ -560,8 +583,6 @@ namespace UiaAtkBridge
 
 		internal int RowAdjustment (IRawElementProviderSimple provider)
 		{
-			if (GridProvider is TableGroupAggregator)
-				return ((TableGroupAggregator)GridProvider).RowAdjustment ((IRawElementProviderFragment)provider);
 			return 0;
 		}
 
@@ -569,110 +590,6 @@ namespace UiaAtkBridge
 		{
 			return (row >= 0 && row < NRows)
 			       && (col >= 0 && col < NColumns);
-		}
-	}
-
-	internal class TableGroupAggregator : IGridProvider
-	{
-		private IRawElementProviderFragment provider;
-
-		public TableGroupAggregator (IRawElementProviderFragment provider)
-		{
-			this.provider = provider;
-		}
-
-		public IRawElementProviderFragment Provider {
-			get { return provider; }
-		}
-
-		public int ColumnCount {
-			get {
-				int adj;
-				IRawElementProviderSimple g = GetGridForRow (0, out adj);
-				IGridProvider grid = null;
-				if (g != null)
-					grid = (IGridProvider) g.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-				if (g != null)
-					return grid.ColumnCount;
-				return -1;
-			}
-		}
-
-		public int RowCount {
-			get {
-				int rows = 0;
-				for (IRawElementProviderFragment child = Provider.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling)) {
-					IGridProvider grid = (IGridProvider) child.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-					if (grid != null)
-						rows += grid.RowCount + 1;
-				}
-				return rows;
-			}
-		}
-
-		public IRawElementProviderSimple GetItem (int row, int column)
-		{
-			int adj;
-			IRawElementProviderSimple g = GetGridForRow (row, out adj);
-			if (g == null)
-				return null;
-			if (adj == -1)
-				return g;
-			IGridProvider grid = (IGridProvider) g.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			if (grid == null)
-				return null;
-			int localRow = row - adj;
-			if (localRow < 0 || localRow >= grid.RowCount || column < 0 || column >= grid.ColumnCount)
-				return null;
-
-			IRawElementProviderSimple item = null;
-			try {
-				item = grid.GetItem (localRow, column);
-			} catch (ArgumentOutOfRangeException e) {
-				Log.Debug (e);
-			}
-
-			return item;
-		}
-
-		internal IRawElementProviderSimple GetGridForRow (int row, out int adj)
-		{
-			IRawElementProviderFragment child;
-			adj = 0;
-			for (child = Provider.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling)) {
-				IGridProvider grid = (IGridProvider) child.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-				if (grid == null)
-				continue;
-				if (adj + grid.RowCount >= row) {
-					if (adj == row)
-						adj = -1;	// header
-					adj++;	// skip group header
-					return child;
-				}
-				adj += grid.RowCount + 1;
-			}
-			return null;
-		}
-
-		internal int RowAdjustment (IRawElementProviderFragment provider)
-		{
-			IRawElementProviderFragment cur = provider;
-			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			int adj = 0;
-			IRawElementProviderFragment parent = provider.Navigate (NavigateDirection.Parent);
-			int parentControlTypeId = (int) parent.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.DataItem.Id) {
-				if (parentControlTypeId == ControlType.DataGrid.Id)
-					return 0;
-				cur = parent;
-				adj = 1;
-			}
-			for (cur = cur.Navigate (NavigateDirection.PreviousSibling); cur != null; cur = cur.Navigate (NavigateDirection.PreviousSibling)) {
-				IGridProvider grid = (IGridProvider) cur.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-				if (grid != null)
-					adj += grid.RowCount + 1;
-			}
-			return adj;
 		}
 	}
 }

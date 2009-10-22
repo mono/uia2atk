@@ -1,3 +1,9 @@
+2009-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Add FIXME.
+
+	* AtkTester.cs: Throw ANE.
+
 2009-09-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Enable Relations sub-test in TreeView.

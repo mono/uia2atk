@@ -2272,6 +2272,9 @@ namespace UiaAtkBridgeTest
 
 		protected virtual void ExpandTreeView (Atk.Object accessible)
 		{
+			if (accessible == null)
+				throw new ArgumentNullException ("accessible");
+
 			int nChildren = accessible.NAccessibleChildren;
 			for (int i = 0; i < nChildren; i++) {
 				Atk.Object child = accessible.RefAccessibleChild (i);

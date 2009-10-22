@@ -1105,6 +1105,7 @@ namespace UiaAtkBridgeTest
 
 			Relation (Atk.RelationType.NodeChildOf, child1, group);
 
+			//FIXME: replace the code below with just a call to InterfaceTable()
 			Assert.AreEqual (3, atkTable.NColumns, "Table NumColumns");
 		}
 

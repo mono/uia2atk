@@ -1,3 +1,10 @@
+2009-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TableImplementorHelper.cs: Kill dead code. Add some
+	comments. Use UIA children navigation instead of ATK, in order
+	to be able to work in the future if we change the ATK layout.
+	No regressions in the tests.
+
 2009-10-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Adapter.cs:
