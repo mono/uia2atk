@@ -1,5 +1,25 @@
 2009-10-21  Neville Gao  <nevillegao@gmail.com>
 
+	* samples/moonlight/: Deleted *.html and *.xap.
+	* samples/moonlight/ListBox/Page.html: Added SelectionMode property.
+	* testers/moonlight/thumb/__init__.py:
+	* testers/moonlight/image/__init__.py:
+	* testers/moonlight/checkbox/__init__.py:
+	* testers/moonlight/radiobutton/__init__.py:
+	* testers/moonlight/textblock/__init__.py:
+	* testers/moonlight/hyperlinkbutton/__init__.py:
+	* testers/moonlight/combobox/__init__.py:
+	* testers/moonlight/gridsplitter/__init__.py:
+	* testers/moonlight/togglebutton/__init__.py:
+	* testers/moonlight/slider/__init__.py:
+	* testers/moonlight/scrollbar/__init__.py:
+	* testers/moonlight/progressbar/__init__.py:
+	* testers/moonlight/tabcontrol/__init__.py:
+	* testers/moonlight/button/__init__.py:
+	* testers/moonlight/passwordbox/__init__.py: Modified samples path.
+
+2009-10-21  Neville Gao  <nevillegao@gmail.com>
+
 	* testers/moonlight/scrollbar/scrollbarframe.py:
 	* testers/moonlight/scrollbar-regression.py: Find scrollBars correctly.
 

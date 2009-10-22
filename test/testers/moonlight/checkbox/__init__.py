@@ -25,7 +25,7 @@ def launchCheckBox(exe=None):
 
     if exe is None:
         # make sure we can find the sample applications
-        exe = '%s/samples/moonlight/checkbox/TestPage.html' % uiaqa_path
+        exe = '%s/samples/moonlight/CheckBox/CheckBoxSample.html' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

@@ -25,7 +25,7 @@ def launchImage(exe=None):
 
     if exe is None:
         # make sure we can find the sample applications
-        exe = '%s/samples/moonlight/image/TestPage.html' % uiaqa_path
+        exe = '%s/samples/moonlight/Image/ImageSample.html' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

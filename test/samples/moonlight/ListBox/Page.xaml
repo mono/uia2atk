@@ -3,16 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     Width="400" Height="300">
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Name="textBlock" Height="30" Margin="50,50,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="listBox" Height="200" Margin="50,100,150,0" VerticalAlignment="Top"  SelectionChanged="ListBox_SelectionChanged">
-            <ListBoxItem Content="Item 1"/>
-            <ListBoxItem Content="Item 2"/>
-            <ListBoxItem Content="Item 3"/>
-            <ListBoxItem Content="Item 4"/>
-            <ListBoxItem Content="Item 5"/>
-            <ListBoxItem Content="Item 6"/>
-            <ListBoxItem Content="Item 7"/>
-            <ListBoxItem Content="Item 8"/>
+        <TextBlock x:Name="textBlock" Height="30" Margin="50,50,0,0" VerticalAlignment="Top"/>
+        <ListBox Name="listBox" Height="200" Margin="50,100,150,0" VerticalAlignment="Top" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Extended">
+           <ListBoxItem Content="Item 1"/>
+           <ListBoxItem Content="Item 2"/>
+           <ListBoxItem Content="Item 3"/>
+           <ListBoxItem Content="Item 4"/>
+           <ListBoxItem Content="Item 5"/>
+           <ListBoxItem Content="Item 6"/>
+           <ListBoxItem Content="Item 7"/>
+           <ListBoxItem Content="Item 8"/>
         </ListBox>
     </Grid>
 </UserControl>

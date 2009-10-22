@@ -25,7 +25,7 @@ def launchTextBlock(exe=None):
 
     if exe is None:
         # make sure we can find the sample applications
-        exe = '%s/samples/moonlight/textblock/TestPage.html' % uiaqa_path
+        exe = '%s/samples/moonlight/TextBlock/TextBlockSample.html' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   
