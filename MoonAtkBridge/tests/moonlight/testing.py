@@ -23,5 +23,22 @@
 #      Brad Taylor <brad@getcoded.net>
 #
 
-from moonlight.browser import launchAddress
-from moonlight.testing import TestCase
+from strongwind.utils import retryUntilTrue
+
+import unittest
+
+class TestCase(unittest.TestCase):
+    def __getattr__(self, name):
+        """
+        Override all assert* and fail* methods and retry them several times
+        before failing.  This accomodates applications which make take a little
+        longer to react to an action due to mainloop contention.
+        """
+        parent = super(unittest.TestCase, self)
+        if hasattr(parent, name):
+            func = getattr(parent, name)
+            if name.startswith('assert') or name.startswith('fail'):
+                return lambda *args, **kwargs: \
+                    retryUntilTrue(func, args, kwargs)
+            return func
+        raise AttributeError(name)

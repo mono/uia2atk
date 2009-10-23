@@ -31,9 +31,8 @@ from strongwind import *
 from time import sleep
 from os.path import abspath
 import pyatspi
-import unittest
 
-class ExpandCollapseToggleInvokeButton(unittest.TestCase):
+class ExpandCollapseToggleInvokeButton(TestCase):
     """
     Exercises the basic functionality of the ExpandCollapseToggleInvoke pattern
     implementor for a button

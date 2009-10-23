@@ -483,7 +483,7 @@ namespace Moonlight.AtkBridge
 			} else if (args.Property == AEIds.BoundingRectangleProperty) {
 				EmitBoundsChanged ((System.Windows.Rect) args.NewValue);
 			} else if (args.Property == AEIds.NameProperty) {
-				// TODO: Emit name changed signal
+				Notify ("accessible-name");
 			}
 
 			if (AutomationPropertyChanged != null)

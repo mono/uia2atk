@@ -26,6 +26,7 @@
 import os
 import signal
 
+from time import sleep
 from strongwind import *
 
 def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
@@ -80,7 +81,13 @@ class FirefoxBrowser(accessibles.Application):
         self.slControl = self.mainFrame.findFiller('Silverlight Control')
 
     def kill(self):
+        self.mainFrame.altF4()
+        sleep(config.MEDIUM_DELAY)
+
         try:
-            os.killpg(self.proc.pid, signal.SIGKILL)
+            self.proc.poll()
+            if not self.proc.returncode:
+                os.killpg(self.proc.pid, signal.SIGKILL)
+                self.proc.wait()
         except:
             print "Unable to send pid %d SIGKILL..." % self.proc.pid

@@ -32,7 +32,7 @@ from os.path import abspath
 import pyatspi
 import unittest
 
-class Bug537507(unittest.TestCase):
+class Bug537507(TestCase):
     """
     Ensures that the browser does not segfault on exit.
     """

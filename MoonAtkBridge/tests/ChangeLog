@@ -1,3 +1,30 @@
+2009-10-23  Brad Taylor  <brad@getcoded.net>
+
+	* moonlight/browser/__init__.py: Close Firefox with altF4 first, then
+	if it's not dead yet, kill it.
+
+	* moonlight/testing.py: 
+	* moonlight/__init__.py: Override unittest.TestCase, and wrap all
+	assert* and fail* methods in retryUntilTrue.
+
+	* test_value.py: 
+	* test_adapter.py: 
+	* test_bug537507.py: 
+	* test_selection.py: 
+	* test_rangevalue.py: 
+	* test_expandcollapsetoggleinvoke.py: Use new TestCase class.
+
+	* assets/Makefile.am: 
+	* assets/AdapterEventsTest/App.xaml: 
+	* assets/AdapterEventsTest/Page.xaml: 
+	* assets/AdapterEventsTest/App.xaml.cs: 
+	* assets/AdapterEventsTest/Makefile.am: 
+	* assets/AdapterEventsTest/Page.xaml.cs: Add AdapterEventsTest sample.
+
+	* test_adapter_events.py: Add test that verifies that accessible name,
+	sensitivity, bounds changed and focus events are fired correctly by
+	Adapter.
+
 2009-10-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* tests.mdp: Add a python project for the MoonAtkBridge tests.

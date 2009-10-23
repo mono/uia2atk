@@ -142,6 +142,7 @@ tests/assets/Makefile
 tests/assets/ValueTest/Makefile
 tests/assets/RangeValueTest/Makefile
 tests/assets/SelectionTest/Makefile
+tests/assets/AdapterEventsTest/Makefile
 ])
 
 AC_OUTPUT

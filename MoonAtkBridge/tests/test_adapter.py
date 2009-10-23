@@ -31,9 +31,8 @@ from strongwind import *
 from time import sleep
 from os.path import abspath
 import pyatspi
-import unittest
 
-class Adapter(unittest.TestCase):
+class Adapter(TestCase):
     """
     Exercises the basic functionality of the Adapter class
     """
@@ -57,9 +56,7 @@ class Adapter(unittest.TestCase):
         self.assertTrue(self.easy_button.visible)
         self.assertTrue(self.easy_button.sensitive)
         self.assertTrue(self.easy_button.enabled)
-
-        # TODO: This property isn't working in the peer yet
-        # self.assertTrue(self.easy_button.focusable)
+        self.assertTrue(self.easy_button.focusable)
 
     def test_role(self):
         self.assertEqual(self.easy_button.roleName, "push button")

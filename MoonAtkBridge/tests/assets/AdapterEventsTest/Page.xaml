@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="AdapterEventsTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="toggleVisibilityButton" Click="OnVisibilityToggled">
+                    <TextBlock>Toggle Visibility</TextBlock>
+                </Button>
+                <Button x:Name="toggleSensitivityButton" Click="OnSensitivityToggled">
+                    <TextBlock>Toggle Sensitivity</TextBlock>
+                </Button>
+                <Button x:Name="toggleSizeButton" Click="OnSizeToggled">
+                    <TextBlock>Toggle Size</TextBlock>
+                </Button>
+            </StackPanel>
+            <TextBox x:Name="textBox" Text="Hello World!" Height="100"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

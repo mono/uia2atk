@@ -31,9 +31,8 @@ from strongwind.events import EventListener
 
 from os.path import abspath
 import pyatspi
-import unittest
 
-class SelectionListBox(unittest.TestCase):
+class SelectionListBox(TestCase):
     """
     Exercises the basic functionality of the Selection class using a ListBox
     control

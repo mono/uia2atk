@@ -30,9 +30,8 @@ from strongwind import *
 
 from os.path import abspath
 import pyatspi
-import unittest
 
-class RangeValueSlider(unittest.TestCase):
+class RangeValueSlider(TestCase):
     """
     Exercises the basic functionality of the RangeValue class using a Slider
     control

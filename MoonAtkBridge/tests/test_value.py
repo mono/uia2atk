@@ -30,9 +30,8 @@ from strongwind import *
 
 from os.path import abspath
 import pyatspi
-import unittest
 
-class ValueTextBox(unittest.TestCase):
+class ValueTextBox(TestCase):
     """
     Exercises the basic functionality of the Value class using a TextBox
     control
