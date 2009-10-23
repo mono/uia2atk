@@ -2,4 +2,5 @@ SUBDIRS = \
 	ValueTest \
 	RangeValueTest \
 	SelectionTest \
-	AdapterEventsTest
+	AdapterEventsTest \
+	ValueEventsTest

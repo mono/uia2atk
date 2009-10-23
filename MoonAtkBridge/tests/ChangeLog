@@ -1,5 +1,17 @@
 2009-10-23  Brad Taylor  <brad@getcoded.net>
 
+	* assets/Makefile.am: 
+	* assets/ValueEventsTest/App.xaml: 
+	* assets/ValueEventsTest/Page.xaml: 
+	* assets/ValueEventsTest/App.xaml.cs: 
+	* assets/ValueEventsTest/Makefile.am: 
+	* assets/ValueEventsTest/Page.xaml.cs: Add ValueEventsTest sample.
+
+	* test_value_events.py: Add test that verifies that
+	visible_data_changed is fired when the value is updated.
+
+2009-10-23  Brad Taylor  <brad@getcoded.net>
+
 	* test_rangevalue.py: Test new accessible-value property change event.
 
 2009-10-23  Brad Taylor  <brad@getcoded.net>

@@ -67,6 +67,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			this.valueProvider = (IValueProvider) peer.GetPattern (
 				PatternInterface.Value);
+
+			adapter.AutomationPropertyChanged
+				+= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
 		}
 
 		public bool AddSelection (int startOffset, int endOffset)
@@ -378,6 +382,12 @@ namespace Moonlight.AtkBridge.PatternImplementors
 #endregion
 
 #region Private Methods
+		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
+		{
+			if (args.Property == ValuePatternIdentifiers.ValueProperty)
+				adapter.EmitSignal ("visible_data_changed");
+		}
+
 		private string ReturnTextWrtOffset (int startOffset, int endOffset)
 		{
 			//TODO: optimize?
