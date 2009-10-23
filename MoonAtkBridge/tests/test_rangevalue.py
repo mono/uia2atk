@@ -27,6 +27,7 @@
 
 from moonlight import *
 from strongwind import *
+from strongwind.events import EventListener
 
 from os.path import abspath
 import pyatspi
@@ -56,6 +57,7 @@ class RangeValueSlider(TestCase):
         self.assertEqual(self.slider_value.minimumIncrement, 0)
 
     def test_current_value(self):
+        self.slider_value.currentValue = 0
         self.assertEqual(self.slider_value.currentValue, 0)
 
         self.slider_value.currentValue = 1
@@ -72,3 +74,16 @@ class RangeValueSlider(TestCase):
 
         self.slider_value.currentValue = 100
         self.assertEqual(self.slider_value.currentValue, 10)
+
+    def test_accessible_value_event(self):
+        self.slider_value.currentValue = 0
+        self.assertEqual(self.slider_value.currentValue, 0)
+
+        listener = EventListener()
+        with listener.listenTo(self.slider):
+            self.slider_value.currentValue = 5
+            self.assertEqual(self.slider_value.currentValue, 5)
+
+        assert listener.containsEvent(self.slider,
+                                      'object:property-change:accessible-value',
+                                      qty=1)

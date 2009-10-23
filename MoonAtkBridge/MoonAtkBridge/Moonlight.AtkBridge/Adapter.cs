@@ -515,6 +515,11 @@ namespace Moonlight.AtkBridge
 		{
 			GLib.Signal.Emit (this, signal);
 		}
+
+		internal void NotifyPropertyChanged (string property)
+		{
+			Notify (property);
+		}
 #endregion
 
 #region Private Methods

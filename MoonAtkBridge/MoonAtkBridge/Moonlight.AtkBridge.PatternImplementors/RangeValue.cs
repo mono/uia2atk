@@ -51,6 +51,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			this.rangeValueProvider = (IRangeValueProvider) peer.GetPattern (
 				PatternInterface.RangeValue);
+
+			adapter.AutomationPropertyChanged
+				+= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
 		}
 
 		public void GetMinimumValue (ref GLib.Value value)
@@ -95,6 +99,14 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 #region Private Fields
 		private IRangeValueProvider rangeValueProvider;
+#endregion
+
+#region Private Methods
+		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
+		{
+			if (args.Property == RangeValuePatternIdentifiers.ValueProperty)
+				adapter.NotifyPropertyChanged ("accessible-value");
+		}
 #endregion
 	}
 }

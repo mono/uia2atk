@@ -1,5 +1,13 @@
 2009-10-23  Brad Taylor  <brad@getcoded.net>
 
+	* Moonlight.AtkBridge/Adapter.cs: Provide access for pattern
+	implementors to call Notify.
+
+	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs: Fire
+	accessible-value property change when the value changes.
+
+2009-10-23  Brad Taylor  <brad@getcoded.net>
+
 	* Moonlight.AtkBridge/Adapter.cs: Emit accessible-name event when a
 	control's name changes.
 
