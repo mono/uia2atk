@@ -1,3 +1,10 @@
+2009-10-26  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/listbox/__init__.py:
+	* testers/moonlight/listbox/listboxframe.py:
+	* testers/moonlight/listbox-regression.py: Added Moonlight ListBox test
+	script.
+
 2009-10-21  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/: Deleted *.html and *.xap.
