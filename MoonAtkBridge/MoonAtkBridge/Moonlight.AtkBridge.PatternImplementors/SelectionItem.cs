@@ -46,6 +46,22 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				+= new EventHandler<AutomationPropertyChangedEventArgs> (
 				OnAutomationPropertyChanged);
 		}
+
+		public override void OnRefStateSet (ref Atk.StateSet states)
+		{
+			ISelectionItemProvider selectionItem
+				= peer.GetPattern (PatternInterface.SelectionItem)
+					as ISelectionItemProvider;
+			if (selectionItem == null)
+				return;
+
+			states.AddState (Atk.StateType.Selectable);
+
+			if (selectionItem.IsSelected)
+				states.AddState (Atk.StateType.Selected);
+			else
+				states.RemoveState (Atk.StateType.Selected);
+		}
 #endregion
 
 #region Private Methods

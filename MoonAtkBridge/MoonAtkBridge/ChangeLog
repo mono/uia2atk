@@ -1,3 +1,18 @@
+2009-10-26  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: 
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: 
+	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs: 
+	Add an overridable property that provides the list of pattern
+	implementors, and query each one for OnRefStateSet, instead of
+	hardcoding them in Adapter.
+
+	* Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs: 
+	Add implementation of OnRefStateSet with code previously residing in Adapter.cs.
+
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs: 
+	Add new states to reflect expandable and expanded.
+
 2009-10-23  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge.PatternImplementors/Value.cs: Fire

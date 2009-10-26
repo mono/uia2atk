@@ -3,4 +3,6 @@ SUBDIRS = \
 	RangeValueTest \
 	SelectionTest \
 	AdapterEventsTest \
-	ValueEventsTest
+	ValueEventsTest \
+	ExpandCollapseEventsTest \
+	ToggleEventsTest

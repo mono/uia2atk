@@ -32,6 +32,8 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Moonlight.AtkBridge.PatternImplementors;
+
 namespace Moonlight.AtkBridge
 {
 	public class Adapter : Atk.Object, Atk.ComponentImplementor
@@ -203,6 +205,12 @@ namespace Moonlight.AtkBridge
 		}
 #endregion
 
+#region Protected Properties
+		protected virtual BasePatternImplementor [] PatternImplementors {
+			get { return new BasePatternImplementor [0]; }
+		}
+#endregion
+
 #region Protected Methods
 		protected override string OnGetName ()
 		{
@@ -333,21 +341,8 @@ namespace Moonlight.AtkBridge
 			else
 				states.RemoveState (Atk.StateType.Focused);
 
-			// Selection PatternImplementor specific states
-			ISelectionItemProvider selectionItem
-				= Peer.GetPattern (PatternInterface.SelectionItem)
-					as ISelectionItemProvider;
-			if (selectionItem != null) {
-				states.AddState (Atk.StateType.Selectable);
-
-				if (selectionItem.IsSelected)
-					states.AddState (Atk.StateType.Selected);
-				else
-					states.RemoveState (Atk.StateType.Selected);
-			} else {
-				states.RemoveState (Atk.StateType.Selectable);
-				states.RemoveState (Atk.StateType.Selected);
-			}
+			foreach (BasePatternImplementor impl in PatternImplementors)
+				impl.OnRefStateSet (ref states);
 
 			return states;
 		}

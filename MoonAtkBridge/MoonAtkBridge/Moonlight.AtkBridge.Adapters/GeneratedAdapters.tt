@@ -135,6 +135,16 @@ foreach (HashSet<string> impls in combinations) {
 #>
 			<#= ToFieldName (impl) #> = new <#= type.FullName #> (this, peer);
 <# 	} #>
+
+			implementors = new BasePatternImplementor[] {
+<# 	foreach (string impl in impls) { #>
+				<#= ToFieldName (impl) #>,
+<# 	} #>
+			};
+		}
+
+		protected override BasePatternImplementor[] PatternImplementors {
+			get { return implementors; }
 		}
 <#
 	// Wrap all the methods and properties in the implementor
@@ -213,6 +223,10 @@ foreach (HashSet<string> impls in combinations) {
 #pragma warning restore 0414
 #endregion
 <# 	} #>
+
+#pragma warning disable 0414
+		private BasePatternImplementor[] implementors;
+#pragma warning restore 0414
 	}
 
 <# } #>

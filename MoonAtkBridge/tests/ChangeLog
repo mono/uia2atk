@@ -1,3 +1,20 @@
+2009-10-26  Brad Taylor  <brad@getcoded.net>
+
+	* test_toggle_events.py: 
+	* assets/ToggleEventsTest/App.xaml: 
+	* assets/ToggleEventsTest/Page.xaml: 
+	* assets/ToggleEventsTest/App.xaml.cs: 
+	* assets/ToggleEventsTest/Makefile.am: 
+	* assets/ToggleEventsTest/Page.xaml.cs: Add test for new toggle events.
+
+	* test_expandcollapse_events.py: 
+	* assets/ExpandCollapseEventsTest/App.xaml: 
+	* assets/ExpandCollapseEventsTest/Page.xaml: 
+	* assets/ExpandCollapseEventsTest/App.xaml.cs: 
+	* assets/ExpandCollapseEventsTest/Makefile.am: 
+	* assets/ExpandCollapseEventsTest/Page.xaml.cs: Add test for new expand
+	collapse events.
+
 2009-10-23  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am: 

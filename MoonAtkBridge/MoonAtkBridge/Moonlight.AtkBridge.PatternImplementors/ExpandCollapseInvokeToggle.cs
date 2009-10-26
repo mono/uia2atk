@@ -31,6 +31,7 @@ using System.Windows.Automation;
 using System.Collections.Generic;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
+using ECPIs = System.Windows.Automation.ExpandCollapsePatternIdentifiers;
 
 using Moonlight.AtkBridge;
 
@@ -58,6 +59,41 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			// TODO: also do this in response to patterns being
 			// added/removed
 			RefreshActions ();
+
+			adapter.AutomationPropertyChanged
+				+= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
+		}
+
+		public override void OnRefStateSet (ref Atk.StateSet states)
+		{
+			IExpandCollapseProvider expandCollapse
+				= peer.GetPattern (PatternInterface.ExpandCollapse)
+					as IExpandCollapseProvider;
+			if (expandCollapse != null) {
+				var state = expandCollapse.ExpandCollapseState;
+
+				// If it's not a leaf, it can be expanded
+				if (state != ExpandCollapseState.LeafNode)
+					states.AddState (Atk.StateType.Expandable);
+
+				if (state == ExpandCollapseState.Expanded
+				    || state == ExpandCollapseState.PartiallyExpanded)
+					states.AddState (Atk.StateType.Expanded);
+				else
+					states.RemoveState (Atk.StateType.Expanded);
+			}
+
+			IToggleProvider toggle
+				= peer.GetPattern (PatternInterface.Toggle)
+					as IToggleProvider;
+			if (toggle != null) {
+				var state = toggle.ToggleState;
+				if (state == ToggleState.On)
+					states.AddState (Atk.StateType.Checked);
+				else
+					states.RemoveState (Atk.StateType.Checked);
+			}
 		}
 
 		public bool DoAction (int i)
@@ -160,6 +196,16 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				actions.Add (new ActionDescriptor {
 					Name = "expand or collapse", Pattern = expandCollapse
 				});
+			}
+		}
+
+		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
+		{
+			if (args.Property == ECPIs.ExpandCollapseStateProperty) {
+				adapter.NotifyStateChange (Atk.StateType.Expanded);
+				adapter.EmitSignal ("visible_data_changed");
+			} else if (args.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+				adapter.NotifyStateChange (Atk.StateType.Checked);
 			}
 		}
 #endregion

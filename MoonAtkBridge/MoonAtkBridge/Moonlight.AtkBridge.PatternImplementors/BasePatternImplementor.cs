@@ -43,6 +43,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			this.adapter = adapter;
 			this.peer = peer;
 		}
+
+		public virtual void OnRefStateSet (ref Atk.StateSet states)
+		{
+		}
 #endregion
 
 #region Protected Fields
