@@ -1,0 +1,114 @@
+diff -r 07ff9d432dac accessible/src/atk/Makefile.in
+--- a/accessible/src/atk/Makefile.in	Sun Oct 25 00:43:31 2009 -0700
++++ b/accessible/src/atk/Makefile.in	Mon Oct 26 16:08:34 2009 -0400
+@@ -81,6 +81,7 @@
+   nsMaiInterfaceTable.cpp \
+   nsMaiInterfaceDocument.cpp \
+   nsMaiInterfaceImage.cpp \
++  nsHTMLAtkObjectAccessible.cpp \
+   $(NULL)
+ 
+ ifdef MOZ_XUL
+@@ -101,6 +102,7 @@
+   nsHTMLImageAccessibleWrap.h \
+   nsHTMLTableAccessibleWrap.h \
+   nsAccessibleRelationWrap.h \
++  nsHTMLAtkObjectAccessible.h \
+   $(NULL)
+ 
+ # we want to force the creation of a static lib.
+diff -r 07ff9d432dac accessible/src/base/nsAccessibilityService.cpp
+--- a/accessible/src/base/nsAccessibilityService.cpp	Sun Oct 25 00:43:31 2009 -0700
++++ b/accessible/src/base/nsAccessibilityService.cpp	Mon Oct 26 16:08:34 2009 -0400
+@@ -83,6 +83,10 @@
+ #include "nsNetError.h"
+ #include "nsDocShellLoadTypes.h"
+ 
++#ifdef MOZ_PLUGINS
++#include "npapi.h"
++#endif
++
+ #ifdef MOZ_XUL
+ #include "nsXULAlertAccessible.h"
+ #include "nsXULColorPickerAccessible.h"
+@@ -99,6 +103,9 @@
+ #ifdef XP_WIN
+ #include "nsHTMLWin32ObjectAccessible.h"
+ #endif
++#ifdef MOZ_ACCESSIBILITY_ATK
++#include "nsHTMLAtkObjectAccessible.h"
++#endif
+ 
+ #ifndef DISABLE_XFORMS_HOOKS
+ #include "nsXFormsFormControlsAccessible.h"
+@@ -746,11 +753,12 @@
+   if (domDoc)
+     return CreateOuterDocAccessible(node, aAccessible);
+ 
++#if defined(XP_WIN) || defined(MOZ_ACCESSIBILITY_ATK)
++  // 2) for plugins
++  nsCOMPtr<nsIPluginInstance> pluginInstance;
++  if (NS_SUCCEEDED(aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance)))
++      && pluginInstance) {
+ #ifdef XP_WIN
+-  // 2) for plugins
+-  nsCOMPtr<nsIPluginInstance> pluginInstance ;
+-  aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance));
+-  if (pluginInstance) {
+     HWND pluginPort = nsnull;
+     aFrame->GetPluginPort(&pluginPort);
+     if (pluginPort) {
+@@ -760,6 +768,19 @@
+         return NS_OK;
+       }
+     }
++#elif MOZ_ACCESSIBILITY_ATK
++    AtkObject *nativeAccessible = NULL;
++
++    pluginInstance->GetValue(nsPluginInstanceVariable_NativeAccessibleAtk, &nativeAccessible);
++    if (nativeAccessible) {
++      *aAccessible = new nsHTMLAtkObjectOwnerAccessible(node, weakShell, nativeAccessible);
++
++      NS_ENSURE_TRUE(*aAccessible, NS_ERROR_OUT_OF_MEMORY);
++      NS_ADDREF(*aAccessible);
++
++      return NS_OK;
++    }
++#endif
+   }
+ #endif
+ 
+diff -r 07ff9d432dac modules/plugin/base/public/npapi.h
+--- a/modules/plugin/base/public/npapi.h	Sun Oct 25 00:43:31 2009 -0700
++++ b/modules/plugin/base/public/npapi.h	Mon Oct 26 16:08:34 2009 -0400
+@@ -340,7 +340,13 @@
+   /* Checks if the plugin is interested in receiving the http body of
+    * all http requests (including failed ones, http status != 200).
+    */
+-  NPPVpluginWantsAllNetworkStreams = 18
++  NPPVpluginWantsAllNetworkStreams = 18,
++
++  /* Get a native accessible for the plugin on Linux.
++   * This is expected to be an AtkObject.
++   * Introduced in Gecko 1.9.2.
++   */
++  NPNVNativeAccessibleAtk = 21
+ 
+ #ifdef XP_MACOSX
+   /* Used for negotiating drawing models */
+diff -r 07ff9d432dac modules/plugin/base/public/nsplugindefs.h
+--- a/modules/plugin/base/public/nsplugindefs.h	Sun Oct 25 00:43:31 2009 -0700
++++ b/modules/plugin/base/public/nsplugindefs.h	Mon Oct 26 16:08:34 2009 -0400
+@@ -210,6 +210,12 @@
+ #ifdef XP_MACOSX
+     , nsPluginInstanceVariable_DrawingModel          = 20
+ #endif
++
++    /* Get a native accessible for the plugin on Linux.
++     * This is expected to be an AtkObject.
++     * Introduced in Gecko 1.9.2.
++     */
++    , nsPluginInstanceVariable_NativeAccessibleAtk   = 21
+ };
+ 
+ ////////////////////////////////////////////////////////////////////////////////
