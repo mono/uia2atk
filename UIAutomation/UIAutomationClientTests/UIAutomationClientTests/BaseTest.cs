@@ -318,12 +318,19 @@ namespace MonoTests.System.Windows.Automation
 			btnRemoveTextboxElement = panel1Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"Remove"));
-			AutomationElementCollection collection;
-			collection = groupBoxElement.FindAll (TreeScope.Children,
+
+			txtCommandElement = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "txtCommand"));
+
+			btnRunElement = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "Run"));
+
+			treeView1Element = groupBoxElement.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Tree));
-			treeView1Element = collection [0];
-			table1Element = collection [1];
+			table1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"dataGridView1"));
 			numericUpDown1Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Slider));

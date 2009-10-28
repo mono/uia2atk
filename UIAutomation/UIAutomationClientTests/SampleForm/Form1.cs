@@ -47,6 +47,10 @@ namespace SampleForm {
 			TreeNode node = new TreeNode ("item 1");
 			node.Nodes.Add (new TreeNode ("item 1a"));
 			treeView1.Nodes.Add (node);
+			node = new TreeNode ("item 2");
+			node.Nodes.Add (new TreeNode ("item 2a"));
+			node.Nodes.Add (new TreeNode ("item 2b"));
+			treeView1.Nodes.Add (node);
 
 			table.Columns.Add ("Gender", typeof (bool));
 			table.Columns.Add ("Name", typeof (string));

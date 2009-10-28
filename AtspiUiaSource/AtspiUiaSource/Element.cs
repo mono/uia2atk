@@ -36,7 +36,7 @@ namespace AtspiUiaSource
 {
 	public class Element : IElement
 	{
-		private Accessible accessible;
+		internal Accessible accessible;
 		private int runtimeId;
 
 		private static int id;
@@ -160,9 +160,13 @@ namespace AtspiUiaSource
 					case Role.Statusbar:
 						return ControlType.StatusBar;
 					case Role.Table:
-						return ControlType.Table;
-					case Role.TableCell:
-						return (accessible.Parent != null && accessible.Parent.Role == Role.Table? ControlType.DataItem: ControlType.TreeItem);
+						return (FirstChild is TableHeaderElement ?
+							ControlType.Table :
+							ControlType.DataGrid);
+					case Role.TableColumnHeader:
+						return ControlType.HeaderItem;
+					case Role.TableRowHeader:
+						return ControlType.HeaderItem;
 					case Role.Text:
 						return (accessible.StateSet.Contains (StateType.MultiLine)? ControlType.Document: ControlType.Edit);
 					case Role.ToggleButton:
@@ -171,10 +175,8 @@ namespace AtspiUiaSource
 						return ControlType.ToolBar;
 					case Role.ToolTip:
 						return ControlType.ToolTip;
-					case Role.Tree:
-					case Role.TreeTable:
-						// TODO: perhaps return List sometimes
-						return ControlType.Tree;
+					case Role.Window:
+						return ControlType.Window;
 					default:
 						Log.Debug ("AtSpiUIASource: Unknown role: " + accessible.Role);
 						return ControlType.Custom;
@@ -412,9 +414,55 @@ namespace AtspiUiaSource
 				return null;
 			if (elements == null)
 				elements = new Dictionary<Accessible, Element> ();
-			if (!elements.ContainsKey (accessible))
+			if (elements.ContainsKey (accessible))
+			return elements [accessible];
+			if (IsTable (accessible))
+				elements [accessible] = new TableElement (accessible);
+			else if (IsTableHeaderItem (accessible))
+				elements [accessible] = new TableHeaderItemElement (accessible);
+			else
 				elements [accessible] = new Element (accessible);
 			return elements [accessible];
+		}
+
+		internal static Element GetElement (Accessible accessible, TableElement parent, int row)
+		{
+			if (accessible == null)
+				return null;
+			if (elements == null)
+				elements = new Dictionary<Accessible, Element> ();
+			if (elements.ContainsKey (accessible))
+				return elements [accessible];
+			elements [accessible] = new TreeItemElement (accessible, parent, row);
+			return elements [accessible];
+		}
+
+		internal static Element GetElement (Accessible accessible, DataItemElement parent, int column)
+		{
+			if (accessible == null)
+				return null;
+			if (elements == null)
+				elements = new Dictionary<Accessible, Element> ();
+			if (elements.ContainsKey (accessible))
+				return elements [accessible];
+			elements [accessible] = new TableCellElement (accessible, parent, column);
+			return elements [accessible];
+		}
+
+		private static bool IsTable (Accessible accessible)
+		{
+			if (accessible.Role == Role.Table)
+				return true;
+			if (accessible.Role != Role.TreeTable)
+				return false;
+			Atspi.Table table = accessible.QueryTable ();
+			return (table != null);
+		}
+
+		private static bool IsTableHeaderItem (Accessible accessible)
+		{
+			return (accessible.Role == Role.TableRowHeader
+				|| accessible.Role == Role.TableColumnHeader);
 		}
 
 		internal Accessible Accessible {
@@ -430,8 +478,7 @@ namespace AtspiUiaSource
 
 		internal bool SupportsGridItem ()
 		{
-			return (accessible.Parent != null
-				&& accessible.Parent.QueryTable () != null);
+			return (accessible.Parent.QueryTable () != null);
 		}
 
 		internal bool SupportsGrid ()
@@ -449,6 +496,21 @@ namespace AtspiUiaSource
 				if (actions [i].Name == "activate" || actions [i].Name == "invoke" || actions [i].Name == "click")
 					return true;
 			return false;
+		}
+
+		internal bool SupportsRangeValue ()
+		{
+			return (accessible.QueryValue () != null);
+		}
+
+		internal bool SupportsSelectionItem ()
+		{
+			return (accessible.Parent.QuerySelection () != null);
+		}
+
+		internal bool SupportsSelection ()
+		{
+			return (accessible.QuerySelection () != null);
 		}
 
 		internal bool SupportsTableItem ()

@@ -45,13 +45,18 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	AssemblyInfo.cs \
 	AutomationSource.cs \
+	DataItemElement.cs \
 	Element.cs \
 	GridItemSource.cs \
 	GridSource.cs \
 	InvokeSource.cs \
+	TableCellElement.cs \
+	TableElement.cs \
+	TableHeaderElement.cs \
 	TableItemSource.cs \
 	TableSource.cs \
-	ToggleSource.cs
+	ToggleSource.cs \
+	TreeItemElement.cs
 
 DATA_FILES = 
 
