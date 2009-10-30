@@ -91,21 +91,6 @@ sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.list_box, "TreeTable", add_states=["focused"])
 statesCheck(lbFrame.list_items[0], "TableCell", add_states=["focused"])
 
-#######################
-# Multi-selection test
-#######################
-lbFrame.clearSelection(lbFrame.listbox)
-sleep(config.SHORT_DELAY)
-lbFrame.select(lbFrame.list_items[1])
-sleep(config.SHORT_DELAY)
-lbFrame.select(lbFrame.list_items[3])
-sleep(config.SHORT_DELAY)
-lbFrame.select(lbFrame.list_items[5])
-sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.list_items[1], 'TableCell')
-statesCheck(lbFrame.list_items[3], 'TableCell')
-statesCheck(lbFrame.list_items[5], 'TableCell')
-
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
 # close application frame window

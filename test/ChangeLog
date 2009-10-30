@@ -1,3 +1,8 @@
+2009-10-30  Neville Gao  <nevillegao@gmail.com>
+
+	* samples/moonlight/ListBox/Page.xaml:
+	* testers/moonlight/listbox-regression.py: Removed SL3 features.
+
 2009-10-26  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/listbox/__init__.py:
