@@ -11,7 +11,7 @@
 # 
 
 Name:           at-spi2-core
-Version:        0.1.0
+Version:        0.1.2
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - dbus
 License:        GPL v2.0 or later
@@ -27,7 +27,7 @@ BuildRequires:  dbus-1-glib-devel
 BuildRequires:  glib2-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  python
-BuildRequires:  update-desktop-files
+#BuildRequires:  update-desktop-files
 Obsoletes:	at-spi
 
 %description
@@ -57,7 +57,7 @@ to develop applications that require these.
 
 %install
 %makeinstall
-%suse_update_desktop_file at-spi-registryd
+#%suse_update_desktop_file at-spi-registryd
 find %{buildroot} -type f -name "*.la" -delete -print
 
 %clean
@@ -71,10 +71,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc AUTHORS COPYING INSTALL README
 %{_datadir}/%{name}
-%config %{_sysconfdir}/xdg/autostart/at-spi-registryd.desktop
+#%config %{_sysconfdir}/xdg/autostart/at-spi-registryd.desktop
 %{_libdir}/libdbind.so.*
 %{_libdir}/libdroute.so.*
-%{_libdir}/at-spi-registryd
+%{_libdir}/at-spi2-registryd
 %{_datadir}/dbus-1/services/org.freedesktop.atspi.Registry.service
 
 %files devel
@@ -87,4 +87,3 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/droute-0.1.pc
 
 %changelog
-
