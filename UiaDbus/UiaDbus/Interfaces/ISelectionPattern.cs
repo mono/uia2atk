@@ -21,51 +21,18 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using NDesk.DBus;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public class ValuePatternWrapper : IValuePattern
+	[Interface (Constants.SelectionPatternInterfaceName)]
+	public interface ISelectionPattern
 	{
-#region Private Fields
-
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
-		{
-			this.provider = provider;
-		}
-
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
-		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
+		string [] GetSelectionPaths ();
+		bool CanSelectMultiple { get; }
+		bool IsSelectionRequired { get; }
 	}
 }

@@ -30,39 +30,68 @@ using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class ScrollPatternWrapper : IScrollPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IScrollProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public ScrollPatternWrapper (IScrollProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IScrollPattern Members
 
-		public void SetValue (string value)
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			provider.SetValue (value);
+			provider.Scroll (horizontalAmount, verticalAmount);
 		}
 
-		public bool IsReadOnly {
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
+		{
+			provider.SetScrollPercent (horizontalPercent, verticalPercent);
+		}
+
+		public bool HorizontallyScrollable {
 			get {
-				return provider.IsReadOnly;
+				return provider.HorizontallyScrollable;
 			}
 		}
 
-		public string Value {
+		public double HorizontalScrollPercent {
 			get {
-				return provider.Value;
+				return provider.HorizontalScrollPercent;
+			}
+		}
+
+		public double HorizontalViewSize {
+			get {
+				return provider.HorizontalViewSize;
+			}
+		}
+
+		public bool VerticallyScrollable {
+			get {
+				return provider.VerticallyScrollable;
+			}
+		}
+
+		public double VerticalScrollPercent {
+			get {
+				return provider.VerticalScrollPercent;
+			}
+		}
+
+		public double VerticalViewSize {
+			get {
+				return provider.VerticalViewSize;
 			}
 		}
 

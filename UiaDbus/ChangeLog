@@ -1,3 +1,41 @@
+2009-10-31  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Makefile.am: 
+	* UiaDbus/UiaDbus.mdp: 
+	* UiaDbusBridge/Makefile.am: 
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/UiaDbusBridge.mdp: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusSource/UiaDbusSource.mdp: 
+	* UiaDbus/Interfaces/IDockPattern.cs: 
+	* UiaDbusSource/UiaDbusDockPattern.cs: 
+	* UiaDbus/Interfaces/IScrollPattern.cs: 
+	* UiaDbus/Interfaces/IWindowPattern.cs: 
+	* UiaDbusSource/UiaDbusScrollPattern.cs: 
+	* UiaDbusSource/UiaDbusWindowPattern.cs: 
+	* UiaDbus/Interfaces/ISelectionPattern.cs: 
+	* UiaDbus/Interfaces/IRangeValuePattern.cs: 
+	* UiaDbus/Interfaces/IScrollItemPattern.cs: 
+	* UiaDbusSource/UiaDbusSelectionPattern.cs: 
+	* UiaDbusSource/UiaDbusRangeValuePattern.cs: 
+	* UiaDbusSource/UiaDbusScrollItemPattern.cs: 
+	* UiaDbus/Interfaces/ISelectionItemPattern.cs: 
+	* UiaDbus/Interfaces/IExpandCollapsePattern.cs: 
+	* UiaDbusBridge/Wrappers/DockPatternWrapper.cs: 
+	* UiaDbusSource/UiaDbusSelectionItemPattern.cs: 
+	* UiaDbusBridge/Wrappers/ValuePatternWrapper.cs: 
+	* UiaDbusSource/UiaDbusExpandCollapsePattern.cs: 
+	* UiaDbusBridge/Wrappers/ScrollPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/WindowPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: 
+	* UiaDbusBridge/Wrappers/SelectionPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/RangeValuePatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/ScrollItemPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/SelectionItemPatternWrapper.cs: 
+	* UiaDbusBridge/Wrappers/ExpandCollapsePatternWrapper.cs: 
+	Implementation of eight patterns: Dock, ExpandCollapse, RangeValue, Scroll, ScrollItem,
+	Selection, SelectionItem, Window.
+
 2009-10-22  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbus/Makefile.am: 

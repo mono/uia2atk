@@ -30,39 +30,73 @@ using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class WindowPatternWrapper : IWindowPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IWindowProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public WindowPatternWrapper (IWindowProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IWindowPattern Members
 
-		public void SetValue (string value)
+		public void SetVisualState (WindowVisualState state)
 		{
-			provider.SetValue (value);
+			provider.SetVisualState (state);
 		}
 
-		public bool IsReadOnly {
+		public void Close ()
+		{
+			provider.Close ();
+		}
+
+		public bool WaitForInputIdle (int milliseconds)
+		{
+			return provider.WaitForInputIdle (milliseconds);
+		}
+
+		public bool Maximizable {
 			get {
-				return provider.IsReadOnly;
+				return provider.Maximizable;
 			}
 		}
 
-		public string Value {
+		public bool Minimizable {
 			get {
-				return provider.Value;
+				return provider.Minimizable;
+			}
+		}
+
+		public bool IsModal {
+			get {
+				return provider.IsModal;
+			}
+		}
+
+		public WindowVisualState VisualState {
+			get {
+				return provider.VisualState;
+			}
+		}
+
+		public WindowInteractionState InteractionState {
+			get {
+				return provider.InteractionState;
+			}
+		}
+
+		public bool IsTopmost {
+			get {
+				return provider.IsTopmost;
 			}
 		}
 

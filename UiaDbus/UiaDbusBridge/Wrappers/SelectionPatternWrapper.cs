@@ -21,48 +21,57 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class SelectionPatternWrapper : ISelectionPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private ISelectionProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public SelectionPatternWrapper (ISelectionProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region ISelectionPattern Members
 
-		public void SetValue (string value)
+		public string [] GetSelectionPaths ()
 		{
-			provider.SetValue (value);
+			var selection = provider.GetSelection ();
+			List<string> selectionPaths = new List<string> (selection.Length);
+			foreach (var section in selection)
+			{
+				string elementPath =
+					AutomationBridge.Instance.FindWrapperByPovider (section).Path;
+				selectionPaths.Add (elementPath);
+			}
+			return selectionPaths.ToArray ();
 		}
 
-		public bool IsReadOnly {
+		public bool CanSelectMultiple {
 			get {
-				return provider.IsReadOnly;
+				return provider.CanSelectMultiple;
 			}
 		}
 
-		public string Value {
+		public bool IsSelectionRequired {
 			get {
-				return provider.Value;
+				return provider.IsSelectionRequired;
 			}
 		}
 

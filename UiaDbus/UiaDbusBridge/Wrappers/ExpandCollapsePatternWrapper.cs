@@ -24,46 +24,46 @@
 //
 
 using System;
+using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class ExpandCollapsePatternWrapper : IExpandCollapsePattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IExpandCollapseProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public ExpandCollapsePatternWrapper (IExpandCollapseProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IExpandCollapsePattern Members
 
-		public void SetValue (string value)
+		public ExpandCollapseState ExpandCollapseState {
+			get {
+				return provider.ExpandCollapseState;
+			}
+		}
+
+		public void Collapse ()
 		{
-			provider.SetValue (value);
+			provider.Collapse ();
 		}
 
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
+		public void Expand ()
+		{
+			provider.Expand ();
 		}
 
 #endregion

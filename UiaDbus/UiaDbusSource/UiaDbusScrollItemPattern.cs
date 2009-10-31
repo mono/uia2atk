@@ -21,51 +21,31 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusScrollItemPattern : IScrollItemProvider
 	{
-#region Private Fields
+		private DCI.IScrollItemPattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusScrollItemPattern (DCI.IScrollItemPattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void ScrollIntoView ()
 		{
-			provider.SetValue (value);
+			pattern.ScrollIntoView ();
 		}
-
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

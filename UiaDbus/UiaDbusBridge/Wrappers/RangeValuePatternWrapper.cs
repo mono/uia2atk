@@ -24,32 +24,33 @@
 //
 
 using System;
+using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class RangeValuePatternWrapper : IRangeValuePattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IRangeValueProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public RangeValuePatternWrapper (IRangeValueProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IRangeValuePattern Members
 
-		public void SetValue (string value)
+		public void SetValue (double value)
 		{
 			provider.SetValue (value);
 		}
@@ -60,7 +61,31 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
-		public string Value {
+		public double LargeChange {
+			get {
+				return provider.LargeChange;
+			}
+		}
+
+		public double Maximum {
+			get {
+				return provider.Maximum;
+			}
+		}
+
+		public double Minimum {
+			get {
+				return provider.Minimum;
+			}
+		}
+
+		public double SmallChange {
+			get {
+				return provider.SmallChange;
+			}
+		}
+
+		public double Value {
 			get {
 				return provider.Value;
 			}

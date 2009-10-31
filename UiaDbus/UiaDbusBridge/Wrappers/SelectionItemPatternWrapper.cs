@@ -30,40 +30,51 @@ using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class SelectionItemPatternWrapper : ISelectionItemPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private ISelectionItemProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public SelectionItemPatternWrapper (ISelectionItemProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region ISelectionItemPattern Members
 
-		public void SetValue (string value)
+		public bool IsSelected {
+			get {
+				return provider.IsSelected;
+			}
+		}
+
+		public string SelectionContainerPath {
+			get {
+				var container = provider.SelectionContainer;
+				return AutomationBridge.Instance.FindWrapperByPovider (container).Path;
+			}
+		}
+
+		public void AddToSelection ()
 		{
-			provider.SetValue (value);
+			provider.AddToSelection ();
 		}
 
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
+		public void RemoveFromSelection ()
+		{
+			provider.RemoveFromSelection ();
 		}
 
-		public string Value {
-			get {
-				return provider.Value;
-			}
+		public void Select ()
+		{
+			provider.Select ();
 		}
 
 #endregion

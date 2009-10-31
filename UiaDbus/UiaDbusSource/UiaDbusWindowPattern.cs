@@ -21,51 +21,59 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusWindowPattern : IWindowPattern
 	{
-#region Private Fields
+		private DCI.IWindowPattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusWindowPattern (DCI.IWindowPattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void Close ()
 		{
-			provider.SetValue (value);
+			pattern.Close ();
 		}
 
-		public bool IsReadOnly {
+		public void SetWindowVisualState (WindowVisualState state)
+		{
+			pattern.SetVisualState (state);
+		}
+
+		public bool WaitForInputIdle (int milliseconds)
+		{
+			return pattern.WaitForInputIdle (milliseconds);
+		}
+
+		public WindowProperties Properties {
 			get {
-				return provider.IsReadOnly;
+				try {
+					WindowProperties properties = new WindowProperties () {
+						WindowInteractionState = pattern.InteractionState,
+						IsModal = pattern.IsModal,
+						IsTopmost = pattern.IsTopmost,
+						CanMaximize = pattern.Maximizable,
+						CanMinimize = pattern.Minimizable,
+						WindowVisualState = pattern.VisualState
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

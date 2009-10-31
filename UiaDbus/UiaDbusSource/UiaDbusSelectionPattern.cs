@@ -21,51 +21,47 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusSelectionPattern : ISelectionPattern
 	{
-#region Private Fields
+		private DCI.ISelectionPattern pattern;
+		private string busName;
+		private UiaDbusAutomationSource source;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusSelectionPattern (DCI.ISelectionPattern pattern, string busName,
+		                                UiaDbusAutomationSource source)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
+			this.busName = busName;
+			this.source = source;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
-		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
+		public SelectionProperties Properties {
 			get {
-				return provider.IsReadOnly;
+				try {
+					SelectionProperties properties = new SelectionProperties () {
+						CanSelectMultiple = pattern.CanSelectMultiple,
+						IsSelectionRequired = pattern.IsSelectionRequired,
+						Selection = source.GetOrCreateElements (busName,
+						                                        pattern.GetSelectionPaths ())
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

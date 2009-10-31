@@ -21,51 +21,61 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusSelectionItemPattern : ISelectionItemPattern
 	{
-#region Private Fields
+		private DCI.ISelectionItemPattern pattern;
+		private string busName;
+		private UiaDbusAutomationSource source;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusSelectionItemPattern (DCI.ISelectionItemPattern pattern, string busName,
+		                                    UiaDbusAutomationSource source)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
+			this.busName = busName;
+			this.source = source;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void Select ()
 		{
-			provider.SetValue (value);
+			pattern.Select ();
 		}
 
-		public bool IsReadOnly {
+		public void AddToSelection ()
+		{
+			pattern.AddToSelection ();
+		}
+
+		public void RemoveFromSelection ()
+		{
+			pattern.RemoveFromSelection ();
+		}
+
+		public SelectionItemProperties Properties {
 			get {
-				return provider.IsReadOnly;
+				try {
+					SelectionItemProperties properties = new SelectionItemProperties () {
+						IsSelected = pattern.IsSelected,
+						SelectionContainer = source.GetOrCreateElement (busName,
+						                                                pattern.SelectionContainerPath)
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

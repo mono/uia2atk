@@ -30,6 +30,14 @@
     <File name="Wrappers/GridItemPatternWrapper.cs" subtype="Code" buildaction="Compile" />
     <File name="Wrappers/TableItemPatternWrapper.cs" subtype="Code" buildaction="Compile" />
     <File name="Wrappers/TablePatternWrapper.cs" subtype="Code" buildaction="Compile" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/DockPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/ExpandCollapsePatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/RangeValuePatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/ScrollItemPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/ScrollPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/WindowPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionItemPatternWrapper.cs" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

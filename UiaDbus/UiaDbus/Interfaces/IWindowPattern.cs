@@ -21,51 +21,25 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using NDesk.DBus;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public class ValuePatternWrapper : IValuePattern
+	[Interface (Constants.WindowPatternInterfaceName)]
+	public interface IWindowPattern
 	{
-#region Private Fields
-
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
-		{
-			this.provider = provider;
-		}
-
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
-		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
+		void SetVisualState (WindowVisualState state);
+		void Close ();
+		bool WaitForInputIdle (int milliseconds);
+		bool Maximizable { get; }
+		bool Minimizable { get; }
+		bool IsModal { get; }
+		WindowVisualState VisualState { get; }
+		WindowInteractionState InteractionState { get; }
+		bool IsTopmost { get; }
 	}
 }

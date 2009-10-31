@@ -21,51 +21,42 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusExpandCollapsePattern : IExpandCollapseProvider
 	{
-#region Private Fields
+		private DCI.IExpandCollapsePattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusExpandCollapsePattern (DCI.IExpandCollapsePattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void Expand ()
 		{
-			provider.SetValue (value);
+			pattern.Expand ();
 		}
 
-		public bool IsReadOnly {
+		public void Collapse ()
+		{
+			pattern.Collapse ();
+		}
+
+		public ExpandCollapseState ExpandCollapseState {
 			get {
-				return provider.IsReadOnly;
+				return pattern.ExpandCollapseState;
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

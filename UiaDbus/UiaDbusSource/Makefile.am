@@ -47,16 +47,24 @@ FILES =  \
 	DbusExceptionTranslator.cs \
 	EventHandlerManager.cs \
 	UiaDbusAutomationSource.cs \
+	UiaDbusDockPattern.cs \
 	UiaDbusElement.cs \
+	UiaDbusExpandCollapsePattern.cs \
 	UiaDbusGridItemPattern.cs \
 	UiaDbusGridPattern.cs \
 	UiaDbusInvokePattern.cs \
+	UiaDbusRangeValuePattern.cs \
+	UiaDbusScrollItemPattern.cs \
+	UiaDbusScrollPattern.cs \
+	UiaDbusSelectionItemPattern.cs \
+	UiaDbusSelectionPattern.cs \
 	UiaDbusTableItemPattern.cs \
 	UiaDbusTablePattern.cs \
 	UiaDbusTextPattern.cs \
 	UiaDbusTextPatternRange.cs \
 	UiaDbusTransformPattern.cs \
-	UiaDbusValuePattern.cs
+	UiaDbusValuePattern.cs \
+	UiaDbusWindowPattern.cs
 
 DATA_FILES = 
 

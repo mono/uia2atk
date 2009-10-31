@@ -21,51 +21,54 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusScrollPattern : IScrollPattern
 	{
-#region Private Fields
+		private DCI.IScrollPattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusScrollPattern (DCI.IScrollPattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
-		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
+		public ScrollProperties Properties {
 			get {
-				return provider.IsReadOnly;
+				try {
+					ScrollProperties properties = new ScrollProperties () {
+						HorizontallyScrollable = pattern.HorizontallyScrollable,
+						HorizontalScrollPercent = pattern.HorizontalScrollPercent,
+						HorizontalViewSize = pattern.HorizontalViewSize,
+						VerticallyScrollable = pattern.VerticallyScrollable,
+						VerticalScrollPercent = pattern.VerticalScrollPercent,
+						VerticalViewSize = pattern.VerticalViewSize
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
-		public string Value {
-			get {
-				return provider.Value;
-			}
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
+		{
+			pattern.Scroll (horizontalAmount, verticalAmount);
 		}
 
-#endregion
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
+		{
+			pattern.SetScrollPercent (horizontalPercent, verticalPercent);
+		}
 	}
 }

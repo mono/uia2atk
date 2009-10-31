@@ -30,40 +30,34 @@ using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class DockPatternWrapper : IDockPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IDockProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public DockPatternWrapper (IDockProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IDockPattern Members
 
-		public void SetValue (string value)
+		public DockPosition DockPosition {
+			get {
+				return provider.DockPosition;
+			}
+		}
+
+		public void SetDockPosition (DockPosition dockPosition)
 		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
+			provider.SetDockPosition (dockPosition);
 		}
 
 #endregion

@@ -21,51 +21,37 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusDockPattern : IDockProvider
 	{
-#region Private Fields
+		private DCI.IDockPattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusDockPattern (DCI.IDockPattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void SetDockPosition (DockPosition dockPosition)
 		{
-			provider.SetValue (value);
+			SetDockPosition (dockPosition);
 		}
 
-		public bool IsReadOnly {
+		public DockPosition DockPosition {
 			get {
-				return provider.IsReadOnly;
+				return pattern.DockPosition;
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

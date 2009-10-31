@@ -27,6 +27,14 @@
     <File name="UiaDbusValuePattern.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusTextPattern.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusTextPatternRange.cs" subtype="Code" buildaction="Compile" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusWindowPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusRangeValuePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusScrollPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusScrollItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusDockPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusExpandCollapsePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusSelectionPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusSelectionItemPattern.cs" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

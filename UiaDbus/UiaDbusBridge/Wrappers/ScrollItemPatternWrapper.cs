@@ -30,40 +30,28 @@ using Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class ScrollItemPatternWrapper : IScrollItemPattern
 	{
 #region Private Fields
 
-		private IValueProvider provider;
+		private IScrollItemProvider provider;
 
 #endregion
 
 #region Constructor
 
-		public ValuePatternWrapper (IValueProvider provider)
+		public ScrollItemPatternWrapper (IScrollItemProvider provider)
 		{
 			this.provider = provider;
 		}
 
 #endregion
 
-#region IValuePattern Members
+#region IScrollItemPattern Members
 
-		public void SetValue (string value)
+		public void ScrollIntoView ()
 		{
-			provider.SetValue (value);
-		}
-
-		public bool IsReadOnly {
-			get {
-				return provider.IsReadOnly;
-			}
-		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
+			provider.ScrollIntoView ();
 		}
 
 #endregion

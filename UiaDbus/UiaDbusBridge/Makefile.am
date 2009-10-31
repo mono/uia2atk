@@ -46,16 +46,24 @@ FILES =  \
 	Application.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
+	Wrappers/DockPatternWrapper.cs \
+	Wrappers/ExpandCollapsePatternWrapper.cs \
 	Wrappers/GridItemPatternWrapper.cs \
 	Wrappers/GridPatternWrapper.cs \
 	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \
+	Wrappers/RangeValuePatternWrapper.cs \
+	Wrappers/ScrollItemPatternWrapper.cs \
+	Wrappers/ScrollPatternWrapper.cs \
+	Wrappers/SelectionItemPatternWrapper.cs \
+	Wrappers/SelectionPatternWrapper.cs \
 	Wrappers/TableItemPatternWrapper.cs \
 	Wrappers/TablePatternWrapper.cs \
 	Wrappers/TextPatternRangeWrapper.cs \
 	Wrappers/TextPatternWrapper.cs \
 	Wrappers/TransformPatternWrapper.cs \
-	Wrappers/ValuePatternWrapper.cs 
+	Wrappers/ValuePatternWrapper.cs \
+	Wrappers/WindowPatternWrapper.cs 
 
 DATA_FILES = 
 

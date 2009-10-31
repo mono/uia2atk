@@ -21,51 +21,49 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-//
+// 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Source;
+using DC = Mono.UIAutomation.UiaDbus;
+using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
+namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class ValuePatternWrapper : IValuePattern
+	public class UiaDbusRangeValuePattern : IRangeValuePattern
 	{
-#region Private Fields
+		private DCI.IRangeValuePattern pattern;
 
-		private IValueProvider provider;
-
-#endregion
-
-#region Constructor
-
-		public ValuePatternWrapper (IValueProvider provider)
+		public UiaDbusRangeValuePattern (DCI.IRangeValuePattern pattern)
 		{
-			this.provider = provider;
+			this.pattern = pattern;
 		}
 
-#endregion
-
-#region IValuePattern Members
-
-		public void SetValue (string value)
+		public void SetValue (double value)
 		{
-			provider.SetValue (value);
+			pattern.SetValue (value);
 		}
 
-		public bool IsReadOnly {
+		public RangeValueProperties Properties {
 			get {
-				return provider.IsReadOnly;
+				try {
+					RangeValueProperties properties = new RangeValueProperties () {
+						Value = pattern.Value,
+						IsReadOnly = pattern.IsReadOnly,
+						Maximum = pattern.Maximum,
+						Minimum = pattern.Minimum,
+						LargeChange = pattern.LargeChange,
+						SmallChange = pattern.SmallChange
+					};
+					return properties;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
-
-		public string Value {
-			get {
-				return provider.Value;
-			}
-		}
-
-#endregion
 	}
 }

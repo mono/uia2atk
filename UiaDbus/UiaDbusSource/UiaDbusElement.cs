@@ -280,7 +280,15 @@ namespace Mono.UIAutomation.UiaDbusSource
 				throw new InvalidOperationException ();
 			object ret = null;
 
-			if (pattern.Id == GridPatternIdentifiers.Pattern.Id) {
+			if (pattern.Id == DockPatternIdentifiers.Pattern.Id) {
+				DCI.IDockPattern dockPattern = Bus.Session.GetObject<DCI.IDockPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.DockPatternSubPath));
+				ret = new UiaDbusDockPattern (dockPattern);
+			} else if (pattern.Id == ExpandCollapsePatternIdentifiers.Pattern.Id) {
+				DCI.IExpandCollapsePattern expandCollapsePattern = Bus.Session.GetObject<DCI.IExpandCollapsePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ExpandCollapsePatternSubPath));
+				ret = new UiaDbusExpandCollapsePattern (expandCollapsePattern);
+			} else if (pattern.Id == GridPatternIdentifiers.Pattern.Id) {
 				DCI.IGridPattern gridPattern = Bus.Session.GetObject<DCI.IGridPattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.GridPatternSubPath));
 				ret = new UiaDbusGridPattern (gridPattern, busName, source);
@@ -292,6 +300,26 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
+			} else if (pattern.Id == RangeValuePatternIdentifiers.Pattern.Id) {
+				DCI.IRangeValuePattern rangeValuePattern = Bus.Session.GetObject<DCI.IRangeValuePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.RangeValuePatternSubPath));
+				ret = new UiaDbusRangeValuePattern (rangeValuePattern);
+			} else if (pattern.Id == ScrollItemPatternIdentifiers.Pattern.Id) {
+				DCI.IScrollItemPattern scrollItemPattern = Bus.Session.GetObject<DCI.IScrollItemPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ScrollItemPatternSubPath));
+				ret = new UiaDbusScrollItemPattern (scrollItemPattern);
+			} else if (pattern.Id == ScrollPatternIdentifiers.Pattern.Id) {
+				DCI.IScrollPattern scrollPattern = Bus.Session.GetObject<DCI.IScrollPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ScrollPatternSubPath));
+				ret = new UiaDbusScrollPattern (scrollPattern);
+			} else if (pattern.Id == SelectionPatternIdentifiers.Pattern.Id) {
+				DCI.ISelectionPattern selectionPattern = Bus.Session.GetObject<DCI.ISelectionPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.SelectionPatternSubPath));
+				ret = new UiaDbusSelectionPattern (selectionPattern, busName, source);
+			} else if (pattern.Id == SelectionItemPatternIdentifiers.Pattern.Id) {
+				DCI.ISelectionItemPattern selectionItemPattern = Bus.Session.GetObject<DCI.ISelectionItemPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.SelectionItemPatternSubPath));
+				ret = new UiaDbusSelectionItemPattern (selectionItemPattern, busName, source);
 			} else if (pattern.Id == TablePatternIdentifiers.Pattern.Id) {
 				DCI.ITablePattern tablePattern = Bus.Session.GetObject<DCI.ITablePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TablePatternSubPath));
@@ -312,6 +340,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.ITransformPattern transformPattern = Bus.Session.GetObject<DCI.ITransformPattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TransformPatternSubPath));
 				ret = new UiaDbusTransformPattern (transformPattern);
+			} else if (pattern.Id == WindowPatternIdentifiers.Pattern.Id) {
+				DCI.IWindowPattern windowPattern = Bus.Session.GetObject<DCI.IWindowPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.WindowPatternSubPath));
+				ret = new UiaDbusWindowPattern (windowPattern);
 			} else
 				throw new InvalidOperationException ();
 

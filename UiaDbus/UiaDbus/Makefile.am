@@ -36,16 +36,24 @@ SOURCE_FILES =  \
 	Constants.cs \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
+	Interfaces/IDockPattern.cs \
+	Interfaces/IExpandCollapsePattern.cs \
 	Interfaces/IGridItemPattern.cs \
 	Interfaces/IGridPattern.cs \
 	Interfaces/IInvokePattern.cs \
 	Interfaces/InterfaceConverter.cs \
+	Interfaces/IRangeValuePattern.cs \
+	Interfaces/IScrollItemPattern.cs \
+	Interfaces/IScrollPattern.cs \
+	Interfaces/ISelectionItemPattern.cs \
+	Interfaces/ISelectionPattern.cs \
 	Interfaces/ITableItemPattern.cs \
 	Interfaces/ITablePattern.cs \
 	Interfaces/ITextPattern.cs \
 	Interfaces/ITextPatternRange.cs \
 	Interfaces/ITransformPattern.cs \
 	Interfaces/IValuePattern.cs \
+	Interfaces/IWindowPattern.cs \
 	Point.cs \
 	Rect.cs 
 
