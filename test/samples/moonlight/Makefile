@@ -20,6 +20,7 @@ SUBDIRS = \
 	Slider \
 	#TabControl
 	TextBlock \
+	TextBox \
 	Thumb \
 	ToggleButton
 

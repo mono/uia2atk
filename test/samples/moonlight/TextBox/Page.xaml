@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="TextBoxSample.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="650" Height="400">
+        <StackPanel x:Name="LayoutRoot" Background="White">
+
+            <TextBlock Margin="20,20,0,0" Text="Type Text Here"/>
+
+            <TextBox x:Name="ReadWriteTB" TextChanged="ReadWriteTB_TextChanged" Text="Read And Write"  IsReadOnly="False" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="200" />
+
+            <TextBlock Margin="20,20,0,0" Text="Read Only TextBox"/>
+
+            <TextBox x:Name="ReadOnlyTB"  IsReadOnly="True" Text="Read Only" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="200" />
+
+            <TextBlock Margin="20,30,0,0" Text="Search Type TextBox" />
+
+            <TextBlock Margin="20,0,0,0" FontSize="11">
+        The following text box has a watermark text (Search). The text is gray until you click inside the text box. 
+        <LineBreak />
+        When you click inside the text box the watermark text is removed and the cursor appears ready for input.
+            </TextBlock>
+
+            <TextBox x:Name="SearchTB" Margin="20,5,0,0" Text="Search" HorizontalAlignment="Left" Height="35" Width="200" Foreground="Gray" GotFocus="SearchTB_GotFocus" LostFocus="SearchTB_LostFocus" />
+
+        </StackPanel>
+
+</UserControl>
