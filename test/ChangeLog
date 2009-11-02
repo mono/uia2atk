@@ -1,3 +1,21 @@
+2009-11-02  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/scrollviewer/scrollviewerframe.py,
+	* testers/moonlight/scrollviewer/__init__.py,
+	* testers/moonlight/scrollviewer-regression.py,
+	* testers/moonlight/scrollviewer: sorry I forgot commit this test :)
+
+2009-11-02  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/TextBox/App.xaml,
+	* samples/moonlight/TextBox/Page.xaml.cs,
+	* samples/moonlight/TextBox/App.xaml.cs,
+	* samples/moonlight/TextBox/Page.xaml,
+	* samples/moonlight/TextBox/Makefile,
+	* samples/moonlight/TextBox: add TextBox sample
+	* samples/moonlight/Makefile: add TextBox to list
+
+
 2009-11-02  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/listbox-regression.py: Re-checked previous item's
