@@ -86,6 +86,8 @@ statesCheck(lbFrame.list_items[0], 'TableCell')
 ########################
 lbFrame.select(lbFrame.list_items[0])
 statesCheck(lbFrame.list_items[0], 'TableCell', add_states=['focused', 'selected'])
+# re-check 'Item 4' states
+statesCheck(lbFrame.list_items[3], 'TableCell')
 lbFrame.clearSelection(lbFrame.list_box)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.list_box, "TreeTable", add_states=["focused"])

@@ -1,3 +1,8 @@
+2009-11-02  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/listbox-regression.py: Re-checked previous item's
+	states after clicking another item.
+
 2009-10-30  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/ListBox/Page.xaml:
