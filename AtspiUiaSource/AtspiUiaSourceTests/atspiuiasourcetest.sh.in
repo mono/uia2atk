@@ -9,7 +9,7 @@ while getopts c:xd:t:l o
 do case "$o" in
     x)  xephyr="yes";;
     d)  optdisplay="$OPTARG" && xephyr="yes";;
-    t)  runtest="$OPTARG"
+    t)  runtest="$OPTARG";;
     l)  labels="yes";;
     \?)  echo "Usage: $0 -x -l -d <display> -c <control>" && exit 1;;
 esac
