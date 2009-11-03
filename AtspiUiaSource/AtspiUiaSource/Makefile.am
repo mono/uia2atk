@@ -55,8 +55,10 @@ FILES =  \
 	TableHeaderElement.cs \
 	TableItemSource.cs \
 	TableSource.cs \
+	TextSource.cs \
 	ToggleSource.cs \
-	TreeItemElement.cs
+	TreeItemElement.cs \
+	ValueSource.cs
 
 DATA_FILES = 
 

@@ -75,6 +75,7 @@ FILES =  \
 	InvokePatternTest.cs \
 	TablePatternTest.cs \
 	TableHierarchyTest.cs \
+	TextPatternTest.cs \
 	TogglePatternTest.cs \
 	ValuePatternTest.cs
 

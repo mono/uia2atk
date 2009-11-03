@@ -360,6 +360,16 @@ namespace AtspiUiaSource
 
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
+			if (pattern == null)
+				throw new InvalidOperationException ();
+			object o = GetCurrentPatternInternal (pattern);
+			if (o != null)
+				return o;
+			throw new InvalidOperationException ();
+		}
+
+		private object GetCurrentPatternInternal (AutomationPattern pattern)
+		{
 			//if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
 				//return (SupportsExpandCollapse () ? new ExpandCollapseSource (this) : null);
 			if (pattern == GridItemPatternIdentifiers.Pattern)
@@ -368,14 +378,22 @@ namespace AtspiUiaSource
 				return (SupportsGrid () ? new GridSource (this) : null);
 			else if (pattern == InvokePatternIdentifiers.Pattern)
 				return (SupportsInvoke () ? new InvokeSource (this) : null);
+			//else if (pattern == RangeValuePatternIdentifiers.Pattern)
+				//return (SupportsRangeValue () ? new RangeValueSource (this) : null);
+			//else if (pattern == SelectionItemPatternIdentifiers.Pattern)
+			//	return (SupportsSelectionItem () ? new SelectionItemSource (this) : null);
+			//else if (pattern == SelectionPatternIdentifiers.Pattern)
+				//return (SupportsSelection () ? new SelectionSource (this) : null);
 			else if (pattern == TableItemPatternIdentifiers.Pattern)
 				return (SupportsTableItem () ? new TableItemSource (this) : null);
 			else if (pattern == TablePatternIdentifiers.Pattern)
 				return (SupportsTable () ? new TableSource (this) : null);
+			else if (pattern == TextPatternIdentifiers.Pattern)
+				return (SupportsText () ? new TextSource (this) : null);
 			else if (pattern == TogglePatternIdentifiers.Pattern)
 				return (SupportsToggle () ? new ToggleSource (this) : null);
-			//else if (pattern == ValuePatternIdentifiers.Pattern)
-				//return (SupportsValue () ? new ValueSource (this) : null);
+			else if (pattern == ValuePatternIdentifiers.Pattern)
+				return (SupportsValue () ? new ValueSource (this) : null);
 			return null;
 		}
 
@@ -530,11 +548,17 @@ namespace AtspiUiaSource
 			return (accessible.Role == Role.CheckBox || accessible.Role == Role.ToggleButton);
 		}
 
+		internal bool SupportsText ()
+		{
+			return (accessible.QueryText () != null);
+		}
+
 		internal bool SupportsValue ()
 		{
-			return (( accessible.QueryEditableText () != null)
-                             && (!accessible.StateSet.Contains (StateType.MultiLine))
-                                ? true : false);
+			// Perhaps we should only support this if MultiLine
+			// is not set, but then the TextPattern test will
+			// fail; might as well always enable it.
+			return (accessible.QueryEditableText () != null);
 		}
 	}
 }

@@ -1,3 +1,9 @@
+2009-11-03  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/TextPatternTest.cs,
+	AtspiUiaClientTests/TextPatternTest.cs, AtspiUiaClientTests/Makefile.am:
+	Add at-spi Text and Value tests.
+
 2009-10-28  Mike Gorse  <mgorse@novell.com>
 
 	* AtspiUiaClientTests/TableHierarchyTest.cs,
