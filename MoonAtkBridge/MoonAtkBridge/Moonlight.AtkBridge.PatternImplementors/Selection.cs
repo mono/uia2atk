@@ -59,6 +59,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			this.selectionProvider = (ISelectionProvider) peer.GetPattern (
 				PatternInterface.Selection);
+
+			adapter.AutomationPropertyChanged += (o, args) => {
+				if (args.Property == SelectionPatternIdentifiers.SelectionProperty)
+					adapter.EmitSignal ("selection_changed");
+			};
 		}
 
 		public bool AddSelection (int i)
@@ -122,7 +127,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		public bool IsChildSelected (int i)
 		{
 			AutomationPeer childPeer = GetChildAt (i);
-			if (peer == null)
+			if (childPeer == null)
 				return false;
 
 			ISelectionItemProvider childItem = childPeer.GetPattern (
@@ -207,8 +212,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		private AutomationPeer GetChildAt (int i)
 		{
 			List<AutomationPeer> children = peer.GetChildren ();
-			if (i < 0 || i > children.Count - 1)
+			if (children == null || i < 0 || i > children.Count - 1) 
 				return null;
+
 			return children[i];
 		}
 #endregion

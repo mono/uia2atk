@@ -1,3 +1,13 @@
+2009-11-03  Mario Carrion  <mcarrion@novell.com>
+
+	* test_combobox.py: 
+	* assets/Makefile.am: 
+	* assets/ComboBoxTest/App.xaml: 
+	* assets/ComboBoxTest/Page.xaml: 
+	* assets/ComboBoxTest/App.xaml.cs: 
+	* assets/ComboBoxTest/Makefile.am: 
+	* assets/ComboBoxTest/Page.xaml.cs: Tests ComboBox.
+
 2009-10-26  Brad Taylor  <brad@getcoded.net>
 
 	* test_toggle_events.py: 

@@ -5,4 +5,5 @@ SUBDIRS = \
 	AdapterEventsTest \
 	ValueEventsTest \
 	ExpandCollapseEventsTest \
-	ToggleEventsTest
+	ToggleEventsTest \
+	ComboBoxTest

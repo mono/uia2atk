@@ -140,7 +140,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			if (i < 0 || i >= actions.Count)
 				return null;
 
-			return actions [i].Keybinding;
+			// In UIA all controls support only one KeyBinding (aka AccessKey)
+			return Keybinding;
 		}
 
 		public string GetName (int i)
@@ -174,6 +175,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		private void RefreshActions ()
 		{
 			actions.Clear ();
+
+			// TODO: Localize actions
 
 			var toggle = peer.GetPattern (PatternInterface.Toggle);
 			if (toggle != null) {
@@ -213,7 +216,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 #region Private Fields
 		private class ActionDescriptor {
 			public string Description = null;
-			public string Keybinding = null;
 			public string Name = null;
 			public string LocalizedName = null;
 			public object Pattern = null;
@@ -221,6 +223,15 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		private List<ActionDescriptor> actions
 			= new List<ActionDescriptor> ();
+
+		private string Keybinding {
+			get {
+				string keybinding = peer.GetAccessKey ();
+				if (!string.IsNullOrEmpty (keybinding))
+					return keybinding.ToUpper ().Replace ("ALT+", "<Alt>");
+				return null;
+			}
+		}
 #endregion
 	}
 }

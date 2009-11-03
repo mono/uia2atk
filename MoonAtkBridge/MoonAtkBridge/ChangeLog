@@ -1,3 +1,12 @@
+2009-11-03  Mario Carrion  <mcarrion@novell.com>
+
+	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: Emits signal
+	selection_changed when SelectionProperty is raised. Fixed NRE when
+	requesting children.
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs: 
+	New private property Keybinding, returns keybinding based on Peer's
+	AccessKey.
+
 2009-10-26  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: 
