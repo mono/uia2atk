@@ -1,3 +1,8 @@
+2009-11-03  Mario Carrion  <mcarrion@novell.com>
+
+	* GridItemSource.cs: GridItemSourceBase replaced by GridItemSource.
+	* TableItemSource.cs: TableItemSource subclassing GridItemSource.
+
 2009-10-28  Mike Gorse  <mgorse@novell.com>
 
 	* DataItemElement.cs, Element.cs, TableCellElement.cs, TableElement.cs,
@@ -22,4 +27,4 @@
 
 	* Element.cs, ToggleSource.cs, Makefile.am: Add TogglePattern..
 
-	* Element.cs: Add support for some missing roles.
+	i Element.cs: Add support for some missing roles.

@@ -35,7 +35,7 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class TableItemSource : GridItemSourceBase, ITableItemPattern
+	public class TableItemSource : GridItemSource, ITableItemPattern
 	{
 		public TableItemSource (Element element) : base (element)
 		{
@@ -61,7 +61,7 @@ namespace AtspiUiaSource
 			return elements;
 		}
 
-		public TableItemProperties Properties {
+		public new TableItemProperties Properties {
 			get {
 				TableItemProperties p = new TableItemProperties ();
 				int row, col, rowExtents, colExtents;

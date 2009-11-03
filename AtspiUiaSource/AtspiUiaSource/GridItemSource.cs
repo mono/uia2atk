@@ -35,12 +35,12 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class GridItemSourceBase
+	public class GridItemSource : IGridItemPattern
 	{
 		protected Accessible accessible;
 		protected Atspi.Table table;
 
-		public GridItemSourceBase (Element element)
+		public GridItemSource (Element element)
 		{
 			accessible = element.Accessible;
 			table = accessible.Parent.QueryTable ();
@@ -82,13 +82,6 @@ namespace AtspiUiaSource
 			get {
 				return Element.GetElement (accessible.Parent);
 			}
-		}
-	}
-
-	public class GridItemSource : GridItemSourceBase, IGridItemPattern
-	{
-		public GridItemSource (Element element) : base (element)
-		{
 		}
 
 		public GridItemProperties Properties {
