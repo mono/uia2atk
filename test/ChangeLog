@@ -1,3 +1,7 @@
+2009-11-04  Calen Chen <cachen@novell.com>
+
+	* harness/tests.py: add moonlight test list, update list name
+
 2009-11-02  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/scrollviewer/scrollviewerframe.py,

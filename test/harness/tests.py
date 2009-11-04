@@ -6,7 +6,7 @@
 
 # only add finished tests that should execute successfully to this list
 
-tests_list = [
+winforms_tests_list = [
 	"winforms/button-regression.py",
 	"winforms/checkbox-regression.py",
 	"winforms/checkedlistbox-regression.py",
@@ -87,4 +87,26 @@ tests_list = [
 	"winforms/trackbar-regression.py",
 	"winforms/treeview-regression.py",
 	"winforms/vscrollbar-regression.py"
+]
+
+moonlight_tests_list = [
+	"moonlight/button-regression.py",
+	"moonlight/checkbox-regression.py",
+	"moonlight/combobox-regression.py",
+	"moonlight/gridsplitter-regression.py",
+	"moonlight/hyperlinkbutton-regression.py",
+	"moonlight/image-regression.py",
+	"moonlight/listbox-regression.py",
+	"moonlight/passwordbox-regression.py",
+	"moonlight/progressbar-regression.py",
+	"moonlight/radiobutton-regression.py",
+	"moonlight/repeatbutton-regression.py",
+	"moonlight/scrollbar-regression.py",
+	"moonlight/scrollviewer-regression.py",
+	"moonlight/slider-regression.py",
+	#"moonlight/tabcontrol-regression.py",
+	"moonlight/textblock-regression.py",
+	"moonlight/textbox-regression.py",
+	"moonlight/thumb-regression.py",
+	"moonlight/togglebutton-regression.py"
 ]
