@@ -57,6 +57,11 @@ namespace Moonlight.AtkBridge
 #region Public Methods
 		public Adapter GetAdapter (AutomationPeer peer)
 		{
+			return GetAdapter (peer, true);
+		}
+
+		public Adapter GetAdapter (AutomationPeer peer, bool create_peer)
+		{
 			if (peer == null)
 				return null;
 
@@ -64,6 +69,9 @@ namespace Moonlight.AtkBridge
 			// this peer?
 			if (activeAdapters.ContainsKey (peer))
 				return activeAdapters [peer];
+
+			if (!create_peer)
+				return null;
 
 			// Create a list of all potential implementors that
 			// will later be merged to have a list of implementors
@@ -162,10 +170,14 @@ namespace Moonlight.AtkBridge
 
 		public void UnregisterAdapter (AutomationPeer peer)
 		{
-			if (!activeAdapters.ContainsKey (peer))
+			Adapter adapter = null;
+			if (!activeAdapters.TryGetValue (peer, out adapter))
 				return;
 
 			activeAdapters.Remove (peer);
+
+			if (adapter != null)
+				adapter.Dispose ();
 		}
 
 		public Type [] GetImplementorsForPeer (AutomationPeer peer)

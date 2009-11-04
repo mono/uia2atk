@@ -433,6 +433,15 @@
 /MoonAtkBridge/tests/assets/TextBlockTest/*.html
 /MoonAtkBridge/tests/assets/TextBlockTest/*.xap
 /MoonAtkBridge/tests/assets/TextBlockTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/Makefile
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/Makefile.in
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.g.cs
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.dll
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.mdb
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.g.resources
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.html
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.xap
+/MoonAtkBridge/tests/assets/AddRemoveAdapterTest/AppManifest.xaml
 /MoonAtkBridge/gtk-sharp/
 /MoonAtkBridge/stage/
 /MoonAtkBridge/bin/

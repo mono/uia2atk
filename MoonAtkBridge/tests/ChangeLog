@@ -1,5 +1,16 @@
 2009-11-04  Brad Taylor  <brad@getcoded.net>
 
+	* assets/Makefile.am: 
+	* test_add_remove_adapter.py: 
+	* assets/AddRemoveAdapterTest/App.xaml: 
+	* assets/AddRemoveAdapterTest/Page.xaml: 
+	* assets/AddRemoveAdapterTest/App.xaml.cs: 
+	* assets/AddRemoveAdapterTest/Makefile.am:
+	* assets/AddRemoveAdapterTest/Page.xaml.cs: Add test for addition and
+	removal of adapters.
+
+2009-11-04  Brad Taylor  <brad@getcoded.net>
+
 	* moonlight/testing.py: Add code to allow the easy testing of states
 	and interfaces.
 

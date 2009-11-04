@@ -26,6 +26,7 @@
 using Atk;
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Automation.Peers;
@@ -428,6 +429,34 @@ namespace Moonlight.AtkBridge
 			if (focused)
 				Atk.Focus.TrackerNotify (this);
 		}
+
+		protected void RemoveChild (AutomationPeer peer)
+		{
+			Adapter adapter = DynamicAdapterFactory.Instance.GetAdapter (peer, false);
+			if (adapter == null)
+				return;
+
+			int index = Children.IndexOf (peer);
+			if (index < 0)
+				return;
+
+			EmitChildrenChanged (ChildrenChangedDetail.Remove,
+			                     (uint) index, adapter);
+			Children.Remove (peer);
+
+			DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
+		}
+
+		protected void AddChild (AutomationPeer peer)
+		{
+			Adapter adapter = DynamicAdapterFactory.Instance.GetAdapter (peer);
+			if (adapter == null)
+				return;
+
+			EmitChildrenChanged (ChildrenChangedDetail.Add,
+			                     (uint) Children.IndexOf (peer),
+			                     adapter);
+		}
 #endregion
 
 #region Protected Fields
@@ -487,6 +516,47 @@ namespace Moonlight.AtkBridge
 
 		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
 		{
+			if (args.Event == AutomationEvents.StructureChanged) {
+				lock (ChildrenLock) {
+					var new_children = Peer.GetChildren ();
+
+					if (Children != null) {
+						var removed = (new_children != null) ? Children.Except (new_children)
+										     : Children;
+
+						// Remove children that aren't
+						// in the new list
+						while (removed != null && removed.Count () > 0)
+							RemoveChild (removed.ElementAt (0));
+					}
+
+					if (new_children != null) {
+						// In an ideal world, we
+						// wouldn't actually add
+						// children (they would be lazy
+						// loaded), but we need to send
+						// events, so blah.
+
+						var added = (Children != null) ? new_children.Except (Children)
+									       : new_children;
+
+						// Make sure we set Children
+						// correctly before we start
+						// sending events so that
+						// listeners will see us in the
+						// correct state
+						Children = new_children;
+
+						// Add children that we haven't
+						// seen before
+						foreach (AutomationPeer peer in added)
+							AddChild (peer);
+					} else {
+						Children = new_children;
+					}
+				}
+			}
+
 			if (AutomationEventRaised != null)
 				AutomationEventRaised (args.Peer, args);
 		}

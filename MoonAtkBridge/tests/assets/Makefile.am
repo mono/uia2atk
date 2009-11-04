@@ -7,4 +7,5 @@ SUBDIRS = \
 	ExpandCollapseEventsTest \
 	ToggleEventsTest \
 	ComboBoxTest \
-	TextBlockTest
+	TextBlockTest \
+	AddRemoveAdapterTest

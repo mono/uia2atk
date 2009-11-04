@@ -148,6 +148,7 @@ tests/assets/ExpandCollapseEventsTest/Makefile
 tests/assets/ToggleEventsTest/Makefile
 tests/assets/ComboBoxTest/Makefile
 tests/assets/TextBlockTest/Makefile
+tests/assets/AddRemoveAdapterTest/Makefile
 ])
 
 AC_OUTPUT

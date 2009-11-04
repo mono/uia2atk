@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="AddRemoveAdapterTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel>
+            <ListBox x:Name="listBox" Height="200">
+                <ListBoxItem>
+                    <TextBlock>Item 1</TextBlock>
+                </ListBoxItem>
+            </ListBox>
+            <Button x:Name="addButton" Click="addButton_Click">
+                <TextBlock>Add Item</TextBlock>
+            </Button>
+            <Button x:Name="removeButton" Click="removeButton_Click">
+                <TextBlock>Remove Item</TextBlock>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

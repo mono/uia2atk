@@ -1,3 +1,12 @@
+2009-11-04  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: Add methods to Remove and Add
+	children and send appropriate events.  Respond to StructureChanged
+	event and properly deal with adding and removing adapters.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Add a GetAdapter
+	overload to disable peer creation if one isn't found.
+
 2009-11-03  Mario Carrion  <mcarrion@novell.com>
 
 	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: Emits signal

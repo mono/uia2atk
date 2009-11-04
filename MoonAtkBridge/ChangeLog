@@ -1,5 +1,9 @@
 2009-11-04  Brad Taylor  <brad@getcoded.net>
 
+	* configure.ac: Add sample for adding/removing adapters.
+
+2009-11-04  Brad Taylor  <brad@getcoded.net>
+
 	* configure.ac: Add TextBlock sample.
 
 2009-11-03  Mario Carrion  <mcarrion@novell.com>
