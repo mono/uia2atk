@@ -23,9 +23,10 @@
 #      Brad Taylor <brad@getcoded.net>
 #
 
-from strongwind.utils import retryUntilTrue
+from strongwind.utils import retryUntilTrue, toConstantName
 
 import unittest
+import pyatspi
 
 class TestCase(unittest.TestCase):
     def __getattr__(self, name):
@@ -42,3 +43,45 @@ class TestCase(unittest.TestCase):
                     retryUntilTrue(func, args, kwargs)
             return func
         raise AttributeError(name)
+
+    def assertStates(self, control, expected_states):
+        """
+        Ensure that only the provided states are present.  Fail otherwise.
+        """
+        states = control._accessible.getState()
+        for state in expected_states:
+            #
+            # Code from strongwind; Covered under the GPL v2
+            # Copyright (C) 2007 Medsphere Systems Corporation
+            #
+            a = 'STATE_' + toConstantName(state)
+            v = vars(pyatspi)
+
+            self.assertTrue(a in v, 'Unrecognized state type: %s' % state)
+            try:
+                self.assertTrue(states.contains(v[a]))
+            except AssertionError:
+                # Sometimes corba throws this instead of returning False from
+                # contains
+                self.fail('State %s not found' % state)
+
+            states.remove(v[a])
+
+        self.assertTrue(states.isEmpty, 'Extra states found')
+
+    def assertInterfaces(self, control, expected_ifaces):
+        """
+        Ensure that only the expected interfaces are present.  Fail otherwise.
+        """
+        ifaces = pyatspi.listInterfaces(control._accessible)
+
+        ifaces = map(str.lower, ifaces)
+        expected_ifaces = map(str.lower, expected_ifaces)
+
+        for iface in ifaces:
+            if iface in expected_ifaces:
+                expected_ifaces.remove(iface)
+            else:
+                self.fail("Unexpected interface: %s" % iface)
+        self.assertEqual(0, len(expected_ifaces), \
+                         "Some interfaces are not implemented: %s" % expected_ifaces)

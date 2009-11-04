@@ -147,6 +147,7 @@ tests/assets/ValueEventsTest/Makefile
 tests/assets/ExpandCollapseEventsTest/Makefile
 tests/assets/ToggleEventsTest/Makefile
 tests/assets/ComboBoxTest/Makefile
+tests/assets/TextBlockTest/Makefile
 ])
 
 AC_OUTPUT

@@ -1,3 +1,16 @@
+2009-11-04  Brad Taylor  <brad@getcoded.net>
+
+	* moonlight/testing.py: Add code to allow the easy testing of states
+	and interfaces.
+
+	* test_textblock.py: 
+	* assets/Makefile.am: 
+	* assets/TextBlockTest/App.xaml: 
+	* assets/TextBlockTest/Page.xaml: 
+	* assets/TextBlockTest/App.xaml.cs: 
+	* assets/TextBlockTest/Makefile.am: 
+	* assets/TextBlockTest/Page.xaml.cs: Add test for TextBlock.
+
 2009-11-03  Mario Carrion  <mcarrion@novell.com>
 
 	* test_combobox.py: 
