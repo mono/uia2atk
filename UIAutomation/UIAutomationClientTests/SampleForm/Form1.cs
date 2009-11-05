@@ -139,6 +139,10 @@ namespace SampleForm {
  				table.Rows.Add (true, "Mallory", 40);
  			else if (cmd == "add table column")
  				table.Columns.Add("More");
+			else if (cmd == "set textBox3 long text")
+				textBox3.Text = "very very very very very very very very long text to enable the horizontal scroll bar";
+			else if (cmd == "disable textBox3")
+				textBox3.Enabled = false;
 		}
 	}
 }

@@ -63,12 +63,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			pattern.Scroll (horizontalAmount, verticalAmount);
+			try {
+				pattern.Scroll (horizontalAmount, verticalAmount);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
 		{
-			pattern.SetScrollPercent (horizontalPercent, verticalPercent);
+			try {
+				pattern.SetScrollPercent (horizontalPercent, verticalPercent);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 	}
 }

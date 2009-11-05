@@ -45,7 +45,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void ScrollIntoView ()
 		{
-			pattern.ScrollIntoView ();
+			try {
+				pattern.ScrollIntoView ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 	}
 }

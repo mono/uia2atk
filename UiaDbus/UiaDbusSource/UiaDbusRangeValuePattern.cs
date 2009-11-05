@@ -45,7 +45,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void SetValue (double value)
 		{
-			pattern.SetValue (value);
+			try {
+				pattern.SetValue (value);
+			} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public RangeValueProperties Properties {

@@ -40,32 +40,89 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class RangeValuePatternTest : BaseTest
 	{
+		private AutomationElement hScrollBarElement = null;
+
+		public override void FixtureSetUp ()
+		{
+			base.FixtureSetUp();
+			if (!Atspi) {
+				// to enable textBox3's horizontal scroll bar.
+				RunCommand ("set textBox3 long text");
+				hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
+				                                               new PropertyCondition (AutomationElementIdentifiers.NameProperty,
+				                                                                      "Horizontal Scroll Bar"));
+				Assert.IsNotNull (hScrollBarElement);
+			}
+		}
+
 		#region Test Methods
+		//todo uncomment PropertiesTest after r#493 is commited (then we'll have the Helper class)
+		//[Test]
+		//public void PropertiesTest ()
+		//{ 
+		//	Helper.CheckPatternIdentifiers<RangeValuePattern> ();
+		//}
+
 		[Test]
 		public void RangeValueTest ()
 		{
-			RangeValuePattern pattern = (RangeValuePattern) numericUpDown1Element.GetCurrentPattern (RangeValuePatternIdentifiers.Pattern);
-			Assert.AreEqual (0, pattern.Current.Minimum, "RangeValue Minimum");
-			Assert.AreEqual (100, pattern.Current.Maximum, "RangeValue Maximum");
-			Assert.AreEqual (10, pattern.Current.SmallChange, "RangeValue SmallChange");
+			RangeValuePattern pattern = null;
+			if (Atspi) {
+				pattern = (RangeValuePattern) numericUpDown1Element.GetCurrentPattern (RangeValuePatternIdentifiers.Pattern);
+				Assert.AreEqual (0, pattern.Current.Minimum, "RangeValue Minimum");
+				Assert.AreEqual (100, pattern.Current.Maximum, "RangeValue Maximum");
+				Assert.AreEqual (10, pattern.Current.SmallChange, "RangeValue SmallChange");
+			}
+			else {
+				//on Windows Winform, NumericUpDown's RangeValuePattern isn't well implemented
+				//So we choose to test RangeValuePattern on textBox3's Horzontal Scroll Bar
+				pattern = (RangeValuePattern) hScrollBarElement.GetCurrentPattern (RangeValuePattern.Pattern);
+				var min = pattern.Current.Minimum;
+				var max = pattern.Current.Maximum;
+				Assert.AreEqual (0, min, "RangeValue Minimum");
+				Assert.Greater (max, min, "Maximum > Minimum");
+				Assert.AreEqual (0, pattern.Current.Value, "RangeValue Value");
+				Assert.AreEqual (1, pattern.Current.SmallChange, "RangeValue SmallChange");
+			}
 			pattern.SetValue (50);
 			Assert.AreEqual (50, pattern.Current.Value, "RangeValue Value after set");
-			pattern.SetValue (500);
+
+			try {
+				pattern.SetValue (500);
+				Assert.Fail ("Should throw ArgumentOutOfRangeException");
+			}
+			catch (ArgumentOutOfRangeException) { }
 			Assert.AreEqual (50, pattern.Current.Value, "RangeValue Value after OOR set");
 		}
 
 		[Test]
-		public void NotEnabledTest ()
+		public void Z_NotEnabledTest ()
 		{
-			DisableControls ();
+			RangeValuePattern pattern = null;
 
-			RangeValuePattern pattern = (RangeValuePattern) numericUpDown1Element.GetCurrentPattern (RangeValuePatternIdentifiers.Pattern);
-			try {
-				pattern.SetValue (50);
-				Assert.Fail ("Should throw ElementNotEnabledException");
-			} catch (ElementNotEnabledException) { }
-			EnableControls ();
+			if (Atspi) {
+				DisableControls ();
+				pattern = (RangeValuePattern) numericUpDown1Element.GetCurrentPattern (RangeValuePatternIdentifiers.Pattern);
+				try {
+					pattern.SetValue (50);
+					Assert.Fail ("Should throw ElementNotEnabledException");
+				} catch (ElementNotEnabledException) { }
+				EnableControls ();
+			}
+			else {
+				RunCommand ("disable textBox3");
+				try {
+					hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
+				                                               new PropertyCondition (AutomationElementIdentifiers.NameProperty,
+				                                                                      "Horizontal Scroll Bar"));
+					Assert.IsNotNull (hScrollBarElement);
+					pattern = (RangeValuePattern) hScrollBarElement.GetCurrentPattern (RangeValuePattern.Pattern);
+					Assert.Fail ("Should throw InvalidOperationException " +
+					             "to indicate that disabled scrollBar dosen't support RangeValuePattern");
+				} catch (InvalidOperationException) { }
+			}
 		}
+
 		#endregion
 	}
 }

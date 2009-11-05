@@ -1,3 +1,9 @@
+2009-11-05  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/RangeValuePatternTest.cs: 
+	Tests for RangeValuePattern
+
 2009-10-22  Matt Guo  <matt@mattguo.com>
 	* UIAutomationClientTests/SampleForm/Form1.cs: 
 	* UIAutomationClientTests/SampleForm/Form1.Designer.cs: 

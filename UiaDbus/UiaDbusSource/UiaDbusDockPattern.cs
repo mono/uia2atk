@@ -45,12 +45,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void SetDockPosition (DockPosition dockPosition)
 		{
-			SetDockPosition (dockPosition);
+			try {
+				SetDockPosition (dockPosition);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public DockPosition DockPosition {
 			get {
-				return pattern.DockPosition;
+				try {
+					return pattern.DockPosition;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 	}

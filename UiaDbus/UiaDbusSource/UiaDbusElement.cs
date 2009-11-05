@@ -64,18 +64,30 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public bool SupportsProperty (AutomationProperty property)
 		{
-			return dbusElement.SupportsProperty (property.Id);
+			try {
+				return dbusElement.SupportsProperty (property.Id);
+			} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public string AcceleratorKey {
 			get {
-				return dbusElement.AcceleratorKey;
+				try {
+					return dbusElement.AcceleratorKey;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string AccessKey {
 			get {
-				return dbusElement.AccessKey;
+				try {
+					return dbusElement.AccessKey;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
@@ -91,106 +103,177 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public Rect BoundingRectangle {
 			get {
-				DC.Rect dbusRect = dbusElement.BoundingRectangle;
+				DC.Rect dbusRect;
+				try {
+					dbusRect = dbusElement.BoundingRectangle;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 				return dbusRect.ToSWRect ();
 			}
 		}
 
 		public string ClassName {
 			get {
-				return dbusElement.ClassName;
+				try {
+					return dbusElement.ClassName;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public Point ClickablePoint {
 			get {
-				DC.Point dbusPoint = dbusElement.ClickablePoint;
+				DC.Point dbusPoint;
+				try {
+					dbusPoint = dbusElement.ClickablePoint;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 				return new Point (dbusPoint.x, dbusPoint.y);
 			}
 		}
 
 		public ControlType ControlType {
 			get {
-				return ControlType.LookupById (dbusElement.ControlTypeId);
+				try {
+					return ControlType.LookupById (dbusElement.ControlTypeId);
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string FrameworkId {
 			get {
-				return dbusElement.FrameworkId;
+				try {
+					return dbusElement.FrameworkId;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool HasKeyboardFocus {
 			get {
-				return dbusElement.HasKeyboardFocus;
+				try {
+					return dbusElement.HasKeyboardFocus;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string HelpText {
 			get {
-				return dbusElement.HelpText;
+				try {
+					return dbusElement.HelpText;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsContentElement {
 			get {
-				return dbusElement.IsContentElement;
+				try {
+					return dbusElement.IsContentElement;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsControlElement {
 			get {
-				return dbusElement.IsControlElement;
+				try {
+					return dbusElement.IsControlElement;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsEnabled {
 			get {
-				return dbusElement.IsEnabled;
+				try {
+					return dbusElement.IsEnabled;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsKeyboardFocusable {
 			get {
-				return dbusElement.IsKeyboardFocusable;
+				try {
+					return dbusElement.IsKeyboardFocusable;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsOffscreen {
 			get {
-				return dbusElement.IsOffscreen;
+				try {
+					return dbusElement.IsOffscreen;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsPassword {
 			get {
-				return dbusElement.IsPassword;
+				try {
+					return dbusElement.IsPassword;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public bool IsRequiredForForm {
 			get {
-				return dbusElement.IsRequiredForForm;
+				try {
+					return dbusElement.IsRequiredForForm;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string ItemStatus {
 			get {
-				return dbusElement.ItemStatus;
+				try {
+					return dbusElement.ItemStatus;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string ItemType {
 			get {
-				return dbusElement.ItemType;
+				try {
+					return dbusElement.ItemType;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public IElement LabeledBy {
 			get {
+				string labeledByPath = null;
+				try {
+					labeledByPath = dbusElement.LabeledByElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 				IElement labeledBy = null;
-				string labeledByPath = dbusElement.LabeledByElementPath;
 				//Log.Debug ("UiaDbusElement.LabeledBy: " + labeledByPath + " AID: " + AutomationId + " CT: " + this.ControlType.ProgrammaticName);
 				if (!string.IsNullOrEmpty (labeledByPath))
 					labeledBy = source.GetOrCreateElement (busName, labeledByPath);
@@ -200,43 +283,72 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public string LocalizedControlType {
 			get {
-				return dbusElement.LocalizedControlType;
+				try {
+					return dbusElement.LocalizedControlType;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public string Name {
 			get {
-				return dbusElement.Name;
+				try {
+					return dbusElement.Name;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public int NativeWindowHandle {
 			get {
-				return dbusElement.NativeWindowHandle;
+				try {
+					return dbusElement.NativeWindowHandle;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public OrientationType Orientation {
 			get {
-				return dbusElement.Orientation;
+				try {
+					return dbusElement.Orientation;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public int ProcessId {
 			get {
-				return dbusElement.ProcessId;
+				try {
+					return dbusElement.ProcessId;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public int [] RuntimeId {
 			get {
-				return dbusElement.RuntimeId;
+				try {
+					return dbusElement.RuntimeId;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public IElement Parent {
 			get {
-				string path = dbusElement.ParentElementPath;
+				string path = null;
+				try {
+					path = dbusElement.ParentElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 				if (string.IsNullOrEmpty (path))
 					return null;
 				return source.GetOrCreateElement (busName, path);
@@ -245,29 +357,49 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public IElement FirstChild {
 			get {
-				return source.GetOrCreateElement (busName,
-				                                  dbusElement.FirstChildElementPath);
+				string firstChildPath = null;
+				try {
+					firstChildPath = dbusElement.FirstChildElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+				return source.GetOrCreateElement (busName, firstChildPath);
 			}
 		}
 
 		public IElement LastChild {
 			get {
-				return source.GetOrCreateElement (busName,
-				                                  dbusElement.LastChildElementPath);
+				string lastChildPath = null;
+				try {
+					lastChildPath = dbusElement.LastChildElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+				return source.GetOrCreateElement (busName, lastChildPath);
 			}
 		}
 
 		public IElement NextSibling {
 			get {
-				return source.GetOrCreateElement (busName,
-				                                  dbusElement.NextSiblingElementPath);
+				string nextSiblingPath = null;
+				try {
+					nextSiblingPath = dbusElement.NextSiblingElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+				return source.GetOrCreateElement (busName, nextSiblingPath);
 			}
 		}
 
 		public IElement PreviousSibling {
 			get {
-				return source.GetOrCreateElement (busName,
-				                                  dbusElement.PreviousSiblingElementPath);
+				string previousSiblingPath = null;
+				try {
+					previousSiblingPath = dbusElement.PreviousSiblingElementPath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+				return source.GetOrCreateElement (busName, previousSiblingPath);
 			}
 		}
 
@@ -275,7 +407,12 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			if (pattern == null)
 				throw new InvalidOperationException ();
-			string patternPath = dbusElement.GetCurrentPatternPath (pattern.Id);
+			string patternPath = null;
+			try {
+				patternPath = dbusElement.GetCurrentPatternPath (pattern.Id);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			if (string.IsNullOrEmpty (patternPath))
 				throw new InvalidOperationException ();
 			object ret = null;

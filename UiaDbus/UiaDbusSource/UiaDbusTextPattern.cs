@@ -68,20 +68,34 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public ITextPatternRange DocumentRange {
 			get {
-				string rangePath = pattern.DocumentRangePath;
+				string rangePath = null;
+				try {
+					rangePath = pattern.DocumentRangePath;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 				return GetTextPatternRange (rangePath);
 			}
 		}
 
 		public SupportedTextSelection SupportedTextSelection {
 			get {
-				return pattern.SupportedTextSelection;
+				try {
+					return pattern.SupportedTextSelection;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 
 		public ITextPatternRange[] GetSelection ()
 		{
-			var selection = pattern.GetSelectionPaths ();
+			string [] selection = null;
+			try {
+				selection = pattern.GetSelectionPaths ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			List<ITextPatternRange> ranges = new List<ITextPatternRange> (selection.Length);
 			foreach (string path in selection) {
 				ranges.Add (GetTextPatternRange (path));
@@ -91,7 +105,12 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public ITextPatternRange[] GetVisibleRanges ()
 		{
-			var visibleRanges = pattern.GetVisibleRangePaths ();
+			string [] visibleRanges = null;
+			try {
+				visibleRanges = pattern.GetVisibleRangePaths ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			List<ITextPatternRange> ranges = new List<ITextPatternRange> ();
 			foreach (string path in visibleRanges) {
 				ranges.Add (GetTextPatternRange (path));
@@ -106,14 +125,24 @@ namespace Mono.UIAutomation.UiaDbusSource
 				throw new InvalidOperationException ("The childElement parameter " +
 					"is not a child of the AutomationElement associated with the " +
 					"TextPattern or from the array of children of the TextPatternRange.");
-			string rangePath = pattern.RangePathFromChild (uiaDbusElement.DbusPath);
+			string rangePath = null;
+			try {
+				rangePath = pattern.RangePathFromChild (uiaDbusElement.DbusPath);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			return GetTextPatternRange (rangePath);
 		}
 
 		public ITextPatternRange RangeFromPoint (Point screenLocation)
 		{
 			DC.Point pt = new DC.Point (screenLocation);
-			string rangePath = pattern.RangePathFromPoint (pt);
+			string rangePath = null;
+			try {
+				rangePath = pattern.RangePathFromPoint (pt);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			return GetTextPatternRange (rangePath);
 		}
 

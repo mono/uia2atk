@@ -1,3 +1,15 @@
+2009-11-05  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusSource/UiaDbusDockPattern.cs: 
+	* UiaDbusSource/UiaDbusTextPattern.cs: 
+	* UiaDbusSource/UiaDbusScrollPattern.cs: 
+	* UiaDbusSource/UiaDbusTextPatternRange.cs: 
+	* UiaDbusSource/UiaDbusRangeValuePattern.cs: 
+	* UiaDbusSource/UiaDbusScrollItemPattern.cs: 
+	* UiaDbusSource/UiaDbusSelectionItemPattern.cs: 
+	* UiaDbusSource/UiaDbusExpandCollapsePattern.cs: Translate DBus Exceptions
+
 2009-10-31  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbus/Makefile.am: 

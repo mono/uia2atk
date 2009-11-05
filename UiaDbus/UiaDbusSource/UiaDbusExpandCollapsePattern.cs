@@ -45,17 +45,29 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void Expand ()
 		{
-			pattern.Expand ();
+			try {
+				pattern.Expand ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void Collapse ()
 		{
-			pattern.Collapse ();
+			try {
+				pattern.Collapse ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public ExpandCollapseState ExpandCollapseState {
 			get {
-				return pattern.ExpandCollapseState;
+				try {
+					return pattern.ExpandCollapseState;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 	}

@@ -55,12 +55,21 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void AddToSelection ()
 		{
-			range.AddToSelection ();
+			try {
+				range.AddToSelection ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public ITextPatternRange Clone ()
 		{
-			string path = range.Clone ();
+			string path = null;
+			try {
+				path = range.Clone ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			return parent.GetTextPatternRange (path);
 		}
 
@@ -69,7 +78,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 			UiaDbusTextPatternRange r = range as UiaDbusTextPatternRange;
 			if (r == null)
 				throw new Exception ("Require a UiaDbusTextPatternRange object");
-			return this.range.Compare (r.path);
+			try {
+				return this.range.Compare (r.path);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public int CompareEndpoints (TextPatternRangeEndpoint endpoint, ITextPatternRange targetRange, TextPatternRangeEndpoint targetEndpoint)
@@ -77,36 +90,63 @@ namespace Mono.UIAutomation.UiaDbusSource
 			UiaDbusTextPatternRange r = targetRange as UiaDbusTextPatternRange;
 			if (r == null)
 				throw new Exception ("Require a UiaDbusTextPatternRange object");
-			return this.range.CompareEndpoints (endpoint, r.path, targetEndpoint);
+			try {
+				return this.range.CompareEndpoints (endpoint, r.path, targetEndpoint);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void ExpandToEnclosingUnit (TextUnit unit)
 		{
-			range.ExpandToEnclosingUnit (unit);
+			try {
+				range.ExpandToEnclosingUnit (unit);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public ITextPatternRange FindAttribute (AutomationTextAttribute attribute, object value, bool backward)
 		{
 			//todo Need object transformation
-			string path = range.FindAttribute (attribute.Id, value, backward);
+			string path = null;
+			try {
+				path = range.FindAttribute (attribute.Id, value, backward);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			return parent.GetTextPatternRange (path);
 		}
 
 		public ITextPatternRange FindText (string text, bool backward, bool ignoreCase)
 		{
-			string path = range.FindText (text, backward, ignoreCase);
+			string path = null;
+			try {
+				path = range.FindText (text, backward, ignoreCase);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			return parent.GetTextPatternRange (path);
 		}
 
 		public object GetAttributeValue (AutomationTextAttribute attribute)
 		{
-			//todo Need object transformation
-			return range.GetAttributeValue (attribute.Id);
+			try {
+				//todo Need object transformation
+				return range.GetAttributeValue (attribute.Id);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public Rect[] GetBoundingRectangles ()
 		{
-			var rects = range.GetBoundingRectangles ();
+			DC.Rect [] rects = null;
+			try {
+				rects = range.GetBoundingRectangles ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			List<Rect> ret = new List<Rect> (rects.Length);
 			foreach (var rect in rects)
 				ret.Add (rect.ToSWRect ());
@@ -115,7 +155,12 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public IElement[] GetChildren ()
 		{
-			var childrenPaths = range.GetChildrenPaths ();
+			string [] childrenPaths;
+			try {
+				childrenPaths = range.GetChildrenPaths ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			List<IElement> elements = new List<IElement> (childrenPaths.Length);
 			foreach (string path in childrenPaths)
 				elements.Add (parent.GetElement (path));
@@ -124,7 +169,12 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public IElement GetEnclosingElement ()
 		{
-			string elementPath = range.GetEnclosingElementPath ();
+			string elementPath = null;
+			try {
+				elementPath = range.GetEnclosingElementPath ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 			if (string.IsNullOrEmpty (elementPath))
 				return null;
 			else
@@ -133,12 +183,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public string GetText (int maxLength)
 		{
-			return range.GetText (maxLength);
+			try {
+				return range.GetText (maxLength);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public int Move (TextUnit unit, int count)
 		{
-			return range.Move (unit, count);
+			try {
+				return range.Move (unit, count);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void MoveEndpointByRange (TextPatternRangeEndpoint endpoint, ITextPatternRange targetRange, TextPatternRangeEndpoint targetEndpoint)
@@ -146,27 +204,47 @@ namespace Mono.UIAutomation.UiaDbusSource
 			UiaDbusTextPatternRange r = targetRange as UiaDbusTextPatternRange;
 			if (r == null)
 				throw new Exception ("Require a UiaDbusTextPatternRange object");
-			range.MoveEndpointByRange (endpoint, r.path, targetEndpoint);
+			try {
+				range.MoveEndpointByRange (endpoint, r.path, targetEndpoint);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, TextUnit unit, int count)
 		{
-			return range.MoveEndpointByUnit (endpoint, unit, count);
+			try {
+				return range.MoveEndpointByUnit (endpoint, unit, count);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void RemoveFromSelection ()
 		{
-			range.RemoveFromSelection ();
+			try {
+				range.RemoveFromSelection ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void ScrollIntoView (bool alignToTop)
 		{
-			range.ScrollIntoView (alignToTop);
+			try {
+				range.ScrollIntoView (alignToTop);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void Select ()
 		{
-			range.Select ();
+			try {
+				range.Select ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 #endregion

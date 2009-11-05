@@ -50,17 +50,29 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void Select ()
 		{
-			pattern.Select ();
+			try {
+				pattern.Select ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void AddToSelection ()
 		{
-			pattern.AddToSelection ();
+			try {
+				pattern.AddToSelection ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void RemoveFromSelection ()
 		{
-			pattern.RemoveFromSelection ();
+			try {
+				pattern.RemoveFromSelection ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public SelectionItemProperties Properties {
