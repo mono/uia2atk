@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6197FA98-1D0D-4CBD-8244-4614208F1A9A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MoonAtkBridge</RootNamespace>
+    <AssemblyName>MoonAtkBridge</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Moonlight.AtkBridge\Adapter.cs" />
+    <Compile Include="Moonlight.AtkBridge\AutomationBridge.cs" />
+    <Compile Include="Moonlight.AtkBridge\DynamicAdapterFactory.cs" />
+    <Compile Include="Moonlight.AtkBridge\ImplementsPatternAttribute.cs" />
+    <Compile Include="Moonlight.AtkBridge\RootVisualAdapter.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\ExpandCollapseInvokeToggle.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\Value.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

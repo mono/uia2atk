@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationTypes", "UIAutomationTypes\UIAutomationTypes.csproj", "{876B87EE-FBD3-400D-891E-BE0589072CDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationBridge", "UIAutomationBridge\UIAutomationBridge.csproj", "{2E55F936-770A-405E-A1F0-209FD2C34AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationSource", "UIAutomationSource\UIAutomationSource.csproj", "{C9708633-8C9C-4F99-A31C-70445DC86ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationProvider", "UIAutomationProvider\UIAutomationProvider.csproj", "{4E7CEBB8-47CA-406F-BF63-FBB17D5DE08A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationClient", "UIAutomationClient\UIAutomationClient.csproj", "{D9AB649A-E07C-44B2-982D-067D887CD17F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E55F936-770A-405E-A1F0-209FD2C34AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E55F936-770A-405E-A1F0-209FD2C34AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7CEBB8-47CA-406F-BF63-FBB17D5DE08A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7CEBB8-47CA-406F-BF63-FBB17D5DE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876B87EE-FBD3-400D-891E-BE0589072CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876B87EE-FBD3-400D-891E-BE0589072CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9708633-8C9C-4F99-A31C-70445DC86ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9708633-8C9C-4F99-A31C-70445DC86ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9AB649A-E07C-44B2-982D-067D887CD17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9AB649A-E07C-44B2-982D-067D887CD17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = UIAutomationTypes\UIAutomationTypes.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = Flat
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.CSharpFormattingPolicy = $2
+		$2.SpacesAfterTypecast = True
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+		$0.TextStylePolicy = $4
+		$4.inheritsSet = Mono
+		$4.inheritsScope = text/plain
+		$4.scope = text/x-csharp
+	EndGlobalSection
+EndGlobal

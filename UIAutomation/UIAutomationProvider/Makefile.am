@@ -28,6 +28,9 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
         AssemblyInfo.cs \
         ../build/common/*.cs \
+        $(PROJECT_SOURCE_FILES)
+
+PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation.Provider/AutomationInteropProvider.cs \
 	System.Windows.Automation.Provider/ICaretProvider.cs \
 	System.Windows.Automation.Provider/IClipboardProvider.cs \

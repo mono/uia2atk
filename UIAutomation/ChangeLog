@@ -1,3 +1,22 @@
+2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomation.sln:
+	* UIAutomationTypes/Makefile.am:
+	* UIAutomationBridge/Makefile.am:
+	* UIAutomationProvider/Makefile.am:
+	* UIAutomationTypes/UIAutomationTypes.csproj:
+	* UIAutomationBridge/UIAutomationBridge.csproj:
+	* UIAutomationClient/UIAutomationClient.csproj:
+	* UIAutomationSource/UIAutomationSource.csproj:
+	* UIAutomationProvider/UIAutomationProvider.csproj:
+	* UIAutomationTypes/Test/UIAutomationTypesTests.sln:
+	* UIAutomationClientTests/UIAutomationClientTests.sln:
+	* UIAutomationProvider/Test/UIAutomationProviderTests.sln:
+	* UIAutomationProvider/Test/UIAutomationProviderTests.csproj:
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Convert from obsolete MonoDevelop file formats to msbuild.
+	Modify some makefiles to accomodate file sync to MD projects.
+
 2009-11-06  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/SampleForm/Form1.cs: 

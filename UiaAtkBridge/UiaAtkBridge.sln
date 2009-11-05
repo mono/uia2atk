@@ -1,0 +1,88 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiaAtkBridge", "UiaAtkBridge\UiaAtkBridge.csproj", "{389C4423-9444-45D1-923B-2A39ACFD90F1}"
+EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "bridge-glue", "bridge-glue\bridge-glue.cproj", "{6D4EB84E-1350-41B5-A183-2624C5D9308D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{F232DFC2-40D0-4C0E-B932-5C2E9E53B0D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtkTest", "Test\AtkTest\AtkTest.csproj", "{7C7C747F-243E-4914-9778-8F2B076F36B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GailTest", "Test\GailTest\GailTest.csproj", "{D4BEB075-AD11-4995-8C5C-1AD86E58389E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GailTestApp", "Test\GailTestApp\GailTestApp.csproj", "{E52AB09A-77D4-4B25-BF22-27045BC458CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiaAtkBridgeTest", "Test\UiaAtkBridgeTest\UiaAtkBridgeTest.csproj", "{1451AEF1-4117-4A7C-978A-EFA45D182F67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{D00D0B0D-37BE-43D8-AB21-B69FF730FAAC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unmanaged", "unmanaged", "{6F480A40-2C94-408D-8BEA-7489552722D8}"
+EndProject
+Project("{2857B73E-F847-4B02-9238-064979017E93}") = "atkHelloWorld", "samples\unmanaged\atkHelloWorld\atkHelloWorld.cproj", "{481BDEA7-B191-4980-9C8D-15EDB5A31F90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "managed", "managed", "{98E29082-2876-41C5-8025-0B76E92F13DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormTest", "samples\managed\FormTest\FormTest.csproj", "{D3BACE15-531E-427C-8AC0-860338493E11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "atkSharpHelloWorld", "samples\managed\atkSharpHelloWorld\atkSharpHelloWorld.csproj", "{6CE657EB-85F5-4F72-8475-45F3905B91DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1451AEF1-4117-4A7C-978A-EFA45D182F67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1451AEF1-4117-4A7C-978A-EFA45D182F67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389C4423-9444-45D1-923B-2A39ACFD90F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389C4423-9444-45D1-923B-2A39ACFD90F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{481BDEA7-B191-4980-9C8D-15EDB5A31F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{481BDEA7-B191-4980-9C8D-15EDB5A31F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CE657EB-85F5-4F72-8475-45F3905B91DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CE657EB-85F5-4F72-8475-45F3905B91DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4EB84E-1350-41B5-A183-2624C5D9308D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4EB84E-1350-41B5-A183-2624C5D9308D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C7C747F-243E-4914-9778-8F2B076F36B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C7C747F-243E-4914-9778-8F2B076F36B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3BACE15-531E-427C-8AC0-860338493E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3BACE15-531E-427C-8AC0-860338493E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BEB075-AD11-4995-8C5C-1AD86E58389E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BEB075-AD11-4995-8C5C-1AD86E58389E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52AB09A-77D4-4B25-BF22-27045BC458CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52AB09A-77D4-4B25-BF22-27045BC458CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7C7C747F-243E-4914-9778-8F2B076F36B8} = {F232DFC2-40D0-4C0E-B932-5C2E9E53B0D0}
+		{D4BEB075-AD11-4995-8C5C-1AD86E58389E} = {F232DFC2-40D0-4C0E-B932-5C2E9E53B0D0}
+		{E52AB09A-77D4-4B25-BF22-27045BC458CD} = {F232DFC2-40D0-4C0E-B932-5C2E9E53B0D0}
+		{1451AEF1-4117-4A7C-978A-EFA45D182F67} = {F232DFC2-40D0-4C0E-B932-5C2E9E53B0D0}
+		{6F480A40-2C94-408D-8BEA-7489552722D8} = {D00D0B0D-37BE-43D8-AB21-B69FF730FAAC}
+		{98E29082-2876-41C5-8025-0B76E92F13DD} = {D00D0B0D-37BE-43D8-AB21-B69FF730FAAC}
+		{481BDEA7-B191-4980-9C8D-15EDB5A31F90} = {6F480A40-2C94-408D-8BEA-7489552722D8}
+		{D3BACE15-531E-427C-8AC0-860338493E11} = {98E29082-2876-41C5-8025-0B76E92F13DD}
+		{6CE657EB-85F5-4F72-8475-45F3905B91DD} = {98E29082-2876-41C5-8025-0B76E92F13DD}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = UiaAtkBridge\UiaAtkBridge.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = Flat
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.CSharpFormattingPolicy = $2
+		$2.SpacesAfterTypecast = True
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+		$0.TextStylePolicy = $4
+		$4.inheritsSet = Mono
+		$4.inheritsScope = text/plain
+		$4.scope = text/x-csharp
+		name = UiaAtkBridge
+	EndGlobalSection
+EndGlobal

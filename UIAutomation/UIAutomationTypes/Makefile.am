@@ -26,17 +26,24 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
-FILES =  \
-        AssemblyInfo.cs \
-        ../build/common/*.cs \
+PROJECT_SOURCE_FILES =  \
+	System.Windows.Automation.Text/AnimationStyle.cs \
+	System.Windows.Automation.Text/BulletStyle.cs \
+	System.Windows.Automation.Text/CapStyle.cs \
+	System.Windows.Automation.Text/FlowDirections.cs \
+	System.Windows.Automation.Text/HorizontalTextAlignment.cs \
+	System.Windows.Automation.Text/OutlineStyles.cs \
+	System.Windows.Automation.Text/TextDecorationLineStyle.cs \
+	System.Windows.Automation.Text/TextPatternRangeEndpoint.cs \
+	System.Windows.Automation.Text/TextUnit.cs \
 	System.Windows.Automation/AsyncContentLoadedEventArgs.cs \
 	System.Windows.Automation/AutomationElementIdentifiers.cs \
-	System.Windows.Automation/AutomationEventArgs.cs \
 	System.Windows.Automation/AutomationEvent.cs \
+	System.Windows.Automation/AutomationEventArgs.cs \
 	System.Windows.Automation/AutomationIdentifier.cs \
 	System.Windows.Automation/AutomationPattern.cs \
-	System.Windows.Automation/AutomationPropertyChangedEventArgs.cs \
 	System.Windows.Automation/AutomationProperty.cs \
+	System.Windows.Automation/AutomationPropertyChangedEventArgs.cs \
 	System.Windows.Automation/AutomationTextAttribute.cs \
 	System.Windows.Automation/CaretPatternIdentifiers.cs \
 	System.Windows.Automation/ClipboardPatternIdentifiers.cs \
@@ -79,16 +86,12 @@ FILES =  \
 	System.Windows.Automation/WindowClosedEventArgs.cs \
 	System.Windows.Automation/WindowInteractionState.cs \
 	System.Windows.Automation/WindowPatternIdentifiers.cs \
-	System.Windows.Automation/WindowVisualState.cs \
-	System.Windows.Automation.Text/AnimationStyle.cs \
-	System.Windows.Automation.Text/BulletStyle.cs \
-	System.Windows.Automation.Text/CapStyle.cs \
-	System.Windows.Automation.Text/FlowDirections.cs \
-	System.Windows.Automation.Text/HorizontalTextAlignment.cs \
-	System.Windows.Automation.Text/OutlineStyles.cs \
-	System.Windows.Automation.Text/TextDecorationLineStyle.cs \
-	System.Windows.Automation.Text/TextPatternRangeEndpoint.cs \
-	System.Windows.Automation.Text/TextUnit.cs
+	System.Windows.Automation/WindowVisualState.cs
+
+FILES =  \
+        AssemblyInfo.cs \
+        ../build/common/*.cs \
+	$(PROJECT_SOURCE_FILES)
 
 
 DATA_FILES = 

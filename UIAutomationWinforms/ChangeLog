@@ -1,3 +1,10 @@
+2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationWinforms.sln:
+	* UIAutomationWinforms/UIAutomationWinforms.csproj:
+	* UIAutomationWinformsTests/UIAutomationWinformsTests.csproj:
+	Convert from obsolete MonoDevelop file formats to msbuild.
+
 2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* configure.ac: Bump version to 1.9.0. UIAutomationWinforms

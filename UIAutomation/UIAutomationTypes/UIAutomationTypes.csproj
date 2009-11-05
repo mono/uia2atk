@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{876B87EE-FBD3-400D-891E-BE0589072CDF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UIAutomationTypes</RootNamespace>
+    <AssemblyName>UIAutomationTypes</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="System.Windows.Automation.Text\AnimationStyle.cs" />
+    <Compile Include="System.Windows.Automation.Text\BulletStyle.cs" />
+    <Compile Include="System.Windows.Automation.Text\CapStyle.cs" />
+    <Compile Include="System.Windows.Automation.Text\FlowDirections.cs" />
+    <Compile Include="System.Windows.Automation.Text\HorizontalTextAlignment.cs" />
+    <Compile Include="System.Windows.Automation.Text\OutlineStyles.cs" />
+    <Compile Include="System.Windows.Automation.Text\TextDecorationLineStyle.cs" />
+    <Compile Include="System.Windows.Automation.Text\TextPatternRangeEndpoint.cs" />
+    <Compile Include="System.Windows.Automation.Text\TextUnit.cs" />
+    <Compile Include="System.Windows.Automation\AsyncContentLoadedEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\AutomationElementIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\AutomationEvent.cs" />
+    <Compile Include="System.Windows.Automation\AutomationEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\AutomationIdentifier.cs" />
+    <Compile Include="System.Windows.Automation\AutomationPattern.cs" />
+    <Compile Include="System.Windows.Automation\AutomationProperty.cs" />
+    <Compile Include="System.Windows.Automation\AutomationPropertyChangedEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\AutomationTextAttribute.cs" />
+    <Compile Include="System.Windows.Automation\CaretPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ClipboardPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ControlType.cs" />
+    <Compile Include="System.Windows.Automation\DockPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\DockPosition.cs" />
+    <Compile Include="System.Windows.Automation\EditableRangePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ElementNotAvailableException.cs" />
+    <Compile Include="System.Windows.Automation\ElementNotEnabledException.cs" />
+    <Compile Include="System.Windows.Automation\EmbeddedImagePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ExpandCollapsePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ExpandCollapseState.cs" />
+    <Compile Include="System.Windows.Automation\GridItemPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\GridPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\InsertDeleteTextPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\InvokePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\KeyEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\MultipleViewPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\NoClickablePointException.cs" />
+    <Compile Include="System.Windows.Automation\OrientationType.cs" />
+    <Compile Include="System.Windows.Automation\ProxyAssemblyNotLoadedException.cs" />
+    <Compile Include="System.Windows.Automation\RangeValuePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\RowOrColumnMajor.cs" />
+    <Compile Include="System.Windows.Automation\ScrollAmount.cs" />
+    <Compile Include="System.Windows.Automation\ScrollItemPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ScrollPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\SelectionItemPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\SelectionPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\StructureChangedEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\StructureChangeType.cs" />
+    <Compile Include="System.Windows.Automation\SupportedTextSelection.cs" />
+    <Compile Include="System.Windows.Automation\TableItemPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\TablePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\TextPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\TogglePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\ToggleState.cs" />
+    <Compile Include="System.Windows.Automation\TransformPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\TreeScope.cs" />
+    <Compile Include="System.Windows.Automation\ValuePatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\WindowClosedEventArgs.cs" />
+    <Compile Include="System.Windows.Automation\WindowInteractionState.cs" />
+    <Compile Include="System.Windows.Automation\WindowPatternIdentifiers.cs" />
+    <Compile Include="System.Windows.Automation\WindowVisualState.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
+          <BuildFilesVar Sync="true" Name="PROJECT_SOURCE_FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Name="REFERENCES" />
+          <AsmRefVar Name="REFERENCES" />
+          <ProjectRefVar Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

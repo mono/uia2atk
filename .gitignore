@@ -2,6 +2,9 @@
 # Global ignores
 *~
 *.pyc
+*.pidb
+*.userprefs
+*.usertasks
 
 # /
 /*.userprefs
@@ -161,6 +164,11 @@
 /UIAutomationWinforms/UIAutomationWinformsTests/Makefile.in
 /UIAutomationWinforms/UIAutomationWinformsTests/*.pc
 /UIAutomationWinforms/UIAutomationWinformsTests/providertest.sh
+
+# /UIAutomationWinforms/UIAutomationWinformsClientTests/
+/UIAutomationWinforms/UIAutomationWinformsClientTests/bin
+/UIAutomationWinforms/UIAutomationWinformsClientTests/DataGridApplication/*.resources
+/UIAutomationWinforms/UIAutomationWinformsClientTests/DataGridApplication/Properties/*.resources
 
 # /UIAutomationWinforms/po/
 /UIAutomationWinforms/po/*.gmo

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1E67B433-629F-4740-BD8A-E200D6A73EC5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UiaDbus</RootNamespace>
+    <AssemblyName>UiaDbus</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Interfaces\IApplication.cs" />
+    <Compile Include="Interfaces\IAutomationElement.cs" />
+    <Compile Include="Interfaces\IGridItemPattern.cs" />
+    <Compile Include="Interfaces\IGridPattern.cs" />
+    <Compile Include="Interfaces\IInvokePattern.cs" />
+    <Compile Include="Interfaces\InterfaceConverter.cs" />
+    <Compile Include="Interfaces\ITableItemPattern.cs" />
+    <Compile Include="Interfaces\ITablePattern.cs" />
+    <Compile Include="Interfaces\ITextPattern.cs" />
+    <Compile Include="Interfaces\ITextPatternRange.cs" />
+    <Compile Include="Interfaces\ITransformPattern.cs" />
+    <Compile Include="Interfaces\IValuePattern.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="Rect.cs" />
+    <Compile Include="Interfaces\IDockPattern.cs" />
+    <Compile Include="Interfaces\IExpandCollapsePattern.cs" />
+    <Compile Include="Interfaces\IRangeValuePattern.cs" />
+    <Compile Include="Interfaces\IScrollItemPattern.cs" />
+    <Compile Include="Interfaces\IScrollPattern.cs" />
+    <Compile Include="Interfaces\ISelectionItemPattern.cs" />
+    <Compile Include="Interfaces\ISelectionPattern.cs" />
+    <Compile Include="Interfaces\IWindowPattern.cs" />
+    <Compile Include="Interfaces\IMultipleViewPattern.cs" />
+    <Compile Include="Interfaces\ITogglePattern.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
+          <BuildFilesVar Sync="true" Name="SOURCE_FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Name="REFERENCES" />
+          <AsmRefVar Name="REFERENCES" />
+          <ProjectRefVar Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

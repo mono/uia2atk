@@ -1,0 +1,12 @@
+<WorkspaceItem ctype="Workspace">
+  <Items>
+    <Item>UIAutomation/UIAutomation.sln</Item>
+    <Item>UIAutomationWinforms/UIAutomationWinforms.sln</Item>
+    <Item>UiaDbus/UiaDbus.sln</Item>
+    <Item>MoonAtkBridge/MoonAtkBridge.sln</Item>
+    <Item>UiaAtkBridge/UiaAtkBridge.sln</Item>
+    <Item>UIAutomation/UIAutomationTypes/Test/UIAutomationTypesTests.sln</Item>
+    <Item>UIAutomation/UIAutomationProvider/Test/UIAutomationProviderTests.sln</Item>
+    <Item>UIAutomation/UIAutomationClientTests/UIAutomationClientTests.sln</Item>
+  </Items>
+</WorkspaceItem>

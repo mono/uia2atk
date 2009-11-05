@@ -1,3 +1,17 @@
+2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaAtkBridge.sln:
+	* Test/AtkTest/AtkTest.csproj:
+	* Test/GailTest/GailTest.csproj:
+	* bridge-glue/bridge-glue.cproj:
+	* UiaAtkBridge/UiaAtkBridge.csproj:
+	* Test/GailTestApp/GailTestApp.csproj:
+	* samples/managed/FormTest/FormTest.csproj:
+	* Test/UiaAtkBridgeTest/UiaAtkBridgeTest.csproj:
+	* samples/unmanaged/atkHelloWorld/atkHelloWorld.cproj:
+	* samples/managed/atkSharpHelloWorld/atkSharpHelloWorld.csproj:
+	Convert from obsolete MonoDevelop file formats to msbuild.
+
 2009-03-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* configure.ac: Bump version to 1.9.0. UIAutomationWinforms

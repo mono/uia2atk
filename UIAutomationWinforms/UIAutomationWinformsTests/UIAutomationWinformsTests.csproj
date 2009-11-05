@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{07E72EB5-371C-46FF-B5EC-136FAA2E0E2B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UIAutomationWinformsTests</RootNamespace>
+    <AssemblyName>UIAutomationWinformsTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="UIAutomationBridge, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BaseColorControlProviderTest.cs" />
+    <Compile Include="BaseProviderTest.cs" />
+    <Compile Include="ButtonProviderTest.cs" />
+    <Compile Include="CheckBoxProviderTest.cs" />
+    <Compile Include="CheckedListBoxProviderTest.cs" />
+    <Compile Include="ComboBoxProviderTest.cs" />
+    <Compile Include="ContextMenuProviderTest.cs" />
+    <Compile Include="ContextMenuStripProviderTest.cs" />
+    <Compile Include="DataGridProviderTest.cs" />
+    <Compile Include="DataGridViewProviderTest.cs" />
+    <Compile Include="DateTimePickerProviderTest.cs" />
+    <Compile Include="DomainUpDownProviderTest.cs" />
+    <Compile Include="ErrorProviderTest.cs" />
+    <Compile Include="FormProviderTest.cs" />
+    <Compile Include="GroupBoxProviderTest.cs" />
+    <Compile Include="HelpProviderTest.cs" />
+    <Compile Include="LabelProviderTest.cs" />
+    <Compile Include="LinkLabelProviderTest.cs" />
+    <Compile Include="ListBoxProviderTest.cs" />
+    <Compile Include="ListViewProviderTest.cs" />
+    <Compile Include="MainMenuProviderTest.cs" />
+    <Compile Include="MaskedTextBoxProviderTest.cs" />
+    <Compile Include="MenuItemProviderTest.cs" />
+    <Compile Include="MenuStripProviderTest.cs" />
+    <Compile Include="MiscHierarchyTest.cs" />
+    <Compile Include="MockBridge.cs" />
+    <Compile Include="MonthCalendarProviderTest.cs" />
+    <Compile Include="NumericUpDownProviderTest.cs" />
+    <Compile Include="PanelProviderTest.cs" />
+    <Compile Include="PictureBoxProviderTest.cs" />
+    <Compile Include="PopupButtonPanelTest.cs" />
+    <Compile Include="PrintPreviewControlProviderTest.cs" />
+    <Compile Include="ProgressBarProviderTest.cs" />
+    <Compile Include="RadioButtonProviderTest.cs" />
+    <Compile Include="RichTextBoxProviderTest.cs" />
+    <Compile Include="ScrollBarProviderTest.cs" />
+    <Compile Include="SplitContainerProviderTest.cs" />
+    <Compile Include="SplitterProviderTest.cs" />
+    <Compile Include="StatusBarProviderTest.cs" />
+    <Compile Include="StatusStripProviderTest.cs" />
+    <Compile Include="TabControlProviderTest.cs" />
+    <Compile Include="TabPageProviderTest.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="TextBoxBaseProviderTest.cs" />
+    <Compile Include="TextBoxProviderTest.cs" />
+    <Compile Include="TextRangeProviderTest.cs" />
+    <Compile Include="ToolBarButtonProviderTest.cs" />
+    <Compile Include="ToolBarProviderTest.cs" />
+    <Compile Include="ToolStripButtonProviderTest.cs" />
+    <Compile Include="ToolStripComboBoxProviderTest.cs" />
+    <Compile Include="ToolStripDropDownItemProviderTest.cs" />
+    <Compile Include="ToolStripLabelProviderTest.cs" />
+    <Compile Include="ToolStripProgressBarProviderTest.cs" />
+    <Compile Include="ToolStripProviderTest.cs" />
+    <Compile Include="ToolStripSeparatorProviderTest.cs" />
+    <Compile Include="ToolStripTextBoxProviderTest.cs" />
+    <Compile Include="ToolTipProviderTest.cs" />
+    <Compile Include="TrackBarProviderTest.cs" />
+    <Compile Include="TreeViewProviderTest.cs" />
+    <Compile Include="WebBrowserProviderTest.cs" />
+    <Compile Include="WordTokenizerTest.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
+          <BuildFilesVar Sync="true" Name="FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Name="REFERENCES" />
+          <AsmRefVar Name="REFERENCES" />
+          <ProjectRefVar Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\UIAutomationWinforms\UIAutomationWinforms.csproj">
+      <Project>{4BF61976-9361-4DCD-8011-542FD58CF3BD}</Project>
+      <Name>UIAutomationWinforms</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

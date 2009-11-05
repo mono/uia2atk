@@ -25,12 +25,15 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
-FILES =  \
-	AssemblyInfo.cs \
-	../build/common/*.cs \
+PROJECT_SOURCE_FILES =  \
 	Mono.UIAutomation.Bridge/IAutomationBridge.cs \
 	Mono.UIAutomation.Bridge/IHypertext.cs \
 	Mono.UIAutomation.Services/Log.cs
+
+FILES =  \
+        AssemblyInfo.cs \
+        ../build/common/*.cs \
+	$(PROJECT_SOURCE_FILES)
 
 DATA_FILES = 
 

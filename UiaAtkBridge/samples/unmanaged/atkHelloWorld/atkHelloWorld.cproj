@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{481BDEA7-B191-4980-9C8D-15EDB5A31F90}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package file="atk" name="atk" IsProject="false" />
+        <Package file="gmodule-2.0" name="gmodule-2.0" IsProject="false" />
+        <Package file="gobject-2.0" name="gobject-2.0" IsProject="false" />
+        <Package file="gthread-2.0" name="gthread-2.0" IsProject="false" />
+        <Package file="glib-2.0" name="glib-2.0" IsProject="false" />
+      </Packages>
+    </Packages>
+    <Compiler>
+      <Compiler ctype="GccCompiler" />
+    </Compiler>
+    <Language>C</Language>
+    <Target>Bin</Target>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <SourceDirectory>.</SourceDirectory>
+    <CodeGeneration>
+      <CodeGeneration ctype="CCompilationParameters" />
+    </CodeGeneration>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <OutputName>atkHelloWorld</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <CodeGeneration>
+      <CodeGeneration ctype="CCompilationParameters" />
+    </CodeGeneration>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>atkHelloWorld</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="hello.c" />
+    <Compile Include="hellotoplevel.c" />
+    <Compile Include="mytkwidget.c" />
+    <Compile Include="helloutil.c" />
+    <Compile Include="mytk.c" />
+    <Compile Include="hellochild.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hello.h" />
+    <None Include="hellotoplevel.h" />
+    <None Include="mytkwidget.h" />
+    <None Include="helloutil.h" />
+    <None Include="mytk.h" />
+    <None Include="hellochild.h" />
+  </ItemGroup>
+</Project>

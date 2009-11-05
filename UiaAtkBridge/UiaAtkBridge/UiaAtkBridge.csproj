@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{389C4423-9444-45D1-923B-2A39ACFD90F1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UiaAtkBridge</RootNamespace>
+    <AssemblyName>UiaAtkBridge</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\mono-uia.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Execution>
+      <Execution clr-version="Net_2_0" />
+    </Execution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Execution>
+      <Execution clr-version="Net_2_0" />
+    </Execution>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Monitor.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="TopLevelRootItem.cs" />
+    <Compile Include="Tree.cs" />
+    <Compile Include="TreeItem.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="WrapperPanel.cs" />
+    <Compile Include="AutomationBridge.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="ActionImplementorHelper.cs" />
+    <Compile Include="Adapter.cs" />
+    <Compile Include="ParentAdapter.cs" />
+    <Compile Include="ProgressBar.cs" />
+    <Compile Include="ScrollBar.cs" />
+    <Compile Include="Slider.cs" />
+    <Compile Include="Spinner.cs" />
+    <Compile Include="Tab.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="TableImplementorHelper.cs" />
+    <Compile Include="TextContainer.cs" />
+    <Compile Include="TextLabel.cs" />
+    <Compile Include="Pane.cs" />
+    <Compile Include="ComponentImplementorHelper.cs" />
+    <Compile Include="ComponentAdapter.cs" />
+    <Compile Include="ComponentParentAdapter.cs" />
+    <Compile Include="ComboBoxDropDown.cs" />
+    <Compile Include="MenuItem.cs" />
+    <Compile Include="CheckBoxButton.cs" />
+    <Compile Include="RadioButton.cs" />
+    <Compile Include="RangeValueProviderTextImplementor.cs" />
+    <Compile Include="Container.cs" />
+    <Compile Include="DataGrid.cs" />
+    <Compile Include="DataGridGroup.cs" />
+    <Compile Include="Hyperlink.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="List.cs" />
+    <Compile Include="ListGroup.cs" />
+    <Compile Include="ListItem.cs" />
+    <Compile Include="SelectionProviderUserHelper.cs" />
+    <Compile Include="ToolTip.cs" />
+    <Compile Include="AmbiDictionary.cs" />
+    <Compile Include="TextBoxEntryView.cs" />
+    <Compile Include="MenuBar.cs" />
+    <Compile Include="ComboBoxOptions.cs" />
+    <Compile Include="ComboBox.cs" />
+    <Compile Include="ExpandCollapseButton.cs" />
+    <Compile Include="SplitButton.cs" />
+    <Compile Include="SplitContainer.cs" />
+    <Compile Include="Splitter.cs" />
+    <Compile Include="TextImageLabel.cs" />
+    <Compile Include="ComboBoxItem.cs" />
+    <Compile Include="ContextMenu.cs" />
+    <Compile Include="ComboBoxOptionsTable.cs" />
+    <Compile Include="HeaderItem.cs" />
+    <Compile Include="Separator.cs" />
+    <Compile Include="ImageImplementorHelper.cs" />
+    <Compile Include="ParentMenu.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="BaseTextImplementor.cs" />
+    <Compile Include="ICanHaveSelection.cs" />
+    <Compile Include="ITextImplementor.cs" />
+    <Compile Include="NamePropertyTextImplementor.cs" />
+    <Compile Include="TextImplementorFactory.cs" />
+    <Compile Include="TextProviderTextImplementor.cs" />
+    <Compile Include="ValueProviderTextImplementor.cs" />
+    <Compile Include="ToggleButton.cs" />
+    <Compile Include="EditableTextImplementorHelper.cs" />
+    <Compile Include="ToolBar.cs" />
+    <Compile Include="ContextMenuWindow.cs" />
+    <Compile Include="TabPage.cs" />
+    <Compile Include="SimpleTreeItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UiaAtkBridge.dll.config.in" />
+    <None Include="Makefile.am" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="UIAutomationBridge, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Sync="true" Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Name="REFERENCES" />
+          <AsmRefVar Name="REFERENCES" />
+          <ProjectRefVar Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

@@ -20,6 +20,9 @@ Global
 		{36E59D55-D2F8-4402-AE21-C3CBD9263500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E59D55-D2F8-4402-AE21-C3CBD9263500}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = UIAutomationClientTests\UIAutomationClientTests.csproj
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

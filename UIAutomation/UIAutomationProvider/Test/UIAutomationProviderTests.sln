@@ -14,6 +14,9 @@ Global
 		{A50A316B-A011-44E4-B014-97A3BA526326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A50A316B-A011-44E4-B014-97A3BA526326}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = UIAutomationProviderTests.csproj
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
