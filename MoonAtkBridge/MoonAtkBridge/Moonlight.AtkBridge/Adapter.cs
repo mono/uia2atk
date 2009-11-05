@@ -224,6 +224,9 @@ namespace Moonlight.AtkBridge
 			if (Peer == null)
 				return Role.Unknown;
 
+			if (Peer.IsPassword ())
+				return Role.PasswordText;
+
 			AutomationControlType type = Peer.GetAutomationControlType ();
 			switch (type) {
 			case AutomationControlType.Button:

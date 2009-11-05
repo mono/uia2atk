@@ -21,6 +21,7 @@
 //
 // Authors:
 //      Andrés G. Aragoneses <aaragoneses@novell.com>
+//      Mario Carrion <mcarrion@novell.com>
 //      Brad Taylor <brad@getcoded.net>
 //
 
@@ -37,7 +38,9 @@ using Moonlight.AtkBridge;
 namespace Moonlight.AtkBridge.PatternImplementors
 {
 	[ImplementsPattern (PatternInterface.Value)]
-	public sealed class Value : BasePatternImplementor, Atk.TextImplementor
+	public sealed class Value : BasePatternImplementor,
+	                            Atk.TextImplementor,
+	                            Atk.EditableTextImplementor
 	{
 #region Public Properties
 		public int CaretOffset {
@@ -54,6 +57,19 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		public int NSelections {
 			get { return 0; }
+		}
+
+		public string TextContents {
+			set {
+				if (valueProvider.IsReadOnly)
+					return;
+
+				try {
+					valueProvider.SetValue (value);
+				} catch (ElementNotEnabledException) {
+					return;
+				}
+			}
 		}
 
 		IntPtr GLib.IWrapper.Handle {
@@ -73,6 +89,15 @@ namespace Moonlight.AtkBridge.PatternImplementors
 					OnAutomationPropertyChanged);
 		}
 
+		public override void OnRefStateSet (ref Atk.StateSet states)
+		{
+			if (valueProvider.IsReadOnly)
+				states.RemoveState (Atk.StateType.Editable);
+			else
+				states.AddState (Atk.StateType.Editable);
+		}
+
+#region Atk.TextImplementor Methods
 		public bool AddSelection (int startOffset, int endOffset)
 		{
 			selectionStartOffset = 0;
@@ -381,11 +406,109 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		}
 #endregion
 
+#region Atk.TextImplementor Methods
+		public bool SetRunAttributes (GLib.SList attribSet, int startOffset, int endOffset)
+		{
+			// ValuePattern doesn't support text attributes
+			return false;
+		}
+
+		public void InsertText (string str, ref int position)
+		{
+			if (valueProvider.IsReadOnly)
+				return;
+
+			string text = Text;
+			if (position < 0 || position > text.Length)
+				position = text.Length;   // gail
+
+			TextContents = text.Substring (0, position)
+				+ str + text.Substring (position);
+		}
+
+		public void CopyText (int startPos, int endPos)
+		{
+			Log.Warn ("ValuePattern doesn't support clipboard actions");
+		}
+
+		public void CutText (int startPos, int endPos)
+		{
+			Log.Warn ("ValuePattern doesn't support clipboard actions");
+		}
+
+		public void DeleteText (int startPos, int endPos)
+		{
+			if (valueProvider.IsReadOnly)
+                                return;
+
+			string text = Text;
+                        if (String.IsNullOrEmpty (text))
+                                return;
+
+                        if (startPos < 0)
+                                startPos = 0;
+                        if (endPos < 0 || endPos > text.Length)
+                                endPos = text.Length;
+                        if (startPos > endPos)
+                                startPos = endPos;
+
+                        TextContents = text.Remove (startPos,
+			                            endPos - startPos);
+		}
+
+		public void PasteText (int position)
+		{
+			Log.Warn ("ValuePattern doesn't support clipboard actions");
+		}
+#endregion
+
+#endregion
+
 #region Private Methods
 		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
 		{
-			if (args.Property == ValuePatternIdentifiers.ValueProperty)
-				adapter.EmitSignal ("visible_data_changed");
+			if (args.Property == ValuePatternIdentifiers.ValueProperty) {
+				AutomationControlType controlType
+					= peer.GetAutomationControlType ();
+				if (controlType == AutomationControlType.Edit
+				    || controlType == AutomationControlType.Document) {
+					TextAdapter textAdapter
+						= new TextAdapter ((TextImplementor) adapter);
+
+					string oldValue = (string) args.OldValue;
+					string newValue = (string) args.NewValue;
+
+					if (oldValue == newValue)
+						return;
+
+					if (newValue.StartsWith (oldValue)) {
+						textAdapter.EmitTextChanged (Atk.TextChangedDetail.Insert,
+									     oldValue.Length,
+						                             newValue.Length - oldValue.Length);
+					} else if (oldValue.StartsWith (newValue)) {
+						textAdapter.EmitTextChanged (Atk.TextChangedDetail.Delete,
+									     newValue.Length,
+						                             oldValue.Length - newValue.Length);
+					} else {
+						// XXX: Improve this algorithm so that
+						// it diffs the two values (maybe using
+						// a modified Levenshtein alg?) and
+						// send just what is deleted or
+						// inserted to avoid thrashing ATs.
+						textAdapter.EmitTextChanged (Atk.TextChangedDetail.Delete,
+									     0, oldValue.Length);
+
+						textAdapter.EmitTextChanged (Atk.TextChangedDetail.Insert,
+									     0, newValue.Length);
+					}
+				} else {
+					// Mirror Gtk+'s behavior here somewhat
+					// and only fire visible_data_changed
+					// in the case of label and label-like
+					// elements.
+					adapter.EmitSignal ("visible_data_changed");
+				}
+			}
 		}
 
 		private string ReturnTextWrtOffset (int startOffset, int endOffset)
@@ -404,9 +527,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			                        out stopLateOffset, false);
 		}
 
-		private void ForwardToNextSeparator (char[] seps, int startOffset, 
+		private void ForwardToNextSeparator (char[] seps, int startOffset,
 		                                     out int stopEarlyOffset,
-		                                     out int stopLateOffset, 
+		                                     out int stopLateOffset,
 		                                     bool findNonSeparators)
 		{
 			string text = Text;
@@ -563,7 +686,13 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 #region Private Properties
 		private string Text {
-			get { return valueProvider.Value; }
+			get {
+				try {
+					return valueProvider.Value;
+				} catch (InvalidOperationException) {
+					return String.Empty;
+				}
+			}
 		}
 #endregion
 

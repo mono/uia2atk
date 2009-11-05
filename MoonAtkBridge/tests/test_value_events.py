@@ -42,23 +42,53 @@ class ValueEvents(TestCase):
         cls.app = launchAddress(abspath('assets/ValueEventsTest/ValueEventsTest.html'))
         cls.textbox = cls.app.slControl.findText('Foo')
         cls.textbox_text = cls.textbox._accessible.queryText()
-        cls.addAFooButton = self.app.slControl.findPushButton('Add A Foo')
+        cls.textbox_edit = cls.textbox._accessible.queryEditableText()
+        cls.addAFooButton = cls.app.slControl.findPushButton('Add A Foo')
 
     @classmethod
     def teardown_class(cls):
         cls.app.kill()
 
-    def test_visible_data_changed_event(self):
+    def test_text_changed_event(self):
         t = self.textbox_text
-        self.assertEqual(t.getText(0, -1), 'Foo');
+        self.assertEqual('Foo', t.getText(0, -1))
 
         listener = EventListener()
         with listener.listenTo(self.textbox):
-            addAFooButton.click()
+            self.addAFooButton.click()
 
-            sleep(config.MEDIUM_DELAY)
-            self.assertEqual(t.getText(0, -1), 'FooFoo\n')
+            self.assertEqual('FooFoo\n', t.getText(0, -1))
 
         assert listener.containsEvent(self.textbox,
-                                      'object:visible-data-changed',
+                                      'object:text-changed:insert',
+                                      qty=1)
+
+        assert listener.containsEvent(self.textbox,
+                                      'object:property-change:accessible-name',
+                                      qty=1)
+
+        with listener.listenTo(self.textbox):
+            self.textbox_edit.insertText(3, 'Bar', 3)
+
+            self.assertEqual('FooBarFoo\n', t.getText(0, -1))
+
+        assert listener.containsEvent(self.textbox,
+                                      'object:text-changed:insert',
+                                      qty=1)
+
+        assert listener.containsEvent(self.textbox,
+                                      'object:property-change:accessible-name',
+                                      qty=1)
+
+        with listener.listenTo(self.textbox):
+            self.textbox_edit.deleteText(0, 3)
+
+            self.assertEqual(t.getText(0, -1), 'BarFoo\n')
+
+        assert listener.containsEvent(self.textbox,
+                                      'object:text-changed:delete',
+                                      qty=1)
+
+        assert listener.containsEvent(self.textbox,
+                                      'object:property-change:accessible-name',
                                       qty=1)

@@ -1,3 +1,15 @@
+2009-11-05  Brad Taylor  <brad@getcoded.net>
+
+	* test_value_events.py: Update Value events test to replace
+	visible-data-changed with text-changed for Text controls.
+
+	* assets/Makefile.am: 
+	* test_passwordbox.py: 
+	* assets/PasswordBoxTest/App.xaml: 
+	* assets/PasswordBoxTest/Page.xaml: 
+	* assets/PasswordBoxTest/App.xaml.cs: 
+	* assets/PasswordBoxTest/Makefile.am: 
+	* assets/PasswordBoxTest/Page.xaml.cs: Add new test for PasswordBox.
 
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 

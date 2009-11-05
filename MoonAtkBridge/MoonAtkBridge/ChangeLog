@@ -1,3 +1,18 @@
+2009-11-05  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: Hardcode the role to PasswordText if
+	the peer is a password.  This may be erroneous, but it will likely be
+	correct in 99% of the cases.
+
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs: Implement
+	EditableText, proper states and signals.
+
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Refactor property
+	code so that it supports set properties.
+
+	defaultMethod.ReturnType.ReturnType actually returns System.Void for
+	set methods, not the property's type value.
+
 2009-11-04  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Add methods to Remove and Add

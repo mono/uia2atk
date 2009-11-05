@@ -8,4 +8,5 @@ SUBDIRS = \
 	ToggleEventsTest \
 	ComboBoxTest \
 	TextBlockTest \
-	AddRemoveAdapterTest
+	AddRemoveAdapterTest \
+	PasswordBoxTest

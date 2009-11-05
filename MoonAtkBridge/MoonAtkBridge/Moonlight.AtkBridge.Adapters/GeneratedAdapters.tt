@@ -159,22 +159,12 @@ foreach (HashSet<string> impls in combinations) {
 		// Create wrappers for all the methods described by
 		// this PatternImplementor
 
-		// Store properties so we can handle them later
-		Dictionary<string, List<MethodDefinition>> properties
-			= new Dictionary<string, List<MethodDefinition>> ();
-
 		foreach (MethodDefinition meth in type.Methods) {
 			if (!meth.IsPublic)
 				continue;
 
-			if (meth.IsSetter || meth.IsGetter) {
-				string prop = GetPropertyName (meth.Name);
-				if (!properties.ContainsKey (prop))
-					properties[prop] = new List<MethodDefinition> ();
-
-				properties[prop].Add (meth);
+			if (meth.IsSetter || meth.IsGetter)
 				continue;
-			}
 
 			TypeDefinition iface = GetImplementingInterface (type, meth);
 			if (iface == null)
@@ -193,26 +183,31 @@ foreach (HashSet<string> impls in combinations) {
 
 <# 		} #>
 <#
-		foreach (KeyValuePair<string, List<MethodDefinition>> prop in properties) {
-			if (prop.Value.Count == 0)
+		foreach (PropertyDefinition prop in type.Properties) {
+			MethodDefinition getMethod = prop.GetMethod;
+			MethodDefinition setMethod = prop.SetMethod;
+
+			if ((getMethod != null && !getMethod.IsPublic)
+			    || (setMethod != null && !setMethod.IsPublic))
 				continue;
 
-			MethodDefinition defaultMethod = prop.Value[0];
-
-			TypeDefinition iface = GetImplementingInterface (type, defaultMethod);
+			TypeDefinition iface = GetImplementingInterface (type, getMethod ?? setMethod);
 			if (iface == null)
 				continue;
+
 #>
-		<#= defaultMethod.ReturnType.ReturnType.FullName #> <#= iface.FullName #>.<#= prop.Key #> {
+		<#= prop.PropertyType.FullName #> <#= iface.FullName #>.<#= prop.Name #> {
 <#
-			foreach (MethodDefinition meth in prop.Value) {
-				if (meth.IsGetter) {
+			if (getMethod != null) {
 #>
-			get { return <#= ToFieldName (impl) #>.<#= prop.Key #>; }
-<#				} else { #>
-			set { <#= ToFieldName (impl) #>.<#= prop.Key #> = value; }
+			get { return <#= ToFieldName (impl) #>.<#= prop.Name #>; }
 <#
-				}
+			}
+
+			if (setMethod != null) {
+#>
+			set { <#= ToFieldName (impl) #>.<#= prop.Name #> = value; }
+<#
 			}
 #>
 		}
@@ -295,11 +290,6 @@ foreach (HashSet<string> impls in combinations) {
 	public string ToFieldName (string typeName)
 	{
 		return String.Format ("{0}Field", typeName.ToLower ());
-	}
-
-	public string GetPropertyName (string fullName)
-	{
-		return fullName.Split ('_')[1];
 	}
 
 	public string BuildParamList (ParameterDefinitionCollection paras, bool withTypes)

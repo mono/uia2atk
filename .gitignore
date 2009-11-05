@@ -450,6 +450,15 @@
 /MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.html
 /MoonAtkBridge/tests/assets/AddRemoveAdapterTest/*.xap
 /MoonAtkBridge/tests/assets/AddRemoveAdapterTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/PasswordBoxTest/Makefile
+/MoonAtkBridge/tests/assets/PasswordBoxTest/Makefile.in
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.g.cs
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.dll
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.mdb
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.g.resources
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.html
+/MoonAtkBridge/tests/assets/PasswordBoxTest/*.xap
+/MoonAtkBridge/tests/assets/PasswordBoxTest/AppManifest.xaml
 /MoonAtkBridge/gtk-sharp/
 /MoonAtkBridge/stage/
 /MoonAtkBridge/bin/

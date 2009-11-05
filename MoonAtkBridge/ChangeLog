@@ -1,3 +1,7 @@
+2009-11-05  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add PasswordBox sample.
+
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MoonAtkBridge.sln: 
