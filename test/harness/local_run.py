@@ -33,7 +33,7 @@ def output(s, newline=True):
     if newline:
       print s
     else:
-      print s,
+      print s
 
 def abort(status):
   ''' exit according to status '''
@@ -55,6 +55,7 @@ class Settings(object):
   distro_version = None
   is_force = False
   is_nodeps = False
+  component = None
   # this is returned to the console.  it will get set to 1 if any tests fail
   return_code = 0
 
@@ -70,7 +71,7 @@ class Settings(object):
 
   def set_log_path(self):
     if Settings.log_path is None:
-      Settings.log_path = "%s/logs" % Settings.uiaqa_home
+      Settings.log_path = "%s/logs/%s" % (Settings.uiaqa_home, Settings.component)
     if not os.path.exists(Settings.log_path):
       output("ERROR:  Log path '%s' does not exist." % Settings.log_path)
       abort(1)
@@ -80,7 +81,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:c:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree=","component="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -111,6 +112,8 @@ class Settings(object):
         elif t == "tag":
           t = "tags"
         Settings.tree = t
+      if o in ("-c","--component"):
+        Settings.component = a
 
       if Settings.tree == BRANCHES:
         assert Settings.version is not None, \
@@ -139,6 +142,8 @@ class Settings(object):
     output("  -n | --nodeps      Do not check deps on the update (using rpm --nodps)")
     output("  -t | --tree=       The part of the SVN tree desired (i.e., tags, branches, or")
     output("                     trunk).  The default is trunk.")
+    output("  -c | --component=  Select at least and only one component to test (i.e.,")
+    output("                     winforms or moonlight).")
     output("  -v | --version=    The tags or branches version desired")
 
   def set_uiaqa_home(self):
@@ -148,7 +153,7 @@ class Settings(object):
 
 class Test(object):
 
-  def __init__(self):
+  def __init__(self, component):
 
     # conditional import based on whether we want to run smoke tests or
     # regression tests
@@ -158,7 +163,14 @@ class Test(object):
     else:
       import tests as tests
 
-    self.tests = tests.tests_list
+    self.component = str(Settings.component)
+    if Settings.component not in dir(tests):
+      help()
+      print '!!!!!!!!!!!!!!!!!'
+      abort(1)
+
+    # dynamically evaluate tests_list with component name
+    self.tests = eval('tests.%s_tests_list' % self.component)
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
@@ -185,14 +197,14 @@ class Test(object):
   def find_distro_version(self):
     assert Settings.distro is not None, "Distro has not been deteced"
     if Settings.distro == FEDORA:
-      f = open('/etc/fedora-release', 'r')  
+      f = open('/etc/fedora-release', 'r')
       release = f.readline()
       try:
         Settings.distro_version = release.split()[2].replace('.','')
       except IndexError:
         pass
     elif Settings.distro == OPENSUSE:
-      f = open('/etc/SuSE-release', 'r')  
+      f = open('/etc/SuSE-release', 'r')
       release = f.readline()
       try:
         Settings.distro_version = release.split()[1].replace('.','')
@@ -208,7 +220,7 @@ class Test(object):
         pass
     else:
       Settings.distro_version = None
- 
+
   def update(self):
     import urllib
     # need to determine the distro and the distro version
@@ -234,11 +246,11 @@ class Test(object):
                            arch,
                            "current",
                            "rpm_revs"))
-      
+
     url = urljoin(url_part1, url_part2)
     u = urllib.urlopen(url)
     self.newest_dir = u.readline().strip()
-	
+
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
 
@@ -297,12 +309,12 @@ class Test(object):
     found_tests = [] # store the full path of the test here
 
     for test in self.tests:
-      test_path = os.path.join(Settings.uiaqa_home, "testers/%s" % test)
+      test_path = os.path.join(Settings.uiaqa_home, "testers/%s/%s" % (self.component, test))
       if not os.path.exists(test_path):
         unfound_tests.append(test)
       else:
         found_tests.append(os.path.join(Settings.uiaqa_home,
-                                        "testers/%s" % test))
+                                        "testers/%s/%s" % (self.component, test)))
 
     num_unfound_tests = len(unfound_tests)
     if num_unfound_tests > 0:
@@ -461,11 +473,11 @@ class Test(object):
           output("WARNING:  Could not create log directory!")
           output("WARNING:  Permanent logs will not be stored")
           return 0
-  
+
     if os.path.exists(self.log_dir):
         raise InconceivableError,\
                 "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
-    
+
     # os.makedirs() does not work here because cifs is slow
     self.makedirs(self.log_dir)
 
@@ -543,13 +555,13 @@ class Test(object):
     os.mkdir(name, mode)
     # XXX: Waiting for CIFS, use a better method
     time.sleep(5)
-  
+
 class InconceivableError(Exception): pass
 
 class Main(object):
 
   def main(self, argv=None):
-    t = Test()
+    t = Test(Settings.component)
     r = None
     if Settings.should_update:
       r = t.update()

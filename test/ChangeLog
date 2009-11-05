@@ -1,3 +1,10 @@
+2009-11-05  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/local_run.py:
+	* harness/tests.py: Added an option to select a component to test.
+	* logs/moonlight:
+	* logs/winforms: Added directories to store tests.
+
 2009-11-05  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/thumb/__init__.py,
