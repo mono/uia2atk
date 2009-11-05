@@ -31,7 +31,7 @@ def launchHyperlinkButton(exe=None):
 
     args = [firefox_path, exe]
 
-    (app, subproc) = cache.launchApplication(args=args, name="Firefox", \
+    (app, subproc) = cache.launchApplication(args=args, name="Minefield", \
                                                         wait=config.LONG_DELAY)
 
     hyperlinkbutton = HyperlinkButton(app, subproc)
