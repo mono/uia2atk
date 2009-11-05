@@ -469,6 +469,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.ITextPattern textPattern = Bus.Session.GetObject<DCI.ITextPattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TextPatternSubPath));
 				ret = new UiaDbusTextPattern (textPattern, busName, source);
+			} else if (pattern.Id == TogglePatternIdentifiers.Pattern.Id) {
+				DCI.ITogglePattern togglePattern = Bus.Session.GetObject<DCI.ITogglePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.TogglePatternSubPath));
+				ret = new UiaDbusTogglePattern (togglePattern);
 			} else if (pattern.Id == ValuePatternIdentifiers.Pattern.Id) {
 				DCI.IValuePattern valuePattern = Bus.Session.GetObject<DCI.IValuePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.ValuePatternSubPath));

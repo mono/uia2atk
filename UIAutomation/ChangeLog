@@ -1,5 +1,12 @@
 2009-11-05  Matt Guo  <matt@mattguo.com>
 
+	* UIAutomationSource/UIAutomationSource.mdp: 
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/TogglePatternTest.cs:
+	Implement/Test TogglePattern 
+
+2009-11-05  Matt Guo  <matt@mattguo.com>
+
 	* UIAutomationClientTests/SampleForm/Form1.cs: 
 	* UIAutomationClientTests/UIAutomationClientTests/RangeValuePatternTest.cs: 
 	Tests for RangeValuePattern

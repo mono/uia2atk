@@ -1,21 +1,36 @@
-<Project name="UIAutomationSource" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Source" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
+<Project name="UIAutomationSource" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Source" language="C#" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationSource" />
       <Build debugmode="True" target="Library" />
-      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <Execution consolepause="True" runwithwarnings="True" runtime="MsNet" clr-version="Net_2_0" />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
     <Configuration name="Release" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationSource" />
       <Build debugmode="False" target="Library" />
-      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <Execution consolepause="True" runwithwarnings="True" runtime="MsNet" clr-version="Net_2_0" />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
     </Configuration>
   </Configurations>
   <Contents>
-    <File name="Mono.UIAutomation.Source/IAutomationSource.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Source/IElement.cs" subtype="Code" buildaction="Compile" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IAutomationSource.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IElement.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IGridItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IGridPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IInvokePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IMultipleViewPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IRangeValuePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IScrollPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ISelectionItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ISelectionPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ITableItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ITablePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ITextPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ITextPatternRange.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/ITransformPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IValuePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Mono.UIAutomation.Source/IWindowPattern.cs" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />

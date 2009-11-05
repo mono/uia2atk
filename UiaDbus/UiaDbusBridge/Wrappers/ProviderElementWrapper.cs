@@ -524,6 +524,10 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				patternPath += DC.Constants.TextPatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
 				                        p => new TextPatternWrapper ((ITextProvider) p, bus, patternPath));
+			} else if (patternId == TogglePatternIdentifiers.Pattern.Id) {
+   				patternPath += DC.Constants.TogglePatternSubPath;
+   				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+  				                        p => new TogglePatternWrapper ((IToggleProvider) p));
 			} else if (patternId == TransformPatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.TransformPatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,

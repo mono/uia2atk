@@ -143,6 +143,10 @@ namespace SampleForm {
 				textBox3.Text = "very very very very very very very very long text to enable the horizontal scroll bar";
 			else if (cmd == "disable textBox3")
 				textBox3.Enabled = false;
+			else if (cmd == "disable checkBox1")
+ 				checkBox1.Enabled = false;
+ 			else if (cmd == "enable checkBox1")
+ 				checkBox1.Enabled = true;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-<Project name="UiaDbusBridge" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.UiaDbusBridge" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
+<Project name="UiaDbusBridge" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.UiaDbusBridge" language="C#" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
   <Policies>
     <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedFlat" ResourceNamePolicy="FileFormatDefault" />
   </Policies>
@@ -38,6 +38,7 @@
     <File subtype="Code" buildaction="Compile" name="Wrappers/WindowPatternWrapper.cs" />
     <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionPatternWrapper.cs" />
     <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionItemPatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/TogglePatternWrapper.cs" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

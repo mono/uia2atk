@@ -51,6 +51,7 @@ SOURCE_FILES =  \
 	Interfaces/ITablePattern.cs \
 	Interfaces/ITextPattern.cs \
 	Interfaces/ITextPatternRange.cs \
+	Interfaces/ITogglePattern.cs \
 	Interfaces/ITransformPattern.cs \
 	Interfaces/IValuePattern.cs \
 	Interfaces/IWindowPattern.cs \

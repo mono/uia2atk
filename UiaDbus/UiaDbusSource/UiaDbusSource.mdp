@@ -27,6 +27,11 @@
     <File name="UiaDbusValuePattern.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusTextPattern.cs" subtype="Code" buildaction="Compile" />
     <File name="UiaDbusTextPatternRange.cs" subtype="Code" buildaction="Compile" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusGridItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusGridPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusTableItemPattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusTablePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="UiaDbusTogglePattern.cs" />
     <File subtype="Code" buildaction="Compile" name="UiaDbusWindowPattern.cs" />
     <File subtype="Code" buildaction="Compile" name="UiaDbusRangeValuePattern.cs" />
     <File subtype="Code" buildaction="Compile" name="UiaDbusScrollPattern.cs" />

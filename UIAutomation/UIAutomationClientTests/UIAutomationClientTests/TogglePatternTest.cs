@@ -34,6 +34,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using NUnit.Framework;
 using MonoTests.System.Windows.Automation;
+using At = System.Windows.Automation.Automation;
 
 namespace MonoTests.System.Windows.Automation
 {
@@ -41,10 +42,18 @@ namespace MonoTests.System.Windows.Automation
 	public class TogglePatternTest : BaseTest
 	{
 		#region Test Methods
+
+		//todo uncomment this test case once r#493 is commited (then we'll have the Helper class)
+		//[Test]
+		//public void PropertiesTest ()
+		//{
+		//	Helper.CheckPatternIdentifiers<TogglePattern> ();
+		//}
+
 		[Test]
 		public void ToggleTest ()
 		{
-			TogglePattern pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePatternIdentifiers.Pattern);
+			TogglePattern pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
 			Assert.AreEqual (ToggleState.Off, pattern.Current.ToggleState, "ToggleState before Toggle");
 			pattern.Toggle ();
 			// TODO: Enable this after resolving at-spi-sharp threading/MainLoop issues
@@ -53,15 +62,39 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
-		[Ignore ("No disabled checkbox in SampleForm")]
 		public void NotEnabledTest ()
 		{
-			TogglePattern pattern = (TogglePattern) checkbox2Element.GetCurrentPattern (TogglePatternIdentifiers.Pattern);
-			Assert.AreEqual (ToggleState.Off, pattern.Current.ToggleState, "ToggleState before Toggle");
+			TogglePattern pattern = null;
+			if (!Atspi) {
+				RunCommand ("disable checkBox1");
+				pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
+			} else {
+				pattern = (TogglePattern) checkbox2Element.GetCurrentPattern (TogglePattern.Pattern);
+			}
+
 			try {
 				pattern.Toggle ();
 				Assert.Fail ("Should throw ElementNotEnabledException");
 			} catch (ElementNotEnabledException) { }
+
+			if (!Atspi)
+				RunCommand ("enable checkBox1");
+		}
+
+		[Test]
+		public void Z_EventTest ()
+		{
+			int eventCount = 0;
+			AutomationPropertyChangedEventHandler handler = (o, e) => eventCount++;
+			At.AddAutomationPropertyChangedEventHandler (checkbox1Element, TreeScope.Element, handler,
+			                                             TogglePattern.ToggleStateProperty);
+
+			TogglePattern pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
+			pattern.Toggle ();
+			//We should expect an AutomationPropertyChangedEvent here,
+			//But since no such event fired on Windows Winforms,
+			//then we assert no event fired here
+			Assert.AreEqual (0, eventCount, "ToggleState changed event");
 		}
 		#endregion
 	}

@@ -62,6 +62,7 @@ FILES =  \
 	UiaDbusTablePattern.cs \
 	UiaDbusTextPattern.cs \
 	UiaDbusTextPatternRange.cs \
+	UiaDbusTogglePattern.cs \
 	UiaDbusTransformPattern.cs \
 	UiaDbusValuePattern.cs \
 	UiaDbusWindowPattern.cs

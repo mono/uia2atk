@@ -61,6 +61,7 @@ FILES =  \
 	Wrappers/TablePatternWrapper.cs \
 	Wrappers/TextPatternRangeWrapper.cs \
 	Wrappers/TextPatternWrapper.cs \
+	Wrappers/TogglePatternWrapper.cs \
 	Wrappers/TransformPatternWrapper.cs \
 	Wrappers/ValuePatternWrapper.cs \
 	Wrappers/WindowPatternWrapper.cs 
