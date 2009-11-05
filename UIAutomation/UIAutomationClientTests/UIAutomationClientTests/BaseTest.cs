@@ -414,5 +414,18 @@ namespace MonoTests.System.Windows.Automation
 				return false;
 			}
 		}
+
+		protected void AssertRaises<T> (Action a, string message) where T : Exception
+		{
+			bool exceptionRaised = false;
+			try {
+				a ();
+			} catch (T) {
+				exceptionRaised = true;
+			}
+			Assert.IsTrue (exceptionRaised,
+			               string.Format ("Expected {0} when {1}",
+			                              typeof (T), message));
+		}
 	}
 }

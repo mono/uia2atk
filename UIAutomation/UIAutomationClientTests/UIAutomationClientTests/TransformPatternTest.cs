@@ -114,14 +114,9 @@ namespace MonoTests.System.Windows.Automation
 			Thread.Sleep (500);
 			Assert.IsFalse (transform.Current.CanMove,
 				"CanMove should be false after changing WindowState");
-			bool exceptionRaised = false;
-			try {
-				transform.Move (0, 0);
-			} catch (InvalidOperationException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised,
-				"Expected InvalidOperationException when calling Move with CanMove == false");
+			AssertRaises<InvalidOperationException> (
+				() => transform.Move (0, 0),
+				"calling Move with CanMove == false");
 
 			// Set CanMove back to true
 			RunCommand ("Toggle.Transform.CanMove");
@@ -219,14 +214,9 @@ namespace MonoTests.System.Windows.Automation
 			Thread.Sleep (500);
 			Assert.IsFalse (transform.Current.CanResize,
 				"CanResize should be false after changing FormBorderStyle");
-			bool exceptionRaised = false;
-			try {
-				transform.Resize (500, 1000);
-			} catch (InvalidOperationException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised,
-				"Expected InvalidOperationException when calling Resize with CanResize == false");
+			AssertRaises<InvalidOperationException> (
+				() => transform.Resize (500, 1000),
+				"calling Resize with CanResize == false");
 
 			// Set CanResize back to true
 			RunCommand ("Toggle.Transform.CanResize");
@@ -258,23 +248,13 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsFalse (transform.Current.CanRotate,
 				"CanRotate always false for winforms and gtk+");
 
-			bool exceptionRaised = false;
+			AssertRaises<InvalidOperationException> (
+				() => transform.Rotate (5),
+				"CanRotate is false");
 
-			try {
-				transform.Rotate (5);
-			} catch (InvalidOperationException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised,
-				"InvalidOperationException expected when CanRotate is false");
-
-			try {
-				transform.Rotate (0);
-			} catch (InvalidOperationException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised,
-				"InvalidOperationException expected even when rotating 0 degrees");
+			AssertRaises<InvalidOperationException> (
+				() => transform.Rotate (0),
+				"rotating even 0 degrees");
 		}
 		#endregion
 	}

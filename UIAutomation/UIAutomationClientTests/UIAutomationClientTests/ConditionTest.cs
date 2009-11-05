@@ -79,13 +79,9 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void PropertyConditionTest ()
 		{
-			bool exceptionRaised = false;
-			try {
-				new PropertyCondition (null, null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => new PropertyCondition (null, null),
+				"passing null to both params of PropertyCondition constructor");
 
 			//Load for everything in AEIds
 			VerifyPropertyConditionBasics (AEIds.AcceleratorKeyProperty,
@@ -403,8 +399,6 @@ namespace MonoTests.System.Windows.Automation
 				expectedGoodValuePropValues.Length,
 				"Cannot test PropertyConditon Value property if expectedGoodValues.Length != expectedGoodValuePropValues.Length");
 
-			bool exceptionRaised;
-
 			List<object> goodVals = new List<object> (expectedGoodValues);
 			goodVals.Add (AutomationElement.NotSupported);
 
@@ -430,15 +424,11 @@ namespace MonoTests.System.Windows.Automation
 			}
 
 			foreach (object val in expectedBadValues) {
-				exceptionRaised = false;
-				try {
-					new PropertyCondition (property, val);
-				} catch (ArgumentException) {
-					exceptionRaised = true;
-				}
-				Assert.IsTrue (exceptionRaised,
-					string.Format ("For {0} expected '{1}' to be a bad value",
-					property.ProgrammaticName, val ?? "(null)"));
+				AssertRaises<ArgumentException> (
+					() => new PropertyCondition (property, val),
+					string.Format ("using '{0}' as value for {1}",
+				                        val ?? "(null)",
+				                        property.ProgrammaticName));
 			}
 		}
 

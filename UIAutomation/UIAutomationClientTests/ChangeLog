@@ -1,3 +1,12 @@
+2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationClientTests/BaseTest.cs: Add new AssertRaises<T>.
+	* UIAutomationClientTests/ConditionTest.cs:
+	* UIAutomationClientTests/TreeWalkerTest.cs:
+	* UIAutomationClientTests/TransformPatternTest.cs:
+	* UIAutomationClientTests/AutomationElementTest.cs: Convert uses of
+	try/catch/Assert.IsTrue pattern to AssertRaises<T> calls.
+
 2009-11-03  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/TextPatternTest.cs,

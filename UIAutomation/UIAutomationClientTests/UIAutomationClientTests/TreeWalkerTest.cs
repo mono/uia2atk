@@ -68,13 +68,9 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void ConditionTest ()
 		{
-			bool exceptionRaised = false;
-			try {
-				new TreeWalker (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => new TreeWalker (null),
+				"passing null to TreeWalker constructor");
 
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
@@ -87,13 +83,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
 
-			bool exceptionRaised = false;
-			try {
-				buttonWalker.GetFirstChild (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => buttonWalker.GetFirstChild (null),
+				"passing null to TreeWalker.GetFirstChild");
 
 			VerifyGetFirstChild (buttonWalker, groupBox1Element, button7Element);
 		}
@@ -104,13 +96,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
 
-			bool exceptionRaised = false;
-			try {
-				buttonWalker.GetLastChild (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => buttonWalker.GetLastChild (null),
+				"passing null to TreeWalker.GetLastChild");
 
 			VerifyGetLastChild (buttonWalker, groupBox1Element, button2Element);
 		}
@@ -121,13 +109,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
 
-			bool exceptionRaised = false;
-			try {
-				buttonWalker.GetNextSibling (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => buttonWalker.GetNextSibling (null),
+				"passing null to TreeWalker.GetNextSibling");
 
 			VerifyGetNextSibling (buttonWalker, button7Element, button6Element);
 			VerifyGetNextSibling (buttonWalker, button6Element, button5Element);
@@ -162,13 +146,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
 
-			bool exceptionRaised = false;
-			try {
-				buttonWalker.GetPreviousSibling (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => buttonWalker.GetPreviousSibling (null),
+				"passing null to TreeWalker.GetPreviousSibling");
 
 			//VerifyGetPreviousSibling (buttonWalker, button7Element, null); // TODO: scrollbar button
 
@@ -197,13 +177,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition buttonCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Button);
 			TreeWalker buttonWalker = new TreeWalker (buttonCondition);
 
-			bool exceptionRaised = false;
-			try {
-				buttonWalker.GetParent (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => buttonWalker.GetParent (null),
+				"passing null to TreeWalker.GetParent");
 
 			VerifyGetParent (buttonWalker, button7Element, null);
 
@@ -230,13 +206,9 @@ namespace MonoTests.System.Windows.Automation
 			Condition groupCondition = new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Group);
 			TreeWalker groupWalker = new TreeWalker (groupCondition);
 
-			bool exceptionRaised = false;
-			try {
-				groupWalker.Normalize (null);
-			} catch (ArgumentNullException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentNullException");
+			AssertRaises<ArgumentNullException> (
+				() => groupWalker.Normalize (null),
+				"passing null to TreeWalker.Normalize");
 
 			Assert.AreEqual (groupBox1Element,
 				groupWalker.Normalize (groupBox1Element),

@@ -745,22 +745,14 @@ namespace MonoTests.System.Windows.Automation
 				new AutomationElement [] { button1Element });
 
 			// TreeScope.Ancestors
-			bool exceptionRaised = false;
-			try {
-				groupBox1Element.FindFirst (TreeScope.Ancestors, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
-			} catch (ArgumentException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentException when using TreeScope.Ancestors");
+			AssertRaises<ArgumentException> (
+				() => groupBox1Element.FindFirst (TreeScope.Ancestors, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window)),
+				"using TreeScope.Ancestors");
 
 			// TreeScope.Parent
-			exceptionRaised = false;
-			try {
-				groupBox1Element.FindFirst (TreeScope.Parent, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
-			} catch (ArgumentException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentException when using TreeScope.Parent");
+			AssertRaises<ArgumentException> (
+				() => groupBox1Element.FindFirst (TreeScope.Parent, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window)),
+				"using TreeScope.Parent");
 
 			// Test search order, conditions (also tested in FindAllTest and FixtureSetUp)
 			AutomationElement firstFound =
@@ -788,22 +780,14 @@ namespace MonoTests.System.Windows.Automation
 				new AutomationElement [] { button1Element });
 
 			// TreeScope.Ancestors
-			bool exceptionRaised = false;
-			try {
-				groupBox1Element.FindAll (TreeScope.Ancestors, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
-			} catch (ArgumentException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentException when using TreeScope.Ancestors");
+			AssertRaises<ArgumentException> (
+				() => groupBox1Element.FindAll (TreeScope.Ancestors, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window)),
+				"using TreeScope.Ancestors");
 
 			// TreeScope.Parent
-			exceptionRaised = false;
-			try {
-				groupBox1Element.FindAll (TreeScope.Parent, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
-			} catch (ArgumentException) {
-				exceptionRaised = true;
-			}
-			Assert.IsTrue (exceptionRaised, "Expected ArgumentException when using TreeScope.Parent");
+			AssertRaises<ArgumentException> (
+				() => groupBox1Element.FindAll (TreeScope.Parent, new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window)),
+				"using TreeScope.Parent");
 		}
 
 		[Test]
