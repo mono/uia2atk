@@ -1,3 +1,16 @@
+2009-11-06  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/SampleForm/Form1.Designer.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/ValuePatternTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/TogglePatternTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/RangeValuePatternTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/MultipleViewPatternTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Implement/Test MultipleViewPattern 
+
 2009-11-05  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationSource/UIAutomationSource.mdp: 

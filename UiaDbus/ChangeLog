@@ -1,3 +1,20 @@
+2009-11-06  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Makefile.am: 
+	* UiaDbus/UiaDbus.mdp: 
+	* UiaDbusBridge/Makefile.am: 
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/UiaDbusBridge.mdp: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusSource/UiaDbusSource.mdp: 
+	* UiaDbusSource/UiaDbusGridPattern.cs: 
+	* UiaDbusSource/UiaDbusRangeValuePattern.cs: 
+	* UiaDbus/Interfaces/IMultipleViewPattern.cs: 
+	* UiaDbusSource/UiaDbusMultipleViewPattern.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: 
+	* UiaDbusBridge/Wrappers/MultipleViewPatternWrapper.cs:
+	Implement MultipleViewPattern
+
 2009-11-05  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbus/Makefile.am: 

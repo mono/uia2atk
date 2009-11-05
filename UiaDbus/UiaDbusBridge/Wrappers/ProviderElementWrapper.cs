@@ -492,6 +492,10 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				patternPath += DC.Constants.InvokePatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
 				                        p => new InvokePatternWrapper ((IInvokeProvider) p));
+			} else if (patternId == MultipleViewPatternIdentifiers.Pattern.Id) {
+				patternPath += DC.Constants.MultipleViewPatternSubPath;
+				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+				                        p => new MultipleViewPatternWrapper ((IMultipleViewProvider) p));
 			} else if (patternId == RangeValuePatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.RangeValuePatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,

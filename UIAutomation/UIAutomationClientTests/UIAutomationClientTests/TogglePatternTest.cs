@@ -43,12 +43,11 @@ namespace MonoTests.System.Windows.Automation
 	{
 		#region Test Methods
 
-		//todo uncomment this test case once r#493 is commited (then we'll have the Helper class)
-		//[Test]
-		//public void PropertiesTest ()
-		//{
-		//	Helper.CheckPatternIdentifiers<TogglePattern> ();
-		//}
+		[Test]
+		public void PropertiesTest ()
+		{
+			CheckPatternIdentifiers<TogglePattern> ();
+		}
 
 		[Test]
 		public void ToggleTest ()

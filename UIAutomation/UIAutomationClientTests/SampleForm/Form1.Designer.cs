@@ -54,6 +54,7 @@ namespace SampleForm {
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			( (System.ComponentModel.ISupportInitialize) (this.dataGridView1 ) ).BeginInit ();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown1 ) ).BeginInit ();
+			this.listView1 = new System.Windows.Forms.ListView();
 			this.SuspendLayout ();
 			// 
 			// button1
@@ -198,6 +199,7 @@ namespace SampleForm {
 			this.btnAddTextbox.TabIndex = 0;
 			this.btnAddTextbox.Text = "Add";
 			this.btnAddTextbox.UseVisualStyleBackColor = true;
+			this.btnAddTextbox.Click += new System.EventHandler (this.btnAddTextbox_Click);
 			// 
 			// label1
 			// 
@@ -275,6 +277,14 @@ namespace SampleForm {
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.Size = new System.Drawing.Size (240, 150);
 			this.dataGridView1.TabIndex = 12;
+			//
+			// listView1
+			// 
+			this.listView1.Location = new System.Drawing.Point(450, 364);
+			this.listView1.Name = "listView1";
+			this.listView1.Size = new System.Drawing.Size(150, 150);
+			this.listView1.TabIndex = 13;
+			this.listView1.UseCompatibleStateImageBehavior = false;
 			// 
 			// Form1
 			// 
@@ -293,6 +303,7 @@ namespace SampleForm {
 			this.Controls.Add (this.groupBox1);
 			this.Controls.Add (this.button1);
 			this.Controls.Add (this.dataGridView1);
+			this.Controls.Add (this.listView1);
 			this.Name = "Form1";
 			this.Text = "TestForm1";
 			this.groupBox1.ResumeLayout (false);
@@ -332,6 +343,7 @@ namespace SampleForm {
 		private System.Windows.Forms.Button btnRun;
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
 		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.ListView listView1;
 	}
 }
 

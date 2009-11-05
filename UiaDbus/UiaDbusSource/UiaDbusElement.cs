@@ -274,7 +274,6 @@ namespace Mono.UIAutomation.UiaDbusSource
 					throw DbusExceptionTranslator.Translate (ex);
 				}
 				IElement labeledBy = null;
-				//Log.Debug ("UiaDbusElement.LabeledBy: " + labeledByPath + " AID: " + AutomationId + " CT: " + this.ControlType.ProgrammaticName);
 				if (!string.IsNullOrEmpty (labeledByPath))
 					labeledBy = source.GetOrCreateElement (busName, labeledByPath);
 				return labeledBy;
@@ -437,6 +436,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
+			} else if (pattern.Id == MultipleViewPatternIdentifiers.Pattern.Id) {
+				DCI.IMultipleViewPattern multipleViewPattern = Bus.Session.GetObject<DCI.IMultipleViewPattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.MultipleViewPatternSubPath));
+				ret = new UiaDbusMultipleViewPattern (multipleViewPattern);
 			} else if (pattern.Id == RangeValuePatternIdentifiers.Pattern.Id) {
 				DCI.IRangeValuePattern rangeValuePattern = Bus.Session.GetObject<DCI.IRangeValuePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.RangeValuePatternSubPath));

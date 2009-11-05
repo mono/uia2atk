@@ -56,12 +56,12 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		#region Test Methods
-		//todo uncomment PropertiesTest after r#493 is commited (then we'll have the Helper class)
-		//[Test]
-		//public void PropertiesTest ()
-		//{ 
-		//	Helper.CheckPatternIdentifiers<RangeValuePattern> ();
-		//}
+
+		[Test]
+		public void PropertiesTest ()
+		{
+			CheckPatternIdentifiers<RangeValuePattern> ();
+		}
 
 		[Test]
 		public void RangeValueTest ()

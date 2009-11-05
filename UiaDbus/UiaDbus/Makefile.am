@@ -41,6 +41,7 @@ SOURCE_FILES =  \
 	Interfaces/IGridItemPattern.cs \
 	Interfaces/IGridPattern.cs \
 	Interfaces/IInvokePattern.cs \
+	Interfaces/IMultipleViewPattern.cs \
 	Interfaces/InterfaceConverter.cs \
 	Interfaces/IRangeValuePattern.cs \
 	Interfaces/IScrollItemPattern.cs \

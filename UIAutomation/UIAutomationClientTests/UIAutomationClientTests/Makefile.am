@@ -78,6 +78,7 @@ FILES =  \
 	ConditionTest.cs \
 	ExpandCollapsePatternTest.cs \
 	InvokePatternTest.cs \
+	MultipleViewPatternTest.cs \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \

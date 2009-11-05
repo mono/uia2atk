@@ -51,6 +51,7 @@ FILES =  \
 	Wrappers/GridItemPatternWrapper.cs \
 	Wrappers/GridPatternWrapper.cs \
 	Wrappers/InvokePatternWrapper.cs \
+	Wrappers/MultipleViewPatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \
 	Wrappers/RangeValuePatternWrapper.cs \
 	Wrappers/ScrollItemPatternWrapper.cs \

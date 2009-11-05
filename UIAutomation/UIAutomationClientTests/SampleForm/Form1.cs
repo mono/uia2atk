@@ -69,6 +69,20 @@ namespace SampleForm {
 
 			dataGridView1.DataSource = table;
 			dataGridView1.AccessibleName = "dataGridView1";
+
+			listView1.AccessibleName = "listView1";
+			var view = listView1;
+			view.CheckBoxes = true;
+			view.View = View.Details;
+			view.Columns.Add ("Subcolumn 1", 100, HorizontalAlignment.Left);
+			view.Columns.Add ("Subcolumn 2", 100, HorizontalAlignment.Center);
+			for (int i = 0; i < 10; i++) {
+				ListViewItem item = new ListViewItem ();
+				item.Text = "Item " + i;
+				item.SubItems.Add ("subitem1");
+				item.SubItems.Add ("subitem2");
+				view.Items.Add (item);
+			}
 		}
 
 		private void button1_Click (object sender, EventArgs e)
@@ -147,6 +161,14 @@ namespace SampleForm {
  				checkBox1.Enabled = false;
  			else if (cmd == "enable checkBox1")
  				checkBox1.Enabled = true;
+			else if (cmd == "change list view mode list")
+ 				listView1.View = View.List;
+ 			else if (cmd == "change list view mode details")
+ 				listView1.View = View.Details;
+ 			else if (cmd == "disable list view")
+ 				listView1.Enabled = false;
+ 			else if (cmd == "enable list view")
+ 				listView1.Enabled = true;
 		}
 	}
 }

@@ -34,34 +34,39 @@ using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
 namespace Mono.UIAutomation.UiaDbusSource
 {
-	public class UiaDbusRangeValuePattern : IRangeValuePattern
+	public class UiaDbusMultipleViewPattern : IMultipleViewPattern
 	{
-		private DCI.IRangeValuePattern pattern;
+		private DCI.IMultipleViewPattern pattern;
 
-		public UiaDbusRangeValuePattern (DCI.IRangeValuePattern pattern)
+		public UiaDbusMultipleViewPattern (DCI.IMultipleViewPattern pattern)
 		{
 			this.pattern = pattern;
 		}
 
-		public void SetValue (double value)
+		public string GetViewName (int viewId)
 		{
 			try {
-				pattern.SetValue (value);
+				return pattern.GetViewName (viewId);
 			} catch (Exception ex) {
 				throw DbusExceptionTranslator.Translate (ex);
 			}
 		}
 
-		public RangeValueProperties Properties {
+		public void SetCurrentView (int viewId)
+		{
+			try {
+				pattern.SetCurrentView (viewId);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+		}
+
+		public MultipleViewProperties Properties {
 			get {
 				try {
-					RangeValueProperties properties = new RangeValueProperties () {
-						Value = pattern.Value,
-						IsReadOnly = pattern.IsReadOnly,
-						Maximum = pattern.Maximum,
-						Minimum = pattern.Minimum,
-						LargeChange = pattern.LargeChange,
-						SmallChange = pattern.SmallChange
+					MultipleViewProperties properties = new MultipleViewProperties () {
+						CurrentView = pattern.CurrentView,
+						SupportedViews = pattern.GetSupportedViews ()
 					};
 					return properties;
 				} catch (Exception ex) {

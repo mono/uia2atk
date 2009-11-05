@@ -42,6 +42,7 @@
     <File subtype="Code" buildaction="Compile" name="Interfaces/ISelectionPattern.cs" />
     <File subtype="Code" buildaction="Compile" name="Interfaces/ISelectionItemPattern.cs" />
     <File subtype="Code" buildaction="Compile" name="Interfaces/ITogglePattern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Interfaces/IMultipleViewPattern.cs" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

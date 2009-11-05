@@ -24,50 +24,16 @@
 // 
 
 using System;
-using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Services;
-using Mono.UIAutomation.Source;
-using DC = Mono.UIAutomation.UiaDbus;
-using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
+using NDesk.DBus;
 
-namespace Mono.UIAutomation.UiaDbusSource
+namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
-	public class UiaDbusRangeValuePattern : IRangeValuePattern
+	[Interface (Constants.MultipleViewPatternInterfaceName)]
+	public interface IMultipleViewPattern
 	{
-		private DCI.IRangeValuePattern pattern;
-
-		public UiaDbusRangeValuePattern (DCI.IRangeValuePattern pattern)
-		{
-			this.pattern = pattern;
-		}
-
-		public void SetValue (double value)
-		{
-			try {
-				pattern.SetValue (value);
-			} catch (Exception ex) {
-				throw DbusExceptionTranslator.Translate (ex);
-			}
-		}
-
-		public RangeValueProperties Properties {
-			get {
-				try {
-					RangeValueProperties properties = new RangeValueProperties () {
-						Value = pattern.Value,
-						IsReadOnly = pattern.IsReadOnly,
-						Maximum = pattern.Maximum,
-						Minimum = pattern.Minimum,
-						LargeChange = pattern.LargeChange,
-						SmallChange = pattern.SmallChange
-					};
-					return properties;
-				} catch (Exception ex) {
-					throw DbusExceptionTranslator.Translate (ex);
-				}
-			}
-		}
+		string GetViewName (int viewId);
+		void SetCurrentView (int viewId);
+		int[] GetSupportedViews ();
+		int CurrentView { get; }
 	}
 }

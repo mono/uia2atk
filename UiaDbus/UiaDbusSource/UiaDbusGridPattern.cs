@@ -61,9 +61,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public GridProperties Properties {
 			get {
-
 				try {
-					GridProperties properties = new GridProperties() {
+					GridProperties properties = new GridProperties () {
 						ColumnCount = pattern.ColumnCount,
 						RowCount = pattern.RowCount
 					};

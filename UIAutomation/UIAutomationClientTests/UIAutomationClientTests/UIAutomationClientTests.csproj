@@ -71,6 +71,8 @@
     <Compile Include="ValuePatternTest.cs" />
     <Compile Include="TransformPatternTest.cs" />
     <Compile Include="TableTest.cs" />
+    <Compile Include="TableHierarchyTest.cs" />
+    <Compile Include="MultipleViewPatternTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

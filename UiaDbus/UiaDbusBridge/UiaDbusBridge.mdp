@@ -39,6 +39,7 @@
     <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionPatternWrapper.cs" />
     <File subtype="Code" buildaction="Compile" name="Wrappers/SelectionItemPatternWrapper.cs" />
     <File subtype="Code" buildaction="Compile" name="Wrappers/TogglePatternWrapper.cs" />
+    <File subtype="Code" buildaction="Compile" name="Wrappers/MultipleViewPatternWrapper.cs" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

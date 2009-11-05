@@ -21,53 +21,61 @@
 // 
 // Authors: 
 //  Matt Guo <matt@mattguo.com>
-// 
+//
 
 using System;
-using System.Windows;
+using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Services;
-using Mono.UIAutomation.Source;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
 using DC = Mono.UIAutomation.UiaDbus;
-using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
+using Mono.UIAutomation.UiaDbus.Interfaces;
 
-namespace Mono.UIAutomation.UiaDbusSource
+using NDesk.DBus;
+
+namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
-	public class UiaDbusRangeValuePattern : IRangeValuePattern
+	public class MultipleViewPatternWrapper : IMultipleViewPattern
 	{
-		private DCI.IRangeValuePattern pattern;
+#region Private Fields
 
-		public UiaDbusRangeValuePattern (DCI.IRangeValuePattern pattern)
+		private IMultipleViewProvider provider;
+
+#endregion
+
+#region Constructor
+
+		public MultipleViewPatternWrapper (IMultipleViewProvider provider)
 		{
-			this.pattern = pattern;
+			this.provider = provider;
 		}
 
-		public void SetValue (double value)
+#endregion
+
+#region IMultipleViewPattern Members
+
+		public string GetViewName (int viewId)
 		{
-			try {
-				pattern.SetValue (value);
-			} catch (Exception ex) {
-				throw DbusExceptionTranslator.Translate (ex);
-			}
+			return provider.GetViewName (viewId);
 		}
 
-		public RangeValueProperties Properties {
+		public void SetCurrentView (int viewId)
+		{
+			provider.SetCurrentView (viewId);
+		}
+
+		public int[] GetSupportedViews ()
+		{
+			return provider.GetSupportedViews ();
+		}
+
+		public int CurrentView {
 			get {
-				try {
-					RangeValueProperties properties = new RangeValueProperties () {
-						Value = pattern.Value,
-						IsReadOnly = pattern.IsReadOnly,
-						Maximum = pattern.Maximum,
-						Minimum = pattern.Minimum,
-						LargeChange = pattern.LargeChange,
-						SmallChange = pattern.SmallChange
-					};
-					return properties;
-				} catch (Exception ex) {
-					throw DbusExceptionTranslator.Translate (ex);
-				}
+				return provider.CurrentView;
 			}
 		}
+
+#endregion
 	}
 }

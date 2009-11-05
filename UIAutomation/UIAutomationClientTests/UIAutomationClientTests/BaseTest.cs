@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -73,6 +74,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement btnRunElement;
 		protected AutomationElement treeView1Element;
 		protected AutomationElement table1Element;
+		protected AutomationElement listView1Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -83,6 +85,39 @@ namespace MonoTests.System.Windows.Automation
 			p.StartInfo.CreateNoWindow = true;
 			p.Start ();
 			return p;
+		}
+
+		public static void CheckPatternIdentifiers<T> () where T : BasePattern
+		{
+			Type patternType = typeof (T);
+			Type patternIdsType = typeof (AutomationElementIdentifiers).Assembly.GetType
+				(patternType.FullName + "Identifiers");
+			foreach (var fieldInfo in patternType.GetFields
+			         (BindingFlags.Public | BindingFlags.Static)) {
+				string fieldName = fieldInfo.Name;
+				if (fieldName == "Pattern" || fieldName.EndsWith ("Property")
+				    || fieldName.EndsWith ("Event")) {
+					AutomationIdentifier value1 = fieldInfo.GetValue (null)
+						as AutomationIdentifier;
+					var fieldInfo2 = patternIdsType.GetField (fieldName, BindingFlags.Public | BindingFlags.Static);
+					AutomationIdentifier value2 = fieldInfo2.GetValue (null)
+						as AutomationIdentifier;
+					Assert.AreEqual (value2.Id, value1.Id,
+					                 string.Format ("{0}.{1}.Id",
+					                                patternType.Name, fieldName)
+					                 );
+					Assert.AreEqual (value2.ProgrammaticName, value1.ProgrammaticName,
+					                 string.Format ("{0}.{1}.ProgrammaticName",
+					                                patternType.Name, fieldName)
+					                 );
+				}
+				else {
+					//We shall never reach here.
+					throw new Exception (string.Format ("Unknown public static pattern fields: '{0}.{1}'",
+					                                    patternType.Name, fieldName)
+					                     );
+				}
+			}
 		}
 
 		[TestFixtureSetUp]
@@ -151,6 +186,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
 			               (AutomationElementIdentifiers.IsTablePatternAvailableProperty),
 			               "Table Pattern should be available");
+			if (!Atspi)
+				Assert.IsNotNull (listView1Element);
 			//Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
 		}
@@ -245,8 +282,9 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Spinner));
 			table1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.NameProperty,
-					"dataGridView1"));
+				new PropertyCondition (AEIds.NameProperty, "dataGridView1"));
+			listView1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "listView1"));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));

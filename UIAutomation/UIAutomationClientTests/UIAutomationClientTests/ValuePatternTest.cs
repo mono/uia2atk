@@ -80,8 +80,8 @@ namespace MonoTests.System.Windows.Automation
 			Thread.Sleep (500);
 			Assert.AreEqual (1, automationEvents.Count, "event count");
 			Assert.AreEqual (textbox1Element, automationEvents [0].Sender, "event sender");
-			Assert.AreEqual (magicStr1, automationEvents [0].Args.OldValue, "old Value");
 			Assert.AreEqual (magicStr2, automationEvents [0].Args.NewValue, "new Value");
+			Assert.AreEqual (magicStr1, automationEvents [0].Args.OldValue, "old Value");
 			automationEvents.Clear ();
 
 			At.RemoveAutomationPropertyChangedEventHandler (textbox1Element, handler);
@@ -101,7 +101,7 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
-		[ExpectedException("System.Windows.Automation.ElementNotEnabledException")]
+		[ExpectedException ("System.Windows.Automation.ElementNotEnabledException")]
 		public void NotEnabledTest ()
 		{
 			ValuePattern pattern = (ValuePattern) textbox2Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
