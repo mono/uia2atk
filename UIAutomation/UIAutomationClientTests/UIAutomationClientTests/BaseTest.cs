@@ -170,16 +170,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (numericUpDown1Element);
 			Assert.IsNotNull (treeView1Element);
 			Assert.IsNotNull (table1Element);
-			/* Todo, why selection pattern will fail on a DataGridView?
-			 Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
-			               (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty),
-			               "Selection Pattern should be available");*/
-			Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
-			               (AutomationElementIdentifiers.IsGridPatternAvailableProperty),
-			               "Grid Pattern should be available");
-			Assert.IsTrue ((bool) table1Element.GetCurrentPropertyValue
-			               (AutomationElementIdentifiers.IsTablePatternAvailableProperty),
-			               "Table Pattern should be available");
+
 			if (!Atspi)
 				Assert.IsNotNull (listView1Element);
 			//Assert.IsNotNull (horizontalMenuStripElement);
@@ -409,7 +400,7 @@ namespace MonoTests.System.Windows.Automation
 			}
 		}
 
-		protected void AssertRaises<T> (Action a, string message) where T : Exception
+		public static void AssertRaises<T> (Action a, string message) where T : Exception
 		{
 			bool exceptionRaised = false;
 			try {
