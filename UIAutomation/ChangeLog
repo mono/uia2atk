@@ -1,3 +1,12 @@
+2009-11-06  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/ScrollTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Test ScrollPattern/ScrollItemPattern 
+
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomation.sln:

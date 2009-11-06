@@ -150,25 +150,34 @@ namespace SampleForm {
 				else
 					FormBorderStyle = FormBorderStyle.Sizable;
 			} else if (cmd == "add table row")
- 				table.Rows.Add (true, "Mallory", 40);
- 			else if (cmd == "add table column")
- 				table.Columns.Add("More");
+				table.Rows.Add (true, "Mallory", 40);
+			else if (cmd == "add table column")
+				table.Columns.Add("More");
 			else if (cmd == "set textBox3 long text")
 				textBox3.Text = "very very very very very very very very long text to enable the horizontal scroll bar";
 			else if (cmd == "disable textBox3")
 				textBox3.Enabled = false;
 			else if (cmd == "disable checkBox1")
- 				checkBox1.Enabled = false;
- 			else if (cmd == "enable checkBox1")
- 				checkBox1.Enabled = true;
+				checkBox1.Enabled = false;
+			else if (cmd == "enable checkBox1")
+				checkBox1.Enabled = true;
 			else if (cmd == "change list view mode list")
- 				listView1.View = View.List;
- 			else if (cmd == "change list view mode details")
- 				listView1.View = View.Details;
- 			else if (cmd == "disable list view")
- 				listView1.Enabled = false;
- 			else if (cmd == "enable list view")
- 				listView1.Enabled = true;
+				listView1.View = View.List;
+			else if (cmd == "change list view mode details")
+				listView1.View = View.Details;
+			else if (cmd == "disable list view")
+				listView1.Enabled = false;
+			else if (cmd == "enable list view")
+				listView1.Enabled = true;
+			else if (cmd == "make listView1 higher")
+				listView1.Height = 500;
+			else if (cmd == "add listView1 item") {
+				ListViewItem item = new ListViewItem ();
+				item.Text = "Item Extra";
+				item.SubItems.Add ("subitem1");
+				item.SubItems.Add ("subitem2");
+				listView1.Items.Add (item);
+			}
 		}
 	}
 }

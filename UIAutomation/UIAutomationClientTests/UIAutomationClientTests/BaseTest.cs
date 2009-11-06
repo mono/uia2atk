@@ -111,12 +111,6 @@ namespace MonoTests.System.Windows.Automation
 					                                patternType.Name, fieldName)
 					                 );
 				}
-				else {
-					//We shall never reach here.
-					throw new Exception (string.Format ("Unknown public static pattern fields: '{0}.{1}'",
-					                                    patternType.Name, fieldName)
-					                     );
-				}
 			}
 		}
 

@@ -73,6 +73,7 @@
     <Compile Include="TableTest.cs" />
     <Compile Include="TableHierarchyTest.cs" />
     <Compile Include="MultipleViewPatternTest.cs" />
+    <Compile Include="ScrollTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">
