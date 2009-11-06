@@ -1,3 +1,10 @@
+2009-11-06  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/button-regression.py,
+	* testers/moonlight/button/__init__.py,
+	* testers/moonlight/button/buttonframe.py: modify and expand tests, 
+	add BUG references
+
 2009-11-05  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py:
