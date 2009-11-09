@@ -1,3 +1,10 @@
+2009-11-09  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/textbox/textboxframe.py,
+	* testers/moonlight/textbox/__init__.py,
+	* testers/moonlight/textbox-regression.py,
+	* testers/moonlight/textbox: add new tests
+
 2009-11-06  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/button-regression.py,
