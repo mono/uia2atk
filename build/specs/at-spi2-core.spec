@@ -56,9 +56,11 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING INSTALL README
-%{_datadir}/%{name}
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/dbus
+%{_datadir}/%{name}/*
 #%config %{_sysconfdir}/xdg/autostart/at-spi-registryd.desktop
-%{_libdir}/at-spi2-registryd
+%{_prefix}/lib/at-spi2-registryd
 %{_datadir}/dbus-1/services/org.freedesktop.atspi.Registry.service
 
 %changelog
