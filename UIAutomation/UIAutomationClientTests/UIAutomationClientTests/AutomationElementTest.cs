@@ -704,8 +704,8 @@ namespace MonoTests.System.Windows.Automation
 		public void EqualsTest ()
 		{
 			AutomationElement button1ElementRef2 = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Button));
+				new PropertyCondition (AEIds.NameProperty,
+					"button1"));
 			Assert.IsTrue (button1Element.Equals (button1ElementRef2), "Comparing two references to button1 element");
 			Assert.IsFalse (button1Element.Equals (button2Element), "Comparing button1 and button2 elements");
 			// TODO: Compare after modifying, ie references have different cached info values

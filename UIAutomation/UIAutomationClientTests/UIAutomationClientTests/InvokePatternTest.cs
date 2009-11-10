@@ -63,9 +63,11 @@ namespace MonoTests.System.Windows.Automation
 			AutomationEventHandler handler = (o, e) => eventCount++;
 			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
 			                              TreeScope.Element, handler);
-			//Shall have no effect.
-			At.RemoveAutomationEventHandler (AutomationElementIdentifiers.AutomationPropertyChangedEvent,
-			                                 button1Element, handler);
+
+			AssertRaises<ArgumentException> (
+				() => At.RemoveAutomationEventHandler (AutomationElementIdentifiers.AutomationPropertyChangedEvent, button1Element, handler),
+				"AutomationPropertyChangedEvent is not valid");
+
 			//Shall have no effect.
 			At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent, testFormElement, handler);
 			RunCommand ("click button1");

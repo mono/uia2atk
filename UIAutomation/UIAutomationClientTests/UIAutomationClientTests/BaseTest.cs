@@ -197,11 +197,11 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.NameProperty,
 					"groupBox3"));
 			button1Element = testFormElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Button));
-			textbox1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"button1"));
+			textbox1Element = testFormElement.FindAll (TreeScope.Children,
 				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
-					new PropertyCondition (AEIds.IsPasswordProperty, false)));
+					new PropertyCondition (AEIds.IsPasswordProperty, false))) [1];
 			textbox2Element = testFormElement.FindFirst (TreeScope.Children,
 				new AndCondition (new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Edit),
 					new PropertyCondition (AEIds.IsPasswordProperty, true)));

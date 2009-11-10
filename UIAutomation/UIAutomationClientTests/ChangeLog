@@ -1,3 +1,10 @@
+2009-11-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests/InvokePatternTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
+	Fix tests to work with latest changes to SampleForm.
+
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/BaseTest.cs: Add new AssertRaises<T>.
