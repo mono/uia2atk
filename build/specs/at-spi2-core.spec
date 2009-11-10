@@ -34,20 +34,6 @@ Obsoletes:	at-spi
 This library, based on ATK, is a general interface for applications to 
 make use of the accessibility toolkit.  This version is based on dbus.
 
-%package devel
-Group:          Development/Libraries/GNOME
-Summary:        Include Files and Libraries mandatory for Development
-Requires:	%{name} = %{version} 
-Requires:	atk-devel
-Requires:	dbus-1-devel
-Requires:	dbus-1-glib-devel
-Requires:	gtk2-devel
-Obsoletes:	at-spi-devel
-
-%description devel
-This package contains all necessary include files and libraries needed
-to develop applications that require these.
-
 %prep
 %setup -q 
 
@@ -72,18 +58,7 @@ rm -rf %{buildroot}
 %doc AUTHORS COPYING INSTALL README
 %{_datadir}/%{name}
 #%config %{_sysconfdir}/xdg/autostart/at-spi-registryd.desktop
-%{_libdir}/libdbind.so.*
-%{_libdir}/libdroute.so.*
 %{_libdir}/at-spi2-registryd
 %{_datadir}/dbus-1/services/org.freedesktop.atspi.Registry.service
-
-%files devel
-%defattr(-,root,root)
-%{_includedir}/dbind-0.1
-%{_includedir}/droute-0.1
-%{_libdir}/libdbind.so
-%{_libdir}/libdroute.so
-%{_libdir}/pkgconfig/dbind-0.1.pc
-%{_libdir}/pkgconfig/droute-0.1.pc
 
 %changelog
