@@ -20,8 +20,8 @@ class CheckBoxFrame(accessibles.Frame):
     # the available widgets on the window
     CHECK_ONE = "Two State CheckBox"
     CHECK_TWO = "Three State CheckBox"
-    TEXE_ONE  = "text1"
-    TEXE_TWO  = "text2"
+    TEXT_ONE  = "text1"
+    TEXT_TWO  = "text2"
 
     def __init__(self, accessible):
         super(CheckBoxFrame, self).__init__(accessible)

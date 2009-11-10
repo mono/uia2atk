@@ -90,8 +90,7 @@ sleep(config.SHORT_DELAY)
 bFrame.button2.click(log=True)
 sleep(config.SHORT_DELAY)
 #statesCheck(bFrame.button2, 'Button', add_states=['focused'])
-## BUG553174: Text of TextBlock is not implemented
-#assertText(bFrame.label, 'Button2 is clicked 3 times.')
+assertName(bFrame.label, 'Button2 is clicked 3 times.')
 
 # assert Button image implementations.
 ## BUG553176: Image is not implemented
