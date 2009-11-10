@@ -22,20 +22,20 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       at-spi2-core
 BuildRequires:	at-spi2-core-devel
 BuildRequires:	libxml2-devel
-BuildRequires:  update-desktop-files
+#BuildRequires:  update-desktop-files
 
 %description
 This library, based on ATK, is a general interface for applications to 
 make use of the accessibility toolkit.  This version is based on dbus.
 
-%package devel
-Group:          Development/Libraries/GNOME
-Summary:        Include Files and Libraries mandatory for Development
-Requires:	%{name} = %{version} 
-
-%description devel
-This package contains all necessary include files and libraries needed
-to develop applications that require these.
+#%package devel
+#Group:          Development/Libraries/GNOME
+#Summary:        Include Files and Libraries mandatory for Development
+#Requires:	%{name} = %{version} 
+#
+#%description devel
+#This package contains all necessary include files and libraries needed
+#to develop applications that require these.
 
 %prep
 %setup -q
@@ -47,7 +47,7 @@ to develop applications that require these.
 %install
 %makeinstall
 find %{buildroot} -type f -name "*.la" -delete -print
-%suse_update_desktop_file atk-bridge
+#%suse_update_desktop_file atk-bridge
 
 %clean
 rm -rf %{buildroot}
@@ -56,19 +56,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING INSTALL README
-%dir %{_datadir}/gnome
-%dir %{_datadir}/gnome/autostart
-%config %{_datadir}/gnome/autostart/atk-bridge.desktop
+#%dir %{_datadir}/gnome
+#%dir %{_datadir}/gnome/autostart
+#%config %{_datadir}/gnome/autostart/atk-bridge.desktop
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
 
-%files devel
-%defattr(-,root,root)
-%dir %{_includedir}/at-spi-1.0
-#%dir %{_includedir}/at-spi-1.0/cspi
-#%{_includedir}/at-spi-1.0/cspi/*
+#%files devel
+#%defattr(-,root,root)
+#%dir %{_includedir}/at-spi-1.0
+#%dir %{_includedir}/at-spi-1.0/libspi
+#%{_includedir}/at-spi-1.0/libspi/*
 #%{_libdir}/libcspi.so
-%dir %{_includedir}/at-spi-1.0/libspi
-%{_includedir}/at-spi-1.0/libspi/*
+#%dir %{_includedir}/at-spi-1.0/libspi
+#%{_includedir}/at-spi-1.0/libspi/*
 
 %changelog
-
