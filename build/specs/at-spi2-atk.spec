@@ -20,7 +20,10 @@ URL:            http://www.gnome.org/
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       at-spi2-core
-BuildRequires:	at-spi2-core-devel
+Requires:	dbus-1
+Requires:	dbus-1-glib
+BuildRequires:  dbus-1-devel
+BuildRequires:  dbus-1-glib-devel
 BuildRequires:	libxml2-devel
 #BuildRequires:  update-desktop-files
 
