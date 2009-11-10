@@ -1,12 +1,13 @@
 SUBDIRS = \
-	ValueTest \
+	AdapterEventsTest \
+	AddRemoveAdapterTest \
+	ButtonTest \
+	ComboBoxTest \
+	ExpandCollapseEventsTest \
+	PasswordBoxTest \
 	RangeValueTest \
 	SelectionTest \
-	AdapterEventsTest \
-	ValueEventsTest \
-	ExpandCollapseEventsTest \
-	ToggleEventsTest \
-	ComboBoxTest \
 	TextBlockTest \
-	AddRemoveAdapterTest \
-	PasswordBoxTest
+	ToggleEventsTest \
+	ValueEventsTest \
+	ValueTest

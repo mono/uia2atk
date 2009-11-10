@@ -139,17 +139,18 @@ Makefile
 install.rdf
 tests/Makefile
 tests/assets/Makefile
-tests/assets/ValueTest/Makefile
+tests/assets/AdapterEventsTest/Makefile
+tests/assets/AddRemoveAdapterTest/Makefile
+tests/assets/ButtonTest/Makefile
+tests/assets/ComboBoxTest/Makefile
+tests/assets/ExpandCollapseEventsTest/Makefile
+tests/assets/PasswordBoxTest/Makefile
 tests/assets/RangeValueTest/Makefile
 tests/assets/SelectionTest/Makefile
-tests/assets/AdapterEventsTest/Makefile
-tests/assets/ValueEventsTest/Makefile
-tests/assets/ExpandCollapseEventsTest/Makefile
-tests/assets/ToggleEventsTest/Makefile
-tests/assets/ComboBoxTest/Makefile
 tests/assets/TextBlockTest/Makefile
-tests/assets/AddRemoveAdapterTest/Makefile
-tests/assets/PasswordBoxTest/Makefile
+tests/assets/ToggleEventsTest/Makefile
+tests/assets/ValueEventsTest/Makefile
+tests/assets/ValueTest/Makefile
 ])
 
 AC_OUTPUT

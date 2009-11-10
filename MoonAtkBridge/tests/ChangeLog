@@ -1,3 +1,13 @@
+2009-11-10  Brad Taylor  <brad@getcoded.net>
+
+	* test_button.py: 
+	* assets/Makefile.am: 
+	* assets/ButtonTest/App.xaml: 
+	* assets/ButtonTest/Page.xaml: 
+	* assets/ButtonTest/App.xaml.cs: 
+	* assets/ButtonTest/Makefile.am: 
+	* assets/ButtonTest/Page.xaml.cs: Add new test for Button.
+
 2009-11-05  Brad Taylor  <brad@getcoded.net>
 
 	* test_value_events.py: Update Value events test to replace
