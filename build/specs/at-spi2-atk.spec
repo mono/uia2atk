@@ -26,6 +26,7 @@ Requires:	dbus-1-glib
 BuildRequires:  atk-devel
 BuildRequires:  dbus-1-devel
 BuildRequires:  dbus-1-glib-devel
+BuildRequires:  gtk2-devel
 BuildRequires:	libxml2-devel
 #BuildRequires:  update-desktop-files
 
