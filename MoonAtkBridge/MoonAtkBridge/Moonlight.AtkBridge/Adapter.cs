@@ -167,8 +167,8 @@ namespace Moonlight.AtkBridge
 			CacheChildren ();
 
 			lock (ChildrenLock) {
-				if (Children != null) {
-					foreach (AutomationPeer peer in Children) {
+				if (children != null) {
+					foreach (AutomationPeer peer in children) {
 						Adapter adapter = DynamicAdapterFactory
 							.Instance.GetAdapter (peer);
 						if (adapter == null)
@@ -356,7 +356,7 @@ namespace Moonlight.AtkBridge
 			CacheChildren ();
 
 			lock (ChildrenLock) {
-				return (Children != null) ? Children.Count : 0;
+				return (children != null) ? children.Count : 0;
 			}
 		}
 
@@ -365,10 +365,10 @@ namespace Moonlight.AtkBridge
 			CacheChildren ();
 
 			lock (ChildrenLock) {
-				if (Children == null || i < 0 || i > Children.Count)
+				if (children == null || i < 0 || i > children.Count)
 					return null;
 
-				AutomationPeer child = Children[i];
+				AutomationPeer child = children[i];
 				if (child == null)
 					return null;
 
@@ -418,10 +418,10 @@ namespace Moonlight.AtkBridge
 		protected virtual void CacheChildren ()
 		{
 			lock (ChildrenLock) {
-				if (Children != null)
+				if (Peer == null || children != null)
 					return;
 
-				Children = Peer.GetChildren ();
+				children = Peer.GetChildren ();
 			}
 		}
 
@@ -439,13 +439,13 @@ namespace Moonlight.AtkBridge
 			if (adapter == null)
 				return;
 
-			int index = Children.IndexOf (peer);
+			int index = children.IndexOf (peer);
 			if (index < 0)
 				return;
 
 			EmitChildrenChanged (ChildrenChangedDetail.Remove,
 			                     (uint) index, adapter);
-			Children.Remove (peer);
+			children.Remove (peer);
 
 			DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
 		}
@@ -457,13 +457,13 @@ namespace Moonlight.AtkBridge
 				return;
 
 			EmitChildrenChanged (ChildrenChangedDetail.Add,
-			                     (uint) Children.IndexOf (peer),
+			                     (uint) children.IndexOf (peer),
 			                     adapter);
 		}
 #endregion
 
 #region Protected Fields
-		protected List<AutomationPeer> Children = null;
+		protected List<AutomationPeer> children = null;
 		protected object ChildrenLock = new object ();
 		protected Dictionary<AutomationPeer, Atk.Object> Adapters
 			= new Dictionary<AutomationPeer, Atk.Object> ();
@@ -479,14 +479,14 @@ namespace Moonlight.AtkBridge
 		{
 			CacheChildren ();
 
-			if (Children == null || child == null)
+			if (children == null || child == null)
 				return -1;
 
 			// Intentionally use Children list instead of
 			// Peer.GetChildren () as we're concerned with what is
 			// currently displayed to the user
 			lock (ChildrenLock) {
-				return Children.IndexOf (child.Peer);
+				return children.IndexOf (child.Peer);
 			}
 		}
 
@@ -523,9 +523,9 @@ namespace Moonlight.AtkBridge
 				lock (ChildrenLock) {
 					var new_children = Peer.GetChildren ();
 
-					if (Children != null) {
-						var removed = (new_children != null) ? Children.Except (new_children)
-										     : Children;
+					if (children != null) {
+						var removed = (new_children != null) ? children.Except (new_children)
+										     : children;
 
 						// Remove children that aren't
 						// in the new list
@@ -540,7 +540,7 @@ namespace Moonlight.AtkBridge
 						// loaded), but we need to send
 						// events, so blah.
 
-						var added = (Children != null) ? new_children.Except (Children)
+						var added = (children != null) ? new_children.Except (children)
 									       : new_children;
 
 						// Make sure we set Children
@@ -548,14 +548,14 @@ namespace Moonlight.AtkBridge
 						// sending events so that
 						// listeners will see us in the
 						// correct state
-						Children = new_children;
+						children = new_children;
 
 						// Add children that we haven't
 						// seen before
 						foreach (AutomationPeer peer in added)
 							AddChild (peer);
 					} else {
-						Children = new_children;
+						children = new_children;
 					}
 				}
 			}

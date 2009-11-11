@@ -39,6 +39,14 @@
     <Compile Include="test_rangevalue.py" />
     <Compile Include="test_selection.py" />
     <Compile Include="test_value.py" />
+    <Compile Include="test_textblock.py" />
+    <Compile Include="test_toggle_events.py" />
+    <Compile Include="test_value_events.py" />
+    <Compile Include="test_combobox.py" />
+    <Compile Include="test_expandcollapse_events.py" />
+    <Compile Include="test_add_remove_adapter.py" />
+    <Compile Include="test_adapter_events.py" />
+    <Compile Include="test_table.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ChangeLog" />

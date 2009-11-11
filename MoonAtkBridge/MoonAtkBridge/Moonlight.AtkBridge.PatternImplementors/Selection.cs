@@ -41,10 +41,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 	public sealed class Selection : BasePatternImplementor, Atk.SelectionImplementor
 	{
 #region Public Properties
-		IntPtr GLib.IWrapper.Handle {
-			get { return IntPtr.Zero; }
-		}
-
 		public int SelectionCount {
 			get { 
 				IRawElementProviderSimple[] selection

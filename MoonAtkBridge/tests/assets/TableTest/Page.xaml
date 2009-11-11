@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="TableTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:extended="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <extended:Calendar x:Name="testCal" Canvas.Top="10" Canvas.Left="10" />
+    </Grid>
+</UserControl>

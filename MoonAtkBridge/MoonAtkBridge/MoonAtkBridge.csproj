@@ -36,6 +36,13 @@
     <Compile Include="Moonlight.AtkBridge.PatternImplementors\ExpandCollapseInvokeToggle.cs" />
     <Compile Include="Moonlight.AtkBridge.PatternImplementors\Value.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\BasePatternImplementor.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\GridTable.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\RangeValue.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\Selection.cs" />
+    <Compile Include="Moonlight.AtkBridge.PatternImplementors\SelectionItem.cs" />
+    <Compile Include="Moonlight.AtkBridge\Log.cs" />
+    <Compile Include="Moonlight.AtkBridge\Navigation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

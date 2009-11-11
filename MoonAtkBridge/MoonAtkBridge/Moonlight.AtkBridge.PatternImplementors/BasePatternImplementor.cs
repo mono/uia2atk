@@ -35,7 +35,7 @@ using Moonlight.AtkBridge;
 
 namespace Moonlight.AtkBridge.PatternImplementors
 {
-	public abstract class BasePatternImplementor
+	public abstract class BasePatternImplementor : GLib.IWrapper
 	{
 #region Public Methods
 		public BasePatternImplementor (Adapter adapter, AutomationPeer peer)
@@ -46,6 +46,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		public virtual void OnRefStateSet (ref Atk.StateSet states)
 		{
+		}
+
+		IntPtr GLib.IWrapper.Handle {
+			get { return IntPtr.Zero; }
 		}
 #endregion
 

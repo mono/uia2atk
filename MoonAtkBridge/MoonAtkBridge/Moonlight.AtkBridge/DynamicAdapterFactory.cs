@@ -43,11 +43,8 @@ namespace Moonlight.AtkBridge
 
 		public Adapter RootVisualAdapter {
 			get {
-				if (rootVisualAdapter == null) {
-					rootVisualAdapter = new RootVisualAdapter ();
-					activeAdapters [rootVisualAdapter.Peer]
-						= rootVisualAdapter;
-				}
+				if (rootVisualAdapter == null)
+					rootVisualAdapter = new RootVisualAdapter (GetNewRootPeer ());
 
 				return rootVisualAdapter;
 			}
@@ -204,6 +201,7 @@ namespace Moonlight.AtkBridge
 #region Private Methods
 		private DynamicAdapterFactory ()
 		{
+			Application.UIANewApplication += OnNewApplication;
 			RegisterPatternImplementors ();
 		}
 
@@ -268,6 +266,30 @@ namespace Moonlight.AtkBridge
 			string name = t.Name;
 			return name.Length > 0 ? Char.ToLower (name [0]) + name.Substring (1)
 			                       : String.Empty;
+		}
+
+		private void OnNewApplication (object sender, EventArgs args)
+		{
+			((Application)sender).UIARootVisualSet += OnRootVisualChanged;
+		}
+
+		private void OnRootVisualChanged (object sender, EventArgs args)
+		{
+			if (rootVisualAdapter == null || Application.Current != sender)
+				return;
+			rootVisualAdapter.UpdatePeer (GetNewRootPeer ());
+		}
+
+		private AutomationPeer GetNewRootPeer ()
+		{
+			AutomationPeer root_peer = null;
+			var root_visual = Application.Current.RootVisual as FrameworkElement;
+			if (root_visual != null){
+				root_peer = new WindowAutomationPeer (root_visual);
+				activeAdapters [root_peer] = rootVisualAdapter;
+			}
+
+			return root_peer;
 		}
 #endregion
 

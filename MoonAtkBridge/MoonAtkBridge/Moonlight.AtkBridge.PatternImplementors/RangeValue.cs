@@ -39,12 +39,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 	[ImplementsPattern (PatternInterface.RangeValue)]
 	public sealed class RangeValue : BasePatternImplementor, Atk.ValueImplementor
 	{
-#region Public Properties
-		IntPtr GLib.IWrapper.Handle {
-			get { return IntPtr.Zero; }
-		}
-#endregion
-
 #region Public Methods
 		public RangeValue (Adapter adapter, AutomationPeer peer)
 			: base (adapter, peer)

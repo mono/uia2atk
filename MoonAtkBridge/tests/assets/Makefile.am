@@ -7,6 +7,7 @@ SUBDIRS = \
 	PasswordBoxTest \
 	RangeValueTest \
 	SelectionTest \
+	TableTest \
 	TextBlockTest \
 	ToggleEventsTest \
 	ValueEventsTest \

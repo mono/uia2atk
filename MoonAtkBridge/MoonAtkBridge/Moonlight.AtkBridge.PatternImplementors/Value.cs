@@ -72,9 +72,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			}
 		}
 
-		IntPtr GLib.IWrapper.Handle {
-			get { return IntPtr.Zero; }
-		}
 #endregion
 
 #region Public Methods

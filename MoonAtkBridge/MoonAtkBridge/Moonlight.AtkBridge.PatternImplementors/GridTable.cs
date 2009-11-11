@@ -1,59 +1,55 @@
-// Permission is hereby granted, free of charge, to any person obtaining 
-// a copy of this software and associated documentation files (the 
-// "Software"), to deal in the Software without restriction, including 
-// without limitation the rights to use, copy, modify, merge, publish, 
-// distribute, sublicense, and/or sell copies of the Software, and to 
-// permit persons to whom the Software is furnished to do so, subject to 
-// the following conditions: 
-//  
-// The above copyright notice and this permission notice shall be 
-// included in all copies or substantial portions of the Software. 
-//  
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
-// 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
-// 
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
+//
 // Authors:
+//      Andrés G. Aragoneses <aaragoneses@novell.com>
 //      Mike Gorse <mgorse@novell.com>
-// 
+//
+
+using Atk;
 
 using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Services;
 using System.Collections.Generic;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 
-namespace UiaAtkBridge
+using Moonlight.AtkBridge;
+
+namespace Moonlight.AtkBridge.PatternImplementors
 {
-	internal class TableImplementorHelper
+	[ImplementsPattern (PatternInterface.Grid)]
+	[ImplementsPattern (PatternInterface.Table)]
+	public class GridTable : BasePatternImplementor, Atk.TableImplementor
 	{
-		public TableImplementorHelper (ComponentParentAdapter resource)
+
+#region Public Members
+		public GridTable (Adapter adapter, AutomationPeer peer) : base (adapter, peer)
 		{
-			this.resource = resource;
-			
-			tableProvider = (ITableProvider) resource.Provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);
-		}
+			this.peer = peer;
 
-		private Adapter						resource;
-		private ITableProvider				tableProvider = null;
-		private IGridProvider				gridProvider = null;
-		private Atk.Object caption = null;
-		private Atk.Object summary = null;
-
-		internal IGridProvider GridProvider {
-			get {
-				if (tableProvider != null)
-					return tableProvider;
-				if (gridProvider == null)
-					gridProvider = (IGridProvider) resource.Provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-				return gridProvider;
-			}
+			this.tableProvider = (ITableProvider) peer.GetPattern (
+				PatternInterface.Table);
 		}
 
 		public Atk.Object RefAt (int row, int column)
@@ -61,7 +57,7 @@ namespace UiaAtkBridge
 			if (!AreRowColInBounds (row, column))
 				return null;
 
-			IRawElementProviderSimple[] headers = null;
+			IRawElementProviderSimple [] headers = null;
 			if (tableProvider != null) {
 				headers = tableProvider.GetColumnHeaders ();
 			}
@@ -72,27 +68,25 @@ namespace UiaAtkBridge
 				if (column >= headers.Length)
 					return null;
 
-				return AutomationBridge.GetAdapterForProviderSemiLazy (
-					headers [column]);
+				return DynamicAdapterFactory.Instance.GetAdapter (headers [column].AutomationPeer);
 			}
 
 			// GetItem indexes through only items, not headers, so
 			// we need to remap the row number
 			if (headers != null)
-				row -= 1;
+				row--;
 
-			IRawElementProviderSimple item;
+			IRawElementProviderSimple item = null;
 			try {
 				item = GridProvider.GetItem (row, column);
 			} catch (ArgumentOutOfRangeException e) {
-				Log.Debug (e);	
-				return null;
+				Log.Debug (e);
 			}
 
 			if (item == null)
 				return null;
 
-			return AutomationBridge.GetAdapterForProviderSemiLazy (item);
+			return DynamicAdapterFactory.Instance.GetAdapter (item.AutomationPeer);
 		}
 
 		public int GetIndexAt (int row, int column)
@@ -106,45 +100,52 @@ namespace UiaAtkBridge
 
 		public int GetColumnAtIndex (int index)
 		{
-			if (index <= 0)
-				return 0;
+			if (index < 0)
+				return -1;
 
-			// Map from Atk's 1-based system to UIA's 0-based
-			// indicies
-			index--;
+			int num_invalid_elements = 0;
+			Adapter child = RefProviderChildByDepthSearch (index, out num_invalid_elements);
 
-			Adapter child = RefProviderChildByDepthSearch (index);
-			if (child != null && child.Provider != null) {
-				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
-				if (g == null)	// ie, if a group header
-					return 0;
-				return g.Column;
+			if (child != null && child.Peer != null) {
+				IGridItemProvider g = (IGridItemProvider) child.Peer.GetPattern (PatternInterface.GridItem);
+				if (g != null)
+					return g.Column;
+				else {
+					if (index < num_invalid_elements)
+						return -1;
+
+					//this is needed because some columnsheader cells don't implement IGridItem!!
+					if (tableProvider != null) {
+						var headers = tableProvider.GetColumnHeaders ();
+						if (index < headers.Length + num_invalid_elements)
+							return index - num_invalid_elements;
+					}
+				}
 			}
 			return -1;
 		}
 
 		public int GetRowAtIndex (int index)
 		{
-			if (index <= 0)
+			if (index < 0)
 				return -1;
 
-			// Map from Atk's 1-based system to UIA's 0-based
-			// indicies
-			index--;
+			int num_invalid_elements = 0;
+			Adapter child = RefProviderChildByDepthSearch (index, out num_invalid_elements);
 
-			int ret = 0;
 			if (tableProvider != null) {
 				IRawElementProviderSimple[] headers
 					= tableProvider.GetColumnHeaders ();
-				if (headers != null && headers.Length > 0) {
-					if (index >= headers.Length)
-						ret = 1;
+				if (headers != null && headers.Length > 0 || num_invalid_elements > 0) {
+					if (index < headers.Length + num_invalid_elements)
+						return -1;
 				}
 			}
 
-			Adapter child = RefProviderChildByDepthSearch (index);
-			if (child != null && child.Provider != null) {
-				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			int ret = 0;
+
+			if (child != null && child.Peer != null) {
+				IGridItemProvider g = (IGridItemProvider) child.Peer.GetPattern (PatternInterface.GridItem);
 				if (g != null)
 					ret += g.Row;
 				return ret;
@@ -154,13 +155,20 @@ namespace UiaAtkBridge
 
 		//this kind of search will work regardless of the technique used for the hierarchy layout used for
 		//the children (mono-level or multi-level), because in the provider side it's multi-level always
-		private Adapter RefProviderChildByDepthSearch (int pos)
+		private Adapter RefProviderChildByDepthSearch (int pos, out int numInvalidElements)
 		{
 			Adapter adapter = null;
-			var frag = resource.Provider as IRawElementProviderFragment;
-			var parent = frag;
+			var frag = peer;
+			var parent = peer;
 
+			var column_headers = new List<AutomationPeer> ();
+			if (tableProvider != null)
+				foreach (IRawElementProviderSimple provider in tableProvider.GetColumnHeaders ())
+					column_headers.Add (provider.AutomationPeer);
+
+			numInvalidElements = 0;
 			while (pos >= 0) {
+				adapter = null;
 				if (frag == null)
 					return null;
 				frag = frag.Navigate (NavigateDirection.FirstChild);
@@ -170,14 +178,26 @@ namespace UiaAtkBridge
 				if (frag != null)
 					parent = frag;
 				else {
-					if (parent != resource.Provider) {
+					if (parent != peer) {
 						parent = parent.Navigate (NavigateDirection.Parent);
 						frag = parent.Navigate (NavigateDirection.NextSibling);
 					} else
 						return null;
 				}
 
-				adapter = AutomationBridge.GetAdapterForProviderSemiLazy (frag);
+				bool label = false;
+				if (column_headers.Count == 0 && frag.GetPattern (PatternInterface.GridItem) == null)
+					label = true;
+
+				//this assumes that column headers are always the first children
+				if (column_headers.Count == 0 || column_headers.Remove (frag)) {
+					if (!label)
+						adapter = DynamicAdapterFactory.Instance.GetAdapter (frag);
+				} else {
+					numInvalidElements++;
+					pos--;
+				}
+
 				//we need this check because there are some children providers that don't have an Adapter
 				if (adapter != null)
 					pos--;
@@ -213,24 +233,24 @@ namespace UiaAtkBridge
 					= tableProvider.GetColumnHeaders ();
 				if (headers != null && headers.Length > 0) {
 					if (row == 0) {
-						g = headers [column].GetPatternProvider (
-							GridItemPatternIdentifiers.Pattern.Id)
+						g = headers [column].AutomationPeer.GetPattern (PatternInterface.Grid)
 								as IGridItemProvider;
 						return (g == null) ? 0 : g.ColumnSpan;
 					}
-					row -= 1;
+					row--;
 				}
 			}
 
-			IRawElementProviderSimple item;
+			IRawElementProviderSimple item = null;
 			try {
 				item = GridProvider.GetItem (row, column);
 			} catch (ArgumentOutOfRangeException e) {
 				Log.Debug (e);
-				return -1;
 			}
+			if (item == null)
+				return -1;
 
-			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			g = (IGridItemProvider) item.AutomationPeer.GetPattern (PatternInterface.GridItem);
 			if (g != null)
 				return g.ColumnSpan;
 			return -1;
@@ -248,12 +268,11 @@ namespace UiaAtkBridge
 					= tableProvider.GetColumnHeaders ();
 				if (headers != null && headers.Length > 0) {
 					if (row == 0) {
-						g = headers [column].GetPatternProvider (
-							GridItemPatternIdentifiers.Pattern.Id)
+						g = headers [column].AutomationPeer.GetPattern (PatternInterface.GridItem)
 								as IGridItemProvider;
 						return (g == null) ? 0 : g.RowSpan;
 					}
-					row -= 1;
+					row--;
 				}
 			}
 
@@ -264,8 +283,10 @@ namespace UiaAtkBridge
 				Log.Debug (e);
 				return -1;
 			}
+			if (item == null)
+				return -1;
 
-			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			g = (IGridItemProvider) item.AutomationPeer.GetPattern (PatternInterface.GridItem);
 			if (g != null)
 				return g.RowSpan;
 			return 1;
@@ -282,10 +303,14 @@ namespace UiaAtkBridge
 				return null;
 
 			IRawElementProviderSimple [] items = tableProvider.GetColumnHeaders ();
-			if (column < 0 || column >= items.Length)
+			if (items == null || column < 0 || column >= items.Length)
 				return null;
 
-			return (string) items [column].GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			AutomationPeer peer = items [column].AutomationPeer;
+			var frameworkPeer = peer as FrameworkElementAutomationPeer;
+			if (frameworkPeer != null)
+				return frameworkPeer.GetHelpText ();
+			return peer.GetName ();
 		}
 
 		public Atk.Object GetColumnHeader (int column)
@@ -294,9 +319,9 @@ namespace UiaAtkBridge
 				return null;
 
 			IRawElementProviderSimple [] items = tableProvider.GetColumnHeaders ();
-			if (column < 0 || column >= items.Length)
+			if (items == null || column < 0 || column >= items.Length)
 				return null;
-			return AutomationBridge.GetAdapterForProviderLazy (items [column]);
+			return DynamicAdapterFactory.Instance.GetAdapter (items [column].AutomationPeer);
 		}
 
 		public string GetRowDescription (int row)
@@ -305,10 +330,14 @@ namespace UiaAtkBridge
 				return null;
 
 			IRawElementProviderSimple [] items = tableProvider.GetRowHeaders ();
-			if (row < 0 || row >= items.Length)
+			if (items == null || row < 0 || row >= items.Length)
 				return null;
 
-			return (string) items [row].GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			AutomationPeer peer = items [row].AutomationPeer;
+			var frameworkPeer = peer as FrameworkElementAutomationPeer;
+			if (frameworkPeer != null)
+				return frameworkPeer.GetHelpText ();
+			return peer.GetName ();
 		}
 
 		public Atk.Object GetRowHeader (int row)
@@ -317,9 +346,9 @@ namespace UiaAtkBridge
 				return null;
 
 			IRawElementProviderSimple [] items = tableProvider.GetRowHeaders ();
-			if (row < 0 || row >= items.Length)
+			if (items == null || row < 0 || row >= items.Length)
 				return null;
-			return AutomationBridge.GetAdapterForProviderLazy (items [row]);
+			return DynamicAdapterFactory.Instance.GetAdapter (items [row].AutomationPeer);
 		}
 
 		public Atk.Object Summary {
@@ -347,38 +376,40 @@ namespace UiaAtkBridge
 			Log.Warn ("TableImplementorHelper: SetRowHeader not implemented.");
 		}
 
-		public int GetSelectedColumns (out int [] selected)
-		{
-			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
-			selected = null;
-			return 0;
-		}
+//FIXME: enable this when we fix Atk# to expose the correct overload (BNC#512477)
+//		public int GetSelectedColumns (out int [] selected)
+//		{
+//			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
+//			selected = null;
+//			return 0;
+//		}
 
-		public int GetSelectedRows (out int [] selected)
-		{
-			ISelectionProvider selection 
-				= (ISelectionProvider) resource.Provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
-			if (selection == null) {
-				selected = new int [0];
-				return 0;
-			}
-
-			IRawElementProviderSimple []items = selection.GetSelection ();
-			List<int> selectedItems = new List <int> ();
-			foreach (IRawElementProviderSimple item in items) {
-				ISelectionItemProvider selectionItem 
-					= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-				IGridItemProvider gridItem 
-					= (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
-				if (selectionItem != null && gridItem != null) {
-					if (selectionItem.IsSelected)
-						selectedItems.Add (gridItem.Row);
-				}
-			}
-
-			selected = selectedItems.ToArray ();
-			return selectedItems.Count;
-		}
+//FIXME: enable this when we fix Atk# to expose the correct overload (BNC#512477)
+//		public int GetSelectedRows (out int [] selected)
+//		{
+//			ISelectionProvider selection
+//				= (ISelectionProvider) peer.GetPattern (PatternInterface.Selection);
+//			if (selection == null) {
+//				selected = new int [0];
+//				return 0;
+//			}
+//
+//			IRawElementProviderSimple []items = selection.GetSelection ();
+//			List<int> selectedItems = new List <int> ();
+//			foreach (IRawElementProviderSimple item in items) {
+//				ISelectionItemProvider selectionItem
+//					= (ISelectionItemProvider) item.AutomationPeer.GetPattern (PatternInterface.SelectionItem);
+//				IGridItemProvider gridItem
+//					= (IGridItemProvider) item.AutomationPeer.GetPattern (PatternInterface.GridItem);
+//				if (selectionItem != null && gridItem != null) {
+//					if (selectionItem.IsSelected)
+//						selectedItems.Add (gridItem.Row);
+//				}
+//			}
+//
+//			selected = selectedItems.ToArray ();
+//			return selectedItems.Count;
+//		}
 
 		// The below function should go away as soon as the atk-sharp api is fixed (BNC#512477)
 		public int GetSelectedColumns (out int selected)
@@ -416,7 +447,7 @@ namespace UiaAtkBridge
 					// In UIA, header rows cannot be selected
 					if (row == 0)
 						return false;
-					row -= 1;
+					row--;
 				}
 			}
 
@@ -427,9 +458,11 @@ namespace UiaAtkBridge
 				Log.Debug (e);
 				return false;
 			}
+			if (item == null)
+				return false;
 
-			ISelectionItemProvider selectionItem 
-				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider selectionItem
+				= (ISelectionItemProvider) item.AutomationPeer.GetPattern (PatternInterface.SelectionItem);
 			if (selectionItem == null)
 				return false;
 
@@ -451,7 +484,7 @@ namespace UiaAtkBridge
 					// In UIA, header rows cannot be selected
 					if (row == 0)
 						return false;
-					row -= 1;
+					row--;
 				}
 			}
 
@@ -466,11 +499,11 @@ namespace UiaAtkBridge
 			if (item == null)
 				return false;
 
-			ISelectionItemProvider selectionItemProvider 
-				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider selectionItemProvider
+				= (ISelectionItemProvider) item.AutomationPeer.GetPattern (PatternInterface.SelectionItem);
 			if (selectionItemProvider == null)
 				return false;
-			
+
 			return selectionItemProvider.IsSelected;
 		}
 
@@ -483,40 +516,39 @@ namespace UiaAtkBridge
 				return false;
 
 			if (tableProvider != null) {
-				IRawElementProviderSimple[] headers
+				IRawElementProviderSimple [] headers
 					= tableProvider.GetColumnHeaders ();
 				if (headers != null && headers.Length > 0) {
 					// In UIA, header rows cannot be selected
 					if (row == 0)
 						return false;
-					row -= 1;
+					row--;
 				}
 			}
-			
-			IRawElementProviderSimple item;
+
+			IRawElementProviderSimple item = null;
 			try {
 				// UIA doesn't support row selection, so we select the first cell
 				item = GridProvider.GetItem (row, 0);
 			} catch (ArgumentOutOfRangeException e) {
 				Log.Debug (e);
-				return false;
 			}
 
 			if (item == null)
 				return false;
 
 			ISelectionItemProvider selectionItem
-				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+				= (ISelectionItemProvider) item.AutomationPeer.GetPattern (PatternInterface.SelectionItem);
 			if (selectionItem == null)
 				return false;
-			
+
 			try {
 				selectionItem.AddToSelection ();
 			} catch (InvalidOperationException e) {
 				Log.Debug (e);
 				return false;
 			}
-			
+
 			return true;
 		}
 
@@ -535,33 +567,32 @@ namespace UiaAtkBridge
 					// In UIA, header rows cannot be selected
 					if (row == 0)
 						return false;
-					row -= 1;
+					row--;
 				}
 			}
-			
-			IRawElementProviderSimple item;
+
+			IRawElementProviderSimple item = null;
 			try {
 				item = GridProvider.GetItem (row, 0);
 			} catch (ArgumentOutOfRangeException e) {
 				Log.Debug (e);
-				return false;
 			}
-			
+
 			if (item == null)
 				return false;
 
 			ISelectionItemProvider selectionItem
-				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+				= (ISelectionItemProvider) item.AutomationPeer.GetPattern (PatternInterface.SelectionItem);
 			if (selectionItem == null)
 				return false;
-			
+
 			try {
 				selectionItem.RemoveFromSelection ();
 			} catch (InvalidOperationException e) {
 				Log.Debug (e);
 				return false;
 			}
-			
+
 			return true;
 		}
 
@@ -578,11 +609,30 @@ namespace UiaAtkBridge
 			Log.Warn ("TableImplementorHelper: RemoveColumnSelection not implemented.");
 			return false;
 		}
+#endregion
+
+#region NonPublic Members
+		private ITableProvider tableProvider = null;
+		private IGridProvider gridProvider = null;
+		private Atk.Object caption = null;
+		private Atk.Object summary = null;
+
+		internal IGridProvider GridProvider {
+			get {
+				if (tableProvider != null)
+					return tableProvider;
+				if (gridProvider == null)
+					gridProvider = (IGridProvider) peer.GetPattern (PatternInterface.Grid);
+				return gridProvider;
+			}
+		}
 
 		private bool AreRowColInBounds (int row, int col)
 		{
 			return (row >= 0 && row < NRows)
 			       && (col >= 0 && col < NColumns);
 		}
+#endregion
+
 	}
 }

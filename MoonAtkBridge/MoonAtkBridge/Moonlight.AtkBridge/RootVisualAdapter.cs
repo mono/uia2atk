@@ -34,10 +34,16 @@ namespace Moonlight.AtkBridge
 	public class RootVisualAdapter : Adapter
 	{
 #region Public Methods
-		public RootVisualAdapter ()
-			: base (new WindowAutomationPeer (
-				(FrameworkElement) Application.Current.RootVisual))
+		public RootVisualAdapter (AutomationPeer peer)
+			: base (peer)
 		{
+		}
+#endregion
+
+#region Internal Methods
+		internal void UpdatePeer (AutomationPeer peer)
+		{
+			this.Peer = peer;
 		}
 #endregion
 
