@@ -1,3 +1,9 @@
+2009-11-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* configure.ac: Use MOON_PATH env var to locate built checkout
+	of moon. Defaults to "../../moon" (same as old behavior).
+
 2009-11-10  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add Button sample.

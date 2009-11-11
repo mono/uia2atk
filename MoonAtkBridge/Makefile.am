@@ -117,12 +117,12 @@ T4_REFERENCES = \
 # bin/ dir contains MoonAtkBridge.dll with sec attrs and with internalized API
 $(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR)
 	mkdir -p bin/raw/
-	cp ../../moon/class/lib/2.1/*.dll ./bin/raw/
+	cp $(MOON_PATH)/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
 	$(MONO) $(T4_EXE) $(T4_GENERATOR) $(T4_REFERENCES) -o $(T4_OUT)
 	$(SMCS) $(CSCFLAGS) $(build_sources) $(T4_OUT) $(build_references)
 	cd bin/raw/ && $(DUMMY_COMPILATION)
-	cd bin/raw/ && $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
+	cd bin/raw/ && $(MONO) --debug $(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yAssemblyStep,Mono.Tuner
 	rm bin/raw/DummyEntryPoint.exe
 	rm bin/*.exe
@@ -132,10 +132,10 @@ $(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMB
 descriptors: $(ASSEMBLY_STAGE_PATH)
 	mkdir -p bin/fullraw/
 	cp ./bin/raw/MoonAtkBridge.dll ./bin/fullraw/
-	cp ../../moon/class/lib/2.1_raw/*.dll ./bin/fullraw/
-	cp ../../moon/class/tuning/masterinfos/*.info ./bin/fullraw/
+	cp $(MOON_PATH)/class/lib/2.1_raw/*.dll ./bin/fullraw/
+	cp $(MOON_PATH)/class/tuning/masterinfos/*.info ./bin/fullraw/
 	cd bin/fullraw/ && $(DUMMY_COMPILATION)
-	cd bin/fullraw/ && time $(MONO) --debug ../../$(LINKING_PATH)/monolinker.exe \
+	cd bin/fullraw/ && time $(MONO) --debug $(LINKING_PATH)/monolinker.exe \
 		-c link -a ./DummyEntryPoint.exe \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
 	cp bin/fullraw/output/$(DESC_FILE_LOCAL) .

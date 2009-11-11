@@ -84,9 +84,14 @@ if test "x$MOON_A11Y_INTERNAL_HACK" = "x"; then
 	AC_MSG_ERROR([The env var MOON_A11Y_INTERNAL_HACK is not set, you need to use it for building mono and moon for now])
 fi
 
+AC_ARG_VAR(MOON_PATH, "Path to built checkout of moon")
+if test "x$MOON_PATH" = "x"; then
+	MOON_PATH=../../moon
+fi
+
 PKG_CHECK_MODULES(CECIL, cecil)
 
-LINKING_PATH=../../moon/class/lib/tuner
+LINKING_PATH=$MOON_PATH/class/lib/tuner
 
 #uncomment this when we can do a proper check instead of using the monolinker.exe in lib/tuner
 #AC_PATH_PROG(MONOLINKER, monolinker, no)
@@ -96,7 +101,7 @@ LINKING_PATH=../../moon/class/lib/tuner
 
 if [ ! test -f "$LINKING_PATH/Mono.Tuner.dll" ]
 then
-	AC_MSG_ERROR([You need a built checkout of moon at the same level of the uia2atk folder])
+	AC_MSG_ERROR([You need a built checkout of moon either at the same level of the uia2atk folder, or at a location specified by MOON_PATH])
 fi
 AC_SUBST(LINKING_PATH)
 
