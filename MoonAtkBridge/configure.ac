@@ -88,6 +88,8 @@ AC_ARG_VAR(MOON_PATH, "Path to built checkout of moon")
 if test "x$MOON_PATH" = "x"; then
 	MOON_PATH=../../moon
 fi
+# Convert relative path to absolute path
+MOON_PATH=`(cd $MOON_PATH && pwd)`
 
 PKG_CHECK_MODULES(CECIL, cecil)
 
