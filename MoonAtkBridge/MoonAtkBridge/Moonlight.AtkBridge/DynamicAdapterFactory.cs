@@ -44,7 +44,7 @@ namespace Moonlight.AtkBridge
 		public Adapter RootVisualAdapter {
 			get {
 				if (rootVisualAdapter == null)
-					rootVisualAdapter = new RootVisualAdapter (GetNewRootPeer ());
+					rootVisualAdapter = new RootVisualAdapter (GetNewRootPeer (Application.Current));
 
 				return rootVisualAdapter;
 			}
@@ -275,15 +275,15 @@ namespace Moonlight.AtkBridge
 
 		private void OnRootVisualChanged (object sender, EventArgs args)
 		{
-			if (rootVisualAdapter == null || Application.Current != sender)
+			if (rootVisualAdapter == null)
 				return;
-			rootVisualAdapter.UpdatePeer (GetNewRootPeer ());
+			rootVisualAdapter.UpdatePeer (GetNewRootPeer ((Application)sender));
 		}
 
-		private AutomationPeer GetNewRootPeer ()
+		private AutomationPeer GetNewRootPeer (Application app)
 		{
 			AutomationPeer root_peer = null;
-			var root_visual = Application.Current.RootVisual as FrameworkElement;
+			var root_visual = app.RootVisual as FrameworkElement;
 			if (root_visual != null){
 				root_peer = new WindowAutomationPeer (root_visual);
 				activeAdapters [root_peer] = rootVisualAdapter;
