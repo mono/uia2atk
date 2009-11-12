@@ -79,7 +79,7 @@ namespace System.Windows.Automation
 
 			private AutomationElement GetNextDirectSibling (AutomationElement element)
 			{
-				AutomationElement parent = SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+				AutomationElement parent = GetParent (element);
 				AutomationElement nextSibling = null;
 
 				if (parent == AutomationElement.RootElement) {
@@ -96,7 +96,7 @@ namespace System.Windows.Automation
 
 			private AutomationElement GetPreviousDirectSibling (AutomationElement element)
 			{
-				AutomationElement parent = SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+				AutomationElement parent = GetParent (element);
 				AutomationElement prevSibling = null;
 
 				if (parent == AutomationElement.RootElement) {

@@ -1,3 +1,7 @@
+2009-11-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation/TreeWalker.TreeIterator.cs:
+	When in doubt, get parent element using GetParent calls.
 
 2009-10-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
