@@ -1,3 +1,12 @@
+2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ChangeLog: Add some forgotten ChangeLogs from last commits.
+
+2009-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TableImplementorHelper.cs: Simplify (RowAdjustment is not
+	used anywhere else). Coding guidelines for properties.
+
 2009-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TableImplementorHelper.cs: Kill dead code. Add some

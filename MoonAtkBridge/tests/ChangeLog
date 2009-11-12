@@ -1,3 +1,21 @@
+2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ChangeLog: Add some forgotten ChangeLogs from last commits.
+
+2009-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* tests/tests.mdproj: Add some nosetest files to the python MD project.
+
+	* assets/TableTest:
+	* assets/Makefile.am:
+	* assets/TableTest/App.xaml:
+	* assets/TableTest/Page.xaml:
+	* assets/TableTest/Makefile.am:
+	* assets/TableTest/App.xaml.cs:
+	* assets/TableTest/Page.xaml.cs: New asset to test Atk.Table.
+
+	* test_table.py: New nosetest to test Atk.Table.
+
 2009-11-10  Brad Taylor  <brad@getcoded.net>
 
 	* test_button.py: 

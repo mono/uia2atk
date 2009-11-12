@@ -36,6 +36,11 @@ Global
 		$4.inheritsSet = Mono
 		$4.inheritsScope = text/plain
 		$4.scope = text/x-csharp
+		$0.ChangeLogPolicy = $5
+		$5.UpdateMode = Nearest
+		$5.MessageStyle = $6
+		$6.LineAlign = 0
+		$5.inheritsSet = Mono
 		name = MoonAtkBridge
 	EndGlobalSection
 EndGlobal

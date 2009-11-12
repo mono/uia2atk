@@ -1,3 +1,7 @@
+2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonAtkBridge.sln: Add ChangeLog policy.
+
 2009-11-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* configure.ac: Fix build by making sure MOON_PATH is an abs path.

@@ -1,3 +1,45 @@
+2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ChangeLog: Add some forgotten ChangeLogs from last commits.
+
+2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs:
+	Changed r145988 slightly (r: toshok). With this usage, the events in
+	r145981 can be backported to moon-2-0.
+
+2009-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MoonAtkBridge.csproj: Include some PatternImplementors in the project file.
+
+	* Moonlight.AtkBridge.PatternImplementors/Value.cs:
+	* Moonlight.AtkBridge.PatternImplementors/Selection.cs:
+	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs:
+	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs:
+	Implement GLib.IWrapper.Handle member in BasePatternImplementor to
+	have less crap around.
+
+	* Moonlight.AtkBridge.PatternImplementors/GridTable.cs:
+	New PatternImplementor: Atk.Table for Grid & Table UIA patterns.
+
+	* MoonAtkBridge.sources: Add new files.
+
+	* Moonlight.AtkBridge/RootVisualAdapter.cs:
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs:
+	Prepare for the cases in which RootVisual is set after
+	GetAccessibleHandle is called (yes, calendar is the first case I
+	found).
+
+	* Moonlight.AtkBridge/Navigation.cs:
+	Mini-navigation UIA layer for SL Provider API, needed by the
+	GridTable class (which comes from the roots of UiaAtkBridge's
+	TableImplementorHelper).
+
+	* Moonlight.AtkBridge/Adapter.cs: Rename
+	Children to children as it's a field, not a property.
+
+	* configure.ac: Include TableTest in the list of assets.
+
 2009-11-05  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Hardcode the role to PasswordText if
