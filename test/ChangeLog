@@ -1,3 +1,10 @@
+2009-11-13  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/gridsplitter/gridsplitterframe.py,
+	* testers/moonlight/gridsplitter-regression.py,
+	* testers/moonlight/gridsplitter/__init__.py: add BUG reference, add 
+	test to check action is not implemented
+
 2009-11-10  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/button-regression.py: change assertText to 

@@ -17,7 +17,7 @@ init_dir = path[0]
 uiaqa_path = dirname(dirname(init_dir))
 # Variable the path of Firefox to run the application, Please install
 # Firefox3.5.1 first which is accessible by accerciser
-firefox_path = '/usr/bin/firefox'
+firefox_path = '/usr/local/bin/firefox'
 
 def launchGridSplitter(exe=None):
     '''Launch Moonlight slider with accessibility enabled and return a
@@ -25,7 +25,9 @@ def launchGridSplitter(exe=None):
 
     if exe is None:
         # make sure we can find the sample applications
-        exe = '%s/samples/moonlight/GridSplitter/GridSplitterSample.html' % uiaqa_path
+        ## If BUG555165 fixed please change TestPage.html to
+        ## GridSplitterSample.html
+        exe = '%s/samples/moonlight/GridSplitter/TestPage.html' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
 
