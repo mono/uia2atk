@@ -58,8 +58,9 @@ gsFrame.assertAction(gsFrame.horizontal_thumb)
 ###################################
 # test navigation of vertical_thumb
 ###################################
-gsFrame.filler.mouseClick()
-#gsFrame.vertical_thumb.grabFocus()
+# Firefox doesn't support grabFocus method
+#gsFrame.filler.mouseClick()
+statesCheck(gsFrame.file, "Menu", add_states=["focused"])
 sleep(config.SHORT_DELAY)
 #statesCheck(gsFrame.vertical_thumb, "Button", add_states=["focused"])
 

@@ -1,5 +1,10 @@
 2009-11-13  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/gridsplitter-regression.py: delete grabFocus method
+	due to Firefox doesn't support it
+
+2009-11-13  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/gridsplitter/gridsplitterframe.py,
 	* testers/moonlight/gridsplitter-regression.py,
 	* testers/moonlight/gridsplitter/__init__.py: add BUG reference, add 
