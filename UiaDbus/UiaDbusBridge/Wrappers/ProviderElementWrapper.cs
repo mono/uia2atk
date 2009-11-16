@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using SW = System.Windows;
 using System.Windows.Automation;
@@ -43,6 +44,26 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		private static volatile int idCount = 0;
 		private static object syncRoot = new object ();
+		private static int [] allPatternIds = {
+			ExpandCollapsePatternIdentifiers.Pattern.Id,
+			GridItemPatternIdentifiers.Pattern.Id,
+			GridPatternIdentifiers.Pattern.Id,
+			InvokePatternIdentifiers.Pattern.Id,
+			MultipleViewPatternIdentifiers.Pattern.Id,
+			RangeValuePatternIdentifiers.Pattern.Id,
+			ScrollPatternIdentifiers.Pattern.Id,
+			SelectionItemPatternIdentifiers.Pattern.Id,
+			SelectionPatternIdentifiers.Pattern.Id,
+			TablePatternIdentifiers.Pattern.Id,
+			TextPatternIdentifiers.Pattern.Id,
+			TogglePatternIdentifiers.Pattern.Id,
+			TransformPatternIdentifiers.Pattern.Id,
+			ValuePatternIdentifiers.Pattern.Id,
+			WindowPatternIdentifiers.Pattern.Id,
+			ScrollItemPatternIdentifiers.Pattern.Id,
+			DockPatternIdentifiers.Pattern.Id,
+			TableItemPatternIdentifiers.Pattern.Id
+		};
 
 #endregion
 
@@ -548,6 +569,14 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				throw new InvalidOperationException ();
 
 			return patternPath;
+		}
+
+		public int [] SupportedPatternIds {
+			get {
+				return allPatternIds
+					.Where (id => provider.GetPatternProvider (id) != null)
+					.ToArray ();
+			}
 		}
 
 #endregion

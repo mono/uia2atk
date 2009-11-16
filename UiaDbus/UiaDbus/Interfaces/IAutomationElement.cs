@@ -97,5 +97,7 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 		string PreviousSiblingElementPath { get; }
 
 		string GetCurrentPatternPath (int patternId);
+
+		int [] SupportedPatternIds { get; }
 	}
 }

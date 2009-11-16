@@ -1,3 +1,10 @@
+2009-11-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbus/Interfaces/IAutomationElement.cs: Add SupportedPatternIds.
+	* UiaDbusSource/UiaDbusElement.cs:
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: Implement
+	GetSupportedPatterns using new SupportedPatternIds property.
+
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbus.sln:

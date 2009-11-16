@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 
@@ -496,8 +497,23 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public AutomationPattern [] GetSupportedPatterns ()
 		{
-			// TODO: Implement
-			throw new NotSupportedException ();
+			int [] supportedPatterns = null;
+			try {
+				supportedPatterns = dbusElement.SupportedPatternIds;
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+			if (supportedPatterns == null) {
+				Log.Error ("SupportedPatternIds returned null for element " +
+				           "with bus name {0} and path {1}",
+				           busName,
+				           dbusPath);
+				return new AutomationPattern [] {};
+			}
+			return supportedPatterns
+				.Select (i => AutomationPattern.LookupById (i))
+				.Where (p => p != null)
+				.ToArray ();
 		}
 		#endregion
 
