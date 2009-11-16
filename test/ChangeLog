@@ -1,3 +1,8 @@
+2009-11-16  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/HyperlinkButton/Page.xaml.cs: update first link to 
+	multi line
+
 2009-11-13  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/gridsplitter-regression.py: delete grabFocus method

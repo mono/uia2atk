@@ -17,6 +17,7 @@ namespace HyperlinkButtonSample
         public Page()
         {
             InitializeComponent();
+            hyperlink_blank.Content = "Click here\r\nto open OpenSUSE in New Window";
         }
     }
 }
