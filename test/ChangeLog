@@ -1,5 +1,12 @@
 2009-11-16  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/hyperlinkbutton/hyperlinkbuttonframe.py,
+	* testers/moonlight/hyperlinkbutton/__init__.py,
+	* testers/moonlight/hyperlinkbutton-regression.py: add BUG references, 
+	comment out some test due to Hyperlink and Hypertext not implemented
+
+2009-11-16  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/HyperlinkButton/Page.xaml.cs: update first link to 
 	multi line
 

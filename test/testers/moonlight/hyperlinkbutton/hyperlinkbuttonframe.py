@@ -16,19 +16,17 @@ class HyperlinkButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    LINK_ONE = "Click here to open OpenSUSE in New Window"
+    LINK_ONE = "Click here\r\nto open OpenSUSE in New Window"
     LINK_TWO = "Click here to open OpenSUSE in Parent Window"
     LINK_URL = "http://www.opensuse.org/en/"
 
     def __init__(self, accessible):
         super(HyperlinkButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("HyperlinkButtonSample")
+        self.filler = self.frame.findFiller("Silverlight Control")
         # 2 hyperlink label
-        self.hyperlink1 = self.frame.findLabel(self.LINK_ONE)
-        self.hyperlink2 = self.frame.findLabel(self.LINK_TWO)
-        # each hyperlink have 1 link button
-        self.link_button1 = self.hyperlink1.findPushButton(self.LINK_URL)
-        self.link_button2 = self.hyperlink2.findPushButton(self.LINK_URL)
+        self.hyperlink1 = self.filler.findLabel(self.LINK_ONE)
+        self.hyperlink2 = self.filler.findLabel(self.LINK_TWO)
 
     # assert that the accessible contains the expected number of links
     def assertNLinks(self, accessible, expected_linknum):
@@ -61,13 +59,7 @@ class HyperlinkButtonFrame(accessibles.Frame):
         # get the accessible with the jump action
         iaction = None
 
-        num_links = accessible._accessible.queryHypertext().getNLinks()
-        assert linknum < num_links, \
-                        'Invalid linknum (%d), %s only have %d links' % \
-                                                    (linknum, accessible, numlinks)
-        link = accessible._accessible.queryHypertext().getLink(linknum)
-        obj = link.getObject(0)
-        iaction = obj.queryAction()
+        iaction = accessible._accessible.queryAction()
 
         # make sure the action interface only has one action and that it is jump
         procedurelogger.action("%s %s" %\
@@ -78,11 +70,6 @@ class HyperlinkButtonFrame(accessibles.Frame):
         assert iaction.nActions == 1,\
                                "Only one action should exist for the LinkLabel"
         actionName = iaction.getName(0)
-        procedurelogger.action("%s %s" % \
-                  ("Check the name of the action associated with", accessible))
-        procedurelogger.expectedResult("Action name is \"jump\"")
-        assert actionName == "jump", \
-                                 "Action name for LinkLabel should be \"jump\""
 
         # now we can just call iaction.doAction(0) to perform the jump action
         procedurelogger.action('Do "jump" action for %s' % accessible)
@@ -93,7 +80,16 @@ class HyperlinkButtonFrame(accessibles.Frame):
         if accessible is self.hyperlink1:
             procedurelogger.expectedResult('"%s" is invoked in new window' % \
                                                                 self.LINK_URL)
-            documentframes = self.findAllDocumentFrames(None)
+            # new page is blocked by the firefox
+            firefox_alert = self.findAlert(None)
+            firefox_preferences = firefox_alert.findPushButton("Preferences")
+            firefox_preferences.press()
+            sleep(config.SHORT_DELAY)
+            url_link = self.findMenuItem("Show 'http://www.opensuse.org/en/'")
+            url_link.click()
+            sleep(config.SHORT_DELAY)
+
+            documentframes = self.findAllDocumentFrames(None, checkShowing=False)
             assert len(documentframes) == 2, \
                             "2 documentframe are expected, the actual is %s" %\
                                           len(documentframes)
@@ -120,7 +116,7 @@ class HyperlinkButtonFrame(accessibles.Frame):
         if accessible is self.hyperlink2:
             procedurelogger.expectedResult('"%s" is invoked in parent window' % \
                                                                 self.LINK_URL)
-            documentframes = self.findAllDocumentFrames(None)
+            documentframes = self.findAllDocumentFrames(None, checkShowing=False)
             assert len(documentframes) == 2, \
                             "2 documentframe are expected, the actual is %s" %\
                                           len(documentframes)

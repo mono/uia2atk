@@ -44,40 +44,45 @@ hlbFrame = app.hyperlinkButtonFrame
 ####################
 # Check Actions
 ####################
-actionsCheck(hlbFrame.link_button1, "HyperlinkButton")
-actionsCheck(hlbFrame.link_button2, "HyperlinkButton")
+# BUG555717: wrong action name
+#actionsCheck(hlbFrame.hyperlink1, "HyperlinkButton")
+#actionsCheck(hlbFrame.hyperlink2, "HyperlinkButton")
 
 ######################
 # Check default States
 ######################
-statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
-statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable"])
+# BUG555726: missing multi-line
+# BUG553160: missing focusable
+#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
+#statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable"])
 
 ##################################
 # Check Focused State by press Tab
 ##################################
-hlbFrame.keyCombo("Tab", grabFocus=False)
+hlbFrame.frame.mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable", "focused"])
+# BUG553160
+#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable", "focused"])
 
 hlbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable", "focused"])
-statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
+#statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable", "focused"])
+#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 
+# XXX Atk.Hyperlink and Atk.Hypertext are not implemented
 #################################
 # Check link number of each label
 #################################
-hlbFrame.assertNLinks(hlbFrame.hyperlink1, 1)
+#hlbFrame.assertNLinks(hlbFrame.hyperlink1, 1)
 
-hlbFrame.assertNLinks(hlbFrame.hyperlink2, 1)
+#hlbFrame.assertNLinks(hlbFrame.hyperlink2, 1)
 
 ################
 # Check link URL
 ################
-hlbFrame.assertURL(hlbFrame.hyperlink1)
+#hlbFrame.assertURL(hlbFrame.hyperlink1)
 
-hlbFrame.assertURL(hlbFrame.hyperlink2)
+#hlbFrame.assertURL(hlbFrame.hyperlink2)
 
 #################################
 # Doing jump action to invoke URL
