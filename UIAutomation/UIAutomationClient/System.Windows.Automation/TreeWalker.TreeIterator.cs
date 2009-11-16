@@ -79,7 +79,7 @@ namespace System.Windows.Automation
 
 			private AutomationElement GetNextDirectSibling (AutomationElement element)
 			{
-				AutomationElement parent = GetParent (element);
+				AutomationElement parent = TreeWalker.RawViewWalker.GetParent (element);
 				AutomationElement nextSibling = null;
 
 				if (parent == AutomationElement.RootElement) {
@@ -96,7 +96,7 @@ namespace System.Windows.Automation
 
 			private AutomationElement GetPreviousDirectSibling (AutomationElement element)
 			{
-				AutomationElement parent = GetParent (element);
+				AutomationElement parent = TreeWalker.RawViewWalker.GetParent (element);
 				AutomationElement prevSibling = null;
 
 				if (parent == AutomationElement.RootElement) {
@@ -253,9 +253,9 @@ namespace System.Windows.Automation
 
 				AutomationElement previousParent = null;
 				if (sibling == null && condition != Automation.RawViewCondition) {
-					previousParent = SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+					previousParent = TreeWalker.RawViewWalker.GetParent (element);
 					markedElements.Add (previousParent);
-					sibling = SourceManager.GetOrCreateAutomationElement (previousParent.SourceElement.Parent);
+					sibling = TreeWalker.RawViewWalker.GetParent (previousParent);
 				}
 
 				if (sibling == null)
@@ -268,7 +268,7 @@ namespace System.Windows.Automation
 					while (sibling != null && nextSibling == null && sibling != AutomationElement.RootElement) {
 						nextSibling = GetFirstChild (sibling, previousParent);
 						previousParent = sibling;
-						sibling = SourceManager.GetOrCreateAutomationElement (sibling.SourceElement.Parent);
+						sibling = TreeWalker.RawViewWalker.GetParent (sibling);
 					}
 				}
 
@@ -287,9 +287,9 @@ namespace System.Windows.Automation
 
 				AutomationElement previousParent = null;
 				if (sibling == null && condition != Automation.RawViewCondition) {
-					previousParent = SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+					previousParent = TreeWalker.RawViewWalker.GetParent (element);
 					markedElements.Add (previousParent);
-					sibling = SourceManager.GetOrCreateAutomationElement (previousParent.SourceElement.Parent);
+					sibling = TreeWalker.RawViewWalker.GetParent (previousParent);
 				}
 
 				if (sibling == null)
@@ -302,7 +302,7 @@ namespace System.Windows.Automation
 					while (sibling != null && prevSibling == null && sibling != AutomationElement.RootElement) {
 						prevSibling = GetLastChild (sibling, previousParent);
 						previousParent = sibling;
-						sibling = SourceManager.GetOrCreateAutomationElement (sibling.SourceElement.Parent);
+						sibling = TreeWalker.RawViewWalker.GetParent (sibling);
 					}
 				}
 
