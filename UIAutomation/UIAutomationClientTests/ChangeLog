@@ -1,3 +1,13 @@
+2009-11-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationClientTests/TogglePatternTest.cs,
+	UIAutomationClientTests/TableTest.cs:
+	Test at-spi events.
+
+	* GtkForm/GtkForm.cs, AtspiUiaClientTests/Makefile.am,
+	AtspiUiaClientTests/TableTest.cs: Use the UIAutomationClientTests
+	TablePattern test.
+
 2009-11-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs:

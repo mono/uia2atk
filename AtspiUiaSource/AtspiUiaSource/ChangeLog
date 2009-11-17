@@ -1,3 +1,9 @@
+2009-11-17  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs, AutomationSource.cs, GridItemSource.cs,
+	TableItemSource.cs: Add event infrastructure and support for
+	Toggle and table events.
+
 2009-11-03  Mike Gorse  <mgorse@novell.com>
 
 	* TexstSource.cs, ValueSource.cs, Element.cs, Makefile.am:

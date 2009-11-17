@@ -91,7 +91,10 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void TablePatternTest ()
 		{
-			Assert.AreEqual (RowOrColumnMajor.RowMajor, tablePattern.Current.RowOrColumnMajor,
+			RowOrColumnMajor expectedMajor = (Atspi
+				? RowOrColumnMajor.Indeterminate
+				: RowOrColumnMajor.RowMajor);
+			Assert.AreEqual (expectedMajor, tablePattern.Current.RowOrColumnMajor,
 			                 "RowOrColumnMajor");
 			Assert.AreEqual (0, tablePattern.Current.GetRowHeaders ().Length, "row headers");
 			var colHeaders = tablePattern.Current.GetColumnHeaders ();
@@ -151,8 +154,9 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (1, automationEvents.Count, "event count");
 			Assert.AreEqual (table1Element, automationEvents [0].Sender, "event sender");
 			Assert.AreEqual (GridPattern.RowCountProperty, automationEvents [0].Args.Property, "property");
-			Assert.AreEqual (3, automationEvents [0].Args.OldValue, "old value");
-			Assert.AreEqual (4, automationEvents [0].Args.NewValue, "new value");
+			int oldValue = (Atspi? 2: 3);
+			Assert.AreEqual (oldValue, automationEvents [0].Args.OldValue, "old value");
+			Assert.AreEqual (oldValue + 1, automationEvents [0].Args.NewValue, "new value");
 			automationEvents.Clear ();
 
 			RunCommand ("add table column");

@@ -12,6 +12,7 @@ namespace GtkForm
 		private Gtk.TextView textBox3;
 		private Gtk.TreeView treeView1;
 		private Gtk.TreeView treeView2;
+		private Gtk.TreeStore tableStore;
 		private Gtk.ScaleButton scaleButton1;
 		private Gtk.HBox hboxPanel;
 		private Gtk.Entry textBoxExtra;
@@ -86,16 +87,15 @@ namespace GtkForm
 			AddTreeViewColumn (treeView1, 0, "column 1");
 			treeView1.ExpandAll ();
 
-			store = new Gtk.TreeStore (typeof (string), typeof (string));
-			iters [0] = store.AppendNode ();
-			store.SetValue (iters [0], 0, "item1");
-			store.SetValue (iters [0], 1, "item2");
-			iters [0] = store.AppendNode ();
-			store.SetValue (iters [0], 0, "item3");
-			store.SetValue (iters [0], 1, "item4");
-			treeView2 = new Gtk.TreeView (store);
-			AddTreeViewColumn (treeView2, 0, "column1");
-			AddTreeViewColumn (treeView2, 1, "column2");
+			tableStore = new Gtk.TreeStore (typeof (string), typeof (string), typeof (string), typeof (string));
+			iters [0] = tableStore.AppendNode ();
+			tableStore.SetValues (iters [0], "false", "Alice", "24", "");
+			iters [0] = tableStore.AppendNode ();
+			tableStore.SetValues (iters [0], "true", "Bob", "28", "");
+			treeView2 = new Gtk.TreeView (tableStore);
+			AddTreeViewColumn (treeView2, 0, "gender");
+			AddTreeViewColumn (treeView2, 1, "name");
+			AddTreeViewColumn (treeView2, 1, "age");
 			treeView2.Accessible.Name = "dataGridView1";
 
 			hboxPanel = new Gtk.HBox ();
@@ -198,6 +198,12 @@ namespace GtkForm
 				endIter = textBox3.Buffer.GetIterAtOffset (end);
 				textBox3.Buffer.MoveMark ("selection_bound", startIter);
 				textBox3.Buffer.MoveMark ("insert", endIter);
+			} else if (cmd == "add table row") {
+				Gtk.TreeIter iter;
+				iter = tableStore.AppendNode ();
+				tableStore.SetValues (iter, "true", "Mallory", "40");
+			} else if (cmd == "add table column") {
+			AddTreeViewColumn (treeView2, 3, "more");
 			}
 		}
 

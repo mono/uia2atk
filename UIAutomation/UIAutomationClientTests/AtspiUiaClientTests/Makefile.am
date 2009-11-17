@@ -73,7 +73,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	InvokePatternTest.cs \
-	TablePatternTest.cs \
+	TableTest.cs \
 	TableHierarchyTest.cs \
 	TextPatternTest.cs \
 	TogglePatternTest.cs \

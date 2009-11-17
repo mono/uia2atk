@@ -64,7 +64,7 @@ namespace AtspiUiaSource
 				bool isSelected;
 				if (!table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected))
 					return 1;
-				return rowExtents;
+				return rowExtents > 0 ? rowExtents : 1;
 			}
 		}
 
@@ -74,7 +74,8 @@ namespace AtspiUiaSource
 				bool isSelected;
 				if (!table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected))
 					return 1;
-				return colExtents;
+				// colExtents can be 0.  Gail bug?
+				return colExtents > 0 ? colExtents : 1;
 			}
 		}
 
@@ -92,8 +93,8 @@ namespace AtspiUiaSource
 				if (table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected)) {
 					p.Row = row;
 					p.Column = col;
-					p.RowSpan = rowExtents;
-					p.ColumnSpan = colExtents;
+					p.RowSpan = rowExtents > 0 ? rowExtents : 1;
+					p.ColumnSpan = colExtents > 0 ? colExtents : 1;
 				} else {
 					p.Row = -1;
 					p.Column = -1;

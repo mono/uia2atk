@@ -69,8 +69,8 @@ namespace AtspiUiaSource
 				if (table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected)) {
 					p.Row = row;
 					p.Column = col;
-					p.RowSpan = rowExtents;
-					p.ColumnSpan = colExtents;
+					p.RowSpan = rowExtents > 0? rowExtents : 1;
+					p.ColumnSpan = colExtents > 0? colExtents : 1;
 				} else {
 					p.Row = -1;
 					p.Column = -1;

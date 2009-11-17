@@ -46,6 +46,32 @@ namespace AtspiUiaSource
 		{
 			this.accessible = accessible;
 			runtimeId = -1;
+			AddEvents ();
+		}
+
+		~Element ()
+		{
+			RemoveEvents ();
+		}
+
+		private void AddEvents ()
+		{
+			if (SupportsGrid ()) {
+				accessible.ObjectEvents.RowInserted += OnRowInserted;
+				accessible.ObjectEvents.RowDeleted += OnRowDeleted;
+				accessible.ObjectEvents.ColumnInserted += OnColumnInserted;
+				accessible.ObjectEvents.ColumnDeleted += OnColumnDeleted;
+			}
+		}
+
+		private void RemoveEvents ()
+		{
+			if (SupportsGrid ()) {
+				accessible.ObjectEvents.RowInserted -= OnRowInserted;
+				accessible.ObjectEvents.RowDeleted -= OnRowDeleted;
+				accessible.ObjectEvents.ColumnInserted -= OnColumnInserted;
+				accessible.ObjectEvents.ColumnDeleted -= OnColumnDeleted;
+			}
 		}
 
 		public virtual bool SupportsProperty (AutomationProperty property)
@@ -430,6 +456,11 @@ namespace AtspiUiaSource
 		{
 			if (accessible == null)
 				return null;
+			// We expose the children of Applications as top-level,
+			// to be more like UIA
+			if (accessible.Parent != null &&
+				accessible.Parent.Role == Role.DesktopFrame)
+				return null;
 			if (elements == null)
 				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
@@ -559,6 +590,46 @@ namespace AtspiUiaSource
 			// is not set, but then the TextPattern test will
 			// fail; might as well always enable it.
 			return (accessible.QueryEditableText () != null);
+		}
+
+		private void OnRowInserted (string str, int row, int nInserted, object val)
+		{
+			int newVal = accessible.QueryTable ().NRows;
+			AutomationSource.RaisePropertyChangedEvent (
+				this,
+				GridPatternIdentifiers.RowCountProperty,
+				newVal - nInserted,
+				newVal);
+		}
+
+		private void OnRowDeleted (string str, int row, int nDeleted, object val)
+		{
+			int newVal = accessible.QueryTable ().NRows;
+			AutomationSource.RaisePropertyChangedEvent (
+				this,
+				GridPatternIdentifiers.RowCountProperty,
+				newVal + nDeleted,
+				newVal);
+		}
+
+		private void OnColumnInserted (string str, int row, int nInserted, object val)
+		{
+			int newVal = accessible.QueryTable ().NColumns;
+			AutomationSource.RaisePropertyChangedEvent (
+				this,
+				GridPatternIdentifiers.ColumnCountProperty,
+				newVal - nInserted,
+				newVal);
+		}
+
+		private void OnColumnDeleted (string str, int row, int nDeleted, object val)
+		{
+			int newVal = accessible.QueryTable ().NColumns;
+			AutomationSource.RaisePropertyChangedEvent (
+				this,
+				GridPatternIdentifiers.ColumnCountProperty,
+				newVal + nDeleted,
+				newVal);
 		}
 	}
 }

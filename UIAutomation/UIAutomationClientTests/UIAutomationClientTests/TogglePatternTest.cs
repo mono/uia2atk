@@ -93,7 +93,8 @@ namespace MonoTests.System.Windows.Automation
 			//We should expect an AutomationPropertyChangedEvent here,
 			//But since no such event fired on Windows Winforms,
 			//then we assert no event fired here
-			Assert.AreEqual (0, eventCount, "ToggleState changed event");
+			int expectedEventCount = (Atspi? 1: 0);
+			Assert.AreEqual (expectedEventCount, eventCount, "ToggleState changed event");
 		}
 		#endregion
 	}
