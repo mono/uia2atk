@@ -43,14 +43,15 @@ iFrame = app.imageFrame
 ######################
 # Image default States
 ######################
-statesCheck(iFrame.image1, "Image")
-statesCheck(iFrame.image2, "Image")
+statesCheck(iFrame.image1, "Icon")
+statesCheck(iFrame.image2, "Icon")
 
 ###########################
 # Image Implementation test
 ###########################
-assertImageSize(iFrame.image1, expected_width=100, expected_height=100)
-assertImageSize(iFrame.image2, expected_width=200, expected_height=200)
+# Atk.Image won't be implemented according to bug553176
+#assertImageSize(iFrame.image1, expected_width=100, expected_height=100)
+#assertImageSize(iFrame.image2, expected_width=200, expected_height=200)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

@@ -1,5 +1,11 @@
 2009-11-16  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/image/imageframe.py,
+	* testers/moonlight/image-regression.py,
+	* testers/moonlight/image/__init__.py: made some updates
+
+2009-11-16  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/hyperlinkbutton/hyperlinkbuttonframe.py,
 	* testers/moonlight/hyperlinkbutton/__init__.py,
 	* testers/moonlight/hyperlinkbutton-regression.py: add BUG references, 
