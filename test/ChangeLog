@@ -1,5 +1,9 @@
 2009-11-17  Calen Chen <cachen@novell.com>
 
+	* samples/moonlight/Makefile: reset the order of tests
+
+2009-11-17  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/helpers.py: add assertName, made some updates
 
 2009-11-17  Calen Chen <cachen@novell.com>

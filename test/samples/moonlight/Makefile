@@ -1,10 +1,7 @@
 SUBDIRS = \
 	Button \
-	#Calendar
 	CheckBox \
 	ComboBox \
-	#DataGrid
-	#DatePicker
 	GridSplitter \
 	HyperlinkButton \
 	Image \
@@ -14,15 +11,18 @@ SUBDIRS = \
 	PasswordBox \
 	ProgressBar \
 	RadioButton \
-	RepeateButton \
+	RepeatButton \
 	ScrollBar \
 	ScrollViewer \
 	Slider \
-	#TabControl
 	TextBlock \
 	TextBox \
 	Thumb \
 	ToggleButton
+	#Calendar
+	#DataGrid
+	#DatePicker
+	#TabControl
 
 all:
 	for i in $(SUBDIRS); do (cd $$i; make); done
