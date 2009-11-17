@@ -115,12 +115,25 @@ def assertText(accessible, expected_text):
     Make sure the accessible's text is expected
     """
     procedurelogger.expectedResult('update %s\'s text to "%s"' % \
-                                                       (accessible, new_label))
+                                                       (accessible, expected_text))
 
     actual_text = accessible.text
     assert actual_text == expected_text, \
                                 "actual text is %s, expected text is %s" % \
                                 (actual_text, expected_text)
+
+# check Name
+def assertName(accessible, expected_name):
+    """
+    Check the name of accessible
+    """
+    procedurelogger.expectedResult("%s's name is %s" % \
+                                                       (accessible, expected_name))
+
+    actual_name = accessible.name
+    assert actual_name == expected_name, \
+                                "actual name is %s, expected name is %s" % \
+                                (actual_name, expected_name)
 
 # check image size is expected
 def assertImageSize(accessible, expected_width=-1, expected_height=-1):

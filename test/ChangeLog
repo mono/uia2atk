@@ -1,4 +1,8 @@
-2009-11-16  Calen Chen <cachen@novell.com>
+2009-11-17  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/helpers.py: add assertName, made some updates
+
+2009-11-17  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/image/imageframe.py,
 	* testers/moonlight/image-regression.py,
