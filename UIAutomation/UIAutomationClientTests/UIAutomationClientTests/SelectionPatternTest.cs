@@ -54,6 +54,7 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.TreeItem));
 			Assert.IsNotNull (childElement, "Child element should not be null");
+			AutomationElement nextElement = TreeWalker.RawViewWalker.GetNextSibling (childElement);
 			SelectionItemPattern selectionItemPattern = (SelectionItemPattern) childElement.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
 			selectionItemPattern.Select ();
 			selection = current.GetSelection ();
@@ -61,11 +62,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (childElement, selection [0], "Selection should contain childElement");
 
 			if (Atspi) {
-				Assert.IsTrue (current.IsSelectionRequired,
+				Assert.IsFalse (current.IsSelectionRequired,
 					"IsSelectionRequired");
-				selectionItemPattern.RemoveFromSelection ();
-				selection = current.GetSelection ();
-				Assert.AreEqual (0, selection.Length, "Selection length");
 			} else {
 				Assert.IsTrue (current.IsSelectionRequired,
 					"IsSelectionRequired");
@@ -76,6 +74,12 @@ namespace MonoTests.System.Windows.Automation
 					// expected
 				}
 			}
+
+			selectionItemPattern = (SelectionItemPattern) nextElement.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			selectionItemPattern.Select ();
+			selection = current.GetSelection ();
+			Assert.AreEqual (1, selection.Length, "Selection length");
+			Assert.AreEqual (nextElement, selection [0], "Selection should contain childElement");
 		}
 		#endregion
 	}

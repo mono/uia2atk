@@ -1,3 +1,7 @@
+2009-11-18  Mike Gorse  <mgorse@novell.com>
+
+	* System.Windows.Automation/SelectionPattern.cs: Support caching.
+
 2009-11-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation/TreeWalker.TreeIterator.cs:

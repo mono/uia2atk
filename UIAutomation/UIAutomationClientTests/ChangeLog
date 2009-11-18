@@ -1,3 +1,13 @@
+2009-11-18  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/SelectionPatternTest.cs,
+	UIAutomationClientTests/RangeValuePatternTest.cs,
+	AtspiUiaClientTests/SelectionPatternTest.cs,
+	AtspiUiaClientTests/RangeValuePatternTest.cs: Add RangeValue,
+	Selection, and SelectionItem tests for AtspiUiaSource.
+
+	AtspiUiaClientTests/atspiuiaclienttest.sh.in: Remove GTK_MODULES.
+
 2009-11-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/TogglePatternTest.cs,

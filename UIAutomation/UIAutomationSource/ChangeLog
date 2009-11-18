@@ -1,3 +1,7 @@
+2009-11-18  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Source/SelectionSource.cs: Add some properties.
+
 2009-09-16  Matt Guo  <matt@mattguo.com>
 
 	* ITablePattern.cs: Derive from IGridPattern.

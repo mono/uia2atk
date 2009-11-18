@@ -404,12 +404,12 @@ namespace AtspiUiaSource
 				return (SupportsGrid () ? new GridSource (this) : null);
 			else if (pattern == InvokePatternIdentifiers.Pattern)
 				return (SupportsInvoke () ? new InvokeSource (this) : null);
-			//else if (pattern == RangeValuePatternIdentifiers.Pattern)
-				//return (SupportsRangeValue () ? new RangeValueSource (this) : null);
-			//else if (pattern == SelectionItemPatternIdentifiers.Pattern)
-			//	return (SupportsSelectionItem () ? new SelectionItemSource (this) : null);
-			//else if (pattern == SelectionPatternIdentifiers.Pattern)
-				//return (SupportsSelection () ? new SelectionSource (this) : null);
+			else if (pattern == RangeValuePatternIdentifiers.Pattern)
+				return (SupportsRangeValue () ? new RangeValueSource (this) : null);
+			else if (pattern == SelectionItemPatternIdentifiers.Pattern)
+				return (SupportsSelectionItem () ? new SelectionItemSource (this) : null);
+			else if (pattern == SelectionPatternIdentifiers.Pattern)
+				return (SupportsSelection () ? new SelectionSource (this) : null);
 			else if (pattern == TableItemPatternIdentifiers.Pattern)
 				return (SupportsTableItem () ? new TableItemSource (this) : null);
 			else if (pattern == TablePatternIdentifiers.Pattern)

@@ -33,28 +33,52 @@ namespace System.Windows.Automation
 	{
 		public struct SelectionPatternInformation
 		{
-			AutomationElement [] selection;
+			private bool cached;
+			private ISelectionPattern source;
+			private bool canSelectMultiple;
+			private bool isSelectionRequired;
+			private AutomationElement [] selection;
 
 			internal SelectionPatternInformation (SelectionProperties properties)
 			{
-				CanSelectMultiple = properties.CanSelectMultiple;
-				IsSelectionRequired = properties.IsSelectionRequired;
-				selection = new AutomationElement [properties.Selection.Length];
-				for (int i = 0; i < properties.Selection.Length; i++)
-					selection [i] = SourceManager.GetOrCreateAutomationElement (properties.Selection [i]);
+				cached = true;
+				canSelectMultiple = properties.CanSelectMultiple;
+				isSelectionRequired = properties.IsSelectionRequired;
+				selection = SourceManager.GetOrCreateAutomationElements (properties.Selection);
+				source = null;
+			}
+
+			internal SelectionPatternInformation (ISelectionPattern source)
+			{
+				this.cached = false;
+				this.source = source;
+				// Below fields are unused for Current
+				canSelectMultiple = false;
+				isSelectionRequired = false;
+				selection = null;
 			}
 
 			public bool CanSelectMultiple {
-				get; private set;
+				get {
+					return (cached ?
+						canSelectMultiple :
+						source.CanSelectMultiple);
+				}
 			}
 
 			public bool IsSelectionRequired {
-				get; private set;
+				get {
+					return (cached ?
+						isSelectionRequired :
+						source.IsSelectionRequired);
+				}
 			}
 
 			public AutomationElement [] GetSelection ()
 			{
-				return selection;
+				return (cached ?
+					selection :
+					SourceManager.GetOrCreateAutomationElements (source.Selection));
 			}
 		}
 
@@ -73,7 +97,7 @@ namespace System.Windows.Automation
 
 		public SelectionPatternInformation Current {
 			get {
-				return new SelectionPatternInformation (source.Properties);
+				return new SelectionPatternInformation (source);
 			}
 		}
 

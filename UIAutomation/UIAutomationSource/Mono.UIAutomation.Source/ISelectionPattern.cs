@@ -31,6 +31,9 @@ namespace Mono.UIAutomation.Source
 	public interface ISelectionPattern
 	{
 		SelectionProperties Properties { get; }
+		bool CanSelectMultiple { get; }
+		bool IsSelectionRequired { get; }
+		IElement [] Selection { get; }
 	}
 
 	public struct SelectionProperties

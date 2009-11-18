@@ -1,3 +1,9 @@
+2009-11-18  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs, RangeValueSource.cs, SelectionItemSource,
+	SelectionSource.cs, Makefile.am: Add RangeValue, Selection, and
+	SelectionItem implementations.
+
 2009-11-17  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs, AutomationSource.cs, GridItemSource.cs,

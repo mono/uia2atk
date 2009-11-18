@@ -47,9 +47,13 @@ FILES =  \
 	AutomationSource.cs \
 	DataItemElement.cs \
 	Element.cs \
+	ExpandCollapseSource.cs \
 	GridItemSource.cs \
 	GridSource.cs \
 	InvokeSource.cs \
+	RangeValueSource.cs \
+	SelectionItemSource.cs \
+	SelectionSource.cs \
 	TableCellElement.cs \
 	TableElement.cs \
 	TableHeaderElement.cs \
