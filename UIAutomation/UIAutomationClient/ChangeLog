@@ -1,5 +1,9 @@
 2009-11-18  Mike Gorse  <mgorse@novell.com>
 
+	* AssemblyInfo.cs.in: Add InternalsVisibleTo for AtspiUiaSource.
+
+2009-11-18  Mike Gorse  <mgorse@novell.com>
+
 	* System.Windows.Automation/SelectionPattern.cs: Support caching.
 
 2009-11-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
