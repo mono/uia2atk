@@ -47,7 +47,6 @@ FILES =  \
 	AutomationSource.cs \
 	DataItemElement.cs \
 	Element.cs \
-	ExpandCollapseSource.cs \
 	GridItemSource.cs \
 	GridSource.cs \
 	InvokeSource.cs \
