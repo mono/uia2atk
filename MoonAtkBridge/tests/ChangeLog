@@ -1,10 +1,25 @@
+2009-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* test_reflection.py: New nosetest for 1st kind of attack
+	vector.
+
+	* tests.mdproj: Add test_reflection.py.
+
+	* assets/Makefile.am:
+	* assets/ReflectionTest:
+	* assets/ReflectionTest/App.xaml:
+	* assets/ReflectionTest/Page.xaml:
+	* assets/ReflectionTest/Makefile.am:
+	* assets/ReflectionTest/App.xaml.cs:
+	* assets/ReflectionTest/Page.xaml.cs: Add ReflectionTest.
+
 2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ChangeLog: Add some forgotten ChangeLogs from last commits.
 
 2009-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* tests/tests.mdproj: Add some nosetest files to the python MD project.
+	* tests.mdproj: Add some nosetest files to the python MD project.
 
 	* assets/TableTest:
 	* assets/Makefile.am:

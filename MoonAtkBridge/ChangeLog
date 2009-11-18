@@ -1,3 +1,7 @@
+2009-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: Add ReflectionTest.
+
 2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MoonAtkBridge.sln: Add ChangeLog policy.

@@ -47,6 +47,7 @@
     <Compile Include="test_add_remove_adapter.py" />
     <Compile Include="test_adapter_events.py" />
     <Compile Include="test_table.py" />
+    <Compile Include="test_reflection.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ChangeLog" />

@@ -6,6 +6,7 @@ SUBDIRS = \
 	ExpandCollapseEventsTest \
 	PasswordBoxTest \
 	RangeValueTest \
+	ReflectionTest \
 	SelectionTest \
 	TableTest \
 	TextBlockTest \
