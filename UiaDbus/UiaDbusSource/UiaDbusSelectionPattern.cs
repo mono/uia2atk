@@ -52,10 +52,9 @@ namespace Mono.UIAutomation.UiaDbusSource
 			get {
 				try {
 					SelectionProperties properties = new SelectionProperties () {
-						CanSelectMultiple = pattern.CanSelectMultiple,
-						IsSelectionRequired = pattern.IsSelectionRequired,
-						Selection = source.GetOrCreateElements (busName,
-						                                        pattern.GetSelectionPaths ())
+						CanSelectMultiple = CanSelectMultiple,
+						IsSelectionRequired = IsSelectionRequired,
+						Selection = Selection
 					};
 					return properties;
 				} catch (Exception ex) {
@@ -63,5 +62,25 @@ namespace Mono.UIAutomation.UiaDbusSource
 				}
 			}
 		}
+		#region ISelectionPattern implementation
+		public bool CanSelectMultiple {
+			get {
+				return pattern.CanSelectMultiple;
+			}
+		}
+
+		public bool IsSelectionRequired {
+			get {
+				return pattern.IsSelectionRequired;
+			}
+		}
+
+		public IElement [] Selection {
+			get {
+				// TODO: Error-checking, default, etc
+				return source.GetOrCreateElements (busName, pattern.GetSelectionPaths ());
+			}
+		}
+		#endregion
 	}
 }

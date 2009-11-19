@@ -1,3 +1,7 @@
+2009-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbusSource/UiaDbusSelectionPattern.cs: Implement new properties.
+
 2009-11-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbus/Interfaces/IAutomationElement.cs: Add SupportedPatternIds.
