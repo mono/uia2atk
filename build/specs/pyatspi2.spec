@@ -20,8 +20,8 @@ Group:          System/Libraries
 URL:            http://www.gnome.org/
 Source0:        pyatspi-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       at-spi2-atk-%{version}
-Requires:       at-spi2-core-%{version}
+Requires:       at-spi2-atk
+Requires:       at-spi2-core
 BuildRequires:	dbus-1-python
 BuildRequires:  fdupes
 BuildRequires:	glib2-devel
