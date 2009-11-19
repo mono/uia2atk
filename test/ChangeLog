@@ -1,3 +1,9 @@
+2009-11-19  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/listbox/listboxframe.py,
+	* testers/moonlight/listbox/__init__.py,
+	* testers/moonlight/listbox-regression.py: add bug references
+
 2009-11-17  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/Makefile: reset the order of tests

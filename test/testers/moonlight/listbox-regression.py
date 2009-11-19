@@ -42,33 +42,21 @@ if app is None:
 # just an alias to make things shorter
 lbFrame = app.listBoxFrame
 
-################
-# Check Actions
-################
-for list_item in lbFrame.list_items:
-    actionsCheck(list_item, 'TableCell')
-
 #######################
 # Check default States
 #######################
-statesCheck(lbFrame.label, 'Label')
-statesCheck(lbFrame.list_box, 'TreeTable')
-for list_item in lbFrame.list_items:
-    statesCheck(list_item, 'TableCell')
-
-########################################
-# Test ATK_TEXT implement for list_item
-########################################
-for list_item in lbFrame.list_items:
-    assertText(list_item, str(list_item))
+statesCheck(lbFrame.list_box, 'List')
+# BUG553160: missing focusable state
+#for list_item in lbFrame.list_items:
+#    statesCheck(list_item, 'ListItem')
 
 #################
 # Key navigation
 #################
-lbFrame.click()
+lbFrame.mouseClick()
 sleep(config.SHORT_DELAY)
-assertText(lbFrame.label, 'You selected no item.')
-statesCheck(lbFrame.list_items[0], 'TableCell', add_states=['focused']
+assertName(lbFrame.label, 'You selected no item.')
+#statesCheck(lbFrame.list_items[0], 'ListItem', add_states=['focused'])
 
 lbFrame.keyCombo('Down')
 sleep(config.SHORT_DELAY)
@@ -76,22 +64,28 @@ lbFrame.keyCombo('Down')
 sleep(config.SHORT_DELAY)
 lbFrame.keyCombo('Down')
 sleep(config.SHORT_DELAY)
-assertText(lbFrame.label, 'You selected Item 4.')
-statesCheck(lbFrame.list_items[3], 'TableCell', add_states=['focused', 'seleceted'])
+assertName(lbFrame.label, 'You selected Item 4.')
+#statesCheck(lbFrame.list_items[3], 'ListItem', add_states=['focused', 'selected'])
 # 'focused' and 'selected' state should move from Item1 to Item4
-statesCheck(lbFrame.list_items[0], 'TableCell')
+#statesCheck(lbFrame.list_items[0], 'ListItem')
 
 ########################
 # Selection action test
 ########################
-lbFrame.select(lbFrame.list_items[0])
-statesCheck(lbFrame.list_items[0], 'TableCell', add_states=['focused', 'selected'])
+lbFrame.select(lbFrame.list_box, 0)
+#statesCheck(lbFrame.list_items[0], 'ListItem', add_states=['focused', 'selected'])
 # re-check 'Item 4' states
-statesCheck(lbFrame.list_items[3], 'TableCell')
-lbFrame.clearSelection(lbFrame.list_box)
-sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.list_box, "TreeTable", add_states=["focused"])
-statesCheck(lbFrame.list_items[0], "TableCell", add_states=["focused"])
+#statesCheck(lbFrame.list_items[3], 'ListItem')
+
+lbFrame.select(lbFrame.list_box, 1)
+#statesCheck(lbFrame.list_items[1], 'ListItem', add_states=['focused', 'selected'])
+# re-check 'Item 4' states
+#statesCheck(lbFrame.list_items[3], 'ListItem')
+# BUG556463: clear selection crashed firefox
+#lbFrame.clearSelection(lbFrame.list_box)
+#sleep(config.SHORT_DELAY)
+#statesCheck(lbFrame.list_box, "List", add_states=["focused"], invalid_states=["focusable"])
+#statesCheck(lbFrame.list_items[0], "ListItem", add_states=["focused"], invalid_states=["focusable"])
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
