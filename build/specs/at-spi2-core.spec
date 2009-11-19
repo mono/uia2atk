@@ -27,8 +27,7 @@ BuildRequires:  dbus-1-glib-devel
 BuildRequires:  glib2-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  python
-#BuildRequires:  update-desktop-files
-Obsoletes:	at-spi
+Provides:       at-spi
 
 %description
 This library, based on ATK, is a general interface for applications to 
@@ -43,7 +42,6 @@ make use of the accessibility toolkit.  This version is based on dbus.
 
 %install
 %makeinstall
-#%suse_update_desktop_file at-spi-registryd
 find %{buildroot} -type f -name "*.la" -delete -print
 
 %clean
@@ -59,8 +57,7 @@ rm -rf %{buildroot}
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/dbus
 %{_datadir}/%{name}/*
-#%config %{_sysconfdir}/xdg/autostart/at-spi-registryd.desktop
-%{_prefix}/lib/at-spi2-registryd
+%{_libexecdir}/at-spi2-registryd
 %{_datadir}/dbus-1/services/org.freedesktop.atspi.Registry.service
 
 %changelog
