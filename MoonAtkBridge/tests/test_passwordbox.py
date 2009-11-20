@@ -58,14 +58,12 @@ class PasswordBox(TestCase):
         # GTK+ password entries also have single_line,
         # but Orca doesn't seem to care
         self.assertStates(self.passwordbox, [
-            # XXX: Focusable disabled due to #552879
             'editable', 'enabled',  'focusable',
             'sensitive', 'showing', 'visible',
         ])
 
         self.passwordbox.grabFocus()
         self.assertStates(self.passwordbox, [
-            # XXX: Focusable disabled due to #552879
             'editable', 'enabled',  'focusable',
             'sensitive', 'showing', 'visible',
             'focused',

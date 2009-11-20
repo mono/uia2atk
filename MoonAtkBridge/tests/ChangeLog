@@ -1,5 +1,9 @@
 2009-11-19  Mario Carrion  <mcarrion@novell.com>
 
+	* test_passwordbox.py: Removed XXX comments.
+
+2009-11-19  Mario Carrion  <mcarrion@novell.com>
+
 	* test_passwordbox.py: Focusable implemented. moon r146586
 
 2009-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
