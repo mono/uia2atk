@@ -151,6 +151,7 @@ tests/assets/AddRemoveAdapterTest/Makefile
 tests/assets/ButtonTest/Makefile
 tests/assets/ComboBoxTest/Makefile
 tests/assets/ExpandCollapseEventsTest/Makefile
+tests/assets/FakeBridgeTest/Makefile
 tests/assets/PasswordBoxTest/Makefile
 tests/assets/RangeValueTest/Makefile
 tests/assets/ReflectionTest/Makefile

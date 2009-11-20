@@ -1,3 +1,17 @@
+2009-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* assets/FakeBridgeTest:
+	* assets/FakeBridgeTest/App.xaml:
+	* assets/FakeBridgeTest/Page.xaml:
+	* assets/FakeBridgeTest/Makefile.am:
+	* assets/FakeBridgeTest/App.xaml.cs:
+	* assets/FakeBridgeTest/Page.xaml.cs: Add FakeBridgeTest
+	asset.
+
+	* assets/Makefile.am: Add FakeBridgeTest.
+
+	* test_fakebridgetest.py: Add nosetest for FakeBridgeTest.
+
 2009-11-19  Mario Carrion  <mcarrion@novell.com>
 
 	* test_passwordbox.py: Removed XXX comments.

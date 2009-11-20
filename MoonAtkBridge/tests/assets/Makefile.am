@@ -4,6 +4,7 @@ SUBDIRS = \
 	ButtonTest \
 	ComboBoxTest \
 	ExpandCollapseEventsTest \
+	FakeBridgeTest \
 	PasswordBoxTest \
 	RangeValueTest \
 	ReflectionTest \

@@ -70,9 +70,9 @@ ASSEMBLY_CONFIG = $(ASSEMBLY_STAGE_PATH).config
 GTK_SHARP_FLAGS = -define:NET_2_1 -unsafe -nowarn:0169,0612,0618
 CSCFLAGS = \
 	-noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ \
-	-keyfile:mono-uia.snk -target:library $(GTK_SHARP_FLAGS) \
-	-out:bin/raw/$(ASSEMBLY)
+	-keyfile:mono-uia.snk -target:library $(GTK_SHARP_FLAGS)
 
+OUT = -out:bin/raw/$(ASSEMBLY)
 DUMMY_REFERENCES = /r:mscorlib.dll /r:MoonAtkBridge.dll
 DUMMY_COMPILATION = $(SMCS) /t:exe ../../DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:DummyEntryPoint.exe
 
@@ -118,15 +118,19 @@ T4_REFERENCES = \
 $(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR)
 	mkdir -p bin/raw/
 	cp $(MOON_PATH)/class/lib/2.1/*.dll ./bin/raw/
-	$(SMCS) $(CSCFLAGS) $(build_sources) $(build_references)
+	$(SMCS) $(CSCFLAGS) $(OUT) $(build_sources) $(build_references)
 	$(MONO) $(T4_EXE) $(T4_GENERATOR) $(T4_REFERENCES) -o $(T4_OUT)
-	$(SMCS) $(CSCFLAGS) $(build_sources) $(T4_OUT) $(build_references)
+	$(SMCS) $(CSCFLAGS) $(OUT) $(build_sources) $(T4_OUT) $(build_references)
 	cd bin/raw/ && $(DUMMY_COMPILATION)
 	cd bin/raw/ && $(MONO) --debug $(LINKING_PATH)/monolinker.exe $(TUNER_FLAGS) \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yAssemblyStep,Mono.Tuner
 	rm bin/raw/DummyEntryPoint.exe
 	rm bin/*.exe
 	cp bin/*.dll stage/components/
+
+fake:
+	mkdir -p bin/fake/
+	$(SMCS) $(CSCFLAGS) -out:bin/fake/$(ASSEMBLY) AttackVector.cs
 
 # bin/fullraw/ dir contains MoonAtkBridge.dll and moonlight assemblies without sec attrs
 descriptors: $(ASSEMBLY_STAGE_PATH)

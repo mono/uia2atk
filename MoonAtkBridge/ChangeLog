@@ -1,3 +1,13 @@
+2009-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* DummyEntryPoint.cs: Add headers.
+
+	* AttackVector.cs: Source file for fake bridge.
+
+	* configure.ac: Add FakeBridgeTest.
+
+	* Makefile.am: Create a new 'fake' target.
+
 2009-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* configure.ac: Add ReflectionTest.

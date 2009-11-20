@@ -23,22 +23,14 @@
 //      Andres Aragoneses <aaragoneses@novell.com>
 //
 
-using System;
-
-namespace Application
+namespace MoonAtkBridge
 {
-	class DummyEntryPoint
+	public class AttackVector
 	{
-		static int Main ()
+		//sync this with one item of the file http://anonsvn.mono-project.com/source/trunk/moon/class/tuning/Descriptors/a11y.xml
+		public int InternalsVisibleToCall ()
 		{
-			//be sure we're referencing moon's corlib
-			new System.Security.SecurityCriticalAttribute ();
-
-			//be sure we're referencing MoonAtkBridge
-			Moonlight.AtkBridge.AutomationBridge.CreateAutomationBridge ().GetAccessibleHandle ();
-
-			//be sure we're referencing private MoonAtkBridge's API used by moonlight
-			return Moonlight.AtkBridge.AutomationBridge.IsAccessibilityEnabled () ? 0 : 1;
+			return new System.Collections.Hashtable ().Count;
 		}
 	}
 }
