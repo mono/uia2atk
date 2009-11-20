@@ -1,3 +1,7 @@
+2009-11-19  Mario Carrion  <mcarrion@novell.com>
+
+	* test_passwordbox.py: Focusable implemented. moon r146586
+
 2009-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* test_reflection.py: New nosetest for 1st kind of attack

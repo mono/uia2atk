@@ -59,14 +59,14 @@ class PasswordBox(TestCase):
         # but Orca doesn't seem to care
         self.assertStates(self.passwordbox, [
             # XXX: Focusable disabled due to #552879
-            'editable', 'enabled', # 'focusable',
+            'editable', 'enabled',  'focusable',
             'sensitive', 'showing', 'visible',
         ])
 
         self.passwordbox.grabFocus()
         self.assertStates(self.passwordbox, [
             # XXX: Focusable disabled due to #552879
-            'editable', 'enabled', # 'focusable',
+            'editable', 'enabled',  'focusable',
             'sensitive', 'showing', 'visible',
             'focused',
         ])
