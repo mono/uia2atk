@@ -1,3 +1,16 @@
+2009-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* List.cs:
+	* Tree.cs:
+	* Table.cs:
+	* ListGroup.cs:
+	* TextContainer.cs:
+	* ComboBoxOptionsTable.cs:
+	* TableImplementorHelper.cs: Fix build wrt recent changes in
+	gtk-sharp-2-12:
+	http://lists.ximian.com/pipermail/mono-patches/2009-November/160655.html
+	.
+
 2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ChangeLog: Add some forgotten ChangeLogs from last commits.

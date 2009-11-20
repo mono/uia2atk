@@ -143,19 +143,30 @@ namespace UiaAtkBridge
 		{
 			tableExpert.SetRowHeader (row, header);
 		}
-		
+
+		public int [] SelectedColumns {
+			get { return new int [0]; }
+		}
+
+		//TODO: return the selected items
+		public int [] SelectedRows {
+			get { return new int [0]; }
+		}
+
+		//FIXME: remove this once we expose the correct overload (BNC#512477)
 		public int GetSelectedColumns (out int selected)
 		{
 			selected = 0;
 			return 0;
 		}
-		
+
+		//FIXME: remove this once we expose the correct overload (BNC#512477)
 		public int GetSelectedRows (out int selected)
 		{
 			selected = 0;
 			return 0;
 		}
-		
+
 		public bool IsColumnSelected (int column)
 		{
 			return false;

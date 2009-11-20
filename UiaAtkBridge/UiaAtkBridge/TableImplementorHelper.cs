@@ -380,6 +380,22 @@ namespace UiaAtkBridge
 			return selectedItems.Count;
 		}
 
+		public int [] SelectedColumns {
+			get {
+				int [] selected;
+				GetSelectedColumns (out selected);
+				return selected;
+			}
+		}
+
+		public int [] SelectedRows {
+			get {
+				int [] selected;
+				GetSelectedRows (out selected);
+				return selected;
+			}
+		}
+
 		// The below function should go away as soon as the atk-sharp api is fixed (BNC#512477)
 		public int GetSelectedColumns (out int selected)
 		{
