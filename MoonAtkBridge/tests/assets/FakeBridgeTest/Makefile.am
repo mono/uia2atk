@@ -11,7 +11,7 @@ FILES = \
 all: $(XAP)
 
 $(FAKEBRIDGE):
-	cd ../../.. && make fake
+	$(MAKE) fake -C ../../..
 	cp ../../../bin/fake/MoonAtkBridge.dll .
 
 $(XAP): $(FILES) $(FAKEBRIDGE)
