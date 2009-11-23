@@ -115,7 +115,7 @@ def assertText(accessible, expected_text):
     Make sure the accessible's text is expected
     """
     procedurelogger.expectedResult('update %s\'s text to "%s"' % \
-                                                       (accessible, expected_text))
+                          (accessible._accessible.getRoleName(), expected_text))
 
     actual_text = accessible.text
     assert actual_text == expected_text, \
@@ -127,8 +127,8 @@ def assertName(accessible, expected_name):
     """
     Check the name of accessible
     """
-    procedurelogger.expectedResult("%s's name is %s" % \
-                                                       (accessible, expected_name))
+    procedurelogger.expectedResult("%s's name is update to %s" % \
+                         (accessible._accessible.getRoleName(), expected_name))
 
     actual_name = accessible.name
     assert actual_name == expected_name, \

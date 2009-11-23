@@ -41,28 +41,32 @@ if app is None:
 # just an alias to make things shorter
 pbFrame = app.passwordBoxFrame
 
-################
-# Check Actions
-################
-actionsCheck(pbFrame.pwdBox, 'Text')
-
 #######################
 # Check default States
 #######################
-statesCheck(pbFrame.label1, 'Label')
-statesCheck(pbFrame.label2, 'Label')
-statesCheck(pbFrame.pwdBox2, 'Text')
+# BUG553160: missing focusable state
+# BUG557655: missing single line state
+#statesCheck(pbFrame.pwdBox, 'Text')
 
-# test PasswordBox.Text property
-PWD = 'secretwords'
-pbFrame.pwdBox.enterText(PWD)
+pbFrame.pwdBox.mouseClick()
 sleep(config.SHORT_DELAY)
-assertText(pbFrame.pwdBox, PWD)
+#statesCheck(pbFrame.pwdBox, 'Text', add_states=["focused"])
 
-# test PasswordBox.PasswordChanged event
-assertText(pbFrame.label1, 'You changed %s times.' % str(len(PWD)))
+# test PasswordBox.Text propertys
+ENTER_PWD = 'enter123'
+TYPE_PWD = '123type'
+pbFrame.pwdBox.enterText(ENTER_PWD)
+sleep(config.SHORT_DELAY)
+# Value pattern won't retain password value
+assertText(pbFrame.pwdBox, "")
+assertName(pbFrame.label2, 'Your password is: enter123')
+
+pbFrame.pwdBox.insertText(TYPE_PWD, 0)
+sleep(config.SHORT_DELAY)
+assertText(pbFrame.pwdBox, "")
+assertName(pbFrame.label2, 'Your password is: 123type')
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
 # close application frame window
-quit(pbFrame)
+#quit(pbFrame)

@@ -1,5 +1,13 @@
 2009-11-23  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/passwordbox/passwordboxframe.py,
+	* testers/moonlight/passwordbox/__init__.py,
+	* testers/moonlight/passwordbox-regression.py: add bug references and 
+	more tests
+	* testers/moonlight/helpers.py: modify result log of assertName method
+
+2009-11-23  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/TextBox/Page.xaml: add some properties for 
 	multi-line and showing scrollbars
 
