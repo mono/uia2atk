@@ -1,3 +1,8 @@
+2009-11-23  Mario Carrion   <mcarrion@novell.com>
+
+	* UIAutomationClientTests/ValuePatternTest.cs: Updated according
+	LAMESPEC.
+
 2009-11-23  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/SelectionPatternTest.cs,

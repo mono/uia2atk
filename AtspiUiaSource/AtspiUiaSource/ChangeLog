@@ -1,3 +1,9 @@
+2009-11-23  Mario Carrion  <mcarrion@novell.com>
+
+	* Element.cs: New static method TryCreateValueElement.
+	* Makefile.am: ValueElement.cs added.
+	* ValueElement.cs: Raises ValuePattern.ValueProperty event.
+
 2009-11-23  Mike Gorse  <mgorse@novell.com>
 
 	* SelectionItemSource.cs: Remove unused variable.

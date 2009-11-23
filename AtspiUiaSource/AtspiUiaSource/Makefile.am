@@ -62,6 +62,7 @@ FILES =  \
 	TextSource.cs \
 	ToggleSource.cs \
 	TreeItemElement.cs \
+	ValueElement.cs \
 	ValueSource.cs
 
 DATA_FILES = 

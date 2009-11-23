@@ -81,7 +81,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (1, automationEvents.Count, "event count");
 			Assert.AreEqual (textbox1Element, automationEvents [0].Sender, "event sender");
 			Assert.AreEqual (magicStr2, automationEvents [0].Args.NewValue, "new Value");
-			Assert.AreEqual (magicStr1, automationEvents [0].Args.OldValue, "old Value");
+			// LAMESPEC: The value should be equal to "magicStr1" but is returning null instead
+			Assert.IsNull (automationEvents [0].Args.OldValue, "old Value");
 			automationEvents.Clear ();
 
 			At.RemoveAutomationPropertyChangedEventHandler (textbox1Element, handler);

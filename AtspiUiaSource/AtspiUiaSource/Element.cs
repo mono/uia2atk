@@ -471,6 +471,7 @@ namespace AtspiUiaSource
 			else if (IsTableHeaderItem (accessible))
 				element = new TableHeaderItemElement (accessible);
 			else if (TryCreateRangeValueElement (accessible, out element)) {
+			} else if (TryCreateValueElement (accessible, out element)) {
 			} else
 				element = new Element (accessible);
 			elements [accessible] = element;
@@ -514,6 +515,16 @@ namespace AtspiUiaSource
 				return false;
 			}
 			element = new RangeValueElement (accessible, val);
+			return true;
+		}
+
+		private static bool TryCreateValueElement (Accessible accessible, out Element element)
+		{
+			element = null;
+			Text text = accessible.QueryText ();
+			if (text == null)
+				return false;
+			element = new ValueElement (accessible, text.GetText ());
 			return true;
 		}
 
