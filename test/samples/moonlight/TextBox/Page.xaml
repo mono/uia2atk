@@ -6,7 +6,7 @@
 
             <TextBlock Margin="20,20,0,0" Text="Type Text Here"/>
 
-            <TextBox x:Name="ReadWriteTB" TextChanged="ReadWriteTB_TextChanged" Text="Read And Write"  IsReadOnly="False" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="200" />
+            <TextBox x:Name="ReadWriteTB" TextChanged="ReadWriteTB_TextChanged" Text="Read And Write" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" IsReadOnly="False" HorizontalAlignment="Left" Margin="20,5,0,0" Height="60" Width="200" />
 
             <TextBlock Margin="20,20,0,0" Text="Read Only TextBox"/>
 

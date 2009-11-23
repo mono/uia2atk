@@ -1,3 +1,8 @@
+2009-11-23  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/TextBox/Page.xaml: add some properties for 
+	multi-line and showing scrollbars
+
 2009-11-19  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/listbox/listboxframe.py,
