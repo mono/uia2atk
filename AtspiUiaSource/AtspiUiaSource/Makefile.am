@@ -50,6 +50,7 @@ FILES =  \
 	GridItemSource.cs \
 	GridSource.cs \
 	InvokeSource.cs \
+	RangeValueElement.cs \
 	RangeValueSource.cs \
 	SelectionItemSource.cs \
 	SelectionSource.cs \

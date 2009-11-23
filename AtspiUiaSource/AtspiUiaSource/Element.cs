@@ -465,13 +465,16 @@ namespace AtspiUiaSource
 				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
 			return elements [accessible];
+			Element element;
 			if (IsTable (accessible))
-				elements [accessible] = new TableElement (accessible);
+				element = new TableElement (accessible);
 			else if (IsTableHeaderItem (accessible))
-				elements [accessible] = new TableHeaderItemElement (accessible);
-			else
-				elements [accessible] = new Element (accessible);
-			return elements [accessible];
+				element = new TableHeaderItemElement (accessible);
+			else if (TryCreateRangeValueElement (accessible, out element)) {
+			} else
+				element = new Element (accessible);
+			elements [accessible] = element;
+			return element;
 		}
 
 		internal static Element GetElement (Accessible accessible, TableElement parent, int row)
@@ -496,6 +499,22 @@ namespace AtspiUiaSource
 				return elements [accessible];
 			elements [accessible] = new TableCellElement (accessible, parent, column);
 			return elements [accessible];
+		}
+
+		private static bool TryCreateRangeValueElement (Accessible accessible, out Element element)
+		{
+			element = null;
+			double val;
+			Value value = accessible.QueryValue ();
+			if (value == null)
+				return false;
+			try {
+				val = value.CurrentValue;
+			} catch {
+				return false;
+			}
+			element = new RangeValueElement (accessible, val);
+			return true;
 		}
 
 		private static bool IsTable (Accessible accessible)

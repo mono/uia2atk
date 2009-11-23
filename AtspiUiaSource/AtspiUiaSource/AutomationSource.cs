@@ -279,6 +279,11 @@ namespace AtspiUiaSource
 			case StateType.Checked:
 				RaisePropertyChangedEvent (sender, TogglePatternIdentifiers.ToggleStateProperty, !set, set);
 				break;
+			case StateType.Selected:
+				RaisePropertyChangedEvent (sender, SelectionItemPatternIdentifiers.IsSelectedProperty, !set, set);
+				if (set)
+					RaiseAutomationEvent (sender, SelectionItemPatternIdentifiers.ElementSelectedEvent);
+				break;
 			default:
 				break;
 			}

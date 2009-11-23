@@ -24,11 +24,13 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 //using System.Windows;
 using System.Windows.Automation;
+using At = System.Windows.Automation.Automation;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
@@ -40,6 +42,20 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class SelectionPatternTest : BaseTest
 	{
+		AutomationElement child1Element;
+		AutomationElement child2Element;
+
+		public override void FixtureSetUp ()
+		{
+			base.FixtureSetUp ();
+			child1Element = treeView1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.TreeItem));
+			Assert.IsNotNull (child1Element, "Child element should not be null");
+			child2Element = TreeWalker.RawViewWalker.GetNextSibling (child1Element);
+			Assert.IsNotNull (child2Element, "Child element should not be null");
+		}
+
 		#region Test Methods
 		[Test]
 		public void SelectionTest ()
@@ -50,16 +66,13 @@ namespace MonoTests.System.Windows.Automation
 			AutomationElement [] selection = current.GetSelection ();
 			Assert.AreEqual (0, selection.Length, "Selection length");
 
-			AutomationElement childElement = treeView1Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.TreeItem));
-			Assert.IsNotNull (childElement, "Child element should not be null");
-			AutomationElement nextElement = TreeWalker.RawViewWalker.GetNextSibling (childElement);
-			SelectionItemPattern selectionItemPattern = (SelectionItemPattern) childElement.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			SelectionItemPattern selectionItemPattern = (SelectionItemPattern) child1Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
 			selectionItemPattern.Select ();
+			if (Atspi)
+				Thread.Sleep (500);
 			selection = current.GetSelection ();
 			Assert.AreEqual (1, selection.Length, "Selection length");
-			Assert.AreEqual (childElement, selection [0], "Selection should contain childElement");
+			Assert.AreEqual (child1Element, selection [0], "Selection should contain child1Element");
 
 			if (Atspi) {
 				Assert.IsFalse (current.IsSelectionRequired,
@@ -75,11 +88,87 @@ namespace MonoTests.System.Windows.Automation
 				}
 			}
 
-			selectionItemPattern = (SelectionItemPattern) nextElement.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			selectionItemPattern = (SelectionItemPattern) child2Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
 			selectionItemPattern.Select ();
 			selection = current.GetSelection ();
 			Assert.AreEqual (1, selection.Length, "Selection length");
-			Assert.AreEqual (nextElement, selection [0], "Selection should contain childElement");
+			Assert.AreEqual (child2Element, selection [0], "Selection should contain childElement");
+		}
+
+		[Test]
+		public void Z_PropertyEventTest ()
+		{
+			var automationEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var automationEvents = automationEventsArray.ToList ();
+			automationEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => automationEvents.Add (new { Sender = o, Args = e });
+
+			SelectionItemPattern item1 = (SelectionItemPattern) child1Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			item1.Select ();
+			At.AddAutomationPropertyChangedEventHandler (treeView1Element,
+				TreeScope.Subtree, handler,
+				SelectionItemPattern.IsSelectedProperty,
+				SelectionPattern.SelectionProperty);
+
+			SelectionItemPattern item2 = (SelectionItemPattern) child2Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			item2.Select ();
+			Thread.Sleep (500);
+			At.RemoveAutomationPropertyChangedEventHandler (treeView1Element, handler);
+			if (Atspi) {
+				Assert.AreEqual (2, automationEvents.Count, "event count");
+				Assert.AreEqual (child1Element, automationEvents [0].Sender, "event sender");
+				Assert.AreEqual (false, automationEvents [0].Args.NewValue, "new Value");
+				Assert.AreEqual (true, automationEvents [0].Args.OldValue, "old Value");
+				Assert.AreEqual (child2Element, automationEvents [1].Sender, "event sender");
+				Assert.AreEqual (true, automationEvents [1].Args.NewValue, "new Value");
+				Assert.AreEqual (false, automationEvents [1].Args.OldValue, "old Value");
+			} else {
+				// TODO: This all seems wrong; test again with Windows 7
+				Assert.AreEqual (1, automationEvents.Count, "event count");
+				Assert.AreEqual (child2Element, automationEvents [0].Sender, "event sender");
+				Assert.AreEqual (true, automationEvents [0].Args.NewValue, "new Value");
+				Assert.IsNull (automationEvents [0].Args.OldValue, "old Value");
+			}
+			automationEvents.Clear ();
+
+			item1.Select ();
+			Thread.Sleep (500);
+			Assert.AreEqual (0, automationEvents.Count, "event count");
+		}
+
+		[Test]
+		public void Z_AutomationEventTest ()
+		{
+			var automationEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationEventArgs) null}};
+			var automationEvents = automationEventsArray.ToList ();
+			automationEvents.Clear ();
+
+			AutomationEventHandler handler =
+				(o, e) => automationEvents.Add (new { Sender = o, Args = e });
+
+			SelectionItemPattern item1 = (SelectionItemPattern) child1Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			item1.Select ();
+
+			AutomationEvent eventId = SelectionItemPattern.ElementSelectedEvent;
+			At.AddAutomationEventHandler (eventId,
+				treeView1Element, TreeScope.Descendants, handler);
+
+			SelectionItemPattern item2 = (SelectionItemPattern) child2Element.GetCurrentPattern (SelectionItemPatternIdentifiers.Pattern);
+			item2.Select ();
+			Thread.Sleep (500);
+			At.RemoveAutomationEventHandler (eventId, treeView1Element, handler);
+			Assert.AreEqual (1, automationEvents.Count, "event count");
+			Assert.AreEqual (child2Element, automationEvents [0].Sender, "event sender");
+			Assert.AreEqual (SelectionItemPattern.ElementSelectedEvent, automationEvents [0].Args.EventId, "EventId");
+			automationEvents.Clear ();
+
+			item1.Select ();
+			Thread.Sleep (500);
+			Assert.AreEqual (0, automationEvents.Count, "event count");
 		}
 		#endregion
 	}

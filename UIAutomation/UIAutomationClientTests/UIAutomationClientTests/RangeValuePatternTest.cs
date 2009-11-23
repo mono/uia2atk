@@ -24,11 +24,13 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 //using System.Windows;
 using System.Windows.Automation;
+using At = System.Windows.Automation.Automation;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
@@ -93,6 +95,41 @@ namespace MonoTests.System.Windows.Automation
 			}
 			catch (ArgumentOutOfRangeException) { }
 			Assert.AreEqual (50, pattern.Current.Value, "RangeValue Value after OOR set");
+		}
+
+		[Test]
+		public void Z_EventTest ()
+		{
+			AutomationElement element = (Atspi
+				? numericUpDown1Element : hScrollBarElement);
+			RangeValuePattern pattern;
+				pattern = (RangeValuePattern) element.GetCurrentPattern (RangeValuePatternIdentifiers.Pattern);
+			var automationEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var automationEvents = automationEventsArray.ToList ();
+			automationEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => automationEvents.Add (new { Sender = o, Args = e });
+			pattern.SetValue (20);
+
+			At.AddAutomationPropertyChangedEventHandler (element,
+			                                             TreeScope.Element, handler,
+			                                             RangeValuePatternIdentifiers.ValueProperty);
+			pattern.SetValue (25);
+			if (Atspi) {
+				Assert.AreEqual (1, automationEvents.Count, "event count");
+				Assert.AreEqual (element, automationEvents [0].Sender, "event sender");
+				Assert.AreEqual (RangeValuePattern.ValueProperty, automationEvents [0].Args.Property, "property");
+				Assert.AreEqual (20, automationEvents [0].Args.OldValue, "old value");
+				Assert.AreEqual (25, automationEvents [0].Args.NewValue, "new value");
+			} else {
+				Assert.AreEqual (0, automationEvents.Count, "event count");
+			}
+
+			At.RemoveAutomationPropertyChangedEventHandler (element,
+			                                             handler);
+			automationEvents.Clear ();
 		}
 
 		[Test]

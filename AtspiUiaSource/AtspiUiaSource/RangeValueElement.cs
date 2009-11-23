@@ -31,65 +31,42 @@ using Mono.Unix;
 using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
 using Atspi;
-using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class SelectionItemSource : ISelectionItemPattern
+	public class RangeValueElement : Element
 	{
-		protected Accessible accessible;
+		private double currentValue;
 
-		public SelectionItemSource (Element element)
-		{
-			accessible = element.Accessible;
-		}
-
-		public bool IsSelected {
+		private Value Value {
 			get {
-				return Selection.IsChildSelected (accessible.IndexInParent);
+				return accessible.QueryValue ();
 			}
 		}
 
-		public IElement SelectionContainer {
-			get {
-				return Element.GetElement (accessible.Parent);
-			}
-		}
-
-		public void Select ()
+		public RangeValueElement (Accessible accessible,
+			double originalValue) : base (accessible)
 		{
-			Selection.ClearSelection ();
-			AddToSelection ();
+			currentValue = originalValue;
+			accessible.ObjectEvents.PropertyChange += OnPropertyChange;
 		}
 
-		public void AddToSelection ()
+		~RangeValueElement ()
 		{
-			Selection.SelectChild (accessible.IndexInParent);
+			accessible.ObjectEvents.PropertyChange -= OnPropertyChange;
 		}
 
-		public void RemoveFromSelection ()
+		private void OnPropertyChange (string name, int v1, int v2, object any)
 		{
-			Selection.DeselectChild (accessible.IndexInParent);
-		}
-
-		public SelectionItemProperties Properties {
-			get {
-				SelectionItemProperties p = new SelectionItemProperties ();
-					p.IsSelected = IsSelected;
-				p.SelectionContainer = SelectionContainer;
-				return p;
-			}
-		}
-
-		private Selection Selection {
-			get {
-				Selection val = (accessible.Parent != null
-					? accessible.Parent.QuerySelection ()
-					: null);
-				if (val == null)
-					throw new NotSupportedException ();
-				return val;
-			}
+			if (name != "accessible-value")
+				return;
+			double newVal = Value.CurrentValue;
+			AutomationSource.RaisePropertyChangedEvent (
+				this,
+				RangeValuePatternIdentifiers.ValueProperty,
+				currentValue,
+				newVal);
+			currentValue = newVal;
 		}
 	}
 }
