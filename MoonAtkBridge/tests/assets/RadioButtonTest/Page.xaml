@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="RadioButtonTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ListBox>
+            <RadioButton GroupName="Fruit">
+                <TextBlock>Apple</TextBlock>
+            </RadioButton>
+            <RadioButton GroupName="Fruit">
+                <TextBlock>Banana</TextBlock>
+            </RadioButton>
+            <RadioButton GroupName="Fruit">
+                <TextBlock>Watermelon</TextBlock>
+            </RadioButton>
+        </ListBox>
+    </Grid>
+</UserControl>

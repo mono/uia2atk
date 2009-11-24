@@ -1,3 +1,23 @@
+2009-11-24  Brad Taylor  <brad@getcoded.net>
+
+	* MoonAtkBridge.sources:
+	* Moonlight.AtkBridge.PatternImplementors/RadioButton.cs: Add pattern
+	implementor specifically for the RadioButton control type to expose a
+	click action.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs:
+	* Moonlight.AtkBridge/ImplementsPatternAttribute.cs: Add support for
+	implementors which should be used for specific control types.
+
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Chain up the
+	inheritance hierarchy for method, property and attribute detection.
+
+	* Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs: Add
+	base implementor for action types to subclass.
+
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs:
+	Refactor to use BaseActionImplementor.
+
 2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ChangeLog: Add some forgotten ChangeLogs from last commits.

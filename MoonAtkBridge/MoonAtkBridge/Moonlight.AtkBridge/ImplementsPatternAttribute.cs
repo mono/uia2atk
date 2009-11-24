@@ -43,16 +43,24 @@ namespace Moonlight.AtkBridge
 			set;
 		}
 
-		public ImplementsPatternAttribute (PatternInterface pattern)
-			: this (pattern, null)
-		{
+		public AutomationControlType? ControlType {
+			get;
+			set;
 		}
 
-		public ImplementsPatternAttribute (PatternInterface pattern,
-		                                   Type elementType)
+		public ImplementsPatternAttribute (PatternInterface pattern)
 		{
 			Pattern = pattern;
+		}
+
+		public ImplementsPatternAttribute (Type elementType)
+		{
 			ElementType = elementType;
+		}
+
+		public ImplementsPatternAttribute (AutomationControlType controlType)
+		{
+			ControlType = controlType;
 		}
 	}
 }

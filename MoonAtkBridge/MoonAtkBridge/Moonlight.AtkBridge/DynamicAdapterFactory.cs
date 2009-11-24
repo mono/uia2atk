@@ -83,6 +83,14 @@ namespace Moonlight.AtkBridge
 					implementors.AddRange (explicitImpls);
 			}
 
+			// Do we have any implementors for this control type?
+			List<Type> controlTypeImpls;
+			if (controlTypeImplementors.TryGetValue (peer.GetAutomationControlType (),
+			                                         out controlTypeImpls)) {
+				if (controlTypeImpls != null)
+					implementors.AddRange (controlTypeImpls);
+			}
+
 			// Find implementors for the patterns that the peer
 			// implements
 			List<Type> potentialImpls = new List<Type> ();
@@ -160,7 +168,7 @@ namespace Moonlight.AtkBridge
 			adapter = (Adapter) Activator.CreateInstance (
 				adapterType, new object [] { peer }
 			);
-			
+
 			activeAdapters [peer] = adapter;
 			return adapter;
 		}
@@ -227,6 +235,15 @@ namespace Moonlight.AtkBridge
 							explicitImplementors [ipa.ElementType] = new List<Type> ();
 
 						explicitImplementors [ipa.ElementType].Add (t);
+						continue;
+					}
+
+					if (ipa.ControlType.HasValue) {
+						AutomationControlType controlType = ipa.ControlType.Value;
+						if (!controlTypeImplementors.ContainsKey (controlType))
+							controlTypeImplementors [controlType] = new List<Type> ();
+
+						controlTypeImplementors [controlType].Add (t);
 						continue;
 					}
 
@@ -302,6 +319,9 @@ namespace Moonlight.AtkBridge
 
 		private Dictionary<Type, List<Type>> explicitImplementors
 			= new Dictionary<Type, List<Type>> ();
+
+		private Dictionary<AutomationControlType, List<Type>> controlTypeImplementors
+			= new Dictionary<AutomationControlType, List<Type>> ();
 
 		// Maps generated type name to the generated adapter type
 		private Dictionary<string, Type> adapterTypes

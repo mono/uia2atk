@@ -40,13 +40,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 	[ImplementsPattern (PatternInterface.ExpandCollapse)]
 	[ImplementsPattern (PatternInterface.Invoke)]
 	[ImplementsPattern (PatternInterface.Toggle)]
-	public class ExpandCollapseInvokeToggle : BasePatternImplementor, Atk.ActionImplementor
+	public class ExpandCollapseInvokeToggle
+		: BaseActionImplementor, Atk.ActionImplementor
 	{
 #region Public Properties
-		public int NActions {
-			get { return actions.Count; }
-		}
-
 		IntPtr GLib.IWrapper.Handle {
 			get { return IntPtr.Zero; }
 		}
@@ -56,10 +53,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		public ExpandCollapseInvokeToggle (Adapter adapter, AutomationPeer peer)
 			: base (adapter, peer)
 		{
-			// TODO: also do this in response to patterns being
-			// added/removed
-			RefreshActions ();
-
 			adapter.AutomationPropertyChanged
 				+= new EventHandler<AutomationPropertyChangedEventArgs> (
 					OnAutomationPropertyChanged);
@@ -95,84 +88,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 					states.RemoveState (Atk.StateType.Checked);
 			}
 		}
-
-		public bool DoAction (int i)
-		{
-			if (i < 0 || i >= actions.Count)
-				return false;
-
-			ActionDescriptor action = actions [i];
-			if (action.Pattern == null)
-				return false;
-
-			try {
-				if (action.Pattern is IInvokeProvider)
-					((IInvokeProvider) action.Pattern).Invoke ();
-				else if (action.Pattern is IToggleProvider)
-					((IToggleProvider) action.Pattern).Toggle ();
-				else if (action.Pattern is IExpandCollapseProvider) {
-					IExpandCollapseProvider ecProvider
-						= (IExpandCollapseProvider) action.Pattern;
-
-					if (ecProvider.ExpandCollapseState == ExpandCollapseState.Expanded
-					    || ecProvider.ExpandCollapseState == ExpandCollapseState.PartiallyExpanded)
-						ecProvider.Collapse ();
-					else
-						ecProvider.Expand ();
-				}
-
-				return true;
-			} catch (ElementNotEnabledException) {
-				return false;
-			}
-		}
-
-		public string GetDescription (int i)
-		{
-			if (i < 0 || i >= actions.Count)
-				return null;
-
-			return actions [i].Description;
-		}
-
-		public string GetKeybinding (int i)
-		{
-			if (i < 0 || i >= actions.Count)
-				return null;
-
-			// In UIA all controls support only one KeyBinding (aka AccessKey)
-			return Keybinding;
-		}
-
-		public string GetName (int i)
-		{
-			if (i < 0 || i >= actions.Count)
-				return null;
-
-			return actions [i].Name;
-		}
-
-		public string GetLocalizedName (int i)
-		{
-			if (i < 0 || i >= actions.Count)
-				return null;
-
-			return actions [i].LocalizedName ?? actions [i].Name;
-		}
-
-		public bool SetDescription (int i, string desc)
-		{
-			if (i < 0 || i >= actions.Count)
-				return false;
-
-			// TODO: preserve these across refreshes
-			actions [i].Description = desc;
-			return true;
-		}
 #endregion
 
-#region Private Methods
-		private void RefreshActions ()
+#region Protected Methods
+		protected override void RefreshActions ()
 		{
 			actions.Clear ();
 
@@ -181,7 +100,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			var toggle = peer.GetPattern (PatternInterface.Toggle);
 			if (toggle != null) {
 				actions.Add (new ActionDescriptor {
-					Name = "click", Pattern = toggle
+					Name = "click", Pattern = toggle,
+					Delegate = p => ((IToggleProvider) p).Toggle ()
 				});
 			}
 
@@ -189,7 +109,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			var invoke = peer.GetPattern (PatternInterface.Invoke);
 			if (toggle == null && invoke != null) {
 				actions.Add (new ActionDescriptor {
-					Name = "click", Pattern = invoke
+					Name = "click", Pattern = invoke,
+					Delegate = p => ((IInvokeProvider) p).Invoke ()
 				});
 			}
 
@@ -197,11 +118,22 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				= peer.GetPattern (PatternInterface.ExpandCollapse);
 			if (expandCollapse != null) {
 				actions.Add (new ActionDescriptor {
-					Name = "expand or collapse", Pattern = expandCollapse
+					Name = "expand or collapse", Pattern = expandCollapse,
+					Delegate = p => {
+						var e = (IExpandCollapseProvider) p;
+
+						if (e.ExpandCollapseState == ExpandCollapseState.Expanded
+						    || e.ExpandCollapseState == ExpandCollapseState.PartiallyExpanded)
+							e.Collapse ();
+						else
+							e.Expand ();
+					}
 				});
 			}
 		}
+#endregion
 
+#region Private Methods
 		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
 		{
 			if (args.Property == ECPIs.ExpandCollapseStateProperty) {
@@ -209,27 +141,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				adapter.EmitSignal ("visible_data_changed");
 			} else if (args.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				adapter.NotifyStateChange (Atk.StateType.Checked);
-			}
-		}
-#endregion
-
-#region Private Fields
-		private class ActionDescriptor {
-			public string Description = null;
-			public string Name = null;
-			public string LocalizedName = null;
-			public object Pattern = null;
-		}
-
-		private List<ActionDescriptor> actions
-			= new List<ActionDescriptor> ();
-
-		private string Keybinding {
-			get {
-				string keybinding = peer.GetAccessKey ();
-				if (!string.IsNullOrEmpty (keybinding))
-					return keybinding.ToUpper ().Replace ("ALT+", "<Alt>");
-				return null;
 			}
 		}
 #endregion

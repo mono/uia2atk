@@ -5,9 +5,11 @@ Moonlight.AtkBridge/DynamicAdapterFactory.cs
 Moonlight.AtkBridge/ImplementsPatternAttribute.cs
 Moonlight.AtkBridge/Navigation.cs
 Moonlight.AtkBridge/Log.cs
+Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs
 Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
 Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
 Moonlight.AtkBridge.PatternImplementors/GridTable.cs
+Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
 Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
 Moonlight.AtkBridge.PatternImplementors/Selection.cs
 Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs

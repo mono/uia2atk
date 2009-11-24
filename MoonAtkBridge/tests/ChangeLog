@@ -1,3 +1,13 @@
+2009-11-24  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_radiobutton.py:
+	* assets/RadioButtonTest/App.xaml:
+	* assets/RadioButtonTest/Page.xaml:
+	* assets/RadioButtonTest/App.xaml.cs:
+	* assets/RadioButtonTest/Makefile.am:
+	* assets/RadioButtonTest/Page.xaml.cs: Add new test for RadioButton.
+
 2009-11-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* assets/FakeBridgeTest/Makefile.am: Use make in a more
