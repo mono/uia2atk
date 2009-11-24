@@ -38,7 +38,7 @@ class ButtonSample:
         self.window.show()
         # This is a new call, which just sets the title of our
         # new window to "Hello Buttons!"
-        self.window.set_title("Buttons")
+        self.window.set_title("AtspiUiaSource Test")
  
         # Here we just set a handler for delete_event that immediately
         # exits GTK.
@@ -66,7 +66,8 @@ class ButtonSample:
  
         # Instead of add(), we pack this button into the invisible
         # box, which has been packed into the window.
-        self.box1.pack_start(self.button1, True, True, 0)
+        #self.box1.pack_start(self.button1, True, True, 0)
+        self.box1.add(self.button1)
  
         # Always remember this step, this tells GTK that our preparation for
         # this button is complete, and it can now be displayed.
@@ -80,7 +81,8 @@ class ButtonSample:
         # passing a pointer to "button 2" instead.
         self.button2.connect("clicked", self.open_dialog)
  
-        self.box1.pack_start(self.button2, True, True, 0)
+        #self.box1.pack_start(self.button2, True, True, 0)
+        self.box1.add(self.button2)
  
         # The order in which we show the buttons is not really important, but I
         # recommend showing the window last, so it all pops up at once.
@@ -93,7 +95,8 @@ class ButtonSample:
         self.button3.set_label("openSUSE")
         self.button3.set_image(self.image)
 
-        self.box1.pack_start(self.button3, True, True, 0)
+        #self.box1.pack_start(self.button3, True, True, 0)
+        self.box1.add(self.button3)
         self.button3.connect("clicked", self.open_dialog)
         self.button2.show()
         #self.button3.show()

@@ -1,3 +1,11 @@
+2009-11-24  Mike Gorse  <mgorse@novell.com>
+
+	* IElementTest.cs: Track some AtspiUiaSource changes.
+
+	* gtkbutton.py: Use add instead of gtk_box_pack_start [BGO#577392]
+
+	* atspiuiasourcetests.sh.in: Remove GTK_MODULES.
+
 2009-11-03  Mario Carrion  <mcarrion@novell.com>
 
 	* ChangeLog: File added.

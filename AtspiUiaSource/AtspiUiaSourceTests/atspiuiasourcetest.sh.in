@@ -45,8 +45,6 @@ if [ "x$labels" == "xyes" ]; then
 	NUNIT_FLAGS="${NUNIT_FLAGS} -labels"
 fi
 
-export GTK_MODULES=gail:/usr/local/lib/gtk-2.0/modules/libspiatk.so
-
 (cd bin/Debug; \
 	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
 
