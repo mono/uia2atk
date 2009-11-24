@@ -763,33 +763,6 @@ namespace MonoTests.System.Windows.Automation
 
 			Assert.AreEqual (SWA.ValuePattern.IsReadOnlyProperty, SWA.ValuePatternIdentifiers.IsReadOnlyProperty);
 			Assert.IsNotNull (SWA.ValuePattern.IsReadOnlyProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.Pattern, SWA.WindowPatternIdentifiers.Pattern);
-			Assert.IsNotNull (SWA.WindowPattern.Pattern);
-
-			Assert.AreEqual (SWA.WindowPattern.CanMaximizeProperty, SWA.WindowPatternIdentifiers.CanMaximizeProperty);
-			Assert.IsNotNull (SWA.WindowPattern.CanMaximizeProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.CanMinimizeProperty, SWA.WindowPatternIdentifiers.CanMinimizeProperty);
-			Assert.IsNotNull (SWA.WindowPattern.CanMinimizeProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.IsModalProperty, SWA.WindowPatternIdentifiers.IsModalProperty);
-			Assert.IsNotNull (SWA.WindowPattern.IsModalProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.IsTopmostProperty, SWA.WindowPatternIdentifiers.IsTopmostProperty);
-			Assert.IsNotNull (SWA.WindowPattern.IsTopmostProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.WindowVisualStateProperty, SWA.WindowPatternIdentifiers.WindowVisualStateProperty);
-			Assert.IsNotNull (SWA.WindowPattern.WindowVisualStateProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.WindowInteractionStateProperty, SWA.WindowPatternIdentifiers.WindowInteractionStateProperty);
-			Assert.IsNotNull (SWA.WindowPattern.WindowInteractionStateProperty);
-
-			Assert.AreEqual (SWA.WindowPattern.WindowOpenedEvent, SWA.WindowPatternIdentifiers.WindowOpenedEvent);
-			Assert.IsNotNull (SWA.WindowPattern.WindowOpenedEvent);
-
-			Assert.AreEqual (SWA.WindowPattern.WindowClosedEvent, SWA.WindowPatternIdentifiers.WindowClosedEvent);
-			Assert.IsNotNull (SWA.WindowPattern.WindowClosedEvent);
 		}
 	}
 }

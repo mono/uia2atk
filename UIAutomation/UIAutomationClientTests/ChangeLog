@@ -1,3 +1,13 @@
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* SampleForm/Form1.cs: Add new commands for WindowPattern.
+
+	* UIAutomationClientTests/Makefile.am:
+	* UIAutomationClientTests/AutomationTest.cs:
+	* UIAutomationClientTests/WindowPatternTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests.csproj: New tests
+	for WindowPattern.
+
 2009-11-23  Mario Carrion   <mcarrion@novell.com>
 
 	* UIAutomationClientTests/ValuePatternTest.cs: Updated according

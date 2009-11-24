@@ -93,7 +93,7 @@ namespace System.Windows.Automation
 
 		public bool WaitForInputIdle (int milliseconds)
 		{
-			throw new NotImplementedException ();
+			return source.WaitForInputIdle (milliseconds);
 		}
 
 		public void Close ()

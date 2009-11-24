@@ -36,6 +36,7 @@ namespace SampleForm {
 	public partial class Form1 : Form {
 
 		private DataTable table = new DataTable ();
+		private Form childForm;
 
 		public Form1 ()
 		{
@@ -177,6 +178,27 @@ namespace SampleForm {
 				item.SubItems.Add ("subitem1");
 				item.SubItems.Add ("subitem2");
 				listView1.Items.Add (item);
+			} else if (cmd == "Open.ChildWindow") {
+				if (childForm == null) {
+					childForm = new Form ();
+					childForm.Text = "TestForm1.ChildForm1";
+				}
+				childForm.Show ();
+			} else if (cmd == "Close.ChildWindow") {
+				if (childForm != null) {
+					childForm.Close ();
+					childForm = null;
+				}
+			} else if (cmd == "Toggle.Window.CanMaximize") {
+				MaximizeBox = !MaximizeBox;
+			} else if (cmd == "Toggle.Window.CanMinimize") {
+				MinimizeBox = !MinimizeBox;
+			} else if (cmd == "Toggle.Window.IsTopmost") {
+				TopMost = !TopMost;
+			} else if (cmd == "Open.ModalChildWindow") {
+				new Form () {Text = "TestForm1.ModalForm1"}.ShowDialog (this);
+			} else if (cmd == "Sleep.2000") {
+				System.Threading.Thread.Sleep (2000);
 			}
 		}
 	}

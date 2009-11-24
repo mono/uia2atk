@@ -89,7 +89,8 @@ FILES =  \
 	TogglePatternTest.cs \
 	TransformPatternTest.cs \
 	TreeWalkerTest.cs \
-	ValuePatternTest.cs 
+	ValuePatternTest.cs \
+	WindowPatternTest.cs 
 
 DATA_FILES = 
 
