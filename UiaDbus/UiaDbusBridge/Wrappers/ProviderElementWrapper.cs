@@ -372,7 +372,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				IntPtr? val = (IntPtr?)
 					provider.GetPropertyValue (AEIds.NativeWindowHandleProperty.Id);
 				if (!val.HasValue)
-					return -1;
+					return 0;
 				return val.Value.ToInt32 ();
 			}
 		}

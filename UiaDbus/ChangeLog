@@ -1,3 +1,23 @@
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbusBridge/Application.cs:
+	* UiaDbus/Interfaces/IApplication.cs:
+	* UiaDbusSource/UiaDbusAutomationSource.cs: Implement GetElementFromHandle.
+
+	* UiaDbusBridge/AutomationBridge.cs: Track handles for non-window
+	providers.
+
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs:
+	* UiaDbusBridgeTests/ProviderElementWrapperTest.cs: NativeWindowHandle
+	default should be 0, not -1.
+
+	* UiaDbusBridge/Wrappers/GridPatternWrapper.cs:
+	* UiaDbusBridge/Wrappers/GridItemPatternWrapper.cs:
+	* UiaDbusBridge/Wrappers/SelectionPatternWrapper.cs:
+	* UiaDbusBridge/Wrappers/TextPatternRangeWrapper.cs:
+	* UiaDbusBridge/Wrappers/SelectionItemPatternWrapper.cs: Fix typo in
+	FindWrapperByProvider method name.
+
 2009-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusSource/UiaDbusSelectionPattern.cs: Implement new properties.

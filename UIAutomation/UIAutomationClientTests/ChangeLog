@@ -1,5 +1,10 @@
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* UIAutomationClientTests/AutomationElementTest.cs: Implement test
+	for AutomationElement.FromHandle.
+
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* SampleForm/Form1.cs: Add new commands for WindowPattern.
 
 	* UIAutomationClientTests/Makefile.am:

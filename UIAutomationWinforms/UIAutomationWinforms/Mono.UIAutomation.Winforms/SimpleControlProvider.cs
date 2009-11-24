@@ -355,7 +355,9 @@ namespace Mono.UIAutomation.Winforms
 				if (!pid.HasValue)
 					pid = System.Diagnostics.Process.GetCurrentProcess ().Id;
 				return pid.Value;
-			} else
+			} else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+				return Control.Handle; // TODO: Should be int, maybe?
+			else
 				return null;
 		}
 

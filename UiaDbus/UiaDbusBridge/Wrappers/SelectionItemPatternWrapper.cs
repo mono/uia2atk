@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public string SelectionContainerPath {
 			get {
 				var container = provider.SelectionContainer;
-				return AutomationBridge.Instance.FindWrapperByPovider (container).Path;
+				return AutomationBridge.Instance.FindWrapperByProvider (container).Path;
 			}
 		}
 

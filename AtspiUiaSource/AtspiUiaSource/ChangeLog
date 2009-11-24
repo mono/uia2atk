@@ -1,3 +1,7 @@
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AutomationSource.cs: Add stub implementation of GetElementFromHandle.
+
 2009-11-23  Mario Carrion  <mcarrion@novell.com>
 
 	* Element.cs: New static method TryCreateValueElement.

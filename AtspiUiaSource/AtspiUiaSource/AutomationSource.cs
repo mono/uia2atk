@@ -62,6 +62,12 @@ namespace AtspiUiaSource
 			return ret;
 		}
 
+		public IElement GetElementFromHandle (IntPtr handle)
+		{
+			// TODO: Implement (how best?)
+			return null;
+		}
+
 		// The below code stolen from UiaAtkBridge
  		public bool IsAccessibilityEnabled {
  			get {

@@ -1,5 +1,10 @@
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* System.Windows.Automation/AutomationElement.cs: Implement
+	FromHandle.
+
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* System.Windows.Automation/WindowPattern.cs: Implement
 	WaitForInputIdle.
 

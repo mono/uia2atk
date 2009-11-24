@@ -940,6 +940,31 @@ namespace MonoTests.System.Windows.Automation
 				"label1's text is modified after button1 is clicked");
 		}
 
+		[Test]
+		public void FromHandleTest ()
+		{
+			AutomationElement [] elements = { testFormElement, button1Element, groupBox1Element };
+			foreach (var testElement in elements) {
+				int handle = testElement.Current.NativeWindowHandle;
+				var element = AutomationElement.FromHandle (new IntPtr (handle));
+				Assert.AreEqual (testElement, element,
+					String.Format ("{0}'s handle of {1} did not work in FromHandle",
+					testElement.Current.Name, handle));
+			}
+
+			var firstTreeItemElement = treeView1Element.FindFirst (TreeScope.Children, Condition.TrueCondition);
+			int itemHandle = firstTreeItemElement.Current.NativeWindowHandle;
+			Assert.AreEqual (0, itemHandle);
+			IntPtr itemPtr = new IntPtr (itemHandle);
+
+			AssertRaises<ArgumentException> (
+				() => AutomationElement.FromHandle (itemPtr),
+				"passing in IntPtr.Zero");
+			AssertRaises<ArgumentException> (
+				() => AutomationElement.FromHandle ((IntPtr)null),
+				"passing in null");
+		}
+
 		#endregion
 
 		#region Private Methods

@@ -75,7 +75,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			foreach (AutomationEventHandlerData handler in automationEventHandlers) {
 				if (handler.EventId == eventId.Id &&
 				    IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
-					var wrapper = AutomationBridge.Instance.FindWrapperByPovider (simpleProvider);
+					var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
 					if (wrapper == null)
 						throw new Exception ("Inconsistent provider -> wrapper mapping state");
 					AutomationEvent (handler.HandlerId, handler.EventId, wrapper.Path);
@@ -93,7 +93,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					int eventPropId = e.Property.Id;
 					foreach (int propId in handler.Properties) {
 						if (eventPropId == propId) {
-							var wrapper = AutomationBridge.Instance.FindWrapperByPovider (simpleProvider);
+							var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
 							if (wrapper == null)
 								throw new Exception ("Inconsistent provider -> wrapper mapping state");
 							//todo Need to add a general class to serialize/deserialize OldValue/Newvalue
@@ -128,7 +128,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					simpleProvider = fragmentProvider;
 				}
 				if (IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
-					var wrapper = AutomationBridge.Instance.FindWrapperByPovider (simpleProvider);
+					var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
 					if (wrapper == null)
 						throw new Exception ("Inconsistent provider -> wrapper mapping state");
 					StructureChanged (handler.HandlerId, handler.EventId, wrapper.Path,
@@ -217,6 +217,14 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			for (int i = 0; i < paths.Length; i++)
 				paths [i] = rootElements [i].Path;
 			return paths;
+		}
+
+		public string GetElementPathFromHandle (int handle)
+		{
+			var element = AutomationBridge.Instance.FindWrapperByHandle (handle);
+			if (element != null)
+				return element.Path;
+			return string.Empty;
 		}
 
 		public void AddAutomationEventHandler (int eventId, int [] elementRuntimeId,

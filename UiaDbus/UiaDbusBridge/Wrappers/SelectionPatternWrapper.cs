@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			foreach (var section in selection)
 			{
 				string elementPath =
-					AutomationBridge.Instance.FindWrapperByPovider (section).Path;
+					AutomationBridge.Instance.FindWrapperByProvider (section).Path;
 				selectionPaths.Add (elementPath);
 			}
 			return selectionPaths.ToArray ();

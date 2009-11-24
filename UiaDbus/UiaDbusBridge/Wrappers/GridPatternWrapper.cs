@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public string GetItemPath (int row, int column)
 		{
 			var element = provider.GetItem (row, column);
-			return AutomationBridge.Instance.FindWrapperByPovider (element).Path;
+			return AutomationBridge.Instance.FindWrapperByProvider (element).Path;
 		}
 
 		public int ColumnCount {

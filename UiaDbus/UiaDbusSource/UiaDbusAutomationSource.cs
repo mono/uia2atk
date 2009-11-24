@@ -137,6 +137,16 @@ namespace Mono.UIAutomation.UiaDbusSource
 			return dbusElements.ToArray ();
 		}
 
+		public IElement GetElementFromHandle (IntPtr handle)
+		{
+			foreach (var appPair in GetUiaApplications ()) {
+				string path = appPair.Value.GetElementPathFromHandle (handle.ToInt32 ());
+				if (!string.IsNullOrEmpty (path))
+					return GetOrCreateElement (appPair.Key, path);
+			}
+			return null;
+		}
+
 		public void AddAutomationEventHandler (AutomationEvent eventId,
 		                                       IElement element,
 		                                       TreeScope scope,
@@ -294,7 +304,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void RemoveAllEventHandlers ()
 		{
-			foreach (DCI.IApplication app in GetUiaApplications ())
+			foreach (DCI.IApplication app in GetUiaApplications ().Values)
 				app.RemoveAllEventHandlers (EventHandlerManager.ClientPrefix);
 		}
 
@@ -376,10 +386,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 			return candidateBusNames;
 		}
 
-		private DCI.IApplication [] GetUiaApplications ()
+		private Dictionary<string, DCI.IApplication> GetUiaApplications ()
 		{
-			List<DCI.IApplication> dbusApps =
-				new List<DCI.IApplication> ();
+			Dictionary<string, DCI.IApplication> dbusApps =
+				new Dictionary<string, DCI.IApplication> ();
 
 			foreach (string busName in GetUiaDbusNames ()) {
 				DCI.IApplication app =
@@ -387,10 +397,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 					                                         new ObjectPath (DC.Constants.ApplicationPath));
 				if (app == null)
 					continue;
-				dbusApps.Add (app);
+				dbusApps [busName] = app;
 			}
 
-			return dbusApps.ToArray ();
+			return dbusApps;
 		}
 
 		private UiaDbusElement CreateElement (DCI.IAutomationElement dbusElement, string busName, string elementPath)

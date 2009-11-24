@@ -45,7 +45,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 	internal class AutomationBridge : IAutomationBridge
 	{
 		#region Private Members
-		
+
+		// TODO: Determine if HostProviderFromHandle would break if only
+		//       one pointer/provider mapping were used
+		private Dictionary<IntPtr, IRawElementProviderSimple> pointerWindowProviderMapping =
+			new Dictionary<IntPtr, IRawElementProviderSimple> ();
 		private Dictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping =
 			new Dictionary<IntPtr, IRawElementProviderSimple> ();
 		private Dictionary<IRawElementProviderSimple, ProviderElementWrapper> providerWrapperMapping =
@@ -96,7 +100,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		public object HostProviderFromHandle (IntPtr hwnd)
 		{
 			IRawElementProviderSimple provider = null;
-			pointerProviderMapping.TryGetValue (hwnd, out provider);
+			pointerWindowProviderMapping.TryGetValue (hwnd, out provider);
 			return provider;
 		}
 
@@ -169,23 +173,28 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				if (simpleProvider == null)
 					return;
 
+				object providerHandleObj =
+					simpleProvider.GetPropertyValue (AEIds.NativeWindowHandleProperty.Id);
+				IntPtr providerHandle = providerHandleObj != null ?
+					(IntPtr) providerHandleObj :
+					IntPtr.Zero;
+
 				bool isWindow = false;
 				if (ControlType.Window.Id == (int)
 				    simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
 					isWindow = true;
-					IntPtr providerHandle = (IntPtr)
-						simpleProvider.GetPropertyValue (AEIds.NativeWindowHandleProperty.Id);
-					pointerProviderMapping [providerHandle] = simpleProvider;
+					pointerWindowProviderMapping [providerHandle] = simpleProvider;
 					windowProviderCount++;
 				}
-				
-				if (simpleProvider != null) {
-					ProviderElementWrapper element = new ProviderElementWrapper (simpleProvider);
-					element.Register (SessionBus);
-					providerWrapperMapping [simpleProvider] = element;
-					if (isWindow)
-						app.AddRootElement (element);
-				}
+
+				ProviderElementWrapper element = new ProviderElementWrapper (simpleProvider);
+				element.Register (SessionBus);
+				providerWrapperMapping [simpleProvider] = element;
+				if (providerHandle != IntPtr.Zero)
+					pointerProviderMapping [providerHandle] = simpleProvider;
+				if (isWindow)
+					app.AddRootElement (element);
+
 				//The event shall be raised after the provider is added to providerWrapperMapping
 				app.RaiseStructureChangedEvent (provider, e);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
@@ -246,7 +255,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		{
 			string [] paths = new string [elements.Length];
 			for (int i = 0; i < elements.Length; i++)
-				paths [i] = FindWrapperByPovider (elements [i]).Path;
+				paths [i] = FindWrapperByProvider (elements [i]).Path;
 			return paths;
 		}
 
@@ -272,11 +281,21 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			return null;
 		}
 
-		internal ProviderElementWrapper FindWrapperByPovider (IRawElementProviderSimple provider)
+		internal ProviderElementWrapper FindWrapperByProvider (IRawElementProviderSimple provider)
 		{
 			ProviderElementWrapper wrapper;
 			if (providerWrapperMapping.TryGetValue (provider, out wrapper))
 				return wrapper;
+			return null;
+		}
+
+		internal ProviderElementWrapper FindWrapperByHandle (int handle)
+		{
+			IRawElementProviderSimple provider = null;
+			pointerProviderMapping.TryGetValue (new IntPtr (handle),
+			                                    out provider);
+			if (provider != null)
+				return FindWrapperByProvider (provider);
 			return null;
 		}
 
@@ -325,20 +344,30 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			int controlTypeId = (int) provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
 
+			IntPtr providerHandle = IntPtr.Zero;
 			if (controlTypeId == ControlType.Window.Id) {
 				app.RemoveRootElement (element);
-				IntPtr providerHandle = IntPtr.Zero;
+				foreach (IntPtr pointer in pointerWindowProviderMapping.Keys) {
+					if (provider == pointerWindowProviderMapping [pointer]) {
+						providerHandle = pointer;
+						break;
+					}
+				}
+				pointerWindowProviderMapping.Remove (providerHandle);
+				windowProviderCount--;
+				if (windowProviderCount == 0)
+					lastWindowProvider = true;
+			} else {
 				foreach (IntPtr pointer in pointerProviderMapping.Keys) {
 					if (provider == pointerProviderMapping [pointer]) {
 						providerHandle = pointer;
 						break;
 					}
 				}
-				pointerProviderMapping.Remove (providerHandle);
-				windowProviderCount--;
-				if (windowProviderCount == 0)
-					lastWindowProvider = true;
 			}
+			if (providerHandle != IntPtr.Zero)
+				pointerProviderMapping.Remove (providerHandle);
+
 			element.Unregister ();
 			providerWrapperMapping.Remove (provider);
 			app.RemoveProvider (provider);

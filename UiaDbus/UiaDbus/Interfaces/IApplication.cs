@@ -38,6 +38,8 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 	{
 		string [] GetRootElementPaths ();
 
+		string GetElementPathFromHandle (int handle);
+
 		void AddAutomationEventHandler (int eventId, int [] elementRuntimeId, TreeScope scope, int handlerId);
 		void AddAutomationPropertyChangedEventHandler (int [] elementRuntimeId, TreeScope scope, int handlerId, int[] properties);
 		void AddStructureChangedEventHandler (int [] elementRuntimeId, TreeScope scope, int handlerId);

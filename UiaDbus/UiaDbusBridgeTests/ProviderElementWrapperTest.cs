@@ -681,7 +681,7 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 			// Test initial value
 			mockWindow.SetPropertyValue (AEIds.NativeWindowHandleProperty.Id,
 			                             null);
-			Assert.AreEqual (-1,
+			Assert.AreEqual (0,
 			                 windowElement.NativeWindowHandle,
 			                 "Initial value");
 

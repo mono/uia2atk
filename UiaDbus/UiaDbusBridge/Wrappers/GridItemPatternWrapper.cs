@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public string ContainingGridPath {
 			get {
 				var element = provider.ContainingGrid;
-				return AutomationBridge.Instance.FindWrapperByPovider (element).Path;
+				return AutomationBridge.Instance.FindWrapperByProvider (element).Path;
 			}
 		}
 

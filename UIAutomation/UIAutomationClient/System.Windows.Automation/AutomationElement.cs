@@ -455,7 +455,17 @@ namespace System.Windows.Automation
 #region Public Static Methods
 		public static AutomationElement FromHandle (IntPtr hwnd)
 		{
-			throw new NotImplementedException ();
+			if (hwnd == (IntPtr) null || hwnd == IntPtr.Zero)
+				throw new ArgumentException ("hwnd");
+			AutomationElement element = null;
+			foreach (var source in SourceManager.GetAutomationSources ()) {
+				var sourceElement = source.GetElementFromHandle (hwnd);
+				if (sourceElement != null) {
+					element = SourceManager.GetOrCreateAutomationElement (sourceElement);
+					break;
+				}
+			}
+			return element;
 		}
 
 		public static AutomationElement FromLocalProvider (IRawElementProviderSimple localImpl)

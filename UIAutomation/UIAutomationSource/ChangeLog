@@ -1,3 +1,7 @@
+2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Source/IAutomationSource.cs: Add GetElementFromHandle.
+
 2009-11-18  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Source/SelectionSource.cs: Add some properties.

@@ -123,7 +123,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			foreach (var child in children)
 			{
 				string elementPath =
-					AutomationBridge.Instance.FindWrapperByPovider (child).Path;
+					AutomationBridge.Instance.FindWrapperByProvider (child).Path;
 				childrenPaths.Add (elementPath);
 			}
 			return childrenPaths.ToArray ();
@@ -135,7 +135,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			if (element == null)
 				return string.Empty;
 			else
-				return AutomationBridge.Instance.FindWrapperByPovider (element).Path;
+				return AutomationBridge.Instance.FindWrapperByProvider (element).Path;
 		}
 
 		public string GetText (int maxLength)

@@ -143,8 +143,6 @@ namespace Mono.UIAutomation.Winforms
 				return Control.Text;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("window");
-			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
-				return form.Handle; // TODO: Should be int, maybe?
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return false;
 			else
