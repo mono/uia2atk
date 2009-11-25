@@ -10,9 +10,11 @@ FILES = \
 
 all: $(XAP)
 
-$(FAKEBRIDGE):
-	$(MAKE) fake -C ../../..
+$(FAKEBRIDGE): ../../../bin/fake/MoonAtkBridge.dll
 	cp ../../../bin/fake/MoonAtkBridge.dll .
+
+../../../bin/fake/MoonAtkBridge.dll:
+	$(MAKE) fake -C ../../..
 
 $(XAP): $(FILES) $(FAKEBRIDGE)
 	$(MXAP)

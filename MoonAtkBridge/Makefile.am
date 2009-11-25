@@ -151,7 +151,7 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
 
-tests-build:
+tests-build: fake
 	cd tests && $(MAKE) $(AM_MAKEFLAGS)
 
 
