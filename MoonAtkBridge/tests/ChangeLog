@@ -1,6 +1,10 @@
+2009-11-25  Stephen Shaw <sshaw@decriptor.com>
+
+	* assets/Makefile.am: Added \ to the end of RadioButtonTest
+
 2009-11-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-        * assets/FakeBridgeTest/Makefile.am: add a new target to not call
+	* assets/FakeBridgeTest/Makefile.am: add a new target to not call
 	make fake if the dll is already there.
 
 2009-11-24  Brad Taylor  <brad@getcoded.net>

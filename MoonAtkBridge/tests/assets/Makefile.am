@@ -6,7 +6,7 @@ SUBDIRS = \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \
 	PasswordBoxTest \
-	RadioButtonTest
+	RadioButtonTest \
 	RangeValueTest \
 	ReflectionTest \
 	SelectionTest \
