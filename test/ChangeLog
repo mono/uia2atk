@@ -1,3 +1,10 @@
+2009-11-25  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/progressbar/progressbarframe.py,
+	* testers/moonlight/progressbar-regression.py,
+	* testers/moonlight/progressbar/__init__.py: add bug references and 
+	make some updates
+
 2009-11-23  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/passwordbox/passwordboxframe.py,

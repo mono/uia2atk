@@ -15,9 +15,10 @@ class ProgressBarFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ProgressBarFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('ProgressBarSample')
-        self.label = self.findLabel(None)
-        self.button = self.findButton(None)
-        self.progressBar = self.findProgressBar('')
+        self.filler = self.frame.findFiller('Silverlight Control')
+        self.label = self.filler.findLabel(None)
+        self.button = self.filler.findPushButton(None)
+        self.progressBar = self.filler.findProgressBar('')
 
     def assertValue(self, expected_value):
         """
@@ -27,7 +28,7 @@ class ProgressBarFrame(accessibles.Frame):
 
         assert  self.progressBar.value == expected_value,\
                 "actual value is %s, expected value is %s" % \
-                (progressBar.value, expected_value)
+                (self.progressBar.value, expected_value)
 
     def setValue(self, value):
         """
@@ -35,4 +36,4 @@ class ProgressBarFrame(accessibles.Frame):
         """
         procedurelogger.action("set progressBar's value to %s" % value)
 
-        progressBar.value = value
+        self.progressBar.value = value

@@ -49,20 +49,20 @@ actionsCheck(pbFrame.button, 'Button')
 #######################
 # Check default States
 #######################
-statesCheck(pbFrame.label, 'Label')
-statesCheck(pbFrame.button, 'Button')
 statesCheck(pbFrame.progressBar, 'ProgressBar')
 
 # click button to assert label if value of progressBar is correct
 pbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-assertText(pbFrame.label, 'It is 20 out of 100\%')
+assertName(pbFrame.label, "It is 20 out of 100%.")
 pbFrame.assertValue(20)
 
 pbFrame.setValue(50)
 sleep(config.SHORT_DELAY)
-assertText(pbFrame.label, 'It is 50 out of 100\%')
-pbFrame.assertValue(50)
+# Value property of progressbar is read-only, so Value shouldn't be updated
+assertName(pbFrame.label, "It is 20 out of 100%.")
+# BUG558232: value shouldn't be editable
+#pbFrame.assertValue(20)
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
