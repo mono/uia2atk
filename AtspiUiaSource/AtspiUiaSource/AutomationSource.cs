@@ -40,13 +40,15 @@ namespace AtspiUiaSource
 
 		public void Initialize ()
 		{
+			if (automationEventHandlers != null)
+				return;
 			Registry.Initialize (true);
-			if (automationEventHandlers == null) {
-				automationEventHandlers = new List<AutomationEventHandlerData> ();
-				propertyEventHandlers = new List<PropertyChangedEventHandlerData> ();
-				structureEventHandlers = new List<StructureChangedEventHandlerData> ();
-			}
+			automationEventHandlers = new List<AutomationEventHandlerData> ();
+			propertyEventHandlers = new List<PropertyChangedEventHandlerData> ();
+			structureEventHandlers = new List<StructureChangedEventHandlerData> ();
 			Desktop.OnStateChanged += OnStateChanged;
+			Desktop.OnChildAdded += OnChildAdded;
+			Desktop.OnChildRemoved += OnChildRemoved;
 		}
 
 		public IElement [] GetRootElements ()
@@ -235,9 +237,18 @@ namespace AtspiUiaSource
 
 		internal static void RaiseStructureChangedEvent (IElement element, StructureChangeType type)
 		{
-			// TODO: Finish this
-			//StructureChangedEventArgs e;
-			//e = new StructureChangedEventArgs (type, element.RuntimeId);
+			StructureChangedEventArgs e;
+			int [] runtimeId = (element != null
+				? element.RuntimeId
+				: new int [0]);
+			e = new StructureChangedEventArgs (type, runtimeId);
+			foreach (StructureChangedEventHandlerData handler in structureEventHandlers) {
+				if (IsElementInScope (element, handler.Element, handler.Scope)) {
+					handler.EventHandler (SourceManager.GetOrCreateAutomationElement (element),
+						e);
+					break;
+				}
+			}
 		}
 
 		//Check whether target is in the scope defined by <element, scope>
@@ -246,6 +257,10 @@ namespace AtspiUiaSource
 		                                       TreeScope scope)
 		{
 			IElement e;
+
+			// TODO: Handle the case of a child being added to the top-level element
+			if (element == null || target == null)
+				return false;
 
 			if ((scope & TreeScope.Element) == TreeScope.Element && target == element)
 				return true;
@@ -293,6 +308,18 @@ namespace AtspiUiaSource
 			default:
 				break;
 			}
+		}
+
+		private void OnChildAdded (Accessible sender, Accessible child)
+		{
+			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
+			RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
+		}
+
+		private void OnChildRemoved (Accessible sender, Accessible child)
+		{
+			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
+			RaiseStructureChangedEvent (sender, StructureChangeType.ChildRemoved);
 		}
 	}
 

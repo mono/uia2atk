@@ -1,3 +1,10 @@
+2009-11-25  Mike Gorse  <mgorse@novell.com>
+
+	* AtspiUiaClientTests/AutomationEventTest.cs,
+	AtspiUiaClientTests/Makefile.am: Add AutomationEventTest.cs.
+
+	* GtkForm/GtkForm.cs: Remove extra Click event.
+
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/AutomationElementTest.cs: Implement test

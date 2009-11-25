@@ -103,7 +103,6 @@ namespace GtkForm
 			btnRemoveTextBox.Clicked += RemoveTextBoxClicked;
 			Gtk.Button btnAddTextBox = new Gtk.Button ("Add");
 			btnAddTextBox.Clicked += AddTextBoxClicked;
-			btnAddTextBox.Clicked += AddTextBoxClicked;
 			txtCommand = new Gtk.Entry ();
 			txtCommand.Accessible.Name = "txtCommand";
 			Gtk.Button btnRun = new Gtk.Button ("Run");
