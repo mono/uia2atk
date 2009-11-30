@@ -1,3 +1,5 @@
+%define		debug_package %{nil}
+
 #
 # spec file for package UiaDbus
 #
@@ -8,8 +10,8 @@ Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
-Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Source0:        http://ftp.novell.com/pub/mono/sources/uiadbus/%{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Summary:        UiaDbus components of UIA on Linux
 BuildRequires:	glib-sharp2
 BuildRequires:	mono-devel >= 2.6
@@ -36,7 +38,8 @@ UiaDbus is another communication channel for UIA on Linux between the client and
 make %{?_smp_mflags}
 
 %install
-%makeinstall
+rm -rf %{buildroot}
+make DESTDIR=%{buildroot} install
 
 
 %clean
@@ -61,3 +64,5 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/mono-uia-dbus.pc
 
 %changelog
+* Mon Nov 30 2009 <sshaw@decriptor.com> - 1.8.90-1
+- packaged UiaDbus version 1.9.0 using the buildservice spec file wizard

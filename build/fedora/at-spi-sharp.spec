@@ -1,3 +1,4 @@
+%define		debug_package %{nil}
 #
 # spec file for package at-spi-sharp
 #
@@ -8,8 +9,8 @@ Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
-Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       mono-core >= 2.6
 BuildRequires:	mono-devel >= 2.6
 BuildRequires:	mono-uia >= 1.8.90
@@ -37,8 +38,8 @@ Devel package that contains the pc file for at-spi-sharp
 make %{?_smp_mflags}
 
 %install
-%makeinstall
-
+rm -rf %{buildroot}
+make DESTDIR=%{buildroot} install
 
 %clean
 rm -rf %{buildroot}
@@ -55,3 +56,5 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Nov 30 2009 Stephen Shaw <sshaw@decriptor.com> = 1.8.90-1
+- Initial RPM

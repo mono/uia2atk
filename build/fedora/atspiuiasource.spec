@@ -1,3 +1,4 @@
+%define		debug_package %{nil}
 #
 # spec file for package AtspiUiaSource
 #
@@ -7,9 +8,9 @@ Version:        1.8.90
 Release:        1
 License:        MIT
 Group:          System/Libraries
-URL:		http://www.mono-project.com/Accessibility
-Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+URL:            http://www.mono-project.com/Accessibility
+Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Summary:        At-spi uia source
 BuildRequires:	at-spi-sharp-devel
 BuildRequires:	glib-sharp2 >= 2.12.8
@@ -29,7 +30,8 @@ At-spi uia source client side
 make
 
 %install
-%makeinstall
+rm -rf %{buildroot}
+make DESTDIR=%{buildroot} install
 
 %clean
 rm -rf %{buildroot}
@@ -42,3 +44,5 @@ rm -rf %{buildroot}
 %{_libdir}/atspiuiasource/*
 
 %changelog
+* Mon Nov 30 2009 Stephen Shaw <sshaw@decriptor.com> = 1.8.90-1
+- Initial RPM

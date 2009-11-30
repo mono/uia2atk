@@ -12,19 +12,19 @@
 
 
 Name:           mono-uia
-Version:        142091
+Version:        1.8.90
 Release:        1
 License:        MIT/X11
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       mono-core >= 2.5 mono-winfxcore
+Requires:       mono-core >= 2.6 mono-winfxcore
 BuildRequires:  gtk-sharp2 >= 2.12.8
-BuildRequires:  mono-core >= 2.5 
-BuildRequires:  mono-devel >= 2.5
-BuildRequires:  mono-nunit >= 2.5
-BuildRequires:  mono-winfxcore
+BuildRequires:  mono-core >= 2.6
+BuildRequires:  mono-devel >= 2.6
+BuildRequires:  mono-nunit >= 2.6
+BuildRequires:  mono-winfxcore >= 2.6
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
@@ -73,4 +73,3 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-

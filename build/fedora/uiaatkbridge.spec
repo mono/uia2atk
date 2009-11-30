@@ -4,17 +4,24 @@
 #
 
 Name:           uiaatkbridge
-Version:	1.0
-Release:	1
+Version:        1.8.90
+Release:        1
 License:        MIT
 Group:          System/Libraries
-URL:		http://www.mono-project.com/Accessibility
+URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/uiaatkbridge/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:	mono-core >= 2.4 gtk-sharp2 >= 2.12.8
-Requires:	mono-uia >= 1.0 mono-winfxcore >= 1.0 at-spi 2.24.0 
-BuildRequires:	mono-devel >= 2.4 gtk-sharp2 >= 2.12.8
-BuildRequires:	mono-uia >= 1.0 mono-winfxcore >= 1.0 atk-devel gtk2-devel
+Requires:       at-spi >= 1.24.0
+Requires:       gtk-sharp2 >= 2.12.8
+Requires:       mono-core >= 2.6
+Requires:       mono-uia >= 1.8.90
+Requires:       mono-winfxcore >= 2.6
+BuildRequires:  atk-devel >= 1.24
+BuildRequires:  gtk2-devel >= 2.14
+BuildRequires:  gtk-sharp2 >= 2.12.8
+BuildRequires:	mono-devel >= 2.6
+BuildRequires:	mono-uia >= 1.8.90
+BuildRequires:  mono-winfxcore >= 2.6
 
 Summary:        Bridge between UIA providers and ATK
 
@@ -56,5 +63,7 @@ rm -rf %{buildroot}
 %postun -p /sbin/ldconfig
 
 %changelog
+* Mon Nov 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.8.90-1
+- Updates for the 2.0 release
 * Thu Apr 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.0-1
 - Initial RPM
