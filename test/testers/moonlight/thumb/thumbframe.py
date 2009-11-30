@@ -15,5 +15,6 @@ class ThumbFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ThumbFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('ThumbSample')
-        self.thumb = self.findPushButton('')
-        self.label = self.findLabel('')
+        self.filler = self.frame.findFiller('Silverlight Control')
+        self.thumb = self.filler.findPushButton('')
+        self.label = self.filler.findLabel('Size: 100, 100')

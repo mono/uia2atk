@@ -20,13 +20,14 @@ class SliderFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(SliderFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('SliderSample')
+        self.filler = self.frame.findFiller('Silverlight Control')
         # two labels to show slider's value
-        self.label1 = self.frame.findLabel(self.LABEL_ONE)
-        self.label2 = self.frame.findLabel(self.LABEL_TWO)
+        self.label1 = self.filler.findLabel(self.LABEL_ONE)
+        self.label2 = self.filler.findLabel(self.LABEL_TWO)
         # one checkbox for IsDirectionReversed setting
-        self.checkbox = self.frame.findCheckBox(self.CHECKBOX)
+        self.checkbox = self.filler.findCheckBox(self.CHECKBOX)
         # there are two sliders
-        self.sliders = self.frame.findAllSliders("")
+        self.sliders = self.filler.findAllSliders("")
         assert len(self.sliders) == self.SLIDER_NUM, \
                 "actual number of slider is:%s, expected is:%s" % \
                  (len(self.sliders), self.SLIDER_NUM)
@@ -82,6 +83,3 @@ class SliderFrame(accessibles.Frame):
         assert self.minimumValue == expected_value, \
                                         "Minimum value is %s, expected %s" % \
                                         (self.minimumValue, expected_value)
-
-
-

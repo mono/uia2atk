@@ -45,7 +45,8 @@ tFrame = app.thumbFrame
 #######################
 # Check default States
 #######################
-statesCheck(tFrame.thumb, 'Thumb')
+##Bug 553160
+#statesCheck(tFrame.thumb, 'Thumb')
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 

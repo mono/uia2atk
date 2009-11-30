@@ -17,13 +17,14 @@ class ToggleButtonFrame(accessibles.Frame):
     # the available widgets on the window
     TOGGLEBUTTON_ONE = "ToggleButton1"
     TOGGLEBUTTON_TWO = "ToggleButton2"
-    TEXE_ONE  = "Two State:"
-    TEXE_TWO  = "Three State:"
+    TEXT_ONE  = "Two State:"
+    TEXT_TWO  = "Three State:"
 
     def __init__(self, accessible):
         super(ToggleButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("ToggleButtonSample")
-        self.toggle1 = self.frame.findPushButton(self.TOGGLEBUTTON_ONE)
-        self.toggle2 = self.frame.findPushButton(self.TOGGLEBUTTON_TWO)
-        self.text1 = self.frame.findLabel(self.TEXT_ONE)
+        self.filler = self.frame.findFiller("Silverlight Control")
+        self.toggle1 = self.filler.findPushButton(self.TOGGLEBUTTON_ONE)
+        self.toggle2 = self.filler.findPushButton(self.TOGGLEBUTTON_TWO)
+        self.text1 = self.filler.findLabel(self.TEXT_ONE)
         self.text2 = self.frame.findLabel(self.TEXT_TWO)

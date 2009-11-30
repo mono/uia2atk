@@ -1,3 +1,15 @@
+2009-11-30  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/togglebutton-regression.py:
+	* testers/moonlight/togglebutton/togglebuttonframe.py:
+	* testers/moonlight/togglebutton/__init__.py:
+	* testers/moonlight/thumb-regression.py:
+	* testers/moonlight/thumb/thumbframe.py:
+	* testers/moonlight/thumb/__init__.py:
+	* testers/moonlight/slider-regression.py:
+	* testers/moonlight/slider/sliderframe.py:
+	* testers/moonlight/slider/__init__.py: Added bug references.
+
 2009-11-25  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/progressbar/progressbarframe.py,
