@@ -1,3 +1,7 @@
+2009-11-30  Stephen Shaw <sshaw@decriptor.com>
+
+	* */configure.ac: Updated version to 1.8.90 for our next release
+
 2009-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* uia2atk.mdw: Convert from obsolete MonoDevelop file formats to
