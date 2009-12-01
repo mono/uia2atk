@@ -19,12 +19,12 @@ namespace ScrollBarSample
             InitializeComponent();
         }
 
-        private void hscrollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        private void hscrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             textBlock1.Text = string.Format("Value of Horizontal: {0}", hscrollBar.Value);
         }
 
-        private void vscrollBar_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        private void vscrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             textBlock2.Text = string.Format("Value of Vertical: {0}", vscrollBar.Value);
         }
