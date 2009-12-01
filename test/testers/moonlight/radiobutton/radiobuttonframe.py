@@ -18,7 +18,8 @@ class RadioButtonFrame(accessibles.Frame):
     RADIOBUTTON_ONE = "radiobutton1"
     RADIOBUTTON_TWO = "radiobutton2"
     RADIOBUTTON_THREE = "radiobutton3"
-    RADIOBUTTON_FOUR = "radiobutton4"
+    RADIOBUTTON_FOUR = ""
+    LABEL = "radiobutton4"
     TEXE_ONE  = "First Group:"
     TEXE_TWO  = "Second Group:"
     TEXT_THREE = ""
@@ -26,10 +27,13 @@ class RadioButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(RadioButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("RadioButtonSample")
-        self.radio1 = self.frame.findRadioButton(self.RADIOBUTTON_ONE)
-        self.radio2 = self.frame.findRadioButton(self.RADIOBUTTON_TWO)
-        self.radio3 = self.frame.findRadioButton(self.RADIOBUTTON_THREE)
-        self.radio4 = self.frame.findRadioButton(self.RADIOBUTTON_FOUR)
-        self.text1 = self.frame.findLabel(self.TEXT_ONE)
-        self.text2 = self.frame.findLabel(self.TEXT_TWO)
-        self.text3 = self.frame.findLabel(self.TEXT_THREE)
+        self.filler = self.frame.findFiller(None)
+        self.radio1 = self.filler.findRadioButton(self.RADIOBUTTON_ONE)
+        self.radio2 = self.filler.findRadioButton(self.RADIOBUTTON_TWO)
+        self.radio3 = self.filler.findRadioButton(self.RADIOBUTTON_THREE)
+        self.radio4 = self.filler.findRadioButton(self.RADIOBUTTON_FOUR)
+        self.radio4_label = self.radio4.findLabel(self.LABEL)
+        self.radio4_image = self.radio4.findImage("")
+        self.text1 = self.filler.findLabel(self.TEXE_ONE)
+        self.text2 = self.filler.findLabel(self.TEXE_TWO)
+        self.text3 = self.filler.findLabel(self.TEXT_THREE)

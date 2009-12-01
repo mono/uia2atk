@@ -1,3 +1,9 @@
+2009-12-01  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/radiobutton/__init__.py,
+	* testers/moonlight/radiobutton/radiobuttonframe.py,
+	* testers/moonlight/radiobutton-regression.py: Added bug references
+
 2009-11-30  Neville Gao  <nevillegao@gmail.com>
 
 	* samples/moonlight/ScrollBar/Page.xaml:
