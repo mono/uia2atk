@@ -22,13 +22,13 @@ Requires:       at-spi >= 1.24.0
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.6
 Requires:       mono-uia >= 1.8.90
-Requires:       mono-winfxcore >= 2.6
+Requires:       mono-winfxcore
 BuildRequires:  atk-devel >= 1.24
 BuildRequires:  gtk2-devel >= 2.14
 BuildRequires:  gtk-sharp2 >= 2.12.8
 BuildRequires:	mono-devel >= 2.6
 BuildRequires:	mono-uia >= 1.8.90
-BuildRequires:  mono-winfxcore >= 2.6
+BuildRequires:  mono-winfxcore
 
 Summary:        Bridge between UIA providers and ATK
 
