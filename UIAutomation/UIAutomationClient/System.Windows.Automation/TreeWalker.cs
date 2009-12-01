@@ -35,7 +35,7 @@ namespace System.Windows.Automation
 	{
 		#region Private Fields
 		private static IList<IAutomationSource> automationSources;
-
+		private Object directChildrenLock = new Object ();
 		private List<AutomationElement> directChildren;
 		#endregion
 
@@ -44,10 +44,7 @@ namespace System.Windows.Automation
 		{
 			automationSources = SourceManager.GetAutomationSources ();
 			RawViewWalker = new TreeWalker (Automation.RawViewCondition);
-			RawViewWalker.directChildren = new List<AutomationElement> ();
-			foreach (IAutomationSource source in automationSources)
-				foreach (IElement sourceElement in source.GetRootElements ())
-					RawViewWalker.directChildren.Add (new AutomationElement (sourceElement));
+			RefreshRootElements ();
 
 			ControlViewWalker = new TreeWalker (Automation.ControlViewCondition);
 			ContentViewWalker = new TreeWalker (Automation.ContentViewCondition);
@@ -61,6 +58,25 @@ namespace System.Windows.Automation
 				throw new ArgumentNullException ("condition");
 			Condition = condition;
 		}
+		#endregion
+
+		#region Internal Methods
+
+		internal static void RefreshRootElements ()
+		{
+			lock (RawViewWalker.directChildrenLock) {
+				bool firstTime = (RawViewWalker.directChildren == null);
+				RawViewWalker.directChildren = new List<AutomationElement> ();
+				foreach (IAutomationSource source in automationSources) {
+					foreach (IElement sourceElement in source.GetRootElements ())
+						RawViewWalker.directChildren.Add (new AutomationElement (sourceElement));
+					if (firstTime)
+						source.RootElementsChanged += (s, e) => RefreshRootElements ();
+				}
+			}
+			Log.Info ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
+		}
+
 		#endregion
 
 		#region Public Methods

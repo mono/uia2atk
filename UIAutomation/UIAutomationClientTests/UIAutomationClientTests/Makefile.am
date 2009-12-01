@@ -81,6 +81,7 @@ FILES =  \
 	MultipleViewPatternTest.cs \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \
+	RootElementTest.cs \
 	ScrollTest.cs \
 	SelectionPatternTest.cs \
 	TableHierarchyTest.cs \

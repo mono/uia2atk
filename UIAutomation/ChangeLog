@@ -1,3 +1,13 @@
+2009-12-01  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/TreeWalker.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationSource/Mono.UIAutomation.Source/IAutomationSource.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/RootElementTest.cs: 
+	* UIAutomationClient/System.Windows.Automation/TreeWalker.TreeIterator.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Make client be aware of the applications which start after the client starts.
+
 2009-11-06  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 

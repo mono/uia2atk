@@ -35,6 +35,8 @@ namespace Mono.UIAutomation.Source
 
 		IElement [] GetRootElements ();
 
+		event EventHandler RootElementsChanged;
+
 		IElement GetElementFromHandle (IntPtr handle);
 
 		bool IsAccessibilityEnabled { get; }

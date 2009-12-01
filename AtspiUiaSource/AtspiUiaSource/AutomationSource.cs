@@ -64,6 +64,8 @@ namespace AtspiUiaSource
 			return ret;
 		}
 
+		public event EventHandler RootElementsChanged;
+
 		public IElement GetElementFromHandle (IntPtr handle)
 		{
 			// TODO: Implement (how best?)
@@ -314,12 +316,22 @@ namespace AtspiUiaSource
 		{
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
 			RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
+			if (sender == Desktop.Instance)
+				OnRootElementsChanged ();
 		}
 
 		private void OnChildRemoved (Accessible sender, Accessible child)
 		{
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildRemoved);
+			if (sender == Desktop.Instance)
+				OnRootElementsChanged ();
+		}
+
+		private void OnRootElementsChanged ()
+		{
+			if (RootElementsChanged != null)
+				RootElementsChanged (this, EventArgs.Empty);
 		}
 	}
 

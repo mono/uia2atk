@@ -75,6 +75,7 @@
     <Compile Include="MultipleViewPatternTest.cs" />
     <Compile Include="ScrollTest.cs" />
     <Compile Include="WindowPatternTest.cs" />
+    <Compile Include="RootElementTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

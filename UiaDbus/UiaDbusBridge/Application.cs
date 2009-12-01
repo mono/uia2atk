@@ -50,14 +50,18 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		public void AddRootElement (ProviderElementWrapper element)
 		{
-			if (element != null && !rootElements.Contains (element))
+			if (element != null && !rootElements.Contains (element)) {
 				rootElements.Add (element);
+				OnRootElementsChanged ();
+			}
 		}
 
 		public void RemoveRootElement (ProviderElementWrapper element)
 		{
-			if (element != null && rootElements.Contains (element))
+			if (element != null && rootElements.Contains (element)) {
 				rootElements.Remove (element);
+				OnRootElementsChanged ();
+			}
 		}
 
 		internal void RemoveProvider (IRawElementProviderSimple provider)
@@ -209,6 +213,12 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
+		private void OnRootElementsChanged ()
+		{
+			if (RootElementsChanged != null)
+				RootElementsChanged ();
+		}
+
 #region IApplication Members
 
 		public string [] GetRootElementPaths ()
@@ -327,7 +337,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			AutomationPropertyChanged;
 		public event Mono.UIAutomation.UiaDbus.Interfaces.StructureChangedHandler
 			StructureChanged;
-
+		public event VoidHandler RootElementsChanged;
 #endregion
 	}
 

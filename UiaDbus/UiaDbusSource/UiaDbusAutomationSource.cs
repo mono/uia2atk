@@ -88,6 +88,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		private List<string> automationEventBusNames = new List<string> ();
 		private List<string> propertyEventBusNames = new List<string> ();
 		private List<string> structureEventBusNames = new List<string> ();
+		private List<string> uiaDbusNames = null;
 
 		#endregion
 
@@ -96,6 +97,9 @@ namespace Mono.UIAutomation.UiaDbusSource
 		public void Initialize ()
 		{
 			CheckMainLoop ();
+			foreach (string busName in GetUiaDbusNames ()) {
+				BindApplicationEventHandlers (busName);
+			}
 		}
 
 		public void Terminate ()
@@ -136,6 +140,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 			Log.Info ("UiaDbusAutomationSource: GetRootElements count will be: " + dbusElements.Count);
 			return dbusElements.ToArray ();
 		}
+
+		public event EventHandler RootElementsChanged;
 
 		public IElement GetElementFromHandle (IntPtr handle)
 		{
@@ -345,10 +351,72 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		#region Private Methods
 
+		private void OnRootElementsChanged ()
+		{
+			if (RootElementsChanged != null)
+				RootElementsChanged (this, EventArgs.Empty);
+		}
+
 		private IList<string> GetUiaDbusNames ()
 		{
+			if (uiaDbusNames == null) {
+				FetchUiaDbusNames ();
+				IBus bus = Bus.Session.GetObject<IBus> (DBusName,
+				                                        new ObjectPath (DBusPath));
+				bus.NameOwnerChanged += BusNameOwnerChanged;
+			}
+			return uiaDbusNames;
+		}
+
+		private static bool IsUiaDbusName (string busName)
+		{
+			var intr = Bus.Session.GetObject<Introspectable> (busName,
+				new ObjectPath (DC.Constants.ApplicationPath));
+			string data = string.Empty;
+			try {
+				data = intr.Introspect ();
+			} catch {}
+			return data.Contains (DC.Constants.ApplicationInterfaceName);
+		}
+
+		private void BusNameOwnerChanged (string name, string oldOwner, string newOwner)
+		{
+			if (!string.IsNullOrEmpty(newOwner) &&
+			    string.IsNullOrEmpty(oldOwner) &&
+			    IsUiaDbusName (newOwner)) {
+				uiaDbusNames.Add (newOwner);
+				OnRootElementsChanged ();
+				BindApplicationEventHandlers (newOwner);
+			} else if (!string.IsNullOrEmpty(oldOwner) &&
+			    string.IsNullOrEmpty(newOwner) &&
+			    uiaDbusNames.Contains (oldOwner)) {
+				uiaDbusNames.Remove (oldOwner);
+				OnRootElementsChanged ();
+			}
+		}
+
+		private void BindApplicationEventHandlers (string busName)
+		{
+			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+				new ObjectPath (DC.Constants.ApplicationPath));
+			app.RootElementsChanged += () => OnRootElementsChanged ();
+
+			//todo, after the FocusedElement patch is applied
+//			if (listenFocusChangeStarted)
+//				app.FocusChanged += delegate (string providerPath) {
+//					if (!string.IsNullOrEmpty (providerPath)) {
+//						lock (focusChangedHandlersLock) {
+//							foreach (var handler in focusChangedHandlers)
+//								handler (GetOrCreateElement (busName, providerPath), -1, -1);
+//						}
+//					}
+//				}
+		}
+
+		private void FetchUiaDbusNames ()
+		{
 			List<Thread> threads = new List<Thread> ();
-			List<string> candidateBusNames = new List<string> ();
+			uiaDbusNames = new List<string> ();
 			Object listLock  = new Object ();
 
 			IBus ibus = Bus.Session.GetObject<IBus> (DBusName,
@@ -361,18 +429,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				// to give the threads time to execute, and then
 				// abort all of them.
 				ParameterizedThreadStart start = (busNameObj) => {
-					string currentBus = (string) busNameObj;
-					// TODO: Likely crash source (ndesk-dbus bugs?)
-					Introspectable intr =
-						Bus.Session.GetObject<Introspectable> (currentBus,
-						                                       new ObjectPath (DC.Constants.ApplicationPath));
-					string data = string.Empty;
-					try {
-						data = intr.Introspect ();
-					} catch {}
-					if (data.Contains (DC.Constants.ApplicationInterfaceName))
+					var currentBus = (string) busNameObj;
+					if (IsUiaDbusName (currentBus))
 						lock (listLock)
-							candidateBusNames.Add (currentBus);
+							uiaDbusNames.Add (currentBus);
 				};
 				Thread thread = new Thread (start);
 				thread.Start (busName);
@@ -382,8 +442,6 @@ namespace Mono.UIAutomation.UiaDbusSource
 			Thread.Sleep (1000);
 			foreach (Thread thread in threads)
 				thread.Abort ();
-
-			return candidateBusNames;
 		}
 
 		private Dictionary<string, DCI.IApplication> GetUiaApplications ()

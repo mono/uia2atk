@@ -32,6 +32,7 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 	public delegate void AutomationEventHandler (int handlerId, int eventId, string providerPath);
 	public delegate void AutomationPropertyChangedHandler (int handlerId, int eventId, string providerPath, int propertyId, object oldValue, object newValue);
 	public delegate void StructureChangedHandler (int handlerId, int eventId, string providerPath, StructureChangeType changeType);
+	public delegate void VoidHandler ();
 
 	[Interface (Constants.ApplicationInterfaceName)]
 	public interface IApplication
@@ -52,5 +53,6 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 		event AutomationEventHandler AutomationEvent;
 		event AutomationPropertyChangedHandler AutomationPropertyChanged;
 		event StructureChangedHandler StructureChanged;
+		event VoidHandler RootElementsChanged;
 	}
 }

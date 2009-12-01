@@ -1,3 +1,10 @@
+2009-12-01  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbus/Interfaces/IApplication.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs:
+	Make client be aware of the applications which start after the client starts.  
+
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusBridge/Application.cs:

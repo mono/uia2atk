@@ -54,9 +54,11 @@ namespace System.Windows.Automation
 				AutomationElement firstChild = null;
 
 				if (element == AutomationElement.RootElement)
-					firstChild = TreeWalker.RawViewWalker.directChildren.Count > 0 ?
-						TreeWalker.RawViewWalker.directChildren [0] :
-						null;
+					lock (TreeWalker.RawViewWalker.directChildrenLock) {
+						firstChild = TreeWalker.RawViewWalker.directChildren.Count > 0 ?
+							TreeWalker.RawViewWalker.directChildren [0] :
+							null;
+					}
 				else
 					firstChild = SourceManager.GetOrCreateAutomationElement (element.SourceElement.FirstChild);
 
@@ -68,9 +70,11 @@ namespace System.Windows.Automation
 				AutomationElement lastChild = null;
 
 				if (element == AutomationElement.RootElement)
-					lastChild = TreeWalker.RawViewWalker.directChildren.Count > 0 ?
-						TreeWalker.RawViewWalker.directChildren [TreeWalker.RawViewWalker.directChildren.Count - 1] :
-						null;
+					lock (TreeWalker.RawViewWalker.directChildrenLock) {
+						lastChild = TreeWalker.RawViewWalker.directChildren.Count > 0 ?
+							TreeWalker.RawViewWalker.directChildren [TreeWalker.RawViewWalker.directChildren.Count - 1] :
+							null;
+					}
 				else
 					lastChild = SourceManager.GetOrCreateAutomationElement (element.SourceElement.LastChild);
 
@@ -82,13 +86,15 @@ namespace System.Windows.Automation
 				AutomationElement parent = TreeWalker.RawViewWalker.GetParent (element);
 				AutomationElement nextSibling = null;
 
-				if (parent == AutomationElement.RootElement) {
-					int nextIndex = TreeWalker.RawViewWalker.directChildren.IndexOf (element) + 1;
-					if (nextIndex > -1 && nextIndex < TreeWalker.RawViewWalker.directChildren.Count)
-						nextSibling = TreeWalker.RawViewWalker.directChildren [nextIndex];
-					else
-						nextSibling = null;
-				} else
+				if (parent == AutomationElement.RootElement)
+					lock (TreeWalker.RawViewWalker.directChildrenLock) {
+						int nextIndex = TreeWalker.RawViewWalker.directChildren.IndexOf (element) + 1;
+						if (nextIndex > -1 && nextIndex < TreeWalker.RawViewWalker.directChildren.Count)
+							nextSibling = TreeWalker.RawViewWalker.directChildren [nextIndex];
+						else
+							nextSibling = null;
+					}
+				else
 					nextSibling = SourceManager.GetOrCreateAutomationElement (element.SourceElement.NextSibling);
 
 				return nextSibling;
@@ -99,13 +105,15 @@ namespace System.Windows.Automation
 				AutomationElement parent = TreeWalker.RawViewWalker.GetParent (element);
 				AutomationElement prevSibling = null;
 
-				if (parent == AutomationElement.RootElement) {
-					int prevIndex = TreeWalker.RawViewWalker.directChildren.IndexOf (element) - 1;
-					if (prevIndex > -1)
-						prevSibling = TreeWalker.RawViewWalker.directChildren [prevIndex];
-					else
-						prevSibling = null;
-				} else
+				if (parent == AutomationElement.RootElement)
+					lock (TreeWalker.RawViewWalker.directChildrenLock) {
+						int prevIndex = TreeWalker.RawViewWalker.directChildren.IndexOf (element) - 1;
+						if (prevIndex > -1)
+							prevSibling = TreeWalker.RawViewWalker.directChildren [prevIndex];
+						else
+							prevSibling = null;
+					}
+				else
 					prevSibling = SourceManager.GetOrCreateAutomationElement (element.SourceElement.PreviousSibling);
 
 				return prevSibling;
@@ -224,8 +232,9 @@ namespace System.Windows.Automation
 					return null;
 				AutomationElement ancestor =
 					SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
-				if (ancestor == null && RawViewWalker.directChildren.Contains (element))
-					ancestor = AutomationElement.RootElement;
+				lock (TreeWalker.RawViewWalker.directChildrenLock)
+					if (ancestor == null && RawViewWalker.directChildren.Contains (element))
+						ancestor = AutomationElement.RootElement;
 				if (ancestor != null && !condition.AppliesTo (ancestor))
 					return GetParent (ancestor);
 				return ancestor;
