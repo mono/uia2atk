@@ -38,7 +38,7 @@ AC_ARG_ENABLE(tests,
 
 NUNIT_PATH=
 
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.9.0])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.8.90])
 PKG_CHECK_MODULES(NUNIT, mono-nunit >= 2.4, nunit_24=yes, nunit_24=no)
 if test "x$nunit_24" = "xno"; then
 	AC_MSG_WARN([Could not find mono-nunit >= 2.4; unit tests will not be available.])
