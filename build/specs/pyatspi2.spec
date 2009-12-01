@@ -48,7 +48,9 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %dir %{python_sitelib}/pyatspi
+%dir %{python_sitelib}/pyatspi/busutils
 %{python_sitelib}/pyatspi/*.py*
+%{python_sitelib}/pyatspi/busutils/*.py*
 
 
 %changelog
