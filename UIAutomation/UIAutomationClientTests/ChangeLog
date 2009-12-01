@@ -1,3 +1,15 @@
+2009-12-01  Mario Carrion  <mcarrion@novell.com>
+
+	* GtkForm/GtkForm.cs: ListView element added.
+	* SampleForm/Form1.cs: 
+	* AtspiUiaClientTests/Makefile.am: Tests added again (removed in last
+	commit.)
+	* UIAutomationClientTests/BaseTest.cs: Updated to get listview
+	element.
+	* AtspiUiaClientTests/atspiuiaclienttest.sh.in: 'c' replaced with 'f'
+	* UIAutomationClientTests/SelectionPatternTest.cs: Tests Selection
+	events.
+
 2009-11-25  Mike Gorse  <mgorse@novell.com>
 
 	* AtspiUiaClientTests/AutomationEventTest.cs,

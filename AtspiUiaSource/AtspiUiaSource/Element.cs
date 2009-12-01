@@ -37,6 +37,7 @@ namespace AtspiUiaSource
 	public class Element : IElement
 	{
 		internal Accessible accessible;
+		private List<ISourceEventHandler> patterns;
 		private int runtimeId;
 
 		private static int id;
@@ -44,6 +45,7 @@ namespace AtspiUiaSource
 
 		public Element (Accessible accessible)
 		{
+			patterns = new List<ISourceEventHandler> ();
 			this.accessible = accessible;
 			runtimeId = -1;
 			AddEvents ();
@@ -56,12 +58,15 @@ namespace AtspiUiaSource
 
 		private void AddEvents ()
 		{
+			// TODO: Move to GridEventHandler
 			if (SupportsGrid ()) {
 				accessible.ObjectEvents.RowInserted += OnRowInserted;
 				accessible.ObjectEvents.RowDeleted += OnRowDeleted;
 				accessible.ObjectEvents.ColumnInserted += OnColumnInserted;
 				accessible.ObjectEvents.ColumnDeleted += OnColumnDeleted;
 			}
+			if (SupportsSelection ())
+				patterns.Add (new SelectionEventHandler (this, new SelectionSource (this)));
 		}
 
 		private void RemoveEvents ()
@@ -72,6 +77,9 @@ namespace AtspiUiaSource
 				accessible.ObjectEvents.ColumnInserted -= OnColumnInserted;
 				accessible.ObjectEvents.ColumnDeleted -= OnColumnDeleted;
 			}
+
+			foreach (ISourceEventHandler pattern in patterns)
+				pattern.Terminate ();
 		}
 
 		public virtual bool SupportsProperty (AutomationProperty property)

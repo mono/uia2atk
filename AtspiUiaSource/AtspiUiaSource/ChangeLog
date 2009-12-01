@@ -1,3 +1,12 @@
+2009-12-01  Mario Carrion  <mcarrion@novell.com>
+
+	* Element.cs: SupportsSelection() event added.
+	* Makefile.am: Added new files.
+	* ISourceEventHandler.cs: File added, to be implemented my
+	Source event handlers.
+	* SelectionEventHandler.cs: Listens SelectionChanged events to raise
+	SelectionProperty events.
+
 2009-11-25  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationSource.cs: Finish StructureChanged events.

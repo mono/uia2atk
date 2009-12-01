@@ -199,7 +199,10 @@ namespace SampleForm {
 				new Form () {Text = "TestForm1.ModalForm1"}.ShowDialog (this);
 			} else if (cmd == "Sleep.2000") {
 				System.Threading.Thread.Sleep (2000);
-			}
+			} else if (cmd == "enable multiselect")
+				listView1.MultiSelect = true;
+			else if (cmd == "disable multiselect")
+				listView1.MultiSelect = false;
 		}
 	}
 }

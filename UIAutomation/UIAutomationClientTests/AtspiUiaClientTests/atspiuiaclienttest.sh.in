@@ -5,7 +5,7 @@ DLL=AtspiUiaClientTests.dll
 TEST_DISPLAY=:99
 NUNIT_FLAGS="-nothread -noshadow"
 
-while getopts c:xd:t:l o
+while getopts f:xd:t:l o
 do case "$o" in
     x)  xephyr="yes";;
     d)  optdisplay="$OPTARG" && xephyr="yes";;

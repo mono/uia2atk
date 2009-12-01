@@ -12,6 +12,7 @@ namespace GtkForm
 		private Gtk.TextView textBox3;
 		private Gtk.TreeView treeView1;
 		private Gtk.TreeView treeView2;
+		private Gtk.TreeView treeView3;
 		private Gtk.TreeStore tableStore;
 		private Gtk.ScaleButton scaleButton1;
 		private Gtk.HBox hboxPanel;
@@ -110,6 +111,16 @@ namespace GtkForm
 			hboxPanel.Add (btnRemoveTextBox);
 			hboxPanel.Add (btnAddTextBox);
 
+			Gtk.TreeStore treeStore = new Gtk.TreeStore (typeof (string));
+			Gtk.TreeIter iter = treeStore.AppendNode ();
+			treeStore.SetValue (iter, 0, "Item 0");
+			iter = treeStore.AppendNode ();
+			treeStore.SetValue (iter, 0, "Item 1");
+			treeView3 = new Gtk.TreeView (treeStore);
+			AddTreeViewColumn (treeView3, 0, "items");
+			treeView3.Accessible.Name = "listView1";
+			treeView3.ExpandAll ();
+
 			hbox2.Add (button5);
 			hbox2.Add (checkbox1);
 			hbox2.Add (checkbox2);
@@ -126,6 +137,7 @@ namespace GtkForm
 			hbox.Add (button1);
 			hbox.Add (treeView1);
 			hbox.Add (treeView2);
+			hbox.Add (treeView3);
 			hbox.Add (txtCommand);
 			hbox.Add (btnRun);
 			hbox.Add (hboxPanel);
@@ -203,7 +215,10 @@ namespace GtkForm
 				tableStore.SetValues (iter, "true", "Mallory", "40");
 			} else if (cmd == "add table column") {
 			AddTreeViewColumn (treeView2, 3, "more");
-			}
+			} else if (cmd == "enable multiselect")
+				treeView3.Selection.Mode = Gtk.SelectionMode.Multiple;
+			else if (cmd == "disable multiselect")
+				treeView3.Selection.Mode = Gtk.SelectionMode.Single;
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)

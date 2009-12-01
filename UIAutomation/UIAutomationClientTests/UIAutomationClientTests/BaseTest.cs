@@ -75,6 +75,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement treeView1Element;
 		protected AutomationElement table1Element;
 		protected AutomationElement listView1Element;
+		protected AutomationElement button8Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -270,6 +271,8 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.NameProperty, "dataGridView1"));
 			listView1Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty, "listView1"));
+			button8Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty, "button8"));
 			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip1"));
@@ -357,6 +360,9 @@ namespace MonoTests.System.Windows.Automation
 			numericUpDown1Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Slider));
+			listView1Element = groupBoxElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"listView1"));
 		}
 
 		protected void DisableControls ()
