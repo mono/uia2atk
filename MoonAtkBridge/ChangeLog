@@ -1,3 +1,13 @@
+2009-11-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: MOON_A11Y_INTERNAL_HACK is not needed anymore 
+	since the  audit finished in r147098, and it was removed
+	in r147102,r147106,r147111.
+
+	* patches/moonlight-a11y-slot-tree.diff: update patch
+	to compile with latest moon. Changes by Brad Taylor 
+	<brad@getcoded.net>.
+
 2009-11-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: fix main build (tests build).
