@@ -81,11 +81,14 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				= peer.GetPattern (PatternInterface.Toggle)
 					as IToggleProvider;
 			if (toggle != null) {
+				states.RemoveState (Atk.StateType.Checked);
+				states.RemoveState (Atk.StateType.Indeterminate);
+
 				var state = toggle.ToggleState;
 				if (state == ToggleState.On)
 					states.AddState (Atk.StateType.Checked);
-				else
-					states.RemoveState (Atk.StateType.Checked);
+				else if (state == ToggleState.Indeterminate)
+					states.AddState (Atk.StateType.Indeterminate);
 			}
 		}
 #endregion
@@ -141,6 +144,12 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				adapter.EmitSignal ("visible_data_changed");
 			} else if (args.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				adapter.NotifyStateChange (Atk.StateType.Checked);
+
+				var oldValue = (ToggleState) args.OldValue;
+				var newValue = (ToggleState) args.NewValue;
+				if (oldValue == ToggleState.Indeterminate
+				    || newValue == ToggleState.Indeterminate)
+					adapter.NotifyStateChange (Atk.StateType.Indeterminate);
 			}
 		}
 #endregion

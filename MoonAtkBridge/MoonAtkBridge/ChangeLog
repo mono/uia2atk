@@ -1,3 +1,9 @@
+2009-12-02  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs:
+	When the CheckBox is in the indeterminate state, add the corresponding
+	ATK state.  Also, raise the state changed event.
+
 2009-11-24  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge.sources:

@@ -1,3 +1,13 @@
+2009-12-02  Brad Taylor  <brad@getcoded.net>
+
+	* test_checkbox.py:
+	* assets/Makefile.am:
+	* assets/CheckBoxTest/App.xaml:
+	* assets/CheckBoxTest/Page.xaml:
+	* assets/CheckBoxTest/App.xaml.cs:
+	* assets/CheckBoxTest/Makefile.am:
+	* assets/CheckBoxTest/Page.xaml.cs: Add new test for CheckBox.
+
 2009-11-25  Stephen Shaw <sshaw@decriptor.com>
 
 	* assets/Makefile.am: Added \ to the end of RadioButtonTest

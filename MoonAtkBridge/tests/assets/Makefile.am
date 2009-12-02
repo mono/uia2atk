@@ -2,6 +2,7 @@ SUBDIRS = \
 	AdapterEventsTest \
 	AddRemoveAdapterTest \
 	ButtonTest \
+	CheckBoxTest \
 	ComboBoxTest \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \
