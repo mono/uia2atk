@@ -58,26 +58,18 @@ namespace AtspiUiaSource
 
 		private void AddEvents ()
 		{
-			// TODO: Move to GridEventHandler
-			if (SupportsGrid ()) {
-				accessible.ObjectEvents.RowInserted += OnRowInserted;
-				accessible.ObjectEvents.RowDeleted += OnRowDeleted;
-				accessible.ObjectEvents.ColumnInserted += OnColumnInserted;
-				accessible.ObjectEvents.ColumnDeleted += OnColumnDeleted;
-			}
+			if (SupportsGrid ())
+				patterns.Add (new GridEventHandler (this));
+			if (SupportsRangeValue ())
+				patterns.Add (new RangeValueEventHandler (this));
 			if (SupportsSelection ())
 				patterns.Add (new SelectionEventHandler (this, new SelectionSource (this)));
+			if (SupportsValue ())
+				patterns.Add (new ValueEventHandler (this));
 		}
 
 		private void RemoveEvents ()
 		{
-			if (SupportsGrid ()) {
-				accessible.ObjectEvents.RowInserted -= OnRowInserted;
-				accessible.ObjectEvents.RowDeleted -= OnRowDeleted;
-				accessible.ObjectEvents.ColumnInserted -= OnColumnInserted;
-				accessible.ObjectEvents.ColumnDeleted -= OnColumnDeleted;
-			}
-
 			foreach (ISourceEventHandler pattern in patterns)
 				pattern.Terminate ();
 		}
@@ -478,9 +470,7 @@ namespace AtspiUiaSource
 				element = new TableElement (accessible);
 			else if (IsTableHeaderItem (accessible))
 				element = new TableHeaderItemElement (accessible);
-			else if (TryCreateRangeValueElement (accessible, out element)) {
-			} else if (TryCreateValueElement (accessible, out element)) {
-			} else
+			else
 				element = new Element (accessible);
 			elements [accessible] = element;
 			return element;
@@ -508,32 +498,6 @@ namespace AtspiUiaSource
 				return elements [accessible];
 			elements [accessible] = new TableCellElement (accessible, parent, column);
 			return elements [accessible];
-		}
-
-		private static bool TryCreateRangeValueElement (Accessible accessible, out Element element)
-		{
-			element = null;
-			double val;
-			Value value = accessible.QueryValue ();
-			if (value == null)
-				return false;
-			try {
-				val = value.CurrentValue;
-			} catch {
-				return false;
-			}
-			element = new RangeValueElement (accessible, val);
-			return true;
-		}
-
-		private static bool TryCreateValueElement (Accessible accessible, out Element element)
-		{
-			element = null;
-			Text text = accessible.QueryText ();
-			if (text == null)
-				return false;
-			element = new ValueElement (accessible, text.GetText ());
-			return true;
 		}
 
 		private static bool IsTable (Accessible accessible)
@@ -630,44 +594,5 @@ namespace AtspiUiaSource
 			return (accessible.QueryEditableText () != null);
 		}
 
-		private void OnRowInserted (string str, int row, int nInserted, object val)
-		{
-			int newVal = accessible.QueryTable ().NRows;
-			AutomationSource.RaisePropertyChangedEvent (
-				this,
-				GridPatternIdentifiers.RowCountProperty,
-				newVal - nInserted,
-				newVal);
-		}
-
-		private void OnRowDeleted (string str, int row, int nDeleted, object val)
-		{
-			int newVal = accessible.QueryTable ().NRows;
-			AutomationSource.RaisePropertyChangedEvent (
-				this,
-				GridPatternIdentifiers.RowCountProperty,
-				newVal + nDeleted,
-				newVal);
-		}
-
-		private void OnColumnInserted (string str, int row, int nInserted, object val)
-		{
-			int newVal = accessible.QueryTable ().NColumns;
-			AutomationSource.RaisePropertyChangedEvent (
-				this,
-				GridPatternIdentifiers.ColumnCountProperty,
-				newVal - nInserted,
-				newVal);
-		}
-
-		private void OnColumnDeleted (string str, int row, int nDeleted, object val)
-		{
-			int newVal = accessible.QueryTable ().NColumns;
-			AutomationSource.RaisePropertyChangedEvent (
-				this,
-				GridPatternIdentifiers.ColumnCountProperty,
-				newVal + nDeleted,
-				newVal);
-		}
 	}
 }

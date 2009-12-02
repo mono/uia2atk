@@ -5,10 +5,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,53 +20,49 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//      Mike Gorse <mgorse@novell.com>
+//	Mario Carrion <mcarrion@novell.com>
 //
 
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Automation;
-using Mono.Unix;
-using Mono.UIAutomation.Services;
-using Mono.UIAutomation.Source;
 using Atspi;
+using System.Windows.Automation;
 
 namespace AtspiUiaSource
 {
-	public class RangeValueElement : Element
-	{
-		private double currentValue;
+	public class ValueEventHandler : ISourceEventHandler {
 
-		private Value Value {
-			get {
-				return accessible.QueryValue ();
-			}
+		public ValueEventHandler (Element element)
+		{
+			this.element = element;
+
+			currentValue = Text.GetText ();
+			element.accessible.ObjectEvents.TextChanged += OnTextChanged;
 		}
 
-		public RangeValueElement (Accessible accessible,
-			double originalValue) : base (accessible)
+		public void Terminate ()
 		{
-			currentValue = originalValue;
-			accessible.ObjectEvents.PropertyChange += OnPropertyChange;
+			element.accessible.ObjectEvents.TextChanged -= OnTextChanged;
 		}
 
-		~RangeValueElement ()
-		{
-			accessible.ObjectEvents.PropertyChange -= OnPropertyChange;
+		private Text Text {
+			get { return element.accessible.QueryText (); }
 		}
 
-		private void OnPropertyChange (string name, int v1, int v2, object any)
+		private void OnTextChanged (string detail, int v1, int v2, object any)
 		{
-			if (name != "accessible-value")
+			string newValue = Text.GetText ();
+			if (newValue == currentValue)
 				return;
-			double newVal = Value.CurrentValue;
-			AutomationSource.RaisePropertyChangedEvent (
-				this,
-				RangeValuePatternIdentifiers.ValueProperty,
-				currentValue,
-				newVal);
-			currentValue = newVal;
+
+			// LAMESPEC: Client tests confirm OldValue is null.
+			AutomationSource.RaisePropertyChangedEvent (element,
+			                                            ValuePattern.ValueProperty,
+								    null,
+								    newValue);
+			currentValue = newValue;
 		}
+
+		private Element element;
+		private string currentValue;
 	}
 }
+

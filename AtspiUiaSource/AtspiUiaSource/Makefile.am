@@ -47,11 +47,12 @@ FILES =  \
 	AutomationSource.cs \
 	DataItemElement.cs \
 	Element.cs \
+	GridEventHandler.cs \
 	GridItemSource.cs \
 	GridSource.cs \
 	InvokeSource.cs \
 	ISourceEventHandler.cs \
-	RangeValueElement.cs \
+	RangeValueEventHandler.cs \
 	RangeValueSource.cs \
 	SelectionEventHandler.cs \
 	SelectionItemSource.cs \
@@ -64,7 +65,7 @@ FILES =  \
 	TextSource.cs \
 	ToggleSource.cs \
 	TreeItemElement.cs \
-	ValueElement.cs \
+	ValueEventHandler.cs \
 	ValueSource.cs
 
 DATA_FILES = 

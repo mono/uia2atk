@@ -1,3 +1,15 @@
+2009-12-02  Mario Carrion  <mcarrion@novell.com>
+
+	* Element.cs: TryCreateRangeValueElement() -> RangeValueEventHandler,
+	TryCreateValueElement() -> ValueEventHandler, OnRowXXX()/OnColumn() ->
+	GridEventHandler.
+	* Makefile.am: Files renamed.
+	* GridEventHandler.cs: Listens for Column and Row changes.
+	* ValueElement.cs -> ValueEventHandler.cs: Renamed, implementing
+	ISourceEventHandler.
+	* RangeValueElement.cs -> RangeValueEventHandler.cs: Renamed,
+	implementing ISourceEventHandler.
+
 2009-12-01  Mario Carrion  <mcarrion@novell.com>
 
 	* Element.cs: SupportsSelection() event added.
