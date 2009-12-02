@@ -16,13 +16,14 @@ class RepeatButtonFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(RepeatButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('RepeatButtonSample')
-        self.button = self.frame.findButton('Show the time')
-        self.label = self.frame.findLabel('Not clicked yet.')
+        self.filler = self.frame.findFiller('Silverlight Control')
+        self.button = self.filler.findPushButton('Show the time')
+        self.label = self.filler.findLabel('Not clicked yet.')
 
     def press(self, accessible, time):
         procedurelogger.action('Check %s\'s actions' % accessible)
 
-        extents = self.button.queryComponent().getExtents(pyatspi.DESKTOP_COORDS)
+        extents = self.button._accessible.queryComponent().getExtents(pyatspi.DESKTOP_COORDS)
         x = extents.x + (extents.width / 2)
         y = extents.y + (extents.height / 2)
 

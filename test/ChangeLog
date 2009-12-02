@@ -1,3 +1,10 @@
+2009-12-02  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/repeatbutton/repeatbuttonframe.py,
+	* testers/moonlight/repeatbutton-regression.py,
+	* testers/moonlight/repeatbutton/__init__.py: some updates and add bug 
+	reference
+
 2009-12-01  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/radiobutton/__init__.py,
