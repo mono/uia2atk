@@ -1,0 +1,5 @@
+2009-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AtspiUiaSource.sln:
+	* AtspiUiaSource/AtspiUiaSource.csproj: MonoDevelop solution
+	for AtspiUiaSource.

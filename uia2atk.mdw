@@ -8,5 +8,6 @@
     <Item>UIAutomation/UIAutomationTypes/Test/UIAutomationTypesTests.sln</Item>
     <Item>UIAutomation/UIAutomationProvider/Test/UIAutomationProviderTests.sln</Item>
     <Item>UIAutomation/UIAutomationClientTests/UIAutomationClientTests.sln</Item>
+    <Item>AtspiUiaSource/AtspiUiaSource.sln</Item>
   </Items>
 </WorkspaceItem>
