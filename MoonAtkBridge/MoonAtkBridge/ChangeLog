@@ -1,3 +1,12 @@
+2009-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Fix bug where
+	implementors could be ignored because they implemented only non-Atk
+	interfaces.
+
+	* Moonlight.AtkBridge.PatternImplementors/RadioButton.cs: Adds
+	checked state and corresponding state change event.
+
 2009-12-02  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs:

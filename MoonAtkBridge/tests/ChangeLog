@@ -1,3 +1,12 @@
+2009-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* test_button.py: Now that #553160 is fixed, re-add "focusable" state.
+
+	* test_radiobutton.py: Test for the "checked" states and events.
+
+	* moonlight/testing.py: Fix problem where extra states were not being
+	identified.
+
 2009-12-02  Brad Taylor  <brad@getcoded.net>
 
 	* test_checkbox.py:

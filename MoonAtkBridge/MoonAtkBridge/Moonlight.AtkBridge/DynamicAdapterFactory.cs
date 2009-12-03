@@ -116,14 +116,12 @@ namespace Moonlight.AtkBridge
 				}
 
 				foreach (Type i in ifaces) {
-					if (i.Namespace != "Atk")
-						continue;
-
-					if (atkInterfaces.ContainsKey (i)
+					if (i.Namespace == "Atk"
+					    && atkInterfaces.ContainsKey (i)
 					    && (ifaces.Length <= atkInterfaces [i].GetInterfaces ().Length))
-						continue;
-
-					atkInterfaces [i] = impl;
+						atkInterfaces.Remove (i);
+					else
+						atkInterfaces [i] = impl;
 				}
 			}
 

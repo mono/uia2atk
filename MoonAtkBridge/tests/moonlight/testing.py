@@ -67,7 +67,7 @@ class TestCase(unittest.TestCase):
 
             states.remove(v[a])
 
-        self.assertTrue(states.isEmpty, 'Extra states found')
+        self.assertTrue(states.isEmpty(), 'Extra states found')
 
     def assertInterfaces(self, control, expected_ifaces):
         """

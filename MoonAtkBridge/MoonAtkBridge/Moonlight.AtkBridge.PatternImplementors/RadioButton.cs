@@ -50,6 +50,23 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		public RadioButton (Adapter adapter, AutomationPeer peer)
 			: base (adapter, peer)
 		{
+			adapter.AutomationPropertyChanged
+				+= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
+		}
+
+		public override void OnRefStateSet (ref Atk.StateSet states)
+		{
+			var selectionItem = peer.GetPattern (
+				PatternInterface.SelectionItem)
+					as ISelectionItemProvider;
+			if (selectionItem == null)
+				return;
+
+			if (selectionItem.IsSelected)
+				states.AddState (Atk.StateType.Checked);
+			else
+				states.RemoveState (Atk.StateType.Checked);
 		}
 #endregion
 
@@ -68,6 +85,14 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				Name = "click", Pattern = selectionItem,
 				Delegate = p => ((ISelectionItemProvider) p).Select ()
 			});
+		}
+#endregion
+
+#region Private Methods
+		private void OnAutomationPropertyChanged (object o, AutomationPropertyChangedEventArgs args)
+		{
+			if (args.Property == SelectionItemPatternIdentifiers.IsSelectedProperty)
+				adapter.NotifyStateChange (Atk.StateType.Checked);
 		}
 #endregion
 	}

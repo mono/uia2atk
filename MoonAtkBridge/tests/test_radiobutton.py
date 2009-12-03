@@ -56,8 +56,7 @@ class RadioButton(TestCase):
         ])
 
         self.assertStates(self.apple, [
-            # XXX: Missing focusable (#553160)
-            'enabled', 'selectable',
+            'enabled', 'focusable', 'selectable',
             'sensitive', 'showing', 'visible',
         ])
 
@@ -86,19 +85,33 @@ class RadioButton(TestCase):
             self.apple.click()
 
             self.assertTrue(self.apple.selected)
+            self.assertTrue(self.apple.checked)
+
             self.assertFalse(self.banana.selected)
+            self.assertFalse(self.banana.checked)
+
             self.assertFalse(self.watermelon.selected)
+            self.assertFalse(self.watermelon.checked)
 
         assert listener.containsEvent(self.apple,
                                       'object:state-changed:selected',
+                                      qty=1)
+
+        assert listener.containsEvent(self.apple,
+                                      'object:state-changed:checked',
                                       qty=1)
 
         with listener.listenTo([self.apple, self.banana]):
             self.banana.click()
 
             self.assertFalse(self.apple.selected)
+            self.assertFalse(self.apple.checked)
+
             self.assertTrue(self.banana.selected)
+            self.assertTrue(self.banana.checked)
+
             self.assertFalse(self.watermelon.selected)
+            self.assertFalse(self.watermelon.checked)
 
         assert listener.containsEvent(self.apple,
                                       'object:state-changed:selected',
@@ -106,4 +119,12 @@ class RadioButton(TestCase):
 
         assert listener.containsEvent(self.banana,
                                       'object:state-changed:selected',
+                                      qty=1)
+
+        assert listener.containsEvent(self.apple,
+                                      'object:state-changed:checked',
+                                      qty=1)
+
+        assert listener.containsEvent(self.banana,
+                                      'object:state-changed:checked',
                                       qty=1)

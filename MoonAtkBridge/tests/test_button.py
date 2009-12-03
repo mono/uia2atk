@@ -58,8 +58,8 @@ class Button(TestCase):
 
         # GTK+ labels also have multi_line, but Orca doesn't seem to care
         self.assertStates(self.button, [
-            # XXX: Missing focusable (#553160)
-            'enabled', 'sensitive', 'showing', 'visible'
+            'enabled', 'focusable', 'sensitive',
+            'showing', 'visible'
         ])
 
         self.assertEqual(1, self.button.childCount)
