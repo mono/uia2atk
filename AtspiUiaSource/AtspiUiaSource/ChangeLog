@@ -1,3 +1,9 @@
+2009-12-03  Mario Carrion  <mcarrion@novell.com>
+
+	* AutomationSource.cs: Converting IElement -> AutomationElement.
+	* SelectionEventHandler.cs: Removed convertion, AutomationSource
+	handles it now.
+
 2009-12-03  Mike Gorse  <mgorse@novell.com>
 
 	* GridItemSource.cs, tableItemSource.cs: Fetch row and column

@@ -47,20 +47,11 @@ namespace AtspiUiaSource
 
 		private void SelectionChanged (string detail, int v1, int v2, object any)
 		{
-			// To always expose public API
-			AutomationElement []oldElements = null;
-			if (oldSelection != null)
-				oldElements = SourceManager.GetOrCreateAutomationElements (oldSelection);
-
-			AutomationElement []newElements = null;
 			IElement []newSelection = source.Selection;
-			if (newSelection != null)
-				newElements = SourceManager.GetOrCreateAutomationElements (newSelection);
-
 			AutomationSource.RaisePropertyChangedEvent (element,
 			                                            SelectionPattern.SelectionProperty,
-								    oldElements ?? new AutomationElement [0],
-								    newElements ?? new AutomationElement [0]);
+								    oldSelection ?? new IElement [0],
+								    newSelection ?? new IElement [0]);
 			oldSelection = newSelection;
 		}
 

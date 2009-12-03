@@ -220,6 +220,31 @@ namespace AtspiUiaSource
 		internal static void RaisePropertyChangedEvent (IElement element,
 				AutomationPropertyChangedEventArgs e)
 		{
+			// To always use public API
+			// - AutomationElement[]
+			if (e.Property.Id == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id
+			    || e.Property.Id == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id
+			    || e.Property.Id == TablePatternIdentifiers.ColumnHeadersProperty.Id
+			    || e.Property.Id == TablePatternIdentifiers.RowHeadersProperty.Id
+			    || e.Property.Id == SelectionPatternIdentifiers.SelectionProperty.Id) {
+				IElement[] oldIElements = e.OldValue as IElement[];
+				IElement[] newIElements = e.NewValue as IElement[];
+
+				e = new AutomationPropertyChangedEventArgs (e.Property,
+				                                            SourceManager.GetOrCreateAutomationElements (oldIElements),
+									    SourceManager.GetOrCreateAutomationElements (newIElements));
+			// - AutomationElement
+			} else if (e.Property.Id == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id
+			           || e.Property.Id == GridItemPatternIdentifiers.ContainingGridProperty.Id
+				   || e.Property.Id == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id) {
+				IElement oldElement = e.OldValue as IElement;
+				IElement newElement = e.NewValue as IElement;
+
+				e = new AutomationPropertyChangedEventArgs (e.Property,
+				                                            SourceManager.GetOrCreateAutomationElement (oldElement),
+									    SourceManager.GetOrCreateAutomationElement (newElement));
+			}
+
 			foreach (PropertyChangedEventHandlerData handler in propertyEventHandlers) {
 				if (IsElementInScope (element, handler.Element, handler.Scope)) {
 					foreach (AutomationProperty property in handler.Properties) {
