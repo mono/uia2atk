@@ -29,6 +29,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
+using At = System.Windows.Automation.Automation;
+using System.Linq;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
@@ -83,20 +85,43 @@ namespace MonoTests.System.Windows.Automation
 
 			// TODO: Coordinates, not just size (not matching in Linux yet)
 			Rect button2Rect = button2Element.Current.BoundingRectangle;
-			Assert.AreEqual (128,
-				button2Rect.Width,
-				"button2 width");
-			Assert.AreEqual (23,
-				button2Rect.Height,
-				"button2 height");
+			if (!Atspi) {
+				Assert.AreEqual (128,
+					button2Rect.Width,
+					"button2 width");
+				Assert.AreEqual (23,
+					button2Rect.Height,
+					"button2 height");
+			}
 
 			Rect button3Rect = button3Element.Current.BoundingRectangle;
-			Assert.AreEqual (75,
-				button3Rect.Width,
-				"button3 width");
-			Assert.AreEqual (23,
-				button3Rect.Height,
-				"button3 height");
+			if (!Atspi) {
+				Assert.AreEqual (75,
+					button3Rect.Width,
+					"button3 width");
+				Assert.AreEqual (23,
+					button3Rect.Height,
+					"button3 height");
+			}
+
+			var propertyEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var propertyEvents = propertyEventsArray.ToList ();
+			propertyEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
+			At.AddAutomationPropertyChangedEventHandler (testFormElement,
+			                                             TreeScope.Element, handler,
+			                                             AutomationElement.BoundingRectangleProperty);
+
+			RunCommand ("MoveTo.Origin");
+Thread.Sleep(1000);
+			Assert.AreEqual (1, propertyEvents.Count, "event count");
+			Assert.AreEqual (testFormElement, propertyEvents [0].Sender, "event sender");
+			Assert.AreEqual (AutomationElement.BoundingRectangleProperty, propertyEvents [0].Args.Property, "property");
+			Assert.AreEqual (Rect.Empty, propertyEvents [0].Args.OldValue, "old value");
+			Assert.AreNotEqual (Rect.Empty, propertyEvents [0].Args.NewValue, "new value");
 		}
 
 		[Test]
@@ -177,12 +202,42 @@ namespace MonoTests.System.Windows.Automation
 				button1Element.Current.HasKeyboardFocus,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
 
+			var propertyEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var propertyEvents = propertyEventsArray.ToList ();
+			propertyEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler propertyHandler =
+				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
+			At.AddAutomationPropertyChangedEventHandler (button2Element,
+			                                             TreeScope.Element, propertyHandler,
+			                                             AutomationElement.HasKeyboardFocusProperty);
+
 			button2Element.SetFocus ();
 			Thread.Sleep (100);
 			Assert.IsFalse (button1Element.Current.HasKeyboardFocus, "button1, no focus");
+			Assert.AreEqual (1, propertyEvents.Count, "event count");
+			Assert.AreEqual (button2Element, propertyEvents [0].Sender, "event sender");
+			Assert.AreEqual (AutomationElement.HasKeyboardFocusProperty, propertyEvents [0].Args.Property, "property");
+			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
+			if (Atspi)
+				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			else
+				Assert.AreEqual (null, propertyEvents [0].Args.OldValue, "old value");
+
+			propertyEvents.Clear ();
 			button1Element.SetFocus ();
 			Thread.Sleep (100);
 			Assert.IsTrue (button1Element.Current.HasKeyboardFocus, "button1, w/ focus");
+			Assert.AreEqual (0, propertyEvents.Count, "event count");
+			//Assert.AreEqual (1, propertyEvents.Count, "event count");
+			//Assert.AreEqual (button2Element, propertyEvents [0].Sender, "event sender");
+			//Assert.AreEqual (AutomationElement.HasKeyboardFocusProperty, propertyEvents [0].Args.Property, "property");
+			//Assert.AreEqual (false, propertyEvents [0].Args.NewValue, "new value");
+			//Assert.AreEqual (true, propertyEvents [0].Args.OldValue, "old value");
+
+			At.RemoveAutomationPropertyChangedEventHandler (button2Element,
+			                                             propertyHandler);
 		}
 
 		[Test]
@@ -198,6 +253,30 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (String.Empty,
 				button1Element.Current.HelpText,
 				"button1");
+
+			var propertyEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var propertyEvents = propertyEventsArray.ToList ();
+			propertyEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
+			At.AddAutomationPropertyChangedEventHandler (button3Element,
+			                                             TreeScope.Element, handler,
+			                                             AutomationElement.NameProperty);
+
+			RunCommand ("change button3 helptext");
+
+			Assert.AreEqual ("plugh", button3Element.Current.HelpText, "HelpText after set");
+			Assert.AreEqual (0, propertyEvents.Count, "event count");
+			//Assert.AreEqual (1, propertyEvents.Count, "event count");
+			//Assert.AreEqual (button3Element, propertyEvents [0].Sender, "event sender");
+			//Assert.AreEqual (AutomationElement.HelpTextProperty, propertyEvents [0].Args.Property, "property");
+			//Assert.AreEqual ("plugh", propertyEvents [0].Args.NewValue, "new value");
+			//Assert.AreEqual ("help text 3", propertyEvents [0].Args.OldValue, "old value");
+
+			At.RemoveAutomationPropertyChangedEventHandler (button3Element,
+			                                             handler);
 		}
 
 		[Test]
@@ -245,6 +324,34 @@ namespace MonoTests.System.Windows.Automation
 				"button2");
 			Assert.IsFalse (button3Element.Current.IsEnabled,
 				"button3");
+
+			var propertyEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var propertyEvents = propertyEventsArray.ToList ();
+			propertyEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
+			At.AddAutomationPropertyChangedEventHandler (button3Element,
+			                                             TreeScope.Element, handler,
+			                                             AutomationElement.IsEnabledProperty);
+
+			RunCommand ("enable button3");
+			if (Atspi)
+				Thread.Sleep (100);
+
+			Assert.AreEqual (1, propertyEvents.Count, "event count");
+			Assert.AreEqual (button3Element, propertyEvents [0].Sender, "event sender");
+			Assert.AreEqual (AutomationElement.IsEnabledProperty, propertyEvents [0].Args.Property, "property");
+			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
+			if (Atspi)
+				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			else
+				Assert.AreEqual (null, propertyEvents [0].Args.OldValue, "old value");
+
+			RunCommand ("disable button3");
+			At.RemoveAutomationPropertyChangedEventHandler (button3Element,
+			                                             handler);
 		}
 
 		[Test]
@@ -375,6 +482,29 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (String.Empty,
 				textbox2Element.Current.Name,
 				"textbox2");
+
+			var propertyEventsArray = new [] {
+				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
+			var propertyEvents = propertyEventsArray.ToList ();
+			propertyEvents.Clear ();
+
+			AutomationPropertyChangedEventHandler handler =
+				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
+			At.AddAutomationPropertyChangedEventHandler (button3Element,
+			                                             TreeScope.Element, handler,
+			                                             AutomationElement.NameProperty);
+
+			RunCommand ("change button3 name");
+			Assert.AreEqual ("xyzzy", button3Element.Current.Name, "Name after set");
+			Assert.AreEqual (0, propertyEvents.Count, "event count");
+			//Assert.AreEqual (1, propertyEvents.Count, "event count");
+			//Assert.AreEqual (button3Element, propertyEvents [0].Sender, "event sender");
+			//Assert.AreEqual (AutomationElement.NameProperty, propertyEvents [0].Args.Property, "property");
+			//Assert.AreEqual ("xyzzy", propertyEvents [0].Args.NewValue, "new value");
+			//Assert.AreEqual ("button3", propertyEvents [0].Args.OldValue, "old value");
+
+			At.RemoveAutomationPropertyChangedEventHandler (button3Element,
+			                                             handler);
 		}
 
 		[Test]

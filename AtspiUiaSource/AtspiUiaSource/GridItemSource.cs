@@ -96,10 +96,10 @@ namespace AtspiUiaSource
 					p.RowSpan = rowExtents > 0 ? rowExtents : 1;
 					p.ColumnSpan = colExtents > 0 ? colExtents : 1;
 				} else {
-					p.Row = -1;
-					p.Column = -1;
-					p.RowSpan = 1;
-					p.ColumnSpan = 1;
+					p.Row = Row;
+					p.Column = Column;
+					p.RowSpan = RowSpan;
+					p.ColumnSpan = ColumnSpan;
 				}
 				p.ContainingGrid = ContainingGrid;
 				return p;

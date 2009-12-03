@@ -235,6 +235,11 @@ namespace System.Windows.Automation
 		{
 			return new AutomationPattern [0];
 		}
+
+		public void SetFocus ()
+		{
+			// TODO: Need to test
+		}
 		#endregion
 	}
 }

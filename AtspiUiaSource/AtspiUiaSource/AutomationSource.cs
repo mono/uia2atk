@@ -46,9 +46,11 @@ namespace AtspiUiaSource
 			automationEventHandlers = new List<AutomationEventHandlerData> ();
 			propertyEventHandlers = new List<PropertyChangedEventHandlerData> ();
 			structureEventHandlers = new List<StructureChangedEventHandlerData> ();
-			Desktop.OnStateChanged += OnStateChanged;
-			Desktop.OnChildAdded += OnChildAdded;
-			Desktop.OnChildRemoved += OnChildRemoved;
+			Desktop.DescriptionChanged += OnDescriptionChanged;
+			Desktop.NameChanged += OnNameChanged;
+			Desktop.StateChanged += OnStateChanged;
+			Desktop.ChildAdded += OnChildAdded;
+			Desktop.ChildRemoved += OnChildRemoved;
 		}
 
 		public IElement [] GetRootElements ()
@@ -296,11 +298,32 @@ namespace AtspiUiaSource
 			return false;
 		}
 
+		private void OnDescriptionChanged (object sender, string oldDescription, string newDescription)
+		{
+			Accessible accessible = sender as Accessible;
+			RaisePropertyChangedEvent (accessible, AutomationElementIdentifiers.HelpTextProperty, oldDescription, newDescription);
+		}
+
+		private void OnNameChanged (object sender, string oldName, string newName)
+		{
+			Accessible accessible = sender as Accessible;
+			RaisePropertyChangedEvent (accessible, AutomationElementIdentifiers.NameProperty, oldName, newName);
+		}
+
 		private void OnStateChanged (Accessible sender, StateType state, bool set)
 		{
 			switch (state) {
 			case StateType.Checked:
 				RaisePropertyChangedEvent (sender, TogglePatternIdentifiers.ToggleStateProperty, !set, set);
+				break;
+			case StateType.Enabled:
+				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.IsEnabledProperty, !set, set);
+				break;
+			case StateType.Focusable:
+				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.IsKeyboardFocusableProperty, !set, set);
+				break;
+			case StateType.Focused:
+				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.HasKeyboardFocusProperty, !set, set);
 				break;
 			case StateType.Selected:
 				RaisePropertyChangedEvent (sender, SelectionItemPatternIdentifiers.IsSelectedProperty, !set, set);

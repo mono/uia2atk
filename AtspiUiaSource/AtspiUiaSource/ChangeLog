@@ -1,3 +1,12 @@
+2009-12-03  Mike Gorse  <mgorse@novell.com>
+
+	* GridItemSource.cs, tableItemSource.cs: Fetch row and column
+	individually if GetRowColumnExtents fails.
+
+	* Element.cs: Implement SetFocus ().
+
+	* AutomationSource.cs: Implement some PropertyChanged handlers.
+
 2009-12-02  Mario Carrion  <mcarrion@novell.com>
 
 	* Element.cs: TryCreateRangeValueElement() -> RangeValueEventHandler,

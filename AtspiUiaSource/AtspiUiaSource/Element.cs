@@ -433,6 +433,13 @@ namespace AtspiUiaSource
 			return patterns.ToArray ();
 		}
 
+		public void SetFocus ()
+		{
+			Component component = accessible.QueryComponent ();
+			if (component != null)
+				component.GrabFocus ();
+		}
+
 		internal static int GetUniqueRuntimeId ()
 		{
 			return ++id;
@@ -593,6 +600,5 @@ namespace AtspiUiaSource
 			// fail; might as well always enable it.
 			return (accessible.QueryEditableText () != null);
 		}
-
 	}
 }

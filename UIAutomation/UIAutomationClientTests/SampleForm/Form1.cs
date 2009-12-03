@@ -203,6 +203,15 @@ namespace SampleForm {
 				listView1.MultiSelect = true;
 			else if (cmd == "disable multiselect")
 				listView1.MultiSelect = false;
+			else if (cmd == "change button3 name") {
+				button3.AccessibleName = "xyzzy";
+			} else if (cmd == "change button3 helptext") {
+				button3.AccessibleDescription = "plugh";
+			} else if (cmd == "enable button3") {
+				button3.Enabled = true;
+			} else if (cmd == "disable button3") {
+				button3.Enabled = false;
+			}
 		}
 	}
 }

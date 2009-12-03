@@ -611,6 +611,10 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
+		public void SetFocus ()
+		{
+			fragment.SetFocus ();
+		}
 #endregion
 	}
 }

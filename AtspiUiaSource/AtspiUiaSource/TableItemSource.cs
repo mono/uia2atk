@@ -43,7 +43,7 @@ namespace AtspiUiaSource
 
 		public IElement [] GetRowHeaderItems ()
 		{
-			Accessible header = table.GetRowHeader (accessible.IndexInParent);
+			Accessible header = table.GetRowHeader (Row);
 			if (header == null)
 				return new Element [0];
 			Element [] elements = new Element [1];
@@ -53,7 +53,7 @@ namespace AtspiUiaSource
 
 		public IElement [] GetColumnHeaderItems ()
 		{
-			Accessible header = table.GetColumnHeader (accessible.IndexInParent);
+			Accessible header = table.GetColumnHeader (Column);
 			if (header == null)
 				return new Element [0];
 			Element [] elements = new Element [1];
@@ -72,10 +72,10 @@ namespace AtspiUiaSource
 					p.RowSpan = rowExtents > 0? rowExtents : 1;
 					p.ColumnSpan = colExtents > 0? colExtents : 1;
 				} else {
-					p.Row = -1;
-					p.Column = -1;
-					p.RowSpan = 1;
-					p.ColumnSpan = 1;
+					p.Row = Row;
+					p.Column = Column;
+					p.RowSpan = RowSpan;
+					p.ColumnSpan = ColumnSpan;
 				}
 				p.ContainingGrid = ContainingGrid;
 				p.RowHeaderItems = GetRowHeaderItems ();

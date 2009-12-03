@@ -7,6 +7,7 @@ namespace GtkForm
 	public class DemoMain
 	{
 		private Gtk.Window window;
+		private Gtk.HBox hbox1;
 		private Gtk.Label label1;
 		private Gtk.Entry textBox1;
 		private Gtk.TextView textBox3;
@@ -19,6 +20,8 @@ namespace GtkForm
 		private Gtk.Entry textBoxExtra;
 		private Gtk.Entry txtCommand;
 		private Gtk.Button button1;
+		private Gtk.Button button2;
+		private Gtk.Button button3;
 
 		public static void Main (string[] args)
 		{
@@ -29,9 +32,9 @@ namespace GtkForm
 
 		public DemoMain ()
 		{
-			window = new Gtk.Window ("Sample GTK form");
+			window = new Gtk.Window ("TestForm1");
 			Gtk.HBox hbox = new Gtk.HBox (false, 0);
-			Gtk.HBox hbox1 = new Gtk.HBox (false, 0);
+			hbox1 = new Gtk.HBox (false, 0);
 			Gtk.HBox hbox2 = new Gtk.HBox (false, 0);
 			Gtk.HBox hbox3 = new Gtk.HBox (false, 0);
 			hbox.Add (hbox1);
@@ -40,8 +43,8 @@ namespace GtkForm
 
 			button1 = new Gtk.Button ("button1");
 			button1.Clicked += Button1Clicked;
-			Gtk.Button button2 = new Gtk.Button ("button2");
-			Gtk.Button button3 = new Gtk.Button ("button3");
+			button2 = new Gtk.Button ("button2");
+			button3 = new Gtk.Button ("button3");
 			Gtk.Button button4 = new Gtk.Button ("button4");
 			button4.Clicked += Button4Clicked;
 			Gtk.Button button5 = new Gtk.Button ("button5");
@@ -94,9 +97,9 @@ namespace GtkForm
 			iters [0] = tableStore.AppendNode ();
 			tableStore.SetValues (iters [0], "true", "Bob", "28", "");
 			treeView2 = new Gtk.TreeView (tableStore);
-			AddTreeViewColumn (treeView2, 0, "gender");
-			AddTreeViewColumn (treeView2, 1, "name");
-			AddTreeViewColumn (treeView2, 1, "age");
+			AddTreeViewColumn (treeView2, 0, "Gender");
+			AddTreeViewColumn (treeView2, 1, "Name");
+			AddTreeViewColumn (treeView2, 2, "Age");
 			treeView2.Accessible.Name = "dataGridView1";
 
 			hboxPanel = new Gtk.HBox ();
@@ -213,12 +216,20 @@ namespace GtkForm
 				Gtk.TreeIter iter;
 				iter = tableStore.AppendNode ();
 				tableStore.SetValues (iter, "true", "Mallory", "40");
-			} else if (cmd == "add table column") {
+			} else if (cmd == "add table column")
 			AddTreeViewColumn (treeView2, 3, "more");
-			} else if (cmd == "enable multiselect")
+			else if (cmd == "enable multiselect")
 				treeView3.Selection.Mode = Gtk.SelectionMode.Multiple;
 			else if (cmd == "disable multiselect")
 				treeView3.Selection.Mode = Gtk.SelectionMode.Single;
+			else if (cmd == "change button3 name")
+				button3.Accessible.Name = "xyzzy";
+			else if (cmd == "change button3 helptext")
+				button3.Accessible.Description = "plugh";
+			else if (cmd == "enable button3")
+				button3.Sensitive = true;
+			else if (cmd == "disable button3")
+				button3.Sensitive = false;
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)

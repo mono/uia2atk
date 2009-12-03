@@ -421,7 +421,7 @@ namespace System.Windows.Automation
 
 		public void SetFocus ()
 		{
-			throw new NotImplementedException ();
+			sourceElement.SetFocus ();
 		}
 
 		public bool TryGetCachedPattern (AutomationPattern pattern,

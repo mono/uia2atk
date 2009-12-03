@@ -53,7 +53,7 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.HeaderItem));
 			Assert.IsNotNull (headerItemElement, "headerItem");
-			Assert.AreEqual ("column1",
+			Assert.AreEqual ("Gender",
 				headerItemElement.Current.Name,
 				"Header 1 name");
 			Assert.AreEqual (headerElement,
@@ -63,11 +63,16 @@ namespace MonoTests.System.Windows.Automation
 				"headerItem should not have children");
 			headerItemElement = TreeWalker.RawViewWalker.GetNextSibling (headerItemElement);
 			Assert.IsNotNull (headerItemElement, "Header #2");
-			Assert.AreEqual ("column2",
+			Assert.AreEqual ("Name",
 				headerItemElement.Current.Name,
 				"Header 2 name");
+			headerItemElement = TreeWalker.RawViewWalker.GetNextSibling (headerItemElement);
+			Assert.IsNotNull (headerItemElement, "Header #3");
+			Assert.AreEqual ("Age",
+				headerItemElement.Current.Name,
+				"Header 3 name");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (headerItemElement),
-				"Should not have more than two header items");
+				"Should not have more than three header items");
 
 			AutomationElement dataItemElement = TreeWalker.RawViewWalker.GetNextSibling (headerElement);
 			Assert.IsNotNull (dataItemElement, "DataItem");
@@ -87,14 +92,19 @@ namespace MonoTests.System.Windows.Automation
 				"TextElement FirstChild");
 				Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (textElement),
 				"TextElement PreviousSibling");
-			Assert.AreEqual ("item1",
+			Assert.AreEqual ("false",
 				textElement.Current.Name,
 				"TextElement Name");
 			//VerifyPatterns (textElement,
 				//ValuePatternIdentifiers.Pattern);
 			textElement = TreeWalker.RawViewWalker.GetNextSibling (textElement);
 			Assert.IsNotNull (textElement, "item2");
-			Assert.AreEqual ("item2",
+			Assert.AreEqual ("Alice",
+				textElement.Current.Name,
+				"TextElement Name");
+			textElement = TreeWalker.RawViewWalker.GetNextSibling (textElement);
+			Assert.IsNotNull (textElement, "item2");
+			Assert.AreEqual ("24",
 				textElement.Current.Name,
 				"TextElement Name");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (textElement),

@@ -1,3 +1,7 @@
+2009-12-03  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Source/IElement.cs: Add SetFocus.
+
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Source/IAutomationSource.cs: Add GetElementFromHandle.

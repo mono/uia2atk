@@ -1,3 +1,15 @@
+2009-12-03  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/AutomationElementTest.cs,
+	AtspiUiaClientTests/AutomationElementTest.cs,
+	AtspiUiaClientTests/Makefile.am: SampleForm/Form1.cs:
+	Test some PropertyChanged events.
+
+	* UIAutomationClientTests/BaseTest.cs, GtkForm/GtkForm.cs:
+	Change name of form to match SWF form.
+
+	* UIAutomationClientTests/TableHierarchyTest.cs: Fix for new table.
+
 2009-12-02  Mario Carrion  <mcarrion@novell.com>
 
 	* AtspiUiaClientTests/Makefile.am: Added RangeValuePatternTest.cs.

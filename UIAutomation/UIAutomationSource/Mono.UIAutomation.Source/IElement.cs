@@ -98,5 +98,7 @@ namespace Mono.UIAutomation.Source
 		object GetCurrentPattern (AutomationPattern pattern);
 
 		AutomationPattern [] GetSupportedPatterns ();
+
+			void SetFocus ();
 	}
 }

@@ -72,6 +72,8 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
+	AutomationElementTest.cs \
+	AutomationEventTest.cs \
 	InvokePatternTest.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \
@@ -79,8 +81,7 @@ FILES =  \
 	TableHierarchyTest.cs \
 	TextPatternTest.cs \
 	TogglePatternTest.cs \
-	ValuePatternTest.cs \
-	AutomationEventTest.cs
+	ValuePatternTest.cs
 
 DATA_FILES = 
 

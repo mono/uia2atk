@@ -99,5 +99,7 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 		string GetCurrentPatternPath (int patternId);
 
 		int [] SupportedPatternIds { get; }
+
+		void SetFocus ();
 	}
 }

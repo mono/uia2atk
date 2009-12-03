@@ -515,6 +515,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 				.Where (p => p != null)
 				.ToArray ();
 		}
+
+		public void SetFocus ()
+		{
+			dbusElement.SetFocus ();
+		}
 		#endregion
 
 		#region Public Properties

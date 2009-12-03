@@ -291,7 +291,7 @@ namespace MonoTests.System.Windows.Automation
 				// TODO: Use ProcessId when at-spi supports it
 			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
 					new PropertyCondition (AEIds.NameProperty,
-						"Sample GTK form"));
+						"TestForm1"));
 			groupBoxElement = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Group));
