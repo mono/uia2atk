@@ -12,6 +12,8 @@ from scrollbar import *
 # class to represent the main window.
 class ScrollBarFrame(accessibles.Frame):
 
+    BUTTONS_NUM = 5
+
     def __init__(self, accessible):
         super(ScrollBarFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('ScrollBarSample')
@@ -25,6 +27,16 @@ class ScrollBarFrame(accessibles.Frame):
                 self.vscrollBar = scrollBar
             else:
                 self.hscrollBar = scrollBar
+
+        self.vs_buttons = self.vscrollBar.findAllPushButtons(None)
+        assert len(self.vs_buttons) == BUTTONS_NUM, \
+               "actual number is %s, expected %s" % \
+                  (len(self.vs_buttons), BUTTONS_NUM)
+
+        self.hs_buttons = self.hscrollBar.findAllPushButtons(None)
+        assert len(self.hs_buttons) == BUTTONS_NUM, \
+               "actual number is %s, expected %s" % \
+                  (len(self.hs_buttons), BUTTONS_NUM)
 
     def setValue(self, accessible, value):
         """

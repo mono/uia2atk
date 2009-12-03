@@ -53,7 +53,72 @@ sbFrame = app.scrollBarFrame
 #statesCheck(sbFrame.hscrollBar, 'HScrollBar', add_states=['horizontal'])
 ##Bug 559825
 #statesCheck(sbFrame.vscrollBar, 'VScrollBar', add_states=['vertical'])
+'''
+for vs_button in vs_buttons:
+    statesCheck(sbFrame.vs_button, 'Button', invalid_states=['focusable'])
 
+for hs_button in hs_buttons:
+    statesCheck(sbFrame.vs_button, 'Button', invalid_states=['focusable'])
+
+#######################
+# Check default Actions
+#######################
+# Thumb won't implement Action
+for vs_button in vs_buttons:
+    if vs_button != vs_buttons[2]:
+        actionsCheck(sbFrame.vs_button, 'Button')
+    else:
+        try:
+            actionsCheck(sbFrame.vs_button, 'Button')
+        except NotImplementedError:
+            return
+        assert False, "Action shouldn't be implemented"
+
+for hs_button in hs_buttons:
+    if hs_button != hs_buttons[2]:
+        actionsCheck(sbFrame.hs_button, 'Button')
+    else:
+        try:
+            actionsCheck(sbFrame.hs_button, 'Button')
+        except NotImplementedError:
+            return
+        assert False, "Action shouldn't be implemented"
+
+##################
+# Click Buttons
+##################
+sbFrame.vs_button[3].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Vertical: 10')
+
+sbFrame.vs_button[4].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Vertical: 11')
+
+sbFrame.vs_button[1].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Vertical: 1')
+
+sbFrame.vs_button[0].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Vertical: 0')
+
+sbFrame.hs_button[3].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Horizontal: 10')
+
+sbFrame.hs_button[4].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.hlabel, 'Value of Horizontal: 11')
+
+sbFrame.hs_button[1].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Horizontal: 1')
+
+sbFrame.hs_button[0].click(log=True)
+sleep(config.SHORT_DELAY)
+assertName(sbFrame.vlabel, 'Value of Horizontal: 0')
+'''
 ##TODO: commented out most of the tests caused by Bug 559825, as we can't correctly find scrollbars.
 """
 # set scrollBar's value and assert label's text

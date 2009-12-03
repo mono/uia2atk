@@ -1,3 +1,8 @@
+2009-12-03  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/scrollbar/scrollbarframe.py,
+	* testers/moonlight/scrollbar-regression.py: expand more tests
+
 2009-12-02  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/scrollviewer/scrollviewerframe.py:
