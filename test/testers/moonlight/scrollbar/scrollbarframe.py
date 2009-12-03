@@ -15,10 +15,11 @@ class ScrollBarFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ScrollBarFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame('ScrollBarSample')
-        self.hlabel = self.frame.findLabel('Value of Horizontal: 0')
-        self.vlabel = self.frame.findLabel('Value of Vertical: 0')
+        self.filler = self.findFiller('Silverlight Control')
+        self.hlabel = self.filler.findLabel('Value of Horizontal: 0')
+        self.vlabel = self.filler.findLabel('Value of Vertical: 0')
 
-        scrollBars = self.frame.findAllScrollBars(None)
+        scrollBars = self.filler.findAllScrollBars(None)
         for scrollBar in scrollBars:
             if scrollBar.vertical:
                 self.vscrollBar = scrollBar

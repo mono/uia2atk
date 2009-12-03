@@ -14,20 +14,23 @@ class ScrollViewerFrame(accessibles.Frame):
 
     BUTTON1 = "Hidden Vertical"
     BUTTON2 = "Hidden Horizontal"
-    BUTTON3 = "Adjust Viewer"
-    LABEL = "Scrolling is enabled when it's necessary"
+    import re
+    BUTTON3 = "^Ad"
+    #BUTTON3 = "Adjust Viewer"
+    LABEL = "Scrolling is enabled when it is necessary."
 
     SCROLLBARS_NUM = 2
 
     def __init__(self, accessible):
         super(ScrollViewerFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("ScrollViewerSample")
+        self.filler = self.findFiller("Silverlight Control")
         # 3 buttons for hidden or showing scrollbars
-        self.hidden_vertical = self.frame.findPushButton(self.BUTTON1)
-        self.hidden_horizontal = self.frame.findPushButton(self.BUTTON2)
-        self.viewer_button = self.frame.findPushButton(self.BUTTON3)
+        self.hidden_vertical = self.filler.findPushButton(self.BUTTON1)
+        self.hidden_horizontal = self.filler.findPushButton(self.BUTTON2)
+        self.viewer_button = self.filler.findPushButton(re.compile(self.BUTTON3))
         # scrollviewer is a panel
-        self.scroll_viewer = self.frame.findPanel("")
+        self.scroll_viewer = self.filler.findPanel("")
         # 1 label and 2 scrollbar in scrollviewer
         self.label = self.scroll_viewer.findLabel(self.LABEL)
         self.findScrollBars()

@@ -45,19 +45,25 @@ sbFrame = app.scrollBarFrame
 #######################
 # Check default States
 #######################
-statesCheck(sbFrame.hlabel, 'Label')
-statesCheck(sbFrame.vlabel, 'Label')
-statesCheck(sbFrame.hscrollBar, 'ScrollBar', add_states=['horizontal'])
-statesCheck(sbFrame.vscrollBar, 'ScrollBar', add_states=['vertical'])
+##Bug 556832
+#statesCheck(sbFrame.hlabel, 'Label')
+##Bug 556832
+#statesCheck(sbFrame.vlabel, 'Label')
+##Bug 559825
+#statesCheck(sbFrame.hscrollBar, 'HScrollBar', add_states=['horizontal'])
+##Bug 559825
+#statesCheck(sbFrame.vscrollBar, 'VScrollBar', add_states=['vertical'])
 
+##TODO: commented out most of the tests caused by Bug 559825, as we can't correctly find scrollbars.
+"""
 # set scrollBar's value and assert label's text
 sbFrame.setValue(sbFrame.hscrollBar, 20)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.hlabel, 'Value of Horizontal: 20')
+assertName(sbFrame.hlabel, 'Value of Horizontal: 20')
 
 sbFrame.setValue(sbFrame.vscrollBar, 20)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.vlabel, 'Value of Vertical: 20')
+assertName(sbFrame.vlabel, 'Value of Vertical: 20')
 
 # test scrollBar's minValue and maxValue
 hminValue = sbFrame.hscrollBar._accessible.queryValue().minimumValue
@@ -89,6 +95,7 @@ assertText(sbFrame.hscrollBar, 'Value of Horizontal: %s' % 90)
 sbFrame.vscrollBar.click(log=True)
 sleep(config.SHORT_DELAY)
 assertText(sbFrame.vscrollBar, 'Value of Vertical: %s' % 90)
+"""
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 

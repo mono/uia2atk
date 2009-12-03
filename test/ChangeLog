@@ -1,3 +1,12 @@
+2009-12-02  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/scrollviewer/scrollviewerframe.py:
+	* testers/moonlight/scrollviewer/__init__.py:
+	* testers/moonlight/scrollviewer-regression.py:
+	* testers/moonlight/scrollbar/scrollbarframe.py:
+	* testers/moonlight/scrollbar/__init__.py:
+	* testers/moonlight/scrollbar-regression.py: Added bug references.
+
 2009-12-02  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/repeatbutton/repeatbuttonframe.py,
