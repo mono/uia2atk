@@ -42,6 +42,7 @@ namespace SampleForm {
 		{
 			InitializeComponent ();
 			txtCommand.AccessibleName = "txtCommand";
+			textBox3.AccessibleName = "textBox3";
 
 			this.button4.Click += new System.EventHandler (this.button4_Click);
 
@@ -211,7 +212,10 @@ namespace SampleForm {
 				button3.Enabled = true;
 			} else if (cmd == "disable button3") {
 				button3.Enabled = false;
-			}
+			} else if (cmd == "focus textBox3")
+ 				textBox3.Focus ();
+			else if (cmd == "focus button2")
+				button2.Focus ();
 		}
 	}
 }

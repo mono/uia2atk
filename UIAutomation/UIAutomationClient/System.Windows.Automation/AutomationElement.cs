@@ -44,6 +44,20 @@ namespace System.Windows.Automation
 
 #region Private Static Members
 		private static AutomationElement rootElement;
+		private static AutomationElement focusedElement;
+		private static bool isFocusedElementInitialized = false;
+
+		internal static void OnFocusChanged (object sender, AutomationFocusChangedEventArgs e)
+		{
+			AutomationElement ae = sender as AutomationElement;
+			if (ae == null)
+				return;
+			bool hasFocus = ae.Current.HasKeyboardFocus;
+			if ((!hasFocus) && ae == focusedElement)
+				focusedElement = null;
+			else
+				focusedElement = ae;
+		}
 #endregion
 
 #region Internal Properties
@@ -72,7 +86,20 @@ namespace System.Windows.Automation
 
 #region Public Static Properties
 		public static AutomationElement FocusedElement {
-			get { throw new NotImplementedException (); }
+			get {
+				if (!isFocusedElementInitialized) {
+					foreach (var source in SourceManager.GetAutomationSources ()) {
+						var element = source.GetFocusedElement ();
+						if (element != null) {
+							focusedElement = SourceManager.GetOrCreateAutomationElement (element);
+							break;
+						}
+					}
+					Automation.AddAutomationFocusChangedEventHandler (OnFocusChanged);
+					isFocusedElementInitialized = true;
+				}
+				return focusedElement;
+			}
 		}
 
 		public static AutomationElement RootElement {

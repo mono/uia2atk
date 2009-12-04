@@ -30,6 +30,7 @@ using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.UiaDbus.Interfaces;
 using Mono.UIAutomation.UiaDbusBridge.Wrappers;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.UiaDbusBridge
 {
@@ -39,6 +40,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		private List<AutomationEventHandlerData> automationEventHandlers;
 		private List<AutomationPropertyChangedHandlerData> propertyEventHandlers;
 		private List<AutomationEventHandlerData> structureEventHandlers;
+		private string focusedElementPath = string.Empty;
 
 		public Application ()
 		{
@@ -76,13 +78,28 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
 			if (simpleProvider == null)
 				return;
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
+			if (wrapper == null) {
+				Log.Error ("Inconsistent provider -> wrapper mapping state");
+				return;
+			}
 			foreach (AutomationEventHandlerData handler in automationEventHandlers) {
 				if (handler.EventId == eventId.Id &&
 				    IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
-					var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
-					if (wrapper == null)
-						throw new Exception ("Inconsistent provider -> wrapper mapping state");
-					AutomationEvent (handler.HandlerId, handler.EventId, wrapper.Path);
+					OnAutomationEvent (handler.HandlerId, handler.EventId, wrapper.Path);
+				}
+			}
+			if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
+				var valueObj = simpleProvider.GetPropertyValue (
+					AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+				bool hasFocus = false;
+				try { hasFocus = (bool)valueObj; } catch {}
+				if (hasFocus && focusedElementPath != wrapper.Path) {
+					focusedElementPath = wrapper.Path;
+					OnFocusChanged (focusedElementPath);
+				} else if (!hasFocus && focusedElementPath == wrapper.Path) {
+					focusedElementPath = string.Empty;
+					OnFocusChanged (focusedElementPath);
 				}
 			}
 		}
@@ -92,19 +109,21 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
 			if (simpleProvider == null)
 				return;
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
+			if (wrapper == null) {
+				Log.Error ("Inconsistent provider -> wrapper mapping state");
+				return;
+			}
 			foreach (AutomationPropertyChangedHandlerData handler in propertyEventHandlers) {
 				if (IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
 					int eventPropId = e.Property.Id;
 					foreach (int propId in handler.Properties) {
 						if (eventPropId == propId) {
-							var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
-							if (wrapper == null)
-								throw new Exception ("Inconsistent provider -> wrapper mapping state");
 							//todo Need to add a general class to serialize/deserialize OldValue/Newvalue
 							//over dbus, and so as to GetCurrentPropertyValue etc.
-							AutomationPropertyChanged (handler.HandlerId,
-							                           e.EventId.Id, wrapper.Path,
-							                           eventPropId, e.OldValue, e.NewValue);
+							OnAutomationPropertyChanged (handler.HandlerId,
+							                             e.EventId.Id, wrapper.Path,
+							                             eventPropId, e.OldValue, e.NewValue);
 							break;
 						}
 					}
@@ -117,28 +136,44 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
 			if (simpleProvider == null)
 				return;
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
+			if (wrapper == null) {
+				Log.Error ("Inconsistent provider -> wrapper mapping state");
+				return;
+			}
 			foreach (AutomationEventHandlerData handler in structureEventHandlers) {
-				//Accroding to MSDN (StructureChangedEventHandler Delegate),
-				//as for ChildRemoved and ChildrenBulkRemoved, the sender of the event handler is
-				//"the parent of the child that was removed".
-				if (e.StructureChangeType == StructureChangeType.ChildRemoved ||
-				    e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
-					IRawElementProviderFragment fragmentProvider = simpleProvider
-						as IRawElementProviderFragment;
-					if (fragmentProvider != null)
-						fragmentProvider = fragmentProvider.Navigate (NavigateDirection.Parent);
-					if (fragmentProvider == null)
-						throw new Exception ("provider cannot be null");
-					simpleProvider = fragmentProvider;
-				}
 				if (IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
-					var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
-					if (wrapper == null)
-						throw new Exception ("Inconsistent provider -> wrapper mapping state");
-					StructureChanged (handler.HandlerId, handler.EventId, wrapper.Path,
-					                  e.StructureChangeType);
+					OnStructureChanged (handler.HandlerId, handler.EventId, wrapper.Path,
+					                    e.StructureChangeType);
 				}
 			}
+		}
+
+		private void OnAutomationEvent (int handlerId, int eventId, string providerPath)
+		{
+			if (AutomationEvent != null)
+				AutomationEvent (handlerId, eventId, providerPath);
+		}
+
+		private void OnAutomationPropertyChanged (int handlerId, int eventId,
+		                                          string providerPath, int propertyId,
+		                                          object oldValue, object newValue)
+		{
+			if (AutomationPropertyChanged != null)
+				AutomationPropertyChanged (handlerId, eventId, providerPath,
+				                           propertyId, oldValue, newValue);
+		}
+
+		private void OnStructureChanged (int handlerId, int eventId, string providerPath, StructureChangeType changeType)
+		{
+			if (StructureChanged != null)
+				StructureChanged (handlerId, eventId, providerPath, changeType);
+		}
+
+		private void OnFocusChanged (string providerPath)
+		{
+			if (FocusChanged != null)
+				FocusChanged (providerPath);
 		}
 
 		//Check whether target is in the scope defined by <element, scope>
@@ -235,6 +270,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			if (element != null)
 				return element.Path;
 			return string.Empty;
+		}
+
+		public string GetFocusedElementPath ()
+		{
+			return AutomationBridge.Instance.GetFocusedElementPath ();
 		}
 
 		public void AddAutomationEventHandler (int eventId, int [] elementRuntimeId,
@@ -338,6 +378,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		public event Mono.UIAutomation.UiaDbus.Interfaces.StructureChangedHandler
 			StructureChanged;
 		public event VoidHandler RootElementsChanged;
+		public event Mono.UIAutomation.UiaDbus.Interfaces.FocusChangedHandler FocusChanged;
 #endregion
 	}
 

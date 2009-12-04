@@ -1,3 +1,15 @@
+2009-12-04  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/FocusTest.cs: 
+	* UIAutomationSource/Mono.UIAutomation.Source/IAutomationSource.cs: 
+	* UIAutomationClient/System.Windows.Automation/AutomationElement.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj: 
+	* UIAutomationClient/System.Windows.Automation/AutomationFocusChangedEventArgs.cs:
+	Implement AutomationElement.FocusedElement, Automation.[Add|Remove]AutomationFocusChangedEventHandler
+
 2009-12-01  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/System.Windows.Automation/TreeWalker.cs: 

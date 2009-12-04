@@ -1,3 +1,11 @@
+2009-12-04  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbus/Interfaces/IApplication.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs:
+	Implement AutomationElement.FocusedElement, Automation.[Add|Remove]AutomationFocusChangedEventHandler 
+
 2009-12-03  Mike Gorse  <mgorse@novell.com>
 
 	* UiaDbus/Interfaces/IAutomationElement.cs,

@@ -259,6 +259,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			return paths;
 		}
 
+		internal string GetFocusedElementPath ()
+		{
+			foreach (var entry in providerWrapperMapping) {
+				object hasFocus = entry.Key.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+				if (hasFocus != null && ((bool)hasFocus))
+					return entry.Value.Path;
+			}
+			return string.Empty;
+		}
+
 		internal IRawElementProviderSimple FindProviderByPath (string path)
 		{
 			foreach (var entry in providerWrapperMapping)

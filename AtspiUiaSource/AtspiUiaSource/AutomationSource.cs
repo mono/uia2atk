@@ -74,6 +74,12 @@ namespace AtspiUiaSource
 			return null;
 		}
 
+		public IElement GetFocusedElement ()
+		{
+			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
+			throw new NotImplementedException ();
+		}
+
 		// The below code stolen from UiaAtkBridge
  		public bool IsAccessibilityEnabled {
  			get {
@@ -134,6 +140,12 @@ namespace AtspiUiaSource
 			structureEventHandlers.Add (data);
 		}
 
+		public void AddAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
+		{
+			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
+			throw new NotImplementedException ();
+		}
+
 		public void RemoveAutomationEventHandler (AutomationEvent eventId,
 		                                          IElement element,
 		                                          AutomationEventHandler eventHandler)
@@ -172,6 +184,12 @@ namespace AtspiUiaSource
 			}
 			foreach (var h in handlersToDelete)
 				structureEventHandlers.Remove (h);
+		}
+
+		public void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
+		{
+			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
+			throw new NotImplementedException ();
 		}
 
 		public void RemoveAllEventHandlers ()

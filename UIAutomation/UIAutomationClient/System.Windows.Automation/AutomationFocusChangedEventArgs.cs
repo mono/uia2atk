@@ -36,7 +36,7 @@ namespace System.Windows.Automation
 		int idChild;
 
 		public AutomationFocusChangedEventArgs (int idObject, int idChild) :
-			base (AutomationEvent.LookupById (0)) // TODO: Correct ID
+			base (AutomationElementIdentifiers.AutomationFocusChangedEvent)
 		{
 			this.idObject = idObject;
 			this.idChild = idChild;

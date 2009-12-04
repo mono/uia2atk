@@ -77,6 +77,7 @@ FILES =  \
 	BaseTest.cs \
 	ConditionTest.cs \
 	ExpandCollapsePatternTest.cs \
+	FocusTest.cs \
 	InvokePatternTest.cs \
 	MultipleViewPatternTest.cs \
 	Properties/AssemblyInfo.cs \

@@ -29,6 +29,11 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Source
 {
+	//We can't use the AutomationFocusChangedEventHandler since it's defined in UIAutomationClient.dll
+	//For most source implementation on Linux, childId and objectId can be ignored, since they're
+	//traditional Microsoft Active Accessibility identifiers.
+	public delegate void FocusChangedEventHandler (IElement element, int objectId, int childId);
+
 	public interface IAutomationSource
 	{
 		void Initialize ();
@@ -36,6 +41,8 @@ namespace Mono.UIAutomation.Source
 		IElement [] GetRootElements ();
 
 		event EventHandler RootElementsChanged;
+
+		IElement GetFocusedElement ();
 
 		IElement GetElementFromHandle (IntPtr handle);
 
@@ -55,6 +62,8 @@ namespace Mono.UIAutomation.Source
 		                                      TreeScope scope,
 		                                      StructureChangedEventHandler eventHandler);
 
+		void AddAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler);
+
 		void RemoveAutomationEventHandler (AutomationEvent eventId,
 		                                   IElement element,
 		                                   AutomationEventHandler eventHandler);
@@ -64,6 +73,8 @@ namespace Mono.UIAutomation.Source
 
 		void RemoveStructureChangedEventHandler (IElement element,
 		                                         StructureChangedEventHandler eventHandler);
+
+		void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler);
 
 		void RemoveAllEventHandlers ();
 	}

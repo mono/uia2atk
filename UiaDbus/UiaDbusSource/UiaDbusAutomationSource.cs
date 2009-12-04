@@ -88,6 +88,9 @@ namespace Mono.UIAutomation.UiaDbusSource
 		private List<string> automationEventBusNames = new List<string> ();
 		private List<string> propertyEventBusNames = new List<string> ();
 		private List<string> structureEventBusNames = new List<string> ();
+		private List<FocusChangedEventHandler> focusChangedHandlers = new List<FocusChangedEventHandler> ();
+		private bool listenFocusChangeStarted = false;
+		private object focusChangedHandlersLock = new object ();
 		private List<string> uiaDbusNames = null;
 
 		#endregion
@@ -149,6 +152,21 @@ namespace Mono.UIAutomation.UiaDbusSource
 				string path = appPair.Value.GetElementPathFromHandle (handle.ToInt32 ());
 				if (!string.IsNullOrEmpty (path))
 					return GetOrCreateElement (appPair.Key, path);
+			}
+			return null;
+		}
+
+		public IElement GetFocusedElement ()
+		{
+			foreach (string busName in GetUiaDbusNames ()) {
+				DCI.IApplication app =
+					Bus.Session.GetObject<DCI.IApplication> (busName,
+					                                         new ObjectPath (DC.Constants.ApplicationPath));
+				if (app == null)
+					continue;
+				string elementPath = app.GetFocusedElementPath ();
+				if (!string.IsNullOrEmpty (elementPath))
+					return GetOrCreateElement (busName, elementPath);
 			}
 			return null;
 		}
@@ -253,6 +271,14 @@ namespace Mono.UIAutomation.UiaDbusSource
 			app.AddStructureChangedEventHandler (runtimeId, scope, handlerId);
 		}
 
+		public void AddAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
+		{
+			if (!listenFocusChangeStarted)
+				StartListenFocusChangedEvents ();
+			lock (focusChangedHandlersLock)
+				focusChangedHandlers.Add (eventHandler);
+		}
+
 		public void RemoveAutomationEventHandler (AutomationEvent eventId,
 		                                          IElement element,
 		                                          AutomationEventHandler eventHandler)
@@ -308,8 +334,16 @@ namespace Mono.UIAutomation.UiaDbusSource
 			app.RemoveStructureChangedEventHandler (runtimeId, handlerId);
 		}
 
+		public void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
+		{
+			lock (focusChangedHandlersLock)
+				focusChangedHandlers.Remove (eventHandler);
+		}
+
 		public void RemoveAllEventHandlers ()
 		{
+			lock (focusChangedHandlersLock)
+				focusChangedHandlers.Clear ();
 			foreach (DCI.IApplication app in GetUiaApplications ().Values)
 				app.RemoveAllEventHandlers (EventHandlerManager.ClientPrefix);
 		}
@@ -401,16 +435,15 @@ namespace Mono.UIAutomation.UiaDbusSource
 				new ObjectPath (DC.Constants.ApplicationPath));
 			app.RootElementsChanged += () => OnRootElementsChanged ();
 
-			//todo, after the FocusedElement patch is applied
-//			if (listenFocusChangeStarted)
-//				app.FocusChanged += delegate (string providerPath) {
-//					if (!string.IsNullOrEmpty (providerPath)) {
-//						lock (focusChangedHandlersLock) {
-//							foreach (var handler in focusChangedHandlers)
-//								handler (GetOrCreateElement (busName, providerPath), -1, -1);
-//						}
-//					}
-//				}
+			if (listenFocusChangeStarted)
+				app.FocusChanged += delegate (string providerPath) {
+					if (!string.IsNullOrEmpty (providerPath)) {
+						lock (focusChangedHandlersLock) {
+							foreach (var handler in focusChangedHandlers)
+								handler (GetOrCreateElement (busName, providerPath), -1, -1);
+						}
+					}
+				};
 		}
 
 		private void FetchUiaDbusNames ()
@@ -459,6 +492,28 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 
 			return dbusApps;
+		}
+
+		private void StartListenFocusChangedEvents ()
+		{
+			if (listenFocusChangeStarted)
+				return;
+			foreach (string busName in GetUiaDbusNames ()) {
+				DCI.IApplication app =
+					Bus.Session.GetObject<DCI.IApplication> (busName,
+					                                         new ObjectPath (DC.Constants.ApplicationPath));
+				if (app == null)
+					continue;
+				app.FocusChanged += delegate (string providerPath) {
+					if (!string.IsNullOrEmpty (providerPath)) {
+						lock (focusChangedHandlersLock) {
+							foreach (var handler in focusChangedHandlers)
+								handler (GetOrCreateElement (busName, providerPath), -1, -1);
+						}
+					}
+				};
+			}
+			listenFocusChangeStarted = true;
 		}
 
 		private UiaDbusElement CreateElement (DCI.IAutomationElement dbusElement, string busName, string elementPath)
