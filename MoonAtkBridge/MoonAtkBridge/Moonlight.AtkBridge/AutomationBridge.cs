@@ -27,6 +27,9 @@
 using Atk;
 
 using System;
+using System.IO;
+using System.Reflection;
+using System.Xml;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
@@ -59,7 +62,9 @@ namespace Moonlight.AtkBridge
 		{
 			// Detect whether it is turned on at a platform level
 			// TODO: Copy this code from UiaAtkBridge
-			return true;
+			bool platform_enabled = true;
+
+			return platform_enabled && IsA11yExtensionEnabled ();
 		}
 
 		public IntPtr GetAccessibleHandle ()
@@ -71,6 +76,25 @@ namespace Moonlight.AtkBridge
 #endregion
 
 #region Private Methods
+		private static bool IsA11yExtensionEnabled ()
+		{
+			string filePath = null;
+			try {
+				filePath = Path.Combine (Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location), "..");
+				filePath = Path.Combine (filePath, "active.xml");
+				using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				{
+					var reader = XmlReader.Create (fs);
+					if (reader.Read() && reader.ReadToFollowing("active") && reader.Read())
+						return bool.Parse (reader.Value);
+					throw new FormatException ("Incorrect format of active.xml");
+				}
+			} catch (Exception e) {
+				Console.Error.WriteLine ("Unexpected exception while reading active.xml file: " + e);
+			}
+			return false;
+		}
+
 		private void OnAutomationPropertyChanged (
 			object o, AutomationPropertyChangedEventArgs args)
 		{

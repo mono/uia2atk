@@ -1,3 +1,14 @@
+2009-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am: Include new files in stage, add reference to
+	System.Xml.
+
+	* active.xml: New file to control if the extension is enabled
+	at runtime.
+
+	* init.js: New init script for the extension to output its
+	Enabled/Disabled status.
+
 2009-11-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* configure.ac: MOON_A11Y_INTERNAL_HACK is not needed anymore 

@@ -1,3 +1,8 @@
+2009-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: Disable a11y when
+	the extension is disabled in Firefox.
+
 2009-12-03  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Fix bug where
