@@ -1,3 +1,8 @@
+2009-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* AtkTester.cs: Make it compile with atk-sharp >= 2.12.10.
+
 2009-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Add FIXME.

@@ -2007,16 +2007,31 @@ namespace UiaAtkBridgeTest
 			implementor.Summary = test;
 			Assert.AreEqual (implementor.Summary, test, "summary after set");
 
+#if HAVE_OLD_ATK_SHARP
 			int numSelected;
-			Assert.AreEqual (expectedSelectedRows, implementor.GetSelectedRows (out numSelected),
+			Assert.AreEqual (expectedSelectedRows, 
+			                 implementor.GetSelectedRows (out numSelected),
 			                 "Incorrect number of selected rows");
 			Assert.AreEqual (expectedSelectedRows, numSelected,
 			                 "Incorrect number of selected rows in out parameter");
+#else
+			Assert.AreEqual (expectedSelectedRows, implementor.SelectedRows,
+			                 "Incorrect number of selected rows");
+#endif
 
-			Assert.AreEqual (expectedSelectedColumns, implementor.GetSelectedColumns (out numSelected),
+
+#if HAVE_OLD_ATK_SHARP
+			Assert.AreEqual (expectedSelectedColumns,
+			                 implementor.GetSelectedColumns (out numSelected),
 			                 "Incorrect number of selected columns");
 			Assert.AreEqual (expectedSelectedColumns, numSelected,
 			                 "Incorrect number of selected columns in out parameter");
+#else
+			Assert.AreEqual (expectedSelectedColumns, implementor.SelectedColumns,
+			                 "Incorrect number of selected columns");
+#endif
+
+
 
 			for (int r = -1; r <= numRows; r++) {
 				for (int c = -1; c <= numCols; c++) {

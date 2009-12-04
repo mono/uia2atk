@@ -1,3 +1,8 @@
+2009-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: Detect at configure time if we have a bleeding
+	edge gtk-sharp.
+
 2009-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* UiaAtkBridge.sln: Add ChangeLog policy.
