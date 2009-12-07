@@ -45,22 +45,31 @@ sFrame = app.sliderFrame
 # Check default States
 #######################
 statesCheck(sFrame.horizontal_slider, "Slider")
-##BUG553160
-#statesCheck(sFrame.horizontal_thumb, "Thumb")
+
+for button in sFrame.hs_buttons:
+    if button == sFrame.hs_buttons[1]:
+        statesCheck(button, "Thumb")
+    # BUG560711: extraneous push buttons
+    #else:
+    #    statesCheck(button, "Thumb", invalid_states=["focusable"])
 
 statesCheck(sFrame.vertical_slider, "Slider")
-##BUG553160
-#statesCheck(sFrame.vertical_thumb, "Thumb")
+
+for button in sFrame.vs_buttons:
+    if button == sFrame.vs_buttons[1]:
+        statesCheck(button, "Thumb")
+    # BUG560711: extraneous push buttons
+    #else:
+    #    statesCheck(button, "Thumb", invalid_states=["focusable"])
 
 ###################################
 # Test horizontal slider and thumb
 ###################################
 # test horizontal_thumb is focusable
-sFrame.horizontal_thumb.grabFocus()
+sFrame.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sFrame.horizontal_slider, "Slider")
-##BUG553160
-#statesCheck(sFrame.horizontal_thumb, "Thumb", add_states=["focused"])
+statesCheck(sFrame.horizontal_thumb, "Thumb", add_states=["focused"])
 
 # test Value implementation
 sFrame.setValue(sFrame.horizontal_slider, 10)
@@ -82,7 +91,7 @@ sFrame.assertValue(sFrame.horizontal_slider, 0)
 sFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
 assertName(sFrame.label1, 'Horizontal Slider Value: 0.1')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.horizontal_slider, 0.1)
 
 sFrame.keyCombo("Down", grabFocus=False)
@@ -94,13 +103,12 @@ sFrame.assertValue(sFrame.horizontal_slider, 0)
 # Test vertical slider and thumb
 ################################
 # test vertical_thumb is focusable
-sFrame.vertical_thumb.grabFocus()
+sFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(sFrame.vertical_slider, "Slider")
-##BUG553160
+# Affect by BUG560711: extraneous push buttons
 #statesCheck(sFrame.vertical_thumb, "Thumb", add_states=["focused"])
-##BUG553160
-#statesCheck(sFrame.horizontal_thumb, "Thumb")
+statesCheck(sFrame.horizontal_thumb, "Thumb")
 
 # test Value implementation
 sFrame.setValue(sFrame.vertical_slider, 20)
@@ -116,15 +124,15 @@ sFrame.assertValue(sFrame.vertical_slider, 10)
 # test navigation
 sFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##Bug 558289
+## BUB558289
 #assertName(sFrame.label2, 'Vertical Slider Value: 10.1')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.vertical_slider, 10.1)
 
 sFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 assertName(sFrame.label2, 'Vertical Slider Value: 10')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.horizontal_slider, 10)
 
 ###############################################
@@ -134,30 +142,30 @@ sFrame.checkbox.click(log=True)
 sleep(config.SHORT_DELAY)
 sFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##Bug 558289
+## BUG558289
 #assertName(sFrame.label2, 'Vertical Slider Value: 10.1')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.vertical_slider, 10.1)
 
 sFrame.keyCombo("Left", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##Bug 558289
+## BUG558289
 #assertName(sFrame.label2, 'Vertical Slider Value: 10.2')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.horizontal_slider, 10.2)
 
 sFrame.keyCombo("Up", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##Bug 558289
+## BUG558289
 #assertName(sFrame.label2, 'Vertical Slider Value: 10.1')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.horizontal_slider, 10.1)
 
 sFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##Bug 558289
+## BUG558289
 #assertName(sFrame.label2, 'Vertical Slider Value:10.2')
-##Bug 558289
+## BUG558289
 #sFrame.assertValue(sFrame.horizontal_slider, 10.2)
 
 ################################

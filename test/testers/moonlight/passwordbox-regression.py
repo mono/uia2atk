@@ -44,7 +44,6 @@ pbFrame = app.passwordBoxFrame
 #######################
 # Check default States
 #######################
-# BUG553160: missing focusable state
 # BUG557655: missing single line state
 #statesCheck(pbFrame.pwdBox, 'Text')
 

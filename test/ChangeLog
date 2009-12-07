@@ -1,3 +1,19 @@
+2009-12-07  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/button-regression.py,
+	* testers/moonlight/passwordbox-regression.py,
+	* testers/moonlight/listbox-regression.py,
+	* testers/moonlight/states.py,
+	* testers/moonlight/checkbox-regression.py,
+	* testers/moonlight/radiobutton-regression.py,
+	* testers/moonlight/hyperlinkbutton-regression.py,
+	* testers/moonlight/gridsplitter/__init__.py,
+	* testers/moonlight/gridsplitter-regression.py,
+	* testers/moonlight/repeatbutton-regression.py,
+	* testers/moonlight/slider/sliderframe.py,
+	* testers/moonlight/slider-regression.py: remove bug553160 references
+	 and uncomment tests
+
 2009-12-07  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/textblock/textblockframe.py:

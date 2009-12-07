@@ -27,7 +27,7 @@ def launchGridSplitter(exe=None):
         # make sure we can find the sample applications
         ## If BUG555165 fixed please change TestPage.html to
         ## GridSplitterSample.html
-        exe = '%s/samples/moonlight/GridSplitter/TestPage.html' % uiaqa_path
+        exe = '%s/samples/moonlight/GridSplitter/GridSplitterSample.html' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
 

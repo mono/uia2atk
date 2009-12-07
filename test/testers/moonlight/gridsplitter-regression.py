@@ -51,18 +51,16 @@ gsFrame.assertAction(gsFrame.horizontal_thumb)
 #######################
 # Check default States
 #######################
-## BUG553160: missing focusable state
-#statesCheck(gsFrame.vertical_thumb, "Button")
-#statesCheck(gsFrame.horizontal_thumb, "Button")
+statesCheck(gsFrame.vertical_thumb, "Button")
+statesCheck(gsFrame.horizontal_thumb, "Button")
 
 ###################################
 # test navigation of vertical_thumb
 ###################################
 # Firefox doesn't support grabFocus method
-#gsFrame.filler.mouseClick()
-statesCheck(gsFrame.file, "Menu", add_states=["focused"])
+gsFrame.filler.mouseClick()
 sleep(config.SHORT_DELAY)
-#statesCheck(gsFrame.vertical_thumb, "Button", add_states=["focused"])
+statesCheck(gsFrame.vertical_thumb, "Button", add_states=["focused"])
 
 gsFrame.changePosition(gsFrame.vertical_thumb, "Up")
 gsFrame.changePosition(gsFrame.vertical_thumb, "Up")
@@ -74,8 +72,8 @@ gsFrame.changePosition(gsFrame.vertical_thumb, "Down")
 #####################################
 gsFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(gsFrame.horizontal_thumb, "Button", add_states=["focused"])
-#statesCheck(gsFrame.vertical_thumb, "Button")
+statesCheck(gsFrame.horizontal_thumb, "Button", add_states=["focused"])
+statesCheck(gsFrame.vertical_thumb, "Button")
 
 gsFrame.changePosition(gsFrame.horizontal_thumb, "Right")
 gsFrame.changePosition(gsFrame.horizontal_thumb, "Right")

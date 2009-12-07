@@ -50,8 +50,7 @@ actionsCheck(rbFrame.button, 'Button')
 #######################
 # Check default States
 #######################
-# BUG553160: missing focusable
-#statesCheck(rbFrame.button, 'Button')
+statesCheck(rbFrame.button, 'Button')
 
 #####################################
 # Mouse click action on repeatbutton
@@ -67,7 +66,7 @@ rbFrame.keyCombo('Tab', grabFocus=False, log=False)
 sleep(config.SHORT_DELAY)
 rbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
-#statesCheck(rbFrame.button, 'Button', add_states=['focused'])
+statesCheck(rbFrame.button, 'Button', add_states=['focused'])
 rbFrame.button.click(log=True)
 sleep(config.SHORT_DELAY)
 rbFrame.button.click(log=True)
@@ -77,9 +76,9 @@ assertName(rbFrame.label, 'Number of Clicks: 4')
 ###################################
 # Do Press action for repeatbutton
 ###################################
-rbFrame.press(rbFrame.button, 30)
+rbFrame.press(rbFrame.button, 16)
 sleep(config.SHORT_DELAY)
-assertName(rbFrame.label, 'Number of Clicks: 34')
+assertName(rbFrame.label, 'Number of Clicks: 20')
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 

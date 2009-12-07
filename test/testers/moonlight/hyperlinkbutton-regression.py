@@ -52,7 +52,6 @@ hlbFrame = app.hyperlinkButtonFrame
 # Check default States
 ######################
 # BUG555726: missing multi-line
-# BUG553160: missing focusable
 #statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 #statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable"])
 
@@ -61,7 +60,6 @@ hlbFrame = app.hyperlinkButtonFrame
 ##################################
 hlbFrame.frame.mouseClick()
 sleep(config.SHORT_DELAY)
-# BUG553160
 #statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable", "focused"])
 
 hlbFrame.keyCombo("Tab", grabFocus=False)
@@ -69,7 +67,7 @@ sleep(config.SHORT_DELAY)
 #statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable", "focused"])
 #statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 
-# XXX Atk.Hyperlink and Atk.Hypertext are not implemented
+# XXX Atk.Hyperlink won't be implemented according to bug556410
 #################################
 # Check link number of each label
 #################################
@@ -87,6 +85,7 @@ sleep(config.SHORT_DELAY)
 #################################
 # Doing jump action to invoke URL
 #################################
+# BUG553678: Run second sample crash the app
 hlbFrame.openURL(hlbFrame.hyperlink1)
 
 hlbFrame.openURL(hlbFrame.hyperlink2)

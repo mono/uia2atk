@@ -16,6 +16,7 @@ class SliderFrame(accessibles.Frame):
     LABEL_TWO = "Vertical Slider Value: 15"
     CHECKBOX = "IsDirectionReversed"
     SLIDER_NUM = 2
+    BUTTON_NUM = 3
 
     def __init__(self, accessible):
         super(SliderFrame, self).__init__(accessible)
@@ -31,12 +32,25 @@ class SliderFrame(accessibles.Frame):
         assert len(self.sliders) == self.SLIDER_NUM, \
                 "actual number of slider is:%s, expected is:%s" % \
                  (len(self.sliders), self.SLIDER_NUM)
-        # find horizontal slider and thumb
+
+        # find horizontal slider and buttons
         self.horizontal_slider = self.sliders[0]
-        self.horizontal_thumb = self.horizontal_slider.findPushButton(None)
-        # find vertical slider and thumb
+        self.hs_buttons = self.horizontal_slider.findAllPushButtons(None)
+        # BUG560711: extraneous push buttons
+        #assert len(self.hs_buttons) == self.BUTTON_NUM, \
+        #        "actual number of button is:%s, expected is:%s" % \
+        #         (len(self.hs_buttons), self.BUTTON_NUM)
+
+        self.horizontal_thumb = self.hs_buttons[1]
+
+        # find vertical slider and buttons
         self.vertical_slider = self.sliders[1]
-        self.vertical_thumb = self.vertical_slider.findPushButton(None)
+        self.vs_buttons = self.vertical_slider.findAllPushButtons(None)
+        # BUG560711: extraneous push buttons
+        #assert len(self.vs_buttons) == self.BUTTON_NUM, \
+        #        "actual number of button is:%s, expected is:%s" % \
+        #         (len(self.vs_buttons), self.BUTTON_NUM)
+        self.vertical_thumb = self.vs_buttons[1]
 
     def assertValue(self, accessible, expected_value):
         """

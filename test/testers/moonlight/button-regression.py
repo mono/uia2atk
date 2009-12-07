@@ -62,12 +62,11 @@ actionsCheck(bFrame.button5, 'Button')
 #######################
 # Check default States
 #######################
-## BUG553160: missing focusable state
-#statesCheck(bFrame.button1, 'Button')
-#statesCheck(bFrame.button2, 'Button')
+statesCheck(bFrame.button1, 'Button')
+statesCheck(bFrame.button2, 'Button')
 statesCheck(bFrame.button3, 'Button', invalid_states=['enabled', 'focusable', 'sensitive'])
-#statesCheck(bFrame.button4, 'Button')
-#statesCheck(bFrame.button5, 'Button')
+statesCheck(bFrame.button4, 'Button')
+statesCheck(bFrame.button5, 'Button')
 
 ##############################
 # Do Click action for button1
@@ -77,11 +76,11 @@ statesCheck(bFrame.button3, 'Button', invalid_states=['enabled', 'focusable', 's
 #sleep(config.SHORT_DELAY)
 #bFrame.assertDialog()
 #statesCheck(bFrame.button1, 'Button', add_states=['focused'])
-#sleep(config.SHORT_DELAY)
 
 ##############################
 # Do Click action for button2
 ##############################
+# BUG554017: doesn't focus the clicked button
 # click button2 three times and check the label.
 bFrame.button2.click(log=True)
 sleep(config.SHORT_DELAY)
