@@ -43,15 +43,18 @@ tbFrame = app.textBlockFrame
 ##########################
 # TextBlock default States
 ##########################
-statesCheck(tbFrame.text1, "Label")
-statesCheck(tbFrame.text2, "Label")
+##Bug 556832
+#statesCheck(tbFrame.text1, "Label")
+##Bug 556832
+#statesCheck(tbFrame.text2, "Label")
 
 #####################
 # Text implementation
 #####################
-assertText(tbFrame.text1, "simply TextBlock")
-assertText(tbFrame.text2, 
-                   "sample with LinkBreak and Run\r\nline2\r\nline3\r\nline4")
+assertName(tbFrame.text1, "simply TextBlock")
+##Bug 561268
+#assertName(tbFrame.text2, 
+#                   "sample with LinkBreak and Run\r\nline2\r\nline3\r\nline4")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
