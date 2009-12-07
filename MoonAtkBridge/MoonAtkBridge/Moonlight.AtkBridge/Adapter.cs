@@ -345,6 +345,17 @@ namespace Moonlight.AtkBridge
 			else
 				states.RemoveState (Atk.StateType.Focused);
 
+			var orientation = Peer.GetOrientation ();
+			if (orientation == AutomationOrientation.Horizontal)
+				states.AddState (Atk.StateType.Horizontal);
+			else
+				states.RemoveState (Atk.StateType.Horizontal);
+
+			if (orientation == AutomationOrientation.Vertical)
+				states.AddState (Atk.StateType.Vertical);
+			else
+				states.RemoveState (Atk.StateType.Vertical);
+
 			foreach (BasePatternImplementor impl in PatternImplementors)
 				impl.OnRefStateSet (ref states);
 

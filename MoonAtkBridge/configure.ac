@@ -153,6 +153,7 @@ tests/assets/PasswordBoxTest/Makefile
 tests/assets/RadioButtonTest/Makefile
 tests/assets/RangeValueTest/Makefile
 tests/assets/ReflectionTest/Makefile
+tests/assets/ScrollBarTest/Makefile
 tests/assets/SelectionTest/Makefile
 tests/assets/TableTest/Makefile
 tests/assets/TextBlockTest/Makefile

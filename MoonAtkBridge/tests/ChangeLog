@@ -1,3 +1,14 @@
+
+2009-12-07  Brad Taylor  <brad@getcoded.net>
+
+	* test_scrollbar.py:
+	* assets/Makefile.am:
+	* assets/ScrollBarTest/App.xaml:
+	* assets/ScrollBarTest/Page.xaml:
+	* assets/ScrollBarTest/App.xaml.cs:
+	* assets/ScrollBarTest/Makefile.am:
+	* assets/ScrollBarTest/Page.xaml.cs: Add new test for ScrollBar.
+
 2009-12-03  Brad Taylor  <brad@getcoded.net>
 
 	* test_button.py: Now that #553160 is fixed, re-add "focusable" state.

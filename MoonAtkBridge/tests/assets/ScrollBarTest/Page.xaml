@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="ScrollBarTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="400" Height="300">
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <ScrollBar Orientation="Horizontal" Maximum="100" LargeChange="25" SmallChange="1"
+                   Width="400" Height="18"/>
+        <ScrollBar Orientation="Vertical" Maximum="200" LargeChange="100" SmallChange="5"
+                   Canvas.Top="20" Height="280"/>
+        <ScrollViewer Canvas.Left="25" Canvas.Top="25" Width="375" Height="275">
+            <TextBlock TextWrapping="Wrap">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus tristique rhoncus. Nullam erat erat, elementum eget dictum non, eleifend quis ante. Duis condimentum, mi quis vestibulum posuere, odio neque vulputate mauris, at placerat tellus leo ornare orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas ut elit quam, sed viverra nisi. In viverra, risus vitae luctus ornare, lectus nibh egestas enim, tempor faucibus diam est ac dolor. In sit amet magna tellus. In sagittis magna in mi viverra pharetra. Cras justo tortor, placerat et commodo in, vestibulum ut risus. Morbi non laoreet quam. Morbi nec odio eget justo vestibulum dictum eu nec mauris. Vestibulum non ante sapien, non sagittis urna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tellus tellus, cursus non blandit ut, mollis sed leo. Suspendisse potenti.
+
+Nulla vitae malesuada massa. Nullam eros diam, aliquam sit amet facilisis at, elementum ac dolor. Fusce sit amet arcu in tellus dignissim blandit quis vitae sapien. Vivamus orci tortor, ultrices vel viverra non, interdum sed massa. Etiam sed sem a quam molestie gravida id et purus. Praesent a magna ante. Integer imperdiet cursus mi, vitae posuere nisi adipiscing nec. Aenean egestas dui gravida justo lobortis et viverra justo consectetur. Suspendisse turpis nisl, malesuada et scelerisque quis, luctus sed metus. Etiam suscipit urna eu sapien facilisis sed convallis lectus congue. Mauris nec nunc laoreet turpis cursus adipiscing. Phasellus non augue iaculis tortor sollicitudin iaculis. Duis ut hendrerit magna. Etiam at consequat purus. Nullam non purus tellus, at aliquam sapien. Suspendisse egestas, est eget viverra hendrerit, ante ipsum sollicitudin ipsum, ut lacinia ligula nulla quis felis. Ut bibendum lectus a ligula dictum mollis. Proin imperdiet, nisl quis accumsan dignissim, velit libero vestibulum nisl, eu viverra lorem lectus ut magna.
+
+Phasellus vehicula iaculis mauris id lacinia. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi pretium lacus ut dui sagittis mattis. Curabitur non turpis neque. Maecenas egestas urna sit amet magna varius rhoncus. Maecenas ac neque vitae sem pharetra commodo quis vel tellus. Nullam mollis neque risus, ut dictum felis. Proin posuere erat et orci bibendum sed elementum dolor placerat. Vivamus at ipsum eros. Vivamus auctor ultricies risus, et viverra magna adipiscing eu. Aenean nec dui elit. Nunc dignissim semper quam, vel rutrum metus consequat sit amet. Curabitur sodales varius molestie. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In eget lectus odio. Praesent rhoncus erat quis purus porttitor varius. Donec eu nisl in nulla placerat posuere vitae ut massa. Vestibulum ac est quis mauris mattis auctor vel eget justo. Integer adipiscing venenatis elit, non volutpat sem egestas ac.
+            </TextBlock>
+        </ScrollViewer>
+    </Canvas>
+</UserControl>

@@ -10,6 +10,7 @@ SUBDIRS = \
 	RadioButtonTest \
 	RangeValueTest \
 	ReflectionTest \
+	ScrollBarTest \
 	SelectionTest \
 	TableTest \
 	TextBlockTest \
