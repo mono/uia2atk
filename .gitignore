@@ -603,6 +603,15 @@
 /MoonAtkBridge/tests/assets/PasswordBoxTest/Makefile.in
 /MoonAtkBridge/tests/assets/PasswordBoxTest/*.mdb
 /MoonAtkBridge/tests/assets/PasswordBoxTest/*.xap
+/MoonAtkBridge/tests/assets/ProgressBarTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.dll
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.g.cs
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.g.resources
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.html
+/MoonAtkBridge/tests/assets/ProgressBarTest/Makefile
+/MoonAtkBridge/tests/assets/ProgressBarTest/Makefile.in
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.mdb
+/MoonAtkBridge/tests/assets/ProgressBarTest/*.xap
 /MoonAtkBridge/tests/assets/RadioButtonTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/RadioButtonTest/*.dll
 /MoonAtkBridge/tests/assets/RadioButtonTest/*.g.cs

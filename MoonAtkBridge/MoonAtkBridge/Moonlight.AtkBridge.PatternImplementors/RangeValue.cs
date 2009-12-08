@@ -77,8 +77,14 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
 				return false;
 
+			if (rangeValueProvider.IsReadOnly)
+				return false;
+
 			try {
 				rangeValueProvider.SetValue (v);
+			} catch (InvalidOperationException e) {
+				Log.Debug (e);
+				return false;
 			} catch (ArgumentOutOfRangeException e) {
 				Log.Debug (e);
 				return false;

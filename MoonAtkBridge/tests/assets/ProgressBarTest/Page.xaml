@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="ProgressBarTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="400" Height="300">
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <ProgressBar x:Name="progressBar" Width="150" Height="20"></ProgressBar>
+        <TextBox x:Name="textbox" Canvas.Left="175" Width="100" TextChanged="TextBox_TextChanged"></TextBox>
+    </Canvas>
+</UserControl>

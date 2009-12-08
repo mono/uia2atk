@@ -8,6 +8,7 @@ SUBDIRS = \
 	FakeBridgeTest \
 	HyperlinkButtonTest \
 	PasswordBoxTest \
+	ProgressBarTest \
 	RadioButtonTest \
 	RangeValueTest \
 	ReflectionTest \

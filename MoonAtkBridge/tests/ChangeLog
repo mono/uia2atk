@@ -1,3 +1,13 @@
+2009-12-08  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_progressbar.py:
+	* assets/ProgressBarTest/App.xaml:
+	* assets/ProgressBarTest/Page.xaml:
+	* assets/ProgressBarTest/App.xaml.cs:
+	* assets/ProgressBarTest/Makefile.am:
+	* assets/ProgressBarTest/Page.xaml.cs: Add new test for ProgressBar.
+
 2009-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* assets/TableTest/Makefile.am: Fix build when specifying anything

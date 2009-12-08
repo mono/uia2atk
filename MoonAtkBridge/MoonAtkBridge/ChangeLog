@@ -1,5 +1,10 @@
 2009-12-08  Brad Taylor  <brad@getcoded.net>
 
+	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs: Check
+	IsReadOnly first before trying to set the value.
+
+2009-12-08  Brad Taylor  <brad@getcoded.net>
+
 	* Moonlight.AtkBridge/Adapter.cs: Hyperlink's role mapping should be to
 	PushButton, not Label.
 
