@@ -1,3 +1,8 @@
+2009-12-08  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation/Automation.cs: Raising ArgumentException
+	when EventId is not valid, in RemoveAutomationEventHandler.
+
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation/AutomationElement.cs: Implement

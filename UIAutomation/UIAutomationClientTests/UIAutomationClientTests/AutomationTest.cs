@@ -764,5 +764,84 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (SWA.ValuePattern.IsReadOnlyProperty, SWA.ValuePatternIdentifiers.IsReadOnlyProperty);
 			Assert.IsNotNull (SWA.ValuePattern.IsReadOnlyProperty);
 		}
+
+		[Test]
+		public void RemoveAutomationEventHandlerTest ()
+		{
+			int eventCount = 0;
+			Process p = BaseTest.StartApplication (@"SampleForm.exe", string.Empty);
+			SWA.AutomationEventHandler handler = (o, e) => eventCount++;
+			Thread.Sleep (2000); // Waiting a little bit for the application to show up
+
+			SWA.AutomationElement testFormElement
+				= SWA.AutomationElement.RootElement.FindFirst (SWA.TreeScope.Children,
+					new SWA.PropertyCondition (AEIds.ProcessIdProperty, p.Id));
+			Assert.IsNotNull (testFormElement, "window");
+
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.AsyncContentLoadedEvent,
+			                                             testFormElement,
+								     handler);
+
+			BaseTest.AssertRaises<ArgumentException> (
+			() => SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.AutomationFocusChangedEvent,
+				                                           testFormElement,
+									   handler),
+			      "SWA.AutomationElementIdentifiers.AutomationFocusChangedEvent");
+
+			BaseTest.AssertRaises<ArgumentException> (
+			() => SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.AutomationPropertyChangedEvent,
+			                                                   testFormElement,
+									   handler),
+			      "SWA.AutomationElementIdentifiers.AutomationPropertyChangedEvent");
+
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.LayoutInvalidatedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.MenuClosedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.MenuOpenedEvent,
+			                                             testFormElement,
+								     handler);
+
+			BaseTest.AssertRaises<ArgumentException> (
+			() => SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.StructureChangedEvent,
+									   testFormElement,
+									   handler),
+			      "SWA.AutomationElementIdentifiers.StructureChangedEvent");
+
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.ToolTipClosedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.AutomationElementIdentifiers.ToolTipOpenedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.InvokePatternIdentifiers.InvokedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.SelectionItemPatternIdentifiers.ElementSelectedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.SelectionPatternIdentifiers.InvalidatedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.TextPatternIdentifiers.TextChangedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.TextPatternIdentifiers.TextSelectionChangedEvent,
+			                                             testFormElement,
+								     handler);
+			SWA.Automation.RemoveAutomationEventHandler (SWA.WindowPatternIdentifiers.WindowOpenedEvent,
+			                                             testFormElement,
+								     handler);
+
+			p.Kill ();
+		}
 	}
 }

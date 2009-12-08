@@ -376,6 +376,12 @@ namespace System.Windows.Automation
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
+			if (AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId.Id
+			    || AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId.Id
+			    || AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id == eventId.Id
+			    || AutomationElementIdentifiers.StructureChangedEvent.Id == eventId.Id)
+				throw new ArgumentException ("eventId");
+
 			foreach (var source in SourceManager.GetAutomationSources ())
 				source.RemoveAutomationEventHandler (eventId, element.SourceElement,
 				                                     eventHandler);
