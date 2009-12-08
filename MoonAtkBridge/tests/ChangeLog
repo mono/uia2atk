@@ -1,3 +1,8 @@
+2009-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* assets/TableTest/Makefile.am: Fix build when specifying anything
+	but the default MOON_PATH.
+
 2009-12-08  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:

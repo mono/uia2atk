@@ -9,7 +9,7 @@ FILES = \
 	Page.xaml.cs
 
 $(SWC).dll:
-	cp ../../../../../moon/class/lib/moonlight/$(SWC).dll .
+	cp $(MOON_PATH)/class/lib/moonlight/$(SWC).dll .
 
 all: $(XAP)
 
