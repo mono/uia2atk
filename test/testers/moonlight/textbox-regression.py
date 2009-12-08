@@ -15,7 +15,7 @@ Test accessibility of textbox widget
 
 # imports
 from strongwind import *
-from textblock import *
+from textbox import *
 from helpers import *
 from sys import argv
 from os import path
@@ -44,31 +44,43 @@ tbFrame = app.textBoxFrame
 # Check States
 ##############
 # check the states of the text boxes
-statesCheck(tbFrame.textbox1, "TextBox")
-statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-statesCheck(tbFrame.textbox3, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox1, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+##BUG553160
+#statesCheck(tbFrame.textbox3, "TextBox")
 
 # mouse click frame to focus on textbox1
 tbFrame.mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(tbFrame.textbox1, "TextBox", add_states=["focused"])
-statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-statesCheck(tbFrame.textbox3, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox1, "TextBox", add_states=["focused"])
+##BUG553160
+#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+##BUG553160
+#statesCheck(tbFrame.textbox3, "TextBox")
 
 # switch focus to textbox2
 tbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(tbFrame.textbox1, "TextBox")
-statesCheck(tbFrame.textbox2, "TextBox", add_states=["focused"],
-                                           invalid_states=["editable"])
-statesCheck(tbFrame.textbox3, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox1, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox2, "TextBox", add_states=["focused"],
+#                                           invalid_states=["editable"])
+##BUG553160
+#statesCheck(tbFrame.textbox3, "TextBox")
 
 # switch focus to textbox3
 tbFrame.textbox3.mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(tbFrame.textbox1, "TextBox")
-statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-statesCheck(tbFrame.textbox3, "TextBox", add_states=["focused"])
+##BUG553160
+#statesCheck(tbFrame.textbox1, "TextBox")
+##BUG553160
+#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+##BUG553160
+#statesCheck(tbFrame.textbox3, "TextBox", add_states=["focused"])
 
 ##############################
 # Test Read and Write TextBox
@@ -77,7 +89,7 @@ statesCheck(tbFrame.textbox3, "TextBox", add_states=["focused"])
 tbFrame.textbox1.deleteText()
 sleep(config.SHORT_DELAY)
 # Insert texts from 0 offset
-tbFrame.textbox1.insertText("single line ", 0)
+tbFrame.textbox1.insertText("single line", 0)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox1, "single line")
 # textbox2's text is updated to the textbox1's text
@@ -85,7 +97,7 @@ assertText(tbFrame.textbox2, "single line")
 
 # append text at the end
 text_len = len(tbFrame.textbox1.text)
-tbFrame.textbox_normal.insertText(" test", text_len)
+tbFrame.textbox1.insertText(" test", text_len)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox1, "single line test")
 # textbox2's text is updated to the insert text
@@ -117,17 +129,18 @@ assertText(tbFrame.textbox2, "new test line")
 tbFrame.textbox2.insertText("single line ", 0)
 sleep(config.SHORT_DELAY)
 # textbox2 is not editable
-tbFrame.assertEditableText(tbFrame.textbox2, "line")
+tbFrame.assertEditableText(tbFrame.textbox2, "new test line")
 
 # delete text from front (delete "single")
 tbFrame.textbox2.deleteText(0, 7)
 sleep(config.SHORT_DELAY)
 # it's not deleteable
-tbFrame.assertEditableText(tbFrame.textbox2, "line")
+tbFrame.assertEditableText(tbFrame.textbox2, "new test line")
 
-####################
+######################
 # Test Search TextBox
-####################
+######################
+##TODO:search textbox has bugs
 # mouse click textbox3 to remove text "Search"
 tbFrame.textbox3.mouseClick()
 sleep(config.SHORT_DELAY)
@@ -162,4 +175,3 @@ tbFrame.assertEditableText(tbFrame.textbox3, "Search")
 # Close Firefox
 ###############
 quit(tbFrame)
-

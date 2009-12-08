@@ -23,7 +23,7 @@ class TextBoxFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(TextBoxFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("TextBoxSample")
-        self.filler = self.frame.findFiller("Silverlight COntrol")
+        self.filler = self.frame.findFiller("Silverlight Control")
         self.textbox1 = self.filler.findText(self.BOX_ONE)
         self.textbox2 = self.filler.findText(self.BOX_TWO)
         self.textbox3 = self.filler.findText(self.BOX_THREE)

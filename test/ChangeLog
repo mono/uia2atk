@@ -1,3 +1,9 @@
+2009-12-08  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/textbox/textboxframe.py:
+	* testers/moonlight/textbox/__init__.py:
+	* testers/moonlight/textbox-regression.py: Added bug references.
+
 2009-12-08  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/scrollbar/scrollbarframe.py,
