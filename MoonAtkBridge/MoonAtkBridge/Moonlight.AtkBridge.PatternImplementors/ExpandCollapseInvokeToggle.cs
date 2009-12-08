@@ -111,8 +111,14 @@ namespace Moonlight.AtkBridge.PatternImplementors
 			// Only add Invoke if Toggle doesn't exist.
 			var invoke = peer.GetPattern (PatternInterface.Invoke);
 			if (toggle == null && invoke != null) {
+				string action_name = "click";
+
+				var type = peer.GetAutomationControlType ();
+				if (type == AutomationControlType.Hyperlink)
+					action_name = "jump";
+
 				actions.Add (new ActionDescriptor {
-					Name = "click", Pattern = invoke,
+					Name = action_name, Pattern = invoke,
 					Delegate = p => ((IInvokeProvider) p).Invoke ()
 				});
 			}

@@ -1,3 +1,16 @@
+2009-12-08  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_hyperlinkbutton.py:
+	* assets/HyperlinkButtonTest/App.xaml:
+	* assets/HyperlinkButtonTest/Page.xaml:
+	* assets/HyperlinkButtonTest/App.xaml.cs:
+	* assets/HyperlinkButtonTest/Makefile.am:
+	* assets/HyperlinkButtonTest/Page.xaml.cs: Add new test for
+	HyperlinkButton.
+
+	* moonlight/browser/__init__.py: Add method to assert that clicking on
+	a link has opened a new tab.
 
 2009-12-07  Brad Taylor  <brad@getcoded.net>
 

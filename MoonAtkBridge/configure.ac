@@ -149,6 +149,7 @@ tests/assets/CheckBoxTest/Makefile
 tests/assets/ComboBoxTest/Makefile
 tests/assets/ExpandCollapseEventsTest/Makefile
 tests/assets/FakeBridgeTest/Makefile
+tests/assets/HyperlinkButtonTest/Makefile
 tests/assets/PasswordBoxTest/Makefile
 tests/assets/RadioButtonTest/Makefile
 tests/assets/RangeValueTest/Makefile

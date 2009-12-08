@@ -24,6 +24,7 @@
 #
 
 import os
+import re
 import signal
 
 from time import sleep
@@ -78,6 +79,8 @@ class FirefoxBrowser(accessibles.Application):
         self.proc = subproc
 
         self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
+        self.tabs = self.mainFrame.findAllPageTabLists('')[0]
+        self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
         self.slControl = self.mainFrame.findFiller('Silverlight Control')
 
     def kill(self):
@@ -91,3 +94,33 @@ class FirefoxBrowser(accessibles.Application):
                 self.proc.wait()
         except:
             print "Unable to send pid %d SIGKILL..." % self.proc.pid
+
+    def assertUrlOpened(self, url):
+        for alert in self.mainFrame.findAllAlerts(''):
+            labels = alert.findAllLabels('')
+            if len(labels) == 0:
+                continue
+
+            if not re.match('(.+) prevented this site from opening a pop-up window.', labels[0].text):
+                continue
+
+            self.mainFrame.findPushButton('Preferences').press()
+
+            # LAME: This menu isn't accessible!
+            # self.mainFrame.findMenuItem("Show '%s'" % url).click()
+
+            self.mainFrame.keyCombo('Down')
+            self.mainFrame.keyCombo('Down')
+            self.mainFrame.keyCombo('Down')
+            self.mainFrame.keyCombo('Down')
+            self.mainFrame.keyCombo('Return')
+
+        # TODO: preserve the tab the user was on before assertUrlOpened was
+        # called
+        for tab in self.tabs.findAllPageTabs(''):
+            tab.switch()
+
+            if self.locationBar.text == url:
+                return True
+
+        return False

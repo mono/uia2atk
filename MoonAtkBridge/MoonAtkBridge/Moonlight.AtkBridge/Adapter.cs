@@ -240,7 +240,7 @@ namespace Moonlight.AtkBridge
 			case AutomationControlType.Edit:
 				return Role.Text;
 			case AutomationControlType.Hyperlink:
-				return Role.Label;
+				return Role.PushButton;
 			case AutomationControlType.Image:
 				return Role.Image;
 			case AutomationControlType.ListItem:

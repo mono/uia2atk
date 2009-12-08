@@ -1,3 +1,11 @@
+2009-12-08  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: Hyperlink's role mapping should be to
+	PushButton, not Label.
+
+	* Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs:
+	Hyperlink's action should be "jump" not "click".
+
 2009-12-07  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Add Horizontal and Vertical states if
