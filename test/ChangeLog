@@ -1,3 +1,9 @@
+2009-12-08  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/scrollbar/scrollbarframe.py,
+	* testers/moonlight/scrollbar-regression.py: remove bug559825, 
+	uncomment tests
+
 2009-12-07  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/button-regression.py,

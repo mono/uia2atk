@@ -29,14 +29,26 @@ class ScrollBarFrame(accessibles.Frame):
                 self.hscrollBar = scrollBar
 
         self.vs_buttons = self.vscrollBar.findAllPushButtons(None)
-        assert len(self.vs_buttons) == BUTTONS_NUM, \
+        assert len(self.vs_buttons) == self.BUTTONS_NUM, \
                "actual number is %s, expected %s" % \
-                  (len(self.vs_buttons), BUTTONS_NUM)
+                  (len(self.vs_buttons), self.BUTTONS_NUM)
 
         self.hs_buttons = self.hscrollBar.findAllPushButtons(None)
-        assert len(self.hs_buttons) == BUTTONS_NUM, \
+        assert len(self.hs_buttons) == self.BUTTONS_NUM, \
                "actual number is %s, expected %s" % \
-                  (len(self.hs_buttons), BUTTONS_NUM)
+                  (len(self.hs_buttons), self.BUTTONS_NUM)
+
+    def ActionIsNotImplemented(self, accessible):
+        """assert accessible's Action is not implemented"""
+
+        procedurelogger.action('check Action for %s' % accessible)
+        procedurelogger.expectedResult('Action is not implemented for %s' % accessible)
+
+        try:
+            accessible._accessible.queryAction()
+        except NotImplementedError:
+            return
+        assert False, "Action shouldn't be implemented"
 
     def setValue(self, accessible, value):
         """

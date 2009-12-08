@@ -45,82 +45,66 @@ sbFrame = app.scrollBarFrame
 #######################
 # Check default States
 #######################
-##Bug 556832
-#statesCheck(sbFrame.hlabel, 'Label')
-##Bug 556832
-#statesCheck(sbFrame.vlabel, 'Label')
-##Bug 559825
-#statesCheck(sbFrame.hscrollBar, 'HScrollBar', add_states=['horizontal'])
-##Bug 559825
-#statesCheck(sbFrame.vscrollBar, 'VScrollBar', add_states=['vertical'])
-'''
-for vs_button in vs_buttons:
-    statesCheck(sbFrame.vs_button, 'Button', invalid_states=['focusable'])
+statesCheck(sbFrame.hscrollBar, 'HScrollBar', add_states=['horizontal'])
+statesCheck(sbFrame.vscrollBar, 'VScrollBar', add_states=['vertical'])
 
-for hs_button in hs_buttons:
-    statesCheck(sbFrame.vs_button, 'Button', invalid_states=['focusable'])
+for vs_button in sbFrame.vs_buttons:
+    statesCheck(vs_button, 'Button', invalid_states=['focusable'])
+
+for hs_button in sbFrame.hs_buttons:
+    statesCheck(hs_button, 'Button', invalid_states=['focusable'])
 
 #######################
 # Check default Actions
 #######################
 # Thumb won't implement Action
-for vs_button in vs_buttons:
-    if vs_button != vs_buttons[2]:
-        actionsCheck(sbFrame.vs_button, 'Button')
+for vs_button in sbFrame.vs_buttons:
+    if vs_button != sbFrame.vs_buttons[2]:
+        actionsCheck(vs_button, 'Button')
     else:
-        try:
-            actionsCheck(sbFrame.vs_button, 'Button')
-        except NotImplementedError:
-            return
-        assert False, "Action shouldn't be implemented"
+        sbFrame.ActionIsNotImplemented(vs_button)        
 
-for hs_button in hs_buttons:
-    if hs_button != hs_buttons[2]:
-        actionsCheck(sbFrame.hs_button, 'Button')
+for hs_button in sbFrame.hs_buttons:
+    if hs_button != sbFrame.hs_buttons[2]:
+        actionsCheck(hs_button, 'Button')
     else:
-        try:
-            actionsCheck(sbFrame.hs_button, 'Button')
-        except NotImplementedError:
-            return
-        assert False, "Action shouldn't be implemented"
+        sbFrame.ActionIsNotImplemented(hs_button)        
 
 ##################
 # Click Buttons
 ##################
-sbFrame.vs_button[3].click(log=True)
+sbFrame.vs_buttons[3].click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(sbFrame.vlabel, 'Value of Vertical: 10')
 
-sbFrame.vs_button[4].click(log=True)
+sbFrame.vs_buttons[4].click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(sbFrame.vlabel, 'Value of Vertical: 11')
 
-sbFrame.vs_button[1].click(log=True)
+sbFrame.vs_buttons[1].click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(sbFrame.vlabel, 'Value of Vertical: 1')
 
-sbFrame.vs_button[0].click(log=True)
+sbFrame.vs_buttons[0].click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(sbFrame.vlabel, 'Value of Vertical: 0')
 
-sbFrame.hs_button[3].click(log=True)
+sbFrame.hs_buttons[3].click(log=True)
 sleep(config.SHORT_DELAY)
-assertName(sbFrame.vlabel, 'Value of Horizontal: 10')
+assertName(sbFrame.hlabel, 'Value of Horizontal: 10')
 
-sbFrame.hs_button[4].click(log=True)
+sbFrame.hs_buttons[4].click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(sbFrame.hlabel, 'Value of Horizontal: 11')
 
-sbFrame.hs_button[1].click(log=True)
+sbFrame.hs_buttons[1].click(log=True)
 sleep(config.SHORT_DELAY)
-assertName(sbFrame.vlabel, 'Value of Horizontal: 1')
+assertName(sbFrame.hlabel, 'Value of Horizontal: 1')
 
-sbFrame.hs_button[0].click(log=True)
+sbFrame.hs_buttons[0].click(log=True)
 sleep(config.SHORT_DELAY)
-assertName(sbFrame.vlabel, 'Value of Horizontal: 0')
-'''
-##TODO: commented out most of the tests caused by Bug 559825, as we can't correctly find scrollbars.
-"""
+assertName(sbFrame.hlabel, 'Value of Horizontal: 0')
+
 # set scrollBar's value and assert label's text
 sbFrame.setValue(sbFrame.hscrollBar, 20)
 sleep(config.SHORT_DELAY)
@@ -133,34 +117,33 @@ assertName(sbFrame.vlabel, 'Value of Vertical: 20')
 # test scrollBar's minValue and maxValue
 hminValue = sbFrame.hscrollBar._accessible.queryValue().minimumValue
 vminValue = sbFrame.vscrollBar._accessible.queryValue().minimumValue
-hmaxVlaue = sbFrame.hscrollBar._accessible.queryValue().maximunValue
-vmaxVlaue = sbFrame.vscrollBar._accessible.queryValue().maximunValue
+hmaxVlaue = sbFrame.hscrollBar._accessible.queryValue().maximumValue
+vmaxVlaue = sbFrame.vscrollBar._accessible.queryValue().maximumValue
 
 sbFrame.setValue(sbFrame.hscrollBar, hminValue)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.hscrollBar, 'Value of Horizontal: %s' % hminValue)
+assertName(sbFrame.hlabel, 'Value of Horizontal: %s' % int(hminValue))
 sbFrame.setValue(sbFrame.hscrollBar, hmaxVlaue)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.hscrollBar, 'Value of Horizontal: %s' % hmaxVlaue)
+assertName(sbFrame.hlabel, 'Value of Horizontal: %s' % int(hmaxVlaue))
 
 sbFrame.setValue(sbFrame.vscrollBar, hminValue)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.vscrollBar, 'Value of Vertical: %s' % vminValue)
+assertName(sbFrame.vlabel, 'Value of Vertical: %s' % int(vminValue))
 sbFrame.setValue(sbFrame.vscrollBar, hmaxVlaue)
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.vscrollBar, 'Value of Vertical: %s' % vmaxVlaue)
+assertName(sbFrame.vlabel, 'Value of Vertical: %s' % int(vmaxVlaue))
 
 # test scrollBar's LargeChange property
 # as the thumb in scrollBar is on max value, it is safe to click
 # on scrollBar to change value
-sbFrame.hscrollBar.click(log=True)
+sbFrame.hscrollBar.mouseClick()
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.hscrollBar, 'Value of Horizontal: %s' % 90)
+assertName(sbFrame.hlabel, 'Value of Horizontal: %s' % 90)
 
-sbFrame.vscrollBar.click(log=True)
+sbFrame.vscrollBar.mouseClick()
 sleep(config.SHORT_DELAY)
-assertText(sbFrame.vscrollBar, 'Value of Vertical: %s' % 90)
-"""
+assertName(sbFrame.vlabel, 'Value of Vertical: %s' % 90)
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
