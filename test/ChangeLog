@@ -1,13 +1,21 @@
-2009-12-08  Neville Gao  <nevillegao@gmail.com>
+2009-12-09  Calen Chen <cachen@novell.com>
 
-	* testers/moonlight/textbox/textboxframe.py:
-	* testers/moonlight/textbox/__init__.py:
-	* testers/moonlight/textbox-regression.py: Added bug references.
+	* testers/moonlight/textbox/textboxframe.py,
+	* testers/moonlight/textbox-regression.py: remove bug references, add 
+	some tests
+	* testers/moonlight/textblock-regression.py: remove bug references
+
 2009-12-09  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/states.py,
 	* testers/moonlight/hyperlinkbutton/hyperlinkbuttonframe.py,
 	* testers/moonlight/hyperlinkbutton-regression.py: remove bug555717
+
+2009-12-08  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/textbox/textboxframe.py:
+	* testers/moonlight/textbox/__init__.py:
+	* testers/moonlight/textbox-regression.py: Added bug references.
 
 2009-12-08  Calen Chen <cachen@novell.com>
 

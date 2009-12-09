@@ -43,16 +43,15 @@ tbFrame = app.textBlockFrame
 ##########################
 # TextBlock default States
 ##########################
-##Bug 556832
-#statesCheck(tbFrame.text1, "Label")
-##Bug 556832
-#statesCheck(tbFrame.text2, "Label")
+# XXX Bug556832 won't be fixed
+statesCheck(tbFrame.text1, "Label", invalid_states=["multi line"])
+statesCheck(tbFrame.text2, "Label", invalid_states=["multi line"])
 
 #####################
 # Text implementation
 #####################
 assertName(tbFrame.text1, "simply TextBlock")
-##Bug 561268
+# BUG561268
 #assertName(tbFrame.text2, 
 #                   "sample with LinkBreak and Run\r\nline2\r\nline3\r\nline4")
 

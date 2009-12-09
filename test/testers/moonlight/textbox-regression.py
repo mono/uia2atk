@@ -44,43 +44,33 @@ tbFrame = app.textBoxFrame
 # Check States
 ##############
 # check the states of the text boxes
-##BUG553160
-#statesCheck(tbFrame.textbox1, "TextBox")
-##BUG553160
-#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-##BUG553160
-#statesCheck(tbFrame.textbox3, "TextBox")
+# XXX Bug556832 won't be fixed, so the implement won't support 
+# multi-line or single-line states
+statesCheck(tbFrame.textbox1, "TextBox")
+statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+statesCheck(tbFrame.textbox3, "TextBox")
 
 # mouse click frame to focus on textbox1
 tbFrame.mouseClick()
 sleep(config.SHORT_DELAY)
-##BUG553160
-#statesCheck(tbFrame.textbox1, "TextBox", add_states=["focused"])
-##BUG553160
-#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-##BUG553160
-#statesCheck(tbFrame.textbox3, "TextBox")
+statesCheck(tbFrame.textbox1, "TextBox", add_states=["focused"])
+statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+statesCheck(tbFrame.textbox3, "TextBox")
 
 # switch focus to textbox2
 tbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-##BUG553160
-#statesCheck(tbFrame.textbox1, "TextBox")
-##BUG553160
-#statesCheck(tbFrame.textbox2, "TextBox", add_states=["focused"],
-#                                           invalid_states=["editable"])
-##BUG553160
-#statesCheck(tbFrame.textbox3, "TextBox")
+statesCheck(tbFrame.textbox1, "TextBox")
+statesCheck(tbFrame.textbox2, "TextBox", add_states=["focused"],
+                                     invalid_states=["editable"])
+statesCheck(tbFrame.textbox3, "TextBox")
 
 # switch focus to textbox3
 tbFrame.textbox3.mouseClick()
 sleep(config.SHORT_DELAY)
-##BUG553160
-#statesCheck(tbFrame.textbox1, "TextBox")
-##BUG553160
-#statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
-##BUG553160
-#statesCheck(tbFrame.textbox3, "TextBox", add_states=["focused"])
+statesCheck(tbFrame.textbox1, "TextBox")
+statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
+statesCheck(tbFrame.textbox3, "TextBox", add_states=["focused"])
 
 ##############################
 # Test Read and Write TextBox
