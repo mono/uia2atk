@@ -44,28 +44,27 @@ hlbFrame = app.hyperlinkButtonFrame
 ####################
 # Check Actions
 ####################
-# BUG555717: wrong action name
-#actionsCheck(hlbFrame.hyperlink1, "HyperlinkButton")
-#actionsCheck(hlbFrame.hyperlink2, "HyperlinkButton")
+actionsCheck(hlbFrame.hyperlink1, "HyperlinkButton")
+actionsCheck(hlbFrame.hyperlink2, "HyperlinkButton")
 
 ######################
 # Check default States
 ######################
-# BUG555726: missing multi-line
-#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
-#statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable"])
+# According to bug555726 multi-line won't be supported
+statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
+statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable"])
 
 ##################################
 # Check Focused State by press Tab
 ##################################
 hlbFrame.frame.mouseClick()
 sleep(config.SHORT_DELAY)
-#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable", "focused"])
+statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable", "focused"])
 
 hlbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
-#statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable", "focused"])
-#statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
+statesCheck(hlbFrame.hyperlink2, "Label", add_states=["focusable", "focused"])
+statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 
 # XXX Atk.Hyperlink won't be implemented according to bug556410
 #################################

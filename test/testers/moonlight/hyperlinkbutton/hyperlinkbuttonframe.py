@@ -24,9 +24,9 @@ class HyperlinkButtonFrame(accessibles.Frame):
         super(HyperlinkButtonFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("HyperlinkButtonSample")
         self.filler = self.frame.findFiller("Silverlight Control")
-        # 2 hyperlink label
-        self.hyperlink1 = self.filler.findLabel(self.LINK_ONE)
-        self.hyperlink2 = self.filler.findLabel(self.LINK_TWO)
+        # 2 hyperlink button
+        self.hyperlink1 = self.filler.findPushButton(self.LINK_ONE)
+        self.hyperlink2 = self.filler.findPushButton(self.LINK_TWO)
 
     # assert that the accessible contains the expected number of links
     def assertNLinks(self, accessible, expected_linknum):

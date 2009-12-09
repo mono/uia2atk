@@ -212,7 +212,7 @@ class RadioButton(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE, SELECTABLE)
 
 class Label(object):
-    states = (ENABLED, MULTI_LINE, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class Form(object):
     states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
@@ -301,7 +301,7 @@ class ToolTip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class TextBox(object):
-    states = (EDITABLE, ENABLED, FOCUSABLE, SINGLE_LINE, SENSITIVE, SHOWING, VISIBLE)
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class MaskedTextBox(TextBox):
     pass

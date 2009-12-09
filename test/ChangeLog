@@ -3,6 +3,11 @@
 	* testers/moonlight/textbox/textboxframe.py:
 	* testers/moonlight/textbox/__init__.py:
 	* testers/moonlight/textbox-regression.py: Added bug references.
+2009-12-09  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/states.py,
+	* testers/moonlight/hyperlinkbutton/hyperlinkbuttonframe.py,
+	* testers/moonlight/hyperlinkbutton-regression.py: remove bug555717
 
 2009-12-08  Calen Chen <cachen@novell.com>
 
