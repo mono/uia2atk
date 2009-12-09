@@ -45,8 +45,7 @@ tFrame = app.thumbFrame
 #######################
 # Check default States
 #######################
-##Bug 553160
-#statesCheck(tFrame.thumb, 'Thumb')
+statesCheck(tFrame.thumb, 'Thumb', invalid_states=["focusable"])
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
