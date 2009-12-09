@@ -3,7 +3,7 @@
 #
 
 Name:           at-spi-sharp
-Version:        1.0
+Version:        0.9.1
 Release:        1
 License:        MIT
 Group:          System/Libraries

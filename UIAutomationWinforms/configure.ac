@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([UIAutomationWinforms], [1.8.90])
+AC_INIT([UIAutomationWinforms], [1.8.91])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
 IT_PROG_INTLTOOL([0.35.0])
 

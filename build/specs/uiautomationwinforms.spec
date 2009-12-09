@@ -12,7 +12,7 @@
 
 
 Name:           uiautomationwinforms
-Version:        1.8.90
+Version:        1.8.91
 Release:        1
 License:        MIT/X11
 Group:          System/Libraries
@@ -23,18 +23,18 @@ Requires:       glib-sharp2 >= 2.12.8
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.6
 Requires:       mono-data >= 2.6
-Requires:       mono-uia >= 1.8.90
+Requires:       mono-uia >= 1.8.91
 Requires:       mono-winfxcore
-Requires:       uiaatkbridge >= 1.8.90
+Requires:       uiaatkbridge >= 1.8.91
 BuildRequires:  gtk-sharp2 >= 2.12.8
 BuildRequires:  glib-sharp2 >= 2.12.8 
 BuildRequires:	mono-devel >= 2.6
 BuildRequires:  mono-data >= 2.6
 BuildRequires:	mono-nunit >= 2.6
-BuildRequires:  mono-uia >= 1.8.90
-BuildRequires:  mono-uia-devel >= 1.8.90
+BuildRequires:  mono-uia >= 1.8.91
+BuildRequires:  mono-uia-devel >= 1.8.91
 BuildRequires:  mono-winfxcore
-BuildRequires:  uiaatkbridge >= 1.8.90
+BuildRequires:  uiaatkbridge >= 1.8.91
 BuildRequires:  intltool
 
 Summary:        Implementation of UIA providers

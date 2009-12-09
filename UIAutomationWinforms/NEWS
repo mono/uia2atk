@@ -3,6 +3,25 @@ Mono Accessibility News
 
 Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
 
+Version 1.8.91: The "beefalo" release
+* #559133 - RadioButton: missing checked and focused states when doing click action
+* #558232 - ProgressBar: value shouldn't be editable
+* #494706 - Test CheckBox control
+* #494711 - Test HyperlinkButton control
+* #494717 - Test ProgressBar control
+* #494718 - Test RadioButton control
+* #494720 - Test ScrollBar control
+* #489331 - Implement AutomationFocusChangedEventArgs
+* #489386 - DbusCoreUiaSource: Implement AutomationElement.FocusedElement
+* #541418 - Security audit for InternalsVisibleTo and platform-code marking of MoonAtkBridge
+* #550443 - If user disables MoonAtkBridge extension from the Firefox->Addons menu, the extension is still enabled
+* #554577 - Write method according the keyboard() in strongwind.
+* #554784 - Replace Find* methods with more generic Find<>
+* #557628 - TreeWalker.directChildren shall be dynamic
+* #558394 - MoonAtkBridge build is broken due to Makefile issues in the tests
+* #555717 - HyperlinkButton: wrong action name
+* #559825 - ScrollBar: HScrollBar is missing 'horizontal' state and VScrollBar is missing 'vertical' state
+
 Version 1.8.90: The "anacronym" release
 * First internal release in prep for 2.0
 

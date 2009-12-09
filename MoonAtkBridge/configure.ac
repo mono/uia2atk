@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([MoonAtkBridge], [1.8.90])
+AC_INIT([MoonAtkBridge], [1.8.91])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
