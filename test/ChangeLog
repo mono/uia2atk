@@ -1,5 +1,10 @@
 2009-12-09  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/togglebutton/togglebuttonframe.py,
+	* testers/moonlight/togglebutton-regression.py: remove bug references
+
+2009-12-09  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/thumb-regression.py: remove focuable check
 
 2009-12-09  Calen Chen <cachen@novell.com>

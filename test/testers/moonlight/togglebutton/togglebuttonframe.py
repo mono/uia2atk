@@ -27,4 +27,4 @@ class ToggleButtonFrame(accessibles.Frame):
         self.toggle1 = self.filler.findPushButton(self.TOGGLEBUTTON_ONE)
         self.toggle2 = self.filler.findPushButton(self.TOGGLEBUTTON_TWO)
         self.text1 = self.filler.findLabel(self.TEXT_ONE)
-        self.text2 = self.frame.findLabel(self.TEXT_TWO)
+        self.text2 = self.filler.findLabel(self.TEXT_TWO)
