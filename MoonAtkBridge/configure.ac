@@ -159,6 +159,7 @@ tests/assets/ScrollBarTest/Makefile
 tests/assets/SelectionTest/Makefile
 tests/assets/TableTest/Makefile
 tests/assets/TextBlockTest/Makefile
+tests/assets/ToggleButtonTest/Makefile
 tests/assets/ToggleEventsTest/Makefile
 tests/assets/ValueEventsTest/Makefile
 tests/assets/ValueTest/Makefile

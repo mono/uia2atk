@@ -1,3 +1,13 @@
+2009-12-14  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_togglebutton.py:
+	* assets/ToggleButtonTest/App.xaml:
+	* assets/ToggleButtonTest/Page.xaml:
+	* assets/ToggleButtonTest/App.xaml.cs:
+	* assets/ToggleButtonTest/Makefile.am:
+	* assets/ToggleButtonTest/Page.xaml.cs: Add new test for ToggleButton.
+
 2009-12-08  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:
