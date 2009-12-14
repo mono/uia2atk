@@ -155,6 +155,7 @@ tests/assets/ProgressBarTest/Makefile
 tests/assets/RadioButtonTest/Makefile
 tests/assets/RangeValueTest/Makefile
 tests/assets/ReflectionTest/Makefile
+tests/assets/RepeatButtonTest/Makefile
 tests/assets/ScrollBarTest/Makefile
 tests/assets/SelectionTest/Makefile
 tests/assets/TableTest/Makefile

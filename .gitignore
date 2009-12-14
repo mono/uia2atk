@@ -639,6 +639,15 @@
 /MoonAtkBridge/tests/assets/ReflectionTest/Makefile.in
 /MoonAtkBridge/tests/assets/ReflectionTest/*.mdb
 /MoonAtkBridge/tests/assets/ReflectionTest/*.xap
+/MoonAtkBridge/tests/assets/RepeatButtonTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.dll
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.g.cs
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.g.resources
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.html
+/MoonAtkBridge/tests/assets/RepeatButtonTest/Makefile
+/MoonAtkBridge/tests/assets/RepeatButtonTest/Makefile.in
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.mdb
+/MoonAtkBridge/tests/assets/RepeatButtonTest/*.xap
 /MoonAtkBridge/tests/assets/ScrollBarTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/ScrollBarTest/*.dll
 /MoonAtkBridge/tests/assets/ScrollBarTest/*.g.cs

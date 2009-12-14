@@ -12,6 +12,7 @@ SUBDIRS = \
 	RadioButtonTest \
 	RangeValueTest \
 	ReflectionTest \
+	RepeatButtonTest \
 	ScrollBarTest \
 	SelectionTest \
 	TableTest \

@@ -1,6 +1,16 @@
 2009-12-14  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:
+	* test_repeatbutton.py:
+	* assets/RepeatButtonTest/App.xaml:
+	* assets/RepeatButtonTest/Page.xaml:
+	* assets/RepeatButtonTest/App.xaml.cs:
+	* assets/RepeatButtonTest/Makefile.am:
+	* assets/RepeatButtonTest/Page.xaml.cs: Add new test for RepeatButton.
+
+2009-12-14  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
 	* test_togglebutton.py:
 	* assets/ToggleButtonTest/App.xaml:
 	* assets/ToggleButtonTest/Page.xaml:
