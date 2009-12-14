@@ -1,3 +1,7 @@
+2009-12-14  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/passwordbox-regression.py: add bug reference
+
 2009-12-09  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/togglebutton/togglebuttonframe.py,
