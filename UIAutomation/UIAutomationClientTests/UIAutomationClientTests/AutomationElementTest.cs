@@ -196,6 +196,17 @@ Thread.Sleep(1000);
 		}
 
 		[Test]
+		public void GetCurrentPatternExceptionTest ()
+		{
+			AssertRaises<InvalidOperationException> (
+				() => testFormElement.GetCurrentPattern (InvokePattern.Pattern),
+				"calling GetCurrentPattern with unsupported pattern");
+			AssertRaises<ArgumentNullException> (
+				() => testFormElement.GetCurrentPattern (null),
+				"calling GetCurrentPattern with null pattern");
+		}
+
+		[Test]
 		public void HasKeyboardFocusTest ()
 		{
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.HasKeyboardFocusProperty),
@@ -895,6 +906,13 @@ Thread.Sleep(1000);
 				groupBox1Element.FindFirst (TreeScope.Subtree,
 				new PropertyCondition (AEIds.OrientationProperty, OrientationType.None));
 			Assert.AreEqual (groupBox1Element, firstFound, "In Subtree, root found before descendants");
+
+			// FindFirst returns a new instance
+			var groupBox1ElementRef2 = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Group));
+			Assert.AreEqual (groupBox1Element, groupBox1ElementRef2, "FindFirst returns equivalent element");
+			Assert.AreNotSame (groupBox1Element, groupBox1ElementRef2, "FindFirst returns different instance");
 		}
 
 		[Test]

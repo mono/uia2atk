@@ -30,17 +30,7 @@ namespace Mono.UIAutomation.Source
 {
 	public interface ITableItemPattern : IGridItemPattern
 	{
-		new TableItemProperties Properties { get; }
-	}
-
-	public struct TableItemProperties
-	{
-		public int Row;
-		public int Column;
-		public int RowSpan;
-		public int ColumnSpan;
-		public IElement ContainingGrid;
-		public IElement [] RowHeaderItems;
-		public IElement [] ColumnHeaderItems;
+		IElement [] GetRowHeaderItems ();
+		IElement [] GetColumnHeaderItems ();
 	}
 }

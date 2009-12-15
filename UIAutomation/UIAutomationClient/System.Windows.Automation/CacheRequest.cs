@@ -24,66 +24,195 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace System.Windows.Automation
 {
 	public sealed class CacheRequest
 	{
+#region Private Fields
+		private List<RequestToken> disposables =
+			new List<RequestToken> ();
+		private List<AutomationPattern> cachedPatterns =
+			new List<AutomationPattern> ();
+		private List<AutomationProperty> cachedProperties =
+			new List<AutomationProperty> ();
+		private AutomationElementMode mode;
+		private Condition treeFilter;
+		private TreeScope scope;
+#endregion
+
 #region Public Properties
 		public AutomationElementMode AutomationElementMode {
-			get; set;
+			get { return mode; }
+			set {
+				if (IsContainedInAnyThreadStack ())
+					throw new InvalidOperationException ("Cannot modify a CacheRequest that is already on the stack");
+				mode = value;
+			}
 		}
 
 		public Condition TreeFilter {
-			get; set;
+			get { return treeFilter; }
+			set {
+				if (IsContainedInAnyThreadStack ())
+					throw new InvalidOperationException ("Cannot modify a CacheRequest that is already on the stack");
+				treeFilter = value;
+			}
 		}
 
 		public TreeScope TreeScope {
-			get; set;
+			get { return scope; }
+			set {
+				if ((value & TreeScope.Ancestors) == TreeScope.Ancestors ||
+				    (value & TreeScope.Parent) == TreeScope.Parent)
+					throw new ArgumentException ("TreeScope.Ancestors and TreeScope.Parent are invalid for CacheRequest.TreeScope");
+				if (IsContainedInAnyThreadStack ())
+					throw new InvalidOperationException ("Cannot modify a CacheRequest that is already on the stack");
+				scope = value;
+			}
 		}
 #endregion
 
 #region Public Static Properties
 		public static CacheRequest Current {
-			get { throw new NotImplementedException (); }
+			get {
+				var requestStack = GetCurrentStack ();
+				return requestStack.Peek (); // NOTE: We guarantee non-empty stack
+			}
+		}
+#endregion
+
+#region Internal Properties
+		internal IList<AutomationProperty> CachedProperties {
+			get { return cachedProperties; }
+		}
+
+		internal IList<AutomationPattern> CachedPatterns {
+			get { return cachedPatterns; }
 		}
 #endregion
 
 #region Constructor
 		public CacheRequest ()
 		{
+			mode = AutomationElementMode.Full;
+			treeFilter = Automation.ControlViewCondition;
+			scope = TreeScope.Element;
 		}
 #endregion
-		
+
 #region Public Methods
 		public IDisposable Activate ()
 		{
-			throw new NotImplementedException ();
+			var requestStack = GetCurrentStack ();
+			RequestToken disposable = new RequestToken (this);
+			disposables.Add (disposable);
+			requestStack.Push (this);
+			return disposable;
 		}
 
 		public void Add (AutomationPattern pattern)
 		{
-			throw new NotImplementedException ();
+			if (pattern == null)
+				throw new ArgumentNullException ("pattern");
+			if (IsContainedInAnyThreadStack ())
+				throw new InvalidOperationException ("Cannot modify an active CacheRequest");
+			cachedPatterns.Add (pattern);
 		}
 
 		public void Add (AutomationProperty property)
 		{
-			throw new NotImplementedException ();
+			if (property == null)
+				throw new ArgumentNullException ("property");
+			if (IsContainedInAnyThreadStack ())
+				throw new InvalidOperationException ("Cannot modify an active CacheRequest");
+			cachedProperties.Add (property);
 		}
 
 		public CacheRequest Clone ()
 		{
-			throw new NotImplementedException ();
+			var clone = new CacheRequest ();
+			clone.TreeFilter = TreeFilter;
+			clone.TreeScope = TreeScope;
+			clone.AutomationElementMode = AutomationElementMode;
+
+			clone.cachedPatterns.AddRange (cachedPatterns);
+			clone.cachedProperties.AddRange (cachedProperties);
+
+			return clone;
 		}
 
 		public void Pop ()
 		{
-			throw new NotImplementedException ();
+			var requestStack = GetCurrentStack ();
+			if (requestStack.Peek () != this ||
+			    this == DefaultRequest)
+				throw new InvalidOperationException ("Can only pop CacheRequest.Current");
+			requestStack.Pop ();
 		}
 
 		public void Push ()
 		{
-			throw new NotImplementedException ();
+			var requestStack = GetCurrentStack ();
+			requestStack.Push (this);
+		}
+#endregion
+
+#region Private Static Members
+		private static Dictionary<Thread, Stack<CacheRequest>> requestStacks =
+			new Dictionary<Thread, Stack<CacheRequest>> ();
+		internal static readonly CacheRequest DefaultRequest =
+			new CacheRequest ();
+		static Object stackLock = new Object ();
+
+		static Stack<CacheRequest> GetCurrentStack ()
+		{
+			Stack<CacheRequest> requestStack;
+			if (!requestStacks.TryGetValue (Thread.CurrentThread, out requestStack)) {
+				lock (stackLock) {
+					if (!requestStacks.TryGetValue (Thread.CurrentThread, out requestStack)) {
+						requestStack = new Stack<CacheRequest> ();
+						requestStack.Push (DefaultRequest);
+						requestStacks [Thread.CurrentThread] = requestStack;
+					}
+				}
+			}
+			return requestStack;
+		}
+#endregion
+
+#region Private Methods
+		private bool IsContainedInAnyThreadStack ()
+		{
+			lock (stackLock) {
+				foreach (var stack in requestStacks.Values)
+					if (stack.Contains (this))
+						return true;
+			}
+			return false;
+		}
+#endregion
+
+#region Private Disposable RequestToken Class
+		private class RequestToken : IDisposable
+		{
+			private CacheRequest request;
+
+			public RequestToken (CacheRequest request)
+			{
+				this.request = request;
+			}
+
+			public void Dispose ()
+			{
+				if (request.disposables.Count != 0) {
+				    //request.disposables.Peek () == this) {
+					request.disposables.Remove (this);
+					request.Pop ();
+				}
+			}
 		}
 #endregion
 	}

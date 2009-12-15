@@ -31,15 +31,8 @@ namespace Mono.UIAutomation.Source
 {
 	public interface ITablePattern : IGridPattern
 	{
-		new TableProperties Properties { get; }
-	}
-
-	public struct TableProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
-		public RowOrColumnMajor RowOrColumnMajor;
-		public IElement [] RowHeaders;
-		public IElement [] ColumnHeaders;
+		RowOrColumnMajor RowOrColumnMajor { get; }
+		IElement [] GetRowHeaders ();
+		IElement [] GetColumnHeaders ();
 	}
 }

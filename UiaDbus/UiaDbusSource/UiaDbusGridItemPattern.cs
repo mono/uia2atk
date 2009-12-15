@@ -48,18 +48,50 @@ namespace Mono.UIAutomation.UiaDbusSource
 			this.source = source;
 		}
 
-		public GridItemProperties Properties {
+		public int Row {
 			get {
-
 				try {
-					GridItemProperties properties = new GridItemProperties() {
-						Column = pattern.Column,
-						ColumnSpan = pattern.ColumnSpan,
-						Row = pattern.Row,
-						RowSpan = pattern.RowSpan,
-						ContainingGrid = source.GetOrCreateElement (busName, pattern.ContainingGridPath)
-					};
-					return properties;
+					return pattern.Row;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public int Column {
+			get {
+				try {
+					return pattern.Column;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public int RowSpan {
+			get {
+				try {
+					return pattern.RowSpan;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public int ColumnSpan {
+			get {
+				try {
+					return pattern.ColumnSpan;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public IElement ContainingGrid {
+			get {
+				try {
+					return source.GetOrCreateElement (busName, pattern.ContainingGridPath);
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

@@ -30,18 +30,12 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IRangeValuePattern
 	{
-		RangeValueProperties Properties { get; }
-
 		void SetValue (double value);
-	}
-
-	public struct RangeValueProperties
-	{
-		public double Value;
-		public bool IsReadOnly;
-		public double Maximum;
-		public double Minimum;
-		public double LargeChange;
-		public double SmallChange;
+		double Value { get; }
+		bool IsReadOnly { get; }
+		double Maximum { get; }
+		double Minimum { get; }
+		double LargeChange { get; }
+		double SmallChange { get; }
 	}
 }

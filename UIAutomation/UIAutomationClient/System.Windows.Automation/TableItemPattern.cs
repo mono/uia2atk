@@ -33,67 +33,78 @@ namespace System.Windows.Automation
 	{
 		public struct TableItemPatternInformation
 		{
-		private AutomationElement [] rowHeaderItems;
-		private AutomationElement [] columnHeaderItems;
+			private bool cache;
+			private TableItemPattern pattern;
 
-			internal TableItemPatternInformation (TableItemProperties properties)
+			internal TableItemPatternInformation (TableItemPattern pattern, bool cache)
 			{
-				Row = properties.Row;
-				Column = properties.Column;
-				RowSpan = properties.RowSpan;
-				ColumnSpan = properties.ColumnSpan;
-				ContainingGrid = SourceManager.GetOrCreateAutomationElement (properties.ContainingGrid);
-				rowHeaderItems = SourceManager.GetOrCreateAutomationElements (properties.RowHeaderItems);
-				columnHeaderItems = SourceManager.GetOrCreateAutomationElements (properties.ColumnHeaderItems);
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public int Row {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (RowProperty, cache); }
 			}
 
 			public int Column {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnProperty, cache); }
 			}
 
 			public int RowSpan {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (RowSpanProperty, cache); }
 			}
 
 			public int ColumnSpan {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnSpanProperty, cache); }
 			}
 
 			public AutomationElement ContainingGrid {
-				get; private set;
+				get { return (AutomationElement) pattern.element.GetPropertyValue (ContainingGridProperty, cache); }
 			}
 
 			public AutomationElement [] GetRowHeaderItems ()
 			{
-				return rowHeaderItems;
+				return (AutomationElement []) pattern.element.GetPropertyValue (RowHeaderItemsProperty, cache);
 			}
 
 			public AutomationElement [] GetColumnHeaderItems ()
 			{
-				return columnHeaderItems;
+				return (AutomationElement []) pattern.element.GetPropertyValue (ColumnHeaderItemsProperty, cache);
 			}
 		}
 
-		private ITableItemPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private TableItemPatternInformation currentInfo;
+		private TableItemPatternInformation cachedInfo;
 
-		internal TableItemPattern (ITableItemPattern source) : base (null)
+		internal TableItemPattern ()
 		{
-			this.source = source;
 		}
+
+		internal TableItemPattern (ITableItemPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new TableItemPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new TableItemPatternInformation (this, true);
+		}
+
+		internal new ITableItemPattern Source { get; private set; }
 
 		public new TableItemPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public new TableItemPatternInformation Current {
 			get {
-				return new TableItemPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 

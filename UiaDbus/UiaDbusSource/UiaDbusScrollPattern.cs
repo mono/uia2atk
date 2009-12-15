@@ -43,24 +43,6 @@ namespace Mono.UIAutomation.UiaDbusSource
 			this.pattern = pattern;
 		}
 
-		public ScrollProperties Properties {
-			get {
-				try {
-					ScrollProperties properties = new ScrollProperties () {
-						HorizontallyScrollable = pattern.HorizontallyScrollable,
-						HorizontalScrollPercent = pattern.HorizontalScrollPercent,
-						HorizontalViewSize = pattern.HorizontalViewSize,
-						VerticallyScrollable = pattern.VerticallyScrollable,
-						VerticalScrollPercent = pattern.VerticalScrollPercent,
-						VerticalViewSize = pattern.VerticalViewSize
-					};
-					return properties;
-				} catch (Exception ex) {
-					throw DbusExceptionTranslator.Translate (ex);
-				}
-			}
-		}
-
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
 			try {
@@ -76,6 +58,66 @@ namespace Mono.UIAutomation.UiaDbusSource
 				pattern.SetScrollPercent (horizontalPercent, verticalPercent);
 			} catch (Exception ex) {
 				throw DbusExceptionTranslator.Translate (ex);
+			}
+		}
+
+		public bool HorizontallyScrollable {
+			get {
+				try {
+					return pattern.HorizontallyScrollable;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double HorizontalScrollPercent {
+			get {
+				try {
+					return pattern.HorizontalScrollPercent;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double HorizontalViewSize {
+			get {
+				try {
+					return pattern.HorizontalViewSize;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool VerticallyScrollable {
+			get {
+				try {
+					return pattern.VerticallyScrollable;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double VerticalScrollPercent {
+			get {
+				try {
+					return pattern.VerticalScrollPercent;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double VerticalViewSize {
+			get {
+				try {
+					return pattern.VerticalViewSize;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
 			}
 		}
 	}

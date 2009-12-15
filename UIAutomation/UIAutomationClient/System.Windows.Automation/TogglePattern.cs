@@ -31,40 +31,60 @@ namespace System.Windows.Automation
 {
 	public class TogglePattern : BasePattern
 	{
-		private IToggleProvider source;
-
 		public struct TogglePatternInformation
 		{
-			internal TogglePatternInformation (ToggleState toggleState)
+			private bool cache;
+			private TogglePattern pattern;
+
+			internal TogglePatternInformation (TogglePattern pattern, bool cache)
 			{
-				ToggleState = toggleState;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public ToggleState ToggleState {
-				get; private set;
+				get { return (ToggleState) pattern.element.GetPropertyValue (ToggleStateProperty, cache); }
 			}
 		}
 
-		internal TogglePattern (IToggleProvider source)
+		private AutomationElement element;
+		private bool cached;
+		private TogglePatternInformation currentInfo;
+		private TogglePatternInformation cachedInfo;
+
+		internal TogglePattern ()
 		{
-			this.source = source;
 		}
+
+		internal TogglePattern (IToggleProvider source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new TogglePatternInformation (this, false);
+			if (cached)
+				cachedInfo = new TogglePatternInformation (this, true);
+		}
+
+		internal IToggleProvider Source { get; private set; }
 
 		public TogglePatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public TogglePatternInformation Current {
 			get {
-				return new TogglePatternInformation (source.ToggleState);
+				return currentInfo;
 			}
 		}
 
 		public void Toggle ()
 		{
-			source.Toggle ();
+			Source.Toggle ();
 		}
 
 		public static readonly AutomationPattern Pattern =

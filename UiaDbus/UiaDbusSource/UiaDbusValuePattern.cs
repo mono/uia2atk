@@ -52,15 +52,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
-		public ValueProperties Properties {
+		public bool IsReadOnly {
 			get {
-
 				try {
-					ValueProperties properties = new ValueProperties() {
-						IsReadOnly = pattern.IsReadOnly,
-						Value = pattern.Value
-					};
-					return properties;
+					return pattern.IsReadOnly;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public string Value {
+			get {
+				try {
+					return pattern.Value;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

@@ -85,17 +85,5 @@ namespace AtspiUiaSource
 			}
 			return elements;
 		}
-
-		TableProperties ITablePattern.Properties {
-			get {
-				TableProperties p = new TableProperties ();
-				p.RowCount = RowCount;
-				p.ColumnCount = ColumnCount;
-				p.RowOrColumnMajor = RowOrColumnMajor;
-				p.RowHeaders = GetRowHeaders ();
-				p.ColumnHeaders = GetColumnHeaders ();
-				return p;
-			}
-		}
 	}
 }

@@ -62,14 +62,5 @@ namespace AtspiUiaSource
 				return table.NColumns;
 			}
 		}
-
-		public GridProperties Properties {
-			get {
-				GridProperties p = new GridProperties ();
-				p.RowCount = RowCount;
-				p.ColumnCount = ColumnCount;
-				return p;
-			}
-		}
 	}
 }

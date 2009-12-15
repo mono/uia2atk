@@ -33,107 +33,157 @@ namespace System.Windows.Automation
 	{
 		public struct AutomationElementInformation
 		{
-			private IElement sourceElement;
+			private AutomationElement element;
+			bool cache;
 
-			internal AutomationElementInformation (IElement sourceElement)
+			internal AutomationElementInformation (AutomationElement element, bool cache)
 			{
-				this.sourceElement = sourceElement;
+				this.element = element;
+				this.cache = cache;
 			}
 
 			public string AcceleratorKey {
-				get { return sourceElement.AcceleratorKey; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.AcceleratorKeyProperty, cache);
+				}
 			}
 
 			public string AccessKey {
-				get { return sourceElement.AccessKey; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.AccessKeyProperty, cache);
+				}
 			}
 
 			public string AutomationId {
-				get { return sourceElement.AutomationId; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.AutomationIdProperty, cache);
+				}
 			}
 
 			public Rect BoundingRectangle {
-				get { return sourceElement.BoundingRectangle; }
+				get {
+					return (Rect) element.GetPropertyValue (AutomationElement.BoundingRectangleProperty, cache);
+				}
 			}
 
 			public string ClassName {
-				get { return sourceElement.ClassName; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.ClassNameProperty, cache);
+				}
 			}
 
 			public ControlType ControlType {
-				get { return sourceElement.ControlType; }
+				get {
+					return (ControlType) element.GetPropertyValue (AutomationElement.ControlTypeProperty, cache);
+				}
 			}
 
 			public string FrameworkId {
-				get { return sourceElement.FrameworkId; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.FrameworkIdProperty, cache);
+				}
 			}
 
 			public bool HasKeyboardFocus {
-				get { return sourceElement.HasKeyboardFocus; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.HasKeyboardFocusProperty, cache);
+				}
 			}
 
 			public string HelpText {
-				get { return sourceElement.HelpText; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.HelpTextProperty, cache);
+				}
 			}
 
 			public bool IsContentElement {
-				get { return sourceElement.IsContentElement; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsContentElementProperty, cache);
+				}
 			}
 
 			public bool IsControlElement {
-				get { return sourceElement.IsControlElement; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsControlElementProperty, cache);
+				}
 			}
 
 			public bool IsEnabled {
-				get { return sourceElement.IsEnabled; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsEnabledProperty, cache);
+				}
 			}
 
 			public bool IsKeyboardFocusable {
-				get { return sourceElement.IsKeyboardFocusable; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsKeyboardFocusableProperty, cache);
+				}
 			}
 
 			public bool IsOffscreen {
-				get { return sourceElement.IsOffscreen; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsOffscreenProperty, cache);
+				}
 			}
 
 			public bool IsPassword {
-				get { return sourceElement.IsPassword; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsPasswordProperty, cache);
+				}
 			}
 
 			public bool IsRequiredForForm {
-				get { return sourceElement.IsRequiredForForm; }
+				get {
+					return (bool) element.GetPropertyValue (AutomationElement.IsRequiredForFormProperty, cache);
+				}
 			}
 
 			public string ItemStatus {
-				get { return sourceElement.ItemStatus; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.ItemStatusProperty, cache);
+				}
 			}
 
 			public string ItemType {
-				get { return sourceElement.ItemType; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.ItemTypeProperty, cache);
+				}
 			}
 
 			public AutomationElement LabeledBy {
-				get { return SourceManager.GetOrCreateAutomationElement (sourceElement.LabeledBy); }
+				get {
+					return (AutomationElement) element.GetPropertyValue (AutomationElement.LabeledByProperty, cache);
+				}
 			}
 
 			public string LocalizedControlType {
-				get { return sourceElement.LocalizedControlType; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.LocalizedControlTypeProperty, cache);
+				}
 			}
 
 			public string Name {
-				get { return sourceElement.Name; }
+				get {
+					return (string) element.GetPropertyValue (AutomationElement.NameProperty, cache);
+				}
 			}
 
 			public int NativeWindowHandle {
-				get { return sourceElement.NativeWindowHandle; }
+				get {
+					return (int) element.GetPropertyValue (AutomationElement.NativeWindowHandleProperty, cache);
+				}
 			}
 
 			public OrientationType Orientation {
-				get { return sourceElement.Orientation; }
+				get {
+					return (OrientationType) element.GetPropertyValue (AutomationElement.OrientationProperty, cache);
+				}
 			}
 
 			public int ProcessId {
-				get { return sourceElement.ProcessId; }
+				get {
+					return (int) element.GetPropertyValue (AutomationElement.ProcessIdProperty, cache);
+				}
 			}
 		}
 	}

@@ -33,77 +33,88 @@ namespace System.Windows.Automation
 	{
 		public struct WindowPatternInformation
 		{
-			internal WindowPatternInformation (WindowProperties properties)
+			private bool cache;
+			private WindowPattern pattern;
+
+			internal WindowPatternInformation (WindowPattern pattern, bool cache)
 			{
-				CanMaximize = properties.CanMaximize;
-				CanMinimize = properties.CanMinimize;
-				IsModal = properties.IsModal;
-				IsTopmost = properties.IsTopmost;
-				WindowVisualState = properties.WindowVisualState;
-				WindowInteractionState = properties.WindowInteractionState;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public bool CanMaximize {
-					get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (CanMaximizeProperty, cache); }
 			}
 
 			public bool CanMinimize {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (CanMinimizeProperty, cache); }
 			}
 
 			public bool IsModal {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (IsModalProperty, cache); }
 			}
 
 			public bool IsTopmost {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (IsTopmostProperty, cache); }
 			}
 
 			public WindowVisualState WindowVisualState {
-				get; private set;
+				get { return (WindowVisualState) pattern.element.GetPropertyValue (WindowVisualStateProperty, cache); }
 			}
 
 			public WindowInteractionState WindowInteractionState {
-				get; private set;
+				get { return (WindowInteractionState) pattern.element.GetPropertyValue (WindowInteractionStateProperty, cache); }
 			}
 		}
 
-		private IWindowPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private WindowPatternInformation currentInfo;
+		private WindowPatternInformation cachedInfo;
 
 		internal WindowPattern ()
 		{
 		}
 
-		internal WindowPattern (IWindowPattern source)
+		internal WindowPattern (IWindowPattern source, AutomationElement element, bool cached)
 		{
-			this.source = source;
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new WindowPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new WindowPatternInformation (this, true);
 		}
+
+		internal IWindowPattern Source { get; private set; }
 
 		public WindowPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public WindowPatternInformation Current {
 			get {
-				return new WindowPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public bool WaitForInputIdle (int milliseconds)
 		{
-			return source.WaitForInputIdle (milliseconds);
+			return Source.WaitForInputIdle (milliseconds);
 		}
 
 		public void Close ()
 		{
-			source.Close ();
+			Source.Close ();
 		}
 
 		public void SetWindowVisualState (WindowVisualState state)
 		{
-			source.SetWindowVisualState (state);
+			Source.SetWindowVisualState (state);
 		}
 
 		public static readonly AutomationPattern Pattern =

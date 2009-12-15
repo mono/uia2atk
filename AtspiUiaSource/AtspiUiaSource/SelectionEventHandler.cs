@@ -36,7 +36,7 @@ namespace AtspiUiaSource
 			this.source = source;
 			this.element = element;
 
-			oldSelection = source.Selection;
+			oldSelection = source.GetSelection ();
 			element.accessible.ObjectEvents.SelectionChanged += SelectionChanged;
 		}
 
@@ -47,7 +47,8 @@ namespace AtspiUiaSource
 
 		private void SelectionChanged (string detail, int v1, int v2, object any)
 		{
-			IElement []newSelection = source.Selection;
+			IElement [] newSelection = source.GetSelection ();
+
 			AutomationSource.RaisePropertyChangedEvent (element,
 			                                            SelectionPattern.SelectionProperty,
 								    oldSelection ?? new IElement [0],

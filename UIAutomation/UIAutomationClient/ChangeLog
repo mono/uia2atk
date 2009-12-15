@@ -1,3 +1,36 @@
+2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation/DockPattern.cs:
+	* System.Windows.Automation/GridPattern.cs:
+	* System.Windows.Automation/CacheRequest.cs:
+	* System.Windows.Automation/TablePattern.cs:
+	* System.Windows.Automation/ValuePattern.cs:
+	* System.Windows.Automation/ScrollPattern.cs:
+	* System.Windows.Automation/TogglePattern.cs:
+	* System.Windows.Automation/WindowPattern.cs:
+	* System.Windows.Automation/GridItemPattern.cs:
+	* System.Windows.Automation/SelectionPattern.cs:
+	* System.Windows.Automation/TableItemPattern.cs:
+	* System.Windows.Automation/TransformPattern.cs:
+	* System.Windows.Automation/RangeValuePattern.cs:
+	* System.Windows.Automation/MultipleViewPattern.cs:
+	* System.Windows.Automation/SelectionItemPattern.cs:
+	* System.Windows.Automation/ExpandCollapsePattern.cs: Implement caching.
+
+	* System.Windows.Automation/TreeWalker.cs: Implement caching methods.
+
+	* System.Windows.Automation/TreeWalker.TreeIterator.cs: Make sure to use
+	a new instance instead of reusing AutomationElement.RootElement.
+
+	* System.Windows.Automation/SourceManager.cs: Update GetOrCreate*
+	methods to always create new instances (will rename later).
+
+	* System.Windows.Automation/AutomationElement.cs: Implement caching.
+
+	* System.Windows.Automation/AutomationElement.AutomationElementInformation.cs:
+	Add caching support, and ensure that Current property always returns
+	up-to-date values.
+
 2009-12-08  Mario Carrion  <mcarrion@novell.com>
 
 	* System.Windows.Automation/Automation.cs: Raising ArgumentException

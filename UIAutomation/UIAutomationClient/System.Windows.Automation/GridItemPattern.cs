@@ -33,52 +33,68 @@ namespace System.Windows.Automation
 	{
 		public struct GridItemPatternInformation
 		{
-			internal GridItemPatternInformation (GridItemProperties properties)
+			private bool cache;
+			private GridItemPattern pattern;
+
+			internal GridItemPatternInformation (GridItemPattern pattern, bool cache)
 			{
-				Row = properties.Row;
-				Column = properties.Column;
-				RowSpan = properties.RowSpan;
-				ColumnSpan = properties.ColumnSpan;
-				ContainingGrid = SourceManager.GetOrCreateAutomationElement (properties.ContainingGrid);
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public int Row {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (RowProperty, cache); }
 			}
 
 			public int Column {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnProperty, cache); }
 			}
 
 			public int RowSpan {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (RowSpanProperty, cache); }
 			}
 
 			public int ColumnSpan {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnSpanProperty, cache); }
 			}
 
 			public AutomationElement ContainingGrid {
-				get; private set;
+				get { return (AutomationElement) pattern.element.GetPropertyValue (ContainingGridProperty, cache); }
 			}
 		}
 
-		private IGridItemPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private GridItemPatternInformation currentInfo;
+		private GridItemPatternInformation cachedInfo;
 
-		internal GridItemPattern (IGridItemPattern source)
+		internal GridItemPattern ()
 		{
-			this.source = source;
 		}
+
+		internal GridItemPattern (IGridItemPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new GridItemPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new GridItemPatternInformation (this, true);
+		}
+
+		internal IGridItemPattern Source { get; private set; }
 
 		public GridItemPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public GridItemPatternInformation Current {
 			get {
-				return new GridItemPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 

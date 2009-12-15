@@ -254,6 +254,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedElement, actualChild,
 				String.Format ("GetFirstChild with root element named {0}: Expected element named {1}, got element named {2}",
 				GetName (rootElement), GetName (expectedElement), GetName (actualChild)));
+			if (expectedElement != null)
+				Assert.AreNotSame (expectedElement, actualChild, "GetFirstChild returns a new instance");
 		}
 
 		private void VerifyGetLastChild (TreeWalker tree, AutomationElement rootElement, AutomationElement expectedElement)
@@ -262,6 +264,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedElement, actualChild,
 				String.Format ("GetLastChild with root element named {0}: Expected element named {1}, got element named {2}",
 				GetName (rootElement), GetName (expectedElement), GetName (actualChild)));
+			if (expectedElement != null)
+				Assert.AreNotSame (expectedElement, actualChild, "GetLastChild returns a new instance");
 		}
 
 		private void VerifyGetNextSibling (TreeWalker tree, AutomationElement rootElement, AutomationElement expectedElement)
@@ -270,6 +274,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedElement, actualChild,
 				String.Format ("GetNextSibling with root element named {0}: Expected element named {1}, got element named {2}",
 				GetName (rootElement), GetName (expectedElement), GetName (actualChild)));
+			if (expectedElement != null)
+				Assert.AreNotSame (expectedElement, actualChild, "GetNextSibling returns a new instance");
 		}
 
 		private void VerifyGetPreviousSibling (TreeWalker tree, AutomationElement rootElement, AutomationElement expectedElement)
@@ -278,6 +284,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedElement, actualChild,
 				String.Format ("GetPreviousSibling with root element named {0}: Expected element named {1}, got element named {2}",
 				GetName (rootElement), GetName (expectedElement), GetName (actualChild)));
+			if (expectedElement != null)
+				Assert.AreNotSame (expectedElement, actualChild, "GetPreviousSibling returns a new instance");
 		}
 
 		private void VerifyGetParent (TreeWalker tree, AutomationElement rootElement, AutomationElement expectedElement)
@@ -286,6 +294,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedElement, actualChild,
 				String.Format ("GetParent with root element named {0}: Expected element named {1}, got element named {2}",
 				GetName (rootElement), GetName (expectedElement), GetName (actualChild)));
+			if (expectedElement != null)
+				Assert.AreNotSame (expectedElement, actualChild, "GetParent returns a new instance");
 		}
 
 		private string GetName (AutomationElement element)

@@ -52,18 +52,60 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
-		public RangeValueProperties Properties {
+		public double Value {
 			get {
 				try {
-					RangeValueProperties properties = new RangeValueProperties () {
-						Value = pattern.Value,
-						IsReadOnly = pattern.IsReadOnly,
-						Maximum = pattern.Maximum,
-						Minimum = pattern.Minimum,
-						LargeChange = pattern.LargeChange,
-						SmallChange = pattern.SmallChange
-					};
-					return properties;
+					return pattern.Value;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool IsReadOnly {
+			get {
+				try {
+					return pattern.IsReadOnly;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double Maximum {
+			get {
+				try {
+					return pattern.Maximum;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double Minimum {
+			get {
+				try {
+					return pattern.Minimum;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double LargeChange {
+			get {
+				try {
+					return pattern.LargeChange;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public double SmallChange {
+			get {
+				try {
+					return pattern.SmallChange;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

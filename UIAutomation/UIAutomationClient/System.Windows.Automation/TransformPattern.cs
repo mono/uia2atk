@@ -33,58 +33,76 @@ namespace System.Windows.Automation
 	{
 		public struct TransformPatternInformation
 		{
-			internal TransformPatternInformation (TransformProperties properties)
+			private bool cache;
+			private TransformPattern pattern;
+
+			internal TransformPatternInformation (TransformPattern pattern, bool cache)
 			{
-				CanMove = properties.CanMove;
-				CanResize = properties.CanResize;
-				CanRotate = properties.CanRotate;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public bool CanMove {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (CanMoveProperty, cache); }
 			}
 
 			public bool CanResize {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (CanResizeProperty, cache); }
 			}
 
 			public bool CanRotate {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (CanRotateProperty, cache); }
 			}
 		}
 
-		private ITransformPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private TransformPatternInformation currentInfo;
+		private TransformPatternInformation cachedInfo;
 
-		internal TransformPattern (ITransformPattern source)
+		internal TransformPattern ()
 		{
-			this.source = source;
 		}
+
+		internal TransformPattern (ITransformPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new TransformPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new TransformPatternInformation (this, true);
+		}
+
+		internal ITransformPattern Source { get; private set; }
 
 		public TransformPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public TransformPatternInformation Current {
 			get {
-				return new TransformPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public void Move (double x, double y)
 		{
-			source.Move (x, y);
+			Source.Move (x, y);
 		}
 
 		public void Resize (double width, double height)
 		{
-			source.Resize (width, height);
+			Source.Resize (width, height);
 		}
 
 		public void Rotate (double degrees)
 		{
-			source.Rotate (degrees);
+			Source.Rotate (degrees);
 		}
 
 		public static readonly AutomationPattern Pattern =

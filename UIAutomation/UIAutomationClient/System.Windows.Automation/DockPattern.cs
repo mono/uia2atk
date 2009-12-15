@@ -33,38 +33,58 @@ namespace System.Windows.Automation
 	{
 		public struct DockPatternInformation
 		{
-			internal DockPatternInformation (DockPosition dockPosition)
+			private bool cache;
+			private DockPattern pattern;
+
+			internal DockPatternInformation (DockPattern pattern, bool cache)
 			{
-				DockPosition = dockPosition;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public DockPosition DockPosition {
-				get; private set;
+				get { return (DockPosition) pattern.element.GetPropertyValue (DockPositionProperty, cache); }
 			}
 		}
 
-		private IDockProvider source;
+		private AutomationElement element;
+		private bool cached;
+		private DockPatternInformation currentInfo;
+		private DockPatternInformation cachedInfo;
 
-		internal DockPattern (IDockProvider source)
+		internal DockPattern ()
 		{
-			this.source = source;
 		}
+
+		internal DockPattern (IDockProvider source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new DockPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new DockPatternInformation (this, true);
+		}
+
+		internal IDockProvider Source { get; private set; }
 
 		public DockPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public DockPatternInformation Current {
 			get {
-				return new DockPatternInformation (source.DockPosition);
+				return currentInfo;
 			}
 		}
 
 		public void SetDockPosition (DockPosition dockPosition)
 		{
-			source.SetDockPosition (dockPosition);
+			Source.SetDockPosition (dockPosition);
 		}
 
 		public static readonly AutomationPattern Pattern =

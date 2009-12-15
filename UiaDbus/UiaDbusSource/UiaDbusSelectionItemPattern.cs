@@ -75,15 +75,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
-		public SelectionItemProperties Properties {
+		public bool IsSelected {
 			get {
 				try {
-					SelectionItemProperties properties = new SelectionItemProperties () {
-						IsSelected = pattern.IsSelected,
-						SelectionContainer = source.GetOrCreateElement (busName,
-						                                                pattern.SelectionContainerPath)
-					};
-					return properties;
+					return pattern.IsSelected;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public IElement SelectionContainer {
+			get {
+				try {
+					return source.GetOrCreateElement (busName, pattern.SelectionContainerPath);
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

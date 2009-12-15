@@ -33,43 +33,62 @@ namespace System.Windows.Automation
 	{
 		public struct ValuePatternInformation
 		{
-			internal ValuePatternInformation (ValueProperties properties)
+			private bool cache;
+			private ValuePattern pattern;
+
+			internal ValuePatternInformation (ValuePattern pattern, bool cache)
 			{
-				Value = properties.Value;
-				IsReadOnly = properties.IsReadOnly;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public string Value {
-				get; private set;
+				get { return (string) pattern.element.GetPropertyValue (ValueProperty, cache); }
 			}
 
 			public bool IsReadOnly {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (IsReadOnlyProperty, cache); }
 			}
 		}
 
-		private IValuePattern source;
+		private AutomationElement element;
+		private bool cached;
+		private ValuePatternInformation currentInfo;
+		private ValuePatternInformation cachedInfo;
 
-		internal ValuePattern (IValuePattern source)
+		internal ValuePattern ()
 		{
-			this.source = source;
 		}
+
+		internal ValuePattern (IValuePattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new ValuePatternInformation (this, false);
+			if (cached)
+				cachedInfo = new ValuePatternInformation (this, true);
+		}
+
+		internal IValuePattern Source { get; private set; }
 
 		public ValuePatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public ValuePatternInformation Current {
 			get {
-				return new ValuePatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public void SetValue (string value)
 		{
-			source.SetValue (value);
+			Source.SetValue (value);
 		}
 
 		public static readonly AutomationPattern Pattern =

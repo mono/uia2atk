@@ -30,18 +30,14 @@ namespace Mono.UIAutomation.Source
 {
 	public interface ISelectionItemPattern
 	{
-		SelectionItemProperties Properties { get; }
-
 		void Select ();
 
 		void AddToSelection ();
 
 		void RemoveFromSelection ();
-	}
 
-	public struct SelectionItemProperties
-	{
-		public bool IsSelected;
-		public IElement SelectionContainer;
+		bool IsSelected { get; }
+
+		IElement SelectionContainer { get; }
 	}
 }

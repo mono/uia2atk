@@ -45,31 +45,85 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void Close ()
 		{
-			pattern.Close ();
+			try {
+				pattern.Close ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public void SetWindowVisualState (WindowVisualState state)
 		{
-			pattern.SetVisualState (state);
+			try {
+				pattern.SetVisualState (state);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
 		public bool WaitForInputIdle (int milliseconds)
 		{
-			return pattern.WaitForInputIdle (milliseconds);
+			try {
+				return pattern.WaitForInputIdle (milliseconds);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
 		}
 
-		public WindowProperties Properties {
+		public bool CanMaximize {
 			get {
 				try {
-					WindowProperties properties = new WindowProperties () {
-						WindowInteractionState = pattern.InteractionState,
-						IsModal = pattern.IsModal,
-						IsTopmost = pattern.IsTopmost,
-						CanMaximize = pattern.Maximizable,
-						CanMinimize = pattern.Minimizable,
-						WindowVisualState = pattern.VisualState
-					};
-					return properties;
+					return pattern.Maximizable;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool CanMinimize {
+			get {
+				try {
+					return pattern.Minimizable;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool IsModal {
+			get {
+				try {
+					return pattern.IsModal;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool IsTopmost {
+			get {
+				try {
+					return pattern.IsTopmost;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public WindowInteractionState WindowInteractionState {
+			get {
+				try {
+					return pattern.InteractionState;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public WindowVisualState WindowVisualState {
+			get {
+				try {
+					return pattern.VisualState;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

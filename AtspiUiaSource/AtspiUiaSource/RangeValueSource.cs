@@ -36,7 +36,7 @@ namespace AtspiUiaSource
 	public class RangeValueSource : IRangeValuePattern
 	{
 		private Accessible accessible;
-		private Value Value {
+		private Value Val {
 			get {
 				Value val = accessible.QueryValue ();
 				if (val == null)
@@ -50,20 +50,6 @@ namespace AtspiUiaSource
 			accessible = element.Accessible;
 		}
 
-		public RangeValueProperties Properties {
-			get {
-				RangeValueProperties properties = new RangeValueProperties ();
-				Value atspiValue = Value;
-				properties.Value = atspiValue.CurrentValue;
-				properties.IsReadOnly = !accessible.StateSet.Contains (StateType.Editable);
-				properties.Maximum = atspiValue.MaximumValue;
-				properties.Minimum = atspiValue.MinimumValue;
-				properties.LargeChange = atspiValue.MinimumIncrement;
-				properties.SmallChange = atspiValue.MinimumIncrement;
-				return properties;
-			}
-		}
-
 		public void SetValue (double value)
 		{
 			if (!accessible.StateSet.Contains (StateType.Enabled))
@@ -72,11 +58,35 @@ namespace AtspiUiaSource
 					accessible.Role == Role.SpinButton) &&
 				!accessible.StateSet.Contains (StateType.Editable))
 				throw new InvalidOperationException ();
-			Value atspiValue = this.Value;
+			Value atspiValue = Val;
 			if (value < atspiValue.MinimumValue ||
 				value > atspiValue.MaximumValue)
 				throw new ArgumentOutOfRangeException ();
 			atspiValue.CurrentValue = value;
+		}
+
+		public double Value {
+			get { return Val.CurrentValue; }
+		}
+
+		public bool IsReadOnly {
+			get { return !accessible.StateSet.Contains (StateType.Editable); }
+		}
+
+		public double Maximum {
+			get { return Val.MaximumValue; }
+		}
+
+		public double Minimum {
+			get { return Val.MinimumValue; }
+		}
+
+		public double LargeChange {
+			get { return Val.MinimumIncrement; }
+		}
+
+		public double SmallChange {
+			get { return Val.MinimumIncrement; }
 		}
 	}
 }

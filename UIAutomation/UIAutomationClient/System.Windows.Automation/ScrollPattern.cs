@@ -33,78 +33,93 @@ namespace System.Windows.Automation
 	{
 		public struct ScrollPatternInformation
 		{
-			internal ScrollPatternInformation (ScrollProperties properties)
+			private bool cache;
+			private ScrollPattern pattern;
+
+			internal ScrollPatternInformation (ScrollPattern pattern, bool cache)
 			{
-				HorizontalScrollPercent = properties.HorizontalScrollPercent;
-				VerticalScrollPercent = properties.VerticalScrollPercent;
-				HorizontalViewSize = properties.HorizontalViewSize;
-				VerticalViewSize = properties.VerticalViewSize;
-				HorizontallyScrollable = properties.HorizontallyScrollable;
-				VerticallyScrollable = properties.VerticallyScrollable;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public double HorizontalScrollPercent {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (HorizontalScrollPercentProperty, cache); }
 			}
 
 			public double VerticalScrollPercent {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (VerticalScrollPercentProperty, cache); }
 			}
 
 			public double HorizontalViewSize {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (HorizontalViewSizeProperty, cache); }
 			}
 
 			public double VerticalViewSize {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (VerticalViewSizeProperty, cache); }
 			}
 
 			public bool HorizontallyScrollable {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (HorizontallyScrollableProperty, cache); }
 			}
 
 			public bool VerticallyScrollable {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (VerticallyScrollableProperty, cache); }
 			}
 		}
 
-		private IScrollPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private ScrollPatternInformation currentInfo;
+		private ScrollPatternInformation cachedInfo;
 
-		internal ScrollPattern (IScrollPattern source)
+		internal ScrollPattern ()
 		{
-			this.source = source;
 		}
+
+		internal ScrollPattern (IScrollPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new ScrollPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new ScrollPatternInformation (this, true);
+		}
+
+		internal IScrollPattern Source { get; private set; }
 
 		public ScrollPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public ScrollPatternInformation Current {
 			get {
-				return new ScrollPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
 		{
-			source.SetScrollPercent (horizontalPercent, verticalPercent);
+			Source.SetScrollPercent (horizontalPercent, verticalPercent);
 		}
 
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
-			source.Scroll (horizontalAmount, verticalAmount);
+			Source.Scroll (horizontalAmount, verticalAmount);
 		}
 
 		public void ScrollHorizontal (ScrollAmount amount)
 		{
-			source.Scroll (amount, ScrollAmount.NoAmount);
+			Source.Scroll (amount, ScrollAmount.NoAmount);
 		}
 
 		public void ScrollVertical (ScrollAmount amount)
 		{
-			source.Scroll (ScrollAmount.NoAmount, amount);
+			Source.Scroll (ScrollAmount.NoAmount, amount);
 		}
 
 		public static readonly AutomationPattern Pattern =

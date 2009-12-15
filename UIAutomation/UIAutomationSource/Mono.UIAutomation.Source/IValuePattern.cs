@@ -30,14 +30,8 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IValuePattern
 	{
-		ValueProperties Properties { get; }
-
 		void SetValue (string value);
-	}
-
-	public struct ValueProperties
-	{
-		public bool IsReadOnly;
-		public string Value;
+		bool IsReadOnly { get; }
+		string Value { get; }
 	}
 }

@@ -61,17 +61,22 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
-		public MultipleViewProperties Properties {
+		public int CurrentView {
 			get {
 				try {
-					MultipleViewProperties properties = new MultipleViewProperties () {
-						CurrentView = pattern.CurrentView,
-						SupportedViews = pattern.GetSupportedViews ()
-					};
-					return properties;
+					return pattern.CurrentView;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}
+			}
+		}
+
+		public int [] GetSupportedViews ()
+		{
+			try {
+				return pattern.GetSupportedViews ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
 			}
 		}
 	}

@@ -33,63 +33,78 @@ namespace System.Windows.Automation
 	{
 		public struct RangeValuePatternInformation
 		{
-			internal RangeValuePatternInformation (RangeValueProperties properties)
+			private bool cache;
+			private RangeValuePattern pattern;
+
+			internal RangeValuePatternInformation (RangeValuePattern pattern, bool cache)
 			{
-				Value = properties.Value;
-				IsReadOnly = properties.IsReadOnly;
-				Maximum = properties.Maximum;
-				Minimum = properties.Minimum;
-				LargeChange= properties.LargeChange;
-				SmallChange = properties.SmallChange;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public double Value {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (ValueProperty, cache); }
 			}
 
 			public bool IsReadOnly {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (IsReadOnlyProperty, cache); }
 			}
 
 			public double Maximum {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (MaximumProperty, cache); }
 			}
 
 			public double Minimum {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (MinimumProperty, cache); }
 			}
 
 			public double LargeChange {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (LargeChangeProperty, cache); }
 			}
 
 			public double SmallChange {
-				get; private set;
+				get { return (double) pattern.element.GetPropertyValue (SmallChangeProperty, cache); }
 			}
 		}
 
-		private IRangeValuePattern source;
+		private AutomationElement element;
+		private bool cached;
+		private RangeValuePatternInformation currentInfo;
+		private RangeValuePatternInformation cachedInfo;
 
-		internal RangeValuePattern (IRangeValuePattern source)
+		internal RangeValuePattern ()
 		{
-			this.source = source;
 		}
+
+		internal RangeValuePattern (IRangeValuePattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new RangeValuePatternInformation (this, false);
+			if (cached)
+				cachedInfo = new RangeValuePatternInformation (this, true);
+		}
+
+		internal IRangeValuePattern Source { get; private set; }
 
 		public RangeValuePatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public RangeValuePatternInformation Current {
 			get {
-				return new RangeValuePatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public void SetValue (double value)
 		{
-			source.SetValue (value);
+			Source.SetValue (value);
 		}
 
 		public static readonly AutomationPattern Pattern =

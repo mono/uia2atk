@@ -33,51 +33,68 @@ namespace System.Windows.Automation
 	{
 		public struct MultipleViewPatternInformation
 		{
-			private int [] supportedViews;
+			private bool cache;
+			private MultipleViewPattern pattern;
 
-			internal MultipleViewPatternInformation (MultipleViewProperties properties)
+			internal MultipleViewPatternInformation (MultipleViewPattern pattern, bool cache)
 			{
-				CurrentView = properties.CurrentView;
-				supportedViews = properties.SupportedViews;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public int CurrentView {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (CurrentViewProperty, cache); }
 			}
 
 			public int [] GetSupportedViews ()
 			{
-				return supportedViews;
+				return (int []) pattern.element.GetPropertyValue (SupportedViewsProperty, cache);
 			}
 		}
 
-		private IMultipleViewPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private MultipleViewPatternInformation currentInfo;
+		private MultipleViewPatternInformation cachedInfo;
 
-		internal MultipleViewPattern (IMultipleViewPattern source)
+		internal MultipleViewPattern ()
 		{
-			this.source = source;
 		}
+
+		internal MultipleViewPattern (IMultipleViewPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new MultipleViewPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new MultipleViewPatternInformation (this, true);
+		}
+
+		internal IMultipleViewPattern Source { get; private set; }
 
 		public MultipleViewPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public MultipleViewPatternInformation Current {
 			get {
-				return new MultipleViewPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public string GetViewName (int viewId)
 		{
-			return source.GetViewName (viewId);
+			return Source.GetViewName (viewId);
 		}
 
 		public void SetCurrentView (int viewId)
 		{
-			source.SetCurrentView (viewId);
+			Source.SetCurrentView (viewId);
 		}
 
 		public static readonly AutomationPattern Pattern =

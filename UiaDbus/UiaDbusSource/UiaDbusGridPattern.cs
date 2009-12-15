@@ -48,7 +48,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 			this.source = source;
 		}
 
-		public IElement GetItem(int row, int column)
+		public IElement GetItem (int row, int column)
 		{
 			string elementPath = null;
 			try {
@@ -59,14 +59,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 			return source.GetOrCreateElement (busName, elementPath);
 		}
 
-		public GridProperties Properties {
+		public int RowCount {
 			get {
 				try {
-					GridProperties properties = new GridProperties () {
-						ColumnCount = pattern.ColumnCount,
-						RowCount = pattern.RowCount
-					};
-					return properties;
+					return pattern.RowCount;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public int ColumnCount {
+			get {
+				try {
+					return pattern.ColumnCount;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

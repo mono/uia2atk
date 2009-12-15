@@ -1,3 +1,19 @@
+2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationClientTests/TreeWalkerTest.cs: Update tests to confirm
+	that new AutomationElement instances are always returned.
+
+	* UIAutomationClientTests/WindowPatternTest.cs: Update tests of
+	Current property.
+
+	* UIAutomationClientTests/AutomationElementTest.cs: Update tests for
+	GetCurrentPattern and FindFirst.
+
+	* UIAutomationClientTests/Makefile.am:
+	* UIAutomationClientTests/CacheRequestTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests.csproj: Add initial
+	tests of CacheRequest class, and caching behavior in general.
+
 2009-12-08  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationClientTests/AutomationTest.cs: New test

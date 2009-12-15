@@ -50,15 +50,14 @@ namespace AtspiUiaSource
 			accessible = element.Accessible;
 		}
 
-		public IElement [] Selection {
-			get {
-				int nSelectedChildren = AtspiSelection.NSelectedChildren;
-				IElement [] currentSelection = new IElement [nSelectedChildren];
-				Selection selection = AtspiSelection;
-				for (int i = 0; i < nSelectedChildren; i++)
-					currentSelection [i] = Element.GetElement (selection.GetSelectedChild (i));
-				return currentSelection;
-			}
+		public IElement [] GetSelection ()
+		{
+			int nSelectedChildren = AtspiSelection.NSelectedChildren;
+			IElement [] currentSelection = new IElement [nSelectedChildren];
+			Selection selection = AtspiSelection;
+			for (int i = 0; i < nSelectedChildren; i++)
+				currentSelection [i] = Element.GetElement (selection.GetSelectedChild (i));
+			return currentSelection;
 		}
 
 		public bool CanSelectMultiple {
@@ -72,16 +71,6 @@ namespace AtspiUiaSource
 			get {
 				// TODO: have at-spi support this
 				return false;
-			}
-		}
-
-		public SelectionProperties Properties {
-			get {
-				SelectionProperties properties = new SelectionProperties ();
-				properties.CanSelectMultiple = CanSelectMultiple;
-				properties.IsSelectionRequired = IsSelectionRequired;
-				properties.Selection = Selection;
-				return properties;
 			}
 		}
 	}

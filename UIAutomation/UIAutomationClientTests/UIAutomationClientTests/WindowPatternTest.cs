@@ -192,10 +192,13 @@ namespace MonoTests.System.Windows.Automation
 				testFormElement.GetCurrentPattern (WindowPattern.Pattern);
 
 			Assert.IsFalse (window.Current.IsTopmost, "Initial val");
+			var current = window.Current;
 
 			RunCommand ("Toggle.Window.IsTopmost");
 			Thread.Sleep (200);
 			Assert.IsTrue (window.Current.IsTopmost, "Val after toggling on");
+			Assert.AreEqual (window.Current.IsTopmost, current.IsTopmost,
+				"Even old WindowPatternInformation instances return correct value");
 
 			RunCommand ("Toggle.Window.IsTopmost");
 			Thread.Sleep (200);

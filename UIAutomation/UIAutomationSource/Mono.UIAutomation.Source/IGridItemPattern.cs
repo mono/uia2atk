@@ -30,15 +30,10 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IGridItemPattern
 	{
-		GridItemProperties Properties { get; }
-	}
-
-	public struct GridItemProperties
-	{
-		public int Row;
-		public int Column;
-		public int RowSpan;
-		public int ColumnSpan;
-		public IElement ContainingGrid;
+		int Row { get; }
+		int Column { get; }
+		int RowSpan { get; }
+		int ColumnSpan { get; }
+		IElement ContainingGrid { get; }
 	}
 }

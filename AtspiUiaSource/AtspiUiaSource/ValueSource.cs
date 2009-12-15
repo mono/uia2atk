@@ -47,15 +47,6 @@ namespace AtspiUiaSource
 			editableText = accessible.QueryEditableText ();
 		}
 
-		public ValueProperties Properties {
-			get {
-				ValueProperties properties = new ValueProperties ();
-				properties.IsReadOnly = !(accessible.StateSet.Contains (StateType.Editable));
-				properties.Value = text.GetText ();
-				return properties;
-			}
-		}
-
 		public void SetValue (string value)
 		{
 			if (!accessible.StateSet.Contains (StateType.Enabled))
@@ -65,6 +56,14 @@ namespace AtspiUiaSource
 			if (!editableText.SetTextContents (value))
 				Log.Warn ("AtspiUiaSource: SetTextContents failed");
 				return;
+		}
+
+		public bool IsReadOnly {
+			get { return !accessible.StateSet.Contains (StateType.Editable); }
+		}
+
+		public string Value {
+			get { return text.GetText (); }
 		}
 	}
 }

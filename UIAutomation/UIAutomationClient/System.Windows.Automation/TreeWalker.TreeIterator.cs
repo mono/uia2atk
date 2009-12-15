@@ -232,9 +232,11 @@ namespace System.Windows.Automation
 					return null;
 				AutomationElement ancestor =
 					SourceManager.GetOrCreateAutomationElement (element.SourceElement.Parent);
+
 				lock (TreeWalker.RawViewWalker.directChildrenLock)
 					if (ancestor == null && RawViewWalker.directChildren.Contains (element))
-						ancestor = AutomationElement.RootElement;
+						ancestor = SourceManager.GetOrCreateAutomationElement (AutomationElement.RootElement.SourceElement);
+
 				if (ancestor != null && !condition.AppliesTo (ancestor))
 					return GetParent (ancestor);
 				return ancestor;

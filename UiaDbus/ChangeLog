@@ -1,3 +1,19 @@
+2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaDbusSource/UiaDbusGridPattern.cs:
+	* UiaDbusSource/UiaDbusTablePattern.cs:
+	* UiaDbusSource/UiaDbusValuePattern.cs:
+	* UiaDbusSource/UiaDbusScrollPattern.cs:
+	* UiaDbusSource/UiaDbusWindowPattern.cs:
+	* UiaDbusSource/UiaDbusGridItemPattern.cs:
+	* UiaDbusSource/UiaDbusSelectionPattern.cs:
+	* UiaDbusSource/UiaDbusTableItemPattern.cs:
+	* UiaDbusSource/UiaDbusTransformPattern.cs:
+	* UiaDbusSource/UiaDbusRangeValuePattern.cs:
+	* UiaDbusSource/UiaDbusMultipleViewPattern.cs:
+	* UiaDbusSource/UiaDbusSelectionItemPattern.cs: Update for interface
+	changes.
+
 2009-12-04  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusBridge/Application.cs: 

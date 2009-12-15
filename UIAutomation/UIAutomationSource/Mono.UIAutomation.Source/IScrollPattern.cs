@@ -31,19 +31,13 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IScrollPattern
 	{
-		ScrollProperties Properties { get; }
-
 		void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount);
 		void SetScrollPercent (double horizontalPercent, double verticalPercent);
-	}
-
-	public struct ScrollProperties
-	{
-		public bool HorizontallyScrollable;
-		public double HorizontalScrollPercent;
-		public double HorizontalViewSize;
-		public bool VerticallyScrollable;
-		public double VerticalScrollPercent;
-		public double VerticalViewSize;
+		bool HorizontallyScrollable { get; }
+		double HorizontalScrollPercent { get; }
+		double HorizontalViewSize { get; }
+		bool VerticallyScrollable { get; }
+		double VerticalScrollPercent { get; }
+		double VerticalViewSize { get; }
 	}
 }

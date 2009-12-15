@@ -33,43 +33,63 @@ namespace System.Windows.Automation
 	{
 		public struct ExpandCollapsePatternInformation
 		{
-			internal ExpandCollapsePatternInformation (ExpandCollapseState expandCollapseState)
+			private bool cache;
+			private ExpandCollapsePattern pattern;
+
+			internal ExpandCollapsePatternInformation (ExpandCollapsePattern pattern, bool cache)
 			{
-				ExpandCollapseState = expandCollapseState;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public ExpandCollapseState ExpandCollapseState {
-				get; private set;
+				get { return (ExpandCollapseState) pattern.element.GetPropertyValue (ExpandCollapseStateProperty, cache); }
 			}
 		}
 
-		private IExpandCollapseProvider source;
+		private AutomationElement element;
+		private bool cached;
+		private ExpandCollapsePatternInformation currentInfo;
+		private ExpandCollapsePatternInformation cachedInfo;
 
-		internal ExpandCollapsePattern (IExpandCollapseProvider source)
+		internal ExpandCollapsePattern ()
 		{
-			this.source = source;
 		}
+
+		internal ExpandCollapsePattern (IExpandCollapseProvider source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new ExpandCollapsePatternInformation (this, false);
+			if (cached)
+				cachedInfo = new ExpandCollapsePatternInformation (this, true);
+		}
+
+		internal IExpandCollapseProvider Source { get; private set; }
 
 		public ExpandCollapsePatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public ExpandCollapsePatternInformation Current {
 			get {
-				return new ExpandCollapsePatternInformation (source.ExpandCollapseState);
+				return currentInfo;
 			}
 		}
 
 		public void Expand ()
 		{
-			source.Expand ();
+			Source.Expand ();
 		}
 
 		public void Collapse ()
 		{
-			source.Collapse ();
+			Source.Collapse ();
 		}
 
 		public static readonly AutomationPattern Pattern =

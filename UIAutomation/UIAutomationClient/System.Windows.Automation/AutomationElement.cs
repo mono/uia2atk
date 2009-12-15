@@ -39,7 +39,12 @@ namespace System.Windows.Automation
 	{
 #region Private Members
 		private AutomationElementInformation current;
+		private AutomationElementInformation cached;
 		private IElement sourceElement;
+		private Dictionary<int, CachedValue> propertyCache;
+		private AutomationElementMode mode;
+		private List<AutomationElement> cachedChildren;
+		private AutomationElement cachedParent;
 #endregion
 
 #region Private Static Members
@@ -64,19 +69,31 @@ namespace System.Windows.Automation
 		internal IElement SourceElement {
 			get { return sourceElement; }
 		}
+
+		internal CacheRequest CacheRequest {
+			get; private set;
+		}
 #endregion
 
 #region Public Properties
 		public AutomationElementInformation Cached {
-			get { throw new NotImplementedException (); }
+			get { return cached; }
 		}
 
 		public AutomationElementCollection CachedChildren {
-			get { throw new NotImplementedException (); }
+			get {
+				if (cachedChildren == null)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return new AutomationElementCollection (cachedChildren);
+			}
 		}
 
 		public AutomationElement CachedParent {
-			get { throw new NotImplementedException (); }
+			get {
+				if (cachedParent == null)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedParent;
+			}
 		}
 
 		public AutomationElementInformation Current {
@@ -118,7 +135,10 @@ namespace System.Windows.Automation
 		internal AutomationElement (IElement sourceElement)
 		{
 			this.sourceElement = sourceElement;
-			current = new AutomationElementInformation (sourceElement);
+			current = new AutomationElementInformation (this, false);
+			cached = new AutomationElementInformation (this, true);
+			propertyCache = new Dictionary<int, CachedValue> ();
+			mode = AutomationElementMode.Full;
 		}
 #endregion
 
@@ -148,18 +168,25 @@ namespace System.Windows.Automation
 
 		public Object GetCachedPattern (AutomationPattern pattern)
 		{
-			throw new NotImplementedException ();
+			return GetPattern (pattern, true);
 		}
 
 		public Object GetCachedPropertyValue (AutomationProperty property)
 		{
-			throw new NotImplementedException ();
+			return GetCachedPropertyValue (property, false);
 		}
 
 		public Object GetCachedPropertyValue (AutomationProperty property,
 		                                      bool ignoreDefaultValue)
 		{
-			throw new NotImplementedException ();
+			CachedValue val = null;
+			bool found = propertyCache.TryGetValue (property.Id,
+			                                        out val);
+			if (!found)
+				throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+			if (ignoreDefaultValue && !val.IsSupported)
+				return NotSupported;
+			return val.Value;
 		}
 
 		public override int GetHashCode ()
@@ -177,48 +204,7 @@ namespace System.Windows.Automation
 
 		public Object GetCurrentPattern (AutomationPattern pattern)
 		{
-			object source = sourceElement.GetCurrentPattern (pattern);
-			if (source == null)
-				throw new NotSupportedException ();
-
-			if (pattern == DockPatternIdentifiers.Pattern)
-				return new DockPattern ((IDockProvider)source);
-			else if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
-				return new ExpandCollapsePattern ((IExpandCollapseProvider)source);
-			else if (pattern == GridItemPatternIdentifiers.Pattern)
-				return new GridItemPattern ((IGridItemPattern)source);
-			else if (pattern == GridPatternIdentifiers.Pattern)
-				return new GridPattern ((IGridPattern)source);
-			else if (pattern == InvokePatternIdentifiers.Pattern)
-				return new InvokePattern ((IInvokePattern)source);
-			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
-				return new MultipleViewPattern ((IMultipleViewPattern)source);
-			else if (pattern == RangeValuePatternIdentifiers.Pattern)
-				return new RangeValuePattern ((IRangeValuePattern)source);
-			else if (pattern == ScrollItemPatternIdentifiers.Pattern)
-				return new ScrollItemPattern ((IScrollItemProvider)source);
-			else if (pattern == ScrollPatternIdentifiers.Pattern)
-				return new ScrollPattern ((IScrollPattern)source);
-			else if (pattern == SelectionItemPatternIdentifiers.Pattern)
-				return new SelectionItemPattern ((ISelectionItemPattern)source);
-			else if (pattern == SelectionPatternIdentifiers.Pattern)
-				return new SelectionPattern ((ISelectionPattern)source);
-			else if (pattern == TableItemPatternIdentifiers.Pattern)
-				return new TableItemPattern ((ITableItemPattern)source);
-			else if (pattern == TablePatternIdentifiers.Pattern)
-				return new TablePattern ((ITablePattern)source);
-			else if (pattern == TextPatternIdentifiers.Pattern)
-				return new TextPattern ((ITextPattern)source);
-			else if (pattern == TogglePatternIdentifiers.Pattern)
-				return new TogglePattern ((IToggleProvider)source);
-			else if (pattern == TransformPatternIdentifiers.Pattern)
-				return new TransformPattern ((ITransformPattern)source);
-			else if (pattern == ValuePatternIdentifiers.Pattern)
-				return new ValuePattern ((IValuePattern)source);
-			else if (pattern == WindowPatternIdentifiers.Pattern)
-				return new WindowPattern ((IWindowPattern)source);
-			else
-				throw new ArgumentException ();
+			return GetPattern (pattern, false);
 		}
 
 		public Object GetCurrentPropertyValue (AutomationProperty property)
@@ -230,6 +216,10 @@ namespace System.Windows.Automation
 		public Object GetCurrentPropertyValue (AutomationProperty property,
 		                                       bool ignoreDefaultValue)
 		{
+			// TODO: Is this tested? Also, add message
+			if (mode == AutomationElementMode.None)
+				throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+
 			object pattern;
 
 			// TODO: Throw ElementNotAvailableException if element no longer exists
@@ -239,15 +229,15 @@ namespace System.Windows.Automation
 				return NotSupported;
 
 			if (property == AEIds.AcceleratorKeyProperty)
-				return current.AcceleratorKey;
+				return sourceElement.AcceleratorKey;
 			else if (property == AEIds.AccessKeyProperty)
-				return current.AccessKey;
+				return sourceElement.AccessKey;
 			else if (property == AEIds.AutomationIdProperty)
-				return current.AutomationId;
+				return sourceElement.AutomationId;
 			else if (property == AEIds.BoundingRectangleProperty)
-				return current.BoundingRectangle;
+				return sourceElement.BoundingRectangle;
 			else if (property == AEIds.ClassNameProperty)
-				return current.ClassName;
+				return sourceElement.ClassName;
 			else if (property == AEIds.ClickablePointProperty) {
 				Point clickablePoint;
 				if (TryGetClickablePoint (out clickablePoint))
@@ -255,23 +245,23 @@ namespace System.Windows.Automation
 				return null;
 			}
 			else if (property == AEIds.ControlTypeProperty)
-				return current.ControlType;
+				return sourceElement.ControlType;
 			else if (property == AEIds.CultureProperty)
 				return null;	// TODO: Implement (new IElement member? not used in UIAutomationWinforms)
 			else if (property == AEIds.FrameworkIdProperty)
-				return current.FrameworkId;
+				return sourceElement.FrameworkId;
 			else if (property == AEIds.HasKeyboardFocusProperty)
-				return current.HasKeyboardFocus;
+				return sourceElement.HasKeyboardFocus;
 			else if (property == AEIds.HelpTextProperty)
-				return current.HelpText;
+				return sourceElement.HelpText;
 			else if (property == AEIds.IsContentElementProperty)
-				return current.IsContentElement;
+				return sourceElement.IsContentElement;
 			else if (property == AEIds.IsControlElementProperty)
-				return current.IsControlElement;
+				return sourceElement.IsControlElement;
 			else if (property == AEIds.IsDockPatternAvailableProperty)
 				return TryGetCurrentPattern (DockPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsEnabledProperty)
-				return current.IsEnabled;
+				return sourceElement.IsEnabled;
 			else if (property == AEIds.IsExpandCollapsePatternAvailableProperty)
 				return TryGetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsGridItemPatternAvailableProperty)
@@ -281,17 +271,17 @@ namespace System.Windows.Automation
 			else if (property == AEIds.IsInvokePatternAvailableProperty)
 				return TryGetCurrentPattern (InvokePatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsKeyboardFocusableProperty)
-				return current.IsKeyboardFocusable;
+				return sourceElement.IsKeyboardFocusable;
 			else if (property == AEIds.IsMultipleViewPatternAvailableProperty)
 				return TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsOffscreenProperty)
-				return current.IsOffscreen;
+				return sourceElement.IsOffscreen;
 			else if (property == AEIds.IsPasswordProperty)
-				return current.IsPassword;
+				return sourceElement.IsPassword;
 			else if (property == AEIds.IsRangeValuePatternAvailableProperty)
 				return TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsRequiredForFormProperty)
-				return current.IsRequiredForForm;
+				return sourceElement.IsRequiredForForm;
 			else if (property == AEIds.IsScrollItemPatternAvailableProperty)
 				return TryGetCurrentPattern (ScrollItemPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsScrollPatternAvailableProperty)
@@ -315,113 +305,114 @@ namespace System.Windows.Automation
 			else if (property == AEIds.IsWindowPatternAvailableProperty)
 				return TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.ItemStatusProperty)
-				return current.ItemStatus;
+				return sourceElement.ItemStatus;
 			else if (property == AEIds.ItemTypeProperty)
-				return current.ItemType;
+				return sourceElement.ItemType;
 			else if (property == AEIds.LabeledByProperty)
-				return current.LabeledBy;
+				// TODO: Caching behavior here should be tested more
+				return SourceManager.GetOrCreateAutomationElement (sourceElement.LabeledBy);
 			else if (property == AEIds.LocalizedControlTypeProperty)
-				return current.LocalizedControlType;
+				return sourceElement.LocalizedControlType;
 			else if (property == AEIds.NameProperty)
-				return current.Name;
+				return sourceElement.Name;
 			else if (property == AEIds.NativeWindowHandleProperty)
-				return current.NativeWindowHandle;
+				return sourceElement.NativeWindowHandle;
 			else if (property == AEIds.OrientationProperty)
-				return current.Orientation;
+				return sourceElement.Orientation;
 			else if (property == AEIds.ProcessIdProperty)
-				return current.ProcessId;
+				return sourceElement.ProcessId;
 			else if (property == AEIds.RuntimeIdProperty)
 				return GetRuntimeId ();
 			else if (property == DockPatternIdentifiers.DockPositionProperty)
-				return (TryGetCurrentPattern (DockPatternIdentifiers.Pattern, out pattern)? ((DockPattern)pattern).Current.DockPosition: DockPosition.None);
+				return (TryGetCurrentPattern (DockPatternIdentifiers.Pattern, out pattern)? ((DockPattern)pattern).Source.DockPosition: DockPosition.None);
 			else if (property == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty)
-				return (TryGetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern, out pattern)? ((ExpandCollapsePattern)pattern).Current.ExpandCollapseState: ExpandCollapseState.LeafNode);
+				return (TryGetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern, out pattern)? ((ExpandCollapsePattern)pattern).Source.ExpandCollapseState: ExpandCollapseState.LeafNode);
 			else if (property == GridItemPatternIdentifiers.ColumnProperty)
-				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Current.Column: 0);
+				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Source.Column: 0);
 			else if (property == GridItemPatternIdentifiers.ColumnSpanProperty)
-				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Current.ColumnSpan: 1);
+				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Source.ColumnSpan: 1);
 			else if (property == GridItemPatternIdentifiers.ContainingGridProperty)
-				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? (object)((GridItemPattern)pattern).Current.ContainingGrid: (object)null);
+				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElement (((GridItemPattern)pattern).Source.ContainingGrid): null);
 			else if (property == GridItemPatternIdentifiers.RowProperty)
-				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Current.Row: 0);
+				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Source.Row: 0);
 			else if (property == GridItemPatternIdentifiers.RowSpanProperty)
-				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Current.RowSpan: 1);
+				return (TryGetCurrentPattern (GridItemPatternIdentifiers.Pattern, out pattern)? ((GridItemPattern)pattern).Source.RowSpan: 1);
 			else if (property == GridPatternIdentifiers.ColumnCountProperty)
-				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Current.ColumnCount: 0);
+				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.ColumnCount: 0);
 			else if (property == GridPatternIdentifiers.RowCountProperty)
-				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Current.RowCount: 0);
+				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.RowCount: 0);
 			else if (property == MultipleViewPatternIdentifiers.CurrentViewProperty)
-				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Current.CurrentView: 0);
+				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Source.CurrentView: 0);
 			else if (property == MultipleViewPatternIdentifiers.SupportedViewsProperty)
-				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Current.GetSupportedViews (): new int [0]);
+				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Source.GetSupportedViews (): new int [0]);
 			else if (property == RangeValuePatternIdentifiers.IsReadOnlyProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.IsReadOnly: true);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.IsReadOnly: true);
 			else if (property == RangeValuePatternIdentifiers.LargeChangeProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.LargeChange: 0);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.LargeChange: 0);
 			else if (property == RangeValuePatternIdentifiers.MaximumProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.Maximum: 0);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.Maximum: 0);
 			else if (property == RangeValuePatternIdentifiers.MinimumProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.Minimum: 0);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.Minimum: 0);
 			else if (property == RangeValuePatternIdentifiers.SmallChangeProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.SmallChange: 0);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.SmallChange: 0);
 			else if (property == RangeValuePatternIdentifiers.ValueProperty)
-				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Current.Value: 0);
+				return (TryGetCurrentPattern (RangeValuePatternIdentifiers.Pattern, out pattern)? ((RangeValuePattern)pattern).Source.Value: 0);
 			else if (property == ScrollPatternIdentifiers.HorizontallyScrollableProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.HorizontallyScrollable: false);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.HorizontallyScrollable: false);
 			else if (property == ScrollPatternIdentifiers.HorizontalScrollPercentProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.HorizontalScrollPercent: 0);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.HorizontalScrollPercent: 0);
 			else if (property == ScrollPatternIdentifiers.HorizontalViewSizeProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.HorizontalViewSize: 100);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.HorizontalViewSize: 100);
 			else if (property == ScrollPatternIdentifiers.VerticallyScrollableProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.VerticallyScrollable: false);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.VerticallyScrollable: false);
 			else if (property == ScrollPatternIdentifiers.VerticalScrollPercentProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.VerticalScrollPercent: 0);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.VerticalScrollPercent: 0);
 			else if (property == ScrollPatternIdentifiers.VerticalViewSizeProperty)
-				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Current.VerticalViewSize: 100);
+				return (TryGetCurrentPattern (ScrollPatternIdentifiers.Pattern, out pattern)? ((ScrollPattern)pattern).Source.VerticalViewSize: 100);
 			else if (property == SelectionItemPatternIdentifiers.IsSelectedProperty)
-				return (TryGetCurrentPattern (SelectionItemPatternIdentifiers.Pattern, out pattern)? ((SelectionItemPattern)pattern).Current.IsSelected: false);
+				return (TryGetCurrentPattern (SelectionItemPatternIdentifiers.Pattern, out pattern)? ((SelectionItemPattern)pattern).Source.IsSelected: false);
 			else if (property == SelectionItemPatternIdentifiers.SelectionContainerProperty)
-				return (TryGetCurrentPattern (SelectionItemPatternIdentifiers.Pattern, out pattern)? (object)((SelectionItemPattern)pattern).Current.SelectionContainer: (object)null);
+				return (TryGetCurrentPattern (SelectionItemPatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElement (((SelectionItemPattern)pattern).Source.SelectionContainer): null);
 			else if (property == SelectionPatternIdentifiers.CanSelectMultipleProperty)
-				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? ((SelectionPattern)pattern).Current.CanSelectMultiple: false);
+				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? ((SelectionPattern)pattern).Source.CanSelectMultiple: false);
 			else if (property == SelectionPatternIdentifiers.IsSelectionRequiredProperty)
-				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? ((SelectionPattern)pattern).Current.IsSelectionRequired: false);
+				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? ((SelectionPattern)pattern).Source.IsSelectionRequired: false);
 			else if (property == SelectionPatternIdentifiers.SelectionProperty)
-				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? ((SelectionPattern)pattern).Current.GetSelection (): new AutomationElement [0]);
+				return (TryGetCurrentPattern (SelectionPatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElements (((SelectionPattern)pattern).Source.GetSelection ()): new AutomationElement [0]);
 			else if (property == TableItemPatternIdentifiers.ColumnHeaderItemsProperty)
-				return (TryGetCurrentPattern (TableItemPatternIdentifiers.Pattern, out pattern)? ((TableItemPattern)pattern).Current.GetColumnHeaderItems (): new AutomationElement [0]);
+				return (TryGetCurrentPattern (TableItemPatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElements (((TableItemPattern)pattern).Source.GetColumnHeaderItems ()): new AutomationElement [0]);
 			else if (property == TableItemPatternIdentifiers.RowHeaderItemsProperty)
-				return (TryGetCurrentPattern (TableItemPatternIdentifiers.Pattern, out pattern)? ((TableItemPattern)pattern).Current.GetRowHeaderItems (): new AutomationElement [0]);
+				return (TryGetCurrentPattern (TableItemPatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElements (((TableItemPattern)pattern).Source.GetRowHeaderItems ()): new AutomationElement [0]);
 			else if (property == TablePatternIdentifiers.ColumnHeadersProperty)
-				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? ((TablePattern)pattern).Current.GetColumnHeaders (): new AutomationElement [0]);
+				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElements (((TablePattern)pattern).Source.GetColumnHeaders ()): new AutomationElement [0]);
 			else if (property == TablePatternIdentifiers.RowHeadersProperty)
-				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? ((TablePattern)pattern).Current.GetRowHeaders (): new AutomationElement [0]);
+				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? SourceManager.GetOrCreateAutomationElements (((TablePattern)pattern).Source.GetRowHeaders ()): new AutomationElement [0]);
 			else if (property == TablePatternIdentifiers.RowOrColumnMajorProperty)
-				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? ((TablePattern)pattern).Current.RowOrColumnMajor: RowOrColumnMajor.Indeterminate);
+				return (TryGetCurrentPattern (TablePatternIdentifiers.Pattern, out pattern)? ((TablePattern)pattern).Source.RowOrColumnMajor: RowOrColumnMajor.Indeterminate);
 			else if (property == TogglePatternIdentifiers.ToggleStateProperty)
-				return (TryGetCurrentPattern (TogglePatternIdentifiers.Pattern, out pattern)? ((TogglePattern)pattern).Current.ToggleState: ToggleState.Indeterminate);
+				return (TryGetCurrentPattern (TogglePatternIdentifiers.Pattern, out pattern)? ((TogglePattern)pattern).Source.ToggleState: ToggleState.Indeterminate);
 			else if (property == TransformPatternIdentifiers.CanMoveProperty)
-				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? (bool)((TransformPattern)pattern).Current.CanMove: false);
+				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? (bool)((TransformPattern)pattern).Source.CanMove: false);
 			else if (property == TransformPatternIdentifiers.CanResizeProperty)
-				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? ((TransformPattern)pattern).Current.CanResize: false);
+				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? ((TransformPattern)pattern).Source.CanResize: false);
 			else if (property == TransformPatternIdentifiers.CanRotateProperty)
-				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? (object)((TransformPattern)pattern).Current.CanRotate: (object)null);
+				return (TryGetCurrentPattern (TransformPatternIdentifiers.Pattern, out pattern)? ((TransformPattern)pattern).Source.CanRotate: false);
 			else if (property == ValuePatternIdentifiers.IsReadOnlyProperty)
-				return (TryGetCurrentPattern (ValuePatternIdentifiers.Pattern, out pattern)? ((ValuePattern)pattern).Current.IsReadOnly: true);
+				return (TryGetCurrentPattern (ValuePatternIdentifiers.Pattern, out pattern)? ((ValuePattern)pattern).Source.IsReadOnly: true);
 			else if (property == ValuePatternIdentifiers.ValueProperty)
-				return (TryGetCurrentPattern (ValuePatternIdentifiers.Pattern, out pattern)? ((ValuePattern)pattern).Current.Value: String.Empty);
+				return (TryGetCurrentPattern (ValuePatternIdentifiers.Pattern, out pattern)? ((ValuePattern)pattern).Source.Value: String.Empty);
 			else if (property == WindowPatternIdentifiers.CanMaximizeProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? (bool)((WindowPattern)pattern).Current.CanMaximize: false);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? (bool)((WindowPattern)pattern).Source.CanMaximize: false);
 			else if (property == WindowPatternIdentifiers.CanMinimizeProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? (bool)((WindowPattern)pattern).Current.CanMinimize: false);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? (bool)((WindowPattern)pattern).Source.CanMinimize: false);
 			else if (property == WindowPatternIdentifiers.IsModalProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Current.IsModal: false);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Source.IsModal: false);
 			else if (property == WindowPatternIdentifiers.IsTopmostProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Current.IsTopmost: false);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Source.IsTopmost: false);
 			else if (property == WindowPatternIdentifiers.WindowInteractionStateProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Current.WindowInteractionState: WindowInteractionState.Running);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Source.WindowInteractionState: WindowInteractionState.Running);
 			else if (property == WindowPatternIdentifiers.WindowVisualStateProperty)
-				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Current.WindowVisualState: WindowVisualState.Normal);
+				return (TryGetCurrentPattern (WindowPatternIdentifiers.Pattern, out pattern)? ((WindowPattern)pattern).Source.WindowVisualState: WindowVisualState.Normal);
 			Log.Debug ("GetCurrentPropertyValue not implemented for: " + property.ProgrammaticName);
 			return NotSupported;
 		}
@@ -443,7 +434,46 @@ namespace System.Windows.Automation
 
 		public AutomationElement GetUpdatedCache (CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+
+			var updated = SourceManager.GetOrCreateAutomationElement (sourceElement);
+			if (request == CacheRequest.DefaultRequest)
+				return updated;
+
+			if (request.TreeFilter.AppliesTo (updated) &&
+			    (request.TreeScope & TreeScope.Element) == TreeScope.Element) {
+				foreach (var property in request.CachedProperties) {
+					updated.propertyCache [property.Id ] =
+						new CachedValue (updated.GetCurrentPropertyValue (property),
+						                 updated.sourceElement.SupportsProperty (property));
+				}
+				updated.mode = request.AutomationElementMode;
+				updated.CacheRequest = request.Clone ();
+			}
+
+			if ((request.TreeScope & TreeScope.Children) == TreeScope.Children ||
+			    (request.TreeScope & TreeScope.Descendants) == TreeScope.Descendants) {
+				// Modify scope to make sure children include
+				// themselves, and only include their own
+				// children if specified by original scope
+				var childRequest = request.Clone ();
+				childRequest.TreeScope |= TreeScope.Element;
+				if ((request.TreeScope & TreeScope.Descendants) != TreeScope.Descendants)
+					childRequest.TreeScope ^= TreeScope.Children;
+
+				updated.cachedChildren = new List<AutomationElement> ();
+				var child = TreeWalker.RawViewWalker.GetFirstChild (updated, childRequest);
+				while (child != null) {
+					if (childRequest.TreeFilter.AppliesTo (child)) {
+						child.cachedParent = updated;
+						updated.cachedChildren.Add (child);
+					}
+					child = TreeWalker.RawViewWalker.GetNextSibling (child, childRequest);
+				}
+			}
+
+			return updated;
 		}
 
 		public void SetFocus ()
@@ -454,9 +484,13 @@ namespace System.Windows.Automation
 		public bool TryGetCachedPattern (AutomationPattern pattern,
 		                                 out Object patternObject)
 		{
-			// TODO: Implement
-			patternObject = null;
-			return false;
+			try {
+				patternObject = GetCachedPattern (pattern);
+				return true;
+			} catch (Exception) {
+				patternObject = null;
+				return false;
+			}
 		}
 
 		public bool TryGetClickablePoint (out Point pt)
@@ -518,21 +552,85 @@ namespace System.Windows.Automation
 		}
 #endregion
 
+#region Internal Methods
+		internal object GetPropertyValue (AutomationProperty property,
+		                                  bool cached)
+		{
+			if (cached)
+				return GetCachedPropertyValue (property);
+			else
+				return GetCurrentPropertyValue (property);
+		}
+#endregion
+
 #region Private Methods
+		private Object GetPattern (AutomationPattern pattern, bool cached)
+		{
+			if (pattern == null)
+				throw new ArgumentNullException ("pattern");
+			if (cached && !CacheRequest.CachedPatterns.Contains (pattern))
+				throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+			object source = sourceElement.GetCurrentPattern (pattern);
+			if (source == null)
+				throw new InvalidOperationException ("Cannot request an unsupported pattern");
+
+			if (pattern == DockPatternIdentifiers.Pattern)
+				return new DockPattern ((IDockProvider) source, this, cached);
+			else if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
+				return new ExpandCollapsePattern ((IExpandCollapseProvider) source, this, cached);
+			else if (pattern == GridItemPatternIdentifiers.Pattern)
+				return new GridItemPattern ((IGridItemPattern) source, this, cached);
+			else if (pattern == GridPatternIdentifiers.Pattern)
+				return new GridPattern ((IGridPattern) source, this, cached);
+			else if (pattern == InvokePatternIdentifiers.Pattern)
+				return new InvokePattern ((IInvokePattern) source);
+			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
+				return new MultipleViewPattern ((IMultipleViewPattern) source, this, cached);
+			else if (pattern == RangeValuePatternIdentifiers.Pattern)
+				return new RangeValuePattern ((IRangeValuePattern) source, this, cached);
+			else if (pattern == ScrollItemPatternIdentifiers.Pattern)
+				return new ScrollItemPattern ((IScrollItemProvider) source);
+			else if (pattern == ScrollPatternIdentifiers.Pattern)
+				return new ScrollPattern ((IScrollPattern) source, this, cached);
+			else if (pattern == SelectionItemPatternIdentifiers.Pattern)
+				return new SelectionItemPattern ((ISelectionItemPattern) source, this, cached);
+			else if (pattern == SelectionPatternIdentifiers.Pattern)
+				return new SelectionPattern ((ISelectionPattern) source, this, cached);
+			else if (pattern == TableItemPatternIdentifiers.Pattern)
+				return new TableItemPattern ((ITableItemPattern) source, this, cached);
+			else if (pattern == TablePatternIdentifiers.Pattern)
+				return new TablePattern ((ITablePattern) source, this, cached);
+			else if (pattern == TextPatternIdentifiers.Pattern)
+				return new TextPattern ((ITextPattern) source);
+			else if (pattern == TogglePatternIdentifiers.Pattern)
+				return new TogglePattern ((IToggleProvider) source, this, cached);
+			else if (pattern == TransformPatternIdentifiers.Pattern)
+				return new TransformPattern ((ITransformPattern) source, this, cached);
+			else if (pattern == ValuePatternIdentifiers.Pattern)
+				return new ValuePattern ((IValuePattern) source, this, cached);
+			else if (pattern == WindowPatternIdentifiers.Pattern)
+				return new WindowPattern ((IWindowPattern) source, this, cached);
+			else
+				throw new ArgumentException ();
+		}
+
 		private List<AutomationElement> Find (TreeScope scope, Condition condition, bool findFirst)
 		{
 			// Parent and Ancestors scopes are not supported on
 			// Windows (this is specified in MSDN, too).
 			if ((scope & TreeScope.Parent) == TreeScope.Parent ||
 			    (scope & TreeScope.Ancestors) == TreeScope.Ancestors)
-				throw new ArgumentException ();
+				throw new ArgumentException ("scope");
 
 			List<AutomationElement> found = new List<AutomationElement> ();
 
 			if ((!findFirst || found.Count == 0) &&
 			    (scope & TreeScope.Element) == TreeScope.Element &&
-			    condition.AppliesTo (this))
-				found.Add (this);
+			    condition.AppliesTo (this) &&
+			    (CacheRequest.Current == CacheRequest.DefaultRequest || CacheRequest.Current.TreeFilter.AppliesTo (this))) {
+				// TODO: Need to check request's TreeScope, too?
+				found.Add (GetUpdatedCache (CacheRequest.Current));
+			}
 
 			if ((!findFirst || found.Count == 0) &&
 			    ((scope & TreeScope.Children) == TreeScope.Children ||
@@ -564,6 +662,19 @@ namespace System.Windows.Automation
 //			}
 //			return output + "}";
 //		}
+
+		class CachedValue
+		{
+			public bool IsSupported { get; private set; }
+
+			public Object Value { get; private set; }
+
+			public CachedValue (object val, bool isSupported)
+			{
+				Value = val;
+				IsSupported = isSupported;
+			}
+		}
 #endregion
 
 #region Public Static ReadOnly Fields

@@ -32,43 +32,61 @@ namespace System.Windows.Automation
 	{
 		public struct GridPatternInformation
 		{
-			internal GridPatternInformation (GridProperties properties)
-			{
-				RowCount = properties.RowCount;
-				ColumnCount = properties.ColumnCount;
-			}
+			private bool cache;
+			private GridPattern pattern;
 
+			internal GridPatternInformation (GridPattern pattern, bool cache)
+			{
+				this.pattern = pattern;
+				this.cache = cache;
+			}
 			public int RowCount {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (RowCountProperty, cache); }
 			}
 
 			public int ColumnCount {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnCountProperty, cache); }
 			}
 		}
 
-		private IGridPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private GridPatternInformation currentInfo;
+		private GridPatternInformation cachedInfo;
 
-		internal GridPattern (IGridPattern source)
+		internal GridPattern ()
 		{
-			this.source = source;
 		}
+
+		internal GridPattern (IGridPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new GridPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new GridPatternInformation (this, true);
+		}
+
+		internal IGridPattern Source { get; private set; }
 
 		public GridPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public GridPatternInformation Current {
 			get {
-				return new GridPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public AutomationElement GetItem (int row, int column)
 		{
-			return SourceManager.GetOrCreateAutomationElement (source.GetItem (row, column));
+			return SourceManager.GetOrCreateAutomationElement (Source.GetItem (row, column));
 		}
 
 		public static readonly AutomationPattern Pattern =

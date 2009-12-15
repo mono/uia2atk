@@ -1,3 +1,15 @@
+2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* GridSource.cs:
+	* TableSource.cs:
+	* ValueSource.cs:
+	* GridItemSource.cs:
+	* SelectionSource.cs:
+	* TableItemSource.cs:
+	* RangeValueSource.cs:
+	* SelectionItemSource.cs:
+	* SelectionEventHandler.cs: Update for latest interfaces changes.
+
 2009-12-03  Mario Carrion  <mcarrion@novell.com>
 
 	* AutomationSource.cs: Converting IElement -> AutomationElement.

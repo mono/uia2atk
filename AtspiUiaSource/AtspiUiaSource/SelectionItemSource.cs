@@ -72,15 +72,6 @@ namespace AtspiUiaSource
 			Selection.DeselectChild (accessible.IndexInParent);
 		}
 
-		public SelectionItemProperties Properties {
-			get {
-				SelectionItemProperties p = new SelectionItemProperties ();
-					p.IsSelected = IsSelected;
-				p.SelectionContainer = SelectionContainer;
-				return p;
-			}
-		}
-
 		private Selection Selection {
 			get {
 				Selection val = (accessible.Parent != null

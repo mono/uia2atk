@@ -33,71 +33,61 @@ namespace System.Windows.Automation
 	{
 		public struct SelectionPatternInformation
 		{
-			private bool cached;
-			private ISelectionPattern source;
-			private bool canSelectMultiple;
-			private bool isSelectionRequired;
-			private AutomationElement [] selection;
+			private bool cache;
+			private SelectionPattern pattern;
 
-			internal SelectionPatternInformation (SelectionProperties properties)
+			internal SelectionPatternInformation (SelectionPattern pattern, bool cache)
 			{
-				cached = true;
-				canSelectMultiple = properties.CanSelectMultiple;
-				isSelectionRequired = properties.IsSelectionRequired;
-				selection = SourceManager.GetOrCreateAutomationElements (properties.Selection);
-				source = null;
-			}
-
-			internal SelectionPatternInformation (ISelectionPattern source)
-			{
-				this.cached = false;
-				this.source = source;
-				// Below fields are unused for Current
-				canSelectMultiple = false;
-				isSelectionRequired = false;
-				selection = null;
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public bool CanSelectMultiple {
-				get {
-					return (cached ?
-						canSelectMultiple :
-						source.CanSelectMultiple);
-				}
+				get { return (bool) pattern.element.GetPropertyValue (CanSelectMultipleProperty, cache); }
 			}
 
 			public bool IsSelectionRequired {
-				get {
-					return (cached ?
-						isSelectionRequired :
-						source.IsSelectionRequired);
-				}
+				get { return (bool) pattern.element.GetPropertyValue (IsSelectionRequiredProperty, cache); }
 			}
 
 			public AutomationElement [] GetSelection ()
 			{
-				return (cached ?
-					selection :
-					SourceManager.GetOrCreateAutomationElements (source.Selection));
+				return (AutomationElement []) pattern.element.GetPropertyValue (SelectionProperty, cache);
 			}
 		}
 
-		private ISelectionPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private SelectionPatternInformation currentInfo;
+		private SelectionPatternInformation cachedInfo;
 
-		internal SelectionPattern (ISelectionPattern source)
+		internal SelectionPattern ()
 		{
-			this.source = source;
 		}
+
+		internal SelectionPattern (ISelectionPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new SelectionPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new SelectionPatternInformation (this, true);
+		}
+
+		internal ISelectionPattern Source { get; private set; }
 
 		public SelectionPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public SelectionPatternInformation Current {
 			get {
-				return new SelectionPatternInformation (source);
+				return currentInfo;
 			}
 		}
 

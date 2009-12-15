@@ -60,28 +60,5 @@ namespace AtspiUiaSource
 			elements [0] = Element.GetElement (header);
 			return elements;
 		}
-
-		public new TableItemProperties Properties {
-			get {
-				TableItemProperties p = new TableItemProperties ();
-				int row, col, rowExtents, colExtents;
-				bool isSelected;
-				if (table.GetRowColumnExtentsAtIndex (accessible.IndexInParent, out row, out col, out rowExtents, out colExtents, out isSelected)) {
-					p.Row = row;
-					p.Column = col;
-					p.RowSpan = rowExtents > 0? rowExtents : 1;
-					p.ColumnSpan = colExtents > 0? colExtents : 1;
-				} else {
-					p.Row = Row;
-					p.Column = Column;
-					p.RowSpan = RowSpan;
-					p.ColumnSpan = ColumnSpan;
-				}
-				p.ContainingGrid = ContainingGrid;
-				p.RowHeaderItems = GetRowHeaderItems ();
-				p.ColumnHeaderItems = GetColumnHeaderItems ();
-				return p;
-			}
-		}
 	}
 }

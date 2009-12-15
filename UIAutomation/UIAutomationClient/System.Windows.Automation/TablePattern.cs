@@ -33,57 +33,71 @@ namespace System.Windows.Automation
 	{
 		public struct TablePatternInformation
 		{
-			private AutomationElement [] rowHeaders;
-			private AutomationElement [] columnHeaders;
+			private bool cache;
+			private TablePattern pattern;
 
-			internal TablePatternInformation (TableProperties properties)
+			internal TablePatternInformation (TablePattern pattern, bool cache)
 			{
-				RowCount = properties.RowCount;
-				ColumnCount = properties.ColumnCount;
-				RowOrColumnMajor = properties.RowOrColumnMajor;
-				rowHeaders = SourceManager.GetOrCreateAutomationElements (properties.RowHeaders);
-				columnHeaders = SourceManager.GetOrCreateAutomationElements (properties.ColumnHeaders);
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public int RowCount {
-				get; private set;
-				}
+				get { return (int) pattern.element.GetPropertyValue (RowCountProperty, cache); }
+			}
 
 			public int ColumnCount {
-				get; private set;
+				get { return (int) pattern.element.GetPropertyValue (ColumnCountProperty, cache); }
 			}
 
 			public RowOrColumnMajor RowOrColumnMajor {
-				get; private set;
+				get { return (RowOrColumnMajor) pattern.element.GetPropertyValue (RowOrColumnMajorProperty, cache); }
 			}
 
 			public AutomationElement [] GetRowHeaders ()
 			{
-				return rowHeaders;
+				return (AutomationElement []) pattern.element.GetPropertyValue (RowHeadersProperty, cache);
 			}
 
 			public AutomationElement [] GetColumnHeaders ()
 			{
-				return columnHeaders;
+				return (AutomationElement []) pattern.element.GetPropertyValue (ColumnHeadersProperty, cache);
 			}
 		}
 
-		private ITablePattern source;
+		private AutomationElement element;
+		private bool cached;
+		private TablePatternInformation currentInfo;
+		private TablePatternInformation cachedInfo;
 
-		internal TablePattern (ITablePattern source) : base (source)
+		internal TablePattern ()
 		{
-			this.source = source;
 		}
+
+		internal TablePattern (ITablePattern source, AutomationElement element, bool cached) :
+			base (source, element, cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new TablePatternInformation (this, false);
+			if (cached)
+				cachedInfo = new TablePatternInformation (this, true);
+		}
+
+		internal new ITablePattern Source { get; private set; }
 
 		public new TablePatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public new TablePatternInformation Current {
 			get {
-				return new TablePatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 

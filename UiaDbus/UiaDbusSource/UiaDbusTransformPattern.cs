@@ -70,16 +70,30 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
-		public TransformProperties Properties {
+		public bool CanMove {
 			get {
-
 				try {
-					TransformProperties properties = new TransformProperties () {
-						CanMove = pattern.CanMove,
-						CanResize = pattern.CanResize,
-						CanRotate = pattern.CanRotate
-					};
-					return properties;
+					return pattern.CanMove;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool CanResize {
+			get {
+				try {
+					return pattern.CanResize;
+				} catch (Exception ex) {
+					throw DbusExceptionTranslator.Translate (ex);
+				}
+			}
+		}
+
+		public bool CanRotate {
+			get {
+				try {
+					return pattern.CanRotate;
 				} catch (Exception ex) {
 					throw DbusExceptionTranslator.Translate (ex);
 				}

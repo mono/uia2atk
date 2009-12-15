@@ -75,6 +75,7 @@ FILES =  \
 	AutomationEventTest.cs \
 	AutomationTest.cs \
 	BaseTest.cs \
+	CacheRequestTest.cs \
 	ConditionTest.cs \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \

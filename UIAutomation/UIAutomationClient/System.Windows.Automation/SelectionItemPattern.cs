@@ -33,53 +33,72 @@ namespace System.Windows.Automation
 	{
 		public struct SelectionItemPatternInformation
 		{
-			internal SelectionItemPatternInformation (SelectionItemProperties properties)
+			private bool cache;
+			private SelectionItemPattern pattern;
+
+			internal SelectionItemPatternInformation (SelectionItemPattern pattern, bool cache)
 			{
-				IsSelected = properties.IsSelected;
-				SelectionContainer = SourceManager.GetOrCreateAutomationElement (properties.SelectionContainer);
+				this.pattern = pattern;
+				this.cache = cache;
 			}
 
 			public bool IsSelected {
-				get; private set;
+				get { return (bool) pattern.element.GetPropertyValue (IsSelectedProperty, cache); }
 			}
 
 			public AutomationElement SelectionContainer {
-				get; private set;
+				get { return (AutomationElement) pattern.element.GetPropertyValue (SelectionContainerProperty, cache); }
 			}
 		}
 
-		internal ISelectionItemPattern source;
+		private AutomationElement element;
+		private bool cached;
+		private SelectionItemPatternInformation currentInfo;
+		private SelectionItemPatternInformation cachedInfo;
 
-		internal SelectionItemPattern (ISelectionItemPattern source)
+		internal SelectionItemPattern ()
 		{
-			this.source = source;
 		}
+
+		internal SelectionItemPattern (ISelectionItemPattern source, AutomationElement element, bool cached)
+		{
+			this.element = element;
+			this.cached = cached;
+			this.Source = source;
+			currentInfo = new SelectionItemPatternInformation (this, false);
+			if (cached)
+				cachedInfo = new SelectionItemPatternInformation (this, true);
+		}
+
+		internal ISelectionItemPattern Source { get; private set; }
 
 		public SelectionItemPatternInformation Cached {
 			get {
-				throw new NotImplementedException ();
+				if (!cached)
+					throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
+				return cachedInfo;
 			}
 		}
 
 		public SelectionItemPatternInformation Current {
 			get {
-				return new SelectionItemPatternInformation (source.Properties);
+				return currentInfo;
 			}
 		}
 
 		public void Select ()
 		{
-			source.Select ();
+			Source.Select ();
 		}
 
 		public void AddToSelection ()
 		{
-			source.AddToSelection ();
+			Source.AddToSelection ();
 		}
 
 		public void RemoveFromSelection ()
 		{
-			source.RemoveFromSelection ();
+			Source.RemoveFromSelection ();
 		}
 
 		public static readonly AutomationPattern Pattern =

@@ -31,13 +31,7 @@ namespace Mono.UIAutomation.Source
 	public interface IGridPattern
 	{
 		IElement GetItem (int row, int column);
-
-		GridProperties Properties { get; }
-	}
-
-	public struct GridProperties
-	{
-		public int RowCount;
-		public int ColumnCount;
+		int RowCount { get; }
+		int ColumnCount { get; }
 	}
 }

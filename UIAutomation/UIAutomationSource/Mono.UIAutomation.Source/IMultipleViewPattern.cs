@@ -30,15 +30,9 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IMultipleViewPattern
 	{
-		MultipleViewProperties Properties { get; }
-
 		string GetViewName (int viewId);
 		void SetCurrentView (int viewId);
-	}
-
-	public struct MultipleViewProperties
-	{
-		public int CurrentView;
-		public int [] SupportedViews;
+		int CurrentView { get; }
+		int [] GetSupportedViews ();
 	}
 }

@@ -38,8 +38,6 @@ namespace System.Windows.Automation
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		private const string UiaDbusSourceAssembly =
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		private static Dictionary<IElement, AutomationElement> elementMapping =
-			new Dictionary<IElement, AutomationElement> ();
 		private static List<IAutomationSource> sources = null;
 
 		internal static IList<IAutomationSource> GetAutomationSources ()
@@ -66,17 +64,15 @@ namespace System.Windows.Automation
 			return sources;
 		}
 
+		// TODO: Rename to GetAutomationElement
 		internal static AutomationElement GetOrCreateAutomationElement (IElement sourceElement)
 		{
 			if (sourceElement == null)
 				return null;
-			AutomationElement element;
-			if (elementMapping.TryGetValue (sourceElement, out element))
-				return element;
-			element = new AutomationElement (sourceElement);
-			return element;
+			return new AutomationElement (sourceElement);
 		}
 
+		// TODO: Rename to GetAutomationElements
 		internal static AutomationElement [] GetOrCreateAutomationElements (IElement [] sourceElements)
 		{
 			AutomationElement [] ret = new AutomationElement [sourceElements.Length];

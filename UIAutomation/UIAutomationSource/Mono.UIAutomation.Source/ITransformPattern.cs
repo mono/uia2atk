@@ -30,19 +30,16 @@ namespace Mono.UIAutomation.Source
 {
 	public interface ITransformPattern
 	{
-		TransformProperties Properties { get; }
-
 		void Move (double x, double y);
 
 		void Resize (double width, double height);
 
 		void Rotate (double degrees);
-	}
 
-	public struct TransformProperties
-	{
-		public bool CanMove;
-		public bool CanResize;
-		public bool CanRotate;
+		bool CanMove { get; }
+
+		bool CanResize { get; }
+
+		bool CanRotate { get; }
 	}
 }

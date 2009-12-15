@@ -186,6 +186,7 @@
 /UIAutomation/missing
 /UIAutomation/autom4te.cache
 /UIAutomation/*.userprefs
+/UIAutomation/mono-uia-*.tar.gz
 
 # /UIAutomation/UIAutomationBridge/
 /UIAutomation/UIAutomationBridge/Makefile
@@ -464,6 +465,7 @@
 /UiaDbus/depcomp
 /UiaDbus/libtool
 /UiaDbus/ltmain.sh
+/UiaDbus/uiadbus-*.tar.gz
 
 # /UiaDbus/data/
 /UiaDbus/data/Makefile

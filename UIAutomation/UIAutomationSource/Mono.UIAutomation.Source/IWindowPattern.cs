@@ -31,22 +31,22 @@ namespace Mono.UIAutomation.Source
 {
 	public interface IWindowPattern
 	{
-		WindowProperties Properties { get; }
-
 		void Close ();
 
 		void SetWindowVisualState (WindowVisualState state);
 
 		bool WaitForInputIdle (int milliseconds);
-	}
 
-	public struct WindowProperties
-	{
-		public WindowInteractionState WindowInteractionState;
-		public bool IsModal;
-		public bool IsTopmost;
-		public bool CanMaximize;
-		public bool CanMinimize;
-		public WindowVisualState WindowVisualState;
+		bool IsModal { get; }
+
+		bool IsTopmost { get; }
+
+		bool CanMaximize { get; }
+
+		bool CanMinimize { get; }
+
+		WindowInteractionState WindowInteractionState { get; }
+
+		WindowVisualState WindowVisualState { get; }
 	}
 }

@@ -122,32 +122,62 @@ namespace System.Windows.Automation
 
 		public AutomationElement GetParent (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = GetParent (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 
 		public AutomationElement GetFirstChild (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = GetFirstChild (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 
 		public AutomationElement GetLastChild (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = GetLastChild (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 
 		public AutomationElement GetNextSibling (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = GetNextSibling (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 
 		public AutomationElement GetPreviousSibling (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = GetPreviousSibling (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 
 		public AutomationElement Normalize (AutomationElement element, CacheRequest request)
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				throw new ArgumentNullException ("request");
+			var result = Normalize (element);
+			if (result != null)
+				return result.GetUpdatedCache (request);
+			return result;
 		}
 		#endregion
 

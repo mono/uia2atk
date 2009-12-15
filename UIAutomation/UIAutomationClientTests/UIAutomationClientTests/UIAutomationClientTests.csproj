@@ -58,6 +58,7 @@
     <Compile Include="AutomationElementTest.cs" />
     <Compile Include="AutomationEventTest.cs" />
     <Compile Include="BaseTest.cs" />
+    <Compile Include="CacheRequestTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutomationTest.cs" />
     <Compile Include="ConditionTest.cs" />
