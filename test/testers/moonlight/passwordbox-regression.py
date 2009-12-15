@@ -57,14 +57,14 @@ TYPE_PWD = '123type'
 pbFrame.pwdBox.enterText(ENTER_PWD)
 sleep(config.SHORT_DELAY)
 # Value pattern won't retain password value
-# BUG564346: doesn't catch password char
-#assertText(pbFrame.pwdBox, "********")
+# Text remains empty as bug564346 is won't fixed
+assertText(pbFrame.pwdBox, "")
 assertName(pbFrame.label2, 'Your password is: enter123')
 
 pbFrame.pwdBox.insertText(TYPE_PWD, 0)
 sleep(config.SHORT_DELAY)
-# BUG564346: doesn't catch password char
-#assertText(pbFrame.pwdBox, "*******")
+# Text remains empty as bug564346 is won't fixed
+assertText(pbFrame.pwdBox, "")
 assertName(pbFrame.label2, 'Your password is: 123type')
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
