@@ -1,47 +1,54 @@
 #
-# spec file for package at-spi2-atk
-#    
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
-# 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/ 
-# 
-# norootforbuild 
-# 
+# spec file for package at-spi2-atk (Version 0.1.3)
+#
+# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
 
 Name:           at-spi2-atk
-Version:        0.1.2
+Version:        0.1.3
 Release:        1
-Summary:        Assistive Technology Service Provider Interface - dbus
-License:        GPL v2.0 or later
+Summary:        Assistive Technology Service Provider Interface - GTK+ module
+License:        GPLv2+
 Group:          System/Libraries
-URL:            http://www.gnome.org/
+Url:            http://www.gnome.org/
 Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       at-spi2-core
-Requires:       atk
-Requires:	dbus-1
-Requires:	dbus-1-glib
+Source99:       %{name}-rpmlintrc
 BuildRequires:  atk-devel
-BuildRequires:  dbus-1-devel
 BuildRequires:  dbus-1-glib-devel
+BuildRequires:  fdupes
 BuildRequires:  gtk2-devel
-BuildRequires:	libxml2-devel
-#BuildRequires:  update-desktop-files
+BuildRequires:  libxml2-devel
+# The GTK+ module is useful only if the at-spi registry is running. But it's
+# not a strict runtime dependency.
+Recommends:     at-spi2-core
+# The library that was shipped with at-spi2-atk was removed.
+Obsoletes:      libcspi0 <= 0.1.1
+Obsoletes:      libcspi-devel <= 0.1.1
+# Old versions of at-spi 1.x provided the same files
+Conflicts:      at-spi < 1.29.3
+# We want to have this package installed if the user has gtk2 and the at-spi
+# stack already installed
+Supplements:    packageand(at-spi2-core:gtk2)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
-This library, based on ATK, is a general interface for applications to 
-make use of the accessibility toolkit.  This version is based on dbus.
+AT-SPI is a general interface for applications to make use of the
+accessibility toolkit. This version is based on dbus.
 
-#%package devel
-#Group:          Development/Libraries/GNOME
-#Summary:        Include Files and Libraries mandatory for Development
-#Requires:	%{name} = %{version} 
-#
-#%description devel
-#This package contains all necessary include files and libraries needed
-#to develop applications that require these.
+This package contains a GTK+ module for at-spi, based on ATK.
 
 %prep
 %setup -q
@@ -53,27 +60,13 @@ make use of the accessibility toolkit.  This version is based on dbus.
 %install
 %makeinstall
 find %{buildroot} -type f -name "*.la" -delete -print
-#%suse_update_desktop_file atk-bridge
 
 %clean
 rm -rf %{buildroot}
 
-
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING INSTALL README
-#%dir %{_datadir}/gnome
-#%dir %{_datadir}/gnome/autostart
-#%config %{_datadir}/gnome/autostart/atk-bridge.desktop
+%doc AUTHORS COPYING README
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
-
-#%files devel
-#%defattr(-,root,root)
-#%dir %{_includedir}/at-spi-1.0
-#%dir %{_includedir}/at-spi-1.0/libspi
-#%{_includedir}/at-spi-1.0/libspi/*
-#%{_libdir}/libcspi.so
-#%dir %{_includedir}/at-spi-1.0/libspi
-#%{_includedir}/at-spi-1.0/libspi/*
 
 %changelog
