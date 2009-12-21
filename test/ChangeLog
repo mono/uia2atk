@@ -1,3 +1,9 @@
+2009-12-21  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/local_run.py: Moved Test.makedirs to global and moved
+	Settings.set_log_path to Test.set_log_path. Fixed 'select component' bug,
+	test will be abort when componet is not found.
+
 2009-12-15  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/passwordbox-regression.py: add comments

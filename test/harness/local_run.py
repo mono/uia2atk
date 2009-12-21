@@ -39,6 +39,30 @@ def abort(status):
   ''' exit according to status '''
   sys.exit(status)
 
+def makedirs(name, mode=0777):
+  """
+  Super-mkdir; create a leaf directory and all intermediate ones.
+  Works like mkdir, except that any intermediate path segment (not
+  just the rightmost) will be created if it does not exist.  This is
+  recursive.  This is stolen from Python's os module, with short sleep
+  added after each individual mkdir to account for CIFS/NFS being slow
+  """
+  head, tail = os.path.split(name)
+  if not tail:
+      head, tail = os.path.split(head)
+  if head and tail and not os.path.exists(head):
+      try:
+          makedirs(head, mode)
+      except OSError, e:
+          # be happy if someone already created the path
+          if e.errno != errno.EEXIST:
+              raise
+      if tail == os.curdir:        # xxx/newdir/. exists if xxx/newdir exists
+          return
+  os.mkdir(name, mode)
+  # XXX: Waiting for CIFS, use a better method
+  time.sleep(5)
+
 class Settings(object):
 
   # static variable, set by ctor
@@ -67,15 +91,6 @@ class Settings(object):
   def __init__(self):
       self.argument_parser()
       self.set_uiaqa_home()
-      self.set_log_path()
-
-  def set_log_path(self):
-    if Settings.log_path is None:
-      Settings.log_path = "%s/logs/%s" % (Settings.uiaqa_home, Settings.component)
-    if not os.path.exists(Settings.log_path):
-      output("ERROR:  Log path '%s' does not exist." % Settings.log_path)
-      abort(1)
-    output("INFO:  Logging to:  %s" % Settings.log_path)
 
   def argument_parser(self):
     opts = []
@@ -154,7 +169,6 @@ class Settings(object):
 class Test(object):
 
   def __init__(self, component):
-
     # conditional import based on whether we want to run smoke tests or
     # regression tests
     global tests
@@ -164,13 +178,23 @@ class Test(object):
       import tests as tests
 
     self.component = str(Settings.component)
-    if Settings.component not in dir(tests):
-      help()
-      print '!!!!!!!!!!!!!!!!!'
+    # dynamically evaluate tests_list with component name
+    try:
+      self.tests = eval('tests.%s_tests_list' % self.component)
+    except AttributeError:
+      output("ERROR:  No component found!")
       abort(1)
 
-    # dynamically evaluate tests_list with component name
-    self.tests = eval('tests.%s_tests_list' % self.component)
+    self.set_log_path()
+
+  def set_log_path(self):
+    if Settings.log_path is None:
+      Settings.log_path = "%s/logs/%s" % (Settings.uiaqa_home, Settings.component)
+    if not os.path.exists(Settings.log_path):
+      makedirs(Settings.log_path)
+      output("ERROR:  Log path '%s' does not exist." % Settings.log_path)
+      abort(1)
+    output("INFO:  Logging to:  %s" % Settings.log_path)
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
@@ -479,7 +503,7 @@ class Test(object):
                 "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
 
     # os.makedirs() does not work here because cifs is slow
-    self.makedirs(self.log_dir)
+    makedirs(self.log_dir)
 
     # copy over the resource files
     # XXX: change the log files to reference the resources from 
@@ -531,30 +555,6 @@ class Test(object):
       output("WARNING:  The above processes will now be killed.")
     for pid in processes:
       self.kill_process(pid)
-
-  def makedirs(self, name, mode=0777):
-    """
-    Super-mkdir; create a leaf directory and all intermediate ones.
-    Works like mkdir, except that any intermediate path segment (not
-    just the rightmost) will be created if it does not exist.  This is
-    recursive.  This is stolen from Python's os module, with short sleep
-    added after each individual mkdir to account for CIFS/NFS being slow
-    """
-    head, tail = os.path.split(name)
-    if not tail:
-        head, tail = os.path.split(head)
-    if head and tail and not os.path.exists(head):
-        try:
-            self.makedirs(head, mode)
-        except OSError, e:
-            # be happy if someone already created the path
-            if e.errno != errno.EEXIST:
-                raise
-        if tail == os.curdir:        # xxx/newdir/. exists if xxx/newdir exists
-            return
-    os.mkdir(name, mode)
-    # XXX: Waiting for CIFS, use a better method
-    time.sleep(5)
 
 class InconceivableError(Exception): pass
 
