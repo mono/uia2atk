@@ -316,6 +316,8 @@ namespace Moonlight.AtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 
+			DynamicAdapterFactory.Instance.MarkExternalReference (states);
+
 			if (Peer == null)
 				return states;
 
@@ -393,7 +395,9 @@ namespace Moonlight.AtkBridge
 
 		protected override Atk.RelationSet OnRefRelationSet ()
 		{
-			return base.OnRefRelationSet ();
+			var relationSet = base.OnRefRelationSet ();
+			DynamicAdapterFactory.Instance.MarkExternalReference (relationSet);
+			return relationSet;
 		}
 
 		protected override Atk.Object OnGetParent ()

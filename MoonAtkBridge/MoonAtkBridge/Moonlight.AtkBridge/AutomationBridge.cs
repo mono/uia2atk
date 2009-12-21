@@ -73,6 +73,19 @@ namespace Moonlight.AtkBridge
 				= DynamicAdapterFactory.Instance.RootVisualAdapter;
 			return (root != null) ? root.Handle : IntPtr.Zero;
 		}
+
+		public void Shutdown ()
+		{
+			AutomationSingleton.Instance.AutomationPropertyChanged
+				-= new EventHandler<AutomationPropertyChangedEventArgs> (
+					OnAutomationPropertyChanged);
+
+			AutomationSingleton.Instance.AutomationEventRaised
+				-= new EventHandler<AutomationEventEventArgs> (
+					OnAutomationEventRaised);
+
+			DynamicAdapterFactory.Instance.UnloadAdapters ();
+		}
 #endregion
 
 #region Private Methods

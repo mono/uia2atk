@@ -1,3 +1,11 @@
+2009-12-21  Brad Taylor  <brad@getcoded.net>
+
+	* test_adapter.py: Replace LONG_DELAY with an actual number, as the
+	splash screen is up for a fixed number of seconds.
+
+	* moonlight/browser/__init__.py: Add more robust detection of segfaults
+	and hangs, and deal with them appropriately.
+
 2009-12-14  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:

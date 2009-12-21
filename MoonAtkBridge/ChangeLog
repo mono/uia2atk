@@ -1,3 +1,8 @@
+2009-12-21  Brad Taylor  <brad@getcoded.net>
+
+	* install.rdf.in: Bump max version number to allow us to work with Moon
+	trunk.
+
 2009-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am: Include new files in stage, add reference to

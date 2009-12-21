@@ -41,7 +41,7 @@ class Adapter(TestCase):
         cls.app = launchAddress(abspath('assets/RootbeerMaze/RootbeerMaze.html'))
 
         # Wait until the RootbeerMaze ad has gone away
-        sleep(config.LONG_DELAY);
+        sleep(35);
 
         cls.slAccessible = cls.app.slControl._accessible
         cls.easy_button = cls.app.slControl.findPushButton('Easy')

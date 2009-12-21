@@ -1,3 +1,20 @@
+2009-12-21  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: Mark OnRefStateSet and
+	OnRefRelationSet variables as external references so that we can
+	dispose them at shutdown time.
+
+	* Moonlight.AtkBridge/AutomationBridge.cs: Add a Shutdown method to be
+	called by Mono.A11yHelper (in Moonlight), and properly unload all
+	adapters and managed references to unmanaged objects.
+
+	* Moonlight.AtkBridge/RootVisualAdapter.cs: Mark parent as an external
+	reference we must manage.
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Add an UnloadAdapters
+	method which disposes our adapters ahead of the appdomain's forceful
+	unloading process.  Also dispose our marked references.
+
 2009-12-08  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge.PatternImplementors/RangeValue.cs: Check

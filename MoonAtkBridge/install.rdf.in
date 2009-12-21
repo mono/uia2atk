@@ -33,7 +33,7 @@
       <Description>
         <em:id>moonlight@novell.com</em:id>
         <em:minVersion>1.9</em:minVersion>
-        <em:maxVersion>2.0</em:maxVersion>
+        <em:maxVersion>3.0</em:maxVersion>
       </Description>
     </em:requires>
 

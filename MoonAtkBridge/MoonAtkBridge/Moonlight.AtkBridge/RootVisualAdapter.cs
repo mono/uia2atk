@@ -71,6 +71,8 @@ namespace Moonlight.AtkBridge
 			// Allow the web browser's plugin host to set our
 			// parent
 			this.parent = parent;
+
+			DynamicAdapterFactory.Instance.MarkExternalReference (this.parent);
 		}
 #endregion
 

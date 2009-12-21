@@ -43,8 +43,12 @@ namespace Moonlight.AtkBridge
 
 		public Adapter RootVisualAdapter {
 			get {
-				if (rootVisualAdapter == null)
-					rootVisualAdapter = new RootVisualAdapter (GetNewRootPeer (Application.Current));
+				if (rootVisualAdapter == null) {
+					rootVisualAdapter = new RootVisualAdapter (
+						GetNewRootPeer (Application.Current));
+					activeAdapters [rootVisualAdapter.Peer]
+						= rootVisualAdapter;
+				}
 
 				return rootVisualAdapter;
 			}
@@ -204,6 +208,52 @@ namespace Moonlight.AtkBridge
 		}
 #endregion
 
+#region Internal Methods
+		// NOTE: We _must_ keep a reference to all unmanaged wrapper
+		// objects (e.g.: anything inheriting from GLib.Object) so that
+		// we can dispose of the unmanaged reference during our
+		// Shutdown phase.  If we forget about them, they will be
+		// finalized during the app domain's shutdown sequence and then
+		// *queued* using a GLib.Timeout to be disposed in the main
+		// loop.  When the timeout is triggered, the
+		// PerformQueuedUnrefs method will most likely be called when
+		// corlib or other fundamental namespaces have been finalized,
+		// and this will trigger a segfault.
+		internal void MarkExternalReference (IDisposable o)
+		{
+			externalReferences.Add (new WeakReference (o, false));
+		}
+
+		internal void UnloadAdapters ()
+		{
+			// TODO: Should we send events to at-spi about these
+			// adapters going away?  Fix this in #549195
+			patternImplementors.Clear ();
+			explicitImplementors.Clear ();
+			adapterTypes.Clear ();
+
+			// NOTE: rootVisualAdapter is included in the
+			// activeAdapters dictionary.
+			foreach (Adapter a in activeAdapters.Values)
+				a.Dispose ();
+
+			rootVisualAdapter = null;
+			activeAdapters.Clear ();
+
+			// Dispose of all of our external references now so
+			// they aren't queued to be unreffed later.
+			foreach (WeakReference r in externalReferences) {
+				if (r.IsAlive) {
+					IDisposable target = r.Target as IDisposable;
+					if (target != null)
+						target.Dispose ();
+				}
+			}
+
+			externalReferences.Clear ();
+		}
+#endregion
+
 #region Private Methods
 		private DynamicAdapterFactory ()
 		{
@@ -329,6 +379,9 @@ namespace Moonlight.AtkBridge
 			= new Dictionary<AutomationPeer, Adapter> ();
 
 		private RootVisualAdapter rootVisualAdapter;
+
+		private List<WeakReference> externalReferences
+			= new List<WeakReference> ();
 #endregion
 	}
 }

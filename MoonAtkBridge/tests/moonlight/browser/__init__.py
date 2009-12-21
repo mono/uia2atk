@@ -65,6 +65,13 @@ def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
     cache.addApplication(browser)
     return browser
 
+def kill_proc(proc):
+    proc.poll()
+    if self.proc.returncode:
+        return True
+
+    os.killpg(proc.pid, signal.SIGKILL)
+
 
 class FirefoxBrowser(accessibles.Application):
     logName = 'Mozilla Firefox'
@@ -74,24 +81,36 @@ class FirefoxBrowser(accessibles.Application):
         """
         Get a refrence to the main browser window.
         """
-        super(FirefoxBrowser, self).__init__(accessible, subproc)
+        try:
+            super(FirefoxBrowser, self).__init__(accessible, subproc)
 
-        self.proc = subproc
+            self.proc = subproc
 
-        self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
-        self.tabs = self.mainFrame.findAllPageTabLists('')[0]
-        self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
-        self.slControl = self.mainFrame.findFiller('Silverlight Control')
+            self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
+            self.tabs = self.mainFrame.findAllPageTabLists('')[0]
+            self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
+            self.slControl = self.mainFrame.findFiller('Silverlight Control')
+        except:
+            self.kill()
+            raise
 
-    def kill(self):
-        self.mainFrame.altF4()
-        sleep(config.MEDIUM_DELAY)
+    def kill(self, should_assert=True):
+        # first, verify that the app is running
+        self.proc.poll()
+        if not self.proc.returncode:
+            # close it nicely
+            self.mainFrame.altF4()
+            sleep(config.MEDIUM_DELAY)
 
         try:
             self.proc.poll()
             if not self.proc.returncode:
+                # still alive?  kill it!
                 os.killpg(self.proc.pid, signal.SIGKILL)
                 self.proc.wait()
+
+                if should_assert:
+                    raise AssertionError('Firefox has not exited cleanly.')
         except:
             print "Unable to send pid %d SIGKILL..." % self.proc.pid
 
