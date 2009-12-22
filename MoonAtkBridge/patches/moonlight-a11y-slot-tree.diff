@@ -1,6 +1,6 @@
 Index: m4/mozilla.m4
 ===================================================================
---- m4/mozilla.m4	(revision 147109)
+--- m4/mozilla.m4	(revision 148826)
 +++ m4/mozilla.m4	(working copy)
 @@ -66,6 +66,7 @@
  	dnl Put it all together
@@ -23,7 +23,7 @@ Index: m4/mozilla.m4
  	AC_SUBST([MIN_FIREFOX_VERSION])
 Index: plugin/plugin.cpp
 ===================================================================
---- plugin/plugin.cpp	(revision 147109)
+--- plugin/plugin.cpp	(revision 148826)
 +++ plugin/plugin.cpp	(working copy)
 @@ -11,6 +11,11 @@
   *
@@ -37,7 +37,7 @@ Index: plugin/plugin.cpp
  #include <config.h>
  
  #include <glib.h>
-@@ -2129,6 +2134,31 @@
+@@ -2157,6 +2162,31 @@
  	return rootobject;
  }
  
@@ -71,23 +71,26 @@ Index: plugin/plugin.cpp
  {
 Index: plugin/moz-sdk/npapi.h
 ===================================================================
---- plugin/moz-sdk/npapi.h	(revision 147109)
+--- plugin/moz-sdk/npapi.h	(revision 148826)
 +++ plugin/moz-sdk/npapi.h	(working copy)
-@@ -370,8 +370,10 @@
+@@ -370,8 +370,13 @@
  
    NPNVSupportsWindowless = 17,
  
 -  NPNVSupportsWindowlessCursors = 18
 +  NPNVSupportsWindowlessCursors = 18,
  
-+  NPNVNativeAccessible = 21
++  /* Same value in 192src/base/public/nsplugindefs.h:
++   * nsPluginInstanceVariable_NativeAccessible
++   */ 
++  NPNVNativeAccessible = 22
 +
  #ifdef XP_MACOSX
    /* Used for negotiating drawing models */
    , NPNVpluginDrawingModel = 1000
 Index: plugin/plugin.h
 ===================================================================
---- plugin/plugin.h	(revision 147109)
+--- plugin/plugin.h	(revision 148826)
 +++ plugin/plugin.h	(working copy)
 @@ -111,6 +111,7 @@
  	BrowserBridge *GetBridge () { return bridge; }
@@ -99,7 +102,7 @@ Index: plugin/plugin.h
  	/* @GenerateCBinding,GeneratePInvoke */
 Index: plugin/plugin-glue.cpp
 ===================================================================
---- plugin/plugin-glue.cpp	(revision 147109)
+--- plugin/plugin-glue.cpp	(revision 148826)
 +++ plugin/plugin-glue.cpp	(working copy)
 @@ -160,6 +160,7 @@
  NPP_GetValue (NPP instance, NPPVariable variable, void *result)

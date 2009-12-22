@@ -1,30 +1,15 @@
-diff -r 0b1ee5128977 accessible/src/atk/Makefile.in
---- a/accessible/src/atk/Makefile.in	Mon Jul 27 15:58:23 2009 +0300
-+++ b/accessible/src/atk/Makefile.in	Mon Jul 27 11:20:55 2009 -0400
-@@ -76,16 +76,17 @@
-   nsMaiInterfaceSelection.cpp \
-   nsMaiInterfaceValue.cpp \
-   nsMaiHyperlink.cpp \
-   nsMaiInterfaceHypertext.cpp \
-   nsMaiInterfaceHyperlinkImpl.cpp \
+diff -r 162e0fd19bc2 accessible/src/atk/Makefile.in
+--- a/accessible/src/atk/Makefile.in	Mon Dec 21 13:17:30 2009 -0500
++++ b/accessible/src/atk/Makefile.in	Tue Dec 22 11:48:42 2009 -0500
+@@ -81,6 +81,7 @@
    nsMaiInterfaceTable.cpp \
    nsMaiInterfaceDocument.cpp \
    nsMaiInterfaceImage.cpp \
 +  nsHTMLAtkObjectAccessible.cpp \
    $(NULL)
  
- ifdef MOZ_XUL
- CPPSRCS += \
-   nsXULTreeAccessibleWrap.cpp \
-   $(NULL)
- endif
- 
-@@ -97,16 +98,17 @@
-   nsRootAccessibleWrap.h \
-   nsTextAccessibleWrap.h \
-   nsXULMenuAccessibleWrap.h \
-   nsXULTreeAccessibleWrap.h \
-   nsHyperTextAccessibleWrap.h \
+ EXPORTS = \
+@@ -97,6 +98,7 @@
    nsHTMLImageAccessibleWrap.h \
    nsHTMLTableAccessibleWrap.h \
    nsAccessibleRelationWrap.h \
@@ -32,14 +17,9 @@ diff -r 0b1ee5128977 accessible/src/atk/Makefile.in
    $(NULL)
  
  # we want to force the creation of a static lib.
- FORCE_STATIC_LIB = 1
- 
- EXTRA_DSO_LDOPTS += $(MOZ_GTK2_LIBS)
- 
- include $(topsrcdir)/config/rules.mk
-diff -r 0b1ee5128977 accessible/src/atk/nsHTMLAtkObjectAccessible.cpp
+diff -r 162e0fd19bc2 accessible/src/atk/nsHTMLAtkObjectAccessible.cpp
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.cpp	Mon Jul 27 11:20:55 2009 -0400
++++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.cpp	Tue Dec 22 11:48:42 2009 -0500
 @@ -0,0 +1,103 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* ***** BEGIN LICENSE BLOCK *****
@@ -144,9 +124,9 @@ diff -r 0b1ee5128977 accessible/src/atk/nsHTMLAtkObjectAccessible.cpp
 +  SetFirstChild(mNativeAccessible);
 +  mAccChildCount = 1;
 +}
-diff -r 0b1ee5128977 accessible/src/atk/nsHTMLAtkObjectAccessible.h
+diff -r 162e0fd19bc2 accessible/src/atk/nsHTMLAtkObjectAccessible.h
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.h	Mon Jul 27 11:20:55 2009 -0400
++++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.h	Tue Dec 22 11:48:42 2009 -0500
 @@ -0,0 +1,79 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* ***** BEGIN LICENSE BLOCK *****
@@ -227,15 +207,10 @@ diff -r 0b1ee5128977 accessible/src/atk/nsHTMLAtkObjectAccessible.h
 +};
 +
 +#endif  
-diff -r 0b1ee5128977 accessible/src/base/nsAccessibilityService.cpp
---- a/accessible/src/base/nsAccessibilityService.cpp	Mon Jul 27 15:58:23 2009 +0300
-+++ b/accessible/src/base/nsAccessibilityService.cpp	Mon Jul 27 11:20:55 2009 -0400
-@@ -79,32 +79,39 @@
- #include "nsTextFragment.h"
- #include "nsPresContext.h"
- #include "nsServiceManagerUtils.h"
- #include "nsUnicharUtils.h"
- #include "nsIWebProgress.h"
+diff -r 162e0fd19bc2 accessible/src/base/nsAccessibilityService.cpp
+--- a/accessible/src/base/nsAccessibilityService.cpp	Mon Dec 21 13:17:30 2009 -0500
++++ b/accessible/src/base/nsAccessibilityService.cpp	Tue Dec 22 11:48:42 2009 -0500
+@@ -84,6 +84,10 @@
  #include "nsNetError.h"
  #include "nsDocShellLoadTypes.h"
  
@@ -246,16 +221,7 @@ diff -r 0b1ee5128977 accessible/src/base/nsAccessibilityService.cpp
  #ifdef MOZ_XUL
  #include "nsXULAlertAccessible.h"
  #include "nsXULColorPickerAccessible.h"
- #include "nsXULFormControlAccessible.h"
- #include "nsXULMenuAccessibleWrap.h"
- #include "nsXULSelectAccessible.h"
- #include "nsXULSliderAccessible.h"
- #include "nsXULTabAccessible.h"
- #include "nsXULTextAccessible.h"
- #include "nsXULTreeAccessibleWrap.h"
- #endif
- 
- // For native window support for object/embed/applet tags
+@@ -101,6 +105,9 @@
  #ifdef XP_WIN
  #include "nsHTMLWin32ObjectAccessible.h"
  #endif
@@ -265,17 +231,7 @@ diff -r 0b1ee5128977 accessible/src/base/nsAccessibilityService.cpp
  
  #ifndef DISABLE_XFORMS_HOOKS
  #include "nsXFormsFormControlsAccessible.h"
- #include "nsXFormsWidgetsAccessible.h"
- #endif
- 
- #ifdef MOZ_ACCESSIBILITY_ATK
- #include "nsAppRootAccessible.h"
-@@ -741,30 +748,44 @@
-   nsCOMPtr<nsIDOMHTMLObjectElement> obj(do_QueryInterface(node));
-   if (obj)
-     obj->GetContentDocument(getter_AddRefs(domDoc));
-   else
-     domDoc = do_QueryInterface(node);
+@@ -777,11 +784,12 @@
    if (domDoc)
      return CreateOuterDocAccessible(node, aAccessible);
  
@@ -292,9 +248,7 @@ diff -r 0b1ee5128977 accessible/src/base/nsAccessibilityService.cpp
      HWND pluginPort = nsnull;
      aFrame->GetPluginPort(&pluginPort);
      if (pluginPort) {
-       *aAccessible = new nsHTMLWin32ObjectOwnerAccessible(node, weakShell, pluginPort);
-       if (*aAccessible) {
-         NS_ADDREF(*aAccessible);
+@@ -791,6 +799,19 @@
          return NS_OK;
        }
      }
@@ -314,20 +268,10 @@ diff -r 0b1ee5128977 accessible/src/base/nsAccessibilityService.cpp
    }
  #endif
  
-   // 3) for images and imagemaps, or anything else with a child frame
-   // we have the object frame, get the image frame
-   nsIFrame *frame = aFrame->GetFirstChild(nsnull);
-   if (frame)
-     return frame->GetAccessible(aAccessible);
-diff -r 0b1ee5128977 modules/plugin/base/public/npapi.h
---- a/modules/plugin/base/public/npapi.h	Mon Jul 27 15:58:23 2009 +0300
-+++ b/modules/plugin/base/public/npapi.h	Mon Jul 27 11:20:55 2009 -0400
-@@ -315,17 +315,23 @@
-    */
-   NPPVformValue = 16,
-   
-   NPPVpluginUrlRequestsDisplayedBool = 17,
-   
+diff -r 162e0fd19bc2 modules/plugin/base/public/npapi.h
+--- a/modules/plugin/base/public/npapi.h	Mon Dec 21 13:17:30 2009 -0500
++++ b/modules/plugin/base/public/npapi.h	Tue Dec 22 11:48:42 2009 -0500
+@@ -320,7 +320,13 @@
    /* Checks if the plugin is interested in receiving the http body of
     * all http requests (including failed ones, http status != 200).
     */
@@ -335,41 +279,26 @@ diff -r 0b1ee5128977 modules/plugin/base/public/npapi.h
 +  NPPVpluginWantsAllNetworkStreams = 18,
 +
 +  /* Get a native accessible for the plugin on the given system. For example,
-+   * this is expected to be an AtkObject on Linux.
-+   * Introduced in Mozilla 1.9.2.
-+   */
++  * this is expected to be an AtkObject on Linux.
++  * Introduced in Mozilla 1.9.2.
++  */
 +  NPNVNativeAccessible = 21
  
  #ifdef XP_MACOSX
    /* Used for negotiating drawing models */
-   , NPPVpluginDrawingModel = 1000
- #endif
- } NPPVariable;
- 
- /*
-diff -r 0b1ee5128977 modules/plugin/base/public/nsplugindefs.h
---- a/modules/plugin/base/public/nsplugindefs.h	Mon Jul 27 15:58:23 2009 +0300
-+++ b/modules/plugin/base/public/nsplugindefs.h	Mon Jul 27 11:20:55 2009 -0400
-@@ -197,16 +197,22 @@
-     nsPluginInstanceVariable_CallSetWindowAfterDestroyBool = 6,
-     nsPluginInstanceVariable_ScriptableInstance      = 10,
-     nsPluginInstanceVariable_ScriptableIID           = 11,
-     nsPluginInstanceVariable_NeedsXEmbed             = 14,
-     nsPluginInstanceVariable_WantsAllNetworkStreams  = 18
- #ifdef XP_MACOSX
+diff -r 162e0fd19bc2 modules/plugin/base/public/nsplugindefs.h
+--- a/modules/plugin/base/public/nsplugindefs.h	Mon Dec 21 13:17:30 2009 -0500
++++ b/modules/plugin/base/public/nsplugindefs.h	Tue Dec 22 11:48:42 2009 -0500
+@@ -205,6 +205,12 @@
      , nsPluginInstanceVariable_DrawingModel          = 20
  #endif
-+
+     , nsPluginInstanceVariable_WindowlessLocalBool   = 21
++ 
 +    /* Get a native accessible implementation for the plugin on the given system.
 +     * On Linux, this is expected to be an AtkObject.
 +     * Introduced in Mozilla 1.9.2.
 +     */
-+    , nsPluginInstanceVariable_NativeAccessible      = 21
++    , nsPluginInstanceVariable_NativeAccessible      = 22
  };
  
- ////////////////////////////////////////////////////////////////////////////////
- 
- enum nsPluginMode {
-     nsPluginMode_Embedded = 1,
-     nsPluginMode_Full
- };
+ #ifdef OJI

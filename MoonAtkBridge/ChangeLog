@@ -1,3 +1,9 @@
+2009-12-22  Mario Carrion  <mcarrion@novell.com>
+
+	* patches/ff-plugin-a11y.patch, 
+	  patches/moonlight-a11y-slot-tree.diff: Patches updated to build 
+	  using latest 192src and moon-2.0.
+
 2009-12-21  Brad Taylor  <brad@getcoded.net>
 
 	* install.rdf.in: Bump max version number to allow us to work with Moon
