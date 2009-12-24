@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1361ECD8-5FD6-4EF9-8386-04FB30DC7AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.UIAutomation.TestFramework", "Mono.UIAutomation.TestFramework\Mono.UIAutomation.TestFramework.csproj", "{4AACD863-5F3A-49E9-B4B5-6B011A7F2741}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1361ECD8-5FD6-4EF9-8386-04FB30DC7AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1361ECD8-5FD6-4EF9-8386-04FB30DC7AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1361ECD8-5FD6-4EF9-8386-04FB30DC7AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1361ECD8-5FD6-4EF9-8386-04FB30DC7AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AACD863-5F3A-49E9-B4B5-6B011A7F2741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AACD863-5F3A-49E9-B4B5-6B011A7F2741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AACD863-5F3A-49E9-B4B5-6B011A7F2741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AACD863-5F3A-49E9-B4B5-6B011A7F2741}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
