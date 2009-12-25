@@ -1,3 +1,25 @@
+
+2009-12-21  felicia Mu  <fxmu@novell.com>
+
+	* testers/uiaclient/Tests/WinForms/KeePassTests.cs: remove extra log.
+
+2009-12-21  felicia Mu  <fxmu@novell.com>
+
+	* testers/uiaclient/autogen.sh,
+	* testers/uiaclient/configure.ac,
+	* testers/uiaclient/expansions.m4,
+	* testers/uiaclient/Makefile.am,
+	* testers/uiaclient/Makefile.include,
+	* testers/uiaclient/UIAClientAPI.sln,
+	* testers/uiaclient/Mono.UIAutomation.TestFramework/*,
+	* testers/uiaclient/Tests/*: Add above files into repository,
+	the origin version is from : git@github.com:raywang/UIAClientAPI.git.
+
+2009-12-21  felicia Mu  <fxmu@novell.com>
+
+	* samples/uiaclient/TransformProvider.cs,
+	* samples/uiaclient/DockProvider.cs: Rename the sample name.
+
 2009-12-21  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py: Moved Test.makedirs to global and moved

@@ -62,8 +62,8 @@ namespace Tests
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
-			window.Close ();
-			window.Find<Button> ("Discard changes").Click ();
+			window.Close (false);
+			window.Find<Button> ("Discard changes").Click (false);
 		}
 
 		//TestCase101 Init Sample, create a new account
