@@ -44,6 +44,8 @@ Index: plugin/plugin.cpp
 +gpointer
 +PluginInstance::GetRootAccessible ()
 +{
++	Deployment::SetCurrent (deployment);
++
 +	MonoAssembly *system_windows_assembly;
 +	
 +	system_windows_assembly = mono_assembly_load_with_partial_name (

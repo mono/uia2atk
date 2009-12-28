@@ -9,7 +9,8 @@ PATCH_STAMP = patch.stamp
 GTK_SHARP_PATCHES = \
 	patches/001_gtk-sharp_target-smcs.diff \
 	patches/002_gtk-sharp_private-api.diff \
-	patches/003_gtk-sharp_remove-glue-dep.diff
+	patches/003_gtk-sharp_remove-glue-dep.diff \
+	patches/004_gtk-sharp_gtype-name.diff
 
 ATK_VERSION=1.10.3
 ATK_FILENAME=atk-$(ATK_VERSION).tar.bz2

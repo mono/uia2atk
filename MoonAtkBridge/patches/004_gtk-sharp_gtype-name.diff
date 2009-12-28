@@ -1,0 +1,13 @@
+Index: glib/GType.cs
+===================================================================
+--- glib/GType.cs	(revision 148851)
++++ glib/GType.cs	(working copy)
+@@ -329,6 +329,8 @@
+ 			sb.Append ("__gtksharp_");
+ 			sb.Append (type_uid++);
+ 			sb.Append ("_");
++			sb.Append (AppDomain.CurrentDomain.GetHashCode ());
++			sb.Append ("_");
+ 			foreach (char c in qn) {
+ 				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+ 					sb.Append (c);

@@ -1,3 +1,12 @@
+2009-12-28  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am:
+	* patches/004_gtk-sharp_gtype-name.diff: Add patch to allow Gtk# types
+	to be created unique to an app domain.
+
+	* patches/moonlight-a11y-slot-tree.diff: Modify Moonlight patch to set
+	the current app domain before calling into AutomationBridge.
+
 2009-12-22  Mario Carrion  <mcarrion@novell.com>
 
 	* patches/ff-plugin-a11y.patch, 
