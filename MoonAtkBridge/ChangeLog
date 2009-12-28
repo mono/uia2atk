@@ -1,5 +1,10 @@
 2009-12-28  Brad Taylor  <brad@getcoded.net>
 
+	* patches/moonlight-a11y-slot-tree.diff: Update patch to latest moon to
+	fix malformed patch error.
+
+2009-12-28  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am:
 	* patches/004_gtk-sharp_gtype-name.diff: Add patch to allow Gtk# types
 	to be created unique to an app domain.
