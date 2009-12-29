@@ -26,7 +26,8 @@ class CheckBoxFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(CheckBoxFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("CheckBoxSample")
-        self.check1 = self.frame.findCheckBox(self.CHECK_ONE)
-        self.check2 = self.frame.findCheckBox(self.CHECK_TWO)
-        self.text1 = self.frame.findLabel(self.TEXT_ONE)
-        self.text2 = self.frame.findLabel(self.TEXT_TWO)
+        self.filler = self.frame.findFiller(None)
+        self.check1 = self.filler.findCheckBox(self.CHECK_ONE)
+        self.check2 = self.filler.findCheckBox(self.CHECK_TWO)
+        self.text1 = self.filler.findLabel(self.TEXT_ONE)
+        self.text2 = self.filler.findLabel(self.TEXT_TWO)

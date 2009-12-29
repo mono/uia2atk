@@ -1,5 +1,9 @@
 2009-12-29  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/checkbox/checkboxframe.py: add to find filler
+
+2009-12-29  Calen Chen <cachen@novell.com>
+
 	* samples/moonlight/ListBox/Page.xaml.cs: update 
 	ListBox_SelectionChanged handle
 
