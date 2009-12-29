@@ -1,3 +1,7 @@
+2009-12-29  Calen Chen <cachen@novell.com>
+
+	* samples/moonlight/ListBox/Page.xaml.cs: update 
+	ListBox_SelectionChanged handle
 
 2009-12-29  felicia Mu  <fxmu@novell.com>
 

@@ -24,7 +24,8 @@ namespace ListBoxSample
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem listBoxItem = ((sender as ListBox).SelectedItem as ListBoxItem);
-            textBlock.Text = "You selected " + listBoxItem.Content.ToString() + ".";
+            if (listBoxItem != null)
+                textBlock.Text = "You selected " + listBoxItem.Content.ToString() + ".";
         }
     }
 }
