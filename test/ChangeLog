@@ -1,5 +1,9 @@
 
-2009-12-21  felicia Mu  <fxmu@novell.com>
+2009-12-29  felicia Mu  <fxmu@novell.com>
+
+	* testers/uiaclient/Tests/: add two new folders:GTK & Moonlight.
+
+2009-12-29  felicia Mu  <fxmu@novell.com>
 
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/: delete the extra
 	Application .cs.
