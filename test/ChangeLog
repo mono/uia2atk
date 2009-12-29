@@ -1,6 +1,11 @@
 
 2009-12-21  felicia Mu  <fxmu@novell.com>
 
+	* testers/uiaclient/Mono.UIAutomation.TestFramework/: delete the extra
+	Application .cs.
+
+2009-12-21  felicia Mu  <fxmu@novell.com>
+
 	* testers/uiaclient/Tests/WinForms/KeePassTests.cs: remove extra log.
 
 2009-12-21  felicia Mu  <fxmu@novell.com>
