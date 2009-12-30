@@ -49,16 +49,16 @@ def makedirs(name, mode=0777):
   """
   head, tail = os.path.split(name)
   if not tail:
-      head, tail = os.path.split(head)
+    head, tail = os.path.split(head)
   if head and tail and not os.path.exists(head):
-      try:
-          makedirs(head, mode)
-      except OSError, e:
-          # be happy if someone already created the path
-          if e.errno != errno.EEXIST:
-              raise
-      if tail == os.curdir:        # xxx/newdir/. exists if xxx/newdir exists
-          return
+    try:
+      makedirs(head, mode)
+    except OSError, e:
+      # be happy if someone already created the path
+      if e.errno != errno.EEXIST:
+          raise
+    if tail == os.curdir:  # xxx/newdir/. exists if xxx/newdir exists
+      return
   os.mkdir(name, mode)
   # XXX: Waiting for CIFS, use a better method
   time.sleep(5)
@@ -89,8 +89,8 @@ class Settings(object):
   third_party_apps = ["gcalctool","firefox","gnome-calculator"]
 
   def __init__(self):
-      self.argument_parser()
-      self.set_uiaqa_home()
+    self.argument_parser()
+    self.set_uiaqa_home()
 
   def argument_parser(self):
     opts = []
@@ -210,13 +210,13 @@ class Test(object):
   def find_distro(self):
     # returns None if we don't know (or don't care)
     if os.path.exists("/etc/fedora-release"):
-        Settings.distro = FEDORA
+      Settings.distro = FEDORA
     elif os.path.exists("/etc/SuSE-release"):
-        Settings.distro = OPENSUSE
+      Settings.distro = OPENSUSE
     elif os.path.exists("/usr/bin/ubuntu-bug"):
-        Settings.distro = UBUNTU
+      Settings.distro = UBUNTU
     else:
-        Settings.distro = None
+      Settings.distro = None
 
   def find_distro_version(self):
     assert Settings.distro is not None, "Distro has not been deteced"
@@ -235,7 +235,7 @@ class Test(object):
       except IndexError:
         pass
     elif Settings.distro == UBUNTU:
-      f = open('/etc/lsb-release', 'r')  
+      f = open('/etc/lsb-release', 'r')
       release = f.readline()
       release = f.readline()
       try:
@@ -254,9 +254,9 @@ class Test(object):
     osystem = ""
     arch = ""
     if os.path.exists("/usr/lib64"):
-        arch = "64"
+      arch = "64"
     else:
-        arch = "32"
+      arch = "32"
     if Settings.tree == TRUNK:
       url_part2 = "/".join((Settings.tree,
                            "%s%s" % (Settings.distro, Settings.distro_version),
@@ -298,35 +298,35 @@ class Test(object):
                  stderr=s.STDOUT)
     o = []
     while True:
-        o_tmp = t.stdout.readline()
-        if o_tmp != '':
-            o.append(o_tmp) 
-            print o_tmp.rstrip()
-        if o_tmp == '' and t.poll() is not None:
-            break
+      o_tmp = t.stdout.readline()
+      if o_tmp != '':
+        o.append(o_tmp)
+        print o_tmp.rstrip()
+      if o_tmp == '' and t.poll() is not None:
+        break
     r = t.poll()
     package_status_path = "%s/%s_package_status" % \
                             (Settings.log_path, HOSTNAME)
     if r != 0:
-        # create the package_status file.  delete it first so that it 
-        # is picked up as a new file by qamon
-        os.system("rm -f %s" % package_status_path)
-        os.system("echo 1 > %s" % package_status_path)
-        os.system("echo --- >> %s" % package_status_path)
-        f = open(package_status_path, 'a+')
-        f.write("".join(o))
-        f.close()
-        return 1
+      # create the package_status file.  delete it first so that it
+      # is picked up as a new file by qamon
+      os.system("rm -f %s" % package_status_path)
+      os.system("echo 1 > %s" % package_status_path)
+      os.system("echo --- >> %s" % package_status_path)
+      f = open(package_status_path, 'a+')
+      f.write("".join(o))
+      f.close()
+      return 1
     else:
-        os.system("rm -f %s/%s_package_status" % \
-                                            (Settings.log_path, HOSTNAME))
-        os.system("echo 0 > %s/%s_package_status" % \
-                                            (Settings.log_path, HOSTNAME))
-        os.system("echo --- >> %s" % package_status_path)
-        f = open(package_status_path, 'a+')
-        f.write("".join(o))
-        f.close()
-        return 0
+      os.system("rm -f %s/%s_package_status" % \
+                                          (Settings.log_path, HOSTNAME))
+      os.system("echo 0 > %s/%s_package_status" % \
+                                          (Settings.log_path, HOSTNAME))
+      os.system("echo --- >> %s" % package_status_path)
+      f = open(package_status_path, 'a+')
+      f.write("".join(o))
+      f.close()
+      return 0
 
   def run(self):
     unfound_tests = []
@@ -398,15 +398,15 @@ class Test(object):
         first_char = f.read(1)
         f.close()
         if first_char != "0":
-            f = open(file_path,'r')
-            log = []
-            for line in f:
-                log.append(line)
-            f.close()
-            f = open(file_path, 'w')
-            f.write("0\n")
-            f.write("".join(log))
-            f.close()
+          f = open(file_path,'r')
+          log = []
+          for line in f:
+              log.append(line)
+          f.close()
+          f = open(file_path, 'w')
+          f.write("0\n")
+          f.write("".join(log))
+          f.close()
       try:
         self.log(test)
       except InconceivableError, msg:
@@ -499,14 +499,14 @@ class Test(object):
           return 0
 
     if os.path.exists(self.log_dir):
-        raise InconceivableError,\
+      raise InconceivableError,\
                 "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
 
     # os.makedirs() does not work here because cifs is slow
     makedirs(self.log_dir)
 
     # copy over the resource files
-    # XXX: change the log files to reference the resources from 
+    # XXX: change the log files to reference the resources from
     # a static location so we don't have to copy these every time and
     # waste time/space
     os.system("echo %s > %s/time" % (time.time(), self.log_dir))

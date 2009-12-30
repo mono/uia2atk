@@ -1,3 +1,7 @@
+2009-12-30  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/local_run.py: Fixed indentation issues.
+
 2009-12-29  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/checkbox/checkboxframe.py: add to find filler
