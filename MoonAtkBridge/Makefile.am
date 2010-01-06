@@ -15,18 +15,25 @@ GTK_SHARP_PATCHES = \
 ATK_VERSION=1.10.3
 ATK_TARBALL=atk-$(ATK_VERSION).tar.bz2
 ATK_XML_URL=http://ftp.gnome.org/pub/gnome/sources/atk/1.10/$(ATK_TARBALL)
+
 GTK_SHARP=gtk-sharp
 GLIB_SHARP_PATH=$(GTK_SHARP)/glib/
 GAPI_PARSER_PATH=$(GTK_SHARP)/parser/
 GAPI_GENERATOR_PATH=$(GTK_SHARP)/generator/
 ATK_SHARP_PATH=$(GTK_SHARP)/atk/
+
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SOURCES_PATH=resources/$(GTK_SHARP_28_SOURCES_FILE)
 GTK_SHARP_28_SOURCES_DEST=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
+
 TUNER_FLAGS=-a ./DummyEntryPoint.exe -d ./ -o ../ -l none -b true
-ANONSVN_TRUNK=http://anonsvn.mono-project.com/source/trunk/
+
 DESC_FILE_UPSTREAM=a11y.xml
 DESC_FILE_LOCAL=descriptors.xml
+DESC_FILE_UPSTREAM_PATH=resources/$(DESC_FILE_UPSTREAM)
+DESC_FILE_LOCAL_PATH=resources/$(DESC_FILE_LOCAL)
+
+ANONSVN_TRUNK=http://anonsvn.mono-project.com/source/trunk/
 ANONSVN_DESCRIPTORS=$(ANONSVN_TRUNK)moon/class/tuning/Descriptors/$(DESC_FILE_UPSTREAM)
 ANONSVN_GTKSHARP=$(ANONSVN_TRUNK)gtk-sharp
 
@@ -79,7 +86,7 @@ DUMMY_COMPILATION = $(SMCS) /t:exe ../../resources/DummyEntryPoint.cs $(DUMMY_RE
 
 # check if there are differences between moon upstream and local
 # (if there are, build will fail until you commit the new file)
-COMPARE_DESCS = $(DIFF) -q $(DESC_FILE_UPSTREAM) $(DESC_FILE_LOCAL)
+COMPARE_DESCS = $(DIFF) -q $(DESC_FILE_UPSTREAM_PATH) $(DESC_FILE_LOCAL_PATH)
 
 
 REFERENCES = \
@@ -144,9 +151,9 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 	cd bin/fullraw/ && time $(MONO) --debug $(LINKING_PATH)/monolinker.exe \
 		-c link -a ./DummyEntryPoint.exe \
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
-	cp bin/fullraw/output/$(DESC_FILE_LOCAL) .
-	rm -f $(DESC_FILE_UPSTREAM)
-	$(WGET) $(ANONSVN_DESCRIPTORS)
+	cp bin/fullraw/output/$(DESC_FILE_LOCAL) $(DESC_FILE_LOCAL_PATH)
+	rm -f $(DESC_FILE_UPSTREAM_PATH)
+	$(WGET) $(ANONSVN_DESCRIPTORS) --output-document=$(DESC_FILE_UPSTREAM_PATH)
 	$(COMPARE_DESCS)
 
 # stage contains bin/ assemblies plus the files needed for XPI generation
