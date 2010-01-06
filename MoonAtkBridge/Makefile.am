@@ -22,7 +22,8 @@ GAPI_GENERATOR_PATH=$(GTK_SHARP)/generator/
 ATK_SHARP_PATH=$(GTK_SHARP)/atk/
 ATK_API_FILE=$(GAPI_PARSER_PATH)$(ATK_FILENAME)
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
-GTK_SHARP_28_SRCDIR=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
+GTK_SHARP_28_SOURCES_PATH=resources/$(GTK_SHARP_28_SOURCES_FILE)
+GTK_SHARP_28_SOURCES_DEST=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
 TUNER_FLAGS=-a ./DummyEntryPoint.exe -d ./ -o ../ -l none -b true
 ANONSVN_TRUNK=http://anonsvn.mono-project.com/source/trunk/
 DESC_FILE_UPSTREAM=a11y.xml
@@ -44,7 +45,7 @@ $(GTK_SHARP):
 	cd $(GTK_SHARP) && ./bootstrap-2.8
 
 	## Give the parser the correct API definitions for 2.8
-	cp $(GTK_SHARP_28_SOURCES_FILE) $(GTK_SHARP_28_SRCDIR)
+	cp $(GTK_SHARP_28_SOURCES_PATH) $(GTK_SHARP_28_SOURCES_DEST)
 	$(WGET) $(ATK_XML_URL) --output-document=$(ATK_API_FILE)
 	cd $(GAPI_PARSER_PATH) && tar -xvf $(ATK_FILENAME)
 	cd $(GAPI_PARSER_PATH) && $(MAKE) \
