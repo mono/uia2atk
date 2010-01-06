@@ -29,7 +29,6 @@ using Atk;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Xml;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
@@ -92,16 +91,13 @@ namespace Moonlight.AtkBridge
 			string filePath = null;
 			try {
 				filePath = Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location);
-Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 1: {0}", filePath);
 				filePath = Path.Combine (filePath, "..");
-Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 2: {0}", filePath);
 			} catch (ArgumentException) {
 				Log.Error ("Unable to construct path to extension directory");
 				return false;
 			}
 
 			filePath = Path.Combine (filePath, "extension_disabled");
-Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 3: {0}", filePath);
 			if (File.Exists (filePath)) {
 				Log.Debug ("Extension disabled because sentinel file was found.");
 				return false;

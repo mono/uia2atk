@@ -47,7 +47,7 @@ $(GTK_SHARP):
 	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p;)
 
 	## Bootstrap for the oldest version of atk that we support
-	cp bootstrap-2.8 $(GTK_SHARP)
+	cp resources/bootstrap-2.8 $(GTK_SHARP)
 	cd $(GTK_SHARP) && ./bootstrap-2.8
 
 	## Give the parser the correct API definitions for 2.8
@@ -139,7 +139,7 @@ $(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMB
 
 fake:
 	mkdir -p bin/fake/
-	$(SMCS) $(CSCFLAGS) -out:bin/fake/$(ASSEMBLY) AttackVector.cs
+	$(SMCS) $(CSCFLAGS) -out:bin/fake/$(ASSEMBLY) resources/AttackVector.cs
 
 # bin/fullraw/ dir contains MoonAtkBridge.dll and moonlight assemblies without sec attrs
 descriptors: $(ASSEMBLY_STAGE_PATH)
@@ -161,7 +161,7 @@ stage/install.rdf: stage resources/install.rdf
 	cp -p resources/install.rdf stage/install.rdf
 
 stage/components/init.js: stage
-	cp -p init.js stage/components/init.js
+	cp -p resources/init.js stage/components/init.js
 
 tests-build: fake
 	cd tests && $(MAKE) $(AM_MAKEFLAGS)

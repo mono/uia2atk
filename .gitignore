@@ -517,9 +517,10 @@
 /MoonAtkBridge/depcomp
 /MoonAtkBridge/libtool
 /MoonAtkBridge/ltmain.sh
-/MoonAtkBridge/a11y.xml
-/MoonAtkBridge/descriptors.xml
 /MoonAtkBridge/MoonAtkBridge/*.pidb
+/MoonAtkBridge/resources/a11y.xml
+/MoonAtkBridge/resources/descriptors.xml
+/MoonAtkBridge/resources/install.rdf
 /MoonAtkBridge/tests/Makefile
 /MoonAtkBridge/tests/Makefile.in
 /MoonAtkBridge/tests/assets/Makefile
@@ -725,7 +726,6 @@
 /MoonAtkBridge/gtk-sharp/
 /MoonAtkBridge/stage/
 /MoonAtkBridge/bin/
-/MoonAtkBridge/install.rdf
 /MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs
 
 # /AtspiUiaSource
