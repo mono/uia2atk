@@ -60,11 +60,9 @@ namespace Moonlight.AtkBridge
 
 		public static bool IsAccessibilityEnabled ()
 		{
-			// Detect whether it is turned on at a platform level
-			// TODO: Copy this code from UiaAtkBridge
-			bool platform_enabled = true;
-
-			return platform_enabled && IsA11yExtensionEnabled ();
+			// TODO: Detect whether accessibility is turned on at a
+			// platform level
+			return IsExtensionEnabled ();
 		}
 
 		public IntPtr GetAccessibleHandle ()
@@ -89,23 +87,28 @@ namespace Moonlight.AtkBridge
 #endregion
 
 #region Private Methods
-		private static bool IsA11yExtensionEnabled ()
+		private static bool IsExtensionEnabled ()
 		{
 			string filePath = null;
 			try {
-				filePath = Path.Combine (Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location), "..");
-				filePath = Path.Combine (filePath, "active.xml");
-				using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					var reader = XmlReader.Create (fs);
-					if (reader.Read() && reader.ReadToFollowing("active") && reader.Read())
-						return bool.Parse (reader.Value);
-					throw new FormatException ("Incorrect format of active.xml");
-				}
-			} catch (Exception e) {
-				Console.Error.WriteLine ("Unexpected exception while reading active.xml file: " + e);
+				filePath = Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location);
+Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 1: {0}", filePath);
+				filePath = Path.Combine (filePath, "..");
+Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 2: {0}", filePath);
+			} catch (ArgumentException) {
+				Log.Error ("Unable to construct path to extension directory");
+				return false;
 			}
-			return false;
+
+			filePath = Path.Combine (filePath, "extension_disabled");
+Console.WriteLine ("%%%%%%%%%%%%%%%%%%%%%%%%%% 3: {0}", filePath);
+			if (File.Exists (filePath)) {
+				Log.Debug ("Extension disabled because sentinel file was found.");
+				return false;
+			}
+
+			Log.Debug ("Sentinel file not found, assuming extension is enabled...");
+			return true;
 		}
 
 		private void OnAutomationPropertyChanged (

@@ -21,63 +21,79 @@
 //
 // Authors:
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Brad Taylor <brad@getcoded.net>
 //
 
-
-//ctor
-function myA11yObserver()
+function MoonlightAccessibilityExtension()
 {
-  this.mydump = dump;
+  // use this to print to the console
+  this.dump = dump;
+
   this.cc = Components;
-  this.observerService = this.cc.classes["@mozilla.org/observer-service;1"]
-                         .getService(this.cc.interfaces.nsIObserverService);
-  this.fileLocalClass = this.cc.classes["@mozilla.org/file/local;1"];
-  this.event = "quit-application";
+
+  this.event = "em-action-requested";
 
   var componentFile = __LOCATION__;
   var componentsDir = componentFile.parent;
   var extensionDir = componentsDir.parent;
-  this.controlFilePath = extensionDir.path + "/active.xml";
+  this.sentinelFile = extensionDir.path + "/extension_disabled";
 
+  this.registered = false;
   this.register();
   this.enable();
 }
 
-myA11yObserver.prototype = {
+MoonlightAccessibilityExtension.prototype = {
   observe: function(subject, topic, data) {
-    //this.mydump ("__DEBUG: myA11yObserver::observe()\n");
+    // NOTE: We will never get the item-enabled signal, since our code is never
+    // loaded.  Instead, we assume that if we are constructed, we are enabled.
 
-    this.write("<root><active>false</active></root>")
+    if (data == "item-disabled")
+      this.disable();
   },
-  register: function() {
-    this.observerService.addObserver(this, this.event, false);
-  },
-  unregister: function() {
-    this.observerService.removeObserver(this, this.event);
+  disable: function() {
+    var file = this.cc.classes["@mozilla.org/file/local;1"]
+                      .createInstance(this.cc.interfaces.nsILocalFile);
+    var stream = this.cc.classes["@mozilla.org/network/file-output-stream;1"]
+                        .createInstance(this.cc.interfaces.nsIFileOutputStream);
+    var converter = this.cc.classes["@mozilla.org/intl/converter-output-stream;1"]
+                           .createInstance(this.cc.interfaces.nsIConverterOutputStream);
+
+    file.initWithPath(this.sentinelFile);
+    if (file.exists())
+      return;
+
+    stream.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
+    converter.init(stream, "UTF-8", 0, 0);
+
+    // create a blank file (file.create() doesn't work)
+    converter.writeString("");
+    converter.close();
   },
   enable: function() {
-    //this.mydump ("__DEBUG: myA11yObserver::enable()\n");
-
-    this.write("<root><active>true</active></root>");
+    var file = this.cc.classes["@mozilla.org/file/local;1"]
+                      .createInstance(this.cc.interfaces.nsILocalFile);
+    file.initWithPath(this.sentinelFile);
+    if (file.exists())
+      file.remove(false);
   },
-  write: function(data) {
-    var file = this.fileLocalClass.createInstance(this.cc.interfaces.nsILocalFile);
-    file.initWithPath(this.controlFilePath);
-
-    var foStream = this.cc.classes["@mozilla.org/network/file-output-stream;1"]
-                   .createInstance(this.cc.interfaces.nsIFileOutputStream);
-
-    foStream.init(file, 0x02 | 0x08 | 0x20, 0666, 0); 
-    var converter = this.cc.classes["@mozilla.org/intl/converter-output-stream;1"]
-                    .createInstance(this.cc.interfaces.nsIConverterOutputStream);
-    converter.init(foStream, "UTF-8", 0, 0);
-    converter.writeString(data);
-    converter.close();
-  }
-
+  register: function() {
+    if (!this.registered) {
+      var observerService = this.cc.classes["@mozilla.org/observer-service;1"]
+                                   .getService(this.cc.interfaces.nsIObserverService);
+      observerService.addObserver(this, this.event, false);
+      this.registered = true;
+    }
+  },
+  unregister: function() {
+    if (this.registered) {
+      var observerService = this.cc.classes["@mozilla.org/observer-service;1"]
+                                   .getService(this.cc.interfaces.nsIObserverService);
+      observerService.removeObserver(this, this.event, false);
+      this.registered = false;
+    }
+  },
 }
 
-//dump ("__DEBUG: moonlight-a11y@novell.com : init.js\n");
-
-observer = new myA11yObserver();
+observer = new MoonlightAccessibilityExtension();
 

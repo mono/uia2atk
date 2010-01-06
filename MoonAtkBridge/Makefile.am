@@ -117,7 +117,7 @@ T4_REFERENCES = \
 
 # bin/raw/ dir contains MoonAtkBridge.dll without sec attrs, plus moonlight assemblies with sec attrs
 # bin/ dir contains MoonAtkBridge.dll with sec attrs and with internalized API
-$(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR) stage/active.xml stage/components/init.js
+$(ASSEMBLY_STAGE_PATH): stage/install.rdf $(GTK_SHARP) $(build_sources) $(ASSEMBLY_CONFIG) $(T4_GENERATOR) stage/components/init.js
 	mkdir -p bin/raw/
 	cp $(MOON_PATH)/class/lib/2.1/*.dll ./bin/raw/
 	$(SMCS) $(CSCFLAGS) $(OUT) $(build_sources) $(build_references)
@@ -152,9 +152,6 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 # stage contains bin/ assemblies plus the files needed for XPI generation
 stage/install.rdf: stage install.rdf
 	cp -p install.rdf stage/install.rdf
-
-stage/active.xml: stage
-	cp -p active.xml stage/active.xml
 
 stage/components/init.js: stage
 	cp -p init.js stage/components/init.js
