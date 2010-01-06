@@ -178,6 +178,8 @@ novell-moonlight-a11y.xpi:
 
 clean:
 	rm -f $(PATCH_STAMP)
+	rm -f $(DESC_FILE_LOCAL_PATH)
+	rm -f $(DESC_FILE_UPSTREAM_PATH)
 	rm -rf $(GTK_SHARP)/
 	rm -rf stage/
 	rm -rf bin/
