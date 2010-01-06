@@ -150,8 +150,8 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 	$(COMPARE_DESCS)
 
 # stage contains bin/ assemblies plus the files needed for XPI generation
-stage/install.rdf: stage install.rdf
-	cp -p install.rdf stage/install.rdf
+stage/install.rdf: stage resources/install.rdf
+	cp -p resources/install.rdf stage/install.rdf
 
 stage/components/init.js: stage
 	cp -p init.js stage/components/init.js

@@ -139,7 +139,7 @@ AC_SUBST(VERSION)
 
 AC_CONFIG_FILES([
 Makefile
-install.rdf
+resources/install.rdf
 tests/Makefile
 tests/assets/Makefile
 tests/assets/AdapterEventsTest/Makefile
