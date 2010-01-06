@@ -1,3 +1,11 @@
+2010-01-06  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/remote_run.py: Fixed indentation issues.
+	* tools/dashboard/winforms:
+	* tools/dashboard/moonlight: Added directories, and moved smoke.xsl,
+	regression.xsl and control.css to each dir.
+	* tools/dashboard/component.css: Renamed dashboard.css to new name.
+
 2009-12-30  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py: Fixed indentation issues.

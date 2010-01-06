@@ -46,15 +46,16 @@ class Settings(object):
   test_failed_machines = []
   is_force = False
   is_nodeps = False
-  
+  component = None
+
   def __init__(self):
-      self.argument_parser()
+    self.argument_parser()
 
   def argument_parser(self):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"funshql:e:s:",["smoke","help","quiet","force","nodeps","log=","email=","update","sender="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:e:s:c:",["smoke","help","quiet","force","nodeps","log=","email=","update","sender=","component="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -83,33 +84,37 @@ class Settings(object):
         if not os.path.exists(Settings.local_log_path):
           output("ERROR:  Log path does not exist.")
           abort(1)
+      if o in ("-c","--component"):
+          Settings.component = a
 
   def help(self):
     output("Common Options:")
-    output("  -h | --help    Print help information (this message).")
-    output("  -q | --quiet   Don't print anything.")
-    output("  -l | --log=    Where the log(s) should be stored.")
-    output("  -s | --smoke   Run only smoke tests.")
-    output("  -u | --update  Update packages on remote machines")
-    output("  -n | --nodeps  Ingore dependencies on remote package update")
-    output("  -f | --force   Force install of remote package update")
-    output("  -e | --email=  Send e-mail results to comma delineated recipients")
+    output("  -h | --help        Print help information (this message).")
+    output("  -q | --quiet       Don't print anything.")
+    output("  -l | --log=        Where the log(s) should be stored.")
+    output("  -s | --smoke       Run only smoke tests.")
+    output("  -u | --update      Update packages on remote machines")
+    output("  -n | --nodeps      Ingore dependencies on remote package update")
+    output("  -f | --force       Force install of remote package update")
+    output("  -e | --email=      Send e-mail results to comma delineated recipients")
+    output("  -c | --component=  Select at least and only one component to test (i.e.,")
+    output("                     winforms or moonlight).")
 
 class Ping(threading.Thread):
 
-   def __init__ (self,name,ip):
-      threading.Thread.__init__(self)
-      self.ip = ip
-      self.status = -1
-      self.name = name
-   def run(self):
-      self.status = os.system("ping -q -c2 %s > /dev/null" % self.ip)
+  def __init__ (self,name,ip):
+    threading.Thread.__init__(self)
+    self.ip = ip
+    self.status = -1
+    self.name = name
+  def run(self):
+    self.status = os.system("ping -q -c2 %s > /dev/null" % self.ip)
 
 class Test(threading.Thread):
 
   package_failed_machines = []
   test_failed_machines = []
-    
+
   def __init__ (self, name, ip):
     threading.Thread.__init__(self)
     self.ip = ip
@@ -122,6 +127,7 @@ class Test(threading.Thread):
     update_option = lambda: Settings.should_update == True and "--update" or ""
     force_option = lambda: Settings.is_force == True and "--force" or ""
     nodeps_option = lambda: Settings.is_nodeps == True and "--nodeps" or ""
+    component_option = lambda: Settings.component != None and "--component=%s" % Settings.component or ""
     if self.pkg_status == 0:
       self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 python -u %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                           (machines.USERNAME, self.ip,
@@ -129,8 +135,9 @@ class Test(threading.Thread):
                            " ".join([smoke_option(),
                                      update_option(),
                                      force_option(),
-                                     nodeps_option()]).strip(),
-                           Settings.remote_log_path,
+                                     nodeps_option(),
+                                     component_option()]).strip(),
+                           os.path.join(Settings.remote_log_path, Settings.component),
                            Settings.local_log_path,
                            self.name))
       if self.test_status != 0:
@@ -168,7 +175,7 @@ class TestHandler(object):
     for t in ping_list:
       t.join()
       lock.acquire()
-      output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+      output("  %-12s (%10s) ==>" % (t.name, t.ip), False)
       if t.status == 0:
         output("UP")
         self.up_machines.append(t.name)
@@ -210,7 +217,7 @@ class TestHandler(object):
         if not t.isAlive():
           dead_threads.append(t)
           lock.acquire()
-          output("  TEST COMPLETE:  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+          output("  TEST COMPLETE:  %-12s (%10s) ==>" % (t.name, t.ip), False)
           if t.pkg_status == 0 and t.test_status == 0:
             good_machines.append(t.name)
             output("PERFECT")
@@ -231,7 +238,7 @@ class TestHandler(object):
               % (len(failed_machines), len(self.up_machines)))
     if settings.is_log_ok:
       output("INFO:  Local logs saved to %s" % Settings.local_log_path)
-    output("INFO:  Remote logs saved to %s" % Settings.remote_log_path)
+    output("INFO:  Remote logs saved to %s/%s" % (Settings.remote_log_path, Settings.component))
     if t.pkg_status == 0 and t.test_status == 0:
       return 0
     else:
@@ -243,27 +250,27 @@ class TestHandler(object):
     try:
       os.mkdir(Settings.local_log_path)
     except OSError, msg:
-        Settings.is_log_ok = False
-        output(msg)
-        output("WARNINGS:  Could not create %s directory!" % \
-                Settings.local_log_path)
-        output("WARNINGS:  Local logs will not be stored")
+      Settings.is_log_ok = False
+      output(msg)
+      output("WARNINGS:  Could not create %s directory!" % \
+              Settings.local_log_path)
+      output("WARNINGS:  Local logs will not be stored")
 
   def run(self):
     if not self.check_machines():
       return 1
     self.setup_logging()
-    return self.execute_tests() 
+    return self.execute_tests()
 
   def compose_mail_message(self):
-  
+
     import urllib
 
     test_type = lambda: Settings.is_smoke == True and "smoke tests" or "tests"
     status = lambda: len(Test.package_failed_machines) + \
                     len(Test.test_failed_machines) > 0 \
                     and "failed" or "succeeded"
-  
+
     revisions = urllib.urlopen("http://build1.sled.lab.novell.com/uia/current/rpm_revs").read()
 
     # mathematic union of the failed machines, we will use this to grab
@@ -286,7 +293,7 @@ class TestHandler(object):
 
     self.summary_message.append("The above %s %s for the following packages:\n\n%s\n\n" % (test_type(), status(), revisions))
 
-    
+
     # add local logs to the detailed message, which will be the second
     # part of the e-mail
     self.detailed_message = []
@@ -329,19 +336,19 @@ class TestHandler(object):
 
     try:
       f = open("%s/email" % Settings.local_log_path,'w')
-      f.write(MESSAGE)      
+      f.write(MESSAGE)
       f.close()
       output("Sending e-mail...", False)
       email_cmd = 'mailx -s "%s" -r "%s" %s < %s/email' % \
                       (subject, from_addr, to_addrs, Settings.local_log_path)
       r = os.system(email_cmd)
-      assert r == 0 
+      assert r == 0
       output("OK")
     except IOError:
       outupt("ERROR")
     except AssertionError:
       output("ERROR")
-   
+
 
 class Main(object):
 
@@ -351,7 +358,7 @@ class Main(object):
     if Settings.email_addresses is not None:
       if Settings.is_log_ok:
         t.compose_mail_message()
-      t.send_mail() 
+      t.send_mail()
     return r
 
 settings = Settings()

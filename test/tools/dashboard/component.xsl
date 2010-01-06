@@ -4,7 +4,7 @@
   <html lang="en">
     <head>
       <title>Strongwind Test Status Dashboard</title>
-      <link rel="stylesheet" type="text/css" href="dashboard.css" media="all"/>
+      <link rel="stylesheet" type="text/css" href="component.css" media="all"/>
     </head>
     <body>
       <p class="header">
@@ -119,7 +119,7 @@
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="../../dashboard/smoke/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
+	    <td><a href="../../dashboard/winforms/smoke/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
@@ -228,7 +228,7 @@
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="../../dashboard/regression/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
+            <td><a href="../../dashboard/winforms/regression/{$controlName}.xml"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
