@@ -13,14 +13,13 @@ GTK_SHARP_PATCHES = \
 	patches/004_gtk-sharp_gtype-name.diff
 
 ATK_VERSION=1.10.3
-ATK_FILENAME=atk-$(ATK_VERSION).tar.bz2
-ATK_XML_URL=http://ftp.gnome.org/pub/gnome/sources/atk/1.10/$(ATK_FILENAME)
+ATK_TARBALL=atk-$(ATK_VERSION).tar.bz2
+ATK_XML_URL=http://ftp.gnome.org/pub/gnome/sources/atk/1.10/$(ATK_TARBALL)
 GTK_SHARP=gtk-sharp
 GLIB_SHARP_PATH=$(GTK_SHARP)/glib/
 GAPI_PARSER_PATH=$(GTK_SHARP)/parser/
 GAPI_GENERATOR_PATH=$(GTK_SHARP)/generator/
 ATK_SHARP_PATH=$(GTK_SHARP)/atk/
-ATK_API_FILE=$(GAPI_PARSER_PATH)$(ATK_FILENAME)
 GTK_SHARP_28_SOURCES_FILE=gtk-sharp-2.8-sources.xml
 GTK_SHARP_28_SOURCES_PATH=resources/$(GTK_SHARP_28_SOURCES_FILE)
 GTK_SHARP_28_SOURCES_DEST=$(GAPI_PARSER_PATH)$(GTK_SHARP_28_SOURCES_FILE)
@@ -46,8 +45,8 @@ $(GTK_SHARP):
 
 	## Give the parser the correct API definitions for 2.8
 	cp $(GTK_SHARP_28_SOURCES_PATH) $(GTK_SHARP_28_SOURCES_DEST)
-	$(WGET) $(ATK_XML_URL) --output-document=$(ATK_API_FILE)
-	cd $(GAPI_PARSER_PATH) && tar -xvf $(ATK_FILENAME)
+	$(WGET) $(ATK_XML_URL) --output-document=$(GAPI_PARSER_PATH)$(ATK_TARBALL)
+	cd $(GAPI_PARSER_PATH) && tar -xvf $(ATK_TARBALL)
 	cd $(GAPI_PARSER_PATH) && $(MAKE) \
 		&& PATH=.:$$PATH $(MONO) --debug gapi-parser.exe $(GTK_SHARP_28_SOURCES_FILE)
 	
