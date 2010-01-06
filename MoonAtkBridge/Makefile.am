@@ -75,7 +75,7 @@ CSCFLAGS = \
 
 OUT = -out:bin/raw/$(ASSEMBLY)
 DUMMY_REFERENCES = /r:mscorlib.dll /r:MoonAtkBridge.dll
-DUMMY_COMPILATION = $(SMCS) /t:exe ../../DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:DummyEntryPoint.exe
+DUMMY_COMPILATION = $(SMCS) /t:exe ../../resources/DummyEntryPoint.cs $(DUMMY_REFERENCES) /out:DummyEntryPoint.exe
 
 # check if there are differences between moon upstream and local
 # (if there are, build will fail until you commit the new file)
