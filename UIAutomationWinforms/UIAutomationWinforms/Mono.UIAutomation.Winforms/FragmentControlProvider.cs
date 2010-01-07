@@ -521,7 +521,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public int[] GetRuntimeId ()
 		{
-			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
+			return new int [] { AutomationInteropProvider.AppendRuntimeId,
+				System.Diagnostics.Process.GetCurrentProcess ().Id,
 				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
 		}
 		

@@ -1,3 +1,7 @@
+2010-01-08  Matt Guo  <matt@mattguo.com>
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/FragmentControlProvider.cs: 
+	Fix GetRuntimeId bug
+
 2009-11-30  Stephen Shaw <sshaw@decriptor.com>
 
 	* configure.ac: Changed mono-uia >= 1.9.0 to 1.8.90
