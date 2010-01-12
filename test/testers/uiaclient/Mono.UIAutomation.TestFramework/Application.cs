@@ -1,3 +1,5 @@
+
+
 ﻿// Application.cs: launch the appointed application.
 //
 // This program is free software; you can redistribute it and/or modify it under
@@ -24,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Mono.UIAutomation.TestFramework
 {
@@ -44,9 +47,7 @@ namespace Mono.UIAutomation.TestFramework
 			procedureLogger.Action ("Launch " + this.sample);
 			try {
 				Process.Start (sample);
-				String ExpectResult = null;
-				ExpectResult = string.Format ("{0} launched.", sample);
-				procedureLogger.ExpectedResult (ExpectResult);
+				Thread.Sleep (Config.Instance.ShortDelay);
 			} catch (Exception e) {
 				Console.WriteLine (e.Message);
 				Process.GetCurrentProcess ().Kill ();
