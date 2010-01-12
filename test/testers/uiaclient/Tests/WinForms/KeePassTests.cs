@@ -62,8 +62,8 @@ namespace Tests
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
-			window.Close (false);
-			window.Find<Button> ("Discard changes").Click (false);
+			window.Close ();
+			window.Find<Button> ("Discard changes").Click ();
 		}
 
 		//TestCase101 Init Sample, create a new account
@@ -78,18 +78,20 @@ namespace Tests
 			//101.1 Click the "New..." button on the toolbar.
 			var toolBar = window.Find<ToolBar> ();
 			toolBar.Find<Button> ("New...").Click (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.\n");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
+			//BUG569846 [uiaclient-winforms]: the uiaclient winforms tests can't be run 
+			//correctly on Linux 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			var fileNameEdit = newPassDialog.Find<Edit> ("File name:");
-			fileNameEdit.SetValue ("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
+			fileNameComboBox.SetValue("TestCase101");
 			procedureLogger.ExpectedResult ("\"TestCase101\" entered in the \"File Name\" box.");
-			Assert.AreEqual (fileNameEdit.Value, "TestCase101");
+			Assert.AreEqual (fileNameComboBox.Value, "TestCase101");
 			Thread.Sleep(Config.Instance.ShortDelay);
-
+			
 			//101.3 Change the view of list to "Extra Large Icons"
 			var itemViewList = newPassDialog.Find<MyList> ("Items View");
 			if (itemViewList.GetSupportedViews ().Contains<int> (0))

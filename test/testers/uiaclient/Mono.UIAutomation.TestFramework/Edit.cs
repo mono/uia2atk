@@ -51,7 +51,7 @@ namespace Mono.UIAutomation.TestFramework
 			vp.SetValue (value);
 		}
 
-		// The property of ValuePattern
+		// The ValuePattern's property
 		public string Value {
 			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
 		}

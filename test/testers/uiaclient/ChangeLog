@@ -1,3 +1,11 @@
+
+2010-01-11  felicia Mu  <fxmu@novell.com>
+	* testers/uiaclient/Mono.UIAutomation.TestFramework/Element.cs:
+	* testers/uiaclient/Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* testers/uiaclient/Mono.UIAutomation.TestFramework/Edit.cs:
+	* Tests/WinForms/KeePassTests.cs: modify to add setvalue method
+	in Combobox and make testcase101 can run. 
+
 2010-01-12  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/mono.uiautomation.testframework.pc.in:

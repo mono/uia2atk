@@ -82,7 +82,7 @@ namespace Mono.UIAutomation.TestFramework
 		protected Element Find (ControlType type, string name, string automationId)
 		{
 			Condition cond;
-
+			
 			if (automationId == string.Empty && name != string.Empty) {
 				cond = new AndCondition (new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, type),
 					new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
@@ -108,7 +108,7 @@ namespace Mono.UIAutomation.TestFramework
 			return null;
 		}
 
-		protected T [] FindAll<T> (ControlType type) where T : Element
+		public T [] FindAll<T> (ControlType type) where T : Element
 		{
 			for (int i = 0; i < Config.Instance.RetryTimes; i++) {
 				var cond = new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, type);

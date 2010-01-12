@@ -35,6 +35,26 @@ namespace Mono.UIAutomation.TestFramework
 			: base (elm)
 		{
 		}
+		
+		// The ValuePattern's method
+		public void SetValue (string value)
+		{
+			SetValue (value, true);
+		}
+
+		public void SetValue (string value, bool log)
+		{
+			if (log == true)
+				procedureLogger.Action (string.Format ("Set {0} to {1}.", value, this.Name));
+
+			ValuePattern vp = (ValuePattern) element.GetCurrentPattern (ValuePattern.Pattern);
+			vp.SetValue (value);
+		}
+
+		// The ValuePattern's property
+		public string Value {
+			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
+		}
 
 		// The methods of ExpandCollapsePattern
 		public void Expand ()
