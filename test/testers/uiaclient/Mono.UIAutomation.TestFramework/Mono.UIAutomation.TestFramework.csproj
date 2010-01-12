@@ -71,27 +71,15 @@
     <Compile Include="TabItem.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ProcedureLogger.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="ToolBar.cs" />
     <Compile Include="UIAutomationMetadata.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\novell_logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\procedures.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\procedures.xsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\uiaqa_logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

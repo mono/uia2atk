@@ -1,4 +1,4 @@
-﻿// DockPattern.cs: Tests for DockPattern
+// DockPattern.cs: Tests for DockPattern
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ using System.Diagnostics;
 using Mono.UIAutomation.TestFramework;
 using NUnit.Framework;
 
-namespace Tests
+namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 {
 	[TestFixture]
 	public class DockPatternTests : TestBase

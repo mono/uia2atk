@@ -3,4 +3,4 @@ Description: Tests
 Version: 0.1
 
 Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/Tests.dll
+Libs: -r:@expanded_libdir@/@PACKAGE@/MonoTests.Mono.UIAutomation.UIAClientAPI.dll

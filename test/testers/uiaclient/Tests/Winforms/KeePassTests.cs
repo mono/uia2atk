@@ -36,10 +36,8 @@ using NUnit.Framework;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.TestFramework;
-using MyList = Mono.UIAutomation.TestFramework.List;
-using MyText = Mono.UIAutomation.TestFramework.Text;
 
-namespace Tests
+namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 {
 	[TestFixture]
 	public class KeePassTests : TestBase
@@ -62,8 +60,8 @@ namespace Tests
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
-			window.Close ();
-			window.Find<Button> ("Discard changes").Click ();
+			window.Close (false);
+			window.Find<Button> ("Discard changes").Click (false);
 		}
 
 		//TestCase101 Init Sample, create a new account
@@ -78,22 +76,20 @@ namespace Tests
 			//101.1 Click the "New..." button on the toolbar.
 			var toolBar = window.Find<ToolBar> ();
 			toolBar.Find<Button> ("New...").Click (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.\n");
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
-			//BUG569846 [uiaclient-winforms]: the uiaclient winforms tests can't be run 
-			//correctly on Linux 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
+			var fileNameEdit = newPassDialog.Find<Edit> ("File name:");
+			fileNameEdit.SetValue ("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
-			fileNameComboBox.SetValue("TestCase101");
 			procedureLogger.ExpectedResult ("\"TestCase101\" entered in the \"File Name\" box.");
-			Assert.AreEqual (fileNameComboBox.Value, "TestCase101");
+			Assert.AreEqual (fileNameEdit.Value, "TestCase101");
 			Thread.Sleep(Config.Instance.ShortDelay);
-			
+
 			//101.3 Change the view of list to "Extra Large Icons"
-			var itemViewList = newPassDialog.Find<MyList> ("Items View");
+			var itemViewList = newPassDialog.Find<List> ("Items View");
 			if (itemViewList.GetSupportedViews ().Contains<int> (0))
 				itemViewList.SetCurrentView (0);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -247,7 +243,7 @@ namespace Tests
 
 			//102.10 Select list item "30" on the "Icon Picker" dialog.
 			var iconPickerWindow = editGroupWindow.Find<Window> ("Icon Picker");
-			var standardIconList = iconPickerWindow.Finder.ByAutomationId ("m_lvIcons").Find<MyList> ();
+			var standardIconList = iconPickerWindow.Finder.ByAutomationId ("m_lvIcons").Find<List> ();
 			var listItem30 = standardIconList.Find<ListItem> ("30");
 			listItem30.Select ();
 			procedureLogger.ExpectedResult ("The \"30\" list item is selected.");
@@ -480,7 +476,6 @@ namespace Tests
 			//103.16 Type the "aa" into the "Name" edit
 			procedureLogger.Action ("Type the \"aa\" into the \"Name\" edit");
 			var editEntryStringWindow = window.Find<Window> ("Edit Entry String");
-			var nameEdit = editEntryStringWindow.Find<Edit> ("Name:");
 			SWF.SendKeys.SendWait ("aa");
 			procedureLogger.ExpectedResult ("the \"name\" edit 's value is \"aa\"");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -492,7 +487,7 @@ namespace Tests
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.18 Check the "aa" text's TableItemPattern
-			var aaText = addEntryDialog.Find<MyText> ("aa");
+			var aaText = addEntryDialog.Find<Text> ("aa");
 
 			procedureLogger.Action ("Check \"aa\" text's TableItemPattern's Column property");
 			Assert.AreEqual (0, aaText.Column);
@@ -516,7 +511,7 @@ namespace Tests
 
 			procedureLogger.Action ("Check \"aa\" text's TableItemPattern's ContainingGrid property");
 			AutomationElement dataGridItem = notesDatagrid.GetItem (0, 0);
-			AutomationElement aatextItem = window.Find<MyText> ("aa").AutomationElement;
+			AutomationElement aatextItem = window.Find<Text> ("aa").AutomationElement;
 			Assert.AreEqual (dataGridItem, aatextItem);
 			procedureLogger.ExpectedResult ("The \"aa\" text's ContainingGrid should be 0");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -583,7 +578,6 @@ namespace Tests
 
 			//104.7  Input the "email" into the title  edit
 			procedureLogger.Action ("Input the \"email\" into the title edit ");
-			var notesEdit = newPassDialog.Find<Edit> ("Notes:");
 			SWF.SendKeys.SendWait ("email");
 			procedureLogger.ExpectedResult ("The \"email\" field is inputted into the \"Notes\" edit");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -638,7 +632,7 @@ namespace Tests
 			//104.14 Get the (0,0) element of the datagrid , check if it is "Sample Entry"
 			procedureLogger.Action ("Get the (0,0) element of the datagrid , check if it is \"Sample Entry\"");
 			AutomationElement dataGridItem = dataGrid.GetItem (0, 0);
-			AutomationElement textItem = window.Find<MyText> ("Sample Entry").AutomationElement;
+			AutomationElement textItem = window.Find<Text> ("Sample Entry").AutomationElement;
 			Assert.AreEqual (dataGridItem, textItem);
 			procedureLogger.ExpectedResult ("the (0,0) item in the datagrid should be Sample Entry");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -771,7 +765,7 @@ namespace Tests
 
 			//104.28 Check the TableItem's property of text in data grid
 			procedureLogger.Action ("Check the TableItemColumn of the text in datagrid");
-			MyText sampleText = window.Find<MyText> ("Sample Entry");
+			var sampleText = window.Find<Text> ("Sample Entry");
 			Assert.AreEqual (0, sampleText.TableItemColumn);
 			procedureLogger.ExpectedResult ("the TableItemColumn of the text in datagrid should be 0");
 			Thread.Sleep (Config.Instance.ShortDelay);

@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 		
-		// The ValuePattern's method
+		// The method of ValuePattern
 		public void SetValue (string value)
 		{
 			SetValue (value, true);
@@ -51,7 +51,7 @@ namespace Mono.UIAutomation.TestFramework
 			vp.SetValue (value);
 		}
 
-		// The ValuePattern's property
+		// The property of ValuePattern
 		public string Value {
 			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
 		}
@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.TestFramework
 			ecp.Expand ();
 		}
 
-		//Collapse the combobox
+		// Collapse the combobox
 		public void Collapse ()
 		{
 			Collapse (true);

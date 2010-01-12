@@ -1,4 +1,4 @@
-﻿// Element.cs: the base class of each control class wrapper.
+// Element.cs: the base class of each control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -52,11 +52,11 @@ namespace Mono.UIAutomation.TestFramework
 			const int MAX_NAME_DISPLAY_LEN = 32;
 			string name = element.Current.Name;
 			if (name.Length > MAX_NAME_DISPLAY_LEN)
-				name = name.Substring (0, MAX_NAME_DISPLAY_LEN) + "...";  // <- Sometimes the name could be super long, e.g. for a RichTextBox, the name will be its whole content.
+				// Sometimes the name could be super long, e.g. for a RichTextBox, the name will be its whole content.
+				name = name.Substring (0, MAX_NAME_DISPLAY_LEN) + "...";
 			return string.Format ("\"{0}\" {1}",
-			    name, UIAutomationMetadata.GetControlTypeName (element.Current.ControlType));
+				name, UIAutomationMetadata.GetControlTypeName (element.Current.ControlType));
 		}
-
 
 		public AutomationElement AutomationElement {
 			get { return element; }
@@ -82,7 +82,7 @@ namespace Mono.UIAutomation.TestFramework
 		protected Element Find (ControlType type, string name, string automationId)
 		{
 			Condition cond;
-			
+
 			if (automationId == string.Empty && name != string.Empty) {
 				cond = new AndCondition (new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, type),
 					new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));

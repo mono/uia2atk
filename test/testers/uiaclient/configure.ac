@@ -47,15 +47,16 @@ fi
 
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
+PKG_CHECK_MODULES([NUNIT], [nunit])
 
 dnl package checks, per config
 
 
 AC_CONFIG_FILES([
-Tests/tests.pc
-Tests/Makefile
 Mono.UIAutomation.TestFramework/mono.uiautomation.testframework.pc
 Mono.UIAutomation.TestFramework/Makefile
+Tests/tests.pc
+Tests/Makefile
 Makefile
 
 ])

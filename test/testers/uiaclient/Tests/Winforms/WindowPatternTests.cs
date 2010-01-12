@@ -36,7 +36,7 @@ using Mono.UIAutomation.TestFramework;
 using NUnit.Framework;
 using System.Windows.Automation;
 
-namespace Tests
+namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 {
 	[TestFixture]
 	public class WindowPatternTests : TestBase

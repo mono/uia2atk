@@ -1,3 +1,31 @@
+2010-01-12  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Properties/AssemblyInfo.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/Resources:
+	* Mono.UIAutomation.TestFramework/Resources/procedures.xsl:
+	* Mono.UIAutomation.TestFramework/Resources/novell_logo.png:
+	* Mono.UIAutomation.TestFramework/Resources/procedures.css:
+	* Mono.UIAutomation.TestFramework/Resources/uiaqa_logo.png:
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj
+	* Mono.UIAutomation.TestFramework/AssemblyInfo.cs:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	* Tests/AssemblyInfo.cs:
+	* Tests/Tests.csproj:
+	* Tests/WinForms:
+	* Tests/WinForms/KeePassTests.cs:
+	* Tests/WinForms/DockPatternTests.cs:
+	* Tests/WinForms/WindowPatternTests.cs:
+	* Tests/Winforms:
+	* Tests/Winforms/KeePassTests.cs:
+	* Tests/Winforms/DockPatternTests.cs:
+	* Tests/Winforms/WindowPatternTests.cs:
+	* Tests/tests.pc.in:
+	* Tests/Makefile.am:
+	* Tests/Resources:
+	* Tests/Properties/AssemblyInfo.cs:
+	* configure.ac:
+	* Makefile.am:
+	Project structure adjustment.
 
 2010-01-11  felicia Mu  <fxmu@novell.com>
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/Element.cs:
