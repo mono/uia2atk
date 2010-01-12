@@ -1,0 +1,14 @@
+2010-01-12  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/mono.uiautomation.testframework.pc.in:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	* configure.ac:
+	* Makefile.am:
+	* autogen.sh: 
+	* Tests/Makefile.am: Update autotools scripts, so that the project 
+	could be built on GNU/Linux.
+	* Mono.UIAutomation.TestFramework/UIAutomationMetadata.cs:
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj
+	* Mono.UIAutomation.TestFramework/TestBase.cs:
+	* Tests/Tests.csproj: Update nunit reference path.
+	* ChangeLog: Add ChangeLog for uiaclient.

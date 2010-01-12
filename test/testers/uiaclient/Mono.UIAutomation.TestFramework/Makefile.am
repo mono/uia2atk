@@ -6,7 +6,7 @@ EXTRA_DIST =
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG;TRACE"
-ASSEMBLY = bin/Debug/UIAClientTestFramework.dll
+ASSEMBLY = bin/Debug/Mono.UIAutomation.TestFramework.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
@@ -17,15 +17,15 @@ NOVELL_LOGO_PNG_SOURCE=Resources/novell_logo.png
 PROCEDURES_CSS_SOURCE=Resources/procedures.css
 PROCEDURES_XSL_SOURCE=Resources/procedures.xsl
 UIAQA_LOGO_PNG_SOURCE=Resources/uiaqa_logo.png
-UIACLIENTTESTFRAMEWORK_DLL_MDB_SOURCE=bin/Debug/UIAClientTestFramework.dll.mdb
-UIACLIENTTESTFRAMEWORK_DLL_MDB=$(BUILD_DIR)/UIAClientTestFramework.dll.mdb
+MONO_UIAUTOMATION_TESTFRAMEWORK_DLL_MDB_SOURCE=bin/Debug/Mono.UIAutomation.TestFramework.dll.mdb
+MONO_UIAUTOMATION_TESTFRAMEWORK_DLL_MDB=$(BUILD_DIR)/Mono.UIAutomation.TestFramework.dll.mdb
 
 endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ "-define:TRACE"
-ASSEMBLY = bin/Release/UIAClientTestFramework.dll
+ASSEMBLY = bin/Release/Mono.UIAutomation.TestFramework.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
@@ -36,7 +36,7 @@ NOVELL_LOGO_PNG_SOURCE=Resources/novell_logo.png
 PROCEDURES_CSS_SOURCE=Resources/procedures.css
 PROCEDURES_XSL_SOURCE=Resources/procedures.xsl
 UIAQA_LOGO_PNG_SOURCE=Resources/uiaqa_logo.png
-UIACLIENTTESTFRAMEWORK_DLL_MDB=
+MONO_UIAUTOMATION_TESTFRAMEWORK_DLL_MDB=
 
 endif
 
@@ -45,7 +45,7 @@ SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
 	$(CONFIG_XML) \
-	$(UIACLIENTTESTFRAMEWORK_DLL_MDB)  
+	$(MONO_UIAUTOMATION_TESTFRAMEWORK_DLL_MDB)  
 
 PROGRAMFILES_RESOURCES = \
 	$(NOVELL_LOGO_PNG) \
@@ -54,7 +54,7 @@ PROGRAMFILES_RESOURCES = \
 	$(UIAQA_LOGO_PNG)  
 
 LINUX_PKGCONFIG = \
-	$(UIACLIENTTESTFRAMEWORK_PC)  
+	$(MONO_UIAUTOMATION_TESTFRAMEWORK_PC)  
 
 
 RESGEN=resgen2
@@ -62,6 +62,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES) $(PROGRAMFILES_RESOURCES) $(LINUX_PKGCONFIG) 
 
 FILES = \
+	Application.cs \
 	Button.cs \
 	CheckBox.cs \
 	ComboBox.cs \
@@ -85,6 +86,7 @@ FILES = \
 	Properties/AssemblyInfo.cs \
 	Text.cs \
 	ToolBar.cs \
+	UIAutomationMetadata.cs \
 	Utils.cs \
 	Window.cs 
 
@@ -98,10 +100,9 @@ EXTRAS = \
 	Resources/procedures.css \
 	Resources/procedures.xsl \
 	Resources/uiaqa_logo.png \
-	uiaclienttestframework.pc.in 
+	mono.uiautomation.testframework.pc.in 
 
 REFERENCES =  \
-	nunit.framework \
 	System \
 	System.Core \
 	System.Drawing \
@@ -110,8 +111,7 @@ REFERENCES =  \
 	System.Data.DataSetExtensions \
 	System.Data \
 	System.Xml \
-	UIAutomationClient \
-	UIAutomationTypes
+	$(MONO_UIA_LIBS)
 
 DLL_REFERENCES = 
 
@@ -124,14 +124,14 @@ NOVELL_LOGO_PNG = $(BUILD_DIR)/Resources/novell_logo.png
 PROCEDURES_CSS = $(BUILD_DIR)/Resources/procedures.css
 PROCEDURES_XSL = $(BUILD_DIR)/Resources/procedures.xsl
 UIAQA_LOGO_PNG = $(BUILD_DIR)/Resources/uiaqa_logo.png
-UIACLIENTTESTFRAMEWORK_PC = $(BUILD_DIR)/uiaclienttestframework.pc
+MONO_UIAUTOMATION_TESTFRAMEWORK_PC = $(BUILD_DIR)/mono.uiautomation.testframework.pc
 
 $(eval $(call emit-deploy-target,CONFIG_XML))
 $(eval $(call emit-deploy-target,NOVELL_LOGO_PNG))
 $(eval $(call emit-deploy-target,PROCEDURES_CSS))
 $(eval $(call emit-deploy-target,PROCEDURES_XSL))
 $(eval $(call emit-deploy-target,UIAQA_LOGO_PNG))
-$(eval $(call emit-deploy-wrapper,UIACLIENTTESTFRAMEWORK_PC,uiaclienttestframework.pc))
+$(eval $(call emit-deploy-wrapper,MONO_UIAUTOMATION_TESTFRAMEWORK_PC,mono.uiautomation.testframework.pc))
 
 
 $(eval $(call emit_resgen_targets))
