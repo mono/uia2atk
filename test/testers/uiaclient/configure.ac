@@ -46,8 +46,14 @@ fi
 
 
 dnl package checks, common for all configs
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
-PKG_CHECK_MODULES([NUNIT], [nunit])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.8.91])
+PKG_CHECK_MODULES(NUNIT, mono-nunit >= 2.4, nunit_24=yes, nunit_24=no)
+if test "x$nunit_24" = "xno"; then
+    AC_MSG_WARN([Could not find mono-nunit >= 2.4; unit tests will not be available.])
+    enable_tests=no
+else
+    NUNIT_PATH=`pkg-config --variable=libdir mono-nunit`/mono/2.0/
+fi
 
 dnl package checks, per config
 

@@ -1,4 +1,9 @@
 2010-01-12  Ray Wang  <rawang@novell.com>
+	* Tests/Tests.csproj:
+	* Tests/Makefile.am:
+	* configure.ac: Update nunit dependency to mono-nunit.
+
+2010-01-12  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Properties:
 	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
 	* Tests/Properties: Delete useless Properties directory.

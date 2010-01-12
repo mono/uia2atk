@@ -90,7 +90,6 @@ EXTRAS = \
 	tests.pc.in 
 
 REFERENCES =  \
-	$(NUNIT_LIBS) \
 	System \
 	System.Core \
 	System.Windows.Forms \
@@ -98,7 +97,8 @@ REFERENCES =  \
 	System.Data.DataSetExtensions \
 	System.Data \
 	System.Xml \
-	$(MONO_UIA_LIBS)
+	$(MONO_UIA_LIBS) \
+	$(NUNIT_LIBS)
 
 DLL_REFERENCES = 
 
