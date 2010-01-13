@@ -45,8 +45,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 		protected override void LaunchSample ()
 		{
-			string sample = Path.Combine (System.AppDomain.CurrentDomain.BaseDirectory, "DockPatternProvider.exe");
-			Application app = new Application (sample);
+			Application app = new Application ("DockPatternProvider.exe");
 			app.Launch ();
 		}
 

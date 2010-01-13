@@ -1,6 +1,12 @@
 
 2010-01-13  felicia Mu  <fxmu@novell.com>
-	* Tests/WinForms/KeePassTests.cs: call setvalue() method
+	* Tests/WinForms/KeePassTests.cs: 
+	* Tests/Winforms/DockPatternTests.cs:
+	* Tests/Winforms/WindowPatternTests.cs: Simplify the app
+	routin to find.
+
+2010-01-13  felicia Mu  <fxmu@novell.com>
+	* Tests/WinForms/KeePassTests.cs: Call setvalue() method
 	by combobox.
 
 2010-01-12  Ray Wang  <rawang@novell.com>
