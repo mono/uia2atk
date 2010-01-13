@@ -191,9 +191,9 @@ namespace System.Windows.Automation
 
 		public override int GetHashCode ()
 		{
-			int code = 0;
+			int code = 1;
 			foreach (int i in GetRuntimeId ())
-				code ^= i;
+				code = 31 * code + i;
 			return code;
 		}
 
