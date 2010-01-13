@@ -340,7 +340,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (labeledBy == null)
 					return string.Empty;
 				ProviderElementWrapper labeledByWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (labeledBy);
+					AutomationBridge.Instance.FindWrapperByProvider (labeledBy);
 				if (labeledByWrapper == null)
 					return string.Empty;
 				return labeledByWrapper.Path;
@@ -415,7 +415,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (parent == null || parent == fragment)
 					return string.Empty;
 				ProviderElementWrapper parentWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (parent);
+					AutomationBridge.Instance.FindWrapperByProvider (parent);
 				if (parentWrapper == null)
 					return string.Empty;
 				return parentWrapper.Path;
@@ -430,7 +430,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (child == null)
 					return string.Empty;
 				ProviderElementWrapper childWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (child);
+					AutomationBridge.Instance.FindWrapperByProvider (child);
 				if (childWrapper == null)
 					return string.Empty;
 				return childWrapper.Path;
@@ -445,7 +445,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (child == null)
 					return string.Empty;
 				ProviderElementWrapper childWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (child);
+					AutomationBridge.Instance.FindWrapperByProvider (child);
 				if (childWrapper == null)
 					return string.Empty;
 				return childWrapper.Path;
@@ -460,7 +460,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (sibling == null)
 					return string.Empty;
 				ProviderElementWrapper siblingWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (sibling);
+					AutomationBridge.Instance.FindWrapperByProvider (sibling);
 				if (siblingWrapper == null)
 					return string.Empty;
 				return siblingWrapper.Path;
@@ -475,7 +475,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				if (sibling == null)
 					return string.Empty;
 				ProviderElementWrapper siblingWrapper =
-					AutomationBridge.Instance.GetProviderWrapper (sibling);
+					AutomationBridge.Instance.FindWrapperByProvider (sibling);
 				if (siblingWrapper == null)
 					return string.Empty;
 				return siblingWrapper.Path;

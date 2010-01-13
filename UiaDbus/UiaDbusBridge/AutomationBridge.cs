@@ -55,12 +55,12 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		private Dictionary<IRawElementProviderSimple, ProviderElementWrapper> providerWrapperMapping =
 			new Dictionary<IRawElementProviderSimple, ProviderElementWrapper> ();
 		private int windowProviderCount = 0;
-		
+
 		private Application app = null;
-		private bool mainLoopStarted = false;
-		private static bool runMainLoop = false;
+		private volatile bool mainLoopStarted = false;
+		private volatile static bool runMainLoop = false;
 		private Thread mainLoop = null;
-		
+
 		private static volatile Bus sessionBus = null;
 		private static volatile AutomationBridge instance = null;
 		protected static object syncRoot = new object ();
@@ -82,14 +82,15 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		#endregion
 
 		#region Private Static Properties
-		
+
 		private static Bus SessionBus {
 			get {
-				lock (syncRoot) {
-					if (sessionBus == null)
-						sessionBus = Bus.Session;
-					return sessionBus;
-				}
+				if (sessionBus == null)
+					lock (syncRoot) {
+						if (sessionBus == null)
+							sessionBus = Bus.Session;
+					}
+				return sessionBus;
 			}
 		}
 
@@ -115,6 +116,9 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				element as IRawElementProviderSimple;
 
 			ProviderElementWrapper wrapper = null;
+			// no need to lock "providerWrapperMapping read" here,
+			// RaiseAutomationPropertyChangedEvent always happen in the "main thread",
+			// and providerWrapperMapping is only written by RaiseAutomationPropertyChangedEvent.
 			if (!providerWrapperMapping.TryGetValue (simpleProvider, out wrapper))
 				return;
 
@@ -189,9 +193,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 				ProviderElementWrapper element = new ProviderElementWrapper (simpleProvider);
 				element.Register (SessionBus);
-				providerWrapperMapping [simpleProvider] = element;
+				lock (providerWrapperMapping)
+					providerWrapperMapping [simpleProvider] = element;
 				if (providerHandle != IntPtr.Zero)
-					pointerProviderMapping [providerHandle] = simpleProvider;
+					lock (pointerProviderMapping)
+						pointerProviderMapping [providerHandle] = simpleProvider;
 				if (isWindow)
 					app.AddRootElement (element);
 
@@ -231,18 +237,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return true; // TODO
 			}
 		}
-		
+
 		#endregion
 
 		#region Internal Methods and Properties
-
-		internal ProviderElementWrapper GetProviderWrapper (IRawElementProviderSimple provider)
-		{
-			ProviderElementWrapper wrapper = null;
-			if (providerWrapperMapping.TryGetValue (provider, out wrapper))
-				return wrapper;
-			return null;
-		}
 
 		internal static AutomationBridge Instance
 		{
@@ -261,49 +259,59 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		internal string GetFocusedElementPath ()
 		{
-			foreach (var entry in providerWrapperMapping) {
-				object hasFocus = entry.Key.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-				if (hasFocus != null && ((bool)hasFocus))
-					return entry.Value.Path;
+			lock (providerWrapperMapping)
+			{
+				foreach (var entry in providerWrapperMapping) {
+					object hasFocus = entry.Key.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+					if (hasFocus != null && ((bool)hasFocus))
+						return entry.Value.Path;
+				}
 			}
 			return string.Empty;
 		}
 
 		internal IRawElementProviderSimple FindProviderByPath (string path)
 		{
-			foreach (var entry in providerWrapperMapping)
+			lock (providerWrapperMapping)
 			{
-				if (entry.Value.Path == path)
+				foreach (var entry in providerWrapperMapping)
+				{
+					if (entry.Value.Path == path)
 						return entry.Key;
+				}
 			}
 			return null;
 		}
 
 		internal IRawElementProviderSimple FindProviderByRuntimeId (int [] runtimeId)
 		{
-			foreach (var provider in providerWrapperMapping.Keys)
+			lock (providerWrapperMapping)
 			{
-				int [] rid = (int []) provider.GetPropertyValue (
-					AutomationElementIdentifiers.RuntimeIdProperty.Id);
-				if (Automation.Compare (rid, runtimeId))
-					return provider;
+				foreach (var provider in providerWrapperMapping.Keys)
+				{
+					int [] rid = (int []) provider.GetPropertyValue (
+						AutomationElementIdentifiers.RuntimeIdProperty.Id);
+					if (Automation.Compare (rid, runtimeId))
+						return provider;
+				}
 			}
 			return null;
 		}
 
 		internal ProviderElementWrapper FindWrapperByProvider (IRawElementProviderSimple provider)
 		{
-			ProviderElementWrapper wrapper;
-			if (providerWrapperMapping.TryGetValue (provider, out wrapper))
-				return wrapper;
-			return null;
+			ProviderElementWrapper wrapper = null;
+			lock (providerWrapperMapping)
+				providerWrapperMapping.TryGetValue (provider, out wrapper);
+			return wrapper;
 		}
 
 		internal ProviderElementWrapper FindWrapperByHandle (int handle)
 		{
 			IRawElementProviderSimple provider = null;
-			pointerProviderMapping.TryGetValue (new IntPtr (handle),
-			                                    out provider);
+			lock (pointerProviderMapping)
+				pointerProviderMapping.TryGetValue (new IntPtr (handle),
+					out provider);
 			if (provider != null)
 				return FindWrapperByProvider (provider);
 			return null;
@@ -355,31 +363,34 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
 
 			IntPtr providerHandle = IntPtr.Zero;
-			if (controlTypeId == ControlType.Window.Id) {
-				app.RemoveRootElement (element);
-				foreach (IntPtr pointer in pointerWindowProviderMapping.Keys) {
-					if (provider == pointerWindowProviderMapping [pointer]) {
-						providerHandle = pointer;
-						break;
+			lock (pointerProviderMapping) {
+				if (controlTypeId == ControlType.Window.Id) {
+					app.RemoveRootElement (element);
+					foreach (IntPtr pointer in pointerWindowProviderMapping.Keys) {
+						if (provider == pointerWindowProviderMapping [pointer]) {
+							providerHandle = pointer;
+							break;
+						}
+					}
+					pointerWindowProviderMapping.Remove (providerHandle);
+					windowProviderCount--;
+					if (windowProviderCount == 0)
+						lastWindowProvider = true;
+				} else {
+					foreach (IntPtr pointer in pointerProviderMapping.Keys) {
+						if (provider == pointerProviderMapping [pointer]) {
+							providerHandle = pointer;
+							break;
+						}
 					}
 				}
-				pointerWindowProviderMapping.Remove (providerHandle);
-				windowProviderCount--;
-				if (windowProviderCount == 0)
-					lastWindowProvider = true;
-			} else {
-				foreach (IntPtr pointer in pointerProviderMapping.Keys) {
-					if (provider == pointerProviderMapping [pointer]) {
-						providerHandle = pointer;
-						break;
-					}
-				}
+				if (providerHandle != IntPtr.Zero)
+					pointerProviderMapping.Remove (providerHandle);
 			}
-			if (providerHandle != IntPtr.Zero)
-				pointerProviderMapping.Remove (providerHandle);
 
 			element.Unregister ();
-			providerWrapperMapping.Remove (provider);
+			lock (providerWrapperMapping)
+				providerWrapperMapping.Remove (provider);
 			app.RemoveProvider (provider);
 
 			return lastWindowProvider;
@@ -410,8 +421,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			runMainLoop = false;
 			if (mainLoop != null) {// && mainLoop.IsAlive) {
 				SessionBus.Unregister (new ObjectPath (DC.Constants.ApplicationPath));
-				foreach (ProviderElementWrapper wrapper in providerWrapperMapping.Values)
-					wrapper.Unregister ();
+				//lock here since dictionary enumeration is not thread safe
+				lock (providerWrapperMapping)
+					foreach (ProviderElementWrapper wrapper in providerWrapperMapping.Values)
+						wrapper.Unregister ();
 				Log.Info ("Stopping dbus bridge main loop");
 				mainLoop.Abort ();
 			}
