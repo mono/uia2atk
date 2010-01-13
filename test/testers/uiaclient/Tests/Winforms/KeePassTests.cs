@@ -81,11 +81,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			var fileNameEdit = newPassDialog.Find<Edit> ("File name:");
-			fileNameEdit.SetValue ("TestCase101");
+			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
+			fileNameComboBox.SetValue("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("\"TestCase101\" entered in the \"File Name\" box.");
-			Assert.AreEqual (fileNameEdit.Value, "TestCase101");
+			Assert.AreEqual (fileNameComboBox.Value, "TestCase101");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
 			//101.3 Change the view of list to "Extra Large Icons"

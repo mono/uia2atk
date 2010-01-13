@@ -1,3 +1,8 @@
+
+2010-01-13  felicia Mu  <fxmu@novell.com>
+	* Tests/WinForms/KeePassTests.cs: call setvalue() method
+	by combobox.
+
 2010-01-12  Ray Wang  <rawang@novell.com>
 	* Tests/Tests.csproj:
 	* Tests/Makefile.am:
