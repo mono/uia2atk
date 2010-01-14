@@ -99,6 +99,8 @@ namespace Mono.UIAutomation.Source
 
 		AutomationPattern [] GetSupportedPatterns ();
 
-			void SetFocus ();
+		AutomationProperty [] GetSupportedProperties ();
+
+		void SetFocus ();
 	}
 }

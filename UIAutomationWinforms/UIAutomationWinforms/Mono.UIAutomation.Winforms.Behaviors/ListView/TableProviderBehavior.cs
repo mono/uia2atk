@@ -77,6 +77,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				return GetColumnHeaders ();
 			else if (propertyId == TablePatternIdentifiers.RowHeadersProperty.Id)
 				return GetRowHeaders ();
+			else if (propertyId == TablePatternIdentifiers.RowOrColumnMajorProperty.Id)
+				return RowOrColumnMajor;
 			else
 				return base.GetPropertyValue (propertyId);
 		}

@@ -433,6 +433,11 @@ namespace AtspiUiaSource
 			return patterns.ToArray ();
 		}
 
+		public AutomationProperty [] GetSupportedProperties ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public void SetFocus ()
 		{
 			Component component = accessible.QueryComponent ();

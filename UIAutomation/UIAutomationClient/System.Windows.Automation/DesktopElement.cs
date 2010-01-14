@@ -236,6 +236,37 @@ namespace System.Windows.Automation
 			return new AutomationPattern [0];
 		}
 
+		public AutomationProperty [] GetSupportedProperties ()
+		{
+			//TODO need to test whether other properties' values are 'NotSupported'
+			return new AutomationProperty [] {
+				AutomationElementIdentifiers.AcceleratorKeyProperty,
+				AutomationElementIdentifiers.AccessKeyProperty,
+				AutomationElementIdentifiers.AutomationIdProperty,
+				AutomationElementIdentifiers.BoundingRectangleProperty,
+				AutomationElementIdentifiers.ClassNameProperty,
+				AutomationElementIdentifiers.ControlTypeProperty,
+				AutomationElementIdentifiers.FrameworkIdProperty,
+				AutomationElementIdentifiers.HasKeyboardFocusProperty,
+				AutomationElementIdentifiers.HelpTextProperty,
+				AutomationElementIdentifiers.ItemStatusProperty,
+				AutomationElementIdentifiers.ItemTypeProperty,
+				AutomationElementIdentifiers.IsControlElementProperty,
+				AutomationElementIdentifiers.IsContentElementProperty,
+				AutomationElementIdentifiers.IsEnabledProperty,
+				AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+				AutomationElementIdentifiers.IsOffscreenProperty,
+				AutomationElementIdentifiers.IsPasswordProperty,
+				AutomationElementIdentifiers.IsRequiredForFormProperty,
+				AutomationElementIdentifiers.LabeledByProperty,
+				AutomationElementIdentifiers.LocalizedControlTypeProperty,
+				AutomationElementIdentifiers.NameProperty,
+				AutomationElementIdentifiers.OrientationProperty,
+				AutomationElementIdentifiers.ProcessIdProperty,
+				AutomationElementIdentifiers.RuntimeIdProperty
+			};
+		}
+
 		public void SetFocus ()
 		{
 			// TODO: Need to test

@@ -146,7 +146,7 @@ namespace System.Windows.Automation
 		public override bool Equals (Object obj)
 		{
 			AutomationElement other = obj as AutomationElement;
-			if (null == obj)
+			if (null == other)
 				return false;
 
 			return Automation.Compare (this, other);
@@ -429,7 +429,7 @@ namespace System.Windows.Automation
 
 		public AutomationProperty [] GetSupportedProperties ()
 		{
-			throw new NotImplementedException ();
+			return sourceElement.GetSupportedProperties ();
 		}
 
 		public AutomationElement GetUpdatedCache (CacheRequest request)

@@ -1,3 +1,11 @@
+2010-01-14  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationSource/Mono.UIAutomation.Source/IElement.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClient/System.Windows.Automation/DesktopElement.cs: 
+	* UIAutomationClient/System.Windows.Automation/AutomationElement.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs: AutomationElement.SupportedProperties
+
 2010-01-13  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/System.Windows.Automation/AutomationElement.cs:

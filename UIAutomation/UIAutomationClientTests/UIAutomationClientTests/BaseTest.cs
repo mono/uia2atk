@@ -31,7 +31,7 @@ using System.Threading;
 using System.Windows.Automation;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
-
+using At = System.Windows.Automation.Automation;
 using NUnit.Framework;
 
 namespace MonoTests.System.Windows.Automation
@@ -404,6 +404,23 @@ namespace MonoTests.System.Windows.Automation
 			get {
 				return false;
 			}
+		}
+
+		public static AutomationProperty [] GetPatternProperties (AutomationPattern pattern)
+		{
+			List<AutomationProperty> props = new List<AutomationProperty> ();
+			var patternName = string.Format (
+				"System.Windows.Automation.{0}Pattern",
+				At.PatternName (pattern));
+			Type t = typeof(DockPattern).Assembly.GetType(patternName);
+			Assert.IsNotNull (t, "Unknown pattern type");
+			foreach (FieldInfo info in t.GetFields (
+				BindingFlags.Public | BindingFlags.Static)) {
+				if (info.Name.EndsWith ("Property")) {
+					props.Add ((AutomationProperty)info.GetValue (null));
+				}
+			}
+			return props.ToArray();
 		}
 
 		public static void AssertRaises<T> (Action a, string message) where T : Exception

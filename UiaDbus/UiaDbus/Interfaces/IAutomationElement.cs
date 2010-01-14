@@ -100,6 +100,8 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 
 		int [] SupportedPatternIds { get; }
 
+		int [] SupportedPropertyIds { get; }
+
 		void SetFocus ();
 	}
 }

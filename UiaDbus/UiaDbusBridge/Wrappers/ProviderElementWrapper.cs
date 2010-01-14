@@ -64,6 +64,100 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			DockPatternIdentifiers.Pattern.Id,
 			TableItemPatternIdentifiers.Pattern.Id
 		};
+		private static int [] allPropertyIds = {
+			AutomationElementIdentifiers.IsControlElementProperty.Id,
+			AutomationElementIdentifiers.ControlTypeProperty.Id,
+			AutomationElementIdentifiers.IsContentElementProperty.Id,
+			AutomationElementIdentifiers.LabeledByProperty.Id,
+			AutomationElementIdentifiers.NativeWindowHandleProperty.Id,
+			AutomationElementIdentifiers.AutomationIdProperty.Id,
+			AutomationElementIdentifiers.ItemTypeProperty.Id,
+			AutomationElementIdentifiers.IsPasswordProperty.Id,
+			AutomationElementIdentifiers.LocalizedControlTypeProperty.Id,
+			AutomationElementIdentifiers.NameProperty.Id,
+			AutomationElementIdentifiers.AcceleratorKeyProperty.Id,
+			AutomationElementIdentifiers.AccessKeyProperty.Id,
+			AutomationElementIdentifiers.HasKeyboardFocusProperty.Id,
+			AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id,
+			AutomationElementIdentifiers.IsEnabledProperty.Id,
+			AutomationElementIdentifiers.BoundingRectangleProperty.Id,
+			AutomationElementIdentifiers.ProcessIdProperty.Id,
+			AutomationElementIdentifiers.RuntimeIdProperty.Id,
+			AutomationElementIdentifiers.ClassNameProperty.Id,
+			AutomationElementIdentifiers.HelpTextProperty.Id,
+			AutomationElementIdentifiers.ClickablePointProperty.Id,
+			AutomationElementIdentifiers.CultureProperty.Id,
+			AutomationElementIdentifiers.IsOffscreenProperty.Id,
+			AutomationElementIdentifiers.OrientationProperty.Id,
+			AutomationElementIdentifiers.FrameworkIdProperty.Id,
+			AutomationElementIdentifiers.IsRequiredForFormProperty.Id,
+			AutomationElementIdentifiers.ItemStatusProperty.Id,
+			// Comment Is*PatternAvailableProperty since MS.Net never include those 
+			// properties in the return value of AutomationElement.GetSupportedProperties ()
+			//AutomationElementIdentifiers.IsDockPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsTransformPatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id,
+			//AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id,
+			ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id,
+			GridItemPatternIdentifiers.RowProperty.Id,
+			GridItemPatternIdentifiers.ColumnProperty.Id,
+			GridItemPatternIdentifiers.RowSpanProperty.Id,
+			GridItemPatternIdentifiers.ColumnSpanProperty.Id,
+			GridItemPatternIdentifiers.ContainingGridProperty.Id,
+			GridPatternIdentifiers.RowCountProperty.Id,
+			GridPatternIdentifiers.ColumnCountProperty.Id,
+			MultipleViewPatternIdentifiers.CurrentViewProperty.Id,
+			MultipleViewPatternIdentifiers.SupportedViewsProperty.Id,
+			RangeValuePatternIdentifiers.ValueProperty.Id,
+			RangeValuePatternIdentifiers.IsReadOnlyProperty.Id,
+			RangeValuePatternIdentifiers.MinimumProperty.Id,
+			RangeValuePatternIdentifiers.MaximumProperty.Id,
+			RangeValuePatternIdentifiers.LargeChangeProperty.Id,
+			RangeValuePatternIdentifiers.SmallChangeProperty.Id,
+			ScrollPatternIdentifiers.HorizontalScrollPercentProperty.Id,
+			ScrollPatternIdentifiers.HorizontalViewSizeProperty.Id,
+			ScrollPatternIdentifiers.VerticalScrollPercentProperty.Id,
+			ScrollPatternIdentifiers.VerticalViewSizeProperty.Id,
+			ScrollPatternIdentifiers.HorizontallyScrollableProperty.Id,
+			ScrollPatternIdentifiers.VerticallyScrollableProperty.Id,
+			SelectionItemPatternIdentifiers.IsSelectedProperty.Id,
+			SelectionItemPatternIdentifiers.SelectionContainerProperty.Id,
+			SelectionPatternIdentifiers.SelectionProperty.Id,
+			SelectionPatternIdentifiers.CanSelectMultipleProperty.Id,
+			SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id,
+			TablePatternIdentifiers.RowHeadersProperty.Id,
+			TablePatternIdentifiers.ColumnHeadersProperty.Id,
+			TablePatternIdentifiers.RowOrColumnMajorProperty.Id,
+			TogglePatternIdentifiers.ToggleStateProperty.Id,
+			TransformPatternIdentifiers.CanMoveProperty.Id,
+			TransformPatternIdentifiers.CanResizeProperty.Id,
+			TransformPatternIdentifiers.CanRotateProperty.Id,
+			ValuePatternIdentifiers.ValueProperty.Id,
+			ValuePatternIdentifiers.IsReadOnlyProperty.Id,
+			WindowPatternIdentifiers.CanMaximizeProperty.Id,
+			WindowPatternIdentifiers.CanMinimizeProperty.Id,
+			WindowPatternIdentifiers.IsModalProperty.Id,
+			WindowPatternIdentifiers.WindowVisualStateProperty.Id,
+			WindowPatternIdentifiers.WindowInteractionStateProperty.Id,
+			WindowPatternIdentifiers.IsTopmostProperty.Id,
+			DockPatternIdentifiers.DockPositionProperty.Id,
+			TableItemPatternIdentifiers.RowHeaderItemsProperty.Id,
+			TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id
+		};
 
 #endregion
 
@@ -579,6 +673,13 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
+		public int [] SupportedPropertyIds {
+			get {
+				return allPropertyIds
+					.Where (id => SupportsProperty (id))
+					.ToArray ();
+			}
+		}
 #endregion
 
 #region Public Methods and Properties

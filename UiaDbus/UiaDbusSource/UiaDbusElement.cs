@@ -516,6 +516,27 @@ namespace Mono.UIAutomation.UiaDbusSource
 				.ToArray ();
 		}
 
+		public AutomationProperty [] GetSupportedProperties ()
+		{
+			int [] supportedProperties = null;
+			try {
+				supportedProperties = dbusElement.SupportedPropertyIds;
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+			if (supportedProperties == null) {
+				Log.Error ("SupportedPropertyIds returned null for element " +
+				           "with bus name {0} and path {1}",
+				           busName,
+				           dbusPath);
+				return new AutomationProperty [] {};
+			}
+			return supportedProperties
+				.Select (i => AutomationProperty.LookupById (i))
+				.Where (p => p != null)
+				.ToArray ();
+		}
+
 		public void SetFocus ()
 		{
 			dbusElement.SetFocus ();

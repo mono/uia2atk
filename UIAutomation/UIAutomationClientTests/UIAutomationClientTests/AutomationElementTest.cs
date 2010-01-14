@@ -33,7 +33,6 @@ using At = System.Windows.Automation.Automation;
 using System.Linq;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
-
 using NUnit.Framework;
 
 namespace MonoTests.System.Windows.Automation
@@ -1113,6 +1112,17 @@ Thread.Sleep(1000);
 				"passing in null");
 		}
 
+		[Test]
+		public void SupportedPropertiesTest ()
+		{
+			SupportedPropertiesTestInternal (testFormElement);
+			SupportedPropertiesTestInternal (checkBox1Element);
+			SupportedPropertiesTestInternal (groupBox1Element);
+			SupportedPropertiesTestInternal (numericUpDown1Element);
+			SupportedPropertiesTestInternal (textbox1Element);
+			SupportedPropertiesTestInternal (treeView1Element);
+			SupportedPropertiesTestInternal (listView1Element);
+		}
 		#endregion
 
 		#region Private Methods
@@ -1210,6 +1220,27 @@ Thread.Sleep(1000);
 				}
 			}
 
+		}
+
+		private void SupportedPropertiesTestInternal (AutomationElement element)
+		{
+			var supportedProperties = element.GetSupportedProperties ();
+			foreach (AutomationPattern pattern in element.GetSupportedPatterns ()) {
+				foreach (var prop in GetPatternProperties (pattern)) {
+					Assert.IsTrue (supportedProperties.Contains (prop),
+						string.Format ("[{0}] {1} shall be supported since {2} pattern is supported",
+							element.Current.Name,
+							prop.ProgrammaticName,
+							At.PatternName (pattern)));
+				}
+			}
+			foreach (var prop in supportedProperties) {
+				Assert.AreNotEqual (AutomationElement.NotSupported,
+					element.GetCurrentPropertyValue (prop, true),
+					string.Format ("[{0}] {1} shall be supported since it's in SupportedProperties",
+						element.Current.Name,
+						prop.ProgrammaticName));
+			}
 		}
 		#endregion
 	}

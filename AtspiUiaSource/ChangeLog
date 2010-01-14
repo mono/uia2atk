@@ -1,3 +1,7 @@
+2010-01-14  Matt Guo  <matt@mattguo.com>
+
+	* AtspiUiaSource/Element.cs: Add empty method stub for AutomationElement.SupportedProperties
+
 2009-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* AtspiUiaSource.sln:
