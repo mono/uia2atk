@@ -748,3 +748,7 @@
 /AtspiUiaSource/AtspiUiaSourceTests/bin
 /AtspiUiaSource/AtspiUiaSourceTests/atspiuiasourcetest.sh
 
+# /test/testers/uiaclient
+/test/testers/uiaclient/Mono.UIAutomation.TestFramework/bin/
+/test/testers/uiaclient/Tests/bin/
+/test/testers/uiaclient/Tests/test-results/
