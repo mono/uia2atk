@@ -1,5 +1,9 @@
 
 2010-01-13  felicia Mu  <fxmu@novell.com>
+	* Tests//Tests/GTK: Fspot.cs: Write some tests for
+	Fspot. 
+
+2010-01-13  felicia Mu  <fxmu@novell.com>
 	* Tests/WinForms/KeePassTests.cs: 
 	* Tests/Winforms/DockPatternTests.cs:
 	* Tests/Winforms/WindowPatternTests.cs: Simplify the app
