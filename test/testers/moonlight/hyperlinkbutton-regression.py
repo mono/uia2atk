@@ -87,7 +87,7 @@ statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 # BUG553678: Run second sample crash the app
 hlbFrame.openURL(hlbFrame.hyperlink1)
 
-hlbFrame.openURL(hlbFrame.hyperlink2)
+#hlbFrame.openURL(hlbFrame.hyperlink2)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

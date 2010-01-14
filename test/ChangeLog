@@ -1,5 +1,10 @@
 2010-01-14  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/hyperlinkbutton-regression.py: comment out the test 
+	for hyperlink2 due to bug553678
+
+2010-01-14  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/combobox/__init__.py: update firefox path
 
 2010-01-06  Neville Gao  <nevillegao@gmail.com>
