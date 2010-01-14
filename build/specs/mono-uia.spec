@@ -12,7 +12,7 @@
 
 
 Name:           mono-uia
-Version:        1.8.91
+Version:        1.8.92
 Release:        1
 License:        MIT/X11
 Group:          System/Libraries

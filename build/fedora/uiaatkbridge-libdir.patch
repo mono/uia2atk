@@ -1,0 +1,24 @@
+diff -uraN uiaatkbridge.orig//Makefile.include uiaatkbridge.new//Makefile.include
+--- uiaatkbridge.orig//Makefile.include	2009-12-09 12:01:12.000000000 -0700
++++ uiaatkbridge.new//Makefile.include	2010-01-12 11:46:01.000000000 -0700
+@@ -107,7 +107,7 @@
+ 	mkdir -p '$(@D)'
+ 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
+ 
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ 
+ gac-install: $(POLICY_ASSEMBLIES)
+ 	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
+diff -uraN uiaatkbridge.orig//UiaAtkBridge/Makefile.in uiaatkbridge.new//UiaAtkBridge/Makefile.in
+--- uiaatkbridge.orig//UiaAtkBridge/Makefile.in	2009-12-09 12:01:19.000000000 -0700
++++ uiaatkbridge.new//UiaAtkBridge/Makefile.in	2010-01-12 11:46:21.000000000 -0700
+@@ -383,7 +383,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:

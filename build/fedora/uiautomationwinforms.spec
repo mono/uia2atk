@@ -5,29 +5,26 @@
 #
 
 Name:           uiautomationwinforms
-Version:        1.8.90
+Version:        1.8.92
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/uiautomationwinforms/%{name}-%{version}.tar.bz2
+Patch0:         uiautomationwinforms-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       glib-sharp2 >= 2.12.8
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.6
 Requires:       mono-data >= 2.6
-Requires:       mono-uia >= 1.8.90
-Requires:       mono-winfxcore >= 2.6
-Requires:       uiaatkbridge >= 1.8.90
-BuildRequires:  gtk-sharp2 >= 2.12.8
-BuildRequires:  glib-sharp2 >= 2.12.8 
+Requires:       mono-uia >= 1.8.92
+Requires:       uiaatkbridge >= 1.8.92
+BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:	mono-devel >= 2.6
 BuildRequires:  mono-data >= 2.6
 BuildRequires:	mono-nunit >= 2.6
-BuildRequires:  mono-uia >= 1.8.90
-BuildRequires:  mono-uia-devel >= 1.8.90
-BuildRequires:  mono-winfxcore >= 2.6
-BuildRequires:  uiaatkbridge >= 1.8.90
+BuildRequires:  mono-uia >= 1.8.92
+BuildRequires:  mono-uia-devel >= 1.8.92
+BuildRequires:  uiaatkbridge >= 1.8.92
 BuildRequires:  intltool
 
 Summary:        Implementation of UIA providers
@@ -37,6 +34,7 @@ Implementation of UIA providers for Mono's Winforms controls
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --disable-tests

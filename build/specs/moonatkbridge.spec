@@ -3,7 +3,7 @@
 #
 
 Name:           moonatkbridge
-Version:        1.8.91
+Version:        1.8.92
 Release:        1
 License:        MIT
 Group:          System/Libraries

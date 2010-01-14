@@ -4,25 +4,25 @@
 #
 
 Name:           uiaatkbridge
-Version:        1.8.90
+Version:        1.8.92
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/uiaatkbridge/%{name}-%{version}.tar.bz2
+Patch0:         uiaatkbridge-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       at-spi >= 1.24.0
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.6
-Requires:       mono-uia >= 1.8.90
-Requires:       mono-winfxcore >= 2.6
+Requires:       mono-uia >= 1.8.92
 BuildRequires:  atk-devel >= 1.24
 BuildRequires:  gtk2-devel >= 2.14
-BuildRequires:  gtk-sharp2 >= 2.12.8
+#BuildRequires:  gtk-sharp2 >= 2.12.8
+BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:	mono-devel >= 2.6
-BuildRequires:	mono-uia >= 1.8.90
-BuildRequires:	mono-uia-devel >= 1.8.90
-BuildRequires:  mono-winfxcore >= 2.6
+BuildRequires:	mono-uia >= 1.8.92
+BuildRequires:	mono-uia-devel >= 1.8.92
 
 Summary:        Bridge between UIA providers and ATK
 
@@ -34,6 +34,7 @@ Automation core to send it automation events and provider information.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --disable-tests

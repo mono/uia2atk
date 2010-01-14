@@ -1,0 +1,24 @@
+diff -uraN uiautomationwinforms.orig/Makefile.include uiautomationwinforms.new/Makefile.include
+--- uiautomationwinforms.orig/Makefile.include	2009-12-09 12:00:30.000000000 -0700
++++ uiautomationwinforms.new/Makefile.include	2010-01-12 11:59:20.000000000 -0700
+@@ -107,7 +107,7 @@
+ 	mkdir -p '$(@D)'
+ 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
+ 
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ 
+ gac-install: $(POLICY_ASSEMBLIES)
+ 	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
+diff -uraN uiautomationwinforms.orig/UIAutomationWinforms/Makefile.in uiautomationwinforms.new/UIAutomationWinforms/Makefile.in
+--- uiautomationwinforms.orig/UIAutomationWinforms/Makefile.in	2009-12-09 12:00:36.000000000 -0700
++++ uiautomationwinforms.new/UIAutomationWinforms/Makefile.in	2010-01-12 11:59:44.000000000 -0700
+@@ -877,7 +877,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:

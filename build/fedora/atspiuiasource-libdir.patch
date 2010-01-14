@@ -1,0 +1,24 @@
+diff -uraN atspiuiasource.orig/AtspiUiaSource/Makefile.in atspiuiasource.new/AtspiUiaSource/Makefile.in
+--- atspiuiasource.orig/AtspiUiaSource/Makefile.in	2009-12-16 10:29:31.000000000 -0700
++++ atspiuiasource.new/AtspiUiaSource/Makefile.in	2010-01-12 15:03:18.000000000 -0700
+@@ -321,7 +321,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:
+diff -uraN atspiuiasource.orig/Makefile.include atspiuiasource.new/Makefile.include
+--- atspiuiasource.orig/Makefile.include	2009-12-16 10:28:35.000000000 -0700
++++ atspiuiasource.new/Makefile.include	2010-01-12 15:03:02.000000000 -0700
+@@ -107,7 +107,7 @@
+ 	mkdir -p '$(@D)'
+ 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
+ 
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ 
+ gac-install: $(POLICY_ASSEMBLIES)
+ 	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) $(PACKAGE_FLAG) || exit 1;

@@ -1,0 +1,72 @@
+diff -uraN uiadbus.orig/data/Makefile.am uiadbus.new/data/Makefile.am
+--- uiadbus.orig/data/Makefile.am	2009-12-16 09:42:48.000000000 -0700
++++ uiadbus.new/data/Makefile.am	2010-01-12 12:05:31.000000000 -0700
+@@ -1,7 +1,7 @@
+ 
+ EXTRA_DIST =  
+ 
+-a11ydir    = $(prefix)/lib/mono/accessibility
++a11ydir    = $(libdir)/mono/accessibility
+ 
+ SHELL = /bin/sh
+ MKINSTALLDIRS = $(SHELL) $(top_srcdir)/mkinstalldirs
+diff -uraN uiadbus.orig/data/Makefile.in uiadbus.new/data/Makefile.in
+--- uiadbus.orig/data/Makefile.in	2009-12-16 09:43:25.000000000 -0700
++++ uiadbus.new/data/Makefile.in	2010-01-12 12:05:05.000000000 -0700
+@@ -172,7 +172,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ EXTRA_DIST = 
+-a11ydir = $(prefix)/lib/mono/accessibility
++a11ydir = $(libdir)/mono/accessibility
+ MKINSTALLDIRS = $(SHELL) $(top_srcdir)/mkinstalldirs
+ INSTALL_D = $(INSTALL) -c -m 644
+ REWRITE = 
+diff -uraN uiadbus.orig/Makefile.include uiadbus.new/Makefile.include
+--- uiadbus.orig/Makefile.include	2009-12-16 09:42:38.000000000 -0700
++++ uiadbus.new/Makefile.include	2010-01-12 12:03:23.000000000 -0700
+@@ -107,7 +107,7 @@
+ 	mkdir -p '$(@D)'
+ 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
+ 
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ 
+ gac-install: $(POLICY_ASSEMBLIES)
+ 	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) $(PACKAGE_FLAG) || exit 1;
+diff -uraN uiadbus.orig/UiaDbus/Makefile.in uiadbus.new/UiaDbus/Makefile.in
+--- uiadbus.orig/UiaDbus/Makefile.in	2009-12-16 09:43:24.000000000 -0700
++++ uiadbus.new/UiaDbus/Makefile.in	2010-01-12 12:05:57.000000000 -0700
+@@ -320,7 +320,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:
+diff -uraN uiadbus.orig/UiaDbusBridge/Makefile.in uiadbus.new/UiaDbusBridge/Makefile.in
+--- uiadbus.orig/UiaDbusBridge/Makefile.in	2009-12-16 09:43:24.000000000 -0700
++++ uiadbus.new/UiaDbusBridge/Makefile.in	2010-01-12 12:03:51.000000000 -0700
+@@ -321,7 +321,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:
+diff -uraN uiadbus.orig/UiaDbusSource/Makefile.in uiadbus.new/UiaDbusSource/Makefile.in
+--- uiadbus.orig/UiaDbusSource/Makefile.in	2009-12-16 09:43:24.000000000 -0700
++++ uiadbus.new/UiaDbusSource/Makefile.in	2010-01-12 12:04:15.000000000 -0700
+@@ -322,7 +322,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:

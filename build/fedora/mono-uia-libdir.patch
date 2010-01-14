@@ -98,3 +98,15 @@ diff -uraN mono-uia-1.0.orig/WindowsBase/Makefile.in mono-uia-1.0/WindowsBase/Ma
  all: all-am
  
  .SUFFIXES:
+diff -uraN UIAutomation/UIAutomationSource/Makefile.in.old UIAutomation/UIAutomationSource/Makefile.in
+--- UIAutomation/UIAutomationSource/Makefile.in.old	2010-01-11 15:09:01.000000000 -0700
++++ UIAutomation/UIAutomationSource/Makefile.in	2010-01-11 15:07:17.000000000 -0700
+@@ -281,7 +281,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+ 
+ .SUFFIXES:

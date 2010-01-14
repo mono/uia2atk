@@ -4,25 +4,26 @@
 #
 
 Name:           atspiuiasource
-Version:        1.8.90
+Version:        1.8.92
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
+Patch0:         atspiuiasource-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  at-spi-sharp-devel
+BuildRequires:  gtk-sharp2-devel >= 2.12.8
+BuildRequires:  mono-devel >= 2.6
+BuildRequires:  mono-uia-devel >= 1.8.92
 Summary:        At-spi uia source
-BuildRequires:	at-spi-sharp-devel
-BuildRequires:	glib-sharp2 >= 2.12.8
-BuildRequires:	mono-devel >= 2.6
-BuildRequires:	mono-uia-devel >= 1.8.90
-BuildRequires:	pkg-config
 
 %description
 At-spi uia source client side
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure --disable-tests
@@ -37,10 +38,8 @@ make DESTDIR=%{buildroot} install
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
-%dir %{_prefix}/lib/mono/gac/AtspiUiaSource
-%{_prefix}/lib/mono/gac/AtspiUiaSource/*
-%dir %{_libdir}/atspiuiasource
+%defattr(-,root,root,-)
+%{_libdir}/mono/gac/AtspiUiaSource/*
 %{_libdir}/atspiuiasource/*
 
 %changelog

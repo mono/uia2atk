@@ -3,6 +3,19 @@ Mono Accessibility News
 
 Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
 
+Version 1.8.92: The "chocoholic" release
+* #554449 - MoonAtkBridge doesn't display the proper accessibles when more than one plugin is loaded
+* #555714 - HyperlinkButton: do click action on accerciser make the firefox crashed
+* #549215 - Investigate and fix latest segfault in Bridge
+* #494719 - Test RepeatButton control
+* #494727 - Test ToggleButton control
+* #552190 - Make sure StructureChanged is raised
+* #553682 - Accerciser shows wrong elements for the first sample
+* #564737 - Update code according to the comments from Review Board.
+* #565859 - Prepare machines to be ready for running tests
+* #567486 - Build atspiuiasource, at-spi-sharp, uiadbus debian package
+* #567919 - Rebuild mono-uia, mono-uia-atkbridge, mono-uia-winforms deb packages
+
 Version 1.8.91: The "beefalo" release
 * #559133 - RadioButton: missing checked and focused states when doing click action
 * #558232 - ProgressBar: value shouldn't be editable
