@@ -1,5 +1,10 @@
 2010-01-14  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/textbox/textboxframe.py,
+	* testers/moonlight/textbox-regression.py: fixed a failure
+
+2010-01-14  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/hyperlinkbutton-regression.py: comment out the test 
 	for hyperlink2 due to bug553678
 

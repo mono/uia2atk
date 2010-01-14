@@ -39,7 +39,7 @@ class TextBoxFrame(accessibles.Frame):
 
         procedurelogger.action('Assert the text of %s' % accessible)
         procedurelogger.expectedResult('%s text is "%s"' % \
-                                                (accessible, accessible.text))
+                                                (accessible, expected_text))
 
         eti = accessible._accessible.queryEditableText()
         actual_text = eti.getText(0, eti.characterCount)
