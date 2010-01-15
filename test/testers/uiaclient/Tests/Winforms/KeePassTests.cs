@@ -59,6 +59,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
+			procedureLogger.Save ();
 			window.Close (false);
 			window.Find<Button> ("Discard changes").Click (false);
 		}
@@ -286,12 +287,20 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (searchCombobox.ExpandCollapseState, ExpandCollapseState.Expanded);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.17 Select the "Enabled" from the "Searching entries in this group" combo box.
+			//102.17 Collapse the "Searching entries in this group" combo box.
+			searchCombobox.Collapse ();
+			procedureLogger.ExpectedResult ("\"Searching entries in this group\" combox box is collapsed.");
+			Assert.AreEqual (searchCombobox.ExpandCollapseState, ExpandCollapseState.Expanded);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//102.18 Select the "Enabled" from the "Searching entries in this group" combo box.
+			searchCombobox.Expand ();
+			Thread.Sleep (Config.Instance.ShortDelay);
 			searchCombobox.Find<ListItem> ("Enabled").Select ();
 			procedureLogger.ExpectedResult ("The \"Enabled\" list item is selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.18 Click the "OK" button on the  "Edit Group" dialog.
+			//102.19 Click the "OK" button on the  "Edit Group" dialog.
 			editGroupWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Edit Group\" dialog disappears.");
 			Thread.Sleep (Config.Instance.ShortDelay);

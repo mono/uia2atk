@@ -58,8 +58,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
+			procedureLogger.Save ();
 			window.Close ();
-			window.Find<Button> ("Discard changes").Click ();
 		}
 
 		[Test]

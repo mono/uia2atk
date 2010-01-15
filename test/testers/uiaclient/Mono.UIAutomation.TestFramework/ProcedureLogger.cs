@@ -1,4 +1,4 @@
-﻿// ProcedureLogger.cs: ouput the info to screen and write it into a xml file
+// ProcedureLogger.cs: ouput the info to screen and write it into a xml file
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -34,10 +34,20 @@ namespace Mono.UIAutomation.TestFramework
 	{
 		static StringBuilder actionBuffer;
 		static StringBuilder expectedResultBuffer;
+		private string testName = string.Empty;
 		private static List<List<string>> procedures;
 		private static DateTime startTime;
 
-		public static void Init()
+		public ProcedureLogger ()
+		{
+		}
+
+		public ProcedureLogger (string testName)
+		{
+			this.testName = testName;
+		}
+
+		public static void Init ()
 		{
 			actionBuffer = new StringBuilder ();
 			expectedResultBuffer = new StringBuilder ();
@@ -55,7 +65,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Action (string action)
 		{
 			FlushBuffer ();
-			actionBuffer.Append(action);
+			actionBuffer.Append (action);
 			actionBuffer.Append (" ");
 			Console.WriteLine ("Action: {0}", action);
 		}
@@ -96,13 +106,13 @@ namespace Mono.UIAutomation.TestFramework
 
 			//add <name> element
 			XmlElement nameElm = xmlDoc.CreateElement ("name");
-			XmlText nameElmText = xmlDoc.CreateTextNode ("KeePass");
+			XmlText nameElmText = xmlDoc.CreateTextNode (this.testName);
 			nameElm.AppendChild (nameElmText);
 			rootElm.AppendChild (nameElm);
 
 			//add <description> element
 			XmlElement descElm = xmlDoc.CreateElement ("description");
-			XmlText descElmText = xmlDoc.CreateTextNode ("Test cases for KeePass");
+			XmlText descElmText = xmlDoc.CreateTextNode (string.Format("Test cases for {0}", this.testName));
 			descElm.AppendChild (descElmText);
 			rootElm.AppendChild (descElm);
 
@@ -122,20 +132,20 @@ namespace Mono.UIAutomation.TestFramework
 
 				//add <action> element in <step> element
 				XmlElement actionElm = xmlDoc.CreateElement ("action");
-				XmlText actionElmText = xmlDoc.CreateTextNode (p [0]);
+				XmlText actionElmText = xmlDoc.CreateTextNode (p[0]);
 				actionElm.AppendChild (actionElmText);
 				stepElm.AppendChild (actionElm);
 
 				//add <expectedResult> element in <step> element
 				XmlElement resultElm = xmlDoc.CreateElement ("expectedResult");
-				XmlText resultElmText = xmlDoc.CreateTextNode (p [1]);
+				XmlText resultElmText = xmlDoc.CreateTextNode (p[1]);
 				resultElm.AppendChild (resultElmText);
 				stepElm.AppendChild (resultElm);
 
 				//add <screenshot> element in <step> element
 				if (Config.Instance.TakeScreenShots) {
 					XmlElement screenshotElm = xmlDoc.CreateElement ("screenshot");
-					XmlText screenshotElmText = xmlDoc.CreateTextNode (p [2]);
+					XmlText screenshotElmText = xmlDoc.CreateTextNode (p[2]);
 					//add if clause to determine whether has a screenshot or not.
 					screenshotElm.AppendChild (screenshotElmText);
 					stepElm.AppendChild (screenshotElm);
@@ -143,7 +153,6 @@ namespace Mono.UIAutomation.TestFramework
 
 				procElm.AppendChild (stepElm);
 			}
-
 
 			rootElm.AppendChild (procElm);
 
@@ -170,15 +179,22 @@ namespace Mono.UIAutomation.TestFramework
 		 */
 		private void FlushBuffer ()
 		{
-			if (actionBuffer.Length != 0  && expectedResultBuffer.Length != 0) {
+			if (actionBuffer.Length != 0 && expectedResultBuffer.Length != 0) {
 				if (Config.Instance.TakeScreenShots) {
 					string filename = string.Format ("screen{0:00}.png", procedures.Count + 1);
 					// take screenshot
 					Utils.TakeScreenshot (Path.Combine (Config.Instance.OutputDir, filename));
 					Console.WriteLine ("Screenshot: " + filename);
-					procedures.Add (new List<string> { actionBuffer.ToString().TrimEnd (), expectedResultBuffer.ToString().TrimEnd (), filename });
+					procedures.Add (new List<string> {
+						actionBuffer.ToString ().TrimEnd (),
+						expectedResultBuffer.ToString ().TrimEnd (),
+						filename
+					});
 				} else {
-					procedures.Add (new List<string> { actionBuffer.ToString().TrimEnd (), expectedResultBuffer.ToString().TrimEnd ()});
+					procedures.Add (new List<string> {
+						actionBuffer.ToString ().TrimEnd (),
+						expectedResultBuffer.ToString ().TrimEnd ()
+					});
 				}
 
 				actionBuffer.Remove (0, actionBuffer.Length);

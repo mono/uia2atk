@@ -1,6 +1,4 @@
-
-
-﻿// Application.cs: launch the appointed application.
+// Application.cs: launch the appointed application.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -33,20 +31,21 @@ namespace Mono.UIAutomation.TestFramework
 	public class Application
 	{
 		protected String sample;
-		protected ProcedureLogger procedureLogger = new ProcedureLogger ();
+		protected ProcedureLogger procedureLogger;
 
 		public Application (String sample)
 		{
 			if (sample == null)
 				throw new ArgumentException ("Sample cannot be null.");
 			this.sample = sample;
+			procedureLogger = new ProcedureLogger(sample);
 		}
 
 		public void Launch ()
 		{
 			procedureLogger.Action ("Launch " + this.sample);
 			try {
-				Process.Start (sample);
+				Process.Start ("mono", sample);
 				Thread.Sleep (Config.Instance.ShortDelay);
 			} catch (Exception e) {
 				Console.WriteLine (e.Message);

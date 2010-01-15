@@ -67,8 +67,6 @@ namespace Mono.UIAutomation.TestFramework
 
 		protected virtual void OnQuit ()
 		{
-			procedureLogger.Action ("Close the application.");
-			procedureLogger.Save ();
 		}
 
 		public Window GetWindow (String title)
