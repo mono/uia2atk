@@ -1,3 +1,8 @@
+2010-01-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Provide a
+	simpler and more accurate algorithm for choosing LabeledBy value.
+
 2009-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs:
