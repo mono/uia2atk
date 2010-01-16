@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetCurrentView (int viewId, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Set current view to {0}.", GetViewName (viewId)));
 
 			MultipleViewPattern mvp = (MultipleViewPattern) element.GetCurrentPattern (MultipleViewPattern.Pattern);

@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Scroll {0} horizontally and {1} vertically.", horizontalAmount.ToString (), verticalAmount.ToString ()));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void ScrollHorizontal (ScrollAmount amount, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Scroll {0} horizontally.", amount.ToString ()));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
@@ -72,7 +72,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void ScrollVertical (ScrollAmount amount, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Scroll {0} vertically..", amount.ToString ()));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
@@ -86,7 +86,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetScrollPercent (double horizontalPercent, double verticalPercent, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Set scroll {0} percent horizontally and {1} percent vertically.", horizontalPercent, verticalPercent));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);

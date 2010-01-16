@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetValue (string value, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Set {0} to {1}.", value, this.Name));
 
 			ValuePattern vp = (ValuePattern) element.GetCurrentPattern (ValuePattern.Pattern);

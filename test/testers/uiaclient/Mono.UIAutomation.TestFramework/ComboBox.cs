@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetValue (string value, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Set {0} to {1}.", value, this.Name));
 
 			ValuePattern vp = (ValuePattern) element.GetCurrentPattern (ValuePattern.Pattern);
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Expand (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Expand {0}.", this.Name));
 
 			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
@@ -79,7 +79,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Collapse (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Collapse {0}.", this.Name));
 
 			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);

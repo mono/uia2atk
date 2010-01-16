@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Move (double x, double y, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Move window to ({0}, {1}).", x, y));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);
@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Resize (double width, double height, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Resize window to {0} width, {1} height.", width, height));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);
@@ -73,7 +73,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Rotate (double degree, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.Name, degree));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);
@@ -100,7 +100,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetWindowVisualState (WindowVisualState state, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Set {0} to be {1}.", this.Name, state));
 
 			WindowPattern wp = (WindowPattern) element.GetCurrentPattern (WindowPattern.Pattern);
@@ -114,7 +114,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Close (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Close {0}.", this.Name));
 
 			WindowPattern wp = (WindowPattern) element.GetCurrentPattern (WindowPattern.Pattern);

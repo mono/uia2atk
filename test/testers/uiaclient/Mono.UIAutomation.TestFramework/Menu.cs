@@ -27,7 +27,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Click (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Click {0}.", this.Name));
 
 			InvokePattern ip = (InvokePattern) element.GetCurrentPattern (InvokePattern.Pattern);

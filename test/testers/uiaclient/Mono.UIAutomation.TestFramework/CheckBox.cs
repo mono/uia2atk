@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Toggle (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Toggle {0}.", this.Name));
 
 			TogglePattern tp = (TogglePattern) element.GetCurrentPattern (TogglePattern.Pattern);

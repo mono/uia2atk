@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetDockPosition (DockPosition position, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Dock {0} to {1}.", this.Name, position));
 
 			DockPattern dp = (DockPattern) element.GetCurrentPattern (DockPattern.Pattern);
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Rotate (double degree, bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.Name, degree));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);

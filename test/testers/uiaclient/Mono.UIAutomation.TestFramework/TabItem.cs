@@ -43,7 +43,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Select (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Select {0}.", this.Name));
 
 			SelectionItemPattern sp = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);

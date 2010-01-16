@@ -43,7 +43,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void ScrollIntoView (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Scroll {0} into view.", this.Name));
 
 			ScrollItemPattern sip = (ScrollItemPattern) element.GetCurrentPattern (ScrollItemPattern.Pattern);
@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void Select (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Select {0}.", this.Name));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void RemoveFromSelection (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Unselect {0}.", this.Name));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
@@ -85,7 +85,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void AddToSelection (bool log)
 		{
-			if (log == true)
+			if (log)
 				procedureLogger.Action (string.Format ("Select {0}.", this.Name));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
