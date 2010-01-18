@@ -1,3 +1,12 @@
+2010-01-18  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Application.cs:
+	* Mono.UIAutomation.TestFramework/TestBase.cs:
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Tests/Winforms/KeePassTests.cs:
+	* Tests/Winforms/DockPatternTests.cs:
+	* Tests/Winforms/WindowPatternTests.cs:
+	Move GetWindow method from TestBase class to Application class.
+
 2010-01-16  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Spinner.cs:

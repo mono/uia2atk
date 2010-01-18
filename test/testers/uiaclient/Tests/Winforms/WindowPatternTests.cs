@@ -41,18 +41,19 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 	[TestFixture]
 	public class WindowPatternTests : TestBase
 	{
-		Window window = null;
+		Window window;
+		Application app;
 
 		protected override void LaunchSample ()
 		{
-			Application app = new Application ("WindowAndTransformPatternProvider.exe");
+			app = new Application ("WindowAndTransformPatternProvider.exe");
 			app.Launch ();
 		}
 
 		protected override void OnSetup ()
 		{
 			base.OnSetup ();
-			window = GetWindow ("WindowPattern and TransformPattern Test");
+			window = app.GetWindow ("WindowPattern and TransformPattern Test");
 		}
 
 		protected override void OnQuit ()

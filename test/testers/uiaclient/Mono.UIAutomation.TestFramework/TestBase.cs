@@ -69,12 +69,6 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		public Window GetWindow (String title)
-		{
-			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, new PropertyCondition (AutomationElementIdentifiers.NameProperty, title));
-			return new Window (ae);
-		}
-
 		public void HandleException (Exception ex)
 		{
 			procedureLogger.Action ("Error: " + ex.ToString());

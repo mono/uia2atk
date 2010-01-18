@@ -41,18 +41,19 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 	[TestFixture]
 	public class DockPatternTests : TestBase
 	{
-		Window window = null;
+		Window window;
+		Application app;
 
 		protected override void LaunchSample ()
 		{
-			Application app = new Application ("DockPatternProvider.exe");
+			app = new Application ("DockPatternProvider.exe");
 			app.Launch ();
 		}
 
 		protected override void OnSetup ()
 		{
 			base.OnSetup ();
-			window = GetWindow ("DockPattern Test");
+			window = app.GetWindow ("DockPattern Test");
 		}
 
 		protected override void OnQuit ()

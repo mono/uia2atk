@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Automation;
 
 namespace Mono.UIAutomation.TestFramework
 {
@@ -51,6 +52,12 @@ namespace Mono.UIAutomation.TestFramework
 				Console.WriteLine (e.Message);
 				Process.GetCurrentProcess ().Kill ();
 			}
+		}
+		
+		public Window GetWindow (String title)
+		{
+			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, new PropertyCondition (AutomationElementIdentifiers.NameProperty, title));
+			return new Window (ae);
 		}
 	}
 }

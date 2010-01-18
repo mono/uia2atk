@@ -1,4 +1,4 @@
-﻿// DataGrid.cs: DataGrid control class wrapper.
+// DataGrid.cs: DataGrid control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -118,7 +118,9 @@ namespace Mono.UIAutomation.TestFramework
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format("Scroll {0} horizontally and {1} vertically.", horizontalAmount.ToString(), verticalAmount.ToString()));
+				procedureLogger.Action (string.Format ("Scroll {0} horizontally and {1} vertically.",
+				                                       horizontalAmount.ToString (),
+				                                       verticalAmount.ToString ()));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
 			sp.Scroll (horizontalAmount, verticalAmount);

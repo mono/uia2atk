@@ -42,18 +42,19 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 	[TestFixture]
 	public class KeePassTests : TestBase
 	{
-		Window window = null;
+		Window window;
+		Application app;
 
 		protected override void LaunchSample ()
 		{
-			Application app = new Application ("KeePass.exe");
+			app = new Application ("KeePass.exe");
 			app.Launch ();
 		}
 
 		protected override void OnSetup ()
 		{
 			base.OnSetup ();
-			window = GetWindow("KeePass Password Safe");
+			window = app.GetWindow("KeePass Password Safe");
 		}
 
 		protected override void OnQuit ()
