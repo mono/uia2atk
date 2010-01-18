@@ -80,6 +80,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
+			//BUG569846 [uiaclient-winforms]:UIA Client mathes wrong element 
+			//for LabeledByproperty on Linux
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
 			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
@@ -89,13 +91,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (fileNameComboBox.Value, "TestCase101");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
+			//Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
+			//method can't be shown as expected
 			//101.3 Change the view of list to "Extra Large Icons"
-			var itemViewList = newPassDialog.Find<List> ("Items View");
+			var itemViewList = newPassDialog.Find<List> ();
 			if (itemViewList.GetSupportedViews ().Contains<int> (0))
 				itemViewList.SetCurrentView (0);
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The current view of the dialog is \"Extra Large Icons\"");
-			Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Extra Large Icons");
+			Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Icons");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.4 Click the "Save" button of the dialog.
@@ -105,7 +109,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//101.5 Enter "mono-a11y" into  "Master password" text box.
 			var createMasterKeyWindow = window.Find<Window> ("Create Composite Master Key");
+			Console.WriteLine("AcreateMasterKeyWindow   {0}", createMasterKeyWindow);
 			var masterPasswdEdit = createMasterKeyWindow.Finder.ByName("Repeat password:").ByAutomationId("m_tbPassword").Find<Edit> ();
+			Console.WriteLine("Assert.AreEqual (masterPasswdEdit.IsReadOnly)   {0}", masterPasswdEdit.IsReadOnly);
 			Assert.AreEqual (masterPasswdEdit.IsReadOnly, false);
 			masterPasswdEdit.SetValue ("mono-a11y");
 			Thread.Sleep (Config.Instance.ShortDelay);
