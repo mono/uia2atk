@@ -84,7 +84,7 @@ statesCheck(hlbFrame.hyperlink1, "Label", add_states=["focusable"])
 #################################
 # Doing jump action to invoke URL
 #################################
-# BUG553678: Run second sample crash the app
+# BUG555714: do 'jump' action for the second link crash the app
 hlbFrame.openURL(hlbFrame.hyperlink1)
 
 #hlbFrame.openURL(hlbFrame.hyperlink2)

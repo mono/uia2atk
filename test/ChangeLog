@@ -1,3 +1,8 @@
+2010-01-18  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/hyperlinkbutton-regression.py: correct a 
+	bug reference
+
 2010-01-14  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/textbox/textboxframe.py,
