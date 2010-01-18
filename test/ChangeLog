@@ -1,5 +1,9 @@
 2010-01-18  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/progressbar-regression.py: remove bug558232
+
+2010-01-18  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/hyperlinkbutton-regression.py: correct a 
 	bug reference
 

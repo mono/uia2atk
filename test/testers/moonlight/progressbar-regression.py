@@ -61,8 +61,7 @@ pbFrame.setValue(50)
 sleep(config.SHORT_DELAY)
 # Value property of progressbar is read-only, so Value shouldn't be updated
 assertName(pbFrame.label, "It is 20 out of 100%.")
-# BUG558232: value shouldn't be editable
-#pbFrame.assertValue(20)
+pbFrame.assertValue(20)
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
