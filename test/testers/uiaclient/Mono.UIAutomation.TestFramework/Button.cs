@@ -1,4 +1,4 @@
-﻿// Button.cs: Button control class wrapper.
+// Button.cs: Button control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Click (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Click {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Click {0}.", this.NameAndType));
 
 			InvokePattern ip = (InvokePattern) element.GetCurrentPattern (InvokePattern.Pattern);
 			ip.Invoke ();

@@ -74,6 +74,7 @@ FILES = \
 	UIAutomationMetadata.cs \
 	Utils.cs \
 	Window.cs \
+	Menu.cs \
 	AssemblyInfo.cs 
 
 DATA_FILES = 

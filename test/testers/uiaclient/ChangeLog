@@ -1,9 +1,21 @@
+2010-01-19  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Button.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/Application.cs:
+	* Mono.UIAutomation.TestFramework/UIAutomationMetadata.cs:
+	* Mono.UIAutomation.TestFramework/Config.xml:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	* Tests/Winforms/KeePassTests.cs:
+	* Tests/Winforms/DockPatternTests.cs:
+	* Tests/Winforms/WindowPatternTests.c:
+	Add parameters for Launch method in order for launching different
+	application; partially add accessible control type for log message.
 
-2010-01-19  felicia Mu  <fxmu@novell.com>
-	* Tests/Winforms/KeePassTests.cs: Make the tesecase before 101.9
+2010-01-19  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Make the testcase before 101.9
 	can run correctly & add bug reference.
 
-2010-01-18  felicia Mu  <fxmu@novell.com>
+2010-01-18  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Modify FindList<> method
 	to find controls by type not by name, add bug reference.
 

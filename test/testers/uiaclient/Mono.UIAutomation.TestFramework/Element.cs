@@ -46,16 +46,9 @@ namespace Mono.UIAutomation.TestFramework
 		public string Name {
 			get { return element.Current.Name; }
 		}
-
-		private static string GetElementDesc (AutomationElement element)
-		{
-			const int MAX_NAME_DISPLAY_LEN = 32;
-			string name = element.Current.Name;
-			if (name.Length > MAX_NAME_DISPLAY_LEN)
-				// Sometimes the name could be super long, e.g. for a RichTextBox, the name will be its whole content.
-				name = name.Substring (0, MAX_NAME_DISPLAY_LEN) + "...";
-			return string.Format ("\"{0}\" {1}",
-				name, UIAutomationMetadata.GetControlTypeName (element.Current.ControlType));
+		
+		public string NameAndType {
+			get { return UIAutomationMetadata.GetElementDesc(element); }
 		}
 
 		public AutomationElement AutomationElement {

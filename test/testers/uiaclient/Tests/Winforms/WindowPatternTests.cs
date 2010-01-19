@@ -46,8 +46,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 		protected override void LaunchSample ()
 		{
-			app = new Application ("WindowAndTransformPatternProvider.exe");
-			app.Launch ();
+			app = new Application ("WindowAndTransformPatternProvider");
+			app.Launch ("mono", "WindowAndTransformPatternProvider.exe");
 		}
 
 		protected override void OnSetup ()

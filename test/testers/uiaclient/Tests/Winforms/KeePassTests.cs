@@ -42,13 +42,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 	[TestFixture]
 	public class KeePassTests : TestBase
 	{
-		Window window = null;
+		Window window;
 		Application app;
 
 		protected override void LaunchSample ()
 		{
-			app = new Application ("KeePass.exe");
-			app.Launch ();
+			app = new Application ("KeePass");
+			app.Launch ("mono", "KeePass.exe");
 		}
 
 		protected override void OnSetup ()
@@ -80,10 +80,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
 			Thread.Sleep(Config.Instance.ShortDelay);
 
-			//BUG569846 [uiaclient-winforms]:UIA Client mathes wrong element 
-			//for LabeledByproperty on Linux
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
+			//BUG569846 [uiaclient-winforms]:UIA Client mathes wrong element
+			//for LabeledByproperty on Linux
 			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
 			fileNameComboBox.SetValue("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -100,7 +100,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
 			//method can't be shown as expected
 			//Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.4 Click the "Save" button of the dialog.
 			newPassDialog.Save ();
@@ -137,15 +137,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//101.9  Click the "Save" button of the dialog.
 			var newKeyFileDialog = window.Find<Window> ("Create a new key file");
 			newKeyFileDialog.Save();
-			
+
 			//Bug 571799 - [uiaclient-Winforms]：The dialog
 			//who has parent has been found twice
 			//in case there is a TestCase101 key exist.
 			var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
-			Console.WriteLine("comfirmDialog is {0}",comfirmDialog);
+
 			if (comfirmDialog != null) {
 				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog opens.");
 				Thread.Sleep(Config.Instance.ShortDelay);
+
 				comfirmDialog.Yes ();
 				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog disappears.");
 				Thread.Sleep(Config.Instance.ShortDelay);

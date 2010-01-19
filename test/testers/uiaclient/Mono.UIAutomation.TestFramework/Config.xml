@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <RetryTimes>20</RetryTimes>
   <RetryInterval>500</RetryInterval>
-  <TakeScreenShots>true</TakeScreenShots>
+  <TakeScreenShots>false</TakeScreenShots>
   <OutputDir></OutputDir>
   <ShortDelay>500</ShortDelay>
   <MediumDelay>4000</MediumDelay>

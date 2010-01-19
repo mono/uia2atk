@@ -38,25 +38,30 @@ namespace Mono.UIAutomation.TestFramework
 		{
 			if (sample == null)
 				throw new ArgumentException ("Sample cannot be null.");
+
 			this.sample = sample;
 			procedureLogger = new ProcedureLogger(sample);
 		}
 
-		public void Launch ()
+		public void Launch (string program, string param)
 		{
-			procedureLogger.Action ("Launch " + this.sample);
 			try {
-				Process.Start ("mono", sample);
+				procedureLogger.Action ("Launch " + this.sample);
+				Process.Start (program, param);
 				Thread.Sleep (Config.Instance.ShortDelay);
+				procedureLogger.ExpectedResult (string.Format("{0} has been started.", this.sample));
 			} catch (Exception e) {
 				Console.WriteLine (e.Message);
 				Process.GetCurrentProcess ().Kill ();
 			}
 		}
-		
+
 		public Window GetWindow (String title)
 		{
-			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, new PropertyCondition (AutomationElementIdentifiers.NameProperty, title));
+			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, 
+			                                                  new PropertyCondition (
+			                                                  AutomationElementIdentifiers.NameProperty, 
+			                                                  title));
 			return new Window (ae);
 		}
 	}
