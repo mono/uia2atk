@@ -144,7 +144,7 @@ tbFrame.assertEditableText(tbFrame.textbox3, "Search")
 # type texts
 tbFrame.textbox3.mouseClick()
 sleep(config.SHORT_DELAY)
-tbFrame.textbox3.typeText("Search TextBox ")
+tbFrame.textbox3.typeText("Search TextBox")
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "Search TextBox")
 
