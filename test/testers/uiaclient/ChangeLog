@@ -1,3 +1,12 @@
+
+2010-01-19  felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Make the tesecase before 101.9
+	can run correctly & add bug reference.
+
+2010-01-18  felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Modify FindList<> method
+	to find controls by type not by name, add bug reference.
+
 2010-01-18  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Application.cs:
 	* Mono.UIAutomation.TestFramework/TestBase.cs:
