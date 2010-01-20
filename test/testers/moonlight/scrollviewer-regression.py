@@ -47,15 +47,11 @@ svFrame = app.scrollViewerFrame
 #######################
 ##Bug 553160
 #statesCheck(svFrame.scroll_viewer, "Panel", add_states=["focusable"])
-##Bug 556832
-#statesCheck(svFrame.label, "Label")
-##Bug 559825
-#statesCheck(svFrame.hscrollbar, "HScrollBar", add_states=["horizontal"])
-##Bug 559825
-#statesCheck(svFrame.vscrollbar, "VScrollBar", add_states=["vertical"])
+# bug 556832 wouldn't be fixed
+statesCheck(svFrame.label, "Label", invalid_states=["multi line"])
+statesCheck(svFrame.hscrollbar, "HScrollBar", add_states=["horizontal"])
+statesCheck(svFrame.vscrollbar, "VScrollBar", add_states=["vertical"])
 
-##TODO: commented out most of the tests caused by Bug 559825, as we can't correctly find scrollbars.
-"""
 #############
 # Test Value
 #############
@@ -100,10 +96,12 @@ svFrame.assertScrollbar(svFrame.vscrollbar, 2000)
 ###################
 # Hidden ScrollBar
 ###################
+'''
+## BUG572163: moonlight bug that ScrollBarVisibility.Hidden doesn't work
 # click "Hidden Vertical" button to hidden vscrollbar
 svFrame.hidden_vertical.click(log=True)
 sleep(config.SHORT_DELAY)
-svFrame.assertHiddenScrollBar("vscrollbar", is_hidden=True)
+svFrame.assertHiddenScrollBar("vscrollbar", is_showing=False)
 # click again to showing vscrollbar
 svFrame.hidden_vertical.click(log=True)
 sleep(config.SHORT_DELAY)
@@ -117,8 +115,7 @@ svFrame.assertHiddenScrollBar("hscrollbar", is_hidden=True)
 svFrame.hidden_horizontal.click(log=True)
 sleep(config.SHORT_DELAY)
 svFrame.assertHiddenScrollBar("hscrollbar")
-"""
-
+'''
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
 # close application frame window

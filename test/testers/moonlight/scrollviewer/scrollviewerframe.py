@@ -71,11 +71,11 @@ class ScrollViewerFrame(accessibles.Frame):
                                      "current value is %s:" % \
                                      scrollbar.value
 
-    def assertHiddenScrollBar(self, scroll_bar, is_hidden=False):
+    def assertHiddenScrollBar(self, scroll_bar, is_showing=True):
         """
         Make sure the scroll_bar is not accessible after it is hidden
         """
-        if is_hidden:
+        if is_showing:
             procedurelogger.expectedResult("%s is showing" % scroll_bar)
             self.findScrollBars()
         else:
