@@ -5,7 +5,7 @@
 #
 
 Name:           uiautomationwinforms
-Version:        1.8.92
+Version:        1.8.93
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -16,15 +16,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.6
 Requires:       mono-data >= 2.6
-Requires:       mono-uia >= 1.8.92
-Requires:       uiaatkbridge >= 1.8.92
+Requires:       mono-uia >= 1.8.93
+Requires:       uiaatkbridge >= 1.8.93
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:	mono-devel >= 2.6
 BuildRequires:  mono-data >= 2.6
 BuildRequires:	mono-nunit >= 2.6
-BuildRequires:  mono-uia >= 1.8.92
-BuildRequires:  mono-uia-devel >= 1.8.92
-BuildRequires:  uiaatkbridge >= 1.8.92
+BuildRequires:  mono-uia >= 1.8.93
+BuildRequires:  mono-uia-devel >= 1.8.93
 BuildRequires:  intltool
 
 Summary:        Implementation of UIA providers

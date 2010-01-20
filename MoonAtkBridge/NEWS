@@ -3,6 +3,14 @@ Mono Accessibility News
 
 Copyright (C) 2009 Novell, Inc. (http://www.novell.com)
 
+Version 1.8.93: The "digerati" release
+ * #568599 - Dig and verify bug 567496
+ * #568627 - [PENDING BACKPORT] IsOffscreen event not raised when Visibility changes
+ * #568775 - Fix thread safety issues in UiaDbusBridge
+ * #568776 - Make a light-weight uispy-like AT client
+ * #567486 - Build atspiuiasource, at-spi-sharp, uiadbus debian package
+ * #567919 - Rebuild mono-uia, mono-uia-atkbridge, mono-uia-winforms deb packages
+
 Version 1.8.92: The "chocoholic" release
 * #554449 - MoonAtkBridge doesn't display the proper accessibles when more than one plugin is loaded
 * #555714 - HyperlinkButton: do click action on accerciser make the firefox crashed
