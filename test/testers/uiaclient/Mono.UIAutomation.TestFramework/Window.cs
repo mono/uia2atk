@@ -1,4 +1,4 @@
-﻿// Window.cs: Window control class wrapper.
+// Window.cs: Window control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -74,7 +74,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Rotate (double degree, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.Name, degree));
+				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.NameAndType, degree));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);
 			tp.Rotate (degree);
@@ -101,7 +101,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void SetWindowVisualState (WindowVisualState state, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Set {0} to be {1}.", this.Name, state));
+				procedureLogger.Action (string.Format ("Set {0} to be {1}.", this.NameAndType, state));
 
 			WindowPattern wp = (WindowPattern) element.GetCurrentPattern (WindowPattern.Pattern);
 			wp.SetWindowVisualState (state);
@@ -115,7 +115,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Close (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Close {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Close {0}.", this.NameAndType));
 
 			WindowPattern wp = (WindowPattern) element.GetCurrentPattern (WindowPattern.Pattern);
 			wp.Close ();

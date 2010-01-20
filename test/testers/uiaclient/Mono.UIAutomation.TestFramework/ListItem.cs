@@ -1,4 +1,4 @@
-﻿// ListItem.cs: ListItem control class wrapper.
+// ListItem.cs: ListItem control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void ScrollIntoView (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Scroll {0} into view.", this.Name));
+				procedureLogger.Action (string.Format ("Scroll {0} into view.", this.NameAndType));
 
 			ScrollItemPattern sip = (ScrollItemPattern) element.GetCurrentPattern (ScrollItemPattern.Pattern);
 			sip.ScrollIntoView ();

@@ -1,4 +1,4 @@
-﻿// ComboBox.cs: ComboBox control class wrapper.
+// ComboBox.cs: ComboBox control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void SetValue (string value, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Set {0} to {1}.", value, this.Name));
+				procedureLogger.Action (string.Format ("Set {0} to {1}.", value, this.NameAndType));
 
 			ValuePattern vp = (ValuePattern) element.GetCurrentPattern (ValuePattern.Pattern);
 			vp.SetValue (value);

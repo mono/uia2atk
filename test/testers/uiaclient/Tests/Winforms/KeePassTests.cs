@@ -76,7 +76,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		{
 			//101.1 Click the "New..." button on the toolbar.
 			var toolBar = window.Find<ToolBar> ();
-			toolBar.Find<Button> ("New...").Click (false);
+			toolBar.Find<Button> ("New...").Click ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
 			Thread.Sleep(Config.Instance.ShortDelay);
 

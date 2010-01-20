@@ -1,4 +1,4 @@
-﻿// Pane.cs: Pane control class wrapper.
+// Pane.cs: Pane control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void SetDockPosition (DockPosition position, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Dock {0} to {1}.", this.Name, position));
+				procedureLogger.Action (string.Format ("Dock {0} to {1}.", this.NameAndType, position));
 
 			DockPattern dp = (DockPattern) element.GetCurrentPattern (DockPattern.Pattern);
 			dp.SetDockPosition (position);
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Rotate (double degree, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.Name, degree));
+				procedureLogger.Action (string.Format ("Rotate {0} {1} degree(s).", this.NameAndType, degree));
 
 			TransformPattern tp = (TransformPattern) element.GetCurrentPattern (TransformPattern.Pattern);
 			tp.Rotate (degree);

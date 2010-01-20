@@ -34,17 +34,17 @@ namespace Mono.UIAutomation.TestFramework
 	{
 		static StringBuilder actionBuffer;
 		static StringBuilder expectedResultBuffer;
-		private string testName = string.Empty;
-		private static List<List<string>> procedures;
-		private static DateTime startTime;
+		static string testName = string.Empty;
+		static List<List<string>> procedures;
+		static DateTime startTime;
 
 		public ProcedureLogger ()
 		{
 		}
 
-		public ProcedureLogger (string testName)
+		public ProcedureLogger (string sampleName)
 		{
-			this.testName = testName;
+			testName = sampleName;
 		}
 
 		public static void Init ()
@@ -106,13 +106,13 @@ namespace Mono.UIAutomation.TestFramework
 
 			//add <name> element
 			XmlElement nameElm = xmlDoc.CreateElement ("name");
-			XmlText nameElmText = xmlDoc.CreateTextNode (this.testName);
+			XmlText nameElmText = xmlDoc.CreateTextNode (testName);
 			nameElm.AppendChild (nameElmText);
 			rootElm.AppendChild (nameElm);
 
 			//add <description> element
 			XmlElement descElm = xmlDoc.CreateElement ("description");
-			XmlText descElmText = xmlDoc.CreateTextNode (string.Format("Test cases for {0}", this.testName));
+			XmlText descElmText = xmlDoc.CreateTextNode (string.Format("Test cases for {0}", testName));
 			descElm.AppendChild (descElmText);
 			rootElm.AppendChild (descElm);
 

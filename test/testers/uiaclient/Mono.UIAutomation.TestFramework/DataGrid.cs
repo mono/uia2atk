@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.TestFramework
 		public AutomationElement GetItem (int row, int column, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Get item {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Get item {0}.", this.NameAndType));
 
 			GridPattern gp = (GridPattern) element.GetCurrentPattern (GridPattern.Pattern);
 			return gp.GetItem (row, column);

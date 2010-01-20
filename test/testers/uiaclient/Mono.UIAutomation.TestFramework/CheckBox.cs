@@ -1,4 +1,4 @@
-﻿// CheckBox.cs: CheckBox control class wrapper.
+// CheckBox.cs: CheckBox control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Toggle (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Toggle {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Toggle {0}.", this.NameAndType));
 
 			TogglePattern tp = (TogglePattern) element.GetCurrentPattern (TogglePattern.Pattern);
 			tp.Toggle ();

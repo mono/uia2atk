@@ -1,3 +1,22 @@
+2010-01-20  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Spinner.cs:
+	* Mono.UIAutomation.TestFramework/Document.cs:
+	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
+	* Mono.UIAutomation.TestFramework/CheckBox.cs:
+	* Mono.UIAutomation.TestFramework/RadioButton.cs:
+	* Mono.UIAutomation.TestFramework/ListItem.cs:
+	* Mono.UIAutomation.TestFramework/Window.cs:
+	* Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Mono.UIAutomation.TestFramework/MenuItem.cs:
+	* Mono.UIAutomation.TestFramework/Pane.cs:
+	* Mono.UIAutomation.TestFramework/Edit.cs:
+	* Mono.UIAutomation.TestFramework/TabItem.cs:
+	* Mono.UIAutomation.TestFramework/ProcedureLogger.cs:
+	* Tests/Winforms/KeePassTests.cs:
+	Make output print out the type name of each control when operate on
+	them.
+
 2010-01-19  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Element.cs:
