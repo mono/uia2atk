@@ -196,8 +196,15 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				lock (providerWrapperMapping)
 					providerWrapperMapping [simpleProvider] = element;
 				if (providerHandle != IntPtr.Zero)
-					lock (pointerProviderMapping)
+					lock (pointerProviderMapping) {
+						// TODO Add debug flag here, we'd better remove the ContainsKey check in the release version
+						if (pointerProviderMapping.ContainsKey (providerHandle)) {
+							Log.Error ("Duplicate provider handle, {0}, {1}",
+								simpleProvider.GetPropertyValue (AEIds.NameProperty.Id),
+								simpleProvider.GetPropertyValue (AEIds.LocalizedControlTypeProperty.Id));
+						}
 						pointerProviderMapping [providerHandle] = simpleProvider;
+					}
 				if (isWindow)
 					app.AddRootElement (element);
 

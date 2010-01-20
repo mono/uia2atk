@@ -120,6 +120,8 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("list item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return Text;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -161,6 +163,8 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("edit");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return listItemProvider.Text;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

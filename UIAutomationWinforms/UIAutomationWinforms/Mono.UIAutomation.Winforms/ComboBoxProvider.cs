@@ -305,7 +305,11 @@ namespace Mono.UIAutomation.Winforms
 					IExpandCollapseProvider pattern 
 						= comboboxProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
 					return pattern != null && pattern.ExpandCollapseState == ExpandCollapseState.Collapsed;
-				} else
+				} else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+					//Not like Windows, ComboBox.ListBox is a "real control" and has its own handle.
+					//On mono ComboxBox.ListBox dosen't has native window handle.
+					return null;
+				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
@@ -561,6 +565,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return Catalog.GetString ("Drop Down Button");
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);

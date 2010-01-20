@@ -75,6 +75,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.DataGrid.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("data grid");
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -392,6 +394,8 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -463,6 +467,8 @@ namespace Mono.UIAutomation.Winforms
 				return label;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -520,6 +526,8 @@ namespace Mono.UIAutomation.Winforms
 					return Catalog.GetString ("Forward by one month");
 				}
 			} else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
 				return null;
 
 			return base.GetProviderPropertyValue (propertyId);

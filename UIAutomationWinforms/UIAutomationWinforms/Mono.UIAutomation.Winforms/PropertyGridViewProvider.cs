@@ -380,6 +380,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.DataItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("data item");
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -433,6 +435,8 @@ namespace Mono.UIAutomation.Winforms
 				controlRect.X = controlRect.Y = 0;
 				return !controlRect.IntersectsWith (GetBounds ());
 			}
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -592,6 +596,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.NameProperty.Id)
 				return entry.Label;
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
+				return null;
 			else if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Custom.Id;
 

@@ -23,7 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Drawing;				                                              
+using System.Drawing;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -263,6 +263,8 @@ namespace Mono.UIAutomation.Winforms
 					return false;				
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
+				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -319,6 +321,8 @@ namespace Mono.UIAutomation.Winforms
 					return Catalog.GetString ("thumb");
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

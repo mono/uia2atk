@@ -88,7 +88,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DomainUpDown
 		}
 		
 		public string Value {
-			get { return Convert.ToString (((ListItemProvider)Provider).ObjectItem); }
+			get {
+				var val =  Convert.ToString (((ListItemProvider)Provider).ObjectItem);
+				return val ?? string.Empty;
+			}
 		}
 #endregion
 

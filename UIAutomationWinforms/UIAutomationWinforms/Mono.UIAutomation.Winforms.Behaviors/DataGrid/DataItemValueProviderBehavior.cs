@@ -96,7 +96,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		}
 		
 		public string Value {
-			get { return provider.Value as string; }
+			get { return provider.Value as string ?? string.Empty; }
 		}
 		
 		#endregion

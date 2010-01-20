@@ -540,6 +540,8 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.DataItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("data item");
+				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

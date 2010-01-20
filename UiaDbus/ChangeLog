@@ -1,3 +1,7 @@
+2010-01-20  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusBridge/AutomationBridge.cs: Fix bug#570621 
+
 2010-01-14  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusSource/UiaDbusElement.cs: 

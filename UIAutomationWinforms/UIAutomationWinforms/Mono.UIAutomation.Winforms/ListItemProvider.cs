@@ -95,6 +95,8 @@ namespace Mono.UIAutomation.Winforms
 			         || propertyId == AutomationElementIdentifiers.NameProperty.Id
 			         || propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return ListProvider.GetItemPropertyValue (this, propertyId);
+			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

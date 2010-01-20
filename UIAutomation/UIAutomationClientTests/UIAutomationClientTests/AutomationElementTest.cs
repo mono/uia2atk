@@ -1123,6 +1123,27 @@ Thread.Sleep(1000);
 			SupportedPropertiesTestInternal (treeView1Element);
 			SupportedPropertiesTestInternal (listView1Element);
 		}
+
+		[Test]
+		public void Bug570621_Test ()
+		{
+			var firstDataItem = this.table1Element.FindFirst (TreeScope.Children, new PropertyCondition(
+				AEIds.ControlTypeProperty, ControlType.DataItem));
+			Assert.AreEqual (0, firstDataItem.Current.NativeWindowHandle);
+
+			Assert.AreEqual (table1Element,
+				AutomationElement.FromHandle (new IntPtr (table1Element.Current.NativeWindowHandle)));
+		}
+
+		[Test]
+		public void Bug571711_Test ()
+		{
+			var firstDataItem = this.table1Element.FindFirst (TreeScope.Children, new PropertyCondition(
+				AEIds.ControlTypeProperty, ControlType.DataItem));
+			//assert the following line won't fire any exception
+			firstDataItem.GetCurrentPropertyValue (ValuePattern.ValueProperty);
+		}
+
 		#endregion
 
 		#region Private Methods

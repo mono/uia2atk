@@ -786,6 +786,8 @@ namespace Mono.UIAutomation.Winforms
 					                    (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
+				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
