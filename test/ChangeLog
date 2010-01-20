@@ -1,10 +1,14 @@
-2010-01-20 Calen Chen <cachen@novell.com>
+2010-01-20  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/tests.py: Removed Moonlight TabControl test.
+
+2010-01-20  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/scrollviewer/scrollviewerframe.py,
 	* testers/moonlight/scrollviewer-regression.py: uncomment bug 
 	references, add moonlight bug572163
 
-2010-01-20 Calen Chen <cachen@novell.com>
+2010-01-20  Calen Chen <cachen@novell.com>
 
 	* samples/moonlight/ToggleButton/Page.xaml.cs: modify label change
 

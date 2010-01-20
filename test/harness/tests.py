@@ -104,7 +104,6 @@ moonlight_tests_list = [
 	"scrollbar-regression.py",
 	"scrollviewer-regression.py",
 	"slider-regression.py",
-	#"tabcontrol-regression.py",
 	"textblock-regression.py",
 	"textbox-regression.py",
 	"thumb-regression.py",
