@@ -26,24 +26,24 @@ namespace ToggleButtonSample
                 case true:
                     if (tb.Name == "togglebutton1")
                     {
-                        this.togglebutton1.Content = "Disable button2";
+                        this.label1.Text = "Disable button2";
                         this.togglebutton2.IsEnabled = false;
                     }
                     if (tb.Name == "togglebutton2")
-                        this.togglebutton2.Content = "Checked";
+                        this.label2.Text = "Checked";
                     break;
                 case false:
                     if (tb.Name == "togglebutton1")
                     {
-                        this.togglebutton1.Content = "Enable button2";
+                        this.label1.Text = "Enable button2";
                         this.togglebutton2.IsEnabled = true;
                     }
                     if (tb.Name == "togglebutton2")
-                        this.togglebutton2.Content = "UnChecked";
+                        this.label2.Text = "UnChecked";
                     break;
                 case null:
                     if (tb.Name == "togglebutton2")
-                        this.togglebutton2.Content = "Indetermined";
+                        this.label2.Text = "Indetermined";
                     break;
             }
         }
