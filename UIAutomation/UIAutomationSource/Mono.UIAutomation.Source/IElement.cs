@@ -95,6 +95,8 @@ namespace Mono.UIAutomation.Source
 
 		IElement PreviousSibling { get; }
 
+		IAutomationSource AutomationSource { get; }
+
 		object GetCurrentPattern (AutomationPattern pattern);
 
 		AutomationPattern [] GetSupportedPatterns ();

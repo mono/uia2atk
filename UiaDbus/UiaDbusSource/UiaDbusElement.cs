@@ -403,6 +403,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 		}
 
+		public IAutomationSource AutomationSource {
+			get { return source; }
+		}
+
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
 			if (pattern == null)

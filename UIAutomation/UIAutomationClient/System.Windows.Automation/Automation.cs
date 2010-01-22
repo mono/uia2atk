@@ -309,17 +309,14 @@ namespace System.Windows.Automation
 		                                       TreeScope scope,
 		                                       AutomationEventHandler eventHandler)
 		{
+			CheckAutomationEventId (eventId.Id);
+
 			//todo handle root element event
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			/*
-			var source = SourceManager.GetElementSource (element.SourceElement);
-			if (source == null)
-				throw new ElementNotAvailableException ();*/
-
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.AddAutomationEventHandler (eventId, element.SourceElement, scope, eventHandler);
+			var source = element.SourceElement.AutomationSource;
+			source.AddAutomationEventHandler (eventId, element.SourceElement, scope, eventHandler);
 		}
 
 		public static void AddAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
@@ -344,8 +341,9 @@ namespace System.Windows.Automation
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.AddAutomationPropertyChangedEventHandler (element.SourceElement, scope, eventHandler, properties);
+			var source = element.SourceElement.AutomationSource;
+			source.AddAutomationPropertyChangedEventHandler (
+				element.SourceElement, scope, eventHandler, properties);
 		}
 
 		public static void AddStructureChangedEventHandler (AutomationElement element,
@@ -356,8 +354,8 @@ namespace System.Windows.Automation
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.AddStructureChangedEventHandler (element.SourceElement, scope, eventHandler);
+			var source = element.SourceElement.AutomationSource;
+			source.AddStructureChangedEventHandler (element.SourceElement, scope, eventHandler);
 		}
 
 		public static void RemoveAllEventHandlers ()
@@ -368,23 +366,19 @@ namespace System.Windows.Automation
 			AddAutomationFocusChangedEventHandler (AutomationElement.OnFocusChanged);
 		}
 
-		public static void RemoveAutomationEventHandler (AutomationEvent eventId,
-		                                          AutomationElement element,
-		                                          AutomationEventHandler eventHandler)
+		public static void RemoveAutomationEventHandler (
+			AutomationEvent eventId,
+			AutomationElement element,
+			AutomationEventHandler eventHandler)
 		{
+			CheckAutomationEventId (eventId.Id);
+
 			//todo handle root element event
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			if (AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId.Id
-			    || AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId.Id
-			    || AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id == eventId.Id
-			    || AutomationElementIdentifiers.StructureChangedEvent.Id == eventId.Id)
-				throw new ArgumentException ("eventId");
-
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.RemoveAutomationEventHandler (eventId, element.SourceElement,
-				                                     eventHandler);
+			var source = element.SourceElement.AutomationSource;
+			source.RemoveAutomationEventHandler (eventId, element.SourceElement, eventHandler);
 		}
 
 		public static void RemoveAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
@@ -397,28 +391,36 @@ namespace System.Windows.Automation
 			}
 		}
 
-		public static void RemoveAutomationPropertyChangedEventHandler (AutomationElement element,
-		                                                         AutomationPropertyChangedEventHandler eventHandler)
+		public static void RemoveAutomationPropertyChangedEventHandler (
+			AutomationElement element, AutomationPropertyChangedEventHandler eventHandler)
 		{
 			//todo handle root element event
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.RemoveAutomationPropertyChangedEventHandler (element.SourceElement,
-				                                     eventHandler);
+			var source = element.SourceElement.AutomationSource;
+			source.RemoveAutomationPropertyChangedEventHandler (
+				element.SourceElement, eventHandler);
 		}
 
-		public static void RemoveStructureChangedEventHandler (AutomationElement element,
-		                                                StructureChangedEventHandler eventHandler)
+		public static void RemoveStructureChangedEventHandler (
+			AutomationElement element, StructureChangedEventHandler eventHandler)
 		{
 			//todo handle root element event
 			if (element == AutomationElement.RootElement)
 				throw new NotImplementedException ();
 
-			foreach (var source in SourceManager.GetAutomationSources ())
-				source.RemoveStructureChangedEventHandler (element.SourceElement,
-				                                     eventHandler);
+			var source = element.SourceElement.AutomationSource;
+			source.RemoveStructureChangedEventHandler (element.SourceElement, eventHandler);
+		}
+
+		private static void CheckAutomationEventId (int eventId)
+		{
+			if (AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId
+				|| AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId
+				|| AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id == eventId
+				|| AutomationElementIdentifiers.StructureChangedEvent.Id == eventId)
+				throw new ArgumentException ("eventId");
 		}
 
 		public static readonly Condition ContentViewCondition;

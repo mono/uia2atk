@@ -384,6 +384,10 @@ namespace AtspiUiaSource
 			}
 		}
 
+		public IAutomationSource AutomationSource {
+			get { return AtspiUiaSource.AutomationSource.Instance; }
+		}
+
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
 			if (pattern == null)

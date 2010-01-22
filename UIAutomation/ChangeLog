@@ -1,3 +1,11 @@
+2010-01-22  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationSource/Mono.UIAutomation.Source/IElement.cs: 
+	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
+	* UIAutomationClient/System.Windows.Automation/TreeWalker.cs: 
+	* UIAutomationClient/System.Windows.Automation/DesktopElement.cs:
+	Allow find IAutomatioSource by IElement, to enhance the performance of several client APIs.
+
 2010-01-20  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs: unit tests for bug#570621 and bug#571711

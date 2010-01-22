@@ -225,6 +225,10 @@ namespace System.Windows.Automation
 			}
 		}
 
+		public IAutomationSource AutomationSource {
+			get { return null; }
+		}
+
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
 			// TODO: Should this support any patterns?
@@ -271,6 +275,7 @@ namespace System.Windows.Automation
 		{
 			// TODO: Need to test
 		}
+
 		#endregion
 	}
 }

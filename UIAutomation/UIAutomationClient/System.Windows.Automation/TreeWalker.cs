@@ -44,7 +44,7 @@ namespace System.Windows.Automation
 		{
 			automationSources = SourceManager.GetAutomationSources ();
 			RawViewWalker = new TreeWalker (Automation.RawViewCondition);
-			RefreshRootElements ();
+			InitializeRootElements ();
 
 			ControlViewWalker = new TreeWalker (Automation.ControlViewCondition);
 			ContentViewWalker = new TreeWalker (Automation.ContentViewCondition);
@@ -62,17 +62,38 @@ namespace System.Windows.Automation
 
 		#region Internal Methods
 
-		internal static void RefreshRootElements ()
+		internal static void InitializeRootElements ()
 		{
 			lock (RawViewWalker.directChildrenLock) {
-				bool firstTime = (RawViewWalker.directChildren == null);
 				RawViewWalker.directChildren = new List<AutomationElement> ();
 				foreach (IAutomationSource source in automationSources) {
 					foreach (IElement sourceElement in source.GetRootElements ())
-						RawViewWalker.directChildren.Add (new AutomationElement (sourceElement));
-					if (firstTime)
-						source.RootElementsChanged += (s, e) => RefreshRootElements ();
+						RawViewWalker.directChildren.Add (
+							SourceManager.GetOrCreateAutomationElement (sourceElement));
+					source.RootElementsChanged += (s, e) =>
+						OnSourceRootElementChanged (source);
 				}
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private static void OnSourceRootElementChanged (IAutomationSource source)
+		{
+			lock (RawViewWalker.directChildrenLock) {
+				List<AutomationElement> rootElements = new List<AutomationElement> ();
+				foreach (AutomationElement element in RawViewWalker.directChildren) {
+					if (element.SourceElement.AutomationSource != source)
+						rootElements.Add (element);
+				}
+				// We don't handle the cleanup of AutomationElements here, they're
+				// handled by each AutomationSource.
+				// "Clean up" includes removing event handlers etc.
+				foreach (IElement sourceElement in source.GetRootElements ())
+					rootElements.Add (SourceManager.GetOrCreateAutomationElement (sourceElement));
+				RawViewWalker.directChildren = rootElements;
 			}
 			Log.Info ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
 		}

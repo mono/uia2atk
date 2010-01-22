@@ -1,3 +1,8 @@
+2010-01-22  Matt Guo  <matt@mattguo.com>
+
+	* AtspiUiaSource/Element.cs: 
+	* AtspiUiaSource/AutomationSource.cs: Implement IElement.AutomationSource
+
 2010-01-14  Matt Guo  <matt@mattguo.com>
 
 	* AtspiUiaSource/Element.cs: Add empty method stub for AutomationElement.SupportedProperties

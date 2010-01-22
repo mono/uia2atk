@@ -37,11 +37,13 @@ namespace AtspiUiaSource
 		private static List<AutomationEventHandlerData> automationEventHandlers;
 		private static List<PropertyChangedEventHandlerData> propertyEventHandlers;
 		private static List<StructureChangedEventHandlerData> structureEventHandlers;
+		private static AutomationSource instance = null;
 
 		public void Initialize ()
 		{
 			if (automationEventHandlers != null)
 				return;
+			instance = this;
 			Registry.Initialize (true);
 			automationEventHandlers = new List<AutomationEventHandlerData> ();
 			propertyEventHandlers = new List<PropertyChangedEventHandlerData> ();
@@ -197,6 +199,10 @@ namespace AtspiUiaSource
 			automationEventHandlers.Clear ();
 			propertyEventHandlers.Clear ();
 			structureEventHandlers.Clear ();
+		}
+
+		internal static AutomationSource Instance {
+			get { return instance; }
 		}
 
 		internal static void RaiseAutomationEvent (Accessible accessible, AutomationEvent eventId)
