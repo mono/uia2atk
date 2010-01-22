@@ -101,8 +101,28 @@ namespace Mono.UIAutomation.TestFramework
 			return null;
 		}
 
-		public T [] FindAll<T> (ControlType type) where T : Element
+		public T Find<T> (Direction direction, int index) where T : Element
 		{
+			var elements = FindAll<T> ();
+
+			if (direction == Direction.Horizental) {
+				Array.Sort(elements, (e1, e2) => (int) (e1.AutomationElement.Current.BoundingRectangle.X -
+				                                        e2.AutomationElement.Current.BoundingRectangle.X));
+				return elements[index];
+			} else if (direction == Direction.Vertical) {
+				Array.Sort(elements, (e1, e2) => (int) (e1.AutomationElement.Current.BoundingRectangle.Y -
+				                                        e2.AutomationElement.Current.BoundingRectangle.Y));
+				return elements[index];
+			}
+
+			return null;
+		}
+
+		public T [] FindAll<T> () where T : Element
+		{
+			var uiaType = typeof (T).GetField ("UIAType", BindingFlags.Static | BindingFlags.Public);
+			ControlType type = uiaType.GetValue (null) as ControlType;
+
 			for (int i = 0; i < Config.Instance.RetryTimes; i++) {
 				var cond = new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, type);
 				AutomationElementCollection controls = element.FindAll (TreeScope.Descendants, cond);
@@ -166,7 +186,7 @@ namespace Mono.UIAutomation.TestFramework
 			return ret;
 		}
 
-		//add a new Finder property
+		// Finder property
 		public Finder Finder {
 			get { return new Finder (this.AutomationElement); }
 		}

@@ -1,3 +1,13 @@
+2010-01-22  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Direction.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/Finder.cs:
+	* Mono.UIAutomation.TestFramework/TestBase.cs:
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	* Tests/Winforms/KeePassTests.cs:
+	Improve a Find method that searching elements by coordinator.
+
 2010-01-20  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Spinner.cs:
 	* Mono.UIAutomation.TestFramework/Document.cs:

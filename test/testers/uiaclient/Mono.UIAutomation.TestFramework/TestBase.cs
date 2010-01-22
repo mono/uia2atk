@@ -85,5 +85,17 @@ namespace Mono.UIAutomation.TestFramework
 				throw;
 			}
 		}
+
+		protected void SingleInstance (string windowTitle)
+		{
+			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children,
+			                                                  new PropertyCondition (
+			                                                  AutomationElementIdentifiers.NameProperty,
+			                                                  windowTitle));
+			if (ae != null) {
+				Process.GetProcessById (ae.Current.ProcessId).Kill ();
+				Thread.Sleep (Config.Instance.LongDelay);
+			}
+		}
 	}
 }

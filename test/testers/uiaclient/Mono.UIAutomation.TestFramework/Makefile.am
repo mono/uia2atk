@@ -75,6 +75,7 @@ FILES = \
 	Utils.cs \
 	Window.cs \
 	Menu.cs \
+	Direction.cs \
 	AssemblyInfo.cs 
 
 DATA_FILES = 

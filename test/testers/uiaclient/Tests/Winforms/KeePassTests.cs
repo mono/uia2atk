@@ -47,6 +47,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 		protected override void LaunchSample ()
 		{
+			//SingleInstance ("KeePass Password Safe");
 			app = new Application ("KeePass");
 			app.Launch ("mono", "KeePass.exe");
 		}
@@ -54,7 +55,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		protected override void OnSetup ()
 		{
 			base.OnSetup ();
-			window = app.GetWindow("KeePass Password Safe");
+			window = app.GetWindow ("KeePass Password Safe");
 		}
 
 		protected override void OnQuit ()
@@ -78,18 +79,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var toolBar = window.Find<ToolBar> ();
 			toolBar.Find<Button> ("New...").Click ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
 			//BUG569846 [uiaclient-winforms]:UIA Client mathes wrong element
 			//for LabeledByproperty on Linux
-			var fileNameComboBox = newPassDialog.FindAll<ComboBox>(ControlType.ComboBox)[1];
+			var fileNameComboBox = newPassDialog.Find<ComboBox>(Direction.Vertical, 1);
 			fileNameComboBox.SetValue("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("\"TestCase101\" entered in the \"File Name\" box.");
 			Assert.AreEqual (fileNameComboBox.Value, "TestCase101");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.3 Change the view of list to "Extra Large Icons"
 			var itemViewList = newPassDialog.Find<List> ();
@@ -105,22 +106,22 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//101.4 Click the "Save" button of the dialog.
 			newPassDialog.Save ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog disappears.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.5 Enter "mono-a11y" into  "Master password" text box.
 			var createMasterKeyWindow = window.Find<Window> ("Create Composite Master Key");
-			var Edits = createMasterKeyWindow.FindAll<Edit>(ControlType.Edit);	
-			Assert.AreEqual (Edits[0].IsReadOnly, false);
-			Edits[0].SetValue ("mono-a11y");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			var masterPasswdEdit = createMasterKeyWindow.Find<Edit>(Direction.Vertical, 0);
+			Assert.AreEqual (masterPasswdEdit.IsReadOnly, false);
+			masterPasswdEdit.SetValue ("mono-a11y");
 			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.6  Re-Enter "mono-a11y" into "Repeat password" text box.
-			Assert.AreEqual (Edits[1].IsReadOnly, false);
-			Edits[1].SetValue ("mono-a11y");
+			var repeatPasswdEdit = createMasterKeyWindow.Find<Edit>(Direction.Vertical, 1);
+			Assert.AreEqual (repeatPasswdEdit.IsReadOnly, false);
+			repeatPasswdEdit.SetValue ("mono-a11y");
 			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Repeat password\" box.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.7 Check "Key file/option" CheckBox
 			var keyfileCheckBox = createMasterKeyWindow.Find<CheckBox> ("Key file / provider:");
@@ -132,7 +133,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//101.8 Click the " Create..." button.
 			createMasterKeyWindow.Find<Button> (" Create...").Click ();
 			procedureLogger.ExpectedResult ("The \"Create a new key file\" dialog opens.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.9  Click the "Save" button of the dialog.
 			var newKeyFileDialog = window.Find<Window> ("Create a new key file");
@@ -145,42 +146,42 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			if (comfirmDialog != null) {
 				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog opens.");
-				Thread.Sleep(Config.Instance.ShortDelay);
+				Thread.Sleep (Config.Instance.ShortDelay);
 
 				comfirmDialog.Yes ();
 				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog disappears.");
-				Thread.Sleep(Config.Instance.ShortDelay);
+				Thread.Sleep (Config.Instance.ShortDelay);
 			} else {
 				procedureLogger.ExpectedResult ("The \"Entropy Collection\" window opens.");
-				Thread.Sleep(Config.Instance.ShortDelay);
+				Thread.Sleep (Config.Instance.ShortDelay);
 			}
 
 			//101.10 Click the "OK" button of the dialog.
 			createMasterKeyWindow.Find<Window> ("Entropy Collection").OK ();
 			procedureLogger.ExpectedResult ("The \"Entropy Collection\" window disappears.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.11 Click the "OK" button on the "Create Master Key" Window
 			createMasterKeyWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Create Master Key\" window disappears.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.12 Select the "Compression" Tab item.
 			var newPassDialog2 = window.Find<Window> ("Create New Password Database - Step 2");
 			var compressionTabItem = newPassDialog2.Find<TabItem> ("Compression");
 			compressionTabItem.Select ();
 			procedureLogger.ExpectedResult ("The \"Compression\" tab item opened.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.13 Check the "None" RadioButton.
 			compressionTabItem.Find<RadioButton> ("None").Select ();
 			procedureLogger.ExpectedResult ("The \"None\" radio button selected.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.14 Click the "OK" button to close the dialog.
 			newPassDialog2.OK ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" window disappears.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
 		//TestCase102 Organize the group
@@ -212,13 +213,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//102.4 Enter "mono-a11y" into  "Master password" text box.
 			var createMasterKeyWindow = window.Find<Window> ("Create Composite Master Key");
-			var masterPasswdEdit = createMasterKeyWindow.Finder.ByName ("Repeat password:").ByAutomationId ("m_tbPassword").Find<Edit> ();
+			var masterPasswdEdit = createMasterKeyWindow.Find<Edit>(Direction.Vertical, 0);
 			masterPasswdEdit.SetValue ("mono-a11y");
 			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.5 Re-Enter "mono-a11y" into "Repeat password" text box.
-			var repeatPasswdEdit = createMasterKeyWindow.Finder.ByName ("Repeat password:").ByAutomationId ("m_tbRepeatPassword").Find<Edit> ();
+			var repeatPasswdEdit = createMasterKeyWindow.Find<Edit>(Direction.Vertical, 1);
 			repeatPasswdEdit.SetValue ("mono-a11y");
 			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Repeat password\" box.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -239,18 +240,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var editMenuItem = menuBar.Find<MenuItem> ("Edit");
 			editMenuItem.Find<MenuItem> ("Edit Group").Click ();
 			procedureLogger.ExpectedResult ("The \"Edit Group\" dialog opens.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.9 Click the "Icon" button on the "Edit Group" dialog.
 			var editGroupWindow = window.Find<Window> ("Edit Group");
 			var generalTabItem = editGroupWindow.Find<TabItem> ("General");
 			generalTabItem.Find<Button> ("Icon:").Click ();
 			procedureLogger.ExpectedResult ("The \"Icon Picker\" dialog opens.");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.10 Select list item "30" on the "Icon Picker" dialog.
 			var iconPickerWindow = editGroupWindow.Find<Window> ("Icon Picker");
-			var standardIconList = iconPickerWindow.Finder.ByAutomationId ("m_lvIcons").Find<List> ();
+			var standardIconList = iconPickerWindow.Find<List>(Direction.Vertical, 0);
 			var listItem30 = standardIconList.Find<ListItem> ("30");
 			listItem30.Select ();
 			procedureLogger.ExpectedResult ("The \"30\" list item is selected.");
@@ -259,7 +260,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (standardIconList.CanSelectMultiple, false);
 			Assert.AreEqual (standardIconList.IsSelectionRequired, false);
 			Assert.AreEqual (standardIconList.GetSelection () [0].Current.Name, "30");
-			Thread.Sleep(Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.11 Unselect list item "30" on the "Icon Picker" dialog.
 			listItem30.RemoveFromSelection ();
@@ -325,7 +326,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.1 Click "new" button on the toolstripbar
 			var toolBar = window.Find<ToolBar> ();
-			toolBar.Finder.ByName ("New...").Find<Button> ().Click ();
+			toolBar.Find<Button> ("New...").Click ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens");
 			Thread.Sleep (Config.Instance.ShortDelay);
 

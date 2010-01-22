@@ -1,4 +1,4 @@
-﻿// Finder.cs: Find Helper class to assist finding controls from application.
+// Finder.cs: Find Helper class to assist finding controls from application.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -31,7 +31,6 @@ namespace Mono.UIAutomation.TestFramework
 {
 	public class Finder
 	{
-
 		List<Condition> conditions = new List<Condition> ();
 		ControlType ct = null;
 		AutomationElement element = null;
