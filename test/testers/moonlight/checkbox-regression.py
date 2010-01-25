@@ -93,7 +93,6 @@ statesCheck(cbFrame.check1, "CheckBox")
 cbFrame.check2.click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(cbFrame.text2, "Three state CheckBox indeterminate")
-## BUG554025: missing indeterminate states
 ## BUG554017:
 #statesCheck(cbFrame.check2, "CheckBox", add_states=["indeterminate", "focused"])
 # check1 shows default states
@@ -142,7 +141,6 @@ statesCheck(cbFrame.check2, "CheckBox", add_states=["focused", "checked"])
 # press "space" to indeterminate check2
 cbFrame.check2.keyCombo("space", grabFocus=True)
 sleep(config.SHORT_DELAY)
-## BUG554025:
 statesCheck(cbFrame.check2, "CheckBox", add_states=["focused", "indeterminate"])
 
 # press "space" to uncheck check2

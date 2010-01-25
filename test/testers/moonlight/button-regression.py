@@ -92,7 +92,7 @@ sleep(config.SHORT_DELAY)
 assertName(bFrame.label, 'Button2 is clicked 3 times.')
 
 # assert Button image implementations.
-## BUG553176: Image is not implemented
+# according to bug553176 that Image won't be implemented
 #asserImageSize(bFrame.b4_image, 20, 20)
 #asserImageSize(bFrame.b5_image, 12, 12)
 

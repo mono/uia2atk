@@ -91,7 +91,7 @@ sFrame.assertValue(sFrame.horizontal_slider, 0)
 sFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
 assertName(sFrame.label1, 'Horizontal Slider Value: 0.1')
-## BUG558289
+## BUG558289: Key Navigation doesn't update slider's value
 #sFrame.assertValue(sFrame.horizontal_slider, 0.1)
 
 sFrame.keyCombo("Down", grabFocus=False)

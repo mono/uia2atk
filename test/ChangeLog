@@ -1,3 +1,13 @@
+2010-01-25  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/button-regression.py,
+	* testers/moonlight/passwordbox-regression.py,
+	* testers/moonlight/checkbox-regression.py,
+	* testers/moonlight/radiobutton-regression.py,
+	* testers/moonlight/textblock-regression.py,
+	* testers/moonlight/combobox-regression.py,
+	* testers/moonlight/slider-regression.py: clean up BUG references
+
 2010-01-20  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/tests.py: Removed Moonlight TabControl test.

@@ -44,7 +44,7 @@ pbFrame = app.passwordBoxFrame
 #######################
 # Check default States
 #######################
-# BUG557655: missing single line state
+# according to bug557655 single line state won't be supported
 #statesCheck(pbFrame.pwdBox, 'Text')
 
 pbFrame.pwdBox.mouseClick()

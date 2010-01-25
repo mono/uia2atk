@@ -67,7 +67,7 @@ statesCheck(rbFrame.radio4, "RadioButton")
 rbFrame.radio1.click(log=True)
 sleep(config.SHORT_DELAY)
 assertName(rbFrame.text3, "chose: First Group: radiobutton1")
-# BUG559133:missing checked and focused states
+# BUG559133, BUG554017:missing focused states
 #statesCheck(rbFrame.radio1, "RadioButton", add_states=["checked", "focused", "selected"])
 # radio2 shows default states
 statesCheck(rbFrame.radio2, "RadioButton")

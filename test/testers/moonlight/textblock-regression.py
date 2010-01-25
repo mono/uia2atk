@@ -51,7 +51,7 @@ statesCheck(tbFrame.text2, "Label", invalid_states=["multi line"])
 # Text implementation
 #####################
 assertName(tbFrame.text1, "simply TextBlock")
-# BUG561268
+# BUG561268: Multi-line Name Is Parsed Incorrectly
 #assertName(tbFrame.text2, 
 #                   "sample with LinkBreak and Run\r\nline2\r\nline3\r\nline4")
 
