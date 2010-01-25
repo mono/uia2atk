@@ -1,4 +1,8 @@
 2010-01-22  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Merge the KeePass.cs between 150107
+	& 150059.
+
+2010-01-22  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Update tests to make testcase101
 	run correctly.
 
