@@ -1,3 +1,7 @@
+2010-01-22  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Update tests to make testcase101
+	run correctly.
+
 2010-01-22  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Direction.cs:
 	* Mono.UIAutomation.TestFramework/Element.cs:
