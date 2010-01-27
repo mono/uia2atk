@@ -1,5 +1,9 @@
 2010-01-27  Calen Chen <cachen@novell.com>
 
+	* testers/winforms/datagridview/__init__.py: fixed a failure
+
+2010-01-27  Calen Chen <cachen@novell.com>
+
 	* winforms/datagridboolcolumn-regression.py: add winforms bug574257 
 	reference
 

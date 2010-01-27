@@ -20,7 +20,7 @@ def launchDataGridView(exe=None):
 		# make sure we can find the sample application
 		harness_dir = path[0]
 		i = harness_dir.rfind("/")
-        j = harness_dir[:i].rfind("/")
+                j = harness_dir[:i].rfind("/")
 		uiaqa_path = harness_dir[:j]
 		exe = '%s/samples/winforms/datagridview.py' % uiaqa_path
 		if not exists(exe):
