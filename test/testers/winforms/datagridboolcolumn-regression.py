@@ -47,7 +47,7 @@ dgFrame = app.dataGridFrame
 # press key Space to change focused cell's text, key Return move to 
 # next row, Label is changed
 ###################################################################
-
+## BUG574257: winforms bool cell doesn't support key navigation
 dgFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
 dgFrame.keyCombo("Return", grabFocus=False)
