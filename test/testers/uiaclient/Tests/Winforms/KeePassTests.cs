@@ -19,7 +19,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2010 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Ray Wang <rawang@novell.com>
@@ -246,7 +246,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//102.9 Click the "Icon" button on the "Edit Group" dialog.
 			var editGroupWindow = window.Find<Window> ("Edit Group");
 			var generalTabItem = editGroupWindow.Find<TabItem> ("General");
-			jjjgeneralTabItem.Find<Button> ("Icon:").Click ();
+			generalTabItem.Find<Button> ("Icon:").Click ();
 			procedureLogger.ExpectedResult ("The \"Icon Picker\" dialog opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 

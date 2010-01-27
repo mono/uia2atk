@@ -1,3 +1,39 @@
+2010-01-27  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Button.cs:
+	* Mono.UIAutomation.TestFramework/Spinner.cs:
+	* Mono.UIAutomation.TestFramework/Document.cs:
+	* Mono.UIAutomation.TestFramework/Direction.cs:
+	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
+	* Mono.UIAutomation.TestFramework/CheckBox.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/RadioButton.cs:
+	* Mono.UIAutomation.TestFramework/ListItem.cs:
+	* Mono.UIAutomation.TestFramework/Utils.cs:
+	* Mono.UIAutomation.TestFramework/Application.cs:
+	* Mono.UIAutomation.TestFramework/Window.cs:
+	* Mono.UIAutomation.TestFramework/Finder.cs:
+	* Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* Mono.UIAutomation.TestFramework/TestBase.cs:
+	* Mono.UIAutomation.TestFramework/List.cs:
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Mono.UIAutomation.TestFramework/MenuItem.cs:
+	* Mono.UIAutomation.TestFramework/Pane.cs:
+	* Mono.UIAutomation.TestFramework/Text.cs:
+	* Mono.UIAutomation.TestFramework/Edit.cs:
+	* Mono.UIAutomation.TestFramework/TabItem.cs:
+	* Mono.UIAutomation.TestFramework/ProcedureLogger.cs:
+	* Mono.UIAutomation.TestFramework/MenuBar.cs:
+	* Mono.UIAutomation.TestFramework/ToolBar.cs:
+	* Mono.UIAutomation.TestFramework/Menu.cs:
+	* Mono.UIAutomation.TestFramework/Config.cs:
+	* Tests/Winforms/KeePassTests.cs:
+	* Tests/Winforms/DockPatternTests.cs:
+	* Tests/Winforms/WindowPatternTests.cs:
+	Update the year of copyright, update testcases and add bug references, 
+	make output more descriptive.
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	Add Menu class into project.
+
 2010-01-22  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Merge the KeePass.cs between 150107
 	& 150059.

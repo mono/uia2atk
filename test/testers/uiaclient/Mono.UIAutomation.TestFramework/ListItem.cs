@@ -13,7 +13,7 @@
 // this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// Copyright (c) 2009 Novell, Inc (http://www.novell.com)
+// Copyright (c) 2010 Novell, Inc (http://www.novell.com)
 //
 // Authors:
 //	Ray Wang  (rawang@novell.com)
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Select (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Select {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Select {0}.", this.NameAndType));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sip.Select ();
@@ -72,7 +72,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void RemoveFromSelection (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Unselect {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Unselect {0}.", this.NameAndType));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sip.RemoveFromSelection ();
@@ -86,7 +86,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void AddToSelection (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Select {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Select {0}.", this.NameAndType));
 
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sip.AddToSelection ();

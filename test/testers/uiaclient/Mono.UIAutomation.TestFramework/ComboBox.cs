@@ -13,7 +13,7 @@
 // this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
-// Copyright (c) 2009 Novell, Inc (http://www.novell.com)
+// Copyright (c) 2010 Novell, Inc (http://www.novell.com)
 //
 // Authors:
 //	Ray Wang  (rawang@novell.com)
@@ -65,7 +65,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Expand (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Expand {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Expand {0}.", this.NameAndType));
 
 			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
 			ecp.Expand ();
@@ -80,7 +80,7 @@ namespace Mono.UIAutomation.TestFramework
 		public void Collapse (bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Collapse {0}.", this.Name));
+				procedureLogger.Action (string.Format ("Collapse {0}.", this.NameAndType));
 
 			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
 			ecp.Collapse ();

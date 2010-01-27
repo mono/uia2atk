@@ -78,6 +78,7 @@
     <Compile Include="Window.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">

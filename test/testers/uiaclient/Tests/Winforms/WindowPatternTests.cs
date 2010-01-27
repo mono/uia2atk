@@ -19,7 +19,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2010 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Ray Wang <rawang@novell.com>
@@ -46,6 +46,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 		protected override void LaunchSample ()
 		{
+			SingleInstance("WindowPattern and TransformPattern Test");
 			app = new Application ("WindowAndTransformPatternProvider");
 			app.Launch ("mono", "WindowAndTransformPatternProvider.exe");
 		}
@@ -73,26 +74,28 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		{
 			//106.1 Maximize the window
 			window.SetWindowVisualState (WindowVisualState.Maximized);
-			procedureLogger.ExpectedResult ("The window would be Maximized.");
-			Assert.AreEqual (WindowVisualState.Minimized, window.WindowVisualState);
-			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, window.WindowInteractionState);
+			Thread.Sleep (Config.Instance.MediumDelay);
+			procedureLogger.ExpectedResult ("The window is Maximized.");
+			Assert.AreEqual (WindowVisualState.Maximized, window.WindowVisualState);
+			Assert.AreEqual (WindowInteractionState.Running, window.WindowInteractionState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//106.2 Minimize the window
 			window.SetWindowVisualState (WindowVisualState.Minimized);
-			procedureLogger.ExpectedResult ("The window would be Minimized.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			procedureLogger.ExpectedResult ("The window is Minimized.");
 			Assert.AreEqual (WindowVisualState.Minimized, window.WindowVisualState);
-			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, window.WindowInteractionState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//106.3 Restore the window
 			window.SetWindowVisualState (WindowVisualState.Normal);
+			Thread.Sleep (Config.Instance.MediumDelay);
 			procedureLogger.ExpectedResult ("The window would be Restored.");
-			Assert.AreEqual (WindowVisualState.Minimized, window.WindowVisualState);
-			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, window.WindowInteractionState);
+			Assert.AreEqual (WindowVisualState.Normal, window.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//106.4 Rotate the control for a given degree
+			//BUG574269 Cannot find pane control on Linux
 			var pane = window.Find<Pane> ("WindowAndTransformPatternProviderControl, r:0");
 			pane.Rotate (90.0);
 			procedureLogger.ExpectedResult ("The pane would be rotated for 90 degree.");
