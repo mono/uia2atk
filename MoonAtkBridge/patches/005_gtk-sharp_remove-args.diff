@@ -1,0 +1,12 @@
+Index: glib/Makefile.am
+===================================================================
+--- glib/Makefile.am	(revision 142364)
++++ glib/Makefile.am	(working copy)
+@@ -18,7 +18,6 @@
+ references = 
+ 
+ sources =		 			\
+-	Argv.cs					\
+ 	Boxed.cs				\
+ 	CDeclCallbackAttribute.cs		\
+ 	ClassInitializerAttribute.cs		\

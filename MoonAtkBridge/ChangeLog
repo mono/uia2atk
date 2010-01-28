@@ -1,3 +1,10 @@
+2010-01-28  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am:
+	* patches/005_gtk-sharp_remove-args.diff: Patch out Args.cs because
+	System.Environment.GetCommandLineArgs () is now internalized by the
+	tuner.
+
 2009-12-28  Brad Taylor  <brad@getcoded.net>
 
 	* patches/moonlight-a11y-slot-tree.diff: Update patch to latest moon to
