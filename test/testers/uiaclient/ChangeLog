@@ -1,4 +1,7 @@
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Solve the block of testcase 101.
+
+2010-01-27  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Update testcase 102.
 
 2010-01-27  Ray Wang  <rawang@novell.com>

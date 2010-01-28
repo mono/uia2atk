@@ -102,10 +102,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 				itemViewList.SetCurrentView (0);
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The current view of the dialog is \"Large Icons\"");
-			//Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
-			//method can't be shown as expected
-			//Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			/*Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
+			 *method can't be shown as expected
+			 *Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
+			 *Thread.Sleep (Config.Instance.ShortDelay);
+			 */
 
 			//101.4 Click the "Save" button of the dialog.
 			newPassDialog.Save ();
@@ -142,15 +143,20 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//101.9  Click the "Save" button of the dialog.
 			var newKeyFileDialog = window.Find<Window> ("Create a new key file");
 			newKeyFileDialog.Save();
-			/*Bug 571799 - [uiaclient-Winforms]：The dialog
-			who has parent has been found twice
-			in case there is a TestCase101 key exist.*/
+			Console.WriteLine("the newKeyFileDialog is  {0} ddddddd",newKeyFileDialog);
+
+			/*
+			 * Bug 571799 - [uiaclient-Winforms]：The dialog
+			 * who has parent has been found twice
+			 * in case there is a TestCase101 key exist.
+			 */
 			
 			/*BUG 573464 - [uiaclient-winforms]Some dialog's name has been 
-			changed in Linux compares to in Windows
-			window.Find<Button> ("Discard changes").Click ();
-			var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");*/
-			var comfirmDialog = newKeyFileDialog.Find<Window> ("Save");
+			 *changed in Linux compares to in Windows
+			 *var comfirmDialog = newKeyFileDialog.Find<Window> ("Save");
+			 */
+			//nsole.WriteLine("the window {0} has been found",newKeyFileDialog.Find<Window>());
+			var comfirmDialog = window.Find<Window> ("Confirm Save As");
 			if (comfirmDialog != null) {
 				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog opens.");
 				Thread.Sleep (Config.Instance.ShortDelay);
@@ -213,6 +219,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("\"TestCase102\" entered in the \"File Name\" box.");
 			Assert.AreEqual (fileNameComboBox.Value, "TestCase102");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
 			//102.3 Click the "Save" button of the dialog.
 			newPassDialog.Save ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog disappears.");
@@ -246,7 +254,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var menuBar = window.Find<MenuBar> ();
 			var editMenuItem = menuBar.Find<MenuItem> ("Edit");
 			editMenuItem.Click();
+			procedureLogger.ExpectedResult ("The \"Edit \" menu is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			
 			editMenuItem.Find<MenuItem> ("Edit Group").Click ();
 			procedureLogger.ExpectedResult ("The \"Edit Group\" dialog opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -254,9 +264,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//102.9 Click the "Icon" button on the "Edit Group" dialog.
 			var editGroupWindow = window.Find<Window> ("Edit Group");
 			var generalTabItem = editGroupWindow.Find<TabItem> ("General");
-                        //BUG 574226 - [uiaclient-winforms]The name of Button is "Icon" 
-			//in Windows but in linux is ""
-			//generalTabItem.Find<Button> ("Icon:").Click ();
+			/*
+			 * BUG 574226 - [uiaclient-winforms]The name of Button is "Icon" 
+			 * in Windows but in linux is ""
+			 * generalTabItem.Find<Button> ("Icon:").Click ();
+			 */
 			generalTabItem.Find<Button> (Direction.Vertical, 0).Click ();
 			procedureLogger.ExpectedResult ("The \"Icon Picker\" dialog opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -285,12 +297,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			/*The list items in the list is different from the windows, the listitem "68"
-			is always shown.
-			TODO write anther test case to cover the ScrollIntoView() method.
-			102.13 Click list item "68" on the "Icon Picker" dialog.
-			standardIconList.Find<ListItem> ("68").ScrollIntoView ();
-			procedureLogger.ExpectedResult ("The \"68\" list item is showed in the view.");
-			Thread.Sleep (Config.Instance.ShortDelay);*/
+			 *is always shown.
+			 *TODO write anther test case to cover the ScrollIntoView() method.
+			 *102.13 Click list item "68" on the "Icon Picker" dialog.
+			 *standardIconList.Find<ListItem> ("68").ScrollIntoView ();
+			 *procedureLogger.ExpectedResult ("The \"68\" list item is showed in the view.");
+			 *Thread.Sleep (Config.Instance.ShortDelay);
+			 */
 
 			//102.14 Click the "OK" button on the "Icon Picker" dialog.
 			iconPickerWindow.OK ();
@@ -303,6 +316,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Behavior\" tab item opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			//ToReview
 			//102.16 Expand the "Searching entries in this group" combo box.
 			var searchCombobox = behaviorTabItem.Find<ComboBox> ("Searching entries in this group:");
 			searchCombobox.Expand ();
@@ -339,7 +353,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 		private void TestCase103 ()
 		{
-
 			//103.1 Click "new" button on the toolstripbar
 			var toolBar = window.Find<ToolBar> ();
 			toolBar.Find<Button> ("New...").Click ();
@@ -375,7 +388,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.6 Click "Add Entry" button on the toolstripbar
 			procedureLogger.Action ("Click \"Add Entry\" button on the toolstripbar");
-			toolBar.Find<Button> ("Add Entry").Click (false);
+			/*BUG574620 - [uiaclient-winforms]:On linux a control who's control 
+			 * type is "SplitButton" on Windows is "Button"
+			 * toolBar.Find<Button> ("Add Entry").Click (false);
+			*/
+			Console.WriteLine("the SplitButton is {0}.......", toolBar.Find<SplitButton> ("Add Entry"));
+			Console.WriteLine("sssssssssssssssssssssssss");
+			toolBar.Find<SplitButton> ("Add Entry").Click();
+			Thread.Sleep (10000000);
 			procedureLogger.ExpectedResult ("the \"Add Entry\" window appears");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -442,7 +462,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.10 Click the "Add" button on the "Add Entry" Window
 			procedureLogger.Action ("Click the \"Add\" button on the \"Add Entry\" Window");
-			addEntryDialog.Find<Button> ("Add").Click (false);
+			addEntryDialog.Find<Button> ("Add").Click ();
 			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" window appears");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -487,7 +507,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.13 Click "OK" button on the dialog
 			procedureLogger.Action ("Click \"OK\" button on the dialog");
-			autoItemDialog.OK (false);
+			autoItemDialog.OK ();
 			procedureLogger.ExpectedResult ("\"None\" radio button selected");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -501,7 +521,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//103.15 Click the "Add" button on the "Add Entry" Window
 			var notesDatagrid = addEntryDialog.Find<DataGrid> ("Notes:");
 			procedureLogger.Action ("Click the \"Add\" button on the \"Add Entry\" Window");
-			addEntryDialog.Find<Button> ("Add").Click (false);
+			addEntryDialog.Find<Button> ("Add").Click ();
 			procedureLogger.ExpectedResult ("The \"Edit Entry String\" dialog appears");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -514,7 +534,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.17 Click "OK" button on the "Edit Entry String" dialog
 			procedureLogger.Action ("Click \"OK\" button on the \"Edit Entry String\" dialog");
-			editEntryStringWindow.OK (false);
+			editEntryStringWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Edit Entry String\" window closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
