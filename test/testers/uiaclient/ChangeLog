@@ -1,4 +1,8 @@
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+	* Mono.UIAutomation.TestFramework/SplitButton.cs:add the SplitButton.cs
+	class.
+
+2010-01-27  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Update bug 571799 reference.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
