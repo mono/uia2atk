@@ -1,3 +1,8 @@
+2010-01-28  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* Tests/Winforms/KeePassTests.cs:
+	Remove whitespaces and fix conflicts.
+
 2010-01-27  Felicia Mu  <fxmu@novell.com>
 	* Mono.UIAutomation.TestFramework/SplitButton.cs:add the SplitButton.cs
 	class.

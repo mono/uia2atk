@@ -88,7 +88,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		// The property of ExpandCollapsePattern
 		public ExpandCollapseState ExpandCollapseState {
-			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty);	}
+			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty); }
 		}
 	}
 }
