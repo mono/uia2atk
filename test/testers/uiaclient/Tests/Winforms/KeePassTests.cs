@@ -102,10 +102,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 				itemViewList.SetCurrentView (0);
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The current view of the dialog is \"Large Icons\"");
-			/*Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
-			 *method can't be shown as expected
-			 *Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
-			 *Thread.Sleep (Config.Instance.ShortDelay);
+			/* Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() 
+			 * method can't be shown as expected
+			 * Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
+			 * Thread.Sleep (Config.Instance.ShortDelay);
 			 */
 
 			//101.4 Click the "Save" button of the dialog.
@@ -143,26 +143,24 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//101.9  Click the "Save" button of the dialog.
 			var newKeyFileDialog = window.Find<Window> ("Create a new key file");
 			newKeyFileDialog.Save();
-			Console.WriteLine("the newKeyFileDialog is  {0} ddddddd",newKeyFileDialog);
-
 			/*
 			 * Bug 571799 - [uiaclient-Winforms]：The dialog
 			 * who has parent has been found twice
 			 * in case there is a TestCase101 key exist.
+			 * var comfirmDialog = newKeyFileDialog.Find<Window> ("Save");
 			 */
 			
-			/*BUG 573464 - [uiaclient-winforms]Some dialog's name has been 
-			 *changed in Linux compares to in Windows
-			 *var comfirmDialog = newKeyFileDialog.Find<Window> ("Save");
+			/* BUG 573464 - [uiaclient-winforms]Some dialog's name has been 
+			 * changed in Linux compares to in Windows
+			 * var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
 			 */
-			//nsole.WriteLine("the window {0} has been found",newKeyFileDialog.Find<Window>());
-			var comfirmDialog = window.Find<Window> ("Confirm Save As");
+			var comfirmDialog = window.Find<Window> ("Save");
 			if (comfirmDialog != null) {
-				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog opens.");
+				procedureLogger.ExpectedResult ("The \"Save\" dialog opens.");
 				Thread.Sleep (Config.Instance.ShortDelay);
 
 				comfirmDialog.OK ();
-				procedureLogger.ExpectedResult ("The \"Confirm Save As\" dialog disappears.");
+				procedureLogger.ExpectedResult ("The \"Save\" dialog disappears.");
 				Thread.Sleep (Config.Instance.ShortDelay);
 			} else {
 				procedureLogger.ExpectedResult ("The \"Entropy Collection\" window opens.");

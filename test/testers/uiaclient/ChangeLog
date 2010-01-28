@@ -1,4 +1,7 @@
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Update bug 571799 reference.
+
+2010-01-27  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Solve the block of testcase 101.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
