@@ -322,11 +322,14 @@ namespace System.Windows.Automation
 		public static void AddAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
 		{
 			MUS.FocusChangedEventHandler sourceHandler;
-			if (!focusHandlerMapping.TryGetValue (eventHandler, out sourceHandler)) {
-				sourceHandler = (element, objectId, childId) => eventHandler (
-					SourceManager.GetOrCreateAutomationElement (element),
-					new AutomationFocusChangedEventArgs (objectId, childId));
-				focusHandlerMapping.Add (eventHandler, sourceHandler);
+			//according to the spec, all static methods in the UIA lib shall be thread safe.
+			lock (focusHandlerMapping) {
+				if (!focusHandlerMapping.TryGetValue (eventHandler, out sourceHandler)) {
+					sourceHandler = (element, objectId, childId) => eventHandler (
+						SourceManager.GetOrCreateAutomationElement (element),
+						new AutomationFocusChangedEventArgs (objectId, childId));
+					focusHandlerMapping.Add (eventHandler, sourceHandler);
+				}
 			}
 			foreach (var source in SourceManager.GetAutomationSources ())
 				source.AddAutomationFocusChangedEventHandler (sourceHandler);
@@ -360,7 +363,8 @@ namespace System.Windows.Automation
 
 		public static void RemoveAllEventHandlers ()
 		{
-			focusHandlerMapping.Clear ();
+			lock (focusHandlerMapping)
+				focusHandlerMapping.Clear ();
 			foreach (var source in SourceManager.GetAutomationSources ())
 				source.RemoveAllEventHandlers ();
 			AddAutomationFocusChangedEventHandler (AutomationElement.OnFocusChanged);
@@ -384,10 +388,12 @@ namespace System.Windows.Automation
 		public static void RemoveAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
 		{
 			MUS.FocusChangedEventHandler sourceHandler;
-			if (focusHandlerMapping.TryGetValue (eventHandler, out sourceHandler)) {
-				focusHandlerMapping.Remove (eventHandler);
-				foreach (var source in SourceManager.GetAutomationSources ())
-					source.RemoveAutomationFocusChangedEventHandler (sourceHandler);
+			lock (focusHandlerMapping) {
+				if (focusHandlerMapping.TryGetValue (eventHandler, out sourceHandler)) {
+					focusHandlerMapping.Remove (eventHandler);
+					foreach (var source in SourceManager.GetAutomationSources ())
+						source.RemoveAutomationFocusChangedEventHandler (sourceHandler);
+				}
 			}
 		}
 

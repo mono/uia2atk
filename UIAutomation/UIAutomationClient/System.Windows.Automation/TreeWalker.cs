@@ -34,7 +34,6 @@ namespace System.Windows.Automation
 	public sealed partial class TreeWalker
 	{
 		#region Private Fields
-		private static IList<IAutomationSource> automationSources;
 		private Object directChildrenLock = new Object ();
 		private List<AutomationElement> directChildren;
 		#endregion
@@ -42,7 +41,6 @@ namespace System.Windows.Automation
 		#region Static Constructor
 		static TreeWalker ()
 		{
-			automationSources = SourceManager.GetAutomationSources ();
 			RawViewWalker = new TreeWalker (Automation.RawViewCondition);
 			InitializeRootElements ();
 
@@ -66,7 +64,7 @@ namespace System.Windows.Automation
 		{
 			lock (RawViewWalker.directChildrenLock) {
 				RawViewWalker.directChildren = new List<AutomationElement> ();
-				foreach (IAutomationSource source in automationSources) {
+				foreach (IAutomationSource source in SourceManager.GetAutomationSources ()) {
 					foreach (IElement sourceElement in source.GetRootElements ())
 						RawViewWalker.directChildren.Add (
 							SourceManager.GetOrCreateAutomationElement (sourceElement));
@@ -95,7 +93,7 @@ namespace System.Windows.Automation
 					rootElements.Add (SourceManager.GetOrCreateAutomationElement (sourceElement));
 				RawViewWalker.directChildren = rootElements;
 			}
-			Log.Info ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
+			Log.Debug ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
 		}
 
 		#endregion

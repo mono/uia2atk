@@ -1,3 +1,9 @@
+2010-01-30  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
+	* UIAutomationClient/System.Windows.Automation/TreeWalker.cs: 
+	* UIAutomationClient/System.Windows.Automation/SourceManager.cs: Fix thread safety issues
+
 2010-01-22  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationSource/Mono.UIAutomation.Source/IElement.cs: 

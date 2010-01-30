@@ -308,7 +308,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal static int GetUniqueRuntimeId ()
 		{
-			return ++id;
+			return System.Threading.Interlocked.Increment (ref id);
 		}
 
 		internal static TResult GetPrivateField<TResult> (Type referenceType, 

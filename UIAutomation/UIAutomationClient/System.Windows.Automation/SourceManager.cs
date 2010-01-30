@@ -38,33 +38,40 @@ namespace System.Windows.Automation
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		private const string UiaDbusSourceAssembly =
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		private static List<IAutomationSource> sources = null;
+		private static IAutomationSource [] sources = null;
+		private static object sourcesLock = new object ();
 
-		internal static IList<IAutomationSource> GetAutomationSources ()
+		internal static IAutomationSource [] GetAutomationSources ()
 		{
 			if (sources == null) {
-				sources = new List<IAutomationSource> ();
+				lock (sourcesLock) {
+					if (sources == null) {
+						var sourcesList = new List<IAutomationSource> ();
 
-				// Let MONO_UIA_SOURCE env var override default source
-				string sourceAssemblyNames =
-					Environment.GetEnvironmentVariable ("MONO_UIA_SOURCE");
+						// Let MONO_UIA_SOURCE env var override default source
+						string sourceAssemblyNames =
+							Environment.GetEnvironmentVariable ("MONO_UIA_SOURCE");
 
-				if (string.IsNullOrEmpty (sourceAssemblyNames))
-					sourceAssemblyNames =
-						UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
+						if (string.IsNullOrEmpty (sourceAssemblyNames))
+							sourceAssemblyNames =
+								UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
 
-				foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
-					if (string.IsNullOrEmpty (sourceAssembly))
-						continue;
-					IAutomationSource source = GetAutomationSource (sourceAssembly);
-					if (source != null)
-						sources.Add (source);
+						foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
+							if (string.IsNullOrEmpty (sourceAssembly))
+								continue;
+							IAutomationSource source = GetAutomationSource (sourceAssembly);
+							if (source != null)
+								sourcesList.Add (source);
+						}
+						sources = sourcesList.ToArray ();
+					}
 				}
 			}
 			return sources;
 		}
 
 		// TODO: Rename to GetAutomationElement
+		// Note: this method could be invoked by multiple threads simultaneously
 		internal static AutomationElement GetOrCreateAutomationElement (IElement sourceElement)
 		{
 			if (sourceElement == null)

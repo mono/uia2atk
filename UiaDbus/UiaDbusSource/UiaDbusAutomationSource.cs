@@ -84,14 +84,14 @@ namespace Mono.UIAutomation.UiaDbusSource
 		private Dictionary<DbusElementTuple, UiaDbusElement> elementMapping =
 			new Dictionary<DbusElementTuple, UiaDbusElement> ();
 
-		private EventHandlerManager eventHandlerManager = new EventHandlerManager();
+		private EventHandlerManager eventHandlerManager = new EventHandlerManager ();
 		private List<string> automationEventBusNames = new List<string> ();
 		private List<string> propertyEventBusNames = new List<string> ();
 		private List<string> structureEventBusNames = new List<string> ();
 		private List<FocusChangedEventHandler> focusChangedHandlers = new List<FocusChangedEventHandler> ();
 		private bool listenFocusChangeStarted = false;
-		private object focusChangedHandlersLock = new object ();
 		private List<string> uiaDbusNames = null;
+		private Object uiaDbusNamesLock = new Object ();
 
 		#endregion
 
@@ -140,7 +140,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 				}
 			}
 
-			Log.Info ("UiaDbusAutomationSource: GetRootElements count will be: " + dbusElements.Count);
+			Log.Debug ("UiaDbusAutomationSource: GetRootElements count will be: " + dbusElements.Count);
 			return dbusElements.ToArray ();
 		}
 
@@ -275,7 +275,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			if (!listenFocusChangeStarted)
 				StartListenFocusChangedEvents ();
-			lock (focusChangedHandlersLock)
+			lock (focusChangedHandlers)
 				focusChangedHandlers.Add (eventHandler);
 		}
 
@@ -336,13 +336,13 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		public void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
 		{
-			lock (focusChangedHandlersLock)
+			lock (focusChangedHandlers)
 				focusChangedHandlers.Remove (eventHandler);
 		}
 
 		public void RemoveAllEventHandlers ()
 		{
-			lock (focusChangedHandlersLock)
+			lock (focusChangedHandlers)
 				focusChangedHandlers.Clear ();
 			foreach (DCI.IApplication app in GetUiaApplications ().Values)
 				app.RemoveAllEventHandlers (EventHandlerManager.ClientPrefix);
@@ -391,15 +391,18 @@ namespace Mono.UIAutomation.UiaDbusSource
 				RootElementsChanged (this, EventArgs.Empty);
 		}
 
-		private IList<string> GetUiaDbusNames ()
+		private string [] GetUiaDbusNames ()
 		{
-			if (uiaDbusNames == null) {
-				FetchUiaDbusNames ();
-				IBus bus = Bus.Session.GetObject<IBus> (DBusName,
-				                                        new ObjectPath (DBusPath));
-				bus.NameOwnerChanged += BusNameOwnerChanged;
+			lock (uiaDbusNamesLock) {
+				if (uiaDbusNames == null) {
+					FetchUiaDbusNames ();
+					Log.Debug ("Count of found Uia applications over dbus: {0}", uiaDbusNames.Count);
+					IBus bus = Bus.Session.GetObject<IBus> (DBusName,
+					                                        new ObjectPath (DBusPath));
+					bus.NameOwnerChanged += BusNameOwnerChanged;
+				}
+				return uiaDbusNames.ToArray ();
 			}
-			return uiaDbusNames;
 		}
 
 		private static bool IsUiaDbusName (string busName)
@@ -418,13 +421,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 			if (!string.IsNullOrEmpty(newOwner) &&
 			    string.IsNullOrEmpty(oldOwner) &&
 			    IsUiaDbusName (newOwner)) {
-				uiaDbusNames.Add (newOwner);
+				lock (uiaDbusNamesLock) {
+					if (!uiaDbusNames.Contains (newOwner))
+						uiaDbusNames.Add (newOwner);
+					else
+						Log.Error ("Same application bus name is already in \"uiaDbusNames\"");
+				}
 				OnRootElementsChanged ();
 				BindApplicationEventHandlers (newOwner);
 			} else if (!string.IsNullOrEmpty(oldOwner) &&
-			    string.IsNullOrEmpty(newOwner) &&
-			    uiaDbusNames.Contains (oldOwner)) {
-				uiaDbusNames.Remove (oldOwner);
+			    string.IsNullOrEmpty(newOwner)){
+				lock (uiaDbusNamesLock) {
+					if (uiaDbusNames.Contains (oldOwner))
+						uiaDbusNames.Remove (oldOwner);
+				}
 				OnRootElementsChanged ();
 			}
 		}
@@ -438,7 +448,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 			if (listenFocusChangeStarted)
 				app.FocusChanged += delegate (string providerPath) {
 					if (!string.IsNullOrEmpty (providerPath)) {
-						lock (focusChangedHandlersLock) {
+						lock (focusChangedHandlers) {
 							foreach (var handler in focusChangedHandlers)
 								handler (GetOrCreateElement (busName, providerPath), -1, -1);
 						}
@@ -506,7 +516,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 					continue;
 				app.FocusChanged += delegate (string providerPath) {
 					if (!string.IsNullOrEmpty (providerPath)) {
-						lock (focusChangedHandlersLock) {
+						lock (focusChangedHandlers) {
 							foreach (var handler in focusChangedHandlers)
 								handler (GetOrCreateElement (busName, providerPath), -1, -1);
 						}
@@ -521,8 +531,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 			if (dbusElement == null)
 				return null;
 			UiaDbusElement element = new UiaDbusElement (dbusElement, busName, elementPath, this);
-			elementMapping.Add (new DbusElementTuple (busName, elementPath),
-			                    element);
+			lock (elementMapping)
+				elementMapping.Add (new DbusElementTuple (busName, elementPath), element);
 			return element;
 		}
 
@@ -530,8 +540,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		#region Private Methods - DBus Main Loop
 
-		private bool mainLoopStarted = false;
-		private static bool runMainLoop = false;
+		private volatile bool mainLoopStarted = false;
+		private volatile static bool runMainLoop = false;
 		private Thread mainLoop = null;
 
 		private void CheckMainLoop ()
