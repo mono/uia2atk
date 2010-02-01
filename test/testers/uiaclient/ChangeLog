@@ -1,4 +1,15 @@
 2010-01-28  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/Element.cs: Add SplitButton and Menu 
+	class in Promotion method.
+	* Mono.UIAutomation.TestFramework/ListItem.cs: Add IsSelected
+	property.
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	Update SplitButton.cs for the project.
+	* Mono.UIAutomation.TestFramework/SplitButton.cs: 
+	SplitButton class wrapper.
+	* Tests/Winforms/KeePassTests.cs: Update TestCase104.
+
+2010-01-28  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/ComboBox.cs:
 	* Tests/Winforms/KeePassTests.cs:
 	Remove whitespaces and fix conflicts.

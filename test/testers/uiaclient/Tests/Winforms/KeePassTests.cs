@@ -145,13 +145,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			newKeyFileDialog.Save();
 
 			/*
-			 * Bug 571799 - [uiaclient-Winforms]：The dialog
+			 * BUG571799 - [uiaclient-Winforms]：The dialog
 			 * who has parent has been found twice
 			 * in case there is a TestCase101 key exist.
 			 */
 
 			/*
-			 * BUG 573464 - [uiaclient-winforms]Some dialog's name has been
+			 * BUG573464 - [uiaclient-winforms]Some dialog's name has been
 			 * changed in Linux compares to in Windows
 			 */
 			//var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
@@ -589,61 +589,59 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		private void TestCase104 ()
 		{
 			//104.1 Click "new" button on the toolstripbar
-			procedureLogger.Action ("Click \"New...\" button on the toolbar");
 			var toolBar = window.Find<ToolBar> ();
-			toolBar.Find<Button> ("New...").Click (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens");
+			toolBar.Find<Button> ("New...").Click ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.2 Click "Save" button on the dialog
-			procedureLogger.Action ("Click \"Save\" button of the dialog");
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			newPassDialog.Save (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog.Save ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.3 Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var keyDialog = window.Find<Window> ("Create Composite Master Key");
-			keyDialog.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			keyDialog.OK ();
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog sppears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.4 Click "Yes" button on the dialog
-			procedureLogger.Action ("Click \"Yes\" button on the KeePass dialog");
 			var createMasterKeyWindow = window.Find<Window> ("KeePass");
-			createMasterKeyWindow.Yes (false);
-			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box");
+			createMasterKeyWindow.Yes ();
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.5  Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var newPassDialog2 = window.Find<Window> ("Create New Password Database - Step 2");
-			newPassDialog2.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog2.OK ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.6  Click "Add Entry" button on the toolstripbar
-			procedureLogger.Action ("Click \"Add Entry\" button on the toolstripbar");
-			toolBar.Find<Button> ("Add Entry").Click (false);
-			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears");
+			//BUGXXXXX: Button recognized as SplitButton on Linux, but it's Button on Windows
+			toolBar.Find<SplitButton> ("Add Entry").Click ();
+			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.7  Input the "email" into the title  edit
-			procedureLogger.Action ("Input the \"email\" into the title edit ");
+			procedureLogger.Action ("Input \"email\" into the \"Tittle\" edit.");
 			SWF.SendKeys.SendWait ("email");
-			procedureLogger.ExpectedResult ("The \"email\" field is inputted into the \"Notes\" edit");
+			procedureLogger.ExpectedResult ("\"email\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.8 Click "OK" button on the "Add Entry" dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
-			window.Find<Button> ("OK").Click (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
+			//var addEntryDialog = window.Find<Window> ("Add Entry");
+			//add.EntryDialog.OK ();
+			window.Find<Button> ("OK").Click ();
+			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.9 Check the datagrid's Coulum  is 11 and Row count is 2
-			procedureLogger.Action ("check GridPattern 's property :ColumnCount");
-			DataGrid dataGrid = window.Find<DataGrid>();
+			var rightPane = window.Find<Pane> ().Find<Pane> (Direction.Vertical, 0).Find<Pane> (Direction.Horizental, 0);
+			var dataGrid =  rightPane.Find<DataGrid> ();
+			procedureLogger.Action ("Check the count of columns of the right pane.");
 			Assert.AreEqual (11, dataGrid.ColumnCount);
 			procedureLogger.ExpectedResult ("the data grid 's ColumnCount should be 11");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -654,8 +652,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.10 Click "Add Entry" button on the toolstripbar
-			procedureLogger.Action ("Click \"Add Entry\" button on the toolstripbar");
-			toolBar.Find<Button> ("Add Entry").Click (false);
+			toolBar.Find<Button> ("Add Entry").Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -666,8 +663,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.12 Click "OK" button on the "Add Entry" dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
-			window.Find<Button> ("OK").Click (false);
+			window.Find<Button> ("OK").Click ();
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 

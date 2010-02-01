@@ -51,6 +51,5 @@ namespace Mono.UIAutomation.TestFramework
 			InvokePattern ip = (InvokePattern) element.GetCurrentPattern (InvokePattern.Pattern);
 			ip.Invoke ();
 		}
-
 	}
 }

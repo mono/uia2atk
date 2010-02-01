@@ -91,5 +91,9 @@ namespace Mono.UIAutomation.TestFramework
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sip.AddToSelection ();
 		}
+
+		public bool IsSelected {
+			get { return (bool) element.GetCurrentPropertyValue (SelectionItemPattern.IsSelectedProperty); }
+		}
 	}
 }

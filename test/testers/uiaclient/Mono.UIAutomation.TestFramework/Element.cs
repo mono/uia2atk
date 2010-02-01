@@ -174,6 +174,10 @@ namespace Mono.UIAutomation.TestFramework
 				return new Text (elm);
 			else if (elm.Current.ControlType == ControlType.Pane)
 				return new Pane (elm);
+			else if (elm.Current.ControlType == ControlType.Menu)
+				return new Menu (elm);
+			else if (elm.Current.ControlType == ControlType.SplitButton)
+				return new SplitButton (elm);
 
 			return new Element (elm);
 		}

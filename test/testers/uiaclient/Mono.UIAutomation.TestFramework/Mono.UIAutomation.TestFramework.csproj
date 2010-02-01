@@ -79,6 +79,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="SplitButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
