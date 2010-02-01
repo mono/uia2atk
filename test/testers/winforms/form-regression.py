@@ -65,9 +65,9 @@ statesCheck(extra_form_1, "Form", add_states=["active", "modal"], invalid_states
 statesCheck(fFrame, "Form")
 
 # click frame, but MessageBox window should remain active
-fFrame.mouseClick()
-#check main form's states again without 'active'
 ## BUG575635: winforms.form's bug on 64bit platform
+#fFrame.mouseClick()
+#check main form's states again without 'active'
 #statesCheck(fFrame, "Form")
 # make sure that the message widget's states stay the same
 #statesCheck(extra_form_1, "Form", add_states=["active", "modal"], invalid_states=["resizable"])
