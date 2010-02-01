@@ -1,4 +1,12 @@
-2010-01-28  Ray Wang  <rawang@novell.com>
+2010-02-01  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/DataGrid.cs: Make GetItem method
+	output more descriptive.
+	* Mono.UIAutomation.TestFramework/Makefile.am: Add SplitButton.cs into
+	build system.
+	* Tests/Winforms/KeePassTests.cs: Update TestCase104 and correct the
+	order of parameters of assert method.
+
+2010-02-01  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/Element.cs: Add SplitButton and Menu 
 	class in Promotion method.
 	* Mono.UIAutomation.TestFramework/ListItem.cs: Add IsSelected

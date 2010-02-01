@@ -66,6 +66,7 @@ FILES = \
 	RadioButton.cs \
 	ScrollBar.cs \
 	Spinner.cs \
+	SplitButton.cs \
 	TabItem.cs \
 	TestBase.cs \
 	ProcedureLogger.cs \
