@@ -145,13 +145,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			newKeyFileDialog.Save();
 
 			/*
-			 * Bug 571799 - [uiaclient-Winforms]：The dialog
+			 * BUG571799 - [uiaclient-Winforms]：The dialog
 			 * who has parent has been found twice
 			 * in case there is a TestCase101 key exist.
 			 */
 
 			/*
-			 * BUG 573464 - [uiaclient-winforms]Some dialog's name has been
+			 * BUG573464 - [uiaclient-winforms]Some dialog's name has been
 			 * changed in Linux compares to in Windows
 			 */
 			//var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
@@ -589,38 +589,33 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		private void TestCase104 ()
 		{
 			//104.1 Click "new" button on the toolstripbar
-			procedureLogger.Action ("Click \"New...\" button on the toolbar");
 			var toolBar = window.Find<ToolBar> ();
-			toolBar.Find<Button> ("New...").Click (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens");
+			toolBar.Find<Button> ("New...").Click ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.2 Click "Save" button on the dialog
-			procedureLogger.Action ("Click \"Save\" button of the dialog");
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			newPassDialog.Save (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog.Save ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.3 Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var keyDialog = window.Find<Window> ("Create Composite Master Key");
-			keyDialog.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			keyDialog.OK ();
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog sppears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.4 Click "Yes" button on the dialog
-			procedureLogger.Action ("Click \"Yes\" button on the KeePass dialog");
 			var createMasterKeyWindow = window.Find<Window> ("KeePass");
-			createMasterKeyWindow.Yes (false);
-			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box");
+			createMasterKeyWindow.Yes ();
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.5  Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var newPassDialog2 = window.Find<Window> ("Create New Password Database - Step 2");
-			newPassDialog2.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog2.OK ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.6  Click "Add Entry" button on the toolstripbar
@@ -633,7 +628,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//104.7  Input the "email" into the title  edit
 			procedureLogger.Action ("Input \"email\" into the \"Title\" edit.");
 			SWF.SendKeys.SendWait ("email");
-			procedureLogger.ExpectedResult ("The \"email\" field is inputted into the \"Notes\" edit");
+			procedureLogger.ExpectedResult ("\"email\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.8 Click "OK" button on the "Add Entry" dialog.
@@ -727,73 +722,58 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//Assert.AreEqual (100, dataGrid.VerticalViewSize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.16  Use Scroll method give the horizotal Scrollbar a LargeIncrement
+			//104.16 Scroll horizontal scrollbar for a large increment.
 			dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizotal Scrollbar increase large");
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll large increment.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.17 Use Scroll method give the horizotal Scrollbar a SmallIncrement
-			procedureLogger.Action ("Use Scroll method give the horizotal Scrollbar a SmallIncrement");
-			dataGrid.Scroll (ScrollAmount.SmallIncrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizotal Scrollbar increase small");
+			//104.17 Scroll horizontal scrollbar for a large decrement.
+			dataGrid.Scroll (ScrollAmount.SmallDecrement, ScrollAmount.NoAmount);
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll large decrement.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.18 Check the horizotal scrollbar's position should be 100.0d
-			procedureLogger.Action ("after the LargeIncrement and SmallIncrement the scroll's position is 100.0d ");
-			Assert.AreEqual (100.0d, dataGrid.HorizontalScrollPercent);
-			procedureLogger.ExpectedResult ("the scroll's position is 100.0d ");
+			//104.18 Check HorizontalScrollPercent.
+			procedureLogger.Action ("Check HorizontalScrollPercent.");
+			//procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is.");
+			//Assert.AreEqual (100.0d, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.19 Use ScrollHorizontalmethod give the horizotal Scrollbar a  SmalIDecrement
-			procedureLogger.Action ("Use Scroll method give the horizotal Scrollbar a SmalIDecrement");
+			//104.19 Scroll horizontal scrollbar for a small increment.
+			dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll small increment.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.20 Scroll horizontal scrollbar for a small decrement.
 			dataGrid.ScrollHorizontal (ScrollAmount.SmallDecrement);
-			procedureLogger.ExpectedResult ("The horizotal Scrollbar decrease small");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.20 Use ScrollHorizontalmethod give the horizotal Scrollbar a LargeDecrement
-			procedureLogger.Action ("Use Scroll method give the horizotal Scrollbar a LargeDecrement");
-			dataGrid.Scroll (ScrollAmount.LargeDecrement, ScrollAmount.NoAmount);
 			procedureLogger.ExpectedResult ("The horizotal Scrollbar decrease large");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.21 Check the horizotal scrollbar's position should be 0.0d
-			procedureLogger.Action ("after the LargeDecrement and SmallDecrement the scroll's position is 0.0d");
-			Assert.AreEqual (0.0d, dataGrid.HorizontalScrollPercent);
-			procedureLogger.ExpectedResult ("the scroll's position is 0.0d");
+			//104.21 Check HorizontalScrollPercent.
+			procedureLogger.Action ("Check HorizontalScrollPercent.");
+			//procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is.");
+			//Assert.AreEqual (0.0d, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.22 Use SetScrollPercent method make the horizotal scrollbar move to (50, -1)
-			procedureLogger.Action ("Use SetScrollPercent method make the horizotal scrollbar move to (50, -1)");
-			dataGrid.SetScrollPercent (50, -1);
-			procedureLogger.ExpectedResult ("The horizotal Scrollbar move to (50, -1)");
+			//104.22 Set the percentage of horizontal scrollbar to 50%.
+			dataGrid.SetScrollPercent (50.0, 0.0);
+			procedureLogger.ExpectedResult ("The percentage of horizontal scrollbar is 50%.");
+			Assert.AreEqual (50.0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.23 Check the horizotal scrollbar's position should be  54.054054054054056d
-			procedureLogger.Action ("after the SetScrollPercent action the scroll's position is  54.054054054054056d");
-			Assert.AreEqual (51.724137931034484d, dataGrid.HorizontalScrollPercent);
-			procedureLogger.ExpectedResult ("The Horizontal scroll bar's VerticallyScrollable should be  54.054054054054056d");
+			//104.23 Check the data grid's MultipleViewPattern property
+			procedureLogger.Action ("Check CurrentView.");
+			procedureLogger.ExpectedResult ("The value of CurrentView property is 0.");
+			Assert.AreEqual (0, dataGrid.CurrentView);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.24 Check the data grid's MultipleViewPattern property
-			procedureLogger.Action ("Check the data grid's CurrentView is 1");
-			Assert.AreEqual (1, dataGrid.CurrentView);
-			procedureLogger.ExpectedResult ("the data grid 's CurrentViewProperty should be 1");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.25 Retrieves the first name "Icons" of the view pattern of the data grid
-			procedureLogger.Action ("Retrieves the first name \"Icons\" of the view pattern of the data grid");
-			dataGrid.GetViewName (1);
-			procedureLogger.ExpectedResult ("The Horizontal scroll bar's VerticallyScrollable should be  54.054054054054056d");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.26 Retrieves the supported name of the view pattern of the data grid, Assert its value is one
-			procedureLogger.Action ("Retrieves the supported name of the view pattern of the data grid, Assert its value is one");
-			Assert.AreEqual (1, dataGrid.CurrentView);
-			procedureLogger.ExpectedResult ("The supported name's value of the view pattern of the data grid is one");
+			//104.24 Retrieve the view name for the datagrid.
+			var viewName = dataGrid.GetViewName (0);
+			procedureLogger.ExpectedResult ("The current view name is \"Icon\"");
+			Assert.AreEqual("Icon", viewName);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.27 Check the GridItemPattern's property of text in data grid
-			procedureLogger.Action ("Check the column of data grid");
+			procedureLogger.Action ("Check the column of datagrid.");
 			Assert.AreEqual (0, dataGrid.Column);
 			procedureLogger.ExpectedResult ("the column of data grid should be 0");
 			Thread.Sleep (Config.Instance.ShortDelay);

@@ -74,5 +74,37 @@ namespace Mono.UIAutomation.TestFramework
 		public double Value {
 			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.ValueProperty); }
 		}
+
+		// The methods and properties of ScrollPattern
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
+		{
+			Scroll (horizontalAmount, verticalAmount, true);
+		}
+
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount, bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Scroll {0} horizontally and {1} vertically.",
+				                                       horizontalAmount.ToString (),
+				                                       verticalAmount.ToString ()));
+
+			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
+			sp.Scroll (horizontalAmount, verticalAmount);
+		}
+
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent)
+		{
+			SetScrollPercent (horizontalPercent, verticalPercent, true);
+		}
+
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent, bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Set {0} {1}% horizontally and {2}% vertically.",
+				                                       this.NameAndType, horizontalPercent, verticalPercent));
+
+			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
+			sp.SetScrollPercent (horizontalPercent, verticalPercent);
+		}
 	}
 }

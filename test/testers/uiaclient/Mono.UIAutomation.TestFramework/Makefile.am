@@ -58,6 +58,7 @@ FILES = \
 	Edit.cs \
 	Element.cs \
 	Finder.cs \
+	Hyperlink.cs \
 	List.cs \
 	ListItem.cs \
 	MenuBar.cs \

@@ -83,6 +83,14 @@ namespace Mono.UIAutomation.TestFramework
 		// The methods and properties of MultipleViewPattern
 		public string GetViewName (int viewId)
 		{
+			return GetViewName(viewId, true);
+		}
+
+		public string GetViewName (int viewId, bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Get the view name: \"{0}\".", GetViewName(viewId)));
+
 			MultipleViewPattern mvp = (MultipleViewPattern) element.GetCurrentPattern (MultipleViewPattern.Pattern);
 			return mvp.GetViewName (viewId);
 		}
@@ -94,6 +102,9 @@ namespace Mono.UIAutomation.TestFramework
 
 		public void SetCurrentView (int viewId, bool log)
 		{
+			if (!this.SupportedViews.Contains(viewId))
+			    throw new ArgumentOutOfRangeException();
+
 			if (log)
 				procedureLogger.Action (string.Format ("Set current view to {0}.", GetViewName(viewId)));
 
@@ -162,7 +173,8 @@ namespace Mono.UIAutomation.TestFramework
 		public void SetScrollPercent (double horizontalPercent, double verticalPercent, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Set scroll {0} percent horizontally and {1} percent vertically.", horizontalPercent, verticalPercent));
+				procedureLogger.Action (string.Format ("Set {0} {1}% horizontally and {2}% vertically.",
+				                                       this.NameAndType, horizontalPercent, verticalPercent));
 
 			ScrollPattern sp = (ScrollPattern) element.GetCurrentPattern (ScrollPattern.Pattern);
 			sp.SetScrollPercent (horizontalPercent, verticalPercent);

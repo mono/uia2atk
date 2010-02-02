@@ -1,3 +1,14 @@
+2010-02-02  Ray Wang  <rawang@novell.com>
+	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
+	Add Scroll and SetScrollPercent methods.
+	* Mono.UIAutomation.TestFramework/Hyperlink.cs:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	Add new Hyperlink class wrapper.
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Tests/Winforms/KeePassTests.cs:
+	Relevant TestCase104 updates.
+
 2010-02-01  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Update TestCase103, add bug 
 	reference.

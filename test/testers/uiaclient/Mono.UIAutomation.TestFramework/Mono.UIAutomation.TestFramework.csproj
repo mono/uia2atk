@@ -80,6 +80,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="SplitButton.cs" />
+    <Compile Include="Hyperlink.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
