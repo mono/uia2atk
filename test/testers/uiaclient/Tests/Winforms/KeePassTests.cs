@@ -145,13 +145,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			newKeyFileDialog.Save();
 
 			/*
-			 * BUG571799 - [uiaclient-Winforms]：The dialog
+			 * Bug 571799 - [uiaclient-Winforms]：The dialog
 			 * who has parent has been found twice
 			 * in case there is a TestCase101 key exist.
 			 */
 
 			/*
-			 * BUG573464 - [uiaclient-winforms]Some dialog's name has been
+			 * BUG 573464 - [uiaclient-winforms]Some dialog's name has been
 			 * changed in Linux compares to in Windows
 			 */
 			//var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
@@ -391,14 +391,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 * BUG574620 - [uiaclient-winforms]:On linux a control who's control 
 			 * type is "SplitButton" on Windows is "Button"
 			 * toolBar.Find<Button> ("Add Entry").Click (false);
-
-			Console.WriteLine("the SplitButton is {0}.......", toolBar.Find<SplitButton> ("Add Entry"));
-			Console.WriteLine("sssssssssssssssssssssssss");
-			toolBar.Find<SplitButton> ("Add Entry").Click();
-			Thread.Sleep (10000000);
+			 */
+			
+			/*
+			 * BUG576050- [uiaclient-winforms]: 
+			 * The splitbutton's Invoke method doesn't work
+			 */
 			procedureLogger.ExpectedResult ("the \"Add Entry\" window appears");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
 
 			//103.7 Check "Add Entry" window's default WindowPattern Property
 			procedureLogger.Action ("Check \"Add Entry\" window's CanMaximizeProperty");
@@ -589,33 +589,38 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 		private void TestCase104 ()
 		{
 			//104.1 Click "new" button on the toolstripbar
+			procedureLogger.Action ("Click \"New...\" button on the toolbar");
 			var toolBar = window.Find<ToolBar> ();
-			toolBar.Find<Button> ("New...").Click ();
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog appears.");
+			toolBar.Find<Button> ("New...").Click (false);
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.2 Click "Save" button on the dialog
+			procedureLogger.Action ("Click \"Save\" button of the dialog");
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			newPassDialog.Save ();
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes.");
+			newPassDialog.Save (false);
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.3 Click "OK" button on the dialog
+			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var keyDialog = window.Find<Window> ("Create Composite Master Key");
-			keyDialog.OK ();
-			procedureLogger.ExpectedResult ("The \"KeePass\" dialog sppears.");
+			keyDialog.OK (false);
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.4 Click "Yes" button on the dialog
+			procedureLogger.Action ("Click \"Yes\" button on the KeePass dialog");
 			var createMasterKeyWindow = window.Find<Window> ("KeePass");
-			createMasterKeyWindow.Yes ();
-			procedureLogger.ExpectedResult ("The \"KeePass\" dialog closes.");
+			createMasterKeyWindow.Yes (false);
+			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.5  Click "OK" button on the dialog
+			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var newPassDialog2 = window.Find<Window> ("Create New Password Database - Step 2");
-			newPassDialog2.OK ();
-			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" dialog closes.");
+			newPassDialog2.OK (false);
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.6  Click "Add Entry" button on the toolstripbar
@@ -628,7 +633,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//104.7  Input the "email" into the title  edit
 			procedureLogger.Action ("Input \"email\" into the \"Title\" edit.");
 			SWF.SendKeys.SendWait ("email");
-			procedureLogger.ExpectedResult ("\"email\" has been issued.");
+			procedureLogger.ExpectedResult ("The \"email\" field is inputted into the \"Notes\" edit");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.8 Click "OK" button on the "Add Entry" dialog.

@@ -1,3 +1,7 @@
+2010-02-01  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Update TestCase103, add bug 
+	reference.
+
 2010-02-01  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/DataGrid.cs: Make GetItem method
 	output more descriptive.
