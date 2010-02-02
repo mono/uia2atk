@@ -59,8 +59,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("menu item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return Helper.StripAmpersands (menuItem.Text);
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
@@ -232,8 +230,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Menu.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("menu");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return menuItem.Text;
 			return base.GetProviderPropertyValue (propertyId);

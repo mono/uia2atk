@@ -57,9 +57,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return button.CheckOnClick ? ControlType.CheckBox.Id : ControlType.Button.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return button.CheckOnClick ? Catalog.GetString ("checkbox")
-				                           : Catalog.GetString ("button");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else

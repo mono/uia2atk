@@ -74,11 +74,6 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.DataGrid.Id;
 				else
 					return ControlType.List.Id;
-			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
-				if (listView.View == SWF.View.Details)
-					return Catalog.GetString ("data grid");
-				else
-					return Catalog.GetString ("list");
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -759,8 +754,6 @@ namespace Mono.UIAutomation.Winforms
 					return "Header";
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -886,8 +879,6 @@ namespace Mono.UIAutomation.Winforms
 					return columnHeader.Text;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header item");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -979,8 +970,6 @@ namespace Mono.UIAutomation.Winforms
 					//According to: http://msdn.microsoft.com/en-us/library/ms742561.aspx
 					if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 						return ControlType.DataItem.Id;
-					else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-						return Catalog.GetString ("data item");
 					//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
 					else
 						return base.GetProviderPropertyValue (propertyId);
@@ -1182,8 +1171,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("edit");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 					IValueProvider valueProvider = (IValueProvider) GetBehavior (ValuePatternIdentifiers.Pattern);
 					return valueProvider.Value;
@@ -1271,8 +1258,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("checkbox");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return itemProvider.GetPropertyValue (propertyId);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)

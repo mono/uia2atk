@@ -92,8 +92,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Calendar.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("calendar");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return monthCalendar.SelectionStart.ToShortDateString ();
 			return base.GetProviderPropertyValue (propertyId);

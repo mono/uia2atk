@@ -80,8 +80,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Slider.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("slider");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
@@ -239,8 +237,6 @@ namespace Mono.UIAutomation.Winforms
 					return "Thumb";
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Thumb.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("thumb");
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)

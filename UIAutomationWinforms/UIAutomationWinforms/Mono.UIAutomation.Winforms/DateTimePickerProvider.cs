@@ -91,8 +91,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -227,8 +225,6 @@ namespace Mono.UIAutomation.Winforms
 					       && ((DateTimePicker) rootProvider.Control).UIAIsCheckBoxSelected;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
-				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("check box");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
@@ -261,8 +257,6 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
-				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("button");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
@@ -324,8 +318,6 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.Text.Id;
-				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("text");
 				else if (propertyId == AEIds.IsEnabledProperty.Id) {
 					DateTimePicker picker = (DateTimePicker) Control;
 					return Control.Enabled
@@ -377,8 +369,6 @@ namespace Mono.UIAutomation.Winforms
 					       && part_data.Selected;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.Spinner.Id;
-				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("spinner");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 		}
@@ -597,8 +587,6 @@ namespace Mono.UIAutomation.Winforms
 					return Text;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.List.Id;
-				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("list");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 			

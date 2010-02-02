@@ -157,8 +157,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Tree.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tree");
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
@@ -265,8 +263,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TreeItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tree item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return node.Text;
 			else if (propertyId == AEIds.LabeledByProperty.Id)

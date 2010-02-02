@@ -1,3 +1,63 @@
+2010-02-02  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/Helper.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PaneProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/LabelProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TabPageProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/CheckBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/GroupBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListItemProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MainMenuProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MenuItemProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitterProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TrackBarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/LinkLabelProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MenuStripProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PictureBoxProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WebBrowserProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ContextMenuProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ProgressBarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/RadioButtonProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusStripProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/SimpleControlProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitContainerProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/BaseColorControlProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/TrackBar/ButtonInvokeProviderBehavior.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs:
+	to retrun LocalizedControlType by ControlType
+
 2010-01-30  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms/Helper.cs: Fix thread safety issues

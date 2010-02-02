@@ -63,8 +63,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Tab.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tab");
 			else if (propertyId == AEIds.OrientationProperty.Id)
 				return (control.Alignment == TabAlignment.Top || control.Alignment == TabAlignment.Bottom)
 				       ? Orientation.Horizontal : Orientation.Vertical;

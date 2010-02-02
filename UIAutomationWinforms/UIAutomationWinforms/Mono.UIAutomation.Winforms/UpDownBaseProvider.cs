@@ -94,8 +94,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Spinner.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("spinner");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -156,8 +154,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("button");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return GetNameProperty ();
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)

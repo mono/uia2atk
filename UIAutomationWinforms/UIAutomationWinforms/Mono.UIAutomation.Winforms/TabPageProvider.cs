@@ -50,8 +50,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TabItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tab item");
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
 				// Don't return empty if we're not visible.  We
 				// want this control's visiblity managed by the

@@ -73,8 +73,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.DataGrid.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("data grid");
 			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
 				return null;
 
@@ -384,8 +382,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Header.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("header");
 			else if (propertyId == AEIds.OrientationProperty.Id)
 				return OrientationType.Horizontal;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
@@ -461,8 +457,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.HeaderItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("header item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return label;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
@@ -517,8 +511,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id) {
 				return ControlType.Button.Id;
-			} else if (propertyId == AEIds.LocalizedControlTypeProperty.Id) {
-				return Catalog.GetString ("button");
 			} else if (propertyId == AEIds.NameProperty.Id) {
 				if (direction == ButtonDirection.Back) {
 					return Catalog.GetString ("Back by one month");

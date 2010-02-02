@@ -86,9 +86,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return textboxbase.Multiline == true ? ControlType.Document.Id : ControlType.Edit.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return textboxbase.Multiline == true ? Catalog.GetString ("document")
-				                                     : Catalog.GetString ("edit");
 			else 
 				return base.GetProviderPropertyValue (propertyId);
 		}

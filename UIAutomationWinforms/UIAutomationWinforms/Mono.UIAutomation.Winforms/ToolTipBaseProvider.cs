@@ -62,8 +62,6 @@ namespace Mono.UIAutomation.Winforms
 				return message;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tool tip");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)

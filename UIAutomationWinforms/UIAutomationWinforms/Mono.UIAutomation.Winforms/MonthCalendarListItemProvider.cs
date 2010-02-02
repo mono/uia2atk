@@ -116,8 +116,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.ListItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("list item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return Text;
 			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
@@ -159,8 +157,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Edit.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("edit");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return listItemProvider.Text;
 			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)

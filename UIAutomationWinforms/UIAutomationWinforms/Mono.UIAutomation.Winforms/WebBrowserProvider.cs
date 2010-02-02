@@ -51,8 +51,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
 			else if (propertyId == AEIds.HasNativeAccessibilityObjectProperty.Id)
 				return true;
 			else if (propertyId == AEIds.NativeAccessibilityObjectProperty.Id) {

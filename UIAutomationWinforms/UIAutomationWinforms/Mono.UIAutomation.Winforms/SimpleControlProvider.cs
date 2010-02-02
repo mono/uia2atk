@@ -30,6 +30,7 @@ using SWF = System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -272,7 +273,26 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false;
-			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
+				object controlTypeIdObj =
+					GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeIdObj != null) {
+					int controlTypeId = (int) controlTypeIdObj;
+					//On Win7, for DataGrid, DataItem and List, the ControlType.LocalizedControlType
+					//is inconsistent with the element's LocalizedControlType property.
+					if (controlTypeId == ControlType.DataGrid.Id)
+						return Catalog.GetString ("data grid");
+					else if (controlTypeId == ControlType.DataItem.Id)
+						return Catalog.GetString ("data item");
+					else if (controlTypeId == ControlType.List.Id)
+						return Catalog.GetString ("list");
+					else {
+						var ct = ControlType.LookupById (controlTypeId);
+						return ct != null ? ct.LocalizedControlType : null;
+					}
+				} else
+					return null;
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 				Rect bounds = (Rect)
 					GetPropertyValue (AEIds.BoundingRectangleProperty.Id);
 				if (Control == null)

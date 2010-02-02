@@ -172,8 +172,6 @@ namespace Mono.UIAutomation.Winforms
 			// NOTDOTNET: Using DataGrid instead of Table
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.DataGrid.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("data grid");
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -498,8 +496,6 @@ namespace Mono.UIAutomation.Winforms
 					return "Header";
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -634,8 +630,6 @@ namespace Mono.UIAutomation.Winforms
 					return style.HeaderText;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header item");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -776,8 +770,6 @@ namespace Mono.UIAutomation.Winforms
 				// however the implementation uses ListItem.
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.DataItem.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("data item");
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 
 					return Helper.GetControlScreenBounds (DataGridProvider.DataGrid.GetCellBounds (Index, 0),
 					                                      DataGridProvider.DataGrid);
@@ -929,8 +921,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("edit");
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					// ItemProvider.DataGridProvider.DataGrid.Focused should be used here, but seems SWF.DataGrid loses this state randomly
 					return ItemProvider.DataGridProvider.DataGrid.CurrentCell.RowNumber == ItemProvider.Index
@@ -1031,8 +1021,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Custom.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return string.Empty;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
 				else

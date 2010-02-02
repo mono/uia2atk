@@ -61,8 +61,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Hyperlink.Id;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("hyperlink");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}		

@@ -30,6 +30,7 @@ using System.Windows;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -57,6 +58,10 @@ namespace Mono.UIAutomation.Winforms
 				return string.Empty;
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return true;
+			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return Catalog.GetString ("pane");
 			else
 				return null;
 		}

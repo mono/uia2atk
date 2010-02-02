@@ -86,9 +86,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return label.IsLink ? ControlType.Hyperlink.Id : ControlType.Text.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return label.IsLink ? Catalog.GetString ("hyperlink")
-				                    : Catalog.GetString ("text");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

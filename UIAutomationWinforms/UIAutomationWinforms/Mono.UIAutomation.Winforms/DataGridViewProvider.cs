@@ -79,8 +79,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.DataGrid.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("data grid");
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -312,8 +310,6 @@ namespace Mono.UIAutomation.Winforms
 					return "Header";
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -430,8 +426,6 @@ namespace Mono.UIAutomation.Winforms
 					return column.HeaderText;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("header item");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -538,8 +532,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.DataItem.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("data item");
 				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 					return null;
 				else
@@ -755,8 +747,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("button");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -793,8 +783,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("check box");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -826,8 +814,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Hyperlink.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("hyperlink");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -863,8 +849,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Image.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("image");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -904,8 +888,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("edit");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -976,8 +958,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.ComboBox.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("combo box");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -1049,8 +1029,6 @@ namespace Mono.UIAutomation.Winforms
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("list");
 				else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
@@ -1268,8 +1246,6 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("button");
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 					// FIXME: Implement ?
 					return comboboxProvider.GetPropertyValue (propertyId);

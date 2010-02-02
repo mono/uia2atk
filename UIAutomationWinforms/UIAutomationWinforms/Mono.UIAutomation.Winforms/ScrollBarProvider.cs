@@ -121,8 +121,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ScrollBar.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("scroll bar");
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
@@ -317,8 +315,6 @@ namespace Mono.UIAutomation.Winforms
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Thumb.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("thumb");
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)

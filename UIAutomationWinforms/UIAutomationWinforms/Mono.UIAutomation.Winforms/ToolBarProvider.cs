@@ -60,8 +60,6 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return false;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tool bar");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else
@@ -337,15 +335,6 @@ namespace Mono.UIAutomation.Winforms
 				}
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
-					if (style == ToolBarButtonStyle.DropDownButton)
-						return Catalog.GetString ("split button");
-					else if (style == ToolBarButtonStyle.ToggleButton ||
-					         style == ToolBarButtonStyle.PushButton)
-						return Catalog.GetString ("button");
-					else
-						return Catalog.GetString ("separator");
-				}
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)

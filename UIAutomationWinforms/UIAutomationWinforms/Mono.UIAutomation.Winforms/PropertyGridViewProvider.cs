@@ -192,8 +192,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.DataGrid.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("data grid");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -378,8 +376,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.DataItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("data item");
 			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
 				return null;
 			else
@@ -425,8 +421,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Edit.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("edit");
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
 				SD.Rectangle bounds = GetBounds ();
 				return Helper.GetControlScreenBounds (bounds, view, true);

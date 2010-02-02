@@ -51,8 +51,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuBar.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("menu bar");
 			else if (propertyId == AEIds.OrientationProperty.Id) {
 				switch (menu.Orientation) {
 				case Orientation.Vertical:

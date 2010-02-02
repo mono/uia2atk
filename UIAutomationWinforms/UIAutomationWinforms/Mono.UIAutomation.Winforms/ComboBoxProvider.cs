@@ -76,8 +76,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.ComboBox.Id;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("combo box");
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id
 				 && comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown)
 				return false;
@@ -284,8 +282,6 @@ namespace Mono.UIAutomation.Winforms
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("list");
 				else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)

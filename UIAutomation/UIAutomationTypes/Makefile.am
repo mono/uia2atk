@@ -100,7 +100,8 @@ RESOURCES =
 
 REFERENCES =  \
 	WindowsBase \
-	System
+	System \
+	Mono.Posix
 
 DLL_REFERENCES = 
 

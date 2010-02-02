@@ -68,8 +68,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Menu.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("menu");
 			else if (propertyId == AEIds.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AEIds.LabeledByProperty.Id)

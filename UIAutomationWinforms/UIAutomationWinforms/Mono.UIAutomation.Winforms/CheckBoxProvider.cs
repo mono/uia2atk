@@ -67,8 +67,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.CheckBox.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("check box");
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
 				return null; 	 
 			else

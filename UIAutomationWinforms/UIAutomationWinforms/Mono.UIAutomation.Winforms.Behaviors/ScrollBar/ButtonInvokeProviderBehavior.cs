@@ -68,8 +68,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollBar
 		{
 			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return null; // TODO
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("button");
 			else
 				return null;
 		}

@@ -65,8 +65,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.RadioButton.Id;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("radio button");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

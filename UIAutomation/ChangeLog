@@ -1,3 +1,10 @@
+2010-02-02  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationTypes/Makefile.am: 
+	* UIAutomationTypes/UIAutomationTypes.csproj: 
+	* UIAutomationTypes/System.Windows.Automation/ControlType.cs: i18n
+	support for LocalizedControlType
+
 2010-01-30  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/System.Windows.Automation/Automation.cs: 

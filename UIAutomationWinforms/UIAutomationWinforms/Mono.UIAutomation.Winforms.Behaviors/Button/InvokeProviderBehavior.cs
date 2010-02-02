@@ -72,14 +72,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 			                   null);
 		}
 
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("button");
-			else
-				return null;
-		}
-		
 		public override AutomationPattern ProviderPattern { 
 			get { return InvokePatternIdentifiers.Pattern; }
 		}

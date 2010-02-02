@@ -93,10 +93,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
-				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
-					return ((SplitContainer)Control).Orientation == Orientation.Vertical? OrientationType.Vertical: OrientationType.Horizontal;
+			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
+				return ((SplitContainer)Control).Orientation == Orientation.Vertical? OrientationType.Vertical: OrientationType.Horizontal;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -147,8 +145,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Pane.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "pane";
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else

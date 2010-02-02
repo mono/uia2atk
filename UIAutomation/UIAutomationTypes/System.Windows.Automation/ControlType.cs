@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 
 namespace System.Windows.Automation
 {
@@ -126,7 +127,7 @@ namespace System.Windows.Automation
 		static ControlType ()
 		{			
 			Button = new ControlType (ButtonId, "ControlType.Button");
-			Button.localizedControlType = "button";
+			Button.localizedControlType = Catalog.GetString("button");
 			Button.neverSupportedPatterns = new AutomationPattern [] {};
 			Button.requiredProperties = new AutomationProperty [] {};
 			Button.requiredPatternSets = new AutomationPattern [] [] {
@@ -134,7 +135,7 @@ namespace System.Windows.Automation
 					InvokePatternIdentifiers.Pattern}};
 			
 			Calendar = new ControlType (CalendarId, "ControlType.Calendar");
-			Calendar.localizedControlType = "calendar";
+			Calendar.localizedControlType = Catalog.GetString("calendar");
 			Calendar.neverSupportedPatterns = new AutomationPattern [] {};
 			Calendar.requiredProperties = new AutomationProperty [] {};
 			Calendar.requiredPatternSets = new AutomationPattern [] [] {
@@ -144,7 +145,7 @@ namespace System.Windows.Automation
 					SelectionPatternIdentifiers.Pattern}};
 			
 			CheckBox = new ControlType (CheckBoxId, "ControlType.CheckBox");
-			CheckBox.localizedControlType = "check box";
+			CheckBox.localizedControlType = Catalog.GetString("check box");
 			CheckBox.neverSupportedPatterns = new AutomationPattern [] {};
 			CheckBox.requiredProperties = new AutomationProperty [] {};
 			CheckBox.requiredPatternSets = new AutomationPattern [] [] {
@@ -152,7 +153,7 @@ namespace System.Windows.Automation
 					TogglePatternIdentifiers.Pattern}};
 			
 			ComboBox = new ControlType (ComboBoxId, "ControlType.ComboBox");
-			ComboBox.localizedControlType = "combo box";
+			ComboBox.localizedControlType = Catalog.GetString("combo box");
 			ComboBox.neverSupportedPatterns = new AutomationPattern [] {};
 			ComboBox.requiredProperties = new AutomationProperty [] {};
 			ComboBox.requiredPatternSets = new AutomationPattern [] [] {
@@ -161,13 +162,13 @@ namespace System.Windows.Automation
 					ExpandCollapsePatternIdentifiers.Pattern}};
 			
 			Custom = new ControlType (CustomId, "ControlType.Custom");
-			Custom.localizedControlType = "custom";
+			Custom.localizedControlType = Catalog.GetString("custom");
 			Custom.neverSupportedPatterns = new AutomationPattern [] {};
 			Custom.requiredProperties = new AutomationProperty [] {};
 			Custom.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			DataGrid = new ControlType (DataGridId, "ControlType.DataGrid");
-			DataGrid.localizedControlType = "datagrid";
+			DataGrid.localizedControlType = Catalog.GetString("datagrid");
 			DataGrid.neverSupportedPatterns = new AutomationPattern [] {};
 			DataGrid.requiredProperties = new AutomationProperty [] {};
 			DataGrid.requiredPatternSets = new AutomationPattern [] [] {
@@ -179,7 +180,7 @@ namespace System.Windows.Automation
 					TablePatternIdentifiers.Pattern}};
 			
 			DataItem = new ControlType (DataItemId, "ControlType.DataItem");
-			DataItem.localizedControlType = "dataitem";
+			DataItem.localizedControlType = Catalog.GetString("dataitem");
 			DataItem.neverSupportedPatterns = new AutomationPattern [] {};
 			DataItem.requiredProperties = new AutomationProperty [] {};
 			DataItem.requiredPatternSets = new AutomationPattern [] [] {
@@ -188,7 +189,7 @@ namespace System.Windows.Automation
 			};
 			
 			Document = new ControlType (DocumentId, "ControlType.Document");
-			Document.localizedControlType = "document";
+			Document.localizedControlType = Catalog.GetString("document");
 			Document.neverSupportedPatterns = new AutomationPattern [] {
 				ValuePatternIdentifiers.Pattern
 			};
@@ -201,7 +202,7 @@ namespace System.Windows.Automation
 			};
 			
 			Edit = new ControlType (EditId, "ControlType.Edit");
-			Edit.localizedControlType = "edit";
+			Edit.localizedControlType = Catalog.GetString("edit");
 			Edit.neverSupportedPatterns = new AutomationPattern [] {};
 			Edit.requiredProperties = new AutomationProperty [] {};
 			Edit.requiredPatternSets = new AutomationPattern [] [] {
@@ -210,25 +211,25 @@ namespace System.Windows.Automation
 			};
 			
 			Group = new ControlType (GroupId, "ControlType.Group");
-			Group.localizedControlType = "group";
+			Group.localizedControlType = Catalog.GetString("group");
 			Group.neverSupportedPatterns = new AutomationPattern [] {};
 			Group.requiredProperties = new AutomationProperty [] {};
 			Group.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			HeaderItem = new ControlType (HeaderItemId, "ControlType.HeaderItem");
-			HeaderItem.localizedControlType = "header item";
+			HeaderItem.localizedControlType = Catalog.GetString("header item");
 			HeaderItem.neverSupportedPatterns = new AutomationPattern [] {};
 			HeaderItem.requiredProperties = new AutomationProperty [] {};
 			HeaderItem.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Header = new ControlType (HeaderId, "ControlType.Header");
-			Header.localizedControlType = "header";
+			Header.localizedControlType = Catalog.GetString("header");
 			Header.neverSupportedPatterns = new AutomationPattern [] {};
 			Header.requiredProperties = new AutomationProperty [] {};
 			Header.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Hyperlink = new ControlType (HyperlinkId, "ControlType.Hyperlink");
-			Hyperlink.localizedControlType = "hyperlink";
+			Hyperlink.localizedControlType = Catalog.GetString("hyperlink");
 			Hyperlink.neverSupportedPatterns = new AutomationPattern [] {};
 			Hyperlink.requiredProperties = new AutomationProperty [] {};
 			Hyperlink.requiredPatternSets = new AutomationPattern [] [] {
@@ -237,13 +238,13 @@ namespace System.Windows.Automation
 			};
 			
 			Image = new ControlType (ImageId, "ControlType.Image");
-			Image.localizedControlType = "image";
+			Image.localizedControlType = Catalog.GetString("image");
 			Image.neverSupportedPatterns = new AutomationPattern [] {};
 			Image.requiredProperties = new AutomationProperty [] {};
 			Image.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			ListItem = new ControlType (ListItemId, "ControlType.ListItem");
-			ListItem.localizedControlType = "list item";
+			ListItem.localizedControlType = Catalog.GetString("list item");
 			ListItem.neverSupportedPatterns = new AutomationPattern [] {};
 			ListItem.requiredProperties = new AutomationProperty [] {};
 			ListItem.requiredPatternSets = new AutomationPattern [] [] {
@@ -252,7 +253,7 @@ namespace System.Windows.Automation
 			};
 			
 			List = new ControlType (ListId, "ControlType.List");
-			List.localizedControlType = "list view";
+			List.localizedControlType = Catalog.GetString("list view");
 			List.neverSupportedPatterns = new AutomationPattern [] {};
 			List.requiredProperties = new AutomationProperty [] {};
 			List.requiredPatternSets = new AutomationPattern [] [] {
@@ -264,13 +265,13 @@ namespace System.Windows.Automation
 			};
 			
 			MenuBar = new ControlType (MenuBarId, "ControlType.MenuBar");
-			MenuBar.localizedControlType = "menu bar";
+			MenuBar.localizedControlType = Catalog.GetString("menu bar");
 			MenuBar.neverSupportedPatterns = new AutomationPattern [] {};
 			MenuBar.requiredProperties = new AutomationProperty [] {};
 			MenuBar.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			MenuItem = new ControlType (MenuItemId, "ControlType.MenuItem");
-			MenuItem.localizedControlType = "menu item";
+			MenuItem.localizedControlType = Catalog.GetString("menu item");
 			MenuItem.neverSupportedPatterns = new AutomationPattern [] {};
 			MenuItem.requiredProperties = new AutomationProperty [] {};
 			MenuItem.requiredPatternSets = new AutomationPattern [] [] {
@@ -283,13 +284,13 @@ namespace System.Windows.Automation
 			};
 			
 			Menu = new ControlType (MenuId, "ControlType.Menu");
-			Menu.localizedControlType = "menu";
+			Menu.localizedControlType = Catalog.GetString("menu");
 			Menu.neverSupportedPatterns = new AutomationPattern [] {};
 			Menu.requiredProperties = new AutomationProperty [] {};
 			Menu.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Pane = new ControlType (PaneId, "ControlType.Pane");
-			Pane.localizedControlType = "pane";
+			Pane.localizedControlType = Catalog.GetString("pane");
 			Pane.neverSupportedPatterns = new AutomationPattern [] {};
 			Pane.requiredProperties = new AutomationProperty [] {};
 			Pane.requiredPatternSets = new AutomationPattern [] [] {
@@ -298,7 +299,7 @@ namespace System.Windows.Automation
 			};
 			
 			ProgressBar = new ControlType (ProgressBarId, "ControlType.ProgressBar");
-			ProgressBar.localizedControlType = "progress bar";
+			ProgressBar.localizedControlType = Catalog.GetString("progress bar");
 			ProgressBar.neverSupportedPatterns = new AutomationPattern [] {};
 			ProgressBar.requiredProperties = new AutomationProperty [] {};
 			ProgressBar.requiredPatternSets = new AutomationPattern [] [] {
@@ -307,25 +308,25 @@ namespace System.Windows.Automation
 			};
 			
 			RadioButton = new ControlType (RadioButtonId, "ControlType.RadioButton");
-			RadioButton.localizedControlType = "radio button";
+			RadioButton.localizedControlType = Catalog.GetString("radio button");
 			RadioButton.neverSupportedPatterns = new AutomationPattern [] {};
 			RadioButton.requiredProperties = new AutomationProperty [] {};
 			RadioButton.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			ScrollBar = new ControlType (ScrollBarId, "ControlType.ScrollBar");
-			ScrollBar.localizedControlType = "scroll bar";
+			ScrollBar.localizedControlType = Catalog.GetString("scroll bar");
 			ScrollBar.neverSupportedPatterns = new AutomationPattern [] {};
 			ScrollBar.requiredProperties = new AutomationProperty [] {};
 			ScrollBar.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Separator = new ControlType (SeparatorId, "ControlType.Separator");
-			Separator.localizedControlType = "separator";
+			Separator.localizedControlType = Catalog.GetString("separator");
 			Separator.neverSupportedPatterns = new AutomationPattern [] {};
 			Separator.requiredProperties = new AutomationProperty [] {};
 			Separator.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Slider = new ControlType (SliderId, "ControlType.Slider");
-			Slider.localizedControlType = "slider";
+			Slider.localizedControlType = Catalog.GetString("slider");
 			Slider.neverSupportedPatterns = new AutomationPattern [] {};
 			Slider.requiredProperties = new AutomationProperty [] {};
 			Slider.requiredPatternSets = new AutomationPattern [] [] {
@@ -336,7 +337,7 @@ namespace System.Windows.Automation
 			};
 			
 			Spinner = new ControlType (SpinnerId, "ControlType.Spinner");
-			Spinner.localizedControlType = "spinner";
+			Spinner.localizedControlType = Catalog.GetString("spinner");
 			Spinner.neverSupportedPatterns = new AutomationPattern [] {};
 			Spinner.requiredProperties = new AutomationProperty [] {};
 			Spinner.requiredPatternSets = new AutomationPattern [] [] {
@@ -347,7 +348,7 @@ namespace System.Windows.Automation
 			};
 			
 			SplitButton = new ControlType (SplitButtonId, "ControlType.SplitButton");
-			SplitButton.localizedControlType = "split button";
+			SplitButton.localizedControlType = Catalog.GetString("split button");
 			SplitButton.neverSupportedPatterns = new AutomationPattern [] {};
 			SplitButton.requiredProperties = new AutomationProperty [] {};
 			SplitButton.requiredPatternSets = new AutomationPattern [] [] {
@@ -358,19 +359,19 @@ namespace System.Windows.Automation
 			};
 			
 			StatusBar = new ControlType (StatusBarId, "ControlType.StatusBar");
-			StatusBar.localizedControlType = "status bar";
+			StatusBar.localizedControlType = Catalog.GetString("status bar");
 			StatusBar.neverSupportedPatterns = new AutomationPattern [] {};
 			StatusBar.requiredProperties = new AutomationProperty [] {};
 			StatusBar.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			TabItem = new ControlType (TabItemId, "ControlType.TabItem");
-			TabItem.localizedControlType = "tab item";
+			TabItem.localizedControlType = Catalog.GetString("tab item");
 			TabItem.neverSupportedPatterns = new AutomationPattern [] {};
 			TabItem.requiredProperties = new AutomationProperty [] {};
 			TabItem.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Table = new ControlType (TableId, "ControlType.Table");
-			Table.localizedControlType = "table";
+			Table.localizedControlType = Catalog.GetString("table");
 			Table.neverSupportedPatterns = new AutomationPattern [] {};
 			Table.requiredProperties = new AutomationProperty [] {};
 			Table.requiredPatternSets = new AutomationPattern [] [] {
@@ -383,55 +384,55 @@ namespace System.Windows.Automation
 			};
 			
 			Tab = new ControlType (TabId, "ControlType.Tab");
-			Tab.localizedControlType = "tab";
+			Tab.localizedControlType = Catalog.GetString("tab");
 			Tab.neverSupportedPatterns = new AutomationPattern [] {};
 			Tab.requiredProperties = new AutomationProperty [] {};
 			Tab.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Text = new ControlType (TextId, "ControlType.Text");
-			Text.localizedControlType = "text";
+			Text.localizedControlType = Catalog.GetString("text");
 			Text.neverSupportedPatterns = new AutomationPattern [] {};
 			Text.requiredProperties = new AutomationProperty [] {};
 			Text.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Thumb = new ControlType (ThumbId, "ControlType.Thumb");
-			Thumb.localizedControlType = "thumb";
+			Thumb.localizedControlType = Catalog.GetString("thumb");
 			Thumb.neverSupportedPatterns = new AutomationPattern [] {};
 			Thumb.requiredProperties = new AutomationProperty [] {};
 			Thumb.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			TitleBar = new ControlType (TitleBarId, "ControlType.TitleBar");
-			TitleBar.localizedControlType = "title bar";
+			TitleBar.localizedControlType = Catalog.GetString("title bar");
 			TitleBar.neverSupportedPatterns = new AutomationPattern [] {};
 			TitleBar.requiredProperties = new AutomationProperty [] {};
 			TitleBar.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			ToolBar = new ControlType (ToolBarId, "ControlType.ToolBar");
-			ToolBar.localizedControlType = "tool bar";
+			ToolBar.localizedControlType = Catalog.GetString("tool bar");
 			ToolBar.neverSupportedPatterns = new AutomationPattern [] {};
 			ToolBar.requiredProperties = new AutomationProperty [] {};
 			ToolBar.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			ToolTip = new ControlType (ToolTipId, "ControlType.ToolTip");
-			ToolTip.localizedControlType = "tool tip";
+			ToolTip.localizedControlType = Catalog.GetString("tool tip");
 			ToolTip.neverSupportedPatterns = new AutomationPattern [] {};
 			ToolTip.requiredProperties = new AutomationProperty [] {};
 			ToolTip.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			TreeItem = new ControlType (TreeItemId, "ControlType.TreeItem");
-			TreeItem.localizedControlType = "tree view item";
+			TreeItem.localizedControlType = Catalog.GetString("tree view item");
 			TreeItem.neverSupportedPatterns = new AutomationPattern [] {};
 			TreeItem.requiredProperties = new AutomationProperty [] {};
 			TreeItem.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Tree = new ControlType (TreeId, "ControlType.Tree");
-			Tree.localizedControlType = "tree view";
+			Tree.localizedControlType = Catalog.GetString("tree view");
 			Tree.neverSupportedPatterns = new AutomationPattern [] {};
 			Tree.requiredProperties = new AutomationProperty [] {};
 			Tree.requiredPatternSets = new AutomationPattern [] [] {};
 			
 			Window = new ControlType (WindowId, "ControlType.Window");
-			Window.localizedControlType = "window";
+			Window.localizedControlType = Catalog.GetString("window");
 			Window.neverSupportedPatterns = new AutomationPattern [] {};
 			Window.requiredProperties = new AutomationProperty [] {};
 			Window.requiredPatternSets = new AutomationPattern [] [] {

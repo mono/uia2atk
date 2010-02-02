@@ -85,8 +85,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.List.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("list");
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 				if (string.IsNullOrEmpty (listboxControl.AccessibleName))
 					return Helper.StripAmpersands (listboxControl.Text);

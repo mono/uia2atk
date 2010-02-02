@@ -51,8 +51,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.SplitButton.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("split button");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else
