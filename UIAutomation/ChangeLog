@@ -1,3 +1,9 @@
+2010-02-04  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationEventTest.cs:
+	Correct the Type of the AutomationPropertyChangedEventArgs's old/new value.
+
 2010-02-02  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationTypes/Makefile.am: 

@@ -165,6 +165,8 @@ namespace SampleForm {
 				checkBox1.Enabled = true;
 			else if (cmd == "change list view mode list")
 				listView1.View = View.List;
+			else if (cmd == "change list view mode tile")
+				listView1.View = View.Tile;
 			else if (cmd == "change list view mode details")
 				listView1.View = View.Details;
 			else if (cmd == "disable list view")
@@ -216,6 +218,10 @@ namespace SampleForm {
  				textBox3.Focus ();
 			else if (cmd == "focus button2")
 				button2.Focus ();
+			else if (cmd == "change form size 800x600")
+				this.Size = new Size (800, 600);
+			else if (cmd == "textBox3 singleline")
+				textBox3.Multiline = false;
 		}
 	}
 }

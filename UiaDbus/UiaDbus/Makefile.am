@@ -34,6 +34,7 @@ endif
 SOURCE_FILES =  \
 	AssemblyInfo.cs \
 	Constants.cs \
+	DbusSerializer.cs \
 	Interfaces/IApplication.cs \
 	Interfaces/IAutomationElement.cs \
 	Interfaces/IDockPattern.cs \

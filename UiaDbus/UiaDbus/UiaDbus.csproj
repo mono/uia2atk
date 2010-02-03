@@ -65,6 +65,7 @@
     <Compile Include="Interfaces\IWindowPattern.cs" />
     <Compile Include="Interfaces\IMultipleViewPattern.cs" />
     <Compile Include="Interfaces\ITogglePattern.cs" />
+    <Compile Include="DbusSerializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

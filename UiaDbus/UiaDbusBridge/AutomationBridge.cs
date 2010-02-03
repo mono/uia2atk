@@ -107,7 +107,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{
-			app.RaiseAutomationEvent (eventId, provider, e);
+			app.RaiseAutomationEvent (eventId, provider as IRawElementProviderSimple, e);
 		}
 
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
@@ -121,7 +121,6 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			// and providerWrapperMapping is only written by RaiseAutomationPropertyChangedEvent.
 			if (!providerWrapperMapping.TryGetValue (simpleProvider, out wrapper))
 				return;
-
 			if (e.NewValue != null && e.NewValue.Equals (false)) {
 				int patternId = -1;
 
@@ -165,7 +164,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				if (patternId != -1)
 					wrapper.UnregisterPattern (patternId);
 			}
-			app.RaiseAutomationPropertyChangedEvent (element, e);
+			app.RaiseAutomationPropertyChangedEvent (simpleProvider, e);
 		}
 
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
@@ -209,13 +208,13 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					app.AddRootElement (element);
 
 				//The event shall be raised after the provider is added to providerWrapperMapping
-				app.RaiseStructureChangedEvent (provider, e);
+				app.RaiseStructureChangedEvent (simpleProvider, e);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				//The event shall be raised before the provider is deleted from providerWrapperMapping
-				app.RaiseStructureChangedEvent (provider, e);
+				app.RaiseStructureChangedEvent (simpleProvider, e);
 				HandleTotalElementRemoval (simpleProvider);
 			} else {
-				app.RaiseStructureChangedEvent (provider, e);
+				app.RaiseStructureChangedEvent (simpleProvider, e);
 			}
 		}
 

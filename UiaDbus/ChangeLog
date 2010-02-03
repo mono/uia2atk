@@ -1,6 +1,16 @@
+2010-02-04  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbus/Makefile.am: 
+	* UiaDbus/UiaDbus.csproj: 
+	* UiaDbus/DbusSerializer.cs: 
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs: Correct the Type of the
+	AutomationPropertyChangedEventArgs's old/new value.
+
 2010-02-03  Matt Guo  <matt@mattguo.com>
 
-        * ndesk-dbus/Mapper.cs: Fix dbus thread safety issues
+	* ndesk-dbus/Mapper.cs: Fix dbus thread safety issues
 
 2010-01-30  Matt Guo  <matt@mattguo.com>
 

@@ -226,6 +226,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 					if (handler != null) {
 						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
 						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
+						oldValue = DeserializeAutomationPropertyValue (busName, propertyId, oldValue);
+						newValue = DeserializeAutomationPropertyValue (busName, propertyId, newValue);
 						var args =
 						         new AutomationPropertyChangedEventArgs (AutomationProperty.LookupById (propertyId),
 						                                                 oldValue, newValue);
@@ -534,6 +536,32 @@ namespace Mono.UIAutomation.UiaDbusSource
 			lock (elementMapping)
 				elementMapping.Add (new DbusElementTuple (busName, elementPath), element);
 			return element;
+		}
+
+		private object DeserializeAutomationPropertyValue (string busName, int propId, object value)
+		{
+			object ret = null;
+			if (propId == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id ||
+			    propId == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id ||
+			    propId == TablePatternIdentifiers.ColumnHeadersProperty.Id ||
+			    propId == TablePatternIdentifiers.RowHeadersProperty.Id ||
+			    propId == SelectionPatternIdentifiers.SelectionProperty.Id) {
+				string [] paths = (string [])value;
+				AutomationElement [] elements = new AutomationElement [paths.Length];
+				for (var i = 0; i < paths.Length; i++) {
+					UiaDbusElement elem = GetOrCreateElement (busName, paths [i]);
+					elements [i] = SourceManager.GetOrCreateAutomationElement (elem);
+				}
+				ret = elements;
+			} else if (propId == AutomationElementIdentifiers.LabeledByProperty.Id ||
+			           propId == GridItemPatternIdentifiers.ContainingGridProperty.Id ||
+			           propId == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id) {
+				string path = (string) value;
+				UiaDbusElement elem = GetOrCreateElement (busName, path);
+				ret = SourceManager.GetOrCreateAutomationElement (elem);
+			} else
+				ret = DC.DbusSerializer.DeserializeValue (propId, value);
+			return ret;
 		}
 
 		#endregion

@@ -31,6 +31,7 @@ using System.Windows.Automation.Provider;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 using Mono.UIAutomation.UiaDbusBridge.Wrappers;
 using Mono.UIAutomation.Services;
+using DC = Mono.UIAutomation.UiaDbus;
 
 namespace Mono.UIAutomation.UiaDbusBridge
 {
@@ -89,12 +90,13 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				                h => h.Provider == provider);
 		}
 
-		internal void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
+		internal void RaiseAutomationEvent (AutomationEvent eventId,
+		                                    IRawElementProviderSimple provider,
+		                                    AutomationEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
-			if (simpleProvider == null)
+			if (provider == null)
 				return;
-			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
 				Log.Error ("[UiaDbusBridge.RaiseAutomationEvent] Inconsistent provider -> wrapper mapping state");
 				return;
@@ -102,13 +104,13 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			lock (automationEventHandlers) {
 				foreach (AutomationEventHandlerData handler in automationEventHandlers) {
 					if (handler.EventId == eventId.Id &&
-						IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
+						IsProviderInScope (provider, handler.Provider, handler.Scope)) {
 						OnAutomationEvent (handler.HandlerId, handler.EventId, wrapper.Path);
 					}
 				}
 			}
 			if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-				var valueObj = simpleProvider.GetPropertyValue (
+				var valueObj = provider.GetPropertyValue (
 					AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 				bool hasFocus = false;
 				try { hasFocus = (bool)valueObj; } catch {}
@@ -122,27 +124,25 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
-		internal void RaiseAutomationPropertyChangedEvent (object provider, AutomationPropertyChangedEventArgs e)
+		internal void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple provider,
+		                                                   AutomationPropertyChangedEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
-			if (simpleProvider == null)
+			if (provider == null)
 				return;
-			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
-			if (wrapper == null) {
-				Log.Error ("[UiaDbusBridge.RaiseAutomationPropertyChangedEvent] Inconsistent provider -> wrapper mapping state");
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
+			if (wrapper == null)
 				return;
-			}
 			lock (propertyEventHandlers) {
 				foreach (AutomationPropertyChangedHandlerData handler in propertyEventHandlers) {
-					if (IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
+					if (IsProviderInScope (provider, handler.Provider, handler.Scope)) {
 						int eventPropId = e.Property.Id;
 						foreach (int propId in handler.Properties) {
 							if (eventPropId == propId) {
-								//todo Need to add a general class to serialize/deserialize OldValue/Newvalue
-								//over dbus, and so as to GetCurrentPropertyValue etc.
+								var oldValue = SerializeAutomationPropertyValue (propId, e.OldValue);
+								var newValue = SerializeAutomationPropertyValue (propId, e.NewValue);
 								OnAutomationPropertyChanged (handler.HandlerId,
 								                             e.EventId.Id, wrapper.Path,
-								                             eventPropId, e.OldValue, e.NewValue);
+								                             eventPropId, oldValue, newValue);
 								break;
 							}
 						}
@@ -151,19 +151,19 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
-		internal void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		internal void RaiseStructureChangedEvent (IRawElementProviderSimple provider,
+		                                          StructureChangedEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider = provider as IRawElementProviderSimple;
-			if (simpleProvider == null)
+			if (provider == null)
 				return;
-			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (simpleProvider);
+			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
 				Log.Error ("[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state");
 				return;
 			}
 			lock (structureEventHandlers) {
 				foreach (AutomationEventHandlerData handler in structureEventHandlers) {
-					if (IsProviderInScope (simpleProvider, handler.Provider, handler.Scope)) {
+					if (IsProviderInScope (provider, handler.Provider, handler.Scope)) {
 						OnStructureChanged (handler.HandlerId, handler.EventId, wrapper.Path,
 						                    e.StructureChangeType);
 					}
@@ -252,6 +252,29 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 			foreach (T handler in handlersToDelete)
 				handlerList.Remove (handler);
+		}
+
+		private static object SerializeAutomationPropertyValue (int propId, object value)
+		{
+			object ret = null;
+			if (propId == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id ||
+			    propId == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id ||
+			    propId == TablePatternIdentifiers.ColumnHeadersProperty.Id ||
+			    propId == TablePatternIdentifiers.RowHeadersProperty.Id ||
+			    propId == SelectionPatternIdentifiers.SelectionProperty.Id) {
+				IRawElementProviderSimple [] providers = (IRawElementProviderSimple [])value;
+				string [] paths = new string [providers.Length];
+				for (var i = 0; i < providers.Length; i++)
+					paths [i] = AutomationBridge.Instance.FindWrapperByProvider (providers [i]).Path;
+				ret = paths;
+			} else if (propId == AutomationElementIdentifiers.LabeledByProperty.Id ||
+			           propId == GridItemPatternIdentifiers.ContainingGridProperty.Id ||
+			           propId == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id) {
+				IRawElementProviderSimple provider = (IRawElementProviderSimple)value;
+				ret = AutomationBridge.Instance.FindWrapperByProvider (provider).Path;
+			} else
+				ret = DC.DbusSerializer.SerializeValue (propId, value);
+			return ret;
 		}
 
 		private void OnRootElementsChanged ()
