@@ -1,3 +1,7 @@
+2010-02-03  Matt Guo  <matt@mattguo.com>
+
+        * ndesk-dbus/Mapper.cs: Fix dbus thread safety issues
+
 2010-01-30  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusSource/UiaDbusAutomationSource.cs: Fix thread safety issues
