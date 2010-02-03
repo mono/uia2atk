@@ -1,3 +1,18 @@
+2010-02-03  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/DataItem.cs: Add a new DataItem
+	class wrapper.
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	Add new class in the project.
+	* Mono.UIAutomation.TestFramework/DataGrid.cs: Move some methods to
+	DataItem class.
+	* Mono.UIAutomation.TestFramework/Text.cs: Delete duplicated
+	properties.
+	* Mono.UIAutomation.TestFramework/Edit.cs: Add some properties.
+	* Mono.UIAutomation.TestFramework/Makefile.am: Add DataItem to build
+	system.
+	* Tests/Winforms/KeePassTests.cs: Finish to update TestCase104.
+
 2010-02-02  Ray Wang  <rawang@novell.com>
 	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
 	Add Scroll and SetScrollPercent methods.

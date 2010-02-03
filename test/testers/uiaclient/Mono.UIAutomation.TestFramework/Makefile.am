@@ -54,6 +54,7 @@ FILES = \
 	ComboBox.cs \
 	Config.cs \
 	DataGrid.cs \
+	DataItem.cs \
 	Document.cs \
 	Edit.cs \
 	Element.cs \

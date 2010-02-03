@@ -59,5 +59,34 @@ namespace Mono.UIAutomation.TestFramework
 		public bool IsReadOnly {
 			get { return (bool) element.GetCurrentPropertyValue (ValuePattern.IsReadOnlyProperty); }
 		}
+
+		// The properties of TableItemPattern
+		public int Column {
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnProperty); }
+		}
+
+		public int ColumnSpan {
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnSpanProperty); }
+		}
+
+		public int Row {
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowProperty); }
+		}
+
+		public int RowSpan {
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowSpanProperty); }
+		}
+
+		public AutomationElement ContainingGrid {
+			get { return (AutomationElement) element.GetCurrentPropertyValue (TableItemPattern.ContainingGridProperty); }
+		}
+
+		public AutomationElement[] ColumnHeaderItems {
+			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.ColumnHeaderItemsProperty); }
+		}
+
+		public AutomationElement[] RowHeaderItems {
+			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.RowHeaderItemsProperty); }
+		}
 	}
 }

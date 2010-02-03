@@ -81,6 +81,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="SplitButton.cs" />
     <Compile Include="Hyperlink.cs" />
+    <Compile Include="DataItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">

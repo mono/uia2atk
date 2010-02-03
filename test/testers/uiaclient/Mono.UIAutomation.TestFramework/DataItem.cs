@@ -1,4 +1,4 @@
-// Text.cs: Text control class wrapper.
+// DataItem.cs: DataItem control type class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -27,42 +27,34 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.TestFramework
 {
-	public class Text : Element
+	public class DataItem : Element
 	{
-		public static readonly ControlType UIAType = ControlType.Text;
+		public static readonly ControlType UIAType = ControlType.DataItem;
 
-		public Text (AutomationElement elm)
-			: base (elm)
+		public DataItem (AutomationElement elm)
+			:base(elm)
 		{
 		}
 
-		// The properties of TableItemPattern
+		// The properties of GridItemPattern
 		public int Column {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnProperty); }
 		}
 
 		public int ColumnSpan {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnSpanProperty); }
-		}
-
-		public int Row {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowProperty); }
-		}
-
-		public int RowSpan {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowSpanProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnSpanProperty); }
 		}
 
 		public AutomationElement ContainingGrid {
-			get { return (AutomationElement) element.GetCurrentPropertyValue (TableItemPattern.ContainingGridProperty); }
+			get { return (AutomationElement) element.GetCurrentPropertyValue (GridItemPattern.ContainingGridProperty); }
 		}
 
-		public AutomationElement[] ColumnHeaderItems {
-			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.ColumnHeaderItemsProperty); }
+		public int Row {
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowProperty); }
 		}
 
-		public AutomationElement[] RowHeaderItems {
-			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.RowHeaderItemsProperty); }
+		public int RowSpan {
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowSpanProperty); }
 		}
 	}
 }

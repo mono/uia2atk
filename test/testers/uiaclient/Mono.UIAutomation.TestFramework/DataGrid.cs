@@ -59,27 +59,6 @@ namespace Mono.UIAutomation.TestFramework
 			get { return (int) element.GetCurrentPropertyValue (GridPattern.ColumnCountProperty); }
 		}
 
-		// The properties of GridItemPattern
-		public int Column {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnProperty); }
-		}
-
-		public int ColumnSpan {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnSpanProperty); }
-		}
-
-		public AutomationElement ContainingGrid {
-			get { return (AutomationElement) element.GetCurrentPropertyValue (GridItemPattern.ContainingGridProperty); }
-		}
-
-		public int Row {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowProperty); }
-		}
-
-		public int RowSpan {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowSpanProperty); }
-		}
-
 		// The methods and properties of MultipleViewPattern
 		public string GetViewName (int viewId)
 		{
