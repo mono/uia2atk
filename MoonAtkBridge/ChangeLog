@@ -1,5 +1,10 @@
 2010-02-03  Stephen Shaw <sshaw@decriptor.com>
 
+	* patches/moonlight-a11y-slot-tree.diff: Updated NPNVNativeAccessible
+	to 21 to match firefox update
+
+2010-02-03  Stephen Shaw <sshaw@decriptor.com>
+
 	* patches/ff-plugin-a11y.patch: Check in Brad's refresh of the patch
 
 2010-01-28  Brad Taylor  <brad@getcoded.net>

@@ -85,7 +85,7 @@ Index: plugin/moz-sdk/npapi.h
 +  /* Same value in 192src/base/public/nsplugindefs.h:
 +   * nsPluginInstanceVariable_NativeAccessible
 +   */ 
-+  NPNVNativeAccessible = 22
++  NPNVNativeAccessible = 21
 +
  #ifdef XP_MACOSX
    /* Used for negotiating drawing models */
