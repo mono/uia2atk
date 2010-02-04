@@ -1,3 +1,7 @@
+2010-02-04  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Update TestCase103, add BUG576450 
+	reference.
+
 2010-02-03  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/DataItem.cs: Add a new DataItem
