@@ -91,6 +91,7 @@ fi
 AM_CONDITIONAL(HAS_MONO_2_5, test "x$has_mono_2_5" = "xyes")
 
 dnl for test
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
 
 AC_CONFIG_FILES([

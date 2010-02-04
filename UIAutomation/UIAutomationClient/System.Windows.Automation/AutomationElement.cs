@@ -518,6 +518,8 @@ namespace System.Windows.Automation
 		{
 			if (hwnd == (IntPtr) null || hwnd == IntPtr.Zero)
 				throw new ArgumentException ("hwnd");
+			if (hwnd == NativeMethods.RootWindowHandle)
+				return RootElement;
 			AutomationElement element = null;
 			foreach (var source in SourceManager.GetAutomationSources ()) {
 				var sourceElement = source.GetElementFromHandle (hwnd);
@@ -526,6 +528,8 @@ namespace System.Windows.Automation
 					break;
 				}
 			}
+			if (element == null)
+				throw new ElementNotAvailableException ();
 			return element;
 		}
 
@@ -536,7 +540,16 @@ namespace System.Windows.Automation
 
 		public static AutomationElement FromPoint (Point pt)
 		{
-			throw new NotImplementedException ();
+			IntPtr handle = NativeMethods.WindowAtPosition ((int) pt.X, (int) pt.Y);
+			if (handle == IntPtr.Zero)
+				return RootElement;
+			AutomationElement startElement = FromHandle (handle);
+			if (startElement == RootElement)
+				return RootElement;
+			//Keep searching the descendant element which are not native window
+			var sourceElement = startElement.SourceElement.
+				GetDescendantFromPoint (pt.X, pt.Y);
+			return SourceManager.GetOrCreateAutomationElement (sourceElement);
 		}
 
 		public static bool operator == (AutomationElement left,

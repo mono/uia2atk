@@ -222,6 +222,17 @@ namespace SampleForm {
 				this.Size = new Size (800, 600);
 			else if (cmd == "textBox3 singleline")
 				textBox3.Multiline = false;
+			else if (cmd == "bring form to front")
+				this.BringToFront ();
+			else if (cmd == "hide form for 3 seconds") {
+				this.Hide ();
+				var thread = new System.Threading.Thread (() => {
+					System.Threading.Thread.Sleep (3000);
+					MethodInvoker invoker = () => this.Show ();
+					this.Invoke (invoker);
+				});
+				thread.Start ();
+			}
 		}
 	}
 }

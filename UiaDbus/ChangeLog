@@ -1,5 +1,13 @@
 2010-02-04  Matt Guo  <matt@mattguo.com>
 
+	* UiaDbus/Rect.cs: 
+	* UiaDbusSource/UiaDbusElement.cs: 
+	* UiaDbusBridgeTests/UiaDbusRectTest.cs: 
+	* UiaDbus/Interfaces/IAutomationElement.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: AutomationElement.FromPoint
+
+2010-02-04  Matt Guo  <matt@mattguo.com>
+
 	* UiaDbus/Makefile.am: 
 	* UiaDbus/UiaDbus.csproj: 
 	* UiaDbus/DbusSerializer.cs: 

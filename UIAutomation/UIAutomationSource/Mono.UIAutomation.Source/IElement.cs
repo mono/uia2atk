@@ -104,5 +104,7 @@ namespace Mono.UIAutomation.Source
 		AutomationProperty [] GetSupportedProperties ();
 
 		void SetFocus ();
+
+		IElement GetDescendantFromPoint (double x, double y);
 	}
 }

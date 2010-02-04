@@ -1144,9 +1144,74 @@ Thread.Sleep(1000);
 			firstDataItem.GetCurrentPropertyValue (ValuePattern.ValueProperty);
 		}
 
+		[Test]
+		public void FromPointTest ()
+		{
+			RunCommand ("MoveTo.Origin");
+			RunCommand ("bring form to front");
+			var element = AutomationElement.FromPoint (new Point (30.0, 30.0));
+			Assert.AreEqual (element, testFormElement);
+
+			// TODO: uncomment below line after fixing Bug #489387
+			//AssertControlFromPoint (testFormElement, 2.0, 2.0);
+			AssertControlFromPoint (testFormElement, 30.0, 30.0);
+			AssertControlFromPoint (button1Element, 5.0, 5.0);
+			// TODO: uncomment below line after fixing Bug #489387
+			//AssertControlFromPoint (textbox1Element, 2.0, 2.0);
+			AssertControlFromPoint (textbox1Element, 5.0, 5.0);
+			AssertControlFromPoint (groupBox1Element, 5.0, 5.0);
+			// TODO: uncomment below line after fixing Bug #489387
+			//AssertControlFromPoint (listView1Element);
+
+			AssertNotControlFromPoint (testFormElement, 800.0, 800.0);
+			AssertNotControlFromPoint (testFormElement, -10.0, -10.0);
+			RunCommand ("hide form for 3 seconds");
+			Thread.Sleep (1000);
+			AssertNotControlFromPoint (testFormElement, 30.0, 30.0);
+//			//Wait for the form to show up again.
+			Thread.Sleep (3000);
+
+			//Accoding to Windows behavior, if we give a out-of-screen point,
+			//then the returned element shall be RootElement.
+			element = AutomationElement.FromPoint (new Point (999999.0, 999999.0));
+			Assert.AreEqual (element, AutomationElement.RootElement);
+			element = AutomationElement.FromPoint (new Point (-50.0, -50.0));
+			Assert.AreEqual (element, AutomationElement.RootElement);
+
+			// TODO: Test that FromPoint works properly with multiple gtk+ and winforms windows
+		}
+
 		#endregion
 
 		#region Private Methods
+
+		private void AssertControlFromPoint (AutomationElement target, double relX, double relY)
+		{
+			var rect = target.Current.BoundingRectangle;
+			var element = AutomationElement.FromPoint (new Point (rect.X + relX, rect.Y + relY));
+			bool isInTarget = false;
+			while (element != null && element != AutomationElement.RootElement) {
+				Console.WriteLine ("Current Control: {0}, {1}", element.Current.Name, element.Current.BoundingRectangle);
+				if (element == target) {
+					isInTarget = true;
+					break;
+				}
+				element = TreeWalker.RawViewWalker.GetParent (element);
+			}
+			Assert.IsTrue (isInTarget);
+		}
+
+		private void AssertNotControlFromPoint (AutomationElement target, double x, double y)
+		{
+			bool compare = false;
+			try {
+				var element = AutomationElement.FromPoint (new Point (x, y));
+				compare = (element == target);
+			} catch (ElementNotAvailableException) {
+			}
+			Assert.IsFalse (compare,
+				"The returned element of \"FromPoint\" is not the given element.");
+		}
 
 		private void VerifyCurrentPropertyValue (AutomationElement element, AutomationProperty property, object expectedTrue, object expectedFalse, object expectedDefault)
 		{

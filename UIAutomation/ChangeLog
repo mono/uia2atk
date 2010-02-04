@@ -1,5 +1,18 @@
 2010-02-04  Matt Guo  <matt@mattguo.com>
 
+	* configure.ac: 
+	* UIAutomationClient/Makefile.am: 
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClient/UIAutomationClient.csproj: 
+	* UIAutomationSource/Mono.UIAutomation.Source/IElement.cs: 
+	* UIAutomationClient/System.Windows.Automation/NativeMethods.cs: 
+	* UIAutomationClient/System.Windows.Automation/DesktopElement.cs: 
+	* UIAutomationClient/System.Windows.Automation/AutomationElement.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
+	AutomationElement.FromPoint
+
+2010-02-04  Matt Guo  <matt@mattguo.com>
+
 	* UIAutomationClientTests/SampleForm/Form1.cs: 
 	* UIAutomationClientTests/UIAutomationClientTests/AutomationEventTest.cs:
 	Correct the Type of the AutomationPropertyChangedEventArgs's old/new value.

@@ -212,6 +212,21 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				disposable.Dispose ();
 		}
 
+		private ProviderElementWrapper GetWrapperFromPoint (
+			ProviderElementWrapper root, double px, double py, bool checkRoot)
+		{
+			if (checkRoot &&
+			    (root.IsOffscreen || !root.BoundingRectangle.Contains (px, py)))
+				return null;
+			var child = root.FirstChild;
+			while (child != null) {
+				var ret = GetWrapperFromPoint (child, px, py, true);
+				if (ret != null)
+					return ret;
+				child = child.NextSibling;
+			}
+			return root;
+		}
 #endregion
 
 #region Constructor
@@ -503,76 +518,36 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public string ParentElementPath {
 			get {
-				if (fragment == null)
-					return string.Empty;
-				var parent = fragment.Navigate (NavigateDirection.Parent);
-				if (parent == null || parent == fragment)
-					return string.Empty;
-				ProviderElementWrapper parentWrapper =
-					AutomationBridge.Instance.FindWrapperByProvider (parent);
-				if (parentWrapper == null)
-					return string.Empty;
-				return parentWrapper.Path;
+				var wrapper = Parent;
+				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
 
 		public string FirstChildElementPath {
 			get {
-				if (fragment == null)
-					return string.Empty;
-				var child = fragment.Navigate (NavigateDirection.FirstChild);
-				if (child == null)
-					return string.Empty;
-				ProviderElementWrapper childWrapper =
-					AutomationBridge.Instance.FindWrapperByProvider (child);
-				if (childWrapper == null)
-					return string.Empty;
-				return childWrapper.Path;
+				var wrapper = LastChild;
+				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
 
 		public string LastChildElementPath {
 			get {
-				if (fragment == null)
-					return string.Empty;
-				var child = fragment.Navigate (NavigateDirection.LastChild);
-				if (child == null)
-					return string.Empty;
-				ProviderElementWrapper childWrapper =
-					AutomationBridge.Instance.FindWrapperByProvider (child);
-				if (childWrapper == null)
-					return string.Empty;
-				return childWrapper.Path;
+				var wrapper = LastChild;
+				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
 
 		public string NextSiblingElementPath {
 			get {
-				if (fragment == null)
-					return string.Empty;
-				var sibling = fragment.Navigate (NavigateDirection.NextSibling);
-				if (sibling == null)
-					return string.Empty;
-				ProviderElementWrapper siblingWrapper =
-					AutomationBridge.Instance.FindWrapperByProvider (sibling);
-				if (siblingWrapper == null)
-					return string.Empty;
-				return siblingWrapper.Path;
+				var wrapper = NextSibling;
+				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
 
 		public string PreviousSiblingElementPath {
 			get {
-				if (fragment == null)
-					return string.Empty;
-				var sibling = fragment.Navigate (NavigateDirection.PreviousSibling);
-				if (sibling == null)
-					return string.Empty;
-				ProviderElementWrapper siblingWrapper =
-					AutomationBridge.Instance.FindWrapperByProvider (sibling);
-				if (siblingWrapper == null)
-					return string.Empty;
-				return siblingWrapper.Path;
+				var wrapper = PreviousSibling;
+				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
 
@@ -680,9 +655,70 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 					.ToArray ();
 			}
 		}
+
+		public string GetDescendantPathFromPoint (double x, double y)
+		{
+			var wrapper = GetWrapperFromPoint (this, x, y, false);
+			return wrapper.Path;
+		}
 #endregion
 
 #region Public Methods and Properties
+
+		public ProviderElementWrapper Parent {
+			get {
+				if (fragment == null)
+					return null;
+				var parent = fragment.Navigate (NavigateDirection.Parent);
+				if (parent == null || parent == fragment)
+					return null;
+				return AutomationBridge.Instance.FindWrapperByProvider (parent);
+			}
+		}
+
+		public ProviderElementWrapper FirstChild {
+			get {
+				if (fragment == null)
+					return null;
+				var child = fragment.Navigate (NavigateDirection.FirstChild);
+				if (child == null)
+					return null;
+				return AutomationBridge.Instance.FindWrapperByProvider (child);
+			}
+		}
+
+		public ProviderElementWrapper LastChild {
+			get {
+				if (fragment == null)
+					return null;
+				var child = fragment.Navigate (NavigateDirection.LastChild);
+				if (child == null)
+					return null;
+				return AutomationBridge.Instance.FindWrapperByProvider (child);
+			}
+		}
+
+		public ProviderElementWrapper NextSibling {
+			get {
+				if (fragment == null)
+					return null;
+				var sibling = fragment.Navigate (NavigateDirection.NextSibling);
+				if (sibling == null)
+					return null;
+				return AutomationBridge.Instance.FindWrapperByProvider (sibling);
+			}
+		}
+
+		public ProviderElementWrapper PreviousSibling {
+			get {
+				if (fragment == null)
+					return null;
+				var sibling = fragment.Navigate (NavigateDirection.PreviousSibling);
+				if (sibling == null)
+					return null;
+				return AutomationBridge.Instance.FindWrapperByProvider (sibling);
+			}
+		}
 
 		public string Path {
 			get { return DC.Constants.AutomationElementBasePath + pathId.ToString (); }

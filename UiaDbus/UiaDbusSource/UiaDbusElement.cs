@@ -545,6 +545,18 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			dbusElement.SetFocus ();
 		}
+
+		public IElement GetDescendantFromPoint (double x, double y)
+		{
+			string descendantPath = null;
+			try {
+				descendantPath = dbusElement.GetDescendantPathFromPoint (x, y);
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+			return source.GetOrCreateElement (busName, descendantPath);
+		}
+
 		#endregion
 
 		#region Public Properties

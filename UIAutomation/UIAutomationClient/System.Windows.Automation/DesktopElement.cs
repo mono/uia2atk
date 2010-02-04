@@ -58,8 +58,9 @@ namespace System.Windows.Automation
 
 		public Rect BoundingRectangle {
 			get {
-				// TODO: Should be rect of entire desktop
-				return Rect.Empty;
+				int width, height;
+				NativeMethods.GetScreenBound (out width, out height);
+				return new Rect (0, 0, width, height);
 			}
 		}
 
@@ -231,7 +232,6 @@ namespace System.Windows.Automation
 
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
-			// TODO: Should this support any patterns?
 			throw new InvalidOperationException ();
 		}
 
@@ -276,6 +276,12 @@ namespace System.Windows.Automation
 			// TODO: Need to test
 		}
 
+		public IElement GetDescendantFromPoint (double x, double y)
+		{
+			//Root element show have no child element which is not
+			//a native window
+			return this;
+		}
 		#endregion
 	}
 }

@@ -103,5 +103,7 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 		int [] SupportedPropertyIds { get; }
 
 		void SetFocus ();
+
+		string GetDescendantPathFromPoint (double x, double y);
 	}
 }

@@ -61,6 +61,13 @@ namespace Mono.UIAutomation.UiaDbus
 			}
 		}
 
+		public bool Contains (double px, double py)
+		{
+			if (IsEmpty)
+				return false;
+			return x <= px && x + width >= px && y <= py && y + height >= py;
+		}
+
 		public SW.Rect ToSWRect ()
 		{
 			if (IsEmpty)

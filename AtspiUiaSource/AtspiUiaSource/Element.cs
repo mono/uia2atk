@@ -398,6 +398,12 @@ namespace AtspiUiaSource
 			throw new InvalidOperationException ();
 		}
 
+		public IElement GetDescendantFromPoint (double x, double y)
+		{
+			// TODO: to implement, return the descendant element at point (x,y);
+			return this;
+		}
+
 		private object GetCurrentPatternInternal (AutomationPattern pattern)
 		{
 			//if (pattern == ExpandCollapsePatternIdentifiers.Pattern)

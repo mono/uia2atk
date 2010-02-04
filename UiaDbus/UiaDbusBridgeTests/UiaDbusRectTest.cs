@@ -101,6 +101,33 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 		}
 
 		[Test]
+		public void ContainsTest ()
+		{
+			SW.Rect nonEmptyRect = new SW.Rect (10, 10, 100, 100);
+			SW.Rect emptyRect = SW.Rect.Empty;
+			DC.Rect nonEmptyCoreRect = new DC.Rect (nonEmptyRect);
+			DC.Rect emptyCoreRect = new DC.Rect (emptyRect);
+
+			Assert.IsTrue (nonEmptyCoreRect.Contains (10.0, 10.0));
+			Assert.IsTrue (nonEmptyCoreRect.Contains (110.0, 110.0));
+			Assert.IsTrue (nonEmptyCoreRect.Contains (50.0, 50.0));
+			Assert.IsTrue (nonEmptyCoreRect.Contains (10.0, 110.0));
+			Assert.IsTrue (nonEmptyCoreRect.Contains (110.0, 10.0));
+
+			Assert.IsFalse (nonEmptyCoreRect.Contains (0.0, 5.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (0.0, 55.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (0.0, 150.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (150.0, 5.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (150.0, 55.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (150.0, 150.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (55.0, 5.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (55.0, 150.0));
+			Assert.IsFalse (nonEmptyCoreRect.Contains (-100.0, -100.0));
+
+			Assert.IsFalse (emptyCoreRect.Contains (50.0, 50.0));
+		}
+
+		[Test]
 		public void ToSWRectTest ()
 		{
 			SW.Rect nonEmptyRect = new SW.Rect (1,2,3,4);
