@@ -1,3 +1,8 @@
+2010-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Returning null Root
+	when Application.Current is null.
+
 2009-12-21  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Mark OnRefStateSet and

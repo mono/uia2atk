@@ -30,7 +30,7 @@ import signal
 from time import sleep
 from strongwind import *
 
-def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
+def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka', findSLControl=True):
     """
     Launch a browser with the selected uri and return a Browser object.
     """
@@ -61,7 +61,7 @@ def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka'):
                                           find=re.compile('^%s$' % name),
                                           wait=config.LONG_DELAY, cache=True,
                                           logString=logString, setpgid=True)
-    browser = FirefoxBrowser(name, app, proc)
+    browser = FirefoxBrowser(name, app, proc, findSLControl)
     cache.addApplication(browser)
     return browser
 
@@ -77,7 +77,7 @@ class FirefoxBrowser(accessibles.Application):
     logName = 'Mozilla Firefox'
     appNameRegex = '^(.*) - %s$'
 
-    def __init__(self, name, accessible, subproc):
+    def __init__(self, name, accessible, subproc, findSLControl):
         """
         Get a refrence to the main browser window.
         """
@@ -89,7 +89,8 @@ class FirefoxBrowser(accessibles.Application):
             self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
             self.tabs = self.mainFrame.findAllPageTabLists('')[0]
             self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
-            self.slControl = self.mainFrame.findFiller('Silverlight Control')
+	    if findSLControl:
+                self.slControl = self.mainFrame.findFiller('Silverlight Control')
         except:
             self.kill()
             raise

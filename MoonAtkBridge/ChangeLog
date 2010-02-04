@@ -1,3 +1,7 @@
+2010-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: Test ApplicationNullTest added.
+
 2010-02-03  Stephen Shaw <sshaw@decriptor.com>
 
 	* patches/moonlight-a11y-slot-tree.diff: Updated NPNVNativeAccessible

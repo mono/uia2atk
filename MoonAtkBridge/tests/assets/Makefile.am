@@ -1,6 +1,7 @@
 SUBDIRS = \
 	AdapterEventsTest \
 	AddRemoveAdapterTest \
+	ApplicationNullTest \
 	ButtonTest \
 	CheckBoxTest \
 	ComboBoxTest \

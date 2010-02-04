@@ -1,3 +1,16 @@
+2010-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/Makefile.am: 
+	* test_applicationnull.py: 
+	* assets/ApplicationNullTest/App.xaml: 
+	* assets/ApplicationNullTest/Page.xaml: 
+	* assets/ApplicationNullTest/App.xaml.cs: 
+	* assets/ApplicationNullTest/Makefile.am: 
+	* assets/ApplicationNullTest/Page.xaml.cs: Test to confirm fix when
+	Application.Current is null.
+	* moonlight/browser/__init__.py: New argument in launchAddress:
+	findSLControl, default is True.
+
 2009-12-21  Brad Taylor  <brad@getcoded.net>
 
 	* test_adapter.py: Replace LONG_DELAY with an actual number, as the

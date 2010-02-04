@@ -44,6 +44,10 @@ namespace Moonlight.AtkBridge
 		public Adapter RootVisualAdapter {
 			get {
 				if (rootVisualAdapter == null) {
+					// This happens when the XAP is invalid.
+					if (Application.Current == null)
+						return null;
+
 					rootVisualAdapter = new RootVisualAdapter (
 						GetNewRootPeer (Application.Current));
 					activeAdapters [rootVisualAdapter.Peer]

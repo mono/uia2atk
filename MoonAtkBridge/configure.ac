@@ -145,6 +145,7 @@ tests/Makefile
 tests/assets/Makefile
 tests/assets/AdapterEventsTest/Makefile
 tests/assets/AddRemoveAdapterTest/Makefile
+tests/assets/ApplicationNullTest/Makefile
 tests/assets/ButtonTest/Makefile
 tests/assets/CheckBoxTest/Makefile
 tests/assets/ComboBoxTest/Makefile
