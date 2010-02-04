@@ -33,7 +33,7 @@ class PageSetupDialogFrame(accessibles.Frame):
         self.main_cancel_button = self.main_dialog.findPushButton('Cancel')
         self.printer_button = self.main_dialog.findPushButton('Printer...')
         # Margins panel
-        self.margins_panel = self.main_dialog.findPanel("Margins (millimeters)")
+        self.margins_panel = self.main_dialog.findPanel(re.compile('^Margins'))
         self.margins_texts = self.margins_panel.findAllTexts(None)
         assert len(self.margins_texts) == self.MARGINS_TEXTS_NUM, \
                                   "actual number of text:%s, expected:%s" % \
