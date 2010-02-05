@@ -14,7 +14,7 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT OLDERS BE
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -435,8 +435,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 */
 
 			procedureLogger.Action ("Check \"Add Entry\" window's WindowVisualStateProperty");
-			Assert.AreEqual (WindowVisualState.Normal, addEntryDialog.WindowVisualState);
 			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			Assert.AreEqual (WindowVisualState.Normal, addEntryDialog.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.8 move "add entry" window to (200,200 )
@@ -447,18 +447,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//check the transformpattern's property
 			procedureLogger.Action ("Check \"Add Entry\" window's CanMoveProperty");
-			Assert.AreEqual (true, addEntryDialog.CanMove);
 			procedureLogger.ExpectedResult ("The window's CanMoveProperty should be False");
+			Assert.AreEqual (true, addEntryDialog.CanMove);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check \"Add Entry\" window's CanSizeProperty");
-			Assert.AreEqual (false, addEntryDialog.CanResize);
 			procedureLogger.ExpectedResult ("The window's CanSizeProperty should be False");
+			Assert.AreEqual (false, addEntryDialog.CanResize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check \"Add Entry\" window's CanRotateProperty");
-			Assert.AreEqual (false, addEntryDialog.CanRotate);
 			procedureLogger.ExpectedResult ("The window's CanRotateProperty should be False");
+			Assert.AreEqual (false, addEntryDialog.CanRotate);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.9 Click the "Auto-Type" tab item on the "Add Entry" Window
@@ -478,8 +478,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var autoItemDialog = window.Find<Window> ("Edit Auto-Type Item");
 			ScrollBar scrollBar = window.Find<ScrollBar> ();
 			procedureLogger.Action ("Check scroll bar's IsReadOnlyProperty");
-			Assert.AreEqual (false, scrollBar.IsReadOnly);
 			procedureLogger.ExpectedResult ("The scroll bar's IsReadOnlyProperty should be False");
+			Assert.AreEqual (false, scrollBar.IsReadOnly);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.13 Drag the scroll bar to move
@@ -543,9 +543,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 * for LabeledByproperty on Linux
 			 * nameCombobox = editEntryStringWindow.Find<ComboBox> ("Name:");
 			 */
-			var nameCombobox = editEntryStringWindow.Find<ComboBox> ("please enter a field name.");
+			var nameCombobox = editEntryStringWindow.Find<ComboBox> ("");
+			Console.WriteLine("nameCombobox is {0}   ........", nameCombobox);
 			// TODO
-			//nameCombobox.SetValue("a11y");
+			nameCombobox.SetValue("a11y");
 			procedureLogger.ExpectedResult ("the \"name\" edit 's value is \"a11y\"");
 			Thread.Sleep (Config.Instance.ShortDelay);
 

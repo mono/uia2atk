@@ -1,4 +1,7 @@
 2010-02-05  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Deal with the setValue method in testcase 103.
+
+2010-02-05  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Update TestCase103 and the code's format.
 
 2010-02-04  Felicia Mu  <fxmu@novell.com>
