@@ -8,6 +8,7 @@ SUBDIRS = \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \
 	HyperlinkButtonTest \
+	MediaElementTest \
 	PasswordBoxTest \
 	ProgressBarTest \
 	RadioButtonTest \

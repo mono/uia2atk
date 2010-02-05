@@ -1,11 +1,24 @@
+
+2010-02-05  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_mediaelement.py:
+	* assets/MediaElementTest/App.xaml:
+	* assets/MediaElementTest/Page.xaml:
+	* assets/MediaElementTest/App.xaml.cs:
+	* assets/MediaElementTest/Makefile.am:
+	* assets/MediaElementTest/Page.xaml.cs:
+	* assets/MediaElementTest/timecode-short.wmv: Add new test for
+	MediaElement.
+
 2010-02-04  Mario Carrion  <mcarrion@novell.com>
 
-	* assets/Makefile.am: 
-	* test_applicationnull.py: 
-	* assets/ApplicationNullTest/App.xaml: 
-	* assets/ApplicationNullTest/Page.xaml: 
-	* assets/ApplicationNullTest/App.xaml.cs: 
-	* assets/ApplicationNullTest/Makefile.am: 
+	* assets/Makefile.am:
+	* test_applicationnull.py:
+	* assets/ApplicationNullTest/App.xaml:
+	* assets/ApplicationNullTest/Page.xaml:
+	* assets/ApplicationNullTest/App.xaml.cs:
+	* assets/ApplicationNullTest/Makefile.am:
 	* assets/ApplicationNullTest/Page.xaml.cs: Test to confirm fix when
 	Application.Current is null.
 	* moonlight/browser/__init__.py: New argument in launchAddress:

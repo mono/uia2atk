@@ -1,3 +1,7 @@
+2010-02-05  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add MediaElement test.
+
 2010-02-04  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: Test ApplicationNullTest added.

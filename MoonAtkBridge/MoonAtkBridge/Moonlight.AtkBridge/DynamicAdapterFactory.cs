@@ -50,6 +50,12 @@ namespace Moonlight.AtkBridge
 
 					rootVisualAdapter = new RootVisualAdapter (
 						GetNewRootPeer (Application.Current));
+					if (rootVisualAdapter.Peer == null) {
+						rootVisualAdapter.Dispose ();
+						rootVisualAdapter = null;
+						return null;
+					}
+
 					activeAdapters [rootVisualAdapter.Peer]
 						= rootVisualAdapter;
 				}
