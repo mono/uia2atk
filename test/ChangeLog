@@ -1,3 +1,8 @@
+2010-02-05  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/combobox_dropdown-regression.py: 
+	add bug577363 reference
+
 2010-02-04  Calen Chen <cachen@novell.com>
 
 	* testers/winforms/pagesetupdialog/pagesetupdialogframe.py: 

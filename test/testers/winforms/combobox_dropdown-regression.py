@@ -82,8 +82,9 @@ cbddFrame.combobox.press(log=True)
 statesCheck(cbddFrame.combobox, "ComboBox")
 statesCheck(cbddFrame.menu, "Menu", 
                                add_states=["focused", "showing", "visible"])
-statesCheck(cbddFrame.textbox, "Text", 
-                            add_states=["focused", "selectable", "selected"])
+# BUG577363:text child always has extra 'selected' state if SelectedIndex is used
+#statesCheck(cbddFrame.textbox, "Text", 
+#                            add_states=["focused", "selectable"])
 # uncomment next line if BUG520542 is fixed
 #statesCheck(cbddFrame.scrollbar, "VScrollBar")
 
