@@ -525,7 +525,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public string FirstChildElementPath {
 			get {
-				var wrapper = LastChild;
+				var wrapper = FirstChild;
 				return (wrapper != null) ? wrapper.Path : string.Empty;
 			}
 		}
