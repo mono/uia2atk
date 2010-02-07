@@ -37,15 +37,15 @@ namespace AtspiUiaSource
 			this.element = element;
 
 			oldSelection = source.GetSelection ();
-			element.accessible.ObjectEvents.SelectionChanged += SelectionChanged;
+			element.accessible.ObjectEvents.SelectionChanged += OnSelectionChanged;
 		}
 
 		public void Terminate ()
 		{
-			element.accessible.ObjectEvents.SelectionChanged -= SelectionChanged;
+			element.accessible.ObjectEvents.SelectionChanged -= OnSelectionChanged;
 		}
 
-		private void SelectionChanged (string detail, int v1, int v2, object any)
+		private void OnSelectionChanged (Accessible sender)
 		{
 			IElement [] newSelection = source.GetSelection ();
 

@@ -47,7 +47,7 @@ namespace AtspiUiaSource
 			get { return element.accessible.QueryText (); }
 		}
 
-		private void OnTextChanged (string detail, int v1, int v2, object any)
+		private void OnTextChanged (Accessible sender, string detail, int v1, int v2, string any)
 		{
 			string newValue = Text.GetText ();
 			if (newValue == currentValue)

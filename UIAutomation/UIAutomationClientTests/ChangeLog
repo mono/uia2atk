@@ -1,3 +1,14 @@
+2010-02-07  Mike Gorse  <mgorse@novell.com>
+
+	* GtkForm/GtkForm.cs: Initially collapse tree view.
+
+	* GtkForm/GtkForm.cs: Support creating Toggle cell renderers.
+
+	* UIAutomationClientTests/ExpandCollapsePatternTest.cs: Add event test.
+
+	* AtspiUiaClientTests/EpandCollapsePatternTest.cs,
+	AtspiUiaClientTests/Makefile.am: Add ExpandCollapsePatternTest.
+
 2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/TreeWalkerTest.cs: Update tests to confirm

@@ -1,3 +1,16 @@
+2010-02-07  Mike Gorse  <mgorse@novell.com>
+
+	* GridEventhandler.cs, rangeValueEventhandler.cs,
+	SelectionEventhandler.cs, ValueEventhandler.cs: Track at-spi-sharp api.
+
+	* ExpandCollapseSource.cs, Element.cs, AutomationSource.cs,
+	Makefile.am: Add ExpandCollapse.
+
+	* DataItemElement.cs, TableElement.cs, TreeItemElement.cs:
+	Adjust table row indices when rows are added or removed.
+
+	* element.cs: Fix GetSupportedPatterns();
+
 2009-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* GridSource.cs:

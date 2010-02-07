@@ -47,6 +47,7 @@ FILES =  \
 	AutomationSource.cs \
 	DataItemElement.cs \
 	Element.cs \
+	ExpandCollapseSource.cs \
 	GridEventHandler.cs \
 	GridItemSource.cs \
 	GridSource.cs \

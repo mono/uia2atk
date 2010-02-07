@@ -89,7 +89,7 @@ namespace GtkForm
 			store.SetValue (iters [1], 0, "item 2b");
 			treeView1 = new Gtk.TreeView (store);
 			AddTreeViewColumn (treeView1, 0, "column 1");
-			treeView1.ExpandAll ();
+			treeView1.CollapseAll ();
 
 			tableStore = new Gtk.TreeStore (typeof (string), typeof (string), typeof (string), typeof (string));
 			iters [0] = tableStore.AppendNode ();
@@ -152,10 +152,19 @@ namespace GtkForm
 
 		private void AddTreeViewColumn (Gtk.TreeView treeView, int i, string name)
 		{
+			AddTreeViewColumn (treeView, i, name, false);
+		}
+
+		private void AddTreeViewColumn (Gtk.TreeView treeView, int i, string name, bool toggle)
+		{
 			Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
 			col.Title = name;
 			treeView.AppendColumn (col);
-			Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+			Gtk.CellRenderer cell;
+			if (toggle)
+				cell = new Gtk.CellRendererToggle ();
+			else
+				cell = new Gtk.CellRendererText ();
 			col.PackStart (cell, true);
 			col.AddAttribute (cell, "text", i);
 		}

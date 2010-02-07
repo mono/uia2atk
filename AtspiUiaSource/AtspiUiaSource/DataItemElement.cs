@@ -67,7 +67,7 @@ namespace AtspiUiaSource
 
 		public override IElement NextSibling {
 			get {
-				if (row >= parent.rows.Length - 1)
+				if (row >= parent.rows.Count - 1)
 					return null;
 				return parent.rows [row + 1];
 			}

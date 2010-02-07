@@ -74,6 +74,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	AutomationElementTest.cs \
 	AutomationEventTest.cs \
+	ExpandCollapsePatternTest.cs \
 	InvokePatternTest.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \

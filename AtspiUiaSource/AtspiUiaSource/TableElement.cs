@@ -39,13 +39,63 @@ namespace AtspiUiaSource
 		private TableHeaderElement header;
 		private bool treeMode;
 		internal Atspi.Table table;
-		internal Element [] rows;
+		internal List<Element> rows;
 
 		public TableElement (Accessible accessible) : base (accessible)
 		{
 			header = null;
 			table = accessible.QueryTable ();
 			RefreshTreeMode (true);
+			accessible.ObjectEvents.RowInserted += OnRowInserted;
+			accessible.ObjectEvents.RowDeleted += OnRowDeleted;
+		}
+
+		~TableElement ()
+		{
+			accessible.ObjectEvents.RowInserted -= OnRowInserted;
+			accessible.ObjectEvents.RowDeleted -= OnRowDeleted;
+		}
+
+		private void OnRowInserted (Accessible sender, int row, int count)
+		{
+			EnsureRowsSize (row + count);
+			int lim = row + count;
+			for (int i = row; i < lim; i++)
+				rows.Insert (i, null);
+			AdjustRowReferences (row + count);
+		}
+
+		private void OnRowDeleted (Accessible sender, int row, int count)
+		{
+			while (count-- > 0 && row < rows.Count - 1)
+				rows.RemoveAt (row + 1);
+			AdjustRowReferences (row + 1);
+			}
+
+		private void AdjustRowReferences (int min)
+		{
+			if (treeMode)
+				AdjustRowReferencesForTree (min);
+			else
+				AdjustRowReferencesForTable (min);
+		}
+
+		private void AdjustRowReferencesForTree (int min)
+		{
+			for (int i = min; i < rows.Count; i++) {
+				TreeItemElement element = rows [i] as TreeItemElement;
+				if (element != null)
+					element.row = i;
+			}
+		}
+
+		private void AdjustRowReferencesForTable (int min)
+		{
+			for (int i = min; i < rows.Count; i++) {
+				DataItemElement element = rows [i] as DataItemElement;
+				if (element != null)
+					element.row = i;
+			}
 		}
 
 		public void RefreshTreeMode ()
@@ -60,15 +110,22 @@ namespace AtspiUiaSource
 				return;
 			treeMode = newTreeMode;
 			int count = table.NRows;
-			rows = new Element [count];
+			rows = new List<Element> ();
 			if (!treeMode) {
 				for (int i = 0; i < count; i++)
-					rows [i] = new DataItemElement (this, i);
+					rows.Add (new DataItemElement (this, i));
 			}
+		}
+
+		private void EnsureRowsSize (int row)
+		{
+			while (rows.Count <= row)
+				rows.Add (null);
 		}
 
 		internal TreeItemElement GetTreeItemElement (int row)
 		{
+			EnsureRowsSize (row);
 			if (rows [row] != null)
 				return rows [row] as TreeItemElement;
 			Accessible cell = table.GetAccessibleAt (row, 0);

@@ -105,7 +105,7 @@ namespace AtspiUiaSource
 		public override IElement PreviousSibling {
 			get {
 				for (int i = row - 1; i >= 0; i--) {
-					TreeItemElement e = tableElement.GetTreeItemElement (row - 1);
+					TreeItemElement e = tableElement.GetTreeItemElement (i);
 					if (e.parentCell == this.parentCell)
 						return e;
 					if (ancestors.IndexOf (e.parentCell) > -1)

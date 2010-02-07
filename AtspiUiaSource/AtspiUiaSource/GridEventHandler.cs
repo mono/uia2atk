@@ -50,7 +50,7 @@ namespace AtspiUiaSource
 			element.accessible.ObjectEvents.ColumnDeleted -= OnColumnDeleted;
 		}
 
-		private void OnRowInserted (string str, int row, int nInserted, object val)
+		private void OnRowInserted (Accessible sender, int row, int nInserted)
 		{
 			int newVal = element.accessible.QueryTable ().NRows;
 			AutomationSource.RaisePropertyChangedEvent (
@@ -60,7 +60,7 @@ namespace AtspiUiaSource
 				newVal);
 		}
 
-		private void OnRowDeleted (string str, int row, int nDeleted, object val)
+		private void OnRowDeleted (Accessible sender, int row, int nDeleted)
 		{
 			int newVal = element.accessible.QueryTable ().NRows;
 			AutomationSource.RaisePropertyChangedEvent (
@@ -70,7 +70,7 @@ namespace AtspiUiaSource
 				newVal);
 		}
 
-		private void OnColumnInserted (string str, int row, int nInserted, object val)
+		private void OnColumnInserted (Accessible sender, int row, int nInserted)
 		{
 			int newVal = element.accessible.QueryTable ().NColumns;
 			AutomationSource.RaisePropertyChangedEvent (
@@ -80,7 +80,7 @@ namespace AtspiUiaSource
 				newVal);
 		}
 
-		private void OnColumnDeleted (string str, int row, int nDeleted, object val)
+		private void OnColumnDeleted (Accessible sender, int row, int nDeleted)
 		{
 			int newVal = element.accessible.QueryTable ().NColumns;
 			AutomationSource.RaisePropertyChangedEvent (

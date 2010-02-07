@@ -368,6 +368,14 @@ namespace AtspiUiaSource
 			case StateType.Enabled:
 				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.IsEnabledProperty, !set, set);
 				break;
+			case StateType.Expandable:
+				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty, !set, set);
+				break;
+			case StateType.Expanded:
+				RaisePropertyChangedEvent (sender, ExpandCollapsePattern.ExpandCollapseStateProperty,
+					(set ? ExpandCollapseState.Collapsed : ExpandCollapseState.Expanded),
+					(set ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed));
+				break;
 			case StateType.Focusable:
 				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.IsKeyboardFocusableProperty, !set, set);
 				break;

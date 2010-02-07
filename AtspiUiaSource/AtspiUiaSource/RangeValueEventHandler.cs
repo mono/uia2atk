@@ -49,7 +49,9 @@ namespace AtspiUiaSource
 		public RangeValueEventHandler (Element element)
 		{
 			this.element = element;
-			currentValue = Value.CurrentValue;
+			try {
+				currentValue = Value.CurrentValue;
+			} catch (Exception) { }
 
 			element.accessible.ObjectEvents.PropertyChange += OnPropertyChange;
 		}
@@ -59,7 +61,7 @@ namespace AtspiUiaSource
 			element.accessible.ObjectEvents.PropertyChange -= OnPropertyChange;
 		}
 
-		private void OnPropertyChange (string name, int v1, int v2, object any)
+		private void OnPropertyChange (Accessible sender, string name, object any)
 		{
 			if (name != "accessible-value")
 				return;

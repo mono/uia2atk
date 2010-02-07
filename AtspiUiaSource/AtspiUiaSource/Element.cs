@@ -406,9 +406,9 @@ namespace AtspiUiaSource
 
 		private object GetCurrentPatternInternal (AutomationPattern pattern)
 		{
-			//if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
-				//return (SupportsExpandCollapse () ? new ExpandCollapseSource (this) : null);
-			if (pattern == GridItemPatternIdentifiers.Pattern)
+			if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
+				return (SupportsExpandCollapse () ? new ExpandCollapseSource (this) : null);
+			else if (pattern == GridItemPatternIdentifiers.Pattern)
 				return (SupportsGridItem () ? new GridItemSource (this) : null);
 			else if (pattern == GridPatternIdentifiers.Pattern)
 				return (SupportsGrid () ? new GridSource (this) : null);
@@ -437,8 +437,41 @@ namespace AtspiUiaSource
 		{
 			List<AutomationPattern> patterns = new List<AutomationPattern> ();
 
+			if (SupportsExpandCollapse ())
+				patterns.Add (ExpandCollapsePatternIdentifiers.Pattern);
+
+			if (SupportsGrid ())
+				patterns.Add (GridPatternIdentifiers.Pattern);
+
+			if (SupportsGridItem ())
+				patterns.Add (GridItemPatternIdentifiers.Pattern);
+
+			if (SupportsInvoke ())
+				patterns.Add (InvokePatternIdentifiers.Pattern);
+
+			if (SupportsRangeValue ())
+				patterns.Add (RangeValuePatternIdentifiers.Pattern);
+
+			if (SupportsSelection ())
+				patterns.Add (SelectionPatternIdentifiers.Pattern);
+
+			if (SupportsSelectionItem ())
+				patterns.Add (SelectionItemPatternIdentifiers.Pattern);
+
+			if (SupportsTable ())
+				patterns.Add (TablePatternIdentifiers.Pattern);
+
+			if (SupportsTableItem ())
+				patterns.Add (TableItemPatternIdentifiers.Pattern);
+
+			if (SupportsText ())
+				patterns.Add (TextPatternIdentifiers.Pattern);
+
 			if (SupportsToggle ())
 				patterns.Add (TogglePatternIdentifiers.Pattern);
+
+			if (SupportsValue ())
+				patterns.Add (ValuePatternIdentifiers.Pattern);
 
 			return patterns.ToArray ();
 		}
@@ -546,7 +579,14 @@ namespace AtspiUiaSource
 
 		internal bool SupportsExpandCollapse ()
 		{
-			return (accessible.StateSet.Contains (StateType.Expandable));
+			Atspi.Action action = accessible.QueryAction ();
+			if (action == null)
+				return false;
+			ActionDescription [] actions = action.Actions;
+			for (int i = 0; i < actions.Length; i++)
+				if (actions [i].Name == "expand or contract")
+					return accessible.StateSet.Contains (StateType.Expandable);
+			return false;
 		}
 
 		internal bool SupportsGridItem ()
