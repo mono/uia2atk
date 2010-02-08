@@ -1,3 +1,12 @@
+2010-02-08  Neville Gao  <nevillegao@gmail.com>
+
+	* Tests/Moonlight/PuzzleGameTests.cs:
+	* Tests/Moonlight/SL2WithPrismTests.cs: Added Moonlight test cases for
+	UIAClient.
+
+	* Tests/Tests.csproj:
+	* Tests/Makefile.am: Added new files in Makefile and project file.
+
 2010-02-05  Felicia Mu  <fxmu@novell.com>
 	* Tests/Winforms/KeePassTests.cs: Deal with the setValue method in testcase 103.
 
