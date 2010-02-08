@@ -1,5 +1,12 @@
 2010-02-08  Brad Taylor  <brad@getcoded.net>
 
+	* test_multiscaleimage.py:
+	* assets/MultiScaleImageTest/DeepZoomSample.xap:
+	* assets/MultiScaleImageTest/MultiScaleImageTest.html: Add new test for
+	MultiScaleImage.
+
+2010-02-08  Brad Taylor  <brad@getcoded.net>
+
 	* test_thumb.py:
 	* assets/Makefile.am:
 	* assets/ThumbTest/App.xaml:
