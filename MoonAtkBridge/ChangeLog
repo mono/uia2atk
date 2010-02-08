@@ -1,3 +1,7 @@
+2010-02-08  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add Thumb test.
+
 2010-02-05  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add MediaElement test.

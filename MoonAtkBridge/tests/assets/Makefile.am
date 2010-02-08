@@ -19,6 +19,7 @@ SUBDIRS = \
 	SelectionTest \
 	TableTest \
 	TextBlockTest \
+	ThumbTest \
 	ToggleButtonTest \
 	ToggleEventsTest \
 	ValueEventsTest \

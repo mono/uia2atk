@@ -705,6 +705,15 @@
 /MoonAtkBridge/tests/assets/TextBlockTest/Makefile.in
 /MoonAtkBridge/tests/assets/TextBlockTest/*.mdb
 /MoonAtkBridge/tests/assets/TextBlockTest/*.xap
+/MoonAtkBridge/tests/assets/ThumbTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/ThumbTest/*.dll
+/MoonAtkBridge/tests/assets/ThumbTest/*.g.cs
+/MoonAtkBridge/tests/assets/ThumbTest/*.g.resources
+/MoonAtkBridge/tests/assets/ThumbTest/*.html
+/MoonAtkBridge/tests/assets/ThumbTest/Makefile
+/MoonAtkBridge/tests/assets/ThumbTest/Makefile.in
+/MoonAtkBridge/tests/assets/ThumbTest/*.mdb
+/MoonAtkBridge/tests/assets/ThumbTest/*.xap
 /MoonAtkBridge/tests/assets/ToggleButtonTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/ToggleButtonTest/*.dll
 /MoonAtkBridge/tests/assets/ToggleButtonTest/*.g.cs

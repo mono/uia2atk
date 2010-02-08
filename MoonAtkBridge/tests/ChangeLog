@@ -1,3 +1,12 @@
+2010-02-08  Brad Taylor  <brad@getcoded.net>
+
+	* test_thumb.py:
+	* assets/Makefile.am:
+	* assets/ThumbTest/App.xaml:
+	* assets/ThumbTest/Page.xaml:
+	* assets/ThumbTest/App.xaml.cs:
+	* assets/ThumbTest/Makefile.am:
+	* assets/ThumbTest/Page.xaml.cs: Add new test for Thumb.
 
 2010-02-05  Brad Taylor  <brad@getcoded.net>
 
