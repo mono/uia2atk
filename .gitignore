@@ -687,6 +687,15 @@
 /MoonAtkBridge/tests/assets/SelectionTest/Makefile.in
 /MoonAtkBridge/tests/assets/SelectionTest/*.mdb
 /MoonAtkBridge/tests/assets/SelectionTest/*.xap
+/MoonAtkBridge/tests/assets/SliderTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/SliderTest/*.dll
+/MoonAtkBridge/tests/assets/SliderTest/*.g.cs
+/MoonAtkBridge/tests/assets/SliderTest/*.g.resources
+/MoonAtkBridge/tests/assets/SliderTest/*.html
+/MoonAtkBridge/tests/assets/SliderTest/Makefile
+/MoonAtkBridge/tests/assets/SliderTest/Makefile.in
+/MoonAtkBridge/tests/assets/SliderTest/*.mdb
+/MoonAtkBridge/tests/assets/SliderTest/*.xap
 /MoonAtkBridge/tests/assets/TableTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/TableTest/*.dll
 /MoonAtkBridge/tests/assets/TableTest/*.g.cs

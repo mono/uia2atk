@@ -17,6 +17,7 @@ SUBDIRS = \
 	RepeatButtonTest \
 	ScrollBarTest \
 	SelectionTest \
+	SliderTest \
 	TableTest \
 	TextBlockTest \
 	ThumbTest \

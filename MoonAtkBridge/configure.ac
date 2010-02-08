@@ -161,6 +161,7 @@ tests/assets/ReflectionTest/Makefile
 tests/assets/RepeatButtonTest/Makefile
 tests/assets/ScrollBarTest/Makefile
 tests/assets/SelectionTest/Makefile
+tests/assets/SliderTest/Makefile
 tests/assets/TableTest/Makefile
 tests/assets/TextBlockTest/Makefile
 tests/assets/ThumbTest/Makefile

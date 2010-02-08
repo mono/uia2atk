@@ -1,5 +1,15 @@
 2010-02-08  Brad Taylor  <brad@getcoded.net>
 
+	* test_slider.py:
+	* assets/Makefile.am:
+	* assets/SliderTest/App.xaml:
+	* assets/SliderTest/Page.xaml:
+	* assets/SliderTest/App.xaml.cs:
+	* assets/SliderTest/Makefile.am:
+	* assets/SliderTest/Page.xaml.cs: Add new test for Slider.
+
+2010-02-08  Brad Taylor  <brad@getcoded.net>
+
 	* test_multiscaleimage.py:
 	* assets/MultiScaleImageTest/DeepZoomSample.xap:
 	* assets/MultiScaleImageTest/MultiScaleImageTest.html: Add new test for
