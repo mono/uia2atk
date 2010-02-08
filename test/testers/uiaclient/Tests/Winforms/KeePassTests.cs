@@ -299,7 +299,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			/*
 			 * The list items in the list is different from the windows, the listitem "68"
 			 * is always shown.
-			 * TODO write anther test case to cover the ScrollIntoView() method.
+			 * TODO write another test case to cover the ScrollIntoView() method.
 			 * 102.13 Click list item "68" on the "Icon Picker" dialog.
 			 * standardIconList.Find<ListItem> ("68").ScrollIntoView ();
 			 * procedureLogger.ExpectedResult ("The \"68\" list item is showed in the view.");
@@ -317,28 +317,36 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Behavior\" tab item opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//ToReview
-			//102.16 Expand the "Searching entries in this group" combo box.
+			//102.16 Check the searchCombobox 's Current ExpandCollapseState.
 			var searchCombobox = behaviorTabItem.Find<ComboBox> ("Searching entries in this group:");
+			procedureLogger.Action ("Check the searchCombobox 's Current ExpandCollapseState.");
+			procedureLogger.ExpectedResult ("The searchCombobox 's Current state should be Collapsed.");
+			Assert.AreEqual (ExpandCollapseState.Collapsed, searchCombobox.ExpandCollapseState);
+
+			//102.17 Expand the "Searching entries in this group" combo box.
 			searchCombobox.Expand ();
+			Thread.Sleep (Config.Instance.MediumDelay);
 			procedureLogger.ExpectedResult ("\"Searching entries in this group\" combox box is expanded.");
-			//Assert.AreEqual (searchCombobox.ExpandCollapseState, ExpandCollapseState.Expanded);
+			Console.WriteLine("ExpandCollapseState.Expanded is {0}", ExpandCollapseState.Expanded);
+			Assert.AreEqual (ExpandCollapseState.Expanded, searchCombobox.ExpandCollapseState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.17 Collapse the "Searching entries in this group" combo box.
+			//102.18 Collapse the "Searching entries in this group" combo box.
 			searchCombobox.Collapse ();
+			Thread.Sleep (Config.Instance.MediumDelay);
 			procedureLogger.ExpectedResult ("\"Searching entries in this group\" combox box is collapsed.");
-			//Assert.AreEqual (searchCombobox.ExpandCollapseState, ExpandCollapseState.Collapsed);
+			Assert.AreEqual (ExpandCollapseState.Collapsed, searchCombobox.ExpandCollapseState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.18 Select the "Enabled" from the "Searching entries in this group" combo box.
-			searchCombobox.Expand ();
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//102.19 Select the "Enabled" from the "Searching entries in this group" combo box.
+			//searchCombobox.Expand ();
+			//Thread.Sleep (Config.Instance.MediumDelay);
 			searchCombobox.Find<ListItem> ("Enabled").Select ();
+			Thread.Sleep (Config.Instance.MediumDelay);
 			procedureLogger.ExpectedResult ("The \"Enabled\" list item is selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.19 Click the "OK" button on the  "Edit Group" dialog.
+			//102.20 Click the "OK" button on the  "Edit Group" dialog.
 			editGroupWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Edit Group\" dialog disappears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -503,17 +511,17 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.16 Drag the scroll bar to a LargeChange decrease
-			scrollBar.SetValue (scrollBar.Maximum-scrollBar.LargeChange);
+			scrollBar.SetValue (scrollBar.Maximum - scrollBar.LargeChange);
 			procedureLogger.ExpectedResult 
 				(string.Format("The scroll bar can get its minimum {0}", scrollBar.Minimum));
-			Assert.AreEqual (scrollBar.Maximum-scrollBar.Value, scrollBar.LargeChange);
+			Assert.AreEqual (scrollBar.Maximum - scrollBar.Value, scrollBar.LargeChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.17 Drag the scroll bar to a SmallChange increase
-			scrollBar.SetValue (scrollBar.Minimum+scrollBar.SmallChange);
+			scrollBar.SetValue (scrollBar.Minimum + scrollBar.SmallChange);
 			procedureLogger.ExpectedResult 
 				(string.Format("The scroll bar can get its minimum {0}", scrollBar.Minimum));
-			Assert.AreEqual (scrollBar.Value-scrollBar.Minimum, scrollBar.SmallChange);
+			Assert.AreEqual (scrollBar.Value - scrollBar.Minimum, scrollBar.SmallChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.18 Click "OK" button on the dialog
@@ -545,7 +553,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 */
 			var nameCombobox = editEntryStringWindow.Find<ComboBox> ("");
 			Console.WriteLine("nameCombobox is {0}   ........", nameCombobox);
-			// TODO
 			nameCombobox.SetValue("a11y");
 			procedureLogger.ExpectedResult ("the \"name\" edit 's value is \"a11y\"");
 			Thread.Sleep (Config.Instance.ShortDelay);

@@ -1,5 +1,7 @@
-2010-02-08  Neville Gao  <nevillegao@gmail.com>
+2010-02-08  Felicia Mu  <fxmu@novell.com>
+	* Tests/Winforms/KeePassTests.cs: Sovle the assert expand method error. 
 
+2010-02-08  Neville Gao  <nevillegao@gmail.com>
 	* Tests/Moonlight/PuzzleGameTests.cs:
 	* Tests/Moonlight/SL2WithPrismTests.cs: Added Moonlight test cases for
 	UIAClient.
