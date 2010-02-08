@@ -19,8 +19,8 @@
 
 Name:           python-atspi
 %define _name   pyatspi
-Version:        0.1.3
-Release:        1
+Version:        0.1.6
+Release:        51
 Summary:        Assistive Technology Service Provider Interface - Python bindings
 License:        LGPL v2.0
 Group:          Development/Libraries/Python
@@ -58,7 +58,7 @@ This package contains the python bindings for AT-SPI.
 %setup -q -n %{_name}-%{version}
 
 %build
-%configure
+%configure --disable-relocate
 %__make %{?jobs:-j%jobs}
 
 %install
