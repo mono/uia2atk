@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi2-atk (Version 0.1.3)
+# spec file for package at-spi2-atk (Version 0.1.6)
 #
 # Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -18,8 +18,8 @@
 
 
 Name:           at-spi2-atk
-Version:        0.1.3
-Release:        1
+Version:        0.1.6
+Release:        85
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
 Group:          System/Libraries
@@ -54,7 +54,7 @@ This package contains a GTK+ module for at-spi, based on ATK.
 %setup -q
 
 %build
-%configure
+%configure --disable-relocate
 %__make %{?jobs:-j%jobs}
 
 %install
