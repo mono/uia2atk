@@ -1,5 +1,16 @@
 2010-02-08  Brad Taylor  <brad@getcoded.net>
 
+	* test_image.py:
+	* assets/Makefile.am:
+	* assets/ImageTest/App.xaml:
+	* assets/ImageTest/Koala.jpg:
+	* assets/ImageTest/Page.xaml:
+	* assets/ImageTest/App.xaml.cs:
+	* assets/ImageTest/Makefile.am:
+	* assets/ImageTest/Page.xaml.cs: Add new test for Image.
+
+2010-02-08  Brad Taylor  <brad@getcoded.net>
+
 	* test_slider.py:
 	* assets/Makefile.am:
 	* assets/SliderTest/App.xaml:

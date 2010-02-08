@@ -615,6 +615,15 @@
 /MoonAtkBridge/tests/assets/MediaElementTest/Makefile.in
 /MoonAtkBridge/tests/assets/MediaElementTest/*.mdb
 /MoonAtkBridge/tests/assets/MediaElementTest/*.xap
+/MoonAtkBridge/tests/assets/ImageTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/ImageTest/*.dll
+/MoonAtkBridge/tests/assets/ImageTest/*.g.cs
+/MoonAtkBridge/tests/assets/ImageTest/*.g.resources
+/MoonAtkBridge/tests/assets/ImageTest/*.html
+/MoonAtkBridge/tests/assets/ImageTest/Makefile
+/MoonAtkBridge/tests/assets/ImageTest/Makefile.in
+/MoonAtkBridge/tests/assets/ImageTest/*.mdb
+/MoonAtkBridge/tests/assets/ImageTest/*.xap
 /MoonAtkBridge/tests/assets/PasswordBoxTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/PasswordBoxTest/*.dll
 /MoonAtkBridge/tests/assets/PasswordBoxTest/*.g.cs

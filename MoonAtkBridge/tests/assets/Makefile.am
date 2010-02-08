@@ -9,6 +9,7 @@ SUBDIRS = \
 	FakeBridgeTest \
 	HyperlinkButtonTest \
 	MediaElementTest \
+	ImageTest \
 	PasswordBoxTest \
 	ProgressBarTest \
 	RadioButtonTest \
