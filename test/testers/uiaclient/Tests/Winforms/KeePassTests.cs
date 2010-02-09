@@ -341,7 +341,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//102.19 Select the "Enabled" from the "Searching entries in this group" combo box.
 			//searchCombobox.Expand ();
-			//Thread.Sleep (Config.Instance.MediumDelay);
 			searchCombobox.Find<ListItem> ("Enabled").Select ();
 			Thread.Sleep (Config.Instance.MediumDelay);
 			procedureLogger.ExpectedResult ("The \"Enabled\" list item is selected.");
@@ -715,7 +714,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			//var textItem = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
 			//var textItem = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
-			//BUGxxxxx: GridPattern, not null, but exception has been thrown when call GetItem method.
+			//BUG578244: GridPattern, not null, but exception has been thrown when call GetItem method.
 			//var dataGridItem = dataGrid.GetItem (0, 0);
 			//procedureLogger.ExpectedResult ("The (0,0) item of the datagrid is \"Sample Entry\".");
 			//Assert.AreEqual (textItem, dataGridItem);

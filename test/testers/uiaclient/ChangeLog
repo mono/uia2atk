@@ -1,3 +1,7 @@
+2010-02-09  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Add bug 578244 reference.
+
 2010-02-09  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Element.cs: Change FindAll method to
