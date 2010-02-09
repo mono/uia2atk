@@ -63,6 +63,7 @@ FILES =  \
 	TableHeaderElement.cs \
 	TableItemSource.cs \
 	TableSource.cs \
+	TextEventHandler.cs \
 	TextSource.cs \
 	ToggleSource.cs \
 	TreeItemElement.cs \

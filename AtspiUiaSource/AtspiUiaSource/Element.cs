@@ -64,6 +64,8 @@ namespace AtspiUiaSource
 				patterns.Add (new RangeValueEventHandler (this));
 			if (SupportsSelection ())
 				patterns.Add (new SelectionEventHandler (this, new SelectionSource (this)));
+			if (SupportsText ())
+				patterns.Add (new TextEventHandler (this));
 			if (SupportsValue ())
 				patterns.Add (new ValueEventHandler (this));
 		}

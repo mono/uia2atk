@@ -1,3 +1,7 @@
+2010-02-09  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs, TextEventHandler.cs, Makefile.am: Add TextEventHandler.
+
 2010-02-07  Mike Gorse  <mgorse@novell.com>
 
 	* GridEventhandler.cs, rangeValueEventhandler.cs,

@@ -721,7 +721,11 @@ namespace MonoTests.System.Windows.Automation
 			                              TreeScope.Element, handler);
 			RunCommand ("set textbox3 text");
 			Thread.Sleep (500);
-			Assert.AreEqual (1, eventCount, "TextChangedEvent fired");
+			// Ideally we should only receive one event, but at-spi
+			// generates a text-changed::delete followed by a
+			// text-changed::insert.
+			int expectedEventCount = (Atspi? 2: 1);
+			Assert.AreEqual (expectedEventCount, eventCount, "TextChangedEvent fired");
 
 			At.RemoveAutomationEventHandler (TextPattern.TextChangedEvent, textbox3Element, handler);
 		}
