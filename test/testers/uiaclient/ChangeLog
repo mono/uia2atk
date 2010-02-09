@@ -1,7 +1,15 @@
+2010-02-09  Neville Gao  <nevillegao@gmail.com>
+
+	* Tests/Tests.csproj:
+	* Tests/Makefile.am: Deleted Tests/Moonlight/DiggSearchTests.cs to make
+	solution build.
+
 2010-02-08  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Sovle the assert expand method error. 
 
 2010-02-08  Neville Gao  <nevillegao@gmail.com>
+
 	* Tests/Moonlight/PuzzleGameTests.cs:
 	* Tests/Moonlight/SL2WithPrismTests.cs: Added Moonlight test cases for
 	UIAClient.
@@ -10,16 +18,20 @@
 	* Tests/Makefile.am: Added new files in Makefile and project file.
 
 2010-02-05  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Deal with the setValue method in testcase 103.
 
 2010-02-05  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update TestCase103 and the code's format.
 
 2010-02-04  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update TestCase103, add BUG576450 
 	reference.
 
 2010-02-03  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/DataItem.cs: Add a new DataItem
 	class wrapper.
 	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
@@ -34,6 +46,7 @@
 	* Tests/Winforms/KeePassTests.cs: Finish to update TestCase104.
 
 2010-02-02  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
 	Add Scroll and SetScrollPercent methods.
 	* Mono.UIAutomation.TestFramework/Hyperlink.cs:
@@ -45,10 +58,12 @@
 	Relevant TestCase104 updates.
 
 2010-02-01  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update TestCase103, add bug 
 	reference.
 
 2010-02-01  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/DataGrid.cs: Make GetItem method
 	output more descriptive.
 	* Mono.UIAutomation.TestFramework/Makefile.am: Add SplitButton.cs into
@@ -57,6 +72,7 @@
 	order of parameters of assert method.
 
 2010-02-01  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Element.cs: Add SplitButton and Menu 
 	class in Promotion method.
 	* Mono.UIAutomation.TestFramework/ListItem.cs: Add IsSelected
@@ -68,24 +84,30 @@
 	* Tests/Winforms/KeePassTests.cs: Update TestCase104.
 
 2010-01-28  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/ComboBox.cs:
 	* Tests/Winforms/KeePassTests.cs:
 	Remove whitespaces and fix conflicts.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+
 	* Mono.UIAutomation.TestFramework/SplitButton.cs:add the SplitButton.cs
 	class.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update bug 571799 reference.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Solve the block of testcase 101.
 
 2010-01-27  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update testcase 102.
 
 2010-01-27  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Spinner.cs:
 	* Mono.UIAutomation.TestFramework/Document.cs:
@@ -122,14 +144,17 @@
 	Add Menu class into project.
 
 2010-01-22  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Merge the KeePass.cs between 150107
 	& 150059.
 
 2010-01-22  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Update tests to make testcase101
 	run correctly.
 
 2010-01-22  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Direction.cs:
 	* Mono.UIAutomation.TestFramework/Element.cs:
 	* Mono.UIAutomation.TestFramework/Finder.cs:
@@ -140,6 +165,7 @@
 	Improve a Find method that searching elements by coordinator.
 
 2010-01-20  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Spinner.cs:
 	* Mono.UIAutomation.TestFramework/Document.cs:
 	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
@@ -159,6 +185,7 @@
 	them.
 
 2010-01-19  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Element.cs:
 	* Mono.UIAutomation.TestFramework/Application.cs:
@@ -172,14 +199,17 @@
 	application; partially add accessible control type for log message.
 
 2010-01-19  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Make the testcase before 101.9
 	can run correctly & add bug reference.
 
 2010-01-18  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Modify FindList<> method
 	to find controls by type not by name, add bug reference.
 
 2010-01-18  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Application.cs:
 	* Mono.UIAutomation.TestFramework/TestBase.cs:
 	* Mono.UIAutomation.TestFramework/DataGrid.cs:
@@ -189,6 +219,7 @@
 	Move GetWindow method from TestBase class to Application class.
 
 2010-01-16  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Spinner.cs:
 	* Mono.UIAutomation.TestFramework/Document.cs:
@@ -208,6 +239,7 @@
 	Change from "if (log == true)" to "if (log)".
 
 2010-01-15  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Application.cs:
 	* Mono.UIAutomation.TestFramework/TestBase.cs:
 	* Mono.UIAutomation.TestFramework/ProcedureLogger.cs:
@@ -217,30 +249,36 @@
 	Fix hardcoded application name in log files.
 
 2010-01-13  felicia Mu  <fxmu@novell.com>
+
 	* Tests//Tests/GTK: Fspot.cs: Write some tests for
 	Fspot. 
 
 2010-01-13  felicia Mu  <fxmu@novell.com>
+
 	* Tests/WinForms/KeePassTests.cs: 
 	* Tests/Winforms/DockPatternTests.cs:
 	* Tests/Winforms/WindowPatternTests.cs: Simplify the app
 	routin to find.
 
 2010-01-13  felicia Mu  <fxmu@novell.com>
+
 	* Tests/WinForms/KeePassTests.cs: Call setvalue() method
 	by combobox.
 
 2010-01-12  Ray Wang  <rawang@novell.com>
+
 	* Tests/Tests.csproj:
 	* Tests/Makefile.am:
 	* configure.ac: Update nunit dependency to mono-nunit.
 
 2010-01-12  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Properties:
 	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
 	* Tests/Properties: Delete useless Properties directory.
 
 2010-01-12  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Properties/AssemblyInfo.cs:
 	* Mono.UIAutomation.TestFramework/Element.cs:
 	* Mono.UIAutomation.TestFramework/Resources:
@@ -270,6 +308,7 @@
 	Project structure adjustment.
 
 2010-01-12  felicia Mu  <fxmu@novell.com>
+
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/Element.cs:
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/ComboBox.cs:
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/Edit.cs:

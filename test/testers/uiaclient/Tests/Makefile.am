@@ -71,7 +71,6 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES_RESOURCES) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
 
 FILES = \
-	Moonlight/DiggSearchTests.cs \
 	Moonlight/PuzzleGameTests.cs \
 	Moonlight/SL2WithPrismTests.cs \
 	Winforms/DockPatternTests.cs \
