@@ -1,3 +1,12 @@
+2010-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* autogen.sh: Pull ndesk-dbus from out git branch during autogen.
+
+	* ndesk-dbus/*.cs: Delete copy of ndesk-dbus source from SVN.
+
+	* UiaDbus/Makefile.am:
+	* UiaDbus/UiaDbus.dll.config.in: Add a .dll.config file for ndesk-dbus.
+
 2010-02-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: Fix typo

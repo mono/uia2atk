@@ -466,6 +466,8 @@
 /UiaDbus/libtool
 /UiaDbus/ltmain.sh
 /UiaDbus/uiadbus-*.tar.gz
+/UiaDbus/ndesk-dbus-git
+/UiaDbus/ndesk-dbus/*.cs
 
 # /UiaDbus/data/
 /UiaDbus/data/Makefile

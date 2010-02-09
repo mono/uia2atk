@@ -1,5 +1,5 @@
 
-EXTRA_DIST =  
+EXTRA_DIST = UiaDbus.dll.config.in
 
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -unsafe -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk
@@ -23,7 +23,7 @@ PROGRAMFILES = \
 
 RESGEN=resgen2
 	
-all: $(ASSEMBLY) $(PROGRAMFILES)
+all: $(ASSEMBLY) $(PROGRAMFILES) $(ASSEMBLY).config
 
 if ENABLE_EXTERNAL_NDESK_DBUS
 NDESK_DBUS_FILES =
@@ -85,6 +85,9 @@ uninstall-local: gac-uninstall
 
 include $(top_srcdir)/Makefile.include
 
+$(ASSEMBLY).config: $(srcdir)/UiaDbus.dll.config.in Makefile
+	sed -e "s|\@expanded_libdir\@|@expanded_libdir@|" \
+	    < $< > $@
 
 $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
