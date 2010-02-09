@@ -25,7 +25,7 @@ namespace Mono.UIAutomation.TestFramework
 			}
 			
 			return string.Format ("\"{0}\" {1}",
-				name, UIAutomationMetadata.GetControlTypeName (element.Current.ControlType));
+				name, GetControlTypeName (element.Current.ControlType));
 		}
 	}
 }

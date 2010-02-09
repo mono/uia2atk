@@ -1,3 +1,14 @@
+2010-02-09  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Element.cs: Change FindAll method to
+	search only children, but not the whole descendants, because we don't
+	need to do that.
+	* Mono.UIAutomation.TestFramework/DataGrid.cs: Update GetItem method
+	output message.
+	* Mono.UIAutomation.TestFramework/UIAutomationMetadata.cs: Remove
+	unnecessary namespace.
+	* Tests/Winforms/KeePassTests.cs: Update TestCase104.
+
 2010-02-09  Neville Gao  <nevillegao@gmail.com>
 
 	* Tests/Tests.csproj:

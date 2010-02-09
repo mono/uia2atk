@@ -125,7 +125,7 @@ namespace Mono.UIAutomation.TestFramework
 
 			for (int i = 0; i < Config.Instance.RetryTimes; i++) {
 				var cond = new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, type);
-				AutomationElementCollection controls = element.FindAll (TreeScope.Descendants, cond);
+				AutomationElementCollection controls = element.FindAll (TreeScope.Children, cond);
 				if (controls != null)
 					return Promote<T> (controls);
 

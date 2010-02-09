@@ -45,7 +45,8 @@ namespace Mono.UIAutomation.TestFramework
 		public AutomationElement GetItem (int row, int column, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Get {0} from row {1}, col {2}.", this.NameAndType, row, column));
+				procedureLogger.Action (string.Format ("Get element from row {0}, col {1} of {2}.",
+				                                       row, column, this.NameAndType));
 
 			GridPattern gp = (GridPattern) element.GetCurrentPattern (GridPattern.Pattern);
 			return gp.GetItem (row, column);
@@ -68,7 +69,7 @@ namespace Mono.UIAutomation.TestFramework
 		public string GetViewName (int viewId, bool log)
 		{
 			if (log)
-				procedureLogger.Action (string.Format ("Get the view name: \"{0}\".", GetViewName(viewId)));
+				procedureLogger.Action (string.Format ("Get the view name which viewID is {0}.", viewId));
 
 			MultipleViewPattern mvp = (MultipleViewPattern) element.GetCurrentPattern (MultipleViewPattern.Pattern);
 			return mvp.GetViewName (viewId);
