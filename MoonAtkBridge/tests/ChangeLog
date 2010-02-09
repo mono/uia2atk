@@ -1,3 +1,13 @@
+2010-02-09  Brad Taylor  <brad@getcoded.net>
+
+	* test_listbox.py:
+	* assets/Makefile.am:
+	* assets/ListBoxTest/App.xaml:
+	* assets/ListBoxTest/Page.xaml:
+	* assets/ListBoxTest/App.xaml.cs:
+	* assets/ListBoxTest/Makefile.am:
+	* assets/ListBoxTest/Page.xaml.cs: Add new test for ListBox.
+
 2010-02-08  Brad Taylor  <brad@getcoded.net>
 
 	* test_image.py:

@@ -1,3 +1,7 @@
+2010-02-09  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add ListBox test.
+
 2010-02-08  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add Image test.

@@ -608,6 +608,15 @@
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/Makefile.in
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/*.mdb
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/*.xap
+/MoonAtkBridge/tests/assets/ListBoxTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/ListBoxTest/*.dll
+/MoonAtkBridge/tests/assets/ListBoxTest/*.g.cs
+/MoonAtkBridge/tests/assets/ListBoxTest/*.g.resources
+/MoonAtkBridge/tests/assets/ListBoxTest/*.html
+/MoonAtkBridge/tests/assets/ListBoxTest/Makefile
+/MoonAtkBridge/tests/assets/ListBoxTest/Makefile.in
+/MoonAtkBridge/tests/assets/ListBoxTest/*.mdb
+/MoonAtkBridge/tests/assets/ListBoxTest/*.xap
 /MoonAtkBridge/tests/assets/MediaElementTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/MediaElementTest/*.dll
 /MoonAtkBridge/tests/assets/MediaElementTest/*.g.cs
