@@ -162,6 +162,7 @@ tests/assets/RangeValueTest/Makefile
 tests/assets/ReflectionTest/Makefile
 tests/assets/RepeatButtonTest/Makefile
 tests/assets/ScrollBarTest/Makefile
+tests/assets/ScrollViewerTest/Makefile
 tests/assets/SelectionTest/Makefile
 tests/assets/SliderTest/Makefile
 tests/assets/TableTest/Makefile

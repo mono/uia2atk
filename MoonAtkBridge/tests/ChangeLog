@@ -1,5 +1,15 @@
 2010-02-09  Brad Taylor  <brad@getcoded.net>
 
+	* assets/Makefile.am:
+	* test_scrollviewer.py:
+	* assets/ScrollViewerTest/App.xaml:
+	* assets/ScrollViewerTest/Page.xaml:
+	* assets/ScrollViewerTest/App.xaml.cs:
+	* assets/ScrollViewerTest/Makefile.am:
+	* assets/ScrollViewerTest/Page.xaml.cs: Add new test for ScrollViewer.
+
+2010-02-09  Brad Taylor  <brad@getcoded.net>
+
 	* test_listbox.py:
 	* assets/Makefile.am:
 	* assets/ListBoxTest/App.xaml:

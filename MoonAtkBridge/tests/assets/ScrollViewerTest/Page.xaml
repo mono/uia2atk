@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="ScrollViewerTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="400" Height="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <TextBlock TextWrapping="Wrap" Width="500">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut odio nec enim fringilla mollis et a odio. Cras id mauris sed nisl laoreet vestibulum sit amet et libero. Sed nec elementum libero. Curabitur accumsan, lorem nec rutrum pulvinar, leo nulla aliquam purus, non dignissim purus justo sodales augue. Donec fermentum, est at convallis commodo, ipsum diam dictum urna, a varius lacus elit eu nulla. Nam eu neque ut felis molestie facilisis id a sapien. Curabitur non erat vel purus tempus venenatis sed vel nunc. Etiam laoreet enim eu nulla feugiat adipiscing at id est. Praesent porta pulvinar faucibus. Aliquam sed tortor leo, ut tempor nulla. Maecenas aliquet sollicitudin ligula. Aliquam erat volutpat. Sed mollis accumsan orci, sed faucibus diam volutpat quis.
+
+Aliquam a massa id enim pretium aliquam id eget purus. Aenean pretium bibendum cursus. Mauris adipiscing, arcu et consequat facilisis, felis metus adipiscing massa, a suscipit tellus diam ac metus. Mauris consectetur porttitor iaculis. Aenean tempor condimentum dolor, id dignissim odio aliquam sit amet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque metus diam, feugiat sed interdum imperdiet, eleifend non sapien. Nullam rhoncus bibendum accumsan. Integer auctor ipsum ac augue porttitor viverra. Nulla blandit malesuada nisi quis cursus. Vestibulum et neque magna. Nullam fringilla congue suscipit. Cras a nibh mi.
+
+                Phasellus condimentum dolor ac sem laoreet gravida. Proin urna nisl, pulvinar eu vestibulum vitae, porttitor ut libero. Fusce sed mi a nisl eleifend luctus et vitae ligula. Mauris euismod tristique feugiat. Donec a nibh quis eros mattis sollicitudin. Vestibulum vestibulum tempus auctor. Sed rhoncus vehicula fermentum. Nulla orci dolor, imperdiet vitae scelerisque volutpat, sollicitudin id turpis. Nulla nunc lacus, consectetur et commodo nec, euismod vitae felis. Donec quis ipsum sit amet lectus sollicitudin euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut sit amet ipsum nisl, accumsan pellentesque nisl. Donec eu erat ut nibh porttitor ornare. Donec imperdiet ante nec massa aliquam tincidunt. Donec odio arcu, iaculis et consectetur nec, luctus vitae tortor. Ut pretium, dolor in laoreet egestas, magna turpis luctus nisi, nec interdum lacus diam in erat.
+            </TextBlock>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

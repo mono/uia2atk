@@ -18,6 +18,7 @@ SUBDIRS = \
 	ReflectionTest \
 	RepeatButtonTest \
 	ScrollBarTest \
+	ScrollViewerTest \
 	SelectionTest \
 	SliderTest \
 	TableTest \
