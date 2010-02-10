@@ -4,7 +4,7 @@
 #
 
 Name:           at-spi-sharp
-Version:        1.8.93
+Version:        1.8.94
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -13,7 +13,7 @@ Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{versio
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       mono-core >= 2.6
 BuildRequires:	mono-devel >= 2.6
-BuildRequires:	mono-uia >= 1.8.93
+BuildRequires:	mono-uia >= 1.8.94
 BuildRequires:	ndesk-dbus-glib-devel
 BuildRequires:	pkg-config
 

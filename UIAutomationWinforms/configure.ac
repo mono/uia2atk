@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([UIAutomationWinforms], [1.8.93])
+AC_INIT([UIAutomationWinforms], [1.8.94])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
 IT_PROG_INTLTOOL([0.35.0])
 
@@ -81,7 +81,7 @@ AC_SUBST(NUNIT_PATH)
 AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
 dnl package checks, common for all configs
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.8.93])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 1.8.94])
 PKG_CHECK_MODULES([MONO], [mono >= 2.4])
 
 gacutil -l  System.Data | grep "Version=2"

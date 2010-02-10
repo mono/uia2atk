@@ -3,7 +3,7 @@
 #
 
 Name:           uiadbus
-Version:        1.8.93
+Version:        1.8.94
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -13,7 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Summary:        UiaDbus components of UIA on Linux
 BuildRequires:	glib-sharp2
 BuildRequires:	mono-devel >= 2.6
-BuildRequires:	mono-uia-devel >= 1.8.93
+BuildRequires:	mono-uia-devel >= 1.8.94
 BuildRequires:	ndesk-dbus
 
 %description

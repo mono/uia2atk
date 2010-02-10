@@ -3,13 +3,39 @@ Mono Accessibility News
 
 Copyright (C) 2009 Novell, Inc. (http://www.novell.com)
 
+Version 1.8.94: The "ebonics" release
+* #551974 - [PENDING BACKPORT] Test CalendarAutomationPeer and related Peers.
+* #551977 - [PENDING BACKPORT] Test TabControlAutomationPeer and related Peers.
+* #550616 - Make the output log of each element more meaningful.
+* #571581 - Run UIA Client API winforms tests on Linux
+* #568774 - Fix thread safety issues in UiaDbusSource
+* #489315 - Implement TextPattern events
+* #572516 - Build the rpm package for at-spi2-0.14
+* #573328 - Figure out why after install the at-spi2 0.1.4, the test can't run
+* #572318 - Clean UIAutomationWinforms code to return LocalizedControlType
+* #489315 - Implement TextPattern events
+* #562187 - TabControlAutomationPeer does not return children from GetChildren()
+* #560711 - Slider: some extraneous push buttons
+* #494712 - Test Image control
+* #494713 - Test ListBox control
+* #494714 - Test MediaElement control
+* #494715 - Test MultiScaleImage control
+* #494721 - Test ScrollViewer control
+* #494722 - Test Selector control
+* #494723 - Test Slider control
+* #494726 - Test Thumb control
+* #576537 - Finishing running UIA Client API winforms test case 103.
+* #576041 - Create automated test for Moonlight SL2WithPrism real sample
+* #489336 - Implement AutomationElement.FromPoint method
+* #576896 - Run Winforms client test case104 on Linux, other tests followup
+
 Version 1.8.93: The "digerati" release
- * #568599 - Dig and verify bug 567496
- * #568627 - [PENDING BACKPORT] IsOffscreen event not raised when Visibility changes
- * #568775 - Fix thread safety issues in UiaDbusBridge
- * #568776 - Make a light-weight uispy-like AT client
- * #567486 - Build atspiuiasource, at-spi-sharp, uiadbus debian package
- * #567919 - Rebuild mono-uia, mono-uia-atkbridge, mono-uia-winforms deb packages
+* #568599 - Dig and verify bug 567496
+* #568627 - [PENDING BACKPORT] IsOffscreen event not raised when Visibility changes
+* #568775 - Fix thread safety issues in UiaDbusBridge
+* #568776 - Make a light-weight uispy-like AT client
+* #567486 - Build atspiuiasource, at-spi-sharp, uiadbus debian package
+* #567919 - Rebuild mono-uia, mono-uia-atkbridge, mono-uia-winforms deb packages
 
 Version 1.8.92: The "chocoholic" release
 * #554449 - MoonAtkBridge doesn't display the proper accessibles when more than one plugin is loaded
