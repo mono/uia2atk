@@ -79,22 +79,26 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase304 ()
 		{
 			// 304.1: Enter "a11y" into "User Name" textbox on the top of main page
-			var eUserName = window.Find<Edit> ("User Name");
+			var eUserName = window.Find<Edit> (Direction.Vertical, 0);
 			eUserName.SetValue ("a11y");
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("User Name should be entered in the TextBox.");
+			Assert.AreEqual ("a11y", eUserName.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 304.2: Enter "a11ya11y" into "Password" textbox on the top of main page
-			var ePassword = window.Find<Edit> ("Password");
+			var ePassword = window.Find<Edit> (Direction.Vertical, 1);
 			ePassword.SetValue ("a11ya11y");
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Password should be entered in the TextBox, and is displayed as dots.");
+			Assert.AreEqual ("a11ya11y", ePassword.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 304.3: Click "LogIn" button
 			var bLogIn = window.Find<Button> ("LogIn");
 			bLogIn.Click ();
-			procedureLogger.ExpectedResult ("Account should be logged in successfully.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("Account should be logged in successfully.");
 		}
 
 		// 305: Move ScrollBar To Invoke HyperLink
@@ -103,14 +107,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			// 305.1: Move ScrollBar to the Maximum value
 			var sbRight = window.Find<ScrollBar> ();
 			sbRight.SetScrollPercent (0, 100.0);
-			procedureLogger.ExpectedResult ("The web page should be scrolled to bottom.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The web page should be scrolled to bottom.");
 
 			// 305.2: Click "http://www.codeplex.com/SL2WithPrism" hyperlink
 			var hProject = window.Find<Hyperlink> ();
 			hProject.Click ();
-			procedureLogger.ExpectedResult ("The link should be opened in the current page.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The link should be opened in the current page.");
 		}
 	}
 }

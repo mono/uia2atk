@@ -1,3 +1,9 @@
+2010-02-10  Neville Gao  <nevillegao@gmail.com>
+
+	* Tests/Moonlight/PuzzleGameTests.cs: Switched position of "Logger" and "Sleep".
+	* Tests/Moonlight/SL2WithPrismTests.cs: Used "Find-By-Direction" method to
+	find Edit controls. Asserted Edit control's value.
+
 2010-02-09  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/Winforms/KeePassTests.cs: Add bug 578244 reference.

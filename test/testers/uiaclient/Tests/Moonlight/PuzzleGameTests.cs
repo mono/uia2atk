@@ -46,8 +46,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		protected override void LaunchSample ()
 		{
 			app = new Application (sample);
-			//app.Launch ("/usr/local/bin/firefox",
-				    //"http://www.silverlightshow.net/showcase/PuzzleGame/PuzzleGame.html");
 			app.Launch ("firefox",
 				    "http://www.silverlightshow.net/showcase/PuzzleGame/PuzzleGame.html");
 		}
@@ -89,14 +87,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			// 301.1: Click "Scramble" button
 			var bScramble = window.Find<Button> ("Scramble");
 			bScramble.Click ();
-			procedureLogger.ExpectedResult ("The pictures should be placed disordered.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The pictures should be placed disordered.");
 
 			// 301.2: Click "Reset" button
 			var bReset = window.Find<Button> ("Reset");
 			bReset.Click ();
-			procedureLogger.ExpectedResult ("The pictures should be placed to default position.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The pictures should be placed to default position.");
 		}
 
 		// 302: Show Help
@@ -105,13 +103,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			// 302.1: Click "Show Help" checkbox
 			var cbShowHelp = window.Find<CheckBox> ("Show Help");
 			cbShowHelp.Toggle ();
-			procedureLogger.ExpectedResult ("Every picture should be marked with a number.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("Every picture should be marked with a number.");
 
 			// 302.2: Click "Show Help" checkbox again
 			cbShowHelp.Toggle ();
-			procedureLogger.ExpectedResult ("The number on each picture should disappeared.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The number on each picture should disappeared.");
 		}
 
 		// 303: Change Puzzle Dimension
@@ -124,13 +122,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 
 			// 303.2: Check current Selection
 			// TODO:
-			//Assert.AreEqual ();
+			//Assert.IsTrue ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 303.3: Expand "cbPuzzleDimension" 7X7 combobox
 			cbPuzzleDimension.Expand ();
-			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be expanded.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be expanded.");
 
 			// 303.4: Check current ExpandCollapseState
 			Assert.AreEqual (cbPuzzleDimension.ExpandCollapseState, ExpandCollapseState.Expanded);
@@ -139,8 +137,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			// 303.5: Click "3X3" ListItem element to select it
 			var li3X3 = cbPuzzleDimension.Find<ListItem> ("3 X 3");
 			li3X3.Select ();
-			procedureLogger.ExpectedResult ("The \"3 X 3\" item in ComboBox should be selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The \"3 X 3\" item in ComboBox should be selected.");
 
 			// 303.6: Check "3X3" ListItem element current states
 			Assert.IsTrue (li3X3.IsSelected);
@@ -148,13 +146,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 
 			// 303.7: Check current Selection of "ComboBox" element
 			// TODO:
-			//Assert.AreEqual ();
+			//Assert.IsTrue ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 303.8: Collapse "cbPuzzleDimension" 3X3 combobox
 			cbPuzzleDimension.Collapse ();
-			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be collapsed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be collapsed.");
 
 			// 303.9: Check current ExpandCollapseState
 			Assert.AreEqual (cbPuzzleDimension.ExpandCollapseState, ExpandCollapseState.Collapsed);
