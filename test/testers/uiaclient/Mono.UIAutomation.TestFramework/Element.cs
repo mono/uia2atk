@@ -166,6 +166,8 @@ namespace Mono.UIAutomation.TestFramework
 				return new ToolBar (elm);
 			else if (elm.Current.ControlType == ControlType.DataGrid)
 				return new DataGrid (elm);
+			else if (elm.Current.ControlType == ControlType.DataItem)
+				return new DataItem (elm);
 			else if (elm.Current.ControlType == ControlType.Document)
 				return new Document (elm);
 			else if (elm.Current.ControlType == ControlType.ScrollBar)
