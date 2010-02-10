@@ -648,15 +648,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//BUG576050: The splitbutton's Invoke method doesn't work
 			//var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
 			//addEntryButton.Click ();
+			Console.WriteLine("Please click the \"AddEntry\" SplitButton by hand");
 			Thread.Sleep(5000);
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.7  Input the "email" into the title  edit
-			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
-			//var addEntryDialog = window.Find<Window> ("Add Entry");
-			//addEntryDialog.Find<TabItem> ("Entry").Find<Edit> ("Title:").SetValue ("email");
-			window.Find<Edit> ("Title:").SetValue("email");
+			procedureLogger.Action ("Input \"email\" into the \"Title\" edit.");
+			var addEntryDialog = window.Find<Window> ("Add Entry");
+			var titleEdit = addEntryDialog.Find<Edit> ("Title:");
+			titleEdit.SetValue("email");
 			procedureLogger.ExpectedResult ("\"email\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -682,15 +683,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.10 Click "Add Entry" button on the toolstripbar
 			//addEntryButton.Click ();
+			Console.WriteLine("Please input the shopping by hand");
 			Thread.Sleep(5000);
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.11 Input the "shopping" into the title edit
-			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
-			//addEntryDialog = window.Find<Window> ("Add Entry");
-			//addEntryDialog.Find<TabItem> ("Entry").Find<Edit> ("Title:").SetValue ("shopping");
-			window.Find<Edit> ("Title:").SetValue("shopping");
+			procedureLogger.Action ("Input \"shopping\" into the \"Title\" edit.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			//titleEdit2.SetValue("shopping");
 			procedureLogger.ExpectedResult ("\"shopping\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -716,7 +717,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			//var textItem = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
 			//var textItem = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
-			//BUG578244: GridPattern, not null, but exception has been thrown when call GetItem method.
+			//BUG578244: The datagrid's GetItem method can't be run on Linux.
 			//var dataGridItem = dataGrid.GetItem (0, 0);
 			//procedureLogger.ExpectedResult ("The (0,0) item of the datagrid is \"Sample Entry\".");
 			//Assert.AreEqual (textItem, dataGridItem);

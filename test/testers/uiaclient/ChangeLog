@@ -1,3 +1,7 @@
+2010-02-09  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Made the Edit's SetValue method work.
+
 2010-02-10  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Element.cs: Make DataItem class can
