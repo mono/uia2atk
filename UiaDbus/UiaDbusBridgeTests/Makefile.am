@@ -23,6 +23,8 @@ UIADBUSBRIDGE_DLL_MDB_SOURCE=$(top_builddir)/UiaDbusBridge/bin/Debug/UiaDbusBrid
 UIADBUSBRIDGE_DLL_MDB=$(BUILD_DIR)/UiaDbusBridge.dll.mdb
 UIADBUS_DLL_MDB_SOURCE=$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll.mdb
 UIADBUS_DLL_MDB=$(BUILD_DIR)/UiaDbus.dll.mdb
+UIADBUS_DLL_CONFIG_SOURCE=$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll.config
+UIADBUS_DLL_CONFIG=$(BUILD_DIR)/UiaDbus.dll.config
 
 endif
 
@@ -53,6 +55,7 @@ PROGRAMFILES = \
 	$(UIADBUSBRIDGE_DLL) \
 	$(UIADBUSBRIDGETESTS_DLL_MDB) \
 	$(UIADBUS_DLL_MDB) \
+	$(UIADBUS_DLL_CONFIG) \
 	$(UIADBUSBRIDGE_DLL_MDB)  
 
 
@@ -97,6 +100,7 @@ UIADBUS_DLL = $(BUILD_DIR)/UiaDbus.dll
 
 $(eval $(call emit-deploy-target,UIADBUS_DLL))
 $(eval $(call emit-deploy-target,UIADBUS_DLL_MDB))
+$(eval $(call emit-deploy-target,UIADBUS_DLL_CONFIG))
 $(eval $(call emit-deploy-target,UIADBUSBRIDGE_DLL))
 $(eval $(call emit-deploy-target,UIADBUSBRIDGE_DLL_MDB))
 

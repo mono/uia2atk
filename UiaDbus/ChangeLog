@@ -1,5 +1,10 @@
 2010-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* UiaDbusBridgeTests/Makefile.am: Copy UiaDbus.dll.config to fix
+	unit test breakage.
+
+2010-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* autogen.sh: Pull ndesk-dbus from out git branch during autogen.
 
 	* ndesk-dbus/*.cs: Delete copy of ndesk-dbus source from SVN.
