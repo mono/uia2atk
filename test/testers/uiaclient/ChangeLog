@@ -1,4 +1,9 @@
-2010-02-09  Felicia Mu  <fxmu@novell.com>
+2010-02-10  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/testers/uiaclient/Mono.UIAutomation.TestFramework/Edit.cs: 
+	Add the TextPattern method.
+
+2010-02-10  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/Winforms/KeePassTests.cs: Made the Edit's SetValue method work.
 

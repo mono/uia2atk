@@ -20,10 +20,12 @@
 //	Felicia Mu  (fxmu@novell.com)
 
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Automation;
+using System.Windows.Automation.Text;
 
 namespace Mono.UIAutomation.TestFramework
 {
@@ -58,6 +60,31 @@ namespace Mono.UIAutomation.TestFramework
 
 		public bool IsReadOnly {
 			get { return (bool) element.GetCurrentPropertyValue (ValuePattern.IsReadOnlyProperty); }
+		}
+
+		// The method of TextPattern
+		public TextPatternRange [] GetSelection ()
+		{
+		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+		 return (TextPatternRange []) tp.GetSelection ();
+		}
+
+		public TextPatternRange [] GetVisibleRanges ()
+		{
+		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+		 return (TextPatternRange []) tp.GetVisibleRanges();
+		}
+
+		public TextPatternRange RangeFromChild (AutomationElement TextElement)
+		{
+		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+		 return (TextPatternRange) tp.RangeFromChild (TextElement);
+		}
+
+		public TextPatternRange RangeFromPoint (Point screenLocation)
+		{
+		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+		 return (TextPatternRange) tp.RangeFromPoint (screenLocation);
 		}
 
 		// The properties of TableItemPattern
