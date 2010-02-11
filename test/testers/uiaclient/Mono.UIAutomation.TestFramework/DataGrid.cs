@@ -60,6 +60,39 @@ namespace Mono.UIAutomation.TestFramework
 			get { return (int) element.GetCurrentPropertyValue (GridPattern.ColumnCountProperty); }
 		}
 
+		// The methods and properties of TablePattern
+		public AutomationElement [] GetColumnHeaders ()
+		{
+			return GetColumnHeaders (true);
+		}
+
+		public AutomationElement [] GetColumnHeaders (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Get the column headers of {0}.", this.NameAndType));
+
+			TablePattern tp = (TablePattern) element.GetCurrentPattern (TablePattern.Pattern);
+			return tp.Current.GetColumnHeaders ();
+		}
+
+		public AutomationElement [] GetRowHeaders ()
+		{
+			return GetRowHeaders (true);
+		}
+
+		public AutomationElement [] GetRowHeaders (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Get the row headers of {0}.", this.NameAndType));
+
+			TablePattern tp = (TablePattern) element.GetCurrentPattern (TablePattern.Pattern);
+			return tp.Current.GetRowHeaders ();
+		}
+
+		public RowOrColumnMajor RowOrColumnMajor {
+			get { return (RowOrColumnMajor) element.GetCurrentPropertyValue (TablePattern.RowOrColumnMajorProperty); }
+		}
+
 		// The methods and properties of MultipleViewPattern
 		public string GetViewName (int viewId)
 		{

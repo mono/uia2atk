@@ -831,7 +831,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.26 Retrieve the view name for the datagrid.
 			var viewName = dataGrid.GetViewName (0);
-			procedureLogger.ExpectedResult ("The current view name is \"Icons\"");
+			procedureLogger.ExpectedResult ("The current view name is \"Icons\".");
 			Assert.AreEqual ("Icons", viewName);
 			Thread.Sleep (Config.Instance.ShortDelay);
 

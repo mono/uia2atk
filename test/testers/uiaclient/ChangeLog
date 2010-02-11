@@ -1,3 +1,12 @@
+2010-02-10  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	Add WindowsBase reference.
+	* Mono.UIAutomation.TestFramework/DataGrid.cs: Add TablePattern
+	support.
+	* Mono.UIAutomation.TestFramework/Edit.cs: Add TextPattern support.
+	* Tests/Winforms/KeePassTests.cs
+
 2010-02-10  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/testers/uiaclient/Mono.UIAutomation.TestFramework/Edit.cs: 

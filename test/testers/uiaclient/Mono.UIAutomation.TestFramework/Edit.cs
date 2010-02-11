@@ -65,26 +65,58 @@ namespace Mono.UIAutomation.TestFramework
 		// The method of TextPattern
 		public TextPatternRange [] GetSelection ()
 		{
-		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
-		 return (TextPatternRange []) tp.GetSelection ();
+			return GetSelection (true);
+		}
+
+		public TextPatternRange [] GetSelection (bool log)
+		{
+			if (log)
+				procedureLogger.Action(string.Format("Get selection from {0}.", this.NameAndType));
+
+			TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+			return (TextPatternRange []) tp.GetSelection ();
 		}
 
 		public TextPatternRange [] GetVisibleRanges ()
 		{
-		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
-		 return (TextPatternRange []) tp.GetVisibleRanges();
+			return GetVisibleRanges (true);
 		}
 
-		public TextPatternRange RangeFromChild (AutomationElement TextElement)
+		public TextPatternRange [] GetVisibleRanges (bool log)
 		{
-		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
-		 return (TextPatternRange) tp.RangeFromChild (TextElement);
+			if (log)
+				procedureLogger.Action(string.Format("Get visible ranges from {0}.", this.NameAndType));
+
+			TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+			return (TextPatternRange []) tp.GetVisibleRanges();
+		}
+
+		public TextPatternRange RangeFromChild (AutomationElement childElement)
+		{
+			return RangeFromChild (childElement, true);
+		}
+
+		public TextPatternRange RangeFromChild (AutomationElement childElement, bool log)
+		{
+			if (log)
+				procedureLogger.Action(string.Format("Get the range from child of {0}.", this.NameAndType));
+
+			TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+			return (TextPatternRange) tp.RangeFromChild (childElement);
 		}
 
 		public TextPatternRange RangeFromPoint (Point screenLocation)
 		{
-		 TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
-		 return (TextPatternRange) tp.RangeFromPoint (screenLocation);
+			return RangeFromPoint (screenLocation, true);
+		}
+
+		public TextPatternRange RangeFromPoint (Point screenLocation, bool log)
+		{
+			if (log)
+				procedureLogger.Action(string.Format("Get the range from point of {0}.", this.NameAndType));
+
+			TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+			return (TextPatternRange) tp.RangeFromPoint (screenLocation);
 		}
 
 		// The properties of TableItemPattern
