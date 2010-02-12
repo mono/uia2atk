@@ -99,6 +99,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			IRawElementProviderSimple[] selection
 				= selectionProvider.GetSelection ();
+			if (selection == null)
+				return false;
 
 			bool result = true;
 			foreach (IRawElementProviderSimple item in selection) {
@@ -138,7 +140,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			IRawElementProviderSimple[] selection
 				= selectionProvider.GetSelection ();
-			if (i < 0 || i > selection.Length - 1)
+			if (selection == null || i < 0 || i > selection.Length - 1)
 				return null;
 
 			return DynamicAdapterFactory.Instance.GetAdapter (
@@ -149,7 +151,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			IRawElementProviderSimple[] selection
 				= selectionProvider.GetSelection ();
-			if (i < 0 || i > selection.Length - 1)
+			if (selection == null || i < 0 || i > selection.Length - 1)
 				return false;
 
 			AutomationPeer childPeer = selection[i].AutomationPeer;
@@ -178,6 +180,9 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		public bool SelectAllSelection ()
 		{
 			List<AutomationPeer> children = peer.GetChildren ();
+			if (children == null)
+				return true;
+
 			foreach (AutomationPeer child in children) {
 				ISelectionItemProvider childItem = child.GetPattern (
 					PatternInterface.SelectionItem) as ISelectionItemProvider;

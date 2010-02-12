@@ -1,3 +1,12 @@
+2010-02-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: Null checks
+	added.
+	* Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs: Handling
+	AutomationEvents.SelectionItem*.
+	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs:
+	Added property Adapter.
+
 2010-02-04  Mario Carrion  <mcarrion@novell.com>
 
 	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Returning null Root

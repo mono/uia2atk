@@ -563,6 +563,14 @@
 /MoonAtkBridge/tests/assets/ButtonTest/Makefile.in
 /MoonAtkBridge/tests/assets/ButtonTest/*.mdb
 /MoonAtkBridge/tests/assets/ButtonTest/*.xap
+/MoonAtkBridge/tests/assets/CalendarTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/CalendarTest/*.dll
+/MoonAtkBridge/tests/assets/CalendarTest/*.mdb
+/MoonAtkBridge/tests/assets/CalendarTest/*.g.resources
+/MoonAtkBridge/tests/assets/CalendarTest/*.html
+/MoonAtkBridge/tests/assets/CalendarTest/*.xap
+/MoonAtkBridge/tests/assets/CalendarTest/Makefile
+/MoonAtkBridge/tests/assets/CalendarTest/*.g.cs
 /MoonAtkBridge/tests/assets/CheckBoxTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/CheckBoxTest/*.dll
 /MoonAtkBridge/tests/assets/CheckBoxTest/*.g.cs

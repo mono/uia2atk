@@ -51,6 +51,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		IntPtr GLib.IWrapper.Handle {
 			get { return IntPtr.Zero; }
 		}
+
+		public Adapter Adapter {
+			get { return adapter; }
+		}
 #endregion
 
 #region Protected Fields

@@ -1,0 +1,16 @@
+<UserControl x:Class="CalendarTest.Page"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:basics="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+	Width="500" Height="800">
+	<Canvas x:Name="LayoutRoot" Background="White">
+		<basics:Calendar x:Name="calendar" SelectionMode="MultipleRange" Canvas.Top="0" Canvas.Left="0" />
+		<Button Content="Select 1983/04/03" x:Name="button1s" Canvas.Top="135" Click="Button1S_Click" />
+		<Button Content="Unselect 1983/04/03" x:Name="button1u" Canvas.Top="135" Canvas.Left="150" Click="Button1U_Click" />
+		<Button Content="Select 1983/04/15" x:Name="button2s" Canvas.Top="155" Click="Button2S_Click" />
+		<Button Content="Unselect 1983/04/15" x:Name="button2u" Canvas.Top="155" Canvas.Left="150" Click="Button2U_Click" />
+		<Button Content="Select 1983/04/22" x:Name="button3s" Canvas.Top="175" Click="Button3S_Click" />
+		<Button Content="Unselect 1983/04/22" x:Name="button3u" Canvas.Top="175" Canvas.Left="150" Click="Button3U_Click" />
+		<Button Content="Select ONLY 1983/04/22" x:Name="button4" Canvas.Top="195" Click="Button4_Click" />
+	</Canvas>
+</UserControl>

@@ -3,6 +3,7 @@ SUBDIRS = \
 	AddRemoveAdapterTest \
 	ApplicationNullTest \
 	ButtonTest \
+	CalendarTest \
 	CheckBoxTest \
 	ComboBoxTest \
 	ExpandCollapseEventsTest \

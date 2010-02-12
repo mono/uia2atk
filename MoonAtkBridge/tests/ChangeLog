@@ -1,3 +1,14 @@
+2010-02-12  Mario Carrion  <mcarrion@novell.com>
+
+	* test_calendar.py: 
+	* assets/Makefile.am: 
+	* assets/CalendarTest/App.xaml: 
+	* assets/CalendarTest/Page.xaml: 
+	* assets/CalendarTest/App.xaml.cs: 
+	* assets/CalendarTest/Makefile.am: 
+	* assets/CalendarTest/Page.xaml.cs: Add new test for Calendar.
+
+
 2010-02-09  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:

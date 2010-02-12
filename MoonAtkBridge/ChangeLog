@@ -1,3 +1,7 @@
+2010-02-12  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: Add Calendar test.
+
 2010-02-09  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add ScrollViewer test.
