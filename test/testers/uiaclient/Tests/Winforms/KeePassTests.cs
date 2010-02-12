@@ -368,14 +368,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.2 Click "Save" button on the dialog
-			procedureLogger.Action ("Click \"Save\" button of the dialog");
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
 			newPassDialog.Save (false);
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.3 Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var keyDialog = window.Find<Window> ("Create Composite Master Key");
 			keyDialog.OK (false);
 			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
@@ -383,7 +381,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.4 Click "Yes" button on the dialog
 			var createMasterKeyWindow = window.Find<Window> ("KeePass");
-			createMasterKeyWindow.Yes (false);
+			createMasterKeyWindow.Yes ();
 			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -654,7 +652,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.7  Input the "email" into the title  edit
-			procedureLogger.Action ("Input \"email\" into the \"Title\" edit.");
 			var addEntryDialog = window.Find<Window> ("Add Entry");
 			var titleEdit = addEntryDialog.Find<Edit> ("Title:");
 			titleEdit.SetValue("email");
@@ -683,15 +680,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.10 Click "Add Entry" button on the toolstripbar
 			//addEntryButton.Click ();
-			Console.WriteLine("Please input the shopping by hand");
+			Console.WriteLine("Please click the \"AddEntry\" SplitButton by hand");
 			Thread.Sleep(5000);
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.11 Input the "shopping" into the title edit
-			procedureLogger.Action ("Input \"shopping\" into the \"Title\" edit.");
+			window.Find<Edit> ("Title:").SetValue("shopping");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			//titleEdit2.SetValue("shopping");
 			procedureLogger.ExpectedResult ("\"shopping\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -723,9 +719,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//Assert.AreEqual (textItem, dataGridItem);
 			//Thread.Sleep (Config.Instance.ShortDelay);
 
-			// Resize the window smaller in order to make horizontal scroll bar could be displayed.
-			window.Resize (200, 300);
-			procedureLogger.ExpectedResult ("The window is set to be 200 width, 200 height.");
+			//Resize the window smaller in order to make horizontal scroll bar could be displayed.
+			window.Resize (300, 400);
+			procedureLogger.ExpectedResult ("The window is set to be 300 width, 400 height.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.15 Check the ScrollPattern's default property of datagrid
@@ -734,90 +730,54 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (true, dataGrid.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check HorizontalScrollPercent.");
+			//104.16 Set the Scroll horizontal percent to 0
+			dataGrid.SetScrollPercent (0, -1);
 			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent property is 0.0.");
-			Assert.AreEqual (0.0, dataGrid.HorizontalScrollPercent);
+			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * but HorizontalViewSize is different.
-			procedureLogger.Action ("Check HorizontalViewSize.");
-			procedureLogger.ExpectedResult ("The value of HorizontalViewSize property is 50");
-			Assert.AreEqual (50.0, dataGrid.HorizontalViewSize);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-			procedureLogger.Action ("Check VerticallyScrollable.");
-			procedureLogger.ExpectedResult ("The value of VerticallyScrollable property is false.");
-			Assert.AreEqual (false, dataGrid.VerticallyScrollable);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			procedureLogger.Action ("Check VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent property is -1.");
-			Assert.AreEqual (-1, dataGrid.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			procedureLogger.Action ("Check VerticalViewSize.");
-			procedureLogger.ExpectedResult ("The value of VerticalViewSize property is 100.");
-			Assert.AreEqual (100.0, dataGrid.VerticalViewSize);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.16 Scroll horizontal scrollbar for a large increment.
+			//104.17 Set the HorizontalScroll a smallIncrement
 			dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll large increment.");
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a large increment.");
+			Assert.AreEqual (43, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.17 Scroll horizontal scrollbar for a large decrement.
+			//104.18 Set the HorizontalScroll a LargeIncrement
 			dataGrid.Scroll (ScrollAmount.LargeDecrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll large decrement.");
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a large Decrement.");
+			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.18 Check HorizontalScrollPercent.
-			procedureLogger.Action ("Check HorizontalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 0.");
-			Assert.AreEqual (0.0, dataGrid.HorizontalScrollPercent);
+			//104.19 Set the HorizontalScroll a small Decrement
+			dataGrid.Scroll (ScrollAmount.SmallIncrement, ScrollAmount.NoAmount);
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a small increment.");
+			Assert.AreEqual (1, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.19 Set the percentage of horizontal scrollbar to 50%. -1 means NoScroll
-			dataGrid.SetScrollPercent (50.0, -1);
-			procedureLogger.ExpectedResult ("The percentage of horizontal scrollbar is 50%.");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//104.20 Set the HorizontalScroll a large Decrement
+			dataGrid.Scroll (ScrollAmount.SmallDecrement, ScrollAmount.NoAmount);
+			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a small Decrement.");
+			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
+			Thread.Sleep (Config.Instance.MediumDelay);
 
-			//104.20 Check HorizontalScrollPercent.
-			/*
-			 * BUGXXXXX: Set HorizontalScrollPercent to 50%, but actual value is not.
-			procedureLogger.Action ("Check HorizontalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 50%..");
-			Assert.AreEqual (50.0, dataGrid.HorizontalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
+			//104.21 Resize the window size to (1000, 300).
+			window.Resize (1000, 300);
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual(100, dataGrid.HorizontalViewSize);
 
-			//104.21 Scroll horizontal scrollbar for a small increment.
-			dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll small increment.");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//104.22 Resize the window size to (0, 300)
+			window.Resize (0, 300);
+			procedureLogger.ExpectedResult ("The window is set to be 1 width, 300 height.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual(54, dataGrid.HorizontalViewSize);
 
-			//104.22 Check HorizontalScrollPercent.
-			procedureLogger.Action ("Check HorizontalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 1.");
-			//Blocker: BUGxxxxx: Always less 1 when set a curtain percentage
-			//Assert.AreEqual (51.0, dataGrid.HorizontalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//104.23 Resize the window size to (400, 500)
+			window.Resize (400, 500);
+			procedureLogger.ExpectedResult ("The window is set to be 400 width, 500 height.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual (78, dataGrid.HorizontalViewSize);
 
-			//104.23 Scroll horizontal scrollbar for a small decrement.
-			dataGrid.ScrollHorizontal (ScrollAmount.SmallDecrement);
-			procedureLogger.ExpectedResult ("The horizotal Scrollbar decrease large");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.24. Check HorizontalScrollPercent.
-			procedureLogger.Action ("Check HorizontalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 50%..");
-			//Blocker: BUGxxxxx: Always less 1 when set a curtain percentage
-			//Assert.AreEqual (50.0, dataGrid.HorizontalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.24.5 Set current view of dataGrid
+			//104.24 Set current view of dataGrid
 			//BUGxxxxx: The viewId is difference between on Linux and Windows
 			dataGrid.SetCurrentView (0);
 			procedureLogger.ExpectedResult ("The current view of dataGrid is 0.");
@@ -838,8 +798,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//104.27 Check Column, ColumnSpan, Row, RowSpan ContainingGrid of each data item.
 			var dataItems = dataGrid.FindAll<DataItem> ();
 			for (int i = 0; i < dataItems.Length; i++) {
-				//NOTE: Microsort doesn't implement GridItemPattern for DataItem here, but you can call the methods
-				//of GridItemPattern, does it intend to do, or a bug?
 				procedureLogger.Action (string.Format("Check Column of {0}.", dataItems[i].NameAndType));
 				procedureLogger.ExpectedResult (string.Format ("The Column of {0} is 0.", dataItems[i].NameAndType));
 				Assert.AreEqual (0, dataItems[i].Column);
@@ -926,9 +884,54 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			tabItemPreview.Select ();
 			procedureLogger.ExpectedResult ("The \"Preview\" tab selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.32 Scroll vertical scrollbar LargeIncrement
+			
+			//104.XX Set the Scroll vertical percent to 0
 			var passwordDocument = tabItemPreview.Find<Document> ();
+			passwordDocument.SetScrollPercent (-1, 0);
+			procedureLogger.ExpectedResult ("The value of VerticallScrollPercent property is 0.0.");
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.17 Set the VerticalScroll a LargeIncrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large increment.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
+			
+			//104.18 Set the VerticalScroll a LargeDecrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large Decrement.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			
+			//104.19 Set the VerticalScroll a SmallIncrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallIncrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small increment.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			
+			//104.20 Set the VerticalScroll a SmallDecrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallDecrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small Decrement.");
+			Thread.Sleep (Config.Instance.MediumDelay);
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			
+			//104.XX Set the Scroll vertica percent to 100
+			passwordDocument.SetScrollPercent (-1, 100);
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent property is 0.0.");
+			Assert.AreEqual (100, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.MediumDelay);
+			
+			//104.XX Check the Current VerticalViewSize
+			procedureLogger.ExpectedResult 
+				(string.Format("Check the Current VerticalViewSize is {0}",passwordDocument.VerticalViewSize));
+			Assert.AreEqual(73, passwordDocument.VerticalViewSize);
+			Thread.Sleep (Config.Instance.MediumDelay);
+			
+			
+			/////////////////////////////////////////////////
+			//104.32 Scroll vertical scrollbar LargeIncrement
+			
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
 			procedureLogger.ExpectedResult ("The vertical scrollbar scroll large increment.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -961,10 +964,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			/*
 			 * BUGXXXXX: The window is same size on Windows and Linux,
 			 * so it's hard to determine the actual result here.
-			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
+			 * procedureLogger.Action ("Checkthe VerticalScrollPercent.");
+			 * procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
+			 * Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			 * Thread.Sleep (Config.Instance.ShortDelay);
 			 */
 
 			//104.35 Scroll vertical scrollbar SmallDecrement
@@ -987,6 +990,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 			 */
 
+/////////////////////////////////////////////////////////////////////////
+			
 			//104.40 Close "Password Generator" window
 			passwdWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Password Generator\" window closes.");

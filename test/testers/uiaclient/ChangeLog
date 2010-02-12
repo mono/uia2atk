@@ -1,3 +1,8 @@
+2010-02-12  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Add the new test case for the 
+	Scroll Pattern.
+
 2010-02-10  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
