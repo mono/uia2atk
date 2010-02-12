@@ -75,7 +75,7 @@ def kill_proc(proc):
 
 class FirefoxBrowser(accessibles.Application):
     logName = 'Mozilla Firefox'
-    appNameRegex = '^(.*) - %s$'
+    appNameRegex = '^(.*) - (.*)%s$'
 
     def __init__(self, name, accessible, subproc, findSLControl):
         """
