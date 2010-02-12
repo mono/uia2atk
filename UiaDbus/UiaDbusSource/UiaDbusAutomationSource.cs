@@ -176,30 +176,32 @@ namespace Mono.UIAutomation.UiaDbusSource
 		                                       TreeScope scope,
 		                                       AutomationEventHandler eventHandler)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				//throw new Exception ("All elements handled by UiaDbusAutomationSource shall be UiaDbusElement.");
-				return;
+			if (element == null) {
+				//the element is the RootElement
+				// TODO clean up registered handlers when they're removed
+				int handlerId = eventHandlerManager.RegisterAutomationEventHandler (eventHandler);
+				RootElementEventsManager.AddAutomationEventRequest (eventId.Id, scope, handlerId);
+				foreach (var entry in GetUiaApplications ()) {
+					string busName = entry.Key;
+					var app = entry.Value;
+					EnsureAutomationEventsSetUp (app, busName);
+					app.AddRootElementAutomationEventHandler (eventId.Id, scope, handlerId);
+				}
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[AddAutomationEventHandler] The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				int handlerId = eventHandlerManager.RegisterAutomationEventHandler (eventHandler);
 
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			int handlerId = eventHandlerManager.RegisterAutomationEventHandler (eventHandler);
-
-			if (!automationEventBusNames.Contains (busName)) {
-				automationEventBusNames.Add (busName);
-				app.AutomationEvent += delegate(int hId, int evtId, string providerPath) {
-					var handler = eventHandlerManager.GetAutomationEventHandlerById (hId);
-					if (handler != null) {
-						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
-						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
-						var args = new AutomationEventArgs (AutomationEvent.LookupById (evtId));
-						handler (ae, args);
-					}
-				};
+				EnsureAutomationEventsSetUp (app, busName);
+				app.AddAutomationEventHandler (eventId.Id, runtimeId, scope, handlerId);
 			}
-			app.AddAutomationEventHandler (eventId.Id, runtimeId, scope, handlerId);
 		}
 
 		public void AddAutomationPropertyChangedEventHandler (IElement element,
@@ -207,70 +209,68 @@ namespace Mono.UIAutomation.UiaDbusSource
 		                                                      AutomationPropertyChangedEventHandler eventHandler,
 		                                                      AutomationProperty [] properties)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				return;
-
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			int handlerId = eventHandlerManager.RegisterPropertyEventHandler (eventHandler);
-
-			if (!propertyEventBusNames.Contains (busName)) {
-				propertyEventBusNames.Add (busName);
-				app.AutomationPropertyChanged += delegate (int hId, int evtId, string providerPath,
-				                                          int propertyId, object oldValue,
-				                                          object newValue) {
-					var handler = eventHandlerManager.GetPropertyEventHandlerById (hId);
-					if (handler != null) {
-						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
-						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
-						oldValue = DeserializeAutomationPropertyValue (busName, propertyId, oldValue);
-						newValue = DeserializeAutomationPropertyValue (busName, propertyId, newValue);
-						var args =
-						         new AutomationPropertyChangedEventArgs (AutomationProperty.LookupById (propertyId),
-						                                                 oldValue, newValue);
-						handler (ae, args);
-					}
-				};
-			}
 			int [] propertyIds = new int [properties.Length];
 			for (int  i = 0; i < properties.Length; i++)
 				propertyIds [i] = properties [i].Id;
-			app.AddAutomationPropertyChangedEventHandler (runtimeId, scope, handlerId, propertyIds);
+			if (element == null) {
+				//the element is the RootElement
+				// TODO clean up registered handlers when they're removed
+				int handlerId = eventHandlerManager.RegisterPropertyEventHandler (eventHandler);
+				RootElementEventsManager.AddPropertyEventRequest (scope, handlerId, propertyIds);
+				foreach (var entry in GetUiaApplications ()) {
+					string busName = entry.Key;
+					var app = entry.Value;
+					EnsurePropertyEventsSetUp (app, busName);
+					app.AddRootElementAutomationPropertyChangedEventHandler (
+						scope, handlerId, propertyIds);
+				}
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[AddAutomationPropertyChangedEventHandler] The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				int handlerId = eventHandlerManager.RegisterPropertyEventHandler (eventHandler);
+
+				EnsurePropertyEventsSetUp (app, busName);
+				app.AddAutomationPropertyChangedEventHandler (runtimeId, scope, handlerId, propertyIds);
+			}
 		}
 
 		public void AddStructureChangedEventHandler (IElement element,
 		                                             TreeScope scope,
 		                                             StructureChangedEventHandler eventHandler)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				return;
-
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			int handlerId = eventHandlerManager.RegisterStructureEventHandler (eventHandler);
-
-			if (!structureEventBusNames.Contains (busName)) {
-				structureEventBusNames.Add (busName);
-				app.StructureChanged += delegate (int hId, int evtId, string providerPath,
-				                                 StructureChangeType changeType) {
-					var handler = eventHandlerManager.GetStructureEventHandlerById (hId);
-					if (handler != null) {
-						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
-						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
-						//Todo  Shall we make the 2nd arg of StructureChangedEventArgs.ctor be
-						// the same as "elem", i.e. the sender object
-						var args = new StructureChangedEventArgs (changeType, elem.RuntimeId);
-						handler (ae, args);
-					}
-				};
+			if (element == null) {
+				//the element is the RootElement
+				// TODO clean up registered handlers when they're removed
+				int handlerId = eventHandlerManager.RegisterStructureEventHandler (eventHandler);
+				RootElementEventsManager.AddStructureEventRequest (scope, handlerId);
+				foreach (var entry in GetUiaApplications ()) {
+					string busName = entry.Key;
+					var app = entry.Value;
+					EnsureStructureEventsSetUp (app, busName);
+					app.AddRootElementStructureChangedEventHandler (
+						scope, handlerId);
+				}
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[AddStructureChangedEventHandler] The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				int handlerId = eventHandlerManager.RegisterStructureEventHandler (eventHandler);
+				EnsureStructureEventsSetUp (app, busName);
+				app.AddStructureChangedEventHandler (runtimeId, scope, handlerId);
 			}
-			app.AddStructureChangedEventHandler (runtimeId, scope, handlerId);
 		}
 
 		public void AddAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
@@ -285,55 +285,81 @@ namespace Mono.UIAutomation.UiaDbusSource
 		                                          IElement element,
 		                                          AutomationEventHandler eventHandler)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				return;
-
 			int handlerId = eventHandlerManager.GetAutomationEventIdByHandler (eventHandler);
 			if (handlerId == -1)
 				return;
-
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			app.RemoveAutomationEventHandler (eventId.Id, runtimeId, handlerId);
+			if (element == null) {
+				//the element is the RootElement
+				RootElementEventsManager.RemoveAutomationEventRequest (eventId.Id, handlerId);
+				foreach (var entry in GetUiaApplications ())
+					entry.Value.RemoveRootElementAutomationEventHandler (
+						eventId.Id, handlerId);
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[RemoveAutomationEventHandler] The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				app.RemoveAutomationEventHandler (eventId.Id, runtimeId, handlerId);
+			}
 		}
 
 		public void RemoveAutomationPropertyChangedEventHandler (IElement element,
 		                                                         AutomationPropertyChangedEventHandler eventHandler)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				return;
-
 			int handlerId = eventHandlerManager.GetPropertyEventIdByHandler (eventHandler);
 			if (handlerId == -1)
 				return;
 
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			app.RemoveAutomationPropertyChangedEventHandler (runtimeId, handlerId);
+			if (element == null) {
+				//the element is the RootElement
+				RootElementEventsManager.RemovePropertyEventRequest (handlerId);
+				foreach (var entry in GetUiaApplications ())
+					entry.Value.RemoveRootElementAutomationPropertyChangedEventHandler (handlerId);
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[RemoveAutomationPropertyChangedEventHandler] " +
+						"The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				app.RemoveAutomationPropertyChangedEventHandler (runtimeId, handlerId);
+			}
 		}
 
 		public void RemoveStructureChangedEventHandler (IElement element,
 		                                                StructureChangedEventHandler eventHandler)
 		{
-			UiaDbusElement uiaDbusElement = element as UiaDbusElement;
-			if (uiaDbusElement == null)
-				return;
-
 			int handlerId = eventHandlerManager.GetStructureEventIdByHandler (eventHandler);
 			if (handlerId == -1)
 				return;
 
-			string busName = uiaDbusElement.BusName;
-			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
-				new ObjectPath (DC.Constants.ApplicationPath));
-			int [] runtimeId = uiaDbusElement.RuntimeId;
-			app.RemoveStructureChangedEventHandler (runtimeId, handlerId);
+			if (element == null) {
+				//the element is the RootElement
+				RootElementEventsManager.RemoveStructureEventRequest (handlerId);
+				foreach (var entry in GetUiaApplications ())
+					entry.Value.RemoveRootElementStructureChangedEventHandler (handlerId);
+			} else {
+				UiaDbusElement uiaDbusElement = element as UiaDbusElement;
+				if (uiaDbusElement == null) {
+					Log.Error ("[RemoveStructureChangedEventHandler] " +
+						"The element sent to UiaDbusSource is not UiaDbusElement");
+					return;
+				}
+				string busName = uiaDbusElement.BusName;
+				DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
+					new ObjectPath (DC.Constants.ApplicationPath));
+				int [] runtimeId = uiaDbusElement.RuntimeId;
+				app.RemoveStructureChangedEventHandler (runtimeId, handlerId);
+			}
 		}
 
 		public void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
@@ -348,6 +374,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 				focusChangedHandlers.Clear ();
 			foreach (DCI.IApplication app in GetUiaApplications ().Values)
 				app.RemoveAllEventHandlers (EventHandlerManager.ClientPrefix);
+			RootElementEventsManager.RemoveAll ();
 		}
 
 		#endregion
@@ -386,6 +413,61 @@ namespace Mono.UIAutomation.UiaDbusSource
 		#endregion
 
 		#region Private Methods
+
+		private void EnsureAutomationEventsSetUp (DCI.IApplication app, string busName)
+		{
+			if (!automationEventBusNames.Contains (busName)) {
+				automationEventBusNames.Add (busName);
+				app.AutomationEvent += delegate (int hId, int evtId, string providerPath) {
+					var handler = eventHandlerManager.GetAutomationEventHandlerById (hId);
+					if (handler != null) {
+						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
+						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
+						var args = new AutomationEventArgs (AutomationEvent.LookupById (evtId));
+						handler (ae, args);
+					}
+				};
+			}
+		}
+
+		private void EnsurePropertyEventsSetUp (DCI.IApplication app, string busName)
+		{
+			if (!propertyEventBusNames.Contains (busName)) {
+				propertyEventBusNames.Add (busName);
+				app.AutomationPropertyChanged += delegate (
+					int hId, int evtId, string providerPath,
+					int propertyId, object oldValue, object newValue) {
+					var handler = eventHandlerManager.GetPropertyEventHandlerById (hId);
+					if (handler != null) {
+						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
+						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
+						oldValue = DeserializeAutomationPropertyValue (busName, propertyId, oldValue);
+						newValue = DeserializeAutomationPropertyValue (busName, propertyId, newValue);
+						var args = new AutomationPropertyChangedEventArgs (
+							AutomationProperty.LookupById (propertyId),
+							oldValue, newValue);
+						handler (ae, args);
+					}
+				};
+			}
+		}
+
+		private void EnsureStructureEventsSetUp (DCI.IApplication app, string busName)
+		{
+			if (!structureEventBusNames.Contains (busName)) {
+				structureEventBusNames.Add (busName);
+				app.StructureChanged += delegate (int hId, int evtId, string providerPath,
+				                                  StructureChangeType changeType) {
+					var handler = eventHandlerManager.GetStructureEventHandlerById (hId);
+					if (handler != null) {
+						UiaDbusElement elem = GetOrCreateElement (busName, providerPath);
+						AutomationElement ae = SourceManager.GetOrCreateAutomationElement (elem);
+						var args = new StructureChangedEventArgs (changeType, elem.RuntimeId);
+						handler (ae, args);
+					}
+				};
+			}
+		}
 
 		private void OnRootElementsChanged ()
 		{
@@ -445,7 +527,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			DCI.IApplication app = Bus.Session.GetObject<DCI.IApplication> (busName,
 				new ObjectPath (DC.Constants.ApplicationPath));
-			app.RootElementsChanged += () => OnRootElementsChanged ();
+			app.RootElementsChanged += OnRootElementsChanged;
 
 			if (listenFocusChangeStarted)
 				app.FocusChanged += delegate (string providerPath) {
@@ -456,6 +538,27 @@ namespace Mono.UIAutomation.UiaDbusSource
 						}
 					}
 				};
+
+			var automationEventRequests = RootElementEventsManager.ActiveAutomationEventRequests;
+			if (automationEventRequests.Length > 0) {
+				foreach (var req in automationEventRequests)
+					app.AddRootElementAutomationEventHandler (req.EventId, req.Scope, req.HandlerId);
+				EnsureAutomationEventsSetUp (app, busName);
+			}
+			var propertyEventRequests = RootElementEventsManager.ActivePropertyEventRequests;
+			if (propertyEventRequests.Length > 0) {
+				foreach (var req in propertyEventRequests)
+					app.AddRootElementAutomationPropertyChangedEventHandler (
+						req.Scope, req.HandlerId, req.PropertyIds);
+				EnsurePropertyEventsSetUp (app, busName);
+			}
+			var structureEventRequests = RootElementEventsManager.ActiveStructureEventRequests;
+			if (structureEventRequests.Length > 0) {
+				foreach (var req in structureEventRequests)
+					app.AddRootElementStructureChangedEventHandler (
+						req.Scope, req.HandlerId);
+				EnsureStructureEventsSetUp (app, busName);
+			}
 		}
 
 		private void FetchUiaDbusNames ()

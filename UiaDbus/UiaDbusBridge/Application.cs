@@ -38,9 +38,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 	internal class Application : IApplication
 	{
 		private List<ProviderElementWrapper> rootElements;
+
 		private List<AutomationEventHandlerData> automationEventHandlers;
 		private List<AutomationPropertyChangedHandlerData> propertyEventHandlers;
 		private List<AutomationEventHandlerData> structureEventHandlers;
+
 		private string focusedElementPath = string.Empty;
 
 		public Application ()
@@ -158,17 +160,27 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return;
 			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
-				Log.Error ("[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state");
+				Log.Error ("[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state",
+				           provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 				return;
 			}
 			lock (structureEventHandlers) {
 				foreach (AutomationEventHandlerData handler in structureEventHandlers) {
-					if (IsProviderInScope (provider, handler.Provider, handler.Scope)) {
+					if (IsProviderInScope (provider, handler.Provider, handler.Scope))
 						OnStructureChanged (handler.HandlerId, handler.EventId, wrapper.Path,
 						                    e.StructureChangeType);
-					}
 				}
 			}
+		}
+
+		internal void RemoveAllEventHandlers ()
+		{
+			lock (automationEventHandlers)
+				automationEventHandlers.Clear ();
+			lock (propertyEventHandlers)
+				propertyEventHandlers.Clear ();
+			lock (structureEventHandlers)
+				structureEventHandlers.Clear ();
 		}
 
 		private void OnAutomationEvent (int handlerId, int eventId, string providerPath)
@@ -199,10 +211,24 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		}
 
 		//Check whether target is in the scope defined by <element, scope>
-		private static bool IsProviderInScope (IRawElementProviderSimple target,
+		private bool IsProviderInScope (IRawElementProviderSimple target,
 		                                       IRawElementProviderSimple element,
 		                                       TreeScope scope)
 		{
+			if (element == null) {
+				//root element's event handler
+				if ((scope & TreeScope.Descendants) == TreeScope.Descendants)
+					return true;
+				else if ((scope & TreeScope.Children) == TreeScope.Children) {
+					var targetWrapper =
+						AutomationBridge.Instance.FindWrapperByProvider (target);
+
+					lock (rootElements)
+						return rootElements.Contains (targetWrapper);
+				} else
+					return false;
+			}
+
 			if ((scope & TreeScope.Element) == TreeScope.Element && target == element)
 				return true;
 
@@ -316,7 +342,15 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			if (provider == null)
 				return;
 			AutomationEventHandlerData handlerData =
-				new AutomationEventHandlerData (eventId, provider, scope, handlerId);
+				new AutomationEventHandlerData (eventId, provider, scope, handlerId, false);
+			lock (automationEventHandlers)
+				automationEventHandlers.Add (handlerData);
+		}
+
+		public void AddRootElementAutomationEventHandler (int eventId, TreeScope scope, int handlerId)
+		{
+			var handlerData = new AutomationEventHandlerData (eventId,
+				null, scope, handlerId, true);
 			lock (automationEventHandlers)
 				automationEventHandlers.Add (handlerData);
 		}
@@ -329,7 +363,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return;
 			AutomationPropertyChangedHandlerData handlerData =
 				new AutomationPropertyChangedHandlerData (provider, scope,
-					handlerId, properties);
+					handlerId, false, properties);
+			lock (propertyEventHandlers)
+				propertyEventHandlers.Add (handlerData);
+		}
+
+		public void AddRootElementAutomationPropertyChangedEventHandler (
+			TreeScope scope, int handlerId, int [] properties)
+		{
+			var handlerData = new AutomationPropertyChangedHandlerData (
+				null, scope, handlerId, true, properties);
 			lock (propertyEventHandlers)
 				propertyEventHandlers.Add (handlerData);
 		}
@@ -343,7 +386,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			AutomationEventHandlerData handlerData =
 				new AutomationEventHandlerData (
 					AutomationElementIdentifiers.StructureChangedEvent.Id,
-					provider, scope, handlerId);
+					provider, scope, handlerId, false);
+			lock (structureEventHandlers)
+				structureEventHandlers.Add (handlerData);
+		}
+
+		public void AddRootElementStructureChangedEventHandler (TreeScope scope, int handlerId)
+		{
+			var handlerData = new AutomationEventHandlerData (
+				AutomationElementIdentifiers.StructureChangedEvent.Id,
+				null, scope, handlerId, true);
 			lock (structureEventHandlers)
 				structureEventHandlers.Add (handlerData);
 		}
@@ -357,7 +409,18 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				RemoveHandlers (automationEventHandlers,
 					h => h.EventId == eventId &&
 					h.Provider == provider &&
-					h.HandlerId == handlerId);
+					h.HandlerId == handlerId &&
+					!h.IsRootElementEvent);
+		}
+
+		public void RemoveRootElementAutomationEventHandler (int eventId, int handlerId)
+		{
+			lock (automationEventHandlers) {
+				RemoveHandlers (automationEventHandlers,
+					h => h.EventId == eventId &&
+					h.HandlerId == handlerId &&
+					h.IsRootElementEvent);
+			}
 		}
 
 		public void RemoveAutomationPropertyChangedEventHandler (int [] elementRuntimeId, int handlerId)
@@ -367,7 +430,18 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return;
 			lock (propertyEventHandlers)
 				RemoveHandlers (propertyEventHandlers,
-					h => h.Provider == provider && h.HandlerId == handlerId);
+					h => h.Provider == provider &&
+					h.HandlerId == handlerId &&
+					!h.IsRootElementEvent);
+		}
+
+		public void RemoveRootElementAutomationPropertyChangedEventHandler (int handlerId)
+		{
+			lock (propertyEventHandlers) {
+				RemoveHandlers (propertyEventHandlers,
+					h => h.HandlerId == handlerId &&
+					h.IsRootElementEvent);
+			}
 		}
 
 		public void RemoveStructureChangedEventHandler (int [] elementRuntimeId, int handlerId)
@@ -377,7 +451,18 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return;
 			lock (structureEventHandlers)
 				RemoveHandlers (structureEventHandlers,
-					h => h.Provider == provider && h.HandlerId == handlerId);
+					h => h.Provider == provider &&
+					h.HandlerId == handlerId &&
+					!h.IsRootElementEvent);
+		}
+
+		public void RemoveRootElementStructureChangedEventHandler (int handlerId)
+		{
+			lock (structureEventHandlers) {
+				RemoveHandlers (structureEventHandlers,
+					h => h.HandlerId == handlerId &&
+					h.IsRootElementEvent);
+			}
 		}
 
 		public void RemoveAllEventHandlers (int handlerIdMask)
@@ -407,27 +492,28 @@ namespace Mono.UIAutomation.UiaDbusBridge
 	internal class AutomationEventHandlerData
 	{
 		public AutomationEventHandlerData (int eventId, IRawElementProviderSimple provider,
-		                                   TreeScope scope, int handlerId)
+		                                   TreeScope scope, int handlerId, bool isRootElementEvent)
 		{
 			this.EventId = eventId;
 			this.Provider = provider;
 			this.Scope = scope;
 			this.HandlerId = handlerId;
+			this.IsRootElementEvent = isRootElementEvent;
 		}
 
 		public int EventId { get; private set; }
 		public IRawElementProviderSimple Provider { get; private set; }
 		public TreeScope Scope { get; private set; }
 		public int HandlerId { get; private set; }
+		public bool IsRootElementEvent { get; private set; }
 	}
 
 	internal class AutomationPropertyChangedHandlerData : AutomationEventHandlerData
 	{
 		public AutomationPropertyChangedHandlerData (IRawElementProviderSimple provider,
-		                                            TreeScope scope, int handlerId,
-		                                            int [] properties)
+			TreeScope scope, int handlerId, bool isRootElementEvent, int [] properties)
 			: base (AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id,
-			        provider, scope, handlerId)
+				provider, scope, handlerId, isRootElementEvent)
 		{
 			this.Properties = properties;
 		}

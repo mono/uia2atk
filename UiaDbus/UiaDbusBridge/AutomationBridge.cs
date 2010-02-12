@@ -225,6 +225,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		public void Terminate ()
 		{
+			app.RemoveAllEventHandlers ();
 			lock (syncRoot) {
 				AbortMainLoop ();
 				if (instance == this)

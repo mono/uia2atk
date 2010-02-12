@@ -57,11 +57,19 @@ namespace System.Windows.Automation
 			AutomationElement ae = sender as AutomationElement;
 			if (ae == null)
 				return;
-			bool hasFocus = ae.Current.HasKeyboardFocus;
-			if ((!hasFocus) && ae == focusedElement)
+			bool hasFocus = false;
+			try {
+				hasFocus = ae.Current.HasKeyboardFocus;
+				if ((!hasFocus) && ae == focusedElement)
+					focusedElement = null;
+				else
+					focusedElement = ae;
+			} catch (ElementNotAvailableException) {
 				focusedElement = null;
-			else
-				focusedElement = ae;
+			} catch (Exception ex) {
+				Log.Error ("[OnFocusChanged] Unknown Error: {0}", ex);
+				focusedElement = null;
+			}
 		}
 #endregion
 

@@ -720,6 +720,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
+		internal IRawElementProviderSimple Provider
+		{
+			get { return provider; }
+		}
+
 		public string Path {
 			get { return DC.Constants.AutomationElementBasePath + pathId.ToString (); }
 		}

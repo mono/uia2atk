@@ -40,6 +40,117 @@ namespace MonoTests.System.Windows.Automation
 	public class AutomationEventTest : BaseTest
 	{
 		[Test]
+		public void ArgumentExceptionTest ()
+		{
+			Action action = () => {
+				At.AddAutomationEventHandler (InvokePattern.InvokedEvent,
+					null, TreeScope.Element, (o, e) => {});
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to AddAutomationEventHandler");
+
+			action = () => {
+				At.AddAutomationPropertyChangedEventHandler (
+					null, TreeScope.Element, (o, e) => {}, AEIds.NameProperty);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to AddAutomationPropertyChangedEventHandler");
+
+			action = () => {
+				At.AddStructureChangedEventHandler (
+					null, TreeScope.Element, (o, e) => {});
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to AddStructureChangedEventHandler");
+
+			action = () => {
+				At.AddAutomationEventHandler (InvokePattern.InvokedEvent,
+					button1Element, TreeScope.Element, null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to AddAutomationEventHandler");
+
+			action = () => {
+				At.AddAutomationPropertyChangedEventHandler (
+					button1Element, TreeScope.Element, null, AEIds.NameProperty);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to AddAutomationPropertyChangedEventHandler");
+
+			action = () => {
+				At.AddStructureChangedEventHandler (
+					button1Element, TreeScope.Element, null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to AddStructureChangedEventHandler");
+
+			action = () => {
+				At.AddAutomationFocusChangedEventHandler (null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to AddAutomationFocusChangedEventHandler");
+
+			action = () => {
+				At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent,
+					null, (o, e) => {});
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to RemoveAutomationEventHandler");
+
+			action = () => {
+				At.RemoveAutomationPropertyChangedEventHandler (
+					null, (o, e) => {});
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to RemoveAutomationPropertyChangedEventHandler");
+
+			action = () => {
+				At.RemoveStructureChangedEventHandler (
+					null, (o, e) => {});
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as element to RemoveStructureChangedEventHandler");
+
+			action = () => {
+				At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent,
+					button1Element, null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to RemoveAutomationEventHandler");
+
+			action = () => {
+				At.RemoveAutomationPropertyChangedEventHandler (
+					button1Element, null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to RemoveAutomationPropertyChangedEventHandler");
+
+			action = () => {
+				At.RemoveStructureChangedEventHandler (
+					button1Element, null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to RemoveStructureChangedEventHandler");
+
+			action = () => {
+				At.RemoveAutomationFocusChangedEventHandler (null);
+			};
+			AssertRaises<ArgumentNullException>(action,
+				"Pass null as handler to RemoveAutomationFocusChangedEventHandler");
+
+			//Assert removing a non-existent handler won't fire any exception
+			At.RemoveAutomationEventHandler (InvokePattern.InvokedEvent,
+				button1Element, (o, e) => { Console.Write("nop"); } );
+			At.RemoveAutomationPropertyChangedEventHandler (
+				button1Element, (o, e) => { Console.Write("nop"); } );
+			At.RemoveStructureChangedEventHandler (
+				button1Element, (o, e) => { Console.Write("nop"); } );
+			At.RemoveAutomationFocusChangedEventHandler (
+				(o, e) => { Console.Write("nop"); } );
+
+		}
+
+		[Test]
 		public void StructureEventTest ()
 		{
 			List<AutomationElement> elementEventSenders = new List<AutomationElement> ();

@@ -1,3 +1,16 @@
+2010-02-12  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusSource/Makefile.am: 
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbus/Interfaces/IApplication.cs: 
+	* UiaDbusSource/UiaDbusSource.csproj: 
+	* UiaDbusSource/EventHandlerManager.cs: 
+	* UiaDbusSource/UiaDbusAutomationSource.cs: 
+	* UiaDbusSource/RootElementEventsManager.cs: 
+	* UiaDbusBridge/Wrappers/ProviderElementWrapper.cs: UIA events for
+	AutomationElement.RootElement
+
 2010-02-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusBridgeTests/Makefile.am: Copy UiaDbus.dll.config to fix

@@ -24,7 +24,6 @@
 // 
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Windows.Automation;
 
@@ -36,7 +35,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 	//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	//|          Process Id           |        Handler Serial No.     |
 	//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	public class EventHandlerManager
+	internal class EventHandlerManager
 	{
 		private static object staticLock = new object ();
 		private static readonly int clientPrefix;
@@ -45,7 +44,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		static EventHandlerManager ()
 		{
 			handlerSerialNo = 0;
-			clientPrefix = Process.GetCurrentProcess().Id << 16;
+			clientPrefix = System.Diagnostics.Process.GetCurrentProcess().Id << 16;
 		}
 
 		private static int NewHandlerId ()

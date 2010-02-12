@@ -33,6 +33,7 @@ using System.Windows.Automation;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using At = System.Windows.Automation.Automation;
 using NUnit.Framework;
+using System.Text;
 
 namespace MonoTests.System.Windows.Automation
 {
@@ -434,6 +435,19 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsTrue (exceptionRaised,
 			               string.Format ("Expected {0} when {1}",
 			                              typeof (T), message));
+		}
+
+		public static string PrintRuntimeId (int [] runtimeId)
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append ("[");
+			foreach (int id in runtimeId)
+				sb.AppendFormat ("{0},", id);
+			if (sb[sb.Length - 1] == ',')
+				sb[sb.Length - 1] = ']';
+			else
+				sb.Append ("]");
+			return sb.ToString ();
 		}
 	}
 }

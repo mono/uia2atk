@@ -46,6 +46,7 @@ FILES =  \
 	AssemblyInfo.cs \
 	DbusExceptionTranslator.cs \
 	EventHandlerManager.cs \
+	RootElementEventsManager.cs \
 	UiaDbusAutomationSource.cs \
 	UiaDbusDockPattern.cs \
 	UiaDbusElement.cs \

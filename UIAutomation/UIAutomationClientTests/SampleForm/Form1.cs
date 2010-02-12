@@ -215,9 +215,11 @@ namespace SampleForm {
 			} else if (cmd == "disable button3") {
 				button3.Enabled = false;
 			} else if (cmd == "focus textBox3")
- 				textBox3.Focus ();
+				textBox3.Focus ();
 			else if (cmd == "focus button2")
 				button2.Focus ();
+			else if (cmd.StartsWith ("change title:"))
+				this.Text = cmd.Substring (cmd.IndexOf (':') + 1);
 			else if (cmd == "change form size 800x600")
 				this.Size = new Size (800, 600);
 			else if (cmd == "textBox3 singleline")
