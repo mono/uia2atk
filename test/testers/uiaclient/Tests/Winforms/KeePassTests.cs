@@ -730,6 +730,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (true, dataGrid.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			procedureLogger.Action ("Check VerticallyScrollable.");
+			procedureLogger.ExpectedResult ("The value of VerticallyScrollable property is false.");
+			Assert.AreEqual (false, dataGrid.VerticallyScrollable);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
 			//104.16 Set the Scroll horizontal percent to 0
 			dataGrid.SetScrollPercent (0, -1);
 			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent property is 0.0.");
@@ -884,114 +889,61 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			tabItemPreview.Select ();
 			procedureLogger.ExpectedResult ("The \"Preview\" tab selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			
-			//104.XX Set the Scroll vertical percent to 0
+
+			//104.32 Check VerticallyScrollable.
 			var passwordDocument = tabItemPreview.Find<Document> ();
+			procedureLogger.Action ("Check VerticallyScrollable.");
+			procedureLogger.ExpectedResult ("The value of VerticallyScrollable property is true.");
+			Assert.AreEqual (true, passwordDocument.VerticallyScrollable);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			procedureLogger.Action ("Check HorizontallyScrollable.");
+			procedureLogger.ExpectedResult ("The value of HorizontallyScrollable property is false.");
+			Assert.AreEqual (false, passwordDocument.HorizontallyScrollable);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.33 Set the Scroll vertical percent to 0
 			passwordDocument.SetScrollPercent (-1, 0);
 			procedureLogger.ExpectedResult ("The value of VerticallScrollPercent property is 0.0.");
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.17 Set the VerticalScroll a LargeIncrement
+			//104.34 Set the VerticalScroll a LargeIncrement
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
 			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large increment.");
 			Thread.Sleep (Config.Instance.MediumDelay);
 			Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
-			
-			//104.18 Set the VerticalScroll a LargeDecrement
+
+			//104.35 Set the VerticalScroll a LargeDecrement
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
 			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large Decrement.");
 			Thread.Sleep (Config.Instance.MediumDelay);
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			
-			//104.19 Set the VerticalScroll a SmallIncrement
+
+			//104.36 Set the VerticalScroll a SmallIncrement
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallIncrement);
 			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small increment.");
 			Thread.Sleep (Config.Instance.MediumDelay);
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			
-			//104.20 Set the VerticalScroll a SmallDecrement
+
+			//104.37 Set the VerticalScroll a SmallDecrement
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallDecrement);
 			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small Decrement.");
 			Thread.Sleep (Config.Instance.MediumDelay);
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			
-			//104.XX Set the Scroll vertica percent to 100
+
+			//104.38 Set the Scroll vertica percent to 100
 			passwordDocument.SetScrollPercent (-1, 100);
 			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent property is 0.0.");
 			Assert.AreEqual (100, passwordDocument.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.MediumDelay);
-			
-			//104.XX Check the Current VerticalViewSize
+
+			//104.39 Check the Current VerticalViewSize
 			procedureLogger.ExpectedResult 
 				(string.Format("Check the Current VerticalViewSize is {0}",passwordDocument.VerticalViewSize));
 			Assert.AreEqual(73, passwordDocument.VerticalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
-			
-			
-			/////////////////////////////////////////////////
-			//104.32 Scroll vertical scrollbar LargeIncrement
-			
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll large increment.");
-			Thread.Sleep (Config.Instance.ShortDelay);
 
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
-			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-			//104.36 Scroll vertical scrollbar LargeDecrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll large decrement.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.33 Scroll vertical scrollbar SmallIncrement
-			passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small increment.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.34 Check the percentage of vertical scrollbar
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
-			 * procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			 * procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			 * Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			 * Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-			//104.35 Scroll vertical scrollbar SmallDecrement
-			passwordDocument.ScrollVertical (ScrollAmount.SmallDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small decrement.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.38 Set horizontal scroll percentage to 50.-1 means NoScroll
-			passwordDocument.SetScrollPercent (-1, 50.0);
-			procedureLogger.ExpectedResult ("The percentage of vertical scrollbar is 50%.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.39 Check the vertical scrollbar's position
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
-			procedureLogger.Action ("Check VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticallyScrollable is 50%.");
-			Assert.AreEqual (50.0, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-/////////////////////////////////////////////////////////////////////////
-			
 			//104.40 Close "Password Generator" window
 			passwdWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Password Generator\" window closes.");

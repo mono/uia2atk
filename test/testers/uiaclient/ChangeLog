@@ -1,5 +1,10 @@
 2010-02-12  Felicia Mu  <fxmu@novell.com>
 
+	* Tests/Winforms/KeePassTests.cs: For the same control , test its vetical
+	and horizontal at the same time.
+
+2010-02-12  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/Winforms/KeePassTests.cs: Add the new test case for the 
 	Scroll Pattern.
 
