@@ -44,7 +44,7 @@ Implementations of the members and interfaces based on MS UIA API
 %setup -q
 
 %build
-%configure
+%configure  --disable-tests
 #Break build with parrallel make
 make
 
