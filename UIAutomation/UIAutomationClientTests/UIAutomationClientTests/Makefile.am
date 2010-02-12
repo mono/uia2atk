@@ -80,6 +80,7 @@ FILES =  \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \
 	InvokePatternTest.cs \
+	LocalProviderTest.cs \
 	MultipleViewPatternTest.cs \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \

@@ -1191,7 +1191,6 @@ Thread.Sleep(1000);
 			var element = AutomationElement.FromPoint (new Point (rect.X + relX, rect.Y + relY));
 			bool isInTarget = false;
 			while (element != null && element != AutomationElement.RootElement) {
-				Console.WriteLine ("Current Control: {0}, {1}", element.Current.Name, element.Current.BoundingRectangle);
 				if (element == target) {
 					isInTarget = true;
 					break;

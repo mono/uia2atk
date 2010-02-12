@@ -72,6 +72,8 @@
     <Compile Include="System.Windows.Automation\ValuePattern.cs" />
     <Compile Include="System.Windows.Automation\WindowPattern.cs" />
     <Compile Include="System.Windows.Automation\NativeMethods.cs" />
+    <Compile Include="System.Windows.Automation\ClientSideProviderDescription.cs" />
+    <Compile Include="System.Windows.Automation\ClientSettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -101,6 +103,10 @@
     <ProjectReference Include="..\UIAutomationTypes\UIAutomationTypes.csproj">
       <Project>{876B87EE-FBD3-400D-891E-BE0589072CDF}</Project>
       <Name>UIAutomationTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIAutomationProvider\UIAutomationProvider.csproj">
+      <Project>{4E7CEBB8-47CA-406F-BF63-FBB17D5DE08A}</Project>
+      <Name>UIAutomationProvider</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

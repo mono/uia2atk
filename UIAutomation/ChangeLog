@@ -1,5 +1,18 @@
 2010-02-12  Matt Guo  <matt@mattguo.com>
 
+	* UIAutomationClient/Makefile.am: 
+	* UIAutomationClient/UIAutomationClient.csproj: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClient/System.Windows.Automation/ClientSettings.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/LocalProviderTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs: 
+	* UIAutomationClient/System.Windows.Automation/ClientSideProviderDescription.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	API stub for ClientSettings and related data structure, tests for
+	AutomationElement.FromLocalProvider.
+
+2010-02-12  Matt Guo  <matt@mattguo.com>
+
 	* UIAutomationClientTests/SampleForm/Form1.cs: 
 	* UIAutomationClient/System.Windows.Automation/Automation.cs: 
 	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 

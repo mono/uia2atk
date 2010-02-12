@@ -42,6 +42,8 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/BasePattern.cs \
 	System.Windows.Automation/BoolCondition.cs \
 	System.Windows.Automation/CacheRequest.cs \
+	System.Windows.Automation/ClientSettings.cs \
+	System.Windows.Automation/ClientSideProviderDescription.cs \
 	System.Windows.Automation/Condition.cs \
 	System.Windows.Automation/DesktopElement.cs \
 	System.Windows.Automation/DockPattern.cs \
