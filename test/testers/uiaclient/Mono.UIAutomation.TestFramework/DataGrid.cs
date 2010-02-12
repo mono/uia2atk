@@ -89,6 +89,14 @@ namespace Mono.UIAutomation.TestFramework
 			return tp.Current.GetRowHeaders ();
 		}
 
+		public AutomationElement [] ColumnHeaders {
+			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.ColumnHeadersProperty); }
+		}
+
+		public AutomationElement [] RowHeaders {
+			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.RowHeadersProperty); }
+		}
+
 		public RowOrColumnMajor RowOrColumnMajor {
 			get { return (RowOrColumnMajor) element.GetCurrentPropertyValue (TablePattern.RowOrColumnMajorProperty); }
 		}

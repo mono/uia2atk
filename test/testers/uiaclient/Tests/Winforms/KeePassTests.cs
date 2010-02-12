@@ -364,32 +364,31 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//103.1 Click "new" button on the toolstripbar
 			var toolBar = window.Find<ToolBar> ();
 			toolBar.Find<Button> ("New...").Click ();
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens");
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.2 Click "Save" button on the dialog
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			newPassDialog.Save (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog.Save ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.3 Click "OK" button on the dialog
 			var keyDialog = window.Find<Window> ("Create Composite Master Key");
-			keyDialog.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			keyDialog.OK ();
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog sppears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.4 Click "Yes" button on the dialog
 			var createMasterKeyWindow = window.Find<Window> ("KeePass");
 			createMasterKeyWindow.Yes ();
-			procedureLogger.ExpectedResult ("\"mono-a11y\" entered in the \"Master password\" box");
+			procedureLogger.ExpectedResult ("The \"KeePass\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.5 Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button of the dialog");
 			var newPassDialog2 = window.Find<Window> ("Create New Password Database - Step 2");
-			newPassDialog2.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database\" dialog closes");
+			newPassDialog2.OK ();
+			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.6 Click "Add Entry" button on the toolstripbar
@@ -399,33 +398,35 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 * type is "SplitButton" on Windows is "Button"
 			 * toolBar.Find<Button> ("Add Entry").Click (false);
 			 */
+			Thread.Sleep (5000);
 
 			/*
 			 * BUG576050- [uiaclient-winforms]: 
 			 * The splitbutton's Invoke method doesn't work
 			 */
-			procedureLogger.ExpectedResult ("the \"Add Entry\" window appears");
+			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			//abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 			//103.7 Check "Add Entry" window's default WindowPattern Property
-			procedureLogger.Action ("Check \"Add Entry\" window's CanMaximizeProperty");
-			Window addEntryDialog = window.Find<Window> ("Add Entry");
-			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			var addEntryDialog = window.Find<Window> ("Add Entry");
+			procedureLogger.Action ("Check CanMaximize.");
+			procedureLogger.ExpectedResult ("The value of CanMaximize is false.");
 			Assert.AreEqual (false, addEntryDialog.CanMaximize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"Add Entry\" window's CanMinimizeProperty");
-			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			procedureLogger.Action ("Check CanMinimize.");
+			procedureLogger.ExpectedResult ("The value of CanMinimize is false.");
 			Assert.AreEqual (false, addEntryDialog.CanMinimize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"Add Entry\" window's IsModalProperty");
-			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			procedureLogger.Action ("Check IsModal.");
+			procedureLogger.ExpectedResult ("The value of IsModal is true.");
 			Assert.AreEqual (true, addEntryDialog.IsModal);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"Add Entry\" window's IsTopmostProperty");
-			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			procedureLogger.Action ("Check IsTopmost.");
+			procedureLogger.ExpectedResult ("The value of IsTopmost is false.");
 			Assert.AreEqual (false, addEntryDialog.IsTopmost);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -434,171 +435,159 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 * WindowInteractionState will be different between Windows and Linux 
 			 */
 			/*
-			 * procedureLogger.Action ("Check \"Add Entry\" window's WindowInteractionStateProperty");
+			 * procedureLogger.Action ("Check WindowInteractionState.");
+			 * procedureLogger.ExpectedResult ("The value of WindowInteractionState is ReadyForUserInteraction.");
 			 * Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, addEntryDialog.WindowInteractionState);
-			 * procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
 			 * Thread.Sleep (Config.Instance.ShortDelay);
 			 */
 
-			procedureLogger.Action ("Check \"Add Entry\" window's WindowVisualStateProperty");
-			procedureLogger.ExpectedResult ("The window's CanMaximizeProperty should be False");
+			procedureLogger.Action ("Check WindowVisualState.");
+			procedureLogger.ExpectedResult ("The value of WindowVisualState is Normal.");
 			Assert.AreEqual (WindowVisualState.Normal, addEntryDialog.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.8 move "add entry" window to (200,200 )
-			procedureLogger.Action ("move \"add entry\" window to (200,200 )");
-			addEntryDialog.Move (200, 200);
-			procedureLogger.ExpectedResult ("the \"add entry\" window is moved to (200,200 )");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//check the transformpattern's property
-			procedureLogger.Action ("Check \"Add Entry\" window's CanMoveProperty");
-			procedureLogger.ExpectedResult ("The window's CanMoveProperty should be False");
+			procedureLogger.Action ("Check CanMove.");
+			procedureLogger.ExpectedResult ("The value of CanMove is true.");
 			Assert.AreEqual (true, addEntryDialog.CanMove);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"Add Entry\" window's CanSizeProperty");
-			procedureLogger.ExpectedResult ("The window's CanSizeProperty should be False");
+			addEntryDialog.Move (200, 200);
+			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(200, 200 ).");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			procedureLogger.Action ("Check CanSize.");
+			procedureLogger.ExpectedResult ("The value of CanSize is false.");
 			Assert.AreEqual (false, addEntryDialog.CanResize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"Add Entry\" window's CanRotateProperty");
-			procedureLogger.ExpectedResult ("The window's CanRotateProperty should be False");
+			procedureLogger.Action ("Check CanRotate.");
+			procedureLogger.ExpectedResult ("The value of CanRotate is false.");
 			Assert.AreEqual (false, addEntryDialog.CanRotate);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.9 Click the "Auto-Type" tab item on the "Add Entry" Window
-			procedureLogger.Action ("Click the \"Auto-Type\" tab item on the \"Add Entry\" Window");
-			var tabItemAuto = window.Find<TabItem> ("Auto-Type");
-			tabItemAuto.Select ();
-			procedureLogger.ExpectedResult ("The \"Auto-Type\" tab item appears");
+			var autoTypeTabItem = addEntryDialog.Find<TabItem> ("Auto-Type");
+			autoTypeTabItem.Select ();
+			procedureLogger.ExpectedResult ("The \"Auto-Type\" tab item appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.10 Click the "Add" button on the "Add Entry" Window
-			procedureLogger.Action ("Click the \"Add\" button on the \"Add Entry\" Window");
-			addEntryDialog.Find<Button> ("Add").Click ();
-			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" window appears");
+			autoTypeTabItem.Find<Button> ("Add").Click ();
+			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.12 Check the scroll bar's ReadOnly property
-			var autoItemDialog = window.Find<Window> ("Edit Auto-Type Item");
-			ScrollBar scrollBar = window.Find<ScrollBar> ();
-			procedureLogger.Action ("Check scroll bar's IsReadOnlyProperty");
-			procedureLogger.ExpectedResult ("The scroll bar's IsReadOnlyProperty should be False");
+			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
+			//var editAutoTypeDialog = autoTypeTabItem.Find<Window> ("Edit Auto-Type Item");
+			var editAutoTypeDialog = window.Find<Window> ("Edit Auto-Type Item");
+			var scrollBar = editAutoTypeDialog.Find<ScrollBar> ();
+			procedureLogger.Action ("Check IsReadOnly of the vertical scroll bar.");
+			procedureLogger.ExpectedResult ("The value of IsReadOnly is false.");
 			Assert.AreEqual (false, scrollBar.IsReadOnly);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.13 Drag the scroll bar to move
 			scrollBar.SetValue (300);
-			procedureLogger.ExpectedResult ("the scroll bar is draged to the 300 position");
-			Assert.AreEqual (300, (int)scrollBar.Value);
+			procedureLogger.ExpectedResult ("The scroll bar scrolled 300.");
+			Assert.AreEqual (300, (int) scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.14 Drag the scroll bar to its maximum
 			scrollBar.SetValue (scrollBar.Maximum);
-			procedureLogger.ExpectedResult 
-				(string.Format("The scroll bar can get its maximum {0}",scrollBar.Maximum));
+			procedureLogger.ExpectedResult (string.Format("Set the value of scroll bar to maximum {0}.", scrollBar.Maximum));
 			Assert.AreEqual (scrollBar.Maximum, scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.15 Drag the scroll bar to its minimum
 			scrollBar.SetValue (scrollBar.Minimum);
-			procedureLogger.ExpectedResult 
-				(string.Format("The scroll bar can get its minimum {0}",scrollBar.Minimum));
+			procedureLogger.ExpectedResult (string.Format("Set the value of scroll bar to minimum {0}.", scrollBar.Minimum));
 			Assert.AreEqual (scrollBar.Minimum, scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.16 Drag the scroll bar to a LargeChange decrease
 			scrollBar.SetValue (scrollBar.Maximum - scrollBar.LargeChange);
-			procedureLogger.ExpectedResult 
-				(string.Format("The scroll bar can get its minimum {0}", scrollBar.Minimum));
+			procedureLogger.ExpectedResult ("Set the value of scroll bar to large decrement from the maxinum.");
 			Assert.AreEqual (scrollBar.Maximum - scrollBar.Value, scrollBar.LargeChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.17 Drag the scroll bar to a SmallChange increase
 			scrollBar.SetValue (scrollBar.Minimum + scrollBar.SmallChange);
-			procedureLogger.ExpectedResult 
-				(string.Format("The scroll bar can get its minimum {0}", scrollBar.Minimum));
+			procedureLogger.ExpectedResult ("Set the value of scroll bar to small increment from the mininum.");
 			Assert.AreEqual (scrollBar.Value - scrollBar.Minimum, scrollBar.SmallChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.18 Click "OK" button on the dialog
-			procedureLogger.Action ("Click \"OK\" button on the dialog");
-			autoItemDialog.OK ();
-			procedureLogger.ExpectedResult ("\"None\" radio button selected");
+			editAutoTypeDialog.OK ();
+			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.14 Click the "Advanced" tab item on the "Add Entry" Window
-			procedureLogger.Action ("Click the \"Advanced\" tab item on the \"Add Entry\" Window");
-			var tabItemAdvanced = window.Find<TabItem> ("Advanced");
-			tabItemAdvanced.Select ();
-			procedureLogger.ExpectedResult ("The \"Advanced\" tab item appears");
+			var advancedTabItem = addEntryDialog.Find<TabItem> ("Advanced");
+			advancedTabItem.Select ();
+			procedureLogger.ExpectedResult ("The \"Advanced\" tab item appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.15 Click the "Add" button on the "Add Entry" Window
-			var notesDatagrid = addEntryDialog.Find<DataGrid> ("Notes:");
-			procedureLogger.Action ("Click the \"Add\" button on the \"Add Entry\" Window");
-			addEntryDialog.Find<Button> ("Add").Click ();
-			procedureLogger.ExpectedResult ("The \"Edit Entry String\" dialog appears");
+			advancedTabItem.Find<Button> ("Add").Click ();
+			procedureLogger.ExpectedResult ("The \"Edit Entry String\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.16 Type the "a11y" into the "Name" edit
-			procedureLogger.Action ("Type the \"a11y\" into the \"Name\" edit");
-			var editEntryStringWindow = window.Find<Window> ("Edit Entry String");
+			var editEntryStringWindow = addEntryDialog.Find<Window> ("Edit Entry String");
 			/* BUG569846 - [uiaclient-winforms]:UIA Client mathes wrong element 
 			 * for LabeledByproperty on Linux
 			 * nameCombobox = editEntryStringWindow.Find<ComboBox> ("Name:");
 			 */
 			var nameCombobox = editEntryStringWindow.Find<ComboBox> ("");
 			nameCombobox.SetValue("a11y");
-			procedureLogger.ExpectedResult ("the \"name\" edit 's value is \"a11y\"");
+			procedureLogger.ExpectedResult ("\"a11y\" entered in the \"Name\" combo box.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.17 Click "OK" button on the "Edit Entry String" dialog
 			editEntryStringWindow.OK ();
-			procedureLogger.ExpectedResult ("The \"Edit Entry String\" window closes");
+			procedureLogger.ExpectedResult ("The \"Edit Entry String\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			/* BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			 * var a11yText = addEntryDialog.Find<Text> ("a11y");
-			 */
 			//103.18 Check the "a11y" text's TableItemPattern
+			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
+			//var notesDataGrid = advancedTabItem.Find<DataGrid> ("Notes:");
+			//var a11yText = notesDataGrid.Find<Text> ("a11y");
 			var a11yText = addEntryDialog.Find<Edit> ("a11y");
 
-			procedureLogger.Action ("Check \"a11y\" text's TableItemPattern's Column property");
-			procedureLogger.ExpectedResult ("The \"a11y\" text's Colum should be 0");
+			procedureLogger.Action ("Check Column.");
+			procedureLogger.ExpectedResult ("The value of Colum is 0.");
 			Assert.AreEqual (0, a11yText.Column);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"a11y\" text's TableItemPattern's ColumnSpan property");
-			procedureLogger.ExpectedResult ("The \"a11y\" text's ColumnSpan should be 1");
+			procedureLogger.Action ("Check ColumnSpan.");
+			procedureLogger.ExpectedResult ("The value of ColumnSpan 1.");
 			Assert.AreEqual (1, a11yText.ColumnSpan);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"a11y\" text's TableItemPattern's Row property");
-			procedureLogger.ExpectedResult ("The \"a11y\" text's Row should be 0");
+			procedureLogger.Action ("Check Row.");
+			procedureLogger.ExpectedResult ("The value of Row is 0.");
 			Assert.AreEqual (0, a11yText.Row);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"a11y\" text's TableItemPattern's RowSpan property");
-			procedureLogger.ExpectedResult ("The \"a11y\" text's RowSpan should be 1");
+			procedureLogger.Action ("Check RowSpan.");
+			procedureLogger.ExpectedResult ("The value of RowSpan is 1.");
 			Assert.AreEqual (1, a11yText.RowSpan);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check \"a11y\" text's TableItemPattern's ContainingGrid property");
-			AutomationElement dataGridItem = notesDatagrid.GetItem (0, 0);
-			AutomationElement a11ytextItem = window.Find<Text> ("a11y").AutomationElement;
-			procedureLogger.ExpectedResult ("The \"a11y\" text should be the first item of the datagrid it was in");
+			/* 
+			 * BUG576455 All the "Text" controls are recognized as "Edit" on Linux
+			AutomationElement dataGridItem = notesDataGrid.GetItem (0, 0);
+			AutomationElement a11ytextItem = window.Find<Edit> ("a11y").AutomationElement;
+			procedureLogger.Action ("Check ContainingGrid.");
+			procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
 			Assert.AreEqual (dataGridItem, a11ytextItem);
 			Thread.Sleep (Config.Instance.ShortDelay);
-
-			newPassDialog2.OK ();
-			Thread.Sleep (Config.Instance.ShortDelay);
+			 */
 
 			//103.19 Close the "Add Entry" Window
-			procedureLogger.Action ("Close the \"Add Entry\" Window");
-			addEntryDialog.OK (false);
-			procedureLogger.ExpectedResult ("The \"Create New Password Database - Step 2\" window closes");
+			addEntryDialog.OK ();
+			procedureLogger.ExpectedResult ("The \"Add Entry\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
@@ -666,6 +655,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.9 Check the count of columns and rows of datagrid.
+			// if pass TreeScope.Descendant to FindAll method as the first parameter,
+			// it would failed due to "out of range", that the reason why use TreeScope.Childen here.
 			var rightPane = window.Find<Pane> ().Find<Pane> (Direction.Vertical, 0).Find<Pane> (Direction.Horizental, 0);
 			var dataGrid = rightPane.Find<DataGrid> ();
 			procedureLogger.Action ("Check the count of columns of datagrid.");
@@ -673,8 +664,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (11, dataGrid.ColumnCount);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check the count of columns of datagrid.");
-			procedureLogger.ExpectedResult ("The count of columns of datagrid is 2.");
+			procedureLogger.Action ("Check the count of rows of datagrid.");
+			procedureLogger.ExpectedResult ("The count of rows of datagrid is 2.");
 			Assert.AreEqual (2, dataGrid.RowCount);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -704,8 +695,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (11, dataGrid.ColumnCount);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check the count of columns of datagrid.");
-			procedureLogger.ExpectedResult ("The count of columns of datagrid is 3.");
+			procedureLogger.Action ("Check the count of rows of datagrid.");
+			procedureLogger.ExpectedResult ("The count of rows of datagrid is 3.");
 			Assert.AreEqual (3, dataGrid.RowCount);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -735,7 +726,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, dataGrid.VerticallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.16 Set the Scroll horizontal percent to 0
+			//104.16 Set the scroll bar horizontal percent to 0
 			dataGrid.SetScrollPercent (0, -1);
 			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent property is 0.0.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
@@ -944,7 +935,77 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual(73, passwordDocument.VerticalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
 
-			//104.40 Close "Password Generator" window
+			/*
+			 * BUGXXXXX: The window is same size on Windows and Linux,
+			 * so it's hard to determine the actual result here.
+			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
+			Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			 */
+
+			//104.36 Scroll vertical scrollbar LargeDecrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll large decrement.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.33 Scroll vertical scrollbar SmallIncrement
+			passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small increment.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.34 Check the percentage of vertical scrollbar
+			/*
+			 * BUGXXXXX: The window is same size on Windows and Linux,
+			 * so it's hard to determine the actual result here.
+			 * procedureLogger.Action ("Check the VerticalScrollPercent.");
+			 * procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
+			 * Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			 * Thread.Sleep (Config.Instance.ShortDelay);
+			 */
+
+			//104.35 Scroll vertical scrollbar SmallDecrement
+			passwordDocument.ScrollVertical (ScrollAmount.SmallDecrement);
+			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small decrement.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.38 Set horizontal scroll percentage to 50.-1 means NoScroll
+			passwordDocument.SetScrollPercent (-1, 50.0);
+			procedureLogger.ExpectedResult ("The percentage of vertical scrollbar is 50%.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.39 Check the vertical scrollbar's position
+			/*
+			 * BUGXXXXX: The window is same size on Windows and Linux,
+			 * so it's hard to determine the actual result here.
+			procedureLogger.Action ("Check VerticalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of VerticallyScrollable is 50%.");
+			Assert.AreEqual (50.0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			 */
+
+			//104.40 Check ColumnHeaders
+			Assert.AreEqual (dataGrid.ColumnHeaders, dataGrid.GetColumnHeaders ());
+			procedureLogger.ExpectedResult (string.Format("The ColumnHeaders is {0}.", dataGrid.ColumnHeaders));
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.41 Check RowHeaders
+			Assert.AreEqual (0, dataGrid.GetRowHeaders ().Length);
+			procedureLogger.ExpectedResult ("The count of RowHeaders is 0.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.42 Check RowOrColumnMajor
+			procedureLogger.Action ("Check RowOrColumnMajor.");
+			procedureLogger.ExpectedResult ("The RowOrColumnMajor is \"RowMajor\".");
+			Assert.AreEqual (RowOrColumnMajor.RowMajor, dataGrid.RowOrColumnMajor);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.43 Close "Password Generator" window
 			passwdWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Password Generator\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
