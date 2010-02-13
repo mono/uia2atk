@@ -640,23 +640,20 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.7  Input the "email" into the title  edit
+			//104.7  Input the "email" to the "Title" edit
 			var addEntryDialog = window.Find<Window> ("Add Entry");
-			var titleEdit = addEntryDialog.Find<Edit> ("Title:");
-			titleEdit.SetValue("email");
+			addEntryDialog.Find<Edit> ("Title:").SetValue("email");
 			procedureLogger.ExpectedResult ("\"email\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.8 Click "OK" button on the "Add Entry" dialog.
-			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
-			//addEntryDialog.OK ();
-			window.Find<Button> ("OK").Click ();
+			addEntryDialog.OK ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.9 Check the count of columns and rows of datagrid.
 			// if pass TreeScope.Descendant to FindAll method as the first parameter,
-			// it would failed due to "out of range", that the reason why use TreeScope.Childen here.
+			// it would failed due to "out of range", that's the reason why use TreeScope.Childen here.
 			var rightPane = window.Find<Pane> ().Find<Pane> (Direction.Vertical, 0).Find<Pane> (Direction.Horizental, 0);
 			var dataGrid = rightPane.Find<DataGrid> ();
 			procedureLogger.Action ("Check the count of columns of datagrid.");
@@ -670,22 +667,22 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.10 Click "Add Entry" button on the toolstripbar
+			//BUG574620: Button recognized as SplitButton on Linux, but it's Button on Windows
+			//BUG576050: The splitbutton's Invoke method doesn't work
 			//addEntryButton.Click ();
-			Console.WriteLine("Please click the \"AddEntry\" SplitButton by hand");
 			Thread.Sleep(5000);
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.11 Input the "shopping" into the title edit
-			window.Find<Edit> ("Title:").SetValue("shopping");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			addEntryDialog = window.Find<Window> ("Add Entry");
+			addEntryDialog.Find<Edit> ("Title:").SetValue("shopping");
 			procedureLogger.ExpectedResult ("\"shopping\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.12 Click "OK" button on the "Add Entry" dialog
 			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
-			//addEntryDialog.OK ();
-			window.Find<Button> ("OK").Click ();
+			addEntryDialog.OK ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -702,20 +699,21 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.14 Get the (0,0) element of the datagrid , check if it is "Sample Entry"
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			//var textItem = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
-			//var textItem = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
+			//var sampleText = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
+			//var sampleText = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
 			//BUG578244: The datagrid's GetItem method can't be run on Linux.
-			//var dataGridItem = dataGrid.GetItem (0, 0);
+			//var entryText = dataGrid.GetItem (0, 0);
 			//procedureLogger.ExpectedResult ("The (0,0) item of the datagrid is \"Sample Entry\".");
-			//Assert.AreEqual (textItem, dataGridItem);
+			//Assert.AreEqual (sampleText, entryText);
 			//Thread.Sleep (Config.Instance.ShortDelay);
 
+			//104.15 Resize window
 			//Resize the window smaller in order to make horizontal scroll bar could be displayed.
-			window.Resize (300, 400);
-			procedureLogger.ExpectedResult ("The window is set to be 300 width, 400 height.");
+			window.Resize (200, 300);
+			procedureLogger.ExpectedResult ("The window is set to be 200 width, 300 height.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.15 Check the ScrollPattern's default property of datagrid
+			//104.16 Check HorizontallyScrollable and VerticallyScrollable of dataGrid
 			procedureLogger.Action ("Check HorizontallyScrollable.");
 			procedureLogger.ExpectedResult ("The value of HorizontallyScrollable property is true.");
 			Assert.AreEqual (true, dataGrid.HorizontallyScrollable);
@@ -726,74 +724,85 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, dataGrid.VerticallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.16 Set the scroll bar horizontal percent to 0
+			//104.17 Set the scroll bar horizontal percent to 0
 			dataGrid.SetScrollPercent (0, -1);
-			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent property is 0.0.");
+			procedureLogger.ExpectedResult ("The horizontal percentage of scroll bar is set to 0.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.18 Check HorizontalScrollPercent and VerticalScrollPercent
+			procedureLogger.Action ("Check HorizontalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 0.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.17 Set the HorizontalScroll a smallIncrement
-			dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a large increment.");
-			Assert.AreEqual (43, dataGrid.HorizontalScrollPercent);
+			procedureLogger.Action ("Check VerticalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is -1.");
+			Assert.AreEqual (-1, dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.18 Set the HorizontalScroll a LargeIncrement
+			//104.19 Set the horizontal scroll bar large increment
+			//BUGxxxx: scroll bar could not be detected on Linux.
+			//dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
+			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large increment.");
+			//Assert.AreEqual (43, dataGrid.HorizontalScrollPercent);
+			//Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.20 Set the horizontal scroll bar large decrement
 			dataGrid.Scroll (ScrollAmount.LargeDecrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a large Decrement.");
+			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large decrement.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.19 Set the HorizontalScroll a small Decrement
-			dataGrid.Scroll (ScrollAmount.SmallIncrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a small increment.");
-			Assert.AreEqual (1, dataGrid.HorizontalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//104.21 Set the horizontal scroll bar small increment
+			//BUGxxxx: scroll bar could not be detected on Linux.
+			//dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
+			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small increment.");
+			//Assert.AreEqual (1, dataGrid.HorizontalScrollPercent);
+			//Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.20 Set the HorizontalScroll a large Decrement
-			dataGrid.Scroll (ScrollAmount.SmallDecrement, ScrollAmount.NoAmount);
-			procedureLogger.ExpectedResult ("The horizontal scrollbar scroll has a small Decrement.");
+			//104.22 Set the horizontal scroll bar small decrement
+			dataGrid.ScrollHorizontal (ScrollAmount.SmallDecrement);
+			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small decrement.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.MediumDelay);
 
-			//104.21 Resize the window size to (1000, 300).
-			window.Resize (1000, 300);
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual(100, dataGrid.HorizontalViewSize);
+			//104.23 Check HorizontalViewSize of dataGrid
+			//BUGxxxx: The window is same size on Window and Linux,
+			//but the horizontal view size is not identical
+			//procedureLogger.Action ("Check HorizontalViewSize.");
+			//procedureLogger.ExpectedResult ("The value of HorizontalViewSize is.");
+			//Assert.AreEqual (, dataGrid.HorizontalViewSize);
+			//Thread.Sleep (Config.Instance.MediumDelay);
 
-			//104.22 Resize the window size to (0, 300)
-			window.Resize (0, 300);
-			procedureLogger.ExpectedResult ("The window is set to be 1 width, 300 height.");
+			//104.24 Check VerticalViewSize of dataGrid
+			procedureLogger.Action ("Check VerticalViewSize.");
+			procedureLogger.ExpectedResult ("The value of VerticalViewSize is 100.");
+			Assert.AreEqual (100, dataGrid.VerticalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual(54, dataGrid.HorizontalViewSize);
 
-			//104.23 Resize the window size to (400, 500)
-			window.Resize (400, 500);
-			procedureLogger.ExpectedResult ("The window is set to be 400 width, 500 height.");
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual (78, dataGrid.HorizontalViewSize);
-
-			//104.24 Set current view of dataGrid
+			//104.25 Set current view of dataGrid
 			//BUGxxxxx: The viewId is difference between on Linux and Windows
 			dataGrid.SetCurrentView (0);
 			procedureLogger.ExpectedResult ("The current view of dataGrid is 0.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.25 Check the data grid's MultipleViewPattern property
+			//104.26 Check current view of dataGrid
 			procedureLogger.Action ("Check CurrentView.");
 			procedureLogger.ExpectedResult ("The value of CurrentView property is 0.");
 			Assert.AreEqual (0, dataGrid.CurrentView);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.26 Retrieve the view name for the datagrid.
+			//104.27 Check the view name of datagrid.
 			var viewName = dataGrid.GetViewName (0);
 			procedureLogger.ExpectedResult ("The current view name is \"Icons\".");
 			Assert.AreEqual ("Icons", viewName);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.27 Check Column, ColumnSpan, Row, RowSpan ContainingGrid of each data item.
+			//104.28 Check Column, ColumnSpan, Row, RowSpan ContainingGrid of each data item.
 			var dataItems = dataGrid.FindAll<DataItem> ();
 			for (int i = 0; i < dataItems.Length; i++) {
+				//NOTE: Microsoft doesn't implement GridItemPattern for DataItem here, but you can call the methods
+-               //of GridItemPattern, does it intend to do, or a bug?
 				procedureLogger.Action (string.Format("Check Column of {0}.", dataItems[i].NameAndType));
 				procedureLogger.ExpectedResult (string.Format ("The Column of {0} is 0.", dataItems[i].NameAndType));
 				Assert.AreEqual (0, dataItems[i].Column);
@@ -822,7 +831,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 				Thread.Sleep (Config.Instance.ShortDelay);
 			}
 
-			//104.28 Check Column, ColumnSpan, Row, RowSpan, ContainingGrid,
+			//104.29 Check Column, ColumnSpan, Row, RowSpan, ContainingGrid,
 			// ColumnHeaderItems, RowHeaderItems of an Edit.
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			//var sampleText = dataGrid.Find<Text> ("Sample Entry");
@@ -863,149 +872,122 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (0, sampleText.RowHeaderItems.Length);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.29 Click "Tools" menu item on the menu bar
+			//104.30 Click "Tools" menu item on the menu bar
 			var menubar = window.Find<MenuBar> ();
 			menubar.Find<MenuItem> ("Tools").Click ();
 			procedureLogger.ExpectedResult ("The \"Tools\" menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.30 Click "Generate Password.." menu item on the sub menu
+			//104.31 Click "Generate Password.." menu item on the sub menu
 			menubar.Find<MenuItem> ("Generate Password...").Click ();
 			procedureLogger.ExpectedResult ("The \"Password Generator\" window appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.31 Select "Preview" Tab item
+			//104.32 Select "Preview" Tab item
 			var passwdWindow = window.Find<Window> ("Password Generator");
 			var tabItemPreview = passwdWindow.Find<TabItem> ("Preview");
 			tabItemPreview.Select ();
 			procedureLogger.ExpectedResult ("The \"Preview\" tab selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.32 Check VerticallyScrollable.
+			//104.33 Check VerticallyScrollable and HorizontallyScrollable of passwordDocument
 			var passwordDocument = tabItemPreview.Find<Document> ();
 			procedureLogger.Action ("Check VerticallyScrollable.");
-			procedureLogger.ExpectedResult ("The value of VerticallyScrollable property is true.");
+			procedureLogger.ExpectedResult ("The value of VerticallyScrollable is true.");
 			Assert.AreEqual (true, passwordDocument.VerticallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check HorizontallyScrollable.");
-			procedureLogger.ExpectedResult ("The value of HorizontallyScrollable property is false.");
+			procedureLogger.ExpectedResult ("The value of HorizontallyScrollable is false.");
 			Assert.AreEqual (false, passwordDocument.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.33 Set the Scroll vertical percent to 0
+			//104.34 Set percentage of the vertical scroll bar to 0
 			passwordDocument.SetScrollPercent (-1, 0);
-			procedureLogger.ExpectedResult ("The value of VerticallScrollPercent property is 0.0.");
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			procedureLogger.ExpectedResult ("The vertical percentage of scroll bar is set to 0.");;
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.34 Set the VerticalScroll a LargeIncrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large increment.");
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
-
-			//104.35 Set the VerticalScroll a LargeDecrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a large Decrement.");
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-
-			//104.36 Set the VerticalScroll a SmallIncrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallIncrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small increment.");
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-
-			//104.37 Set the VerticalScroll a SmallDecrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.SmallDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll has a small Decrement.");
-			Thread.Sleep (Config.Instance.MediumDelay);
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-
-			//104.38 Set the Scroll vertica percent to 100
-			passwordDocument.SetScrollPercent (-1, 100);
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent property is 0.0.");
-			Assert.AreEqual (100, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.MediumDelay);
-
-			//104.39 Check the Current VerticalViewSize
-			procedureLogger.ExpectedResult 
-				(string.Format("Check the Current VerticalViewSize is {0}",passwordDocument.VerticalViewSize));
-			Assert.AreEqual(73, passwordDocument.VerticalViewSize);
-			Thread.Sleep (Config.Instance.MediumDelay);
-
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
-			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-			//104.36 Scroll vertical scrollbar LargeDecrement
-			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll large decrement.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			procedureLogger.Action ("Checkthe VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.33 Scroll vertical scrollbar SmallIncrement
-			passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small increment.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.34 Check the percentage of vertical scrollbar
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
-			 * procedureLogger.Action ("Check the VerticalScrollPercent.");
-			 * procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is.");
-			 * Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
-			 * Thread.Sleep (Config.Instance.ShortDelay);
-			 */
-
-			//104.35 Scroll vertical scrollbar SmallDecrement
-			passwordDocument.ScrollVertical (ScrollAmount.SmallDecrement);
-			procedureLogger.ExpectedResult ("The vertical scrollbar scroll small decrement.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.38 Set horizontal scroll percentage to 50.-1 means NoScroll
-			passwordDocument.SetScrollPercent (-1, 50.0);
-			procedureLogger.ExpectedResult ("The percentage of vertical scrollbar is 50%.");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//104.39 Check the vertical scrollbar's position
-			/*
-			 * BUGXXXXX: The window is same size on Windows and Linux,
-			 * so it's hard to determine the actual result here.
+			//104.35 Check VerticalScrollPercent and HorizontalScrollPercent of passwordDocument
 			procedureLogger.Action ("Check VerticalScrollPercent.");
-			procedureLogger.ExpectedResult ("The value of VerticallyScrollable is 50%.");
-			Assert.AreEqual (50.0, passwordDocument.VerticalScrollPercent);
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is 0.");
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
 
-			//104.40 Check ColumnHeaders
+			procedureLogger.Action ("Check HorizontalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is -1.");
+			Assert.AreEqual (-1, passwordDocument.HorizontalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.36 Set the vertical scroll bar large increment
+			//BUGxxxx: Scroll vertical scroll bar,
+			//but the VercialScrollPercent is not identical on Windows and Linux
+			//passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
+			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll large increment.");
+			//Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
+			//Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.37 Set the vertical scroll bar large decrement
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
+			procedureLogger.ExpectedResult ("The vertical scroll bar scroll large decrement.");
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.38 Set the vertical scroll bar small increment
+			//BUGxxxx: Scroll vertical scroll bar,
+			//but the VercialScrollPercent is not identical on Windows and Linux
+			//passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
+			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll small increment.");
+			//Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
+			//Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.39 Set the vertical scroll bar small decrement
+			passwordDocument.ScrollVertical (ScrollAmount.SmallDecrement);
+			procedureLogger.ExpectedResult ("The vertical scroll bar scroll small decrement.");
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.40 Set the Scroll vertica percent to 100
+			passwordDocument.SetScrollPercent (-1, 100);
+			procedureLogger.ExpectedResult ("The vertical percentage of scroll bar is set to 100.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.41 Check VerticalScrollPercent of passwordDocument
+			procedureLogger.Action ("Check VerticalScrollPercent.");
+			procedureLogger.ExpectedResult ("The value of VerticalScrollPercent is 100.");
+			Assert.AreEqual (100, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.42 Check VerticalViewSize of passwordDocument
+			//BUGxxxx: The window is same size on Window and Linux,
+			//but the horizontal view size is not identical
+			//procedureLogger.Action ("Check VerticalViewSize.");
+			//procedureLogger.ExpectedResult ("The value of VerticalViewSize is.");
+			//Assert.AreEqual(, passwordDocument.VerticalViewSize);
+			//Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.43 Check HorizontalViewSize of passwordDocument
+			procedureLogger.Action ("Check HorizontalViewSize.");
+			procedureLogger.ExpectedResult ("The value of HorizontalViewSize is 100.");
+			Assert.AreEqual(100, passwordDocument.HorizontalViewSize);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//104.44 Check ColumnHeaders of dataGrid
 			Assert.AreEqual (dataGrid.ColumnHeaders, dataGrid.GetColumnHeaders ());
 			procedureLogger.ExpectedResult (string.Format("The ColumnHeaders is {0}.", dataGrid.ColumnHeaders));
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.41 Check RowHeaders
+			//104.45 Check RowHeaders of dataGrid
 			Assert.AreEqual (0, dataGrid.GetRowHeaders ().Length);
 			procedureLogger.ExpectedResult ("The count of RowHeaders is 0.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.42 Check RowOrColumnMajor
+			//104.46 Check RowOrColumnMajor of dataGrid
 			procedureLogger.Action ("Check RowOrColumnMajor.");
 			procedureLogger.ExpectedResult ("The RowOrColumnMajor is \"RowMajor\".");
 			Assert.AreEqual (RowOrColumnMajor.RowMajor, dataGrid.RowOrColumnMajor);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.43 Close "Password Generator" window
+			//104.47 Close "Password Generator" window
 			passwdWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Password Generator\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);

@@ -1,3 +1,7 @@
+2010-02-13  Ray Wang  <rawang@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Update Testcase104
+
 2010-02-12  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/Winforms/KeePassTests.cs: For the same control , test its vetical
