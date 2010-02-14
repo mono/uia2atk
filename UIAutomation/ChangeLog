@@ -1,3 +1,8 @@
+2010-02-14  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	Fix build error of UIAutomationClientTests (bug#579635)
+
 2010-02-12  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClient/Makefile.am: 
