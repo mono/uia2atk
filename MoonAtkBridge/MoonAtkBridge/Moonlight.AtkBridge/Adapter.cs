@@ -315,6 +315,9 @@ namespace Moonlight.AtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+			// Clearing inherited states to remove assumptions in specific
+			// interface implementations.
+			states.ClearStates ();
 
 			DynamicAdapterFactory.Instance.MarkExternalReference (states);
 

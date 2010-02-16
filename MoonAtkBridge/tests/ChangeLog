@@ -1,3 +1,8 @@
+2010-02-16  Mario Carrion  <mcarrion@novell.com>
+
+	* test_calendar.py: Testing default states in children. For bugs
+	#567651 and #567651.
+
 2010-02-12  Stephen Shaw <sshaw@decriptor.com>
 
 	* moonlight/browser/__init__.py: Relaxed appNameRegex a bit to allow

@@ -94,6 +94,9 @@ class Calendar(TestCase):
             self.assertEqual(pyatspi.ROLE_PUSH_BUTTON, button.role)
             self.assertEqual(name[i], button.name)
             self.assertEqual(0, button.childCount)
+	    self.assertStates(button, [
+                'enabled', 'sensitive', 'showing', 'visible'
+            ])
 
 	# 7 week days
 	name = [ 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa' ]
@@ -102,6 +105,9 @@ class Calendar(TestCase):
             self.assertEqual(pyatspi.ROLE_LABEL, label.role)
             self.assertEqual(name[i-3], label.name)
             self.assertEqual(0, label.childCount)
+	    self.assertStates(label, [
+                'enabled', 'sensitive', 'showing', 'visible'
+            ])
 
 	# 43 Days
 	# March: 27, 28, 29, 30, 31
@@ -112,6 +118,10 @@ class Calendar(TestCase):
             self.assertEqual(str(day), button.name)
 	    day = day + 1
             self.assertEqual(1, button.childCount)
+	    self.assertStates(button, [
+                'enabled', 'sensitive', 'showing', 'visible', 'selectable'
+            ])
+
 	# April: 1-30
 	day = 1
 	for i in xrange(15, 45):
@@ -120,6 +130,10 @@ class Calendar(TestCase):
             self.assertEqual(str(day), button.name)
 	    day = day + 1
             self.assertEqual(1, button.childCount)
+	    self.assertStates(button, [
+                'enabled', 'sensitive', 'showing', 'visible', 'selectable'
+            ])
+
 	# May: 1-7
 	day = 1
 	for i in xrange(45, 52):
@@ -128,6 +142,9 @@ class Calendar(TestCase):
             self.assertEqual(str(day), button.name)
 	    day = day + 1
             self.assertEqual(1, button.childCount)
+	    self.assertStates(button, [
+                'enabled', 'sensitive', 'showing', 'visible', 'selectable'
+            ])
 
 
 	# Years
@@ -136,6 +153,9 @@ class Calendar(TestCase):
             self.assertEqual(pyatspi.ROLE_PUSH_BUTTON, button.role)
 	    self.assertEqual('Jan', button.name)
             self.assertEqual(0, button.childCount)
+	    self.assertStates(button, [
+                'enabled', 'sensitive', 'selectable'
+            ])
 
     # Selection Tests
 
