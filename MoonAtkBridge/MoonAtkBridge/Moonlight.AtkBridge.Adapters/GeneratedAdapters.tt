@@ -35,6 +35,7 @@
 // Any changes made will be lost if regenerated.
 
 using Atk;
+using System;
 using System.Windows;
 using Moonlight.AtkBridge;
 using System.Windows.Automation;
@@ -171,6 +172,11 @@ foreach (HashSet<string> impls in combinations) {
 				<#= ToFieldName (impl) #>,
 <# 	} #>
 			};
+		}
+
+		protected <#= typeName #> (IntPtr ptr)
+			: base (ptr)
+		{
 		}
 
 		protected override BasePatternImplementor[] PatternImplementors {

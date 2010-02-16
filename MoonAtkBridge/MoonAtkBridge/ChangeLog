@@ -1,15 +1,12 @@
+2010-02-16  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs:
+	* Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt: Add protected
+	IntPtr ctors to assist with Gtk#'s marshaling and stop some segfaults.
+
 2010-02-16  Mario Carrion  <mcarrion@novell.com>
 
 	* Moonlight.AtkBridge/Adapter.cs: Clearing inherited states.
-
-2010-02-12  Mario Carrion  <mcarrion@novell.com>
-
-	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: Null checks
-	added.
-	* Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs: Handling
-	AutomationEvents.SelectionItem*.
-	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs:
-	Added property Adapter.
 
 2010-02-04  Mario Carrion  <mcarrion@novell.com>
 

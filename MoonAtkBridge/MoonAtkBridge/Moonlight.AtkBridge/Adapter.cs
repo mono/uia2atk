@@ -64,6 +64,11 @@ namespace Moonlight.AtkBridge
 			this.Peer = peer;
 		}
 
+		protected Adapter (IntPtr ptr)
+			: base (ptr)
+		{
+		}
+
 		public uint AddFocusHandler (FocusHandler handler)
 		{
 			if (focusHandlers.ContainsValue (handler))
