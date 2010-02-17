@@ -58,6 +58,10 @@ namespace AtspiUiaSource
 
 		private void AddEvents ()
 		{
+			// TODO: Only listen for events where we have
+			// PropertyChange listeners for them
+			if (accessible.ObjectEvents != null)
+				accessible.ObjectEvents.BoundsChanged += OnBoundsChanged;
 			if (SupportsGrid ())
 				patterns.Add (new GridEventHandler (this));
 			if (SupportsRangeValue ())
@@ -74,6 +78,8 @@ namespace AtspiUiaSource
 		{
 			foreach (ISourceEventHandler pattern in patterns)
 				pattern.Terminate ();
+			if (accessible.ObjectEvents != null)
+				accessible.ObjectEvents.BoundsChanged -= OnBoundsChanged;
 		}
 
 		public virtual bool SupportsProperty (AutomationProperty property)
@@ -515,8 +521,7 @@ namespace AtspiUiaSource
 				return null;
 			// We expose the children of Applications as top-level,
 			// to be more like UIA
-			if (accessible.Parent != null &&
-				accessible.Parent.Role == Role.DesktopFrame)
+			if (accessible.Role == Role.Application)
 				return null;
 			if (elements == null)
 				elements = new Dictionary<Accessible, Element> ();
@@ -656,6 +661,15 @@ namespace AtspiUiaSource
 			// is not set, but then the TextPattern test will
 			// fail; might as well always enable it.
 			return (accessible.QueryEditableText () != null);
+		}
+
+		private void OnBoundsChanged (Accessible sender, BoundingBox bounds)
+		{
+			Rect rect = BoundingBoxToRect (bounds);
+			AtspiUiaSource.AutomationSource.RaisePropertyChangedEvent (this,
+				AutomationElement.BoundingRectangleProperty,
+				Rect.Empty,
+				rect);
 		}
 	}
 }

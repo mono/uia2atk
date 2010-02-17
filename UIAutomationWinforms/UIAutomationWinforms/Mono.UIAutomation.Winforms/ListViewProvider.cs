@@ -203,7 +203,7 @@ namespace Mono.UIAutomation.Winforms
 
 			// Use to regenerate children when view changes
 			listView.UIAViewChanged += OnUIAViewChanged;
-			UpdateChildrenStructure (false);
+			UpdateChildrenStructure (listView.Items.Count > 0);
 		}
 		
 		public override void FinalizeChildControlStructure ()

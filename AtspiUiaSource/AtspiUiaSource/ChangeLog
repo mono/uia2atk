@@ -1,3 +1,11 @@
+2010-02-17  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs: Send BoundingRectangle PropertyChanged events.
+
+	* Element.cs: Don't assume that the desktop has a role of DesktopFrame.
+
+	* AutomationSource.cs: Support FocusChanged events and FocusedElement
+
 2010-02-09  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs, TextEventHandler.cs, Makefile.am: Add TextEventHandler.

@@ -239,6 +239,10 @@ namespace GtkForm
 				button3.Sensitive = true;
 			else if (cmd == "disable button3")
 				button3.Sensitive = false;
+			else if (cmd == "focus textBox3")
+				textBox3.GrabFocus ();
+			else if (cmd == "focus button2")
+				button2.GrabFocus ();
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)

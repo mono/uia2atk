@@ -60,12 +60,14 @@ namespace MonoTests.System.Windows.Automation
 			child2Element = TreeWalker.RawViewWalker.GetNextSibling (child1Element);
 			Assert.IsNotNull (child2Element, "Child element should not be null");
 
-			child3Element = listView1Element.FindFirst (TreeScope.Children,
+			// TODO: Change next line back to Children when
+			// "default group" bug is fixed (BGO#578897)
+			child3Element = listView1Element.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"Item 0"));
 			Assert.IsNotNull (child3Element, "ListView.Child #0");
 
-			child4Element = listView1Element.FindFirst (TreeScope.Children,
+			child4Element = listView1Element.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"Item 1"));
 			Assert.IsNotNull (child4Element, "ListView.Child #1");

@@ -75,6 +75,7 @@ FILES =  \
 	AutomationElementTest.cs \
 	AutomationEventTest.cs \
 	ExpandCollapsePatternTest.cs \
+	FocusTest.cs \
 	InvokePatternTest.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \

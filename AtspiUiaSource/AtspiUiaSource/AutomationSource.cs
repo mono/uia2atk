@@ -37,6 +37,8 @@ namespace AtspiUiaSource
 		private static List<AutomationEventHandlerData> automationEventHandlers;
 		private static List<PropertyChangedEventHandlerData> propertyEventHandlers;
 		private static List<StructureChangedEventHandlerData> structureEventHandlers;
+		private static List<FocusChangedEventHandler> focusChangedHandlers;
+		private static Accessible focusedAccessible = null;
 		private static AutomationSource instance = null;
 
 		public void Initialize ()
@@ -48,6 +50,7 @@ namespace AtspiUiaSource
 			automationEventHandlers = new List<AutomationEventHandlerData> ();
 			propertyEventHandlers = new List<PropertyChangedEventHandlerData> ();
 			structureEventHandlers = new List<StructureChangedEventHandlerData> ();
+			focusChangedHandlers = new List<FocusChangedEventHandler> ();
 			Desktop.DescriptionChanged += OnDescriptionChanged;
 			Desktop.NameChanged += OnNameChanged;
 			Desktop.StateChanged += OnStateChanged;
@@ -78,8 +81,24 @@ namespace AtspiUiaSource
 
 		public IElement GetFocusedElement ()
 		{
-			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
-			throw new NotImplementedException ();
+			if (focusedAccessible == null)
+				focusedAccessible = FindFocusedAccessible (Desktop.Instance);
+			return Element.GetElement (focusedAccessible);
+		}
+
+		private Accessible FindFocusedAccessible (Accessible root)
+		{
+			if (root.StateSet.Contains (StateType.Focused))
+				return root;
+			if (root.StateSet.Contains (StateType.ManagesDescendants))
+				return null;
+			int count = root.Children.Count;
+			for (int i = 0; i < count; i++) {
+				Accessible focus = FindFocusedAccessible (root.Children [i]);
+				if (focus != null)
+					return focus;
+			}
+			return null;
 		}
 
 		// The below code stolen from UiaAtkBridge
@@ -144,8 +163,7 @@ namespace AtspiUiaSource
 
 		public void AddAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
 		{
-			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
-			throw new NotImplementedException ();
+			focusChangedHandlers.Add (eventHandler);
 		}
 
 		public void RemoveAutomationEventHandler (AutomationEvent eventId,
@@ -190,8 +208,7 @@ namespace AtspiUiaSource
 
 		public void RemoveAutomationFocusChangedEventHandler (FocusChangedEventHandler eventHandler)
 		{
-			//TODO Added by Matt Guo, 2009/11/24, due to the change of IAutomationSource
-			throw new NotImplementedException ();
+			focusChangedHandlers.Remove (eventHandler);
 		}
 
 		public void RemoveAllEventHandlers ()
@@ -199,6 +216,7 @@ namespace AtspiUiaSource
 			automationEventHandlers.Clear ();
 			propertyEventHandlers.Clear ();
 			structureEventHandlers.Clear ();
+			focusChangedHandlers.Clear ();
 		}
 
 		internal static AutomationSource Instance {
@@ -304,6 +322,22 @@ namespace AtspiUiaSource
 			}
 		}
 
+		internal static void RaiseFocusChangedEvent (Accessible accessible)
+		{
+			IElement element = Element.GetElement (accessible);
+			IElement parent = Element.GetElement (accessible.Parent);
+			RaiseFocusChangedEvent (parent, element);
+		}
+
+		internal static void RaiseFocusChangedEvent (IElement parent, IElement child)
+		{
+			foreach (FocusChangedEventHandler handler in focusChangedHandlers)
+				handler (child,
+					Int32.Parse (parent.AutomationId),
+					Int32.Parse (child.AutomationId));
+		}
+
+
 		//Check whether target is in the scope defined by <element, scope>
 		private static bool IsElementInScope (IElement target,
 		                                       IElement element,
@@ -381,6 +415,10 @@ namespace AtspiUiaSource
 				break;
 			case StateType.Focused:
 				RaisePropertyChangedEvent (sender, AutomationElementIdentifiers.HasKeyboardFocusProperty, !set, set);
+				if (set) {
+					RaiseFocusChangedEvent (sender);
+					focusedAccessible = sender;
+				}
 				break;
 			case StateType.Selected:
 				RaisePropertyChangedEvent (sender, SelectionItemPatternIdentifiers.IsSelectedProperty, !set, set);

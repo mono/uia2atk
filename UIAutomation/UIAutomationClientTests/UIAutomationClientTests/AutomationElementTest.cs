@@ -108,16 +108,26 @@ namespace MonoTests.System.Windows.Automation
 			var propertyEvents = propertyEventsArray.ToList ();
 			propertyEvents.Clear ();
 
+			AutomationElement element = (Atspi ? treeView1Element : testFormElement);
+
 			AutomationPropertyChangedEventHandler handler =
 				(o, e) => propertyEvents.Add (new { Sender = o, Args = e });
-			At.AddAutomationPropertyChangedEventHandler (testFormElement,
+			At.AddAutomationPropertyChangedEventHandler (element,
 			                                             TreeScope.Element, handler,
 			                                             AutomationElement.BoundingRectangleProperty);
 
-			RunCommand ("MoveTo.Origin");
+			if (Atspi) {
+				AutomationElement parentElement;
+				parentElement = treeView1Element.FindFirst (TreeScope.Children,
+					new PropertyCondition (AEIds.ControlTypeProperty,
+						ControlType.TreeItem));
+				ExpandCollapsePattern pattern = (ExpandCollapsePattern) parentElement.GetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern);
+				pattern.Expand ();
+			} else
+				RunCommand ("MoveTo.Origin");
 Thread.Sleep(1000);
 			Assert.AreEqual (1, propertyEvents.Count, "event count");
-			Assert.AreEqual (testFormElement, propertyEvents [0].Sender, "event sender");
+			Assert.AreEqual (element, propertyEvents [0].Sender, "event sender");
 			Assert.AreEqual (AutomationElement.BoundingRectangleProperty, propertyEvents [0].Args.Property, "property");
 			Assert.AreEqual (Rect.Empty, propertyEvents [0].Args.OldValue, "old value");
 			Assert.AreNotEqual (Rect.Empty, propertyEvents [0].Args.NewValue, "new value");

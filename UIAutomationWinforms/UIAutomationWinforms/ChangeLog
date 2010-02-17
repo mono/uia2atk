@@ -1,3 +1,8 @@
+2010-02-17  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListviewProvider.cs: Initialize
+	children if items exist already.
+
 2010-01-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Provide a

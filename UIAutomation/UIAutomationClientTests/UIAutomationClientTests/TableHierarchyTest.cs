@@ -119,6 +119,27 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.TreeItem));
 			Assert.IsNotNull (treeItemElement, "Should have a TreeItem");
+			AutomationElement treeItem2Element;
+			treeItem2Element = TreeWalker.RawViewWalker.GetNextSibling (treeItemElement);
+			ExpandCollapsePattern pattern = (ExpandCollapsePattern) treeItem2Element.GetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern);
+			pattern.Expand ();
+			pattern = (ExpandCollapsePattern) treeItemElement.GetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern);
+			TreeViewHierarchyTest (false);
+			pattern.Expand ();
+Thread.Sleep(500);
+			TreeViewHierarchyTest (true);
+			pattern.Collapse ();
+Thread.Sleep(500);
+			TreeViewHierarchyTest (false);
+		}
+
+		public void TreeViewHierarchyTest (bool item1Expanded)
+		{
+			AutomationElement treeItemElement;
+			treeItemElement = treeView1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.TreeItem));
+			Assert.IsNotNull (treeItemElement, "Should have a TreeItem");
 			Assert.AreEqual ("item 1",
 				treeItemElement.Current.Name, "item 1");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (treeItemElement), "Item1 previous");
@@ -126,17 +147,22 @@ namespace MonoTests.System.Windows.Automation
 			treeItemSubElement = treeItemElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.TreeItem));
-			Assert.IsNotNull (treeItemSubElement, "TreeItemSub");
-			Assert.AreEqual ("item 1a",
-				treeItemSubElement.Current.Name, "item 1a");
-			Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (treeItemSubElement), "Item1a previous");
-			Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (treeItemSubElement), "Item1a next");
+			if (item1Expanded) {
+				Assert.IsNotNull (treeItemSubElement, "TreeItemSub");
+				Assert.AreEqual ("item 1a",
+					treeItemSubElement.Current.Name, "item 1a");
+				Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (treeItemSubElement), "Item1a previous");
+				Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (treeItemSubElement), "Item1a next");
+				Assert.IsNull (TreeWalker.RawViewWalker.GetFirstChild (treeItemSubElement), "Item1a child");
+			} else
+				Assert.IsNull (TreeWalker.RawViewWalker.GetFirstChild (treeItemElement), "Item1 shouldn't have children when not expanded");
 			treeItemElement = TreeWalker.RawViewWalker.GetNextSibling (treeItemElement);
 			Assert.AreEqual ("item 2",
 				treeItemElement.Current.Name, "item 2");
 			treeItemSubElement = treeItemElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.TreeItem));
+			Assert.IsNotNull (treeItemSubElement, "SubElement should not be null");
 			Assert.AreEqual ("item 2a",
 				treeItemSubElement.Current.Name, "item 2a");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (treeItemSubElement), "Item2a previous");
@@ -145,6 +171,9 @@ namespace MonoTests.System.Windows.Automation
 				treeItemSubElement.Current.Name, "item 2b");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (treeItemSubElement), "Item2b next");
 			Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (treeItemElement), "Item2 next");
+			treeItemElement = TreeWalker.RawViewWalker.GetPreviousSibling (treeItemElement);
+			Assert.AreEqual ("item 1",
+				treeItemElement.Current.Name, "item 2 previous");
 		}
 		#endregion
 	}

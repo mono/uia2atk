@@ -49,10 +49,17 @@ namespace MonoTests.System.Windows.Automation
 			//on Windows, call InvokePattern.Invoke will make corresponding button focused, so we also assert this behavior in the test,
 			//however our implementation will not make the button focused after InvokePattern.Invoke.
 
-			AutomationElement [] expectedFocusedElements = new AutomationElement [] {
-				txtCommandElement, textbox3Element,
-				txtCommandElement, button2Element,
-			};
+			AutomationElement [] expectedFocusedElements;
+			if (Atspi)
+				expectedFocusedElements = new AutomationElement [] {
+					btnRunElement, textbox3Element,
+					btnRunElement, button2Element,
+				};
+			else
+				expectedFocusedElements = new AutomationElement [] {
+					txtCommandElement, textbox3Element,
+					txtCommandElement, button2Element,
+				};
 
 			AutomationFocusChangedEventHandler handler = (s,e) => actualFocusedElements.Add ((AutomationElement) s);
 			At.AddAutomationFocusChangedEventHandler (handler);
@@ -71,7 +78,32 @@ namespace MonoTests.System.Windows.Automation
 
 			Assert.AreEqual (expectedFocusedElements.Length, actualFocusedElements.Count, "Event handler count");
 			for (int i = 0; i < actualFocusedElements.Count; i++) {
-				Assert.AreEqual (expectedFocusedElements [i], actualFocusedElements [i], "Event handler sender");
+				Assert.AreEqual (expectedFocusedElements [i], actualFocusedElements [i], "Event handler sender #" + i);
+			}
+		}
+
+		[Test]
+		public void SetFocusTest ()
+		{
+			AutomationElement [] expectedFocusedElements = new AutomationElement [] {
+				textbox3Element, button2Element
+			};
+
+			button2Element.SetFocus ();
+			AutomationFocusChangedEventHandler handler = (s,e) => actualFocusedElements.Add ((AutomationElement) s);
+			At.AddAutomationFocusChangedEventHandler (handler);
+			actualFocusedElements.Clear ();
+			textbox3Element.SetFocus ();
+			Thread.Sleep (100);
+			Assert.AreEqual (textbox3Element, AutomationElement.FocusedElement, "FocusedElement");
+			button2Element.SetFocus ();
+			Thread.Sleep (100);
+			Assert.AreEqual (button2Element, AutomationElement.FocusedElement, "FocusedElement");
+			Thread.Sleep(1000);
+			At.RemoveAutomationFocusChangedEventHandler (handler);
+			Assert.AreEqual (expectedFocusedElements.Length, actualFocusedElements.Count, "Event handler count");
+			for (int i = 0; i < actualFocusedElements.Count; i++) {
+				Assert.AreEqual (expectedFocusedElements [i], actualFocusedElements [i], "Event handler sender #" + i);
 			}
 		}
 
