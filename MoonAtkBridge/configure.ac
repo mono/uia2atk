@@ -81,7 +81,9 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO], [mono >= 2.5])
 
-MOON_LIBDIR=`pkg-config --variable=libdir mono`/mono/moonlight/
+# We need this to make the tests using System.Windows.Controls.dll and 
+# System.Windows.Controls.Data.dll
+MOON_LIBDIR=${prefix}/lib/mono/moonlight/
 AC_SUBST(MOON_LIBDIR)
 
 AC_ARG_VAR(MOON_PATH, "Path to built checkout of moon")

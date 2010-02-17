@@ -1,3 +1,7 @@
+2010-02-17  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: Using $prefix instead of pkg-config.
+
 2010-02-16  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: New variable MOON_LIBDIR, required by the assets using
