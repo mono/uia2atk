@@ -1,5 +1,8 @@
 XAP = CalendarTest.xap
 
+SWC = System.Windows.Controls.dll
+GLOBAL_SWC = ${MOON_LIBDIR}/${SWC}
+
 FILES = \
 	App.xaml \
 	App.xaml.cs \
@@ -8,11 +11,13 @@ FILES = \
 
 all: $(XAP)
 
-$(XAP): $(FILES)
-	cp -f `pkg-config --variable=libdir mono`/moonlight/2.0-redist/System.Windows.Controls.dll .
-	$(MXAP) -r:System.Windows.Controls.dll --builddirhack=$(MOON_PATH)
+$(SWC): $(GLOBAL_SWC)
+	cp $(GLOBAL_SWC) $(SWC)
+
+$(XAP): $(SWC) $(FILES)
+	$(MXAP) -ares:$(SWC)
 
 clean:
-	rm -f System.Windows.Controls.dll
+	rm -f $(SWC)
 	$(MXAP) --clean
 

@@ -1,5 +1,9 @@
 2010-02-16  Mario Carrion  <mcarrion@novell.com>
 
+	* assets/CalendarTest/Makefile.am: Using MOON_LIBDIR to build example.
+
+2010-02-16  Mario Carrion  <mcarrion@novell.com>
+
 	* test_calendar.py: Testing default states in children. For bugs
 	#567651 and #567651.
 

@@ -81,6 +81,9 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO], [mono >= 2.5])
 
+MOON_LIBDIR=`pkg-config --variable=libdir mono`/mono/moonlight/
+AC_SUBST(MOON_LIBDIR)
+
 AC_ARG_VAR(MOON_PATH, "Path to built checkout of moon")
 if test "x$MOON_PATH" = "x"; then
 	MOON_PATH=../../moon
