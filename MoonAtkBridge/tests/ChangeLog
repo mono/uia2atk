@@ -1,3 +1,15 @@
+2010-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* test_slider.py: Requesting children in tests instead of setup class
+	to aviod crash.
+	* assets/Makefile.am: 
+	* assets/TabControlTest/App.xaml: 
+	* assets/TabControlTest/Page.xaml: 
+	* assets/TabControlTest/App.xaml.cs: 
+	* assets/TabControlTest/Makefile.am: 
+	* assets/TabControlTest/Page.xaml.cs: 
+	* test_tabcontrol.py: Tests TabControl
+
 2010-02-19  Brad Taylor  <brad@getcoded.net>
 
 	* test_calendar.py: Test CalendarButton and CalendarDayButton's invoke

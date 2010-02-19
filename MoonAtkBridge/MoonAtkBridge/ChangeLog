@@ -1,3 +1,16 @@
+2010-02-19  Mario Carrion  <mcarrion@novell.com>
+
+	* MoonAtkBridge.sources: TabItem.cs added.
+	* Moonlight.AtkBridge/Adapter.cs: Fix <dead> bug. New method
+	HandleStructureChanged to recreate children.
+	* Moonlight.AtkBridge/ImplementsPatternAttribute.cs: 
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: New logic to blacklist
+	interfaces, implemented by Brad Taylor.
+	* Moonlight.AtkBridge.PatternImplementors/TabItem.cs: New file, used
+	to update TabItem's children when its IsSelected property changes.
+	* Moonlight.AtkBridge.PatternImplementors/Selection.cs: Returning
+	valid value in ClearSelection.
+
 2010-02-19  Brad Taylor  <brad@getcoded.net>
 
 	* MoonAtkBridge.sources:

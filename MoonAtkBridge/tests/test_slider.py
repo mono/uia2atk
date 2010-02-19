@@ -45,10 +45,6 @@ class Slider(TestCase):
         cls.slider = cls.app.slControl.findSlider('')
         cls.slider_value = cls.slider._accessible.queryValue()
 
-        cls.large_decrease = cls.slider.getChildAtIndex(0)
-        cls.thumb = cls.slider.getChildAtIndex(1)
-        cls.large_increase = cls.slider.getChildAtIndex(2)
-
     @classmethod
     def teardown_class(cls):
         cls.app.kill()
@@ -72,7 +68,11 @@ class Slider(TestCase):
             self.assertEqual('', child.name)
             self.assertEqual(0, child.childCount)
 
-        for button in (self.large_increase, self.large_decrease):
+        large_decrease = self.slider.getChildAtIndex(0)
+        thumb = self.slider.getChildAtIndex(1)
+        large_increase = self.slider.getChildAtIndex(2)
+
+        for button in (large_increase, large_decrease):
             self.assertInterfaces(button, [
                 'accessible', 'action', 'component',
             ])
@@ -80,10 +80,10 @@ class Slider(TestCase):
                 'enabled', 'sensitive', 'showing', 'visible',
             ])
 
-        self.assertInterfaces(self.thumb, [
+        self.assertInterfaces(thumb, [
             'accessible', 'component',
         ])
-        self.assertStates(self.thumb, [
+        self.assertStates(thumb, [
             'enabled', 'focusable', 'sensitive', 'showing', 'visible',
         ])
 
@@ -144,10 +144,13 @@ class Slider(TestCase):
         self.assertEqual(self.slider_value.currentValue, 0)
         self.assertEqual(self.label.name, '0')
 
+        large_decrease = self.slider.getChildAtIndex(0)
+        large_increase = self.slider.getChildAtIndex(2)
+
         listener = EventListener()
         for value in (25, 50, 75, 100):
             with listener.listenTo(self.slider):
-                    self.large_increase.click()
+                    large_increase.click()
                     self.assertEqual(self.label.name, str(value))
                     self.assertEqual(self.slider_value.currentValue, value)
 
@@ -156,7 +159,7 @@ class Slider(TestCase):
                                           qty=1)
 
         with listener.listenTo(self.slider):
-                self.large_increase.click()
+                large_increase.click()
                 self.assertEqual(self.label.name, '100')
                 self.assertEqual(self.slider_value.currentValue, 100)
 
@@ -166,7 +169,7 @@ class Slider(TestCase):
 
         for i in (75, 50, 25, 0):
             with listener.listenTo(self.slider):
-                    self.large_decrease.click()
+                    large_decrease.click()
 
                     sleep(config.MEDIUM_DELAY)
 
@@ -178,7 +181,7 @@ class Slider(TestCase):
                                           qty=1)
 
         with listener.listenTo(self.slider):
-                self.large_decrease.click()
+                large_decrease.click()
                 self.assertEqual(self.label.name, '0')
                 self.assertEqual(self.slider_value.currentValue, 0)
 

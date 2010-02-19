@@ -48,6 +48,19 @@ namespace Moonlight.AtkBridge
 			set;
 		}
 
+		public PatternInterface Provides {
+			get { return provides; }
+			set {
+				provides = value;
+				IsProvidesSet = true;
+			}
+		}
+
+		public bool IsProvidesSet {
+			get;
+			private set;
+		}
+
 		public ImplementsPatternAttribute (PatternInterface pattern)
 		{
 			Pattern = pattern;
@@ -62,5 +75,9 @@ namespace Moonlight.AtkBridge
 		{
 			ControlType = controlType;
 		}
+
+		// Hack around a C# limitation which does not allow for
+		// nullable types in named attributes
+		private PatternInterface provides;
 	}
 }

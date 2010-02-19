@@ -1,0 +1,48 @@
+<UserControl x:Class="TabControlTest.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    Width="400" Height="300">
+    <Canvas x:Name="LayoutRoot" Background="White">
+        <TextBlock x:Name="label" Text="Select:" Margin="30,20,0,0" />
+          <control:TabControl x:Name="tab1" Width="350" Height="200" Margin="0,50,0,0" SelectionChanged="tab_SelectionChanged" >
+
+            <control:TabItem x:Name="item0" Header="TabItem0">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item0_label" Text="This is TabItem0" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+           <control:TabItem x:Name="item1" Header="TabItem1" IsSelected="True">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item1_label" Text="This is TabItem1" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+            <control:TabItem x:Name="item2" Header="TabItem2">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item2_label" Text="This is TabItem2" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+            <control:TabItem x:Name="item3" Header="TabItem3">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item3_label" Text="This is TabItem3" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+            <control:TabItem x:Name="item4" Header="TabItem4">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item4_label" Text="This is TabItem4" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+            <control:TabItem x:Name="item5" Header="TabItem5">
+                <control:TabItem.Content>
+                    <TextBlock x:Name="item5_label" Text="This is TabItem5" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                </control:TabItem.Content>
+            </control:TabItem>
+
+        </control:TabControl>
+    </Canvas>
+</UserControl>

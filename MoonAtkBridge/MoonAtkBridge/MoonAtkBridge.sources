@@ -14,5 +14,6 @@ Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
 Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
 Moonlight.AtkBridge.PatternImplementors/Selection.cs
 Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs
+Moonlight.AtkBridge.PatternImplementors/TabItem.cs
 Moonlight.AtkBridge.PatternImplementors/Value.cs
 Moonlight.AtkBridge/RootVisualAdapter.cs

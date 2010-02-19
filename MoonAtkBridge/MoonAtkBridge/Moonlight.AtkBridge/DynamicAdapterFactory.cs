@@ -55,9 +55,8 @@ namespace Moonlight.AtkBridge
 						rootVisualAdapter = null;
 						return null;
 					}
-
-					activeAdapters [rootVisualAdapter.Peer]
-						= rootVisualAdapter;
+					activeAdapters.Add (rootVisualAdapter.Peer,
+					                    rootVisualAdapter);
 				}
 
 				return rootVisualAdapter;
@@ -76,6 +75,11 @@ namespace Moonlight.AtkBridge
 			if (peer == null)
 				return null;
 
+			// We ignore all requests until the application is
+			// completely loaded.
+			if (RootVisualAdapter == null)
+				return null;
+
 			// Do we already have a running Adapter instance for
 			// this peer?
 			if (activeAdapters.ContainsKey (peer))
@@ -89,27 +93,39 @@ namespace Moonlight.AtkBridge
 			// with unique Atk interfaces.
 			List<Type> implementors = new List<Type> ();
 
+			List<PatternInterface> implementorBlacklist = new List<PatternInterface> ();
+
 			// Do we have any explict implementors for this type?
 			List<Type> explicitImpls;
 			if (explicitImplementors.TryGetValue (peer.GetType (),
 			                                      out explicitImpls)) {
-				if (explicitImpls != null)
+				if (explicitImpls != null) {
+					foreach (Type t in explicitImpls)
+						if (blacklist.ContainsKey (t))
+							implementorBlacklist.Add (blacklist [t]);
+
 					implementors.AddRange (explicitImpls);
+				}
 			}
 
 			// Do we have any implementors for this control type?
 			List<Type> controlTypeImpls;
 			if (controlTypeImplementors.TryGetValue (peer.GetAutomationControlType (),
 			                                         out controlTypeImpls)) {
-				if (controlTypeImpls != null)
+				if (controlTypeImpls != null) {
+					foreach (Type t in controlTypeImpls)
+						if (blacklist.ContainsKey (t))
+							implementorBlacklist.Add (blacklist [t]);
+
 					implementors.AddRange (controlTypeImpls);
+				}
 			}
 
 			// Find implementors for the patterns that the peer
 			// implements
 			List<Type> potentialImpls = new List<Type> ();
 			potentialImpls.AddRange (
-				GetImplementorsForPeer (peer));
+				GetImplementorsForPeer (peer, implementorBlacklist));
 
 			// Create a reverse mapping between Atk interface and
 			// implementor to ensure uniqueness.
@@ -152,7 +168,7 @@ namespace Moonlight.AtkBridge
 			Adapter adapter = null;
 			if (implementors.Count () == 0) {
 				adapter = new Adapter (peer);
-				activeAdapters [peer] = adapter;
+				activeAdapters.Add (peer, adapter);
 				return adapter;
 			}
 
@@ -181,7 +197,7 @@ namespace Moonlight.AtkBridge
 				adapterType, new object [] { peer }
 			);
 
-			activeAdapters [peer] = adapter;
+			activeAdapters.Add (peer, adapter);
 			return adapter;
 		}
 
@@ -197,12 +213,16 @@ namespace Moonlight.AtkBridge
 				adapter.Dispose ();
 		}
 
-		public Type [] GetImplementorsForPeer (AutomationPeer peer)
+		public Type [] GetImplementorsForPeer (AutomationPeer peer,
+		                                       List<PatternInterface> blacklist)
 		{
 			List<Type> implementors = new List<Type> ();
 
 			foreach (PatternInterface pattern
 			         in GetEnumValues<PatternInterface> ()) {
+				if (blacklist.Contains (pattern))
+					continue;
+
 				var impl = peer.GetPattern (pattern);
 				if (impl == null)
 					continue;
@@ -288,6 +308,9 @@ namespace Moonlight.AtkBridge
 					if (ipa == null)
 						continue;
 
+					if (ipa.IsProvidesSet)
+						blacklist [t] = ipa.Provides;
+
 					if (ipa.ElementType != null) {
 						if (!explicitImplementors.ContainsKey (ipa.ElementType))
 							explicitImplementors [ipa.ElementType] = new List<Type> ();
@@ -361,7 +384,6 @@ namespace Moonlight.AtkBridge
 			var root_visual = app.RootVisual as FrameworkElement;
 			if (root_visual != null){
 				root_peer = new WindowAutomationPeer (root_visual);
-				activeAdapters [root_peer] = rootVisualAdapter;
 			}
 
 			return root_peer;
@@ -377,6 +399,9 @@ namespace Moonlight.AtkBridge
 
 		private Dictionary<Type, List<Type>> explicitImplementors
 			= new Dictionary<Type, List<Type>> ();
+
+		private Dictionary<Type, PatternInterface> blacklist
+			= new Dictionary<Type, PatternInterface> ();
 
 		private Dictionary<AutomationControlType, List<Type>> controlTypeImplementors
 			= new Dictionary<AutomationControlType, List<Type>> ();

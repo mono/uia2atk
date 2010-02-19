@@ -459,8 +459,10 @@ namespace Moonlight.AtkBridge
 		protected void RemoveChild (AutomationPeer peer)
 		{
 			Adapter adapter = DynamicAdapterFactory.Instance.GetAdapter (peer, false);
-			if (adapter == null)
+			if (adapter == null) {
+				children.Remove (peer);
 				return;
+			}
 
 			int index = children.IndexOf (peer);
 			if (index < 0)
@@ -471,6 +473,9 @@ namespace Moonlight.AtkBridge
 			children.Remove (peer);
 
 			DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
+
+			// We need to remove disposed adapter reference
+			Adapters.Remove (peer);
 		}
 
 		protected void AddChild (AutomationPeer peer)
@@ -540,48 +545,53 @@ namespace Moonlight.AtkBridge
 				AutomationPropertyChanged (args.Peer, args);
 		}
 
-		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
+		internal void HandleStructureChanged ()
 		{
-			if (args.Event == AutomationEvents.StructureChanged) {
-				lock (ChildrenLock) {
-					var new_children = Peer.GetChildren ();
+			lock (ChildrenLock) {
+				var new_children = Peer.GetChildren ();
 
-					if (children != null) {
-						var removed = (new_children != null) ? children.Except (new_children)
-										     : children;
+				if (children != null) {
+					var removed = (new_children != null) ? children.Except (new_children)
+									     : children;
 
-						// Remove children that aren't
-						// in the new list
-						while (removed != null && removed.Count () > 0)
-							RemoveChild (removed.ElementAt (0));
-					}
+					// Remove children that aren't
+					// in the new list
+					while (removed != null && removed.Count () > 0)
+						RemoveChild (removed.ElementAt (0));
+				}
 
-					if (new_children != null) {
-						// In an ideal world, we
-						// wouldn't actually add
-						// children (they would be lazy
-						// loaded), but we need to send
-						// events, so blah.
+				if (new_children != null) {
+					// In an ideal world, we
+					// wouldn't actually add
+					// children (they would be lazy
+					// loaded), but we need to send
+					// events, so blah.
+					//
 
-						var added = (children != null) ? new_children.Except (children)
-									       : new_children;
+					var added = (children != null) ? new_children.Except (children)
+								       : new_children;
 
-						// Make sure we set Children
-						// correctly before we start
-						// sending events so that
-						// listeners will see us in the
-						// correct state
-						children = new_children;
+					// Make sure we set Children
+					// correctly before we start
+					// sending events so that
+					// listeners will see us in the
+					// correct state
+					children = new_children;
 
-						// Add children that we haven't
-						// seen before
-						foreach (AutomationPeer peer in added)
-							AddChild (peer);
-					} else {
-						children = new_children;
-					}
+					// Add children that we haven't
+					// seen before
+					foreach (AutomationPeer peer in added)
+						AddChild (peer);
+				} else {
+					children = new_children;
 				}
 			}
+		}
+
+		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
+		{
+			if (args.Event == AutomationEvents.StructureChanged)
+				HandleStructureChanged ();
 
 			if (AutomationEventRaised != null)
 				AutomationEventRaised (args.Peer, args);

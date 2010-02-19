@@ -22,6 +22,7 @@ SUBDIRS = \
 	ScrollViewerTest \
 	SelectionTest \
 	SliderTest \
+	TabControlTest \
 	TableTest \
 	TextBlockTest \
 	ThumbTest \

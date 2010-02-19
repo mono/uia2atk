@@ -99,8 +99,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			IRawElementProviderSimple[] selection
 				= selectionProvider.GetSelection ();
-			if (selection == null)
-				return false;
+			if (selection == null || selection.Length == 0)
+				return true;
 
 			bool result = true;
 			foreach (IRawElementProviderSimple item in selection) {
