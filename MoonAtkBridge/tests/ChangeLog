@@ -1,3 +1,8 @@
+2010-02-19  Brad Taylor  <brad@getcoded.net>
+
+	* test_calendar.py: Test CalendarButton and CalendarDayButton's invoke
+	implementation.
+
 2010-02-16  Mario Carrion  <mcarrion@novell.com>
 
 	* assets/CalendarTest/Makefile.am: Using MOON_LIBDIR to build example.
