@@ -407,7 +407,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 			//103.7 Check "Add Entry" window's default WindowPattern Property
 			var addEntryDialog = window.Find<Window> ("Add Entry");
 			procedureLogger.Action ("Check CanMaximize.");
@@ -674,10 +673,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.11 Input the "shopping" into the title edit
+			//104.11 Input the "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" into the title edit
 			addEntryDialog = window.Find<Window> ("Add Entry");
-			addEntryDialog.Find<Edit> ("Title:").SetValue("shopping");
-			procedureLogger.ExpectedResult ("\"shopping\" has been issued.");
+			var titleEdit = addEntryDialog.Find<Edit> ("Title:");
+			titleEdit.SetValue("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+			procedureLogger.ExpectedResult ("\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\" has been issued.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.12 Click "OK" button on the "Add Entry" dialog
@@ -741,7 +741,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.19 Set the horizontal scroll bar large increment
-			//BUGxxxx: scroll bar could not be detected on Linux.
+			//BUG580431: [UIAClient-Winforms] Scroll bar of datagrid could not be detected on Linux
 			//dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
 			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large increment.");
 			//Assert.AreEqual (43, dataGrid.HorizontalScrollPercent);
@@ -754,7 +754,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.21 Set the horizontal scroll bar small increment
-			//BUGxxxx: scroll bar could not be detected on Linux.
+			//BUG580431: [UIAClient-Winforms] Scroll bar of datagrid could not be detected on Linux
 			//dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
 			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small increment.");
 			//Assert.AreEqual (1, dataGrid.HorizontalScrollPercent);
@@ -767,8 +767,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//104.23 Check HorizontalViewSize of dataGrid
-			//BUGxxxx: The window is same size on Window and Linux,
-			//but the horizontal view size is not identical
+			//BUG580433: [UIAClient-Winforms] The window is same size on Window and Linux,
+			//but the horizontal or vertical view size is not identical
 			//procedureLogger.Action ("Check HorizontalViewSize.");
 			//procedureLogger.ExpectedResult ("The value of HorizontalViewSize is.");
 			//Assert.AreEqual (, dataGrid.HorizontalViewSize);
@@ -781,7 +781,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//104.25 Set current view of dataGrid
-			//BUGxxxxx: The viewId is difference between on Linux and Windows
+			//BUG580447: The viewId is difference between on Linux and Windows
 			dataGrid.SetCurrentView (0);
 			procedureLogger.ExpectedResult ("The current view of dataGrid is 0.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -802,7 +802,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var dataItems = dataGrid.FindAll<DataItem> ();
 			for (int i = 0; i < dataItems.Length; i++) {
 				//NOTE: Microsoft doesn't implement GridItemPattern for DataItem here, but you can call the methods
--               //of GridItemPattern, does it intend to do, or a bug?
+				//of GridItemPattern, does it intend to do, or a bug?
 				procedureLogger.Action (string.Format("Check Column of {0}.", dataItems[i].NameAndType));
 				procedureLogger.ExpectedResult (string.Format ("The Column of {0} is 0.", dataItems[i].NameAndType));
 				Assert.AreEqual (0, dataItems[i].Column);
@@ -836,6 +836,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			//var sampleText = dataGrid.Find<Text> ("Sample Entry");
 			var sampleText = dataGrid.Find<Edit> ("Sample Entry");
+			var sampleDataItem = dataGrid.Find<DataItem> ("Sample Entry");
 			procedureLogger.Action ("Check Column.");
 			procedureLogger.ExpectedResult ("The value of Column is 0.");
 			Assert.AreEqual (0, sampleText.Column);
@@ -858,8 +859,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			procedureLogger.Action ("Check ContainingGrid.");
 			procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
-			//BUGxxxx: same object, but report different.
-			//Assert.AreEqual (dataGrid.AutomationElement, sampleText.ContainingGrid);
+			Assert.AreEqual (sampleDataItem.AutomationElement, sampleText.ContainingGrid);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check ColumnHeaderItems.");
@@ -919,8 +919,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.36 Set the vertical scroll bar large increment
-			//BUGxxxx: Scroll vertical scroll bar,
-			//but the VercialScrollPercent is not identical on Windows and Linux
+			//BUG580452: [UIAClient-Winforms] The window is same size on Window and Linux,
+			//but the horizontal or vertical scroll percentage is not identical
 			//passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
 			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll large increment.");
 			//Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
@@ -933,8 +933,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.38 Set the vertical scroll bar small increment
-			//BUGxxxx: Scroll vertical scroll bar,
-			//but the VercialScrollPercent is not identical on Windows and Linux
+			//BUG580452: [UIAClient-Winforms] The window is same size on Window and Linux,
+			//but the horizontal or vertical scroll percentage is not identical
 			//passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
 			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll small increment.");
 			//Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
@@ -958,8 +958,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.42 Check VerticalViewSize of passwordDocument
-			//BUGxxxx: The window is same size on Window and Linux,
-			//but the horizontal view size is not identical
+			//BUG580433: [UIAClient-Winforms] The window is same size on Window and Linux,
+			//but the horizontal or vertical view size is not identical
 			//procedureLogger.Action ("Check VerticalViewSize.");
 			//procedureLogger.ExpectedResult ("The value of VerticalViewSize is.");
 			//Assert.AreEqual(, passwordDocument.VerticalViewSize);

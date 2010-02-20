@@ -1,3 +1,7 @@
+2010-02-20  Ray Wang  <rawang@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Add bug references.
+
 2010-02-13  Ray Wang  <rawang@novell.com>
 
 	* Tests/Winforms/KeePassTests.cs: Update Testcase104
