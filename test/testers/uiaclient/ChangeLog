@@ -1,3 +1,7 @@
+2010-02-22  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/List.cs: Add ScrollPattern support.
+
 2010-02-20  Ray Wang  <rawang@novell.com>
 
 	* Tests/Winforms/KeePassTests.cs: Add bug references.

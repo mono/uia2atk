@@ -1,4 +1,4 @@
-﻿// List.cs: List control class wrapper.
+// List.cs: List control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The methods of MultipleViewPattern.
+#region MultipleViewPattern
 		public string GetViewName (int viewId)
 		{
 			MultipleViewPattern mvp = (MultipleViewPattern) element.GetCurrentPattern (MultipleViewPattern.Pattern);
@@ -66,8 +66,9 @@ namespace Mono.UIAutomation.TestFramework
 		public int CurrentView {
 			get { return (int) element.GetCurrentPropertyValue (MultipleViewPattern.CurrentViewProperty); }
 		}
+#endregion
 
-		// The method and properties of SelectionPattern.
+#region SelectionPattern
 		public AutomationElement [] GetSelection ()
 		{
 			SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
@@ -81,5 +82,32 @@ namespace Mono.UIAutomation.TestFramework
 		public bool IsSelectionRequired {
 			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
 		}
+#endregion
+
+#region ScrollPattern
+		public bool HorizontallyScrollable {
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.HorizontallyScrollableProperty); }
+		}
+
+		public double HorizontalScrollPercent {
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty); }
+		}
+
+		public double HorizontalViewSize {
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty); }
+		}
+
+		public bool VerticallyScrollable {
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty); }
+		}
+
+		public double VerticalScrollPercent {
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty); }
+		}
+
+		public double VerticalViewSize {
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty); }
+		}
+#endregion
 	}
 }
