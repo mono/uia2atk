@@ -18,8 +18,8 @@
 
 
 Name:           at-spi2-core
-Version:        0.1.6
-Release:        1
+Version:        0.1.7
+Release:        122
 Summary:        Assistive Technology Service Provider Interface - D-Bus based implementation
 License:        GPLv2+
 Group:          System/Libraries
@@ -68,10 +68,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
 #%{_sysconfdir}/at-spi2
-%{_datadir}/at-spi2
+#%{_datadir}/at-spi2
 #%{_sysconfdir}/xdg/autostart/at-spi-dbus-bus.desktop
 %{_libexecdir}/at-spi2/
-%{_datadir}/dbus-1/services/org.freedesktop.atspi.Registry.service
+%{_datadir}/dbus-1/services/org.a11y.atspi.Registry.service
 #%{_bindir}/at-spi-dbus-bus
 
 %changelog
