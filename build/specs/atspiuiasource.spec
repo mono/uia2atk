@@ -3,7 +3,7 @@
 #
 
 Name:           atspiuiasource
-Version:        1.8.94
+Version:        1.9.90
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -14,7 +14,7 @@ Summary:        At-spi uia source
 BuildRequires:	at-spi-sharp-devel
 BuildRequires:	glib-sharp2 >= 2.12.8
 BuildRequires:	mono-devel >= 2.6
-BuildRequires:	mono-uia-devel >= 1.8.94
+BuildRequires:	mono-uia-devel >= 1.9.90
 BuildRequires:	pkg-config
 
 %description

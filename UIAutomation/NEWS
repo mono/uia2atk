@@ -1,7 +1,21 @@
 
 Mono Accessibility News
 
-Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
+Copyright (C) 2009 Novell, Inc. (http://www.novell.com)
+
+Version 1.9.90: The "fantabulous" release
+* #572097 - Test AutomationEvents.SelectionItem* events.
+* #567650 - DataGrid: view on accerciser left treeview make the app crash
+* #567651 - Calendar: week labels have extraneous 'selectable' state
+* #567653 - Calendar: title buttons have extraneous 'selectable' state
+* #561268 - TextBlock: Multi-line Name Is Parsed Incorrectly
+* #555714 - HyperlinkButton: do click action on accerciser make the firefox crashed
+* #576554 - Summary the client-UIA winforms test
+* #576557 - Test SetFocus
+* #489290 - Support properties other than ControlType.
+* #489272 - Implement DeviceEventController interface
+* #576665 - TabControl doesn't refresh children when changing tab.
+* #578220 - Run and add more test case for the current project.
 
 Version 1.8.94: The "ebonics" release
 * #551974 - [PENDING BACKPORT] Test CalendarAutomationPeer and related Peers.
@@ -13,7 +27,6 @@ Version 1.8.94: The "ebonics" release
 * #572516 - Build the rpm package for at-spi2-0.14
 * #573328 - Figure out why after install the at-spi2 0.1.4, the test can't run
 * #572318 - Clean UIAutomationWinforms code to return LocalizedControlType
-* #489315 - Implement TextPattern events
 * #562187 - TabControlAutomationPeer does not return children from GetChildren()
 * #560711 - Slider: some extraneous push buttons
 * #494712 - Test Image control
@@ -70,10 +83,5 @@ Version 1.8.91: The "beefalo" release
 * #559825 - ScrollBar: HScrollBar is missing 'horizontal' state and VScrollBar is missing 'vertical' state
 
 Version 1.8.90: The "anacronym" release
-* Added initial support for Client API using Winforms and AT-SPI backends.
+* Initial release
 
-Version 1.0: The "Leela" release
-* First stable release
-
-Version 0.9: The "Zoidberg" release
-* Initial Release
