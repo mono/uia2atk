@@ -1,3 +1,20 @@
+2010-02-17  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationCLientTests/FocusTest.cs: Adapt for Atspi, and add
+	SetFocus test.
+
+	* UIAutomationClientTests/SelectionPatternTest.cs: Work around
+	BGO#578897.
+
+	* tableHierarchyTest.cs: Test children of TreeView when expanding.
+
+	* AutomationElementTest.cs: Add BoundingRectangle test.
+
+	* AtspiUiaClientTests/FocusTest.cs, AtspiUiaClientTests/makefile.am:
+	Add FocusTest.
+
+	* GtkForm/GtkForm.cs: Add focus commands.
+
 2010-02-09  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/TextPatternTest.cs: Work around at-spi
