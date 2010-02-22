@@ -321,7 +321,9 @@ namespace AtspiUiaSource
 
 		public virtual int NativeWindowHandle {
 			get {
-				return 0;	// not supported
+				Rect rect = BoundingRectangle;
+				// Is this 64-bit compatible?
+				return (int) NativeMethods.WindowAtPosition ((int) rect.X, (int) rect.Y);
 			}
 		}
 
@@ -337,8 +339,7 @@ namespace AtspiUiaSource
 
 		public virtual int ProcessId {
 			get {
-				// can't do this with the current at-spi implementation.
-				return 0;
+				return (int) accessible.Application.Pid;
 			}
 		}
 
@@ -408,8 +409,13 @@ namespace AtspiUiaSource
 
 		public IElement GetDescendantFromPoint (double x, double y)
 		{
-			// TODO: to implement, return the descendant element at point (x,y);
-			return this;
+			Component component = accessible.QueryComponent ();
+			if (component == null)
+				return this;
+			Accessible descendant = component.GetAccessibleAtPoint ((int)x, (int)y, CoordType.Screen);
+			if (descendant == null)
+				return this;
+			return GetElement (descendant);
 		}
 
 		private object GetCurrentPatternInternal (AutomationPattern pattern)

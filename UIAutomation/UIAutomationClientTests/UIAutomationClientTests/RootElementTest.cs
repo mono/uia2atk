@@ -44,7 +44,7 @@ namespace MonoTests.System.Windows.Automation
 		public RootElementTest ()
 		{
 			findTestForm = new AndCondition (new PropertyCondition (
-				AEIds.NameProperty, Atspi ? "Sample GTK form" : "TestForm1"),
+				AEIds.NameProperty, "TestForm1"),
 				new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
 		}
 
@@ -162,7 +162,7 @@ namespace MonoTests.System.Windows.Automation
 		{
 			var findFormByPid = new AndCondition (
 				new PropertyCondition (
-					AEIds.NameProperty, Atspi ? "Sample GTK form" : "TestForm1"),
+					AEIds.NameProperty, "TestForm1"),
 				new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window),
 				new PropertyCondition (AEIds.ProcessIdProperty, pid));
 			var firstChild = AutomationElement.RootElement.FindFirst (

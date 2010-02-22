@@ -1157,10 +1157,13 @@ Thread.Sleep(1000);
 		[Test]
 		public void FromPointTest ()
 		{
-			RunCommand ("MoveTo.Origin");
-			RunCommand ("bring form to front");
-			var element = AutomationElement.FromPoint (new Point (30.0, 30.0));
-			Assert.AreEqual (element, testFormElement);
+			AutomationElement element;
+			if (!Atspi) {
+				RunCommand ("MoveTo.Origin");
+				RunCommand ("bring form to front");
+				element = AutomationElement.FromPoint (new Point (30.0, 30.0));
+				Assert.AreEqual (element, testFormElement);
+			}
 
 			// TODO: uncomment below line after fixing Bug #489387
 			//AssertControlFromPoint (testFormElement, 2.0, 2.0);

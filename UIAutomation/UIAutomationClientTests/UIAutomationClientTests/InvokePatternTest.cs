@@ -44,6 +44,11 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void InvokeTest ()
 		{
+			int eventCount = 0;
+			AutomationEventHandler handler = (o, e) => eventCount++;
+			At.AddAutomationEventHandler (InvokePattern.InvokedEvent, button1Element,
+			                              TreeScope.Element, handler);
+
 			InvokePattern pattern = (InvokePattern) button1Element.GetCurrentPattern (InvokePattern.Pattern);
 			pattern.Invoke ();
 			if (Atspi)
@@ -54,6 +59,8 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("button1_click",
 				label1Element.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty),
 				"label1's text is modified after button1 is clicked");
+			if (Atspi)
+				Assert.AreEqual (1, eventCount, "Invoke event fired");
 		}
 
 		[Test]

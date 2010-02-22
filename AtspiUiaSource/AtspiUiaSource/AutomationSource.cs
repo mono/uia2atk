@@ -56,6 +56,8 @@ namespace AtspiUiaSource
 			Desktop.StateChanged += OnStateChanged;
 			Desktop.ChildAdded += OnChildAdded;
 			Desktop.ChildRemoved += OnChildRemoved;
+			string [] args = new string [0];
+			Gdk.Global.InitCheck (ref args);
 		}
 
 		public IElement [] GetRootElements ()
@@ -73,10 +75,39 @@ namespace AtspiUiaSource
 
 		public event EventHandler RootElementsChanged;
 
+		// This is only here to implement AutomationElementFromPoint;
+		// it doesn't really work.
 		public IElement GetElementFromHandle (IntPtr handle)
 		{
-			// TODO: Implement (how best?)
+			var win = Gdk.Window.ForeignNew ((uint)handle);
+			int x, y, width, height, depth;
+			win.GetGeometry (out x, out y, out width, out height, out depth);
+			win.GetOrigin (out x, out y);
+			foreach (IElement element in GetRootElements ()) {
+				Component component = ((Element)element).Accessible.QueryComponent ();
+				if (component != null) {
+					BoundingBox extents = component.GetExtents (CoordType.Screen);
+					if (SizeFits (extents, x, y, width, height)) {
+						Accessible ret = component.GetAccessibleAtPoint (x, y, CoordType.Screen);
+						if (ret == null)
+							return element;
+						return Element.GetElement (ret);
+					}
+				}
+			}
 			return null;
+		}
+
+		private bool SizeFits (BoundingBox extents, int x, int y, int width, int height)
+		{
+			// This hack is to distinguish the desktop from other
+			// windows. We should find a better way to do this and
+			// undo this fudging, especially if Nautilus starts to
+			// return something other than Window for the layer.
+			return ((extents.X <= x && (x - extents.X) < 50) &&
+				(extents.Y <= y && (y - extents.Y) < 50) &&
+				(extents.Width >= width && (extents.Width - width) < 50) &&
+				(extents.Height >= height && (extents.Height - height) < 50));
 		}
 
 		public IElement GetFocusedElement ()
@@ -345,8 +376,7 @@ namespace AtspiUiaSource
 		{
 			IElement e;
 
-			// TODO: Handle the case of a child being added to the top-level element
-			if (element == null || target == null)
+			if (target == null)
 				return false;
 
 			if ((scope & TreeScope.Element) == TreeScope.Element && target == element)
@@ -363,8 +393,12 @@ namespace AtspiUiaSource
 						return true;
 					e = e.Parent;
 				}
+				if (e == null && element == null)
+					return true;
 			}
 
+			if (element == null)
+				return false;
 			e = element.Parent;
 			if ((scope & TreeScope.Parent) == TreeScope.Parent &&
 			    e != null &&
@@ -396,6 +430,10 @@ namespace AtspiUiaSource
 		private void OnStateChanged (Accessible sender, StateType state, bool set)
 		{
 			switch (state) {
+			case StateType.Armed:
+				if (set)
+					RaiseAutomationEvent (sender, InvokePattern.InvokedEvent);
+				break;
 			case StateType.Checked:
 				RaisePropertyChangedEvent (sender, TogglePatternIdentifiers.ToggleStateProperty, !set, set);
 				break;
@@ -433,7 +471,11 @@ namespace AtspiUiaSource
 		private void OnChildAdded (Accessible sender, Accessible child)
 		{
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
-			RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
+			if (child.Role == Role.Application) {
+				foreach (Accessible newChild in child.Children)
+					RaiseStructureChangedEvent (newChild, StructureChangeType.ChildAdded);
+			} else
+				RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
 			if (sender == Desktop.Instance)
 				OnRootElementsChanged ();
 		}

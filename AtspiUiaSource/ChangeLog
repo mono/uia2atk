@@ -1,3 +1,7 @@
+2010-02-22  Mike Gorse  <mgorse@novell.com>
+
+	* configure.ac: Add gtk-sharp.
+
 2010-02-04  Matt Guo  <matt@mattguo.com>
 
 	* AtspiUiaSource/Element.cs: AutomationElement.FromPoint, add

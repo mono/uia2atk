@@ -1,3 +1,16 @@
+2010-02-22  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/InvokePatternTest.cs: Add test for event
+	when calling InvokePattern.Invoke ().
+
+	* UIAutomationCLientTests/AutomationElementTest.cs: Disable
+	MoveTo.Origin and associated AutomationElementFromPoint test for at-spi.
+
+	* UIAutomationClientTests/RootElementTest.cs: Assume that the form is
+	named "TestForm1," even for at-spi.
+
+	* UIAutomationClientTests/BaseTest.cs: use ProcessIdProperty even for at-spi.
+
 2010-02-17  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationCLientTests/FocusTest.cs: Adapt for Atspi, and add

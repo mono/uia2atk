@@ -289,10 +289,9 @@ namespace MonoTests.System.Windows.Automation
 
 			Thread.Sleep (1000);
 
-				// TODO: Use ProcessId when at-spi supports it
 			testFormElement = AutomationElement.RootElement.FindFirst (TreeScope.Children,
-					new PropertyCondition (AEIds.NameProperty,
-						"TestForm1"));
+				new PropertyCondition (AEIds.ProcessIdProperty,
+					p.Id));
 			groupBoxElement = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Group));

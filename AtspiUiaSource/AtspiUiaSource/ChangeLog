@@ -1,3 +1,18 @@
+2010-02-22  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs: Implement NativeWindowHandle, ProcessId, and
+	GetDescendantFromPoint.
+
+	* AutomationSource.cs: Init gdk.
+
+	* AutomationSource.cs: Partly implement GetElementFromhandle.
+
+	* AutomationSource.cs: handle the root element when checking scope.
+
+	* AutomationSource.cs: Raise InvokePattern.InvokedEvent on Armed.
+
+	* makefile.am: Add gtk-sharp.
+
 2010-02-17  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs: Send BoundingRectangle PropertyChanged events.

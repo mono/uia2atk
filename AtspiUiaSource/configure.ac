@@ -76,6 +76,8 @@ fi
 # package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES([ATSPI_SHARP], [at-spi-sharp >= 0.9.2])
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
 
 TOPDIR=$PWD
 AC_SUBST(TOPDIR)

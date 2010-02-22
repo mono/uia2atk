@@ -79,7 +79,8 @@ REFERENCES =  \
 	Mono.Posix \
 	System.Core \
 	$(ATSPI_SHARP_LIBS) \
-	$(MONO_UIA_LIBS)
+	$(MONO_UIA_LIBS) \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 
