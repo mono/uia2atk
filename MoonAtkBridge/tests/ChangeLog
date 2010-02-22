@@ -1,3 +1,8 @@
+2010-02-22  Brad Taylor  <brad@getcoded.net>
+
+	* test_hyperlinkbutton.py:
+	* moonlight/browser/__init__.py: Fix HyperlinkButton test failures.
+
 2010-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* test_slider.py: Requesting children in tests instead of setup class

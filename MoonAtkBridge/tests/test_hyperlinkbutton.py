@@ -72,4 +72,4 @@ class HyperlinkButton(TestCase):
     def test_hyperlink_jump(self):
         self.hyperlink.jump()
 
-        assert self.app.assertUrlOpened('http://www.google.com')
+        assert self.app.assertUrlOpened('http://www.google.com/')

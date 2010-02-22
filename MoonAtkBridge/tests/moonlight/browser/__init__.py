@@ -135,12 +135,19 @@ class FirefoxBrowser(accessibles.Application):
             self.mainFrame.keyCombo('Down')
             self.mainFrame.keyCombo('Return')
 
+        # wait for the URL to load
+        sleep(config.LONG_DELAY)
+
         # TODO: preserve the tab the user was on before assertUrlOpened was
         # called
-        for tab in self.tabs.findAllPageTabs(''):
+        for i in xrange(0, self.tabs.childCount):
+            tab = self.tabs.getChildAtIndex(i)
             tab.switch()
 
-            if self.locationBar.text == url:
+            def assertLocation():
+                return self.locationBar.text == url
+
+            if utils.retryUntilTrue(assertLocation):
                 return True
 
         return False
