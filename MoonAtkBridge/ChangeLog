@@ -1,5 +1,10 @@
 2010-02-23  Stephen Shaw <sshaw@decriptor.com>
 
+	* patches/moonlight-a11y-core-extension.diff: Changes the moonlight
+	extension name 
+
+2010-02-23  Stephen Shaw <sshaw@decriptor.com>
+
 	* install.rdf.in: Changed the moonlight plugin name and required
 	versions for both moonlight and firefox.  Added updateURL
 
