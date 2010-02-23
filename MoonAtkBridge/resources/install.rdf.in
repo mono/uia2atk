@@ -3,16 +3,16 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>moonlight-a11y@novell.com</em:id>
-    <em:name>Novell Moonlight Accessibility Support</em:name>
+    <em:name>Novell Moonlight Accessibility Extensions</em:name>
     <em:version>@VERSION@</em:version>
     <em:description>Enables Accessibility for Moonlight on Linux desktops.</em:description>
     <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
-    <!-- TODO:
-    em:updateURL>http://go-mono.com/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
+    <em:updateURL>http://mono-a11y.org/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
+    <!-- No updateKey for now (this is the moonlight and default key : https://developer.mozilla.org/en/Install.rdf#updateKey
     <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi8rEWjKukJk4igOKjOU3RLj3vri9pff1znkb12M4N6
                   irBv4vbTSBjjrDOzOOB+g6C/fAP8LsFCDHgqmXmRbsCxAycED/TKzbevpTkX0ywlUL6nfVwegwQMclzP5
                   rjxQ1fXagEg2+6S4SlGVZnj8jXCybdz+giz53M5QeoaacuFwIDAQAB
-    </em:updateKey
+    </em:updateKey>
     -->
 
     <em:homepageURL>http://mono-project.com/Moonlight</em:homepageURL>
@@ -24,16 +24,16 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>2.9.*</em:minVersion>
-        <em:maxVersion>3.6.*</em:maxVersion>
+        <em:minVersion>3.5</em:minVersion>
+        <em:maxVersion>3.5.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 
     <em:requires>
       <Description>
-        <em:id>moonlight@novell.com</em:id>
-        <em:minVersion>1.9</em:minVersion>
-        <em:maxVersion>3.0</em:maxVersion>
+        <em:id>moonlight-a11y-core@novell.com</em:id>
+        <em:minVersion>2.1</em:minVersion>
+        <em:maxVersion>2.1</em:maxVersion>
       </Description>
     </em:requires>
 

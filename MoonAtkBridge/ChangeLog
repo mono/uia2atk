@@ -1,3 +1,8 @@
+2010-02-23  Stephen Shaw <sshaw@decriptor.com>
+
+	* install.rdf.in: Changed the moonlight plugin name and required
+	versions for both moonlight and firefox.  Added updateURL
+
 2010-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: TabControlTest test added.
