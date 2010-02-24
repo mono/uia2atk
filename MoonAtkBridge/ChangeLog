@@ -1,5 +1,10 @@
 2010-02-24  Brad Taylor  <brad@getcoded.net>
 
+	* patches/moonlight-a11y-slot-tree.diff: Remove m4/mozilla.m4 part of
+	the patch, which was irrelevant anyway.
+
+2010-02-24  Brad Taylor  <brad@getcoded.net>
+
 	* resources/install.rdf.in: Put moonlight-a11y xpi updates in their own
 	folder.
 
