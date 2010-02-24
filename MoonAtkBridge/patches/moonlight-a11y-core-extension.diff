@@ -1,8 +1,8 @@
 Index: plugin/install/install.rdf.in
 ===================================================================
---- plugin/install/install.rdf.in	(revision 152284)
+--- plugin/install/install.rdf.in	(revision 152362)
 +++ plugin/install/install.rdf.in	(working copy)
-@@ -1,15 +1,17 @@
+@@ -1,11 +1,11 @@
  <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
    <Description about="urn:mozilla:install-manifest">
 -    <em:id>moonlight@novell.com</em:id>
@@ -14,16 +14,10 @@ Index: plugin/install/install.rdf.in
      <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
 -    <em:updateURL>http://go-mono.com/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
 +    <em:updateURL>http://mono-a11y.org/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>
-+<!-- Disabling for now
      <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi8rEWjKukJk4igOKjOU3RLj3vri9pff1znkb12M4N6
                    irBv4vbTSBjjrDOzOOB+g6C/fAP8LsFCDHgqmXmRbsCxAycED/TKzbevpTkX0ywlUL6nfVwegwQMclzP5
                    rjxQ1fXagEg2+6S4SlGVZnj8jXCybdz+giz53M5QeoaacuFwIDAQAB
-     </em:updateKey>
-+-->
- 
-     <em:homepageURL>http://mono-project.com/Moonlight</em:homepageURL>
-     <em:creator>Mono Team</em:creator>
-@@ -34,23 +36,9 @@
+@@ -34,23 +34,9 @@
      <em:targetApplication> <!-- Firefox -->
        <Description>
          <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
