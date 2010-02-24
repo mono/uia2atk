@@ -32,8 +32,8 @@
     <em:requires>
       <Description>
         <em:id>moonlight@novell.com</em:id>
-        <em:minVersion>2.1accessibility</em:minVersion>
-        <em:maxVersion>2.1accessibility</em:maxVersion>
+        <em:minVersion>2.2accessibility</em:minVersion>
+        <em:maxVersion>2.2accessibility</em:maxVersion>
       </Description>
     </em:requires>
 

@@ -1,3 +1,7 @@
+2010-02-24  Stephen Shaw <sshaw@decriptor.com>
+
+	* install.rdf.in: Updated to 2.2accessibility
+
 2010-02-24  Brad Taylor  <brad@getcoded.net>
 
 	* resources/install.rdf.in: Require version 2.1accessibility of
