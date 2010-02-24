@@ -31,9 +31,9 @@
 
     <em:requires>
       <Description>
-        <em:id>moonlight-a11y-core@novell.com</em:id>
-        <em:minVersion>2.1</em:minVersion>
-        <em:maxVersion>2.1</em:maxVersion>
+        <em:id>moonlight@novell.com</em:id>
+        <em:minVersion>2.1accessibility</em:minVersion>
+        <em:maxVersion>2.1accessibility</em:maxVersion>
       </Description>
     </em:requires>
 

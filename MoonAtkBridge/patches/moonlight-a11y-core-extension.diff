@@ -5,11 +5,11 @@ Index: plugin/install/install.rdf.in
 @@ -1,11 +1,11 @@
  <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
    <Description about="urn:mozilla:install-manifest">
--    <em:id>moonlight@novell.com</em:id>
+     <em:id>moonlight@novell.com</em:id>
 -    <em:name>Novell Moonlight</em:name>
-+    <em:id>moonlight-a11y-core@novell.com</em:id>
+-    <em:version>@VERSION@</em:version>
 +    <em:name>Novell Moonlight with Accessibility Support</em:name>
-     <em:version>@VERSION@</em:version>
++    <em:version>@VERSION@accessibility</em:version>
      <em:description>The open source implementation of Microsoft Silverlight</em:description>
      <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
 -    <em:updateURL>http://go-mono.com/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL>

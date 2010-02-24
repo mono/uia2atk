@@ -1,3 +1,12 @@
+2010-02-24  Brad Taylor  <brad@getcoded.net>
+
+	* resources/install.rdf.in: Require version 2.1accessibility of
+	Moonlight.
+
+	* patches/moonlight-a11y-core-extension.diff: Update Moonlight patch to
+	change the version to include accessibility at the end to reflect our
+	custom patching.
+
 2010-02-24  Stephen Shaw <sshaw@decriptor.com>
 
 	* patches/moonlight-a11y-core-extension.diff: Enabled updateKey again
