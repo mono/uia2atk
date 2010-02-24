@@ -243,6 +243,8 @@ namespace GtkForm
 				textBox3.GrabFocus ();
 			else if (cmd == "focus button2")
 				button2.GrabFocus ();
+			else if (cmd.StartsWith ("change title:"))
+				window.Title = cmd.Substring (cmd.IndexOf (':') + 1);
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)

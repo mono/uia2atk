@@ -471,11 +471,13 @@ namespace AtspiUiaSource
 		private void OnChildAdded (Accessible sender, Accessible child)
 		{
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
-			if (child.Role == Role.Application) {
-				foreach (Accessible newChild in child.Children)
-					RaiseStructureChangedEvent (newChild, StructureChangeType.ChildAdded);
-			} else
+			// Assuming that we'll get ChildrenChanged for the
+			// Application's children. If we find that sometimes
+			// we don't, then we'll need to rethink this.
+			if (child.Role != Role.Application)
 				RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
+			if (child.Role == Role.Frame)
+				RaiseAutomationEvent (child, WindowPattern.WindowOpenedEvent);
 			if (sender == Desktop.Instance)
 				OnRootElementsChanged ();
 		}

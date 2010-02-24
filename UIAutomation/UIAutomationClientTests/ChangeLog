@@ -1,3 +1,7 @@
+2010-02-24  Mike Gorse  <mgorse@novell.com>
+
+	* GtkForm/GtkForm.cs: Support changing window title.
+
 2010-02-22  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/InvokePatternTest.cs: Add test for event

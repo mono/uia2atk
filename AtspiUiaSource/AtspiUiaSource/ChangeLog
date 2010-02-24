@@ -1,3 +1,9 @@
+2010-02-24  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationSource.cs: Assume that we will receive a ChildrenChanged
+	event when a window is opened, so do not fire StructureChanged events
+	when an application is created.
+
 2010-02-22  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs: Implement NativeWindowHandle, ProcessId, and
