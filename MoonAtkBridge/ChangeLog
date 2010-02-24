@@ -1,3 +1,8 @@
+2010-02-24  Brad Taylor  <brad@getcoded.net>
+
+	* resources/install.rdf.in: Put moonlight-a11y xpi updates in their own
+	folder.
+
 2010-02-24  Stephen Shaw <sshaw@decriptor.com>
 
 	* install.rdf.in: Updated to 2.2accessibility
