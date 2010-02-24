@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Mono.UIAutomation.Source;
@@ -58,42 +59,92 @@ namespace System.Windows.Automation
 		}
 		#endregion
 
-		#region Internal Methods
+		#region Private Static Methods
 
-		internal static void InitializeRootElements ()
+		private static void InitializeRootElements ()
 		{
 			lock (RawViewWalker.directChildrenLock) {
+				var pidElementMapping = new Dictionary<int, IElement> ();
 				RawViewWalker.directChildren = new List<AutomationElement> ();
 				foreach (IAutomationSource source in SourceManager.GetAutomationSources ()) {
-					foreach (IElement sourceElement in source.GetRootElements ())
-						RawViewWalker.directChildren.Add (
-							SourceManager.GetOrCreateAutomationElement (sourceElement));
+					AddUniqueRootElements (RawViewWalker.directChildren,
+					                       source,
+					                       pidElementMapping);
 					source.RootElementsChanged += (s, e) =>
 						OnSourceRootElementChanged (source);
 				}
 			}
 		}
 
-		#endregion
-
-		#region Private Methods
-
 		private static void OnSourceRootElementChanged (IAutomationSource source)
 		{
 			lock (RawViewWalker.directChildrenLock) {
 				List<AutomationElement> rootElements = new List<AutomationElement> ();
+				var pidElementMapping = new Dictionary<int, IElement> ();
 				foreach (AutomationElement element in RawViewWalker.directChildren) {
-					if (element.SourceElement.AutomationSource != source)
+					if (element.SourceElement.AutomationSource != source) {
+						try {
+							pidElementMapping [element.Current.ProcessId] = element.SourceElement;
+						} catch { continue; } // TODO: ElementNotAvailableException
 						rootElements.Add (element);
+					}
 				}
 				// We don't handle the cleanup of AutomationElements here, they're
 				// handled by each AutomationSource.
 				// "Clean up" includes removing event handlers etc.
-				foreach (IElement sourceElement in source.GetRootElements ())
-					rootElements.Add (SourceManager.GetOrCreateAutomationElement (sourceElement));
+				AddUniqueRootElements (rootElements, source, pidElementMapping);
 				RawViewWalker.directChildren = rootElements;
 			}
 			Log.Debug ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
+		}
+
+		// TODO: This approach will completely break when the
+		//       MoonUiaDbusBridge work is committed. This code
+		//       will be replaced with proper source tree merging,
+		//       which requires updates to gtk-sharp.
+		private static void AddUniqueRootElements (List<AutomationElement> rootElements,
+		                                           IAutomationSource source,
+		                                           Dictionary<int, IElement> pidElementMapping)
+		{
+			const string at_spi = "at-spi";
+			foreach (IElement sourceElement in source.GetRootElements ()) {
+				int pid;
+				try {
+					pid = sourceElement.ProcessId;
+				} catch { continue; } // TODO: ElementNotAvailableException
+
+				IElement found;
+				// NOTE: This is not a complete mapping, since
+				//       one process could generate multiple root
+				//       elements. But it's sufficient to catch
+				//       that at least one element exists for
+				//       a given PID.
+				if (pidElementMapping.TryGetValue (pid, out found)) {
+					var sourceFid = sourceElement.FrameworkId;
+					var foundFid = found.FrameworkId;
+					// Ignore at-spi elements when elements
+					// for this process from a preferred
+					// framework exist
+					if (sourceFid == at_spi &&
+					    foundFid != at_spi)
+						continue;
+					// Remove at-spi elements when elements
+					// for this process from a preferred
+					// framework exist
+					else if (sourceFid != at_spi &&
+					         foundFid == at_spi) {
+						// TODO: When we fix ElementNotAvailableException,
+						//       we'll need to mark these
+						//       elements as unavailable.
+						rootElements.RemoveAll (e => e.Current.ProcessId == pid &&
+						                        e.Current.FrameworkId == at_spi);
+					}
+				}
+
+				rootElements.Add (
+					SourceManager.GetOrCreateAutomationElement (sourceElement));
+				pidElementMapping [pid] = sourceElement;
+			}
 		}
 
 		#endregion
