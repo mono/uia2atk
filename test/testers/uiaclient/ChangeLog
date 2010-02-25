@@ -1,3 +1,8 @@
+2010-02-25  Ray Wang  <rawang@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Perform Invoke on MenuItem which is
+	the child of the SplitButton on toolbar.
+
 2010-02-22  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/List.cs: Add ScrollPattern support.

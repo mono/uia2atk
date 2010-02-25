@@ -392,18 +392,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.6 Click "Add Entry" button on the toolstripbar
-			procedureLogger.Action ("Click \"Add Entry\" button on the toolstripbar");
-			/*
-			 * BUG574620 :On linux a control who's control 
-			 * type is "SplitButton" on Windows is "Button"
-			 * toolBar.Find<Button> ("Add Entry").Click (false);
-			 */
-			Thread.Sleep (5000);
-
-			/*
-			 * BUG576050- [uiaclient-winforms]: 
-			 * The splitbutton's Invoke method doesn't work
-			 */
+			//BUG574620 :On linux a control who's control type is "SplitButton" on Windows is "Button"
+			//BUG576050- [uiaclient-winforms]: The splitbutton's Invoke method doesn't work
+			var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
+			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -632,10 +624,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//104.6  Click "Add Entry" button on the toolstripbar
 			//BUG574620: Button recognized as SplitButton on Linux, but it's Button on Windows
 			//BUG576050: The splitbutton's Invoke method doesn't work
-			//var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
-			//addEntryButton.Click ();
-			Console.WriteLine("Please click the \"AddEntry\" SplitButton by hand");
-			Thread.Sleep(5000);
+			var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
+			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -668,8 +658,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			//104.10 Click "Add Entry" button on the toolstripbar
 			//BUG574620: Button recognized as SplitButton on Linux, but it's Button on Windows
 			//BUG576050: The splitbutton's Invoke method doesn't work
-			//addEntryButton.Click ();
-			Thread.Sleep(5000);
+			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
