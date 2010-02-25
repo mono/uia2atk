@@ -14,7 +14,7 @@ Patch0:         atspiuiasource-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  at-spi-sharp-devel
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
-BuildRequires:  mono-devel >= 2.6
+BuildRequires:  mono-devel >= 2.4
 BuildRequires:  mono-uia-devel >= 2.0
 Summary:        At-spi uia source
 

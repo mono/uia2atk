@@ -21,16 +21,16 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       glib-sharp2 >= 2.12.8
 Requires:       gtk-sharp2 >= 2.12.8
-Requires:       mono-core >= 2.6
-Requires:       mono-data >= 2.6
+Requires:       mono-core >= 2.4
+Requires:       mono-data >= 2.4
 Requires:       mono-uia >= 2.0
 Requires:       mono-winfxcore
 Requires:       uiaatkbridge >= 2.0
 BuildRequires:  gtk-sharp2 >= 2.12.8
 BuildRequires:  glib-sharp2 >= 2.12.8 
-BuildRequires:	mono-devel >= 2.6
-BuildRequires:  mono-data >= 2.6
-BuildRequires:	mono-nunit >= 2.6
+BuildRequires:	mono-devel >= 2.4
+BuildRequires:  mono-data >= 2.4
+BuildRequires:	mono-nunit >= 2.4
 BuildRequires:  mono-uia >= 2.0
 BuildRequires:  mono-uia-devel >= 2.0
 BuildRequires:  mono-winfxcore

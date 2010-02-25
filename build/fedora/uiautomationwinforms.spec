@@ -14,14 +14,14 @@ Source0:        http://ftp.novell.com/pub/mono/sources/uiautomationwinforms/%{na
 Patch0:         uiautomationwinforms-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       gtk-sharp2 >= 2.12.8
-Requires:       mono-core >= 2.6
-Requires:       mono-data >= 2.6
+Requires:       mono-core >= 2.4
+Requires:       mono-data >= 2.4
 Requires:       mono-uia >= 2.0
 Requires:       uiaatkbridge >= 2.0
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
-BuildRequires:	mono-devel >= 2.6
-BuildRequires:  mono-data >= 2.6
-BuildRequires:	mono-nunit >= 2.6
+BuildRequires:	mono-devel >= 2.4
+BuildRequires:  mono-data >= 2.4
+BuildRequires:	mono-nunit >= 2.4
 BuildRequires:  mono-uia >= 2.0
 BuildRequires:  mono-uia-devel >= 2.0
 BuildRequires:  intltool

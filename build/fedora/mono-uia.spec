@@ -12,11 +12,11 @@ URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
 Patch0:         mono-uia-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       mono-core >= 2.6
+Requires:       mono-core >= 2.4
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
-BuildRequires:  mono-core >= 2.6
-BuildRequires:  mono-devel >= 2.6
-BuildRequires:  mono-nunit >= 2.6
+BuildRequires:  mono-core >= 2.4
+BuildRequires:  mono-devel >= 2.4
+BuildRequires:  mono-nunit >= 2.4
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description

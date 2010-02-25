@@ -20,13 +20,13 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       at-spi >= 1.24.0
 Requires:       gtk-sharp2 >= 2.12.8
-Requires:       mono-core >= 2.6
+Requires:       mono-core >= 2.4
 Requires:       mono-uia >= 2.0
 Requires:       mono-winfxcore
 BuildRequires:  atk-devel >= 1.24
 BuildRequires:  gtk2-devel >= 2.14
 BuildRequires:  gtk-sharp2 >= 2.12.8
-BuildRequires:	mono-devel >= 2.6
+BuildRequires:	mono-devel >= 2.4
 BuildRequires:	mono-uia >= 2.0
 BuildRequires:	mono-uia-devel >= 2.0
 BuildRequires:  mono-winfxcore

@@ -4,15 +4,15 @@
 #
 
 Name:           at-spi-sharp
-Version:        2.0
+Version:        1.0
 Release:        1
 License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       mono-core >= 2.6
-BuildRequires:	mono-devel >= 2.6
+Requires:       mono-core >= 2.4
+BuildRequires:	mono-devel >= 2.4
 BuildRequires:	mono-uia >= 2.0
 BuildRequires:	ndesk-dbus-glib-devel
 BuildRequires:	pkg-config
