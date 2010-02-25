@@ -1281,17 +1281,6 @@ Thread.Sleep(1000);
 			}
 		}
 
-		private string PrintRuntimeId (int [] runtimeId)
-		{
-			string output = "{";
-			for (int i = 0; i < runtimeId.Length; i++) {
-				output += runtimeId [i].ToString ();
-				if (( i + 1 ) < runtimeId.Length)
-					output += ",";
-			}
-			return output + "}";
-		}
-
 		private void VerifyPatterns (AutomationElement element, params AutomationPattern [] expected)
 		{
 			List<AutomationPattern> expectedPatterns = new List<AutomationPattern> (expected);

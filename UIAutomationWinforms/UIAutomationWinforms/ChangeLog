@@ -1,3 +1,14 @@
+2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: By default,
+	treat otherwise-unhandled controls as Panes (bug #574269).
+
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: Support LabeledBy.
+
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollableControlProvider.cs:
+	Stop deriving from PaneProvider.
+
 2010-02-17  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListviewProvider.cs: Initialize

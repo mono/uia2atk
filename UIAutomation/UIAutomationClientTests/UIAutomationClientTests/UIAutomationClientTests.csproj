@@ -82,6 +82,7 @@
     <Compile Include="RootElementTest.cs" />
     <Compile Include="FocusTest.cs" />
     <Compile Include="LocalProviderTest.cs" />
+    <Compile Include="CustomControlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleForm\SampleForm.csproj">

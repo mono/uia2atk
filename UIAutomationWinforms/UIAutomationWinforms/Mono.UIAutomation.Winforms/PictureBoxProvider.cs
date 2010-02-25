@@ -36,22 +36,18 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	[MapsComponent (typeof (PictureBox))]
-	internal class PictureBoxProvider : PaneProvider
+	internal class PictureBoxProvider : FragmentRootControlProvider
 	{
-		
+
 		#region Constructors
 
 		public PictureBoxProvider (PictureBox pictureBox) : base (pictureBox)
 		{
 		}
-		
+
 		#endregion
-		
+
 		#region SimpleControlProvider: Specialization
-		
-		public override Component Container  {
-			get { return Control.Parent; }
-		}
 
 		public override void Initialize ()
 		{
@@ -70,9 +66,11 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Image.Id;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return false;
 			else
 				return base.GetProviderPropertyValue (propertyId);
-		}		
+		}
 		#endregion
 	}
 }

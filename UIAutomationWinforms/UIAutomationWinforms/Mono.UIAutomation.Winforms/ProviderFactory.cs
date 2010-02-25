@@ -194,13 +194,22 @@ namespace Mono.UIAutomation.Winforms
 				         && typeIter != typeof (System.ComponentModel.Component)
 				         && typeIter != typeof (SWF.Control));
 			}
-			
+
 			if (handler != null) {
 				provider = handler (component);
 			}
 
 			// Create the provider if we found a mapping type
-			if (provider == null && providerType != null) {
+			if (provider == null) {
+				// We meet a unknown custom control type,
+				// then we count it as a Pane
+				if (providerType == null) {
+					var dialog = component as SWF.CommonDialog;
+					if (dialog != null)
+						return GetProvider (dialog.form,
+							initialize, forceInitializeChildren);
+					providerType = typeof (PaneProvider);
+				}
 				try {
 					provider = (FragmentControlProvider)
 						Activator.CreateInstance (providerType,
@@ -226,17 +235,10 @@ namespace Mono.UIAutomation.Winforms
 					FragmentControlProvider frag = (FragmentControlProvider) provider;
 					if (initialize)
 						frag.Initialize ();
-					
 					if (forceInitializeChildren)
 						frag.InitializeChildControlStructure ();
 				}
 			} else {
-				var dialog = component as SWF.CommonDialog;
-				if (dialog != null)
-					return GetProvider (dialog.form,
-					                    initialize,
-					                    forceInitializeChildren);
-				
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
 				Log.Warn ("Provider not implemented for component " + component.GetType ());

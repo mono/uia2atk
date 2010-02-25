@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (ScrollableControl))]
 	internal class ScrollableControlProvider
-		: PaneProvider, IScrollBehaviorSubject
+		: FragmentRootControlProvider, IScrollBehaviorSubject
 	{
 #region Public Methods
 		public ScrollableControlProvider (ScrollableControl control)
@@ -58,9 +58,6 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 
 #region FragmentRootControlProvider Implementation
-		public override Component Container {
-			get { return Control.Parent; }
-		}
 
 		public override void InitializeChildControlStructure ()
 		{
@@ -76,9 +73,8 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			// Override Pane's IsKeyboardFocusableProperty
-			if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return Control.CanFocus && Control.CanSelect;
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

@@ -85,6 +85,11 @@ namespace SampleForm {
 				item.SubItems.Add ("subitem2");
 				view.Items.Add (item);
 			}
+
+			MyControl myCtrl = new MyControl ();
+			myCtrl.AccessibleName = "My Control";
+			myCtrl.Bounds = new Rectangle (5, 5, 30, 15);
+			Controls.Add (myCtrl);
 		}
 
 		private void button1_Click (object sender, EventArgs e)

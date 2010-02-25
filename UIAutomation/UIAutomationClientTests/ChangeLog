@@ -1,3 +1,16 @@
+2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* SampleForm/Form1.cs:
+	* SampleForm/Makefile.am:
+	* SampleForm/MyControl.cs:
+	* SampleForm/SampleForm.csproj:
+	* UIAutomationClientTests/Makefile.am:
+	* UIAutomationClientTests/CustomControlTest.cs:
+	* UIAutomationClientTests/AutomationElementTest.cs:
+	* UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Add new test for controls derived from S.W.Control, which should
+	by default be ControlType.Pane (bug #574269).
+
 2010-02-24  Mike Gorse  <mgorse@novell.com>
 
 	* GtkForm/GtkForm.cs: Support changing window title.

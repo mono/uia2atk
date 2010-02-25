@@ -28,6 +28,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES)
 FILES =  \
 	Form1.cs \
 	Form1.Designer.cs \
+	MyControl.cs \
 	Program.cs \
 	Properties/AssemblyInfo.cs
 

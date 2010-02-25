@@ -84,6 +84,7 @@ FILES =  \
 	BaseTest.cs \
 	CacheRequestTest.cs \
 	ConditionTest.cs \
+	CustomControlTest.cs \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \
 	InvokePatternTest.cs \

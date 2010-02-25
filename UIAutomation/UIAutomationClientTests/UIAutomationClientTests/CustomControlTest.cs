@@ -17,58 +17,49 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2010 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
-// 
+//  Matt Guo <matt@mattguo.com>
+//
+
 using System;
-using Mono.Unix;
-using System.ComponentModel;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
+using NUnit.Framework;
+
+namespace MonoTests.System.Windows.Automation
 {
-
-	internal class PaneProvider : FragmentRootControlProvider
+	[TestFixture]
+	public class CustomControlTest : BaseTest
 	{
+		private AutomationElement myControlElement;
 
-		#region Constructor
-		
-		public PaneProvider (Component component) : base (component)
+		public override void FixtureSetUp ()
 		{
-			this.component = component;
+			base.FixtureSetUp ();
+			if (!Atspi) {
+				myControlElement = testFormElement.FindFirst (TreeScope.Children,
+					new PropertyCondition (AEIds.NameProperty, "My Control"));
+				Assert.IsNotNull (myControlElement, "myControlElement is not null");
+			}
 		}
-		
-		#endregion
-		
-		#region SimpleControlProvider: Specialization
-		
-		public override Component Container  {
-			get { return component.Container as Component; }
-		}
-		
-		protected override object GetProviderPropertyValue (int propertyId)
+
+		[Test]
+		public void PropertyTest ()
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return false;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
-			else
-				return base.GetProviderPropertyValue (propertyId);
+			if (!Atspi) {
+				Assert.AreEqual ("My Control", myControlElement.Current.Name);
+				Assert.AreEqual (ControlType.Pane.ProgrammaticName, myControlElement.Current.ControlType.ProgrammaticName);
+				Assert.AreEqual (new Size (30.0, 15.0), myControlElement.Current.BoundingRectangle.Size);
+			}
 		}
-
-		#endregion
-		
-		#region Private Fields
-		
-		private Component component;
-		
-		#endregion
-
 	}
 }
+
