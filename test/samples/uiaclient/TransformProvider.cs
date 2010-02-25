@@ -71,7 +71,7 @@ namespace TransformProviderTest
         #region IRawElementProviderSimple Members
         public object GetPatternProvider(int patternId)
         {
-            if (patternId == TransformPattern.Pattern.Id)
+            if (patternId == TransformPatternIdentifiers.Pattern.Id)
                 return this;
 
             return null;
@@ -79,11 +79,11 @@ namespace TransformProviderTest
 
         public object GetPropertyValue(int propertyId)
         {
-            if (propertyId == TransformPattern.CanMoveProperty.Id)
+            if (propertyId == TransformPatternIdentifiers.CanMoveProperty.Id)
                 return CanMove;
-            else if (propertyId == TransformPattern.CanResizeProperty.Id)
+            else if (propertyId == TransformPatternIdentifiers.CanResizeProperty.Id)
                 return CanResize;
-            else if (propertyId == TransformPattern.CanRotateProperty.Id)
+            else if (propertyId == TransformPatternIdentifiers.CanRotateProperty.Id)
                 return CanRotate;
             else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
                 return string.Format ("{0}, r:{1}", Name, RotateDegree);

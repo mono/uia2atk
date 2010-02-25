@@ -54,7 +54,7 @@ namespace DockProviderTest
 #region IRawElementProviderSimple Members
 		public object GetPatternProvider (int patternId)
 		{
-			if (patternId == DockPattern.Pattern.Id)
+			if (patternId == DockPatternIdentifiers.Pattern.Id)
 				return this;
 
 			return null;
@@ -62,7 +62,7 @@ namespace DockProviderTest
 
 		public object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == DockPattern.DockPositionProperty.Id)
+			if (propertyId == DockPatternIdentifiers.DockPositionProperty.Id)
 				return DockPosition;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return DockPosition.ToString ();
@@ -118,7 +118,7 @@ namespace DockProviderTest
 
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent(this,
-					new AutomationPropertyChangedEventArgs (DockPattern.DockPositionProperty,
+					new AutomationPropertyChangedEventArgs (DockPatternIdentifiers.DockPositionProperty,
 					                                        oldValue, DockPosition));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this,
 					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,

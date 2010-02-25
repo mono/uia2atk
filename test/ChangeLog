@@ -1,3 +1,9 @@
+2010-02-25  Matt Guo  <matt@mattguo.com>
+
+	* samples/uiaclient/DockProvider.cs: 
+	* samples/uiaclient/TransformProvider.cs: Remove unnecessary reference
+	to UIAutomationClient
+
 2010-02-05  Calen Chen <cachen@novell.com>
 
 	* testers/winforms/combobox_dropdown-regression.py: 
