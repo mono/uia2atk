@@ -89,7 +89,7 @@ git clone git://gitorious.org/dbus-sharp/dbus-sharp.git $srcdir/ndesk-dbus-git
 (cd $srcdir/ndesk-dbus-git && git checkout -b mono-a11y origin/mono-a11y)
 cp $srcdir/ndesk-dbus-git/src/*.cs $srcdir/ndesk-dbus/
 #TODO: Only copy a specific list, use a .sources file
-(cd $srcdir/ndesk-dbus; rm AssemblyInfo* Server* Daemon.cs TypeRental.cs)
+(cd $srcdir/ndesk-dbus; rm AssemblyInfo* Server* Daemon.cs TypeRental.cs PipeTransport.cs)
 echo "Internalizing bundled ndesk-dbus source..."
 perl -pi -e 's/public ((class)|(enum)|(struct)|(abstract class)|(interface)|(sealed)|(partial))/internal $1/g' $srcdir/ndesk-dbus/*.cs
 #TODO: Update master to stop using [Obsolete] API
