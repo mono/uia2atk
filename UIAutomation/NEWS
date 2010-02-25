@@ -1,7 +1,10 @@
 
 Mono Accessibility News
 
-Copyright (C) 2009 Novell, Inc. (http://www.novell.com)
+Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
+
+Version 2.0: The "hypnotoad" release
+* #574269 - Cannot find pane control on Linux
 
 Version 1.9.90: The "fantabulous" release
 * #572097 - Test AutomationEvents.SelectionItem* events.

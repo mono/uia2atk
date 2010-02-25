@@ -4,7 +4,7 @@
 #
 
 Name:           mono-uia
-Version:        1.9.90
+Version:        2.0
 Release:        1
 License:        MIT
 Group:          System/Libraries
