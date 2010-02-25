@@ -25,26 +25,34 @@ BuildRequires:  gtk-sharp2 >= 2.12.8
 BuildRequires:  mono-core >= 2.4
 BuildRequires:  mono-devel >= 2.4
 BuildRequires:  mono-nunit >= 2.4
-BuildRequires:  mono-winfxcore
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
 User Interface Automation (UIA) is a new accessibility standard
 
 %package devel
-License:	MIT
-Summary:	mono-uia devel package
-Group:		Development/Languages
-Requires:	mono-uia == %{version}-%{release}
+License:        MIT
+Summary:        mono-uia devel package
+Group:          Development/Languages
+Requires:       mono-uia == %{version}-%{release}
 
 %description devel
 Implementations of the members and interfaces based on MS UIA API
+
+%package -n mono-winfxcore
+License:	MIT
+Summary:	Parts of winfx
+Group:		Development/Languages
+Requires:	mono-core >= 2.4
+
+%description -n mono-winfxcore
+WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %prep
 %setup -q
 
 %build
-%configure  --disable-tests
+%configure --disable-tests
 #Break build with parrallel make
 make
 
@@ -72,5 +80,11 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root,-)
 %{_libdir}/pkgconfig/*.pc
+
+%files -n mono-winfxcore
+%defattr(-, root, root)
+%{_prefix}/lib/mono/gac/WindowsBase
+%{_prefix}/lib/mono/2.0/WindowsBase.dll
+
 
 %changelog
