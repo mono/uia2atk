@@ -36,7 +36,8 @@ UiaDbus is another communication channel for UIA on Linux between the client and
 
 %build
 %configure --disable-tests
-make %{?_smp_mflags}
+#make %{?_smp_mflags}
+make
 
 %install
 rm -rf %{buildroot}

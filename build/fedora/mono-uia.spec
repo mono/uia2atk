@@ -78,8 +78,8 @@ rm -rf %{buildroot}
 
 %files -n mono-winfxcore
 %defattr(-, root, root)
-%{_prefix}/lib/mono/gac/WindowsBase
-%{_prefix}/lib/mono/2.0/WindowsBase.dll
+%{_libdir}/mono/gac/WindowsBase
+%{_libdir}/mono/2.0/WindowsBase.dll
 
 
 %changelog

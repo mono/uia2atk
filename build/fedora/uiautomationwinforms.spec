@@ -37,7 +37,8 @@ Implementation of UIA providers for Mono's Winforms controls
 
 %build
 %configure --disable-tests
-make %{?_smp_mflags}
+#make %{?_smp_mflags}
+make
 
 %install
 rm -rf %{buildroot}
