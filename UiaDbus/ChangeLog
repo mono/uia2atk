@@ -1,5 +1,9 @@
 2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* UiaDbusSource/UiaDbusDockPattern.cs: Fix potential stack overflow.
+
+2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* autogen.sh: Fix ndesk-dbus build on Mono 2.4.
 
 2010-02-12  Matt Guo  <matt@mattguo.com>
