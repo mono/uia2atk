@@ -546,7 +546,7 @@ class Test(object):
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
     p3 = s.Popen(["grep", "-v", "grep"], stdin=p2.stdout, stdout=s.PIPE)
-    p4 = s.Popen(["awk", "{print $1, $7}"], stdin=p3.stdout, stdout=s.PIPE)
+    p4 = s.Popen(["awk", "{print $1, $6}"], stdin=p3.stdout, stdout=s.PIPE)
     processes = dict(line.strip().split() for line in p4.stdout)
     if final and len(processes) > 0:
       output("WARNING:  The following processes never exited:")

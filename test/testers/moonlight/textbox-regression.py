@@ -66,7 +66,7 @@ statesCheck(tbFrame.textbox2, "TextBox", add_states=["focused"],
 statesCheck(tbFrame.textbox3, "TextBox")
 
 # switch focus to textbox3
-tbFrame.textbox3.mouseClick()
+tbFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.textbox1, "TextBox")
 statesCheck(tbFrame.textbox2, "TextBox", invalid_states=["editable"])
@@ -130,26 +130,42 @@ tbFrame.assertEditableText(tbFrame.textbox2, "new test line")
 ######################
 # Test Search TextBox
 ######################
-##TODO:search textbox has bugs
 # mouse click textbox3 to remove text "Search"
-tbFrame.textbox3.mouseClick()
+tbFrame.mouseClick()
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "")
 
 # mouse click other textbox to reset text "Search"
-tbFrame.textbox2.mouseClick()
+tbFrame.mouseClick()
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "Search")
 
 # type texts
-tbFrame.textbox3.mouseClick()
+tbFrame.mouseClick()
 sleep(config.SHORT_DELAY)
-tbFrame.textbox3.typeText("Search TextBox")
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+#tbFrame.textbox3.typeText("Search TextBox")
+tbFrame.textbox3.enterText("Search TextBox")
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "Search TextBox")
 
 # move focus doesn't change text
-tbFrame.textbox2.mouseClick()
+tbFrame.mouseClick()
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "Search TextBox")
 
@@ -159,7 +175,11 @@ sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "")
 
 # move focus again will change text to "Search"
-tbFrame.textbox2.mouseClick()
+tbFrame.mouseClick()
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
+sleep(config.SHORT_DELAY)
+tbFrame.keyCombo('Tab', grabFocus=False)
 sleep(config.SHORT_DELAY)
 tbFrame.assertEditableText(tbFrame.textbox3, "Search")
 
