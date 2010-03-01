@@ -1,5 +1,9 @@
 2010-03-01  Neville Gao  <nevillegao@gmail.com>
 
+	* tools/dashboard/dashboard.py: Fixed typo.
+
+2010-03-01  Neville Gao  <nevillegao@gmail.com>
+
 	* tools/dashboard/moonlight.xsl:
 	* tools/dashboard/winforms.xsl:
 	* tools/dashboard/component.xsl: Deleted component.xsl and then created

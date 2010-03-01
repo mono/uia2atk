@@ -421,7 +421,7 @@ class PageBuilder(object):
                     self.make_directory('regression')
                 except OSError:
                     output("ERROR: Could not store output for %s" % control)
-                f = open('%s/regression/%s.xml' % (Settings.component, control) 'w')
+                f = open('%s/regression/%s.xml' % (Settings.component, control), 'w')
             else:
                 self.make_directory('%s/%s/regression' % (Settings.output_path, Settings.component))
                 assert os.path.exists('%s/%s/regression' % (Settings.output_path, Settings.component))
