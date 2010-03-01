@@ -20,7 +20,7 @@ def output(s, newline=True):
         if newline:
             print s
         else:
-            print s,
+            print s
 
 def abort(s):
     sys.exit(s)
@@ -30,16 +30,17 @@ class Settings(object):
     is_quiet = False
     log_dir = None
     output_path = None
+    component = None
 
     def __init__(self):
         pass
- 
+
     def argument_parser(self):
         opts = []
         args = []
 
         try:
-            opts, args = getopt.getopt(sys.argv[1:],"qho:",["help","quiet","output="])
+            opts, args = getopt.getopt(sys.argv[1:],"qho:c:",["help","quiet","output=","component="])
         except getopt.GetoptError:
             self.help()
             abort(1)
@@ -53,19 +54,22 @@ class Settings(object):
                 sys.exit(0)
             if o in ("-o","--output"):
                 Settings.output_path = a
-
+            if o in ("-c","--component"):
+                Settings.component = a
 
         try:
             Settings.log_dir = args[0]
         except IndexError, e:
             output("ERROR: log directory argument is required")
             abort(1)
-   
+
     def help(self):
         output("Usage: dashboard [options] <log directory>")
         output("  -h       | --help         Print help information (this message)")
         output("  -q       | --quiet        Don't print anything")
         output("  -o <dir> | --output=<dir> Store output files in <dir>")
+        output("  -c       | --component=   Select at least and only one component to test (i.e.,")
+        output("                            winforms or moonlight).")
 
 class XMLParser(object):
 
@@ -80,97 +84,120 @@ class XMLParser(object):
 
 class PageBuilder(object):
 
-    def __init__(self, log_dir, output_dir=None):
+    def __init__(self, log_dir, component=None, output_dir=None):
         if output_dir is not None:
             Settings.output_path = output_dir
-        Settings.log_dir = log_dir
+        Settings.component = component
+        Settings.log_dir = os.path.join(log_dir, component)
         self.xmlp = XMLParser(Settings.log_dir)
         # a list of every unique machines that has been tested
         self.all_tested_machines = []
-        self.controls = ("Button",
-                        "Checkbox",
-                        "CheckedListBox",
-                        "ColorDialog",
-                        "ColumnHeader",
-                        "Combobox_DropDownList",
-                        "Combobox_DropDown",
-                        "Combobox_Simple",
-                        "Combobox_StyleChanges",
-                        "ContainerControl",
-                        "ContextMenu",
-                        "ContextMenuStrip",
-                        "DataGridBoolColumn",
-                        "DataGridComboboxColumn",
-                        "DataGrid",
-                        "DataGridTextBoxColumn",
-                        "DataGridView_Detail",
-                        "DateTimePicker_DropDown",
-                        "DateTimePicker_ShowUpDown",
-                        "DomainUpDown",
-                        "ErrorProvider",
-                        "FlowLayoutPanel",
-                        "FontDialog",
-                        "Form",
-                        "GroupBox",
-                        "HelpProvider",
-                        "HScrollBar",
-                        "Label",
-                        "LinkLabel",
-                        "ListBox",
-                        "ListView_LargeImage",
-                        "ListView_List",
-                        "ListView",
-                        "ListView_SmallImage",
-                        "MainMenu",
-                        "MaskedTextBox",
-                        "MenuStrip",
-                        "MonthCalendar",
-                        "NotifyIcon",
-                        "NumericUpdown",
-                        "OpenFileDialog",
-                        "PageSetupDialog",
-                        "Panel",
-                        "Picturebox",
-                        "PrintPreviewControl",
-                        "PrintPreviewDialog",
-                        "ProgressBar",
-                        "PropertyGrid",
-                        "RadioButton",
-                        "RichTextBox",
-                        "SaveFileDialog",
-                        "ScrollBar",
-                        "Splitter_Horizontal",
-                        "Splitter_Vertical",
-                        "StatusBarPanel",
-                        "StatusBar",
-                        "StatusStrip",
-                        "TabControl",
-                        "TableLayoutPanel",
-                        "TabPage",
-                        "TextBox",
-                        "ThreadExceptionDialog",
-                        "ToolBarButton",
-                        "ToolBar",
-                        "ToolStripButton",
-                        "ToolStripComboBox",
-                        "ToolStripDropDownButton",
-                        "ToolStripLabel",
-                        "ToolStripMenuItem",
-                        "ToolStripProgressBar",
-                        "ToolStrip",
-                        "ToolStripSeparator",
-                        "ToolStripSplitButton",
-                        "ToolStripTextBox",
-                        "ToolTip",
-                        "TrackBar",
-                        "TreeView",
-                        "VScrollBar")
+        self.controls = []
+        self.winforms_controls = ("Button",
+                                  "Checkbox",
+                                  "CheckedListBox",
+                                  "ColorDialog",
+                                  "ColumnHeader",
+                                  "Combobox_DropDownList",
+                                  "Combobox_DropDown",
+                                  "Combobox_Simple",
+                                  "Combobox_StyleChanges",
+                                  "ContainerControl",
+                                  "ContextMenu",
+                                  "ContextMenuStrip",
+                                  "DataGridBoolColumn",
+                                  "DataGridComboboxColumn",
+                                  "DataGrid",
+                                  "DataGridTextBoxColumn",
+                                  "DataGridView_Detail",
+                                  "DateTimePicker_DropDown",
+                                  "DateTimePicker_ShowUpDown",
+                                  "DomainUpDown",
+                                  "ErrorProvider",
+                                  "FlowLayoutPanel",
+                                  "FontDialog",
+                                  "Form",
+                                  "GroupBox",
+                                  "HelpProvider",
+                                  "HScrollBar",
+                                  "Label",
+                                  "LinkLabel",
+                                  "ListBox",
+                                  "ListView_LargeImage",
+                                  "ListView_List",
+                                  "ListView",
+                                  "ListView_SmallImage",
+                                  "MainMenu",
+                                  "MaskedTextBox",
+                                  "MenuStrip",
+                                  "MonthCalendar",
+                                  "NotifyIcon",
+                                  "NumericUpdown",
+                                  "OpenFileDialog",
+                                  "PageSetupDialog",
+                                  "Panel",
+                                  "Picturebox",
+                                  "PrintPreviewControl",
+                                  "PrintPreviewDialog",
+                                  "ProgressBar",
+                                  "PropertyGrid",
+                                  "RadioButton",
+                                  "RichTextBox",
+                                  "SaveFileDialog",
+                                  "ScrollBar",
+                                  "Splitter_Horizontal",
+                                  "Splitter_Vertical",
+                                  "StatusBarPanel",
+                                  "StatusBar",
+                                  "StatusStrip",
+                                  "TabControl",
+                                  "TableLayoutPanel",
+                                  "TabPage",
+                                  "TextBox",
+                                  "ThreadExceptionDialog",
+                                  "ToolBarButton",
+                                  "ToolBar",
+                                  "ToolStripButton",
+                                  "ToolStripComboBox",
+                                  "ToolStripDropDownButton",
+                                  "ToolStripLabel",
+                                  "ToolStripMenuItem",
+                                  "ToolStripProgressBar",
+                                  "ToolStrip",
+                                  "ToolStripSeparator",
+                                  "ToolStripSplitButton",
+                                  "ToolStripTextBox",
+                                  "ToolTip",
+                                  "TrackBar",
+                                  "TreeView",
+                                  "VScrollBar")
+        self.moonlight_controls = ("Button",
+                                   "CheckBox",
+                                   "ComboBox",
+                                   "GridSplitter",
+                                   "HyperlinkButton",
+                                   "Image",
+                                   "ListBox",
+                                   "PasswordBox",
+                                   "ProgressBar",
+                                   "RadioButton",
+                                   "RepeatButton",
+                                   "ScrollBar",
+                                   "ScrollViewer",
+                                   "Slider",
+                                   "TextBlock",
+                                   "TextBox",
+                                   "Thumb",
+                                   "ToggleButton")
+        if Settings.component == 'winforms':
+            self.controls = self.winforms_controls
+        elif Settings.component == 'moonlight':
+            self.controls = self.moonlight_controls
 
         tmp_test_dirs = os.listdir(Settings.log_dir)
         # take out directories that aren't really for tests, like .svn
         self.test_dirs = [s for s in tmp_test_dirs if "-" in s]
-        self.controls_tested = \
-                             [s[:s.find("-")].lower() for s in self.test_dirs]
+        self.controls_tested = [s[:s.find("-")].lower() for s in self.test_dirs]
 
         self.dashboard_smoke = {}
         self.dashboard_regression = {}
@@ -189,8 +216,7 @@ class PageBuilder(object):
                 self.reports[control] = {}
 
                 test_names = [dir for dir in self.test_dirs if dir.startswith("%s-" % control.lower())]
-                test_paths = \
-                    [os.path.join(Settings.log_dir, dir) for dir in test_names]
+                test_paths = [os.path.join(Settings.log_dir, dir) for dir in test_names]
                 new_to_old_dirs = []
                 for dir in test_paths:
                     self.machines = os.listdir(dir)
@@ -235,7 +261,7 @@ class PageBuilder(object):
             self.newest_dirs[machine].append(time_path)
         except KeyError:
             self.newest_dirs[machine] = [time_path]
-    
+
     def set_update_statuses(self):
         reg = re.compile(".+_package_status")
         log_dir_ls = os.listdir(Settings.log_dir)
@@ -247,7 +273,7 @@ class PageBuilder(object):
             machine = file.replace("_package_status","")
             self.update_statuses[machine] = status
             f.close()
-    
+
     def get_newest_subdirs(self, dir, smoke=False):
         '''update dashboard with the newest subdir of the string dir for
         each unique machine'''
@@ -282,7 +308,7 @@ class PageBuilder(object):
         # get the list of all subdirs dir sorted from newest to oldest
         new_to_old_subdirs = c.getoutput("ls -tc %s" % dir).split()
         # get the entire path of the directories and store it in the same
-        # variable 
+        # variable
         for i in range(len(new_to_old_subdirs)):
             new_to_old_subdirs[i] = os.path.join(dir, new_to_old_subdirs[i])
         return new_to_old_subdirs
@@ -310,7 +336,7 @@ class PageBuilder(object):
         status_code = int(f.read(1))
         f.close()
         return status_code
-        
+
     def get_time(self, machine, control, is_smoke=False):
         # get the list of the most recent log directorie(s) for each control
         # if the control is not found in dashboard, then the test has
@@ -395,19 +421,18 @@ class PageBuilder(object):
                     self.make_directory('regression')
                 except OSError:
                     output("ERROR: Could not store output for %s" % control)
-                f = open('regression/%s.xml' % control, 'w')
+                f = open('%s/regression/%s.xml' % (Settings.component, control) 'w')
             else:
-                self.make_directory('%s/regression' % Settings.output_path)
-                assert os.path.exists('%s/regression' % Settings.output_path)
+                self.make_directory('%s/%s/regression' % (Settings.output_path, Settings.component))
+                assert os.path.exists('%s/%s/regression' % (Settings.output_path, Settings.component))
                 try:
-                    f = open('%s/regression/%s.xml' % (Settings.output_path, control), 'w')
+                    f = open('%s/%s/regression/%s.xml' % (Settings.output_path, Settings.component, control), 'w')
                 except IOError:
-                    output('WARN: Failed to save output to %s/regression/%s.xml, saving to current working directory instead.' % (Settings.output_path, control))
+                    output('WARN: Failed to save output to %s/%s/regression/%s.xml, saving to current working directory instead.' % (Settings.output_path, Settings.component, control))
                     try:
                         self.make_directory('regression')
                     except OSError:
-                        output("ERROR: Could not store output for %s" % \
-                                                                       control)
+                        output("ERROR: Could not store output for %s" % control)
             if f is not None:
                 f.write('<?xml version="1.0" encoding="UTF-8"?>')
                 f.write('<?xml-stylesheet type="text/xsl" href="../regression.xsl"?>')
@@ -550,16 +575,16 @@ class PageBuilder(object):
         # Settings.output_path if it exists, if it doesn't exist or if it
         # fails, save in the cwd
         if Settings.output_path is None:
-            f = open('dashboard.xml', 'w')
+            f = open('%s.xml' % Settings.component, 'w')
         else:
             try:
-                f = open('%s/dashboard.xml' % Settings.output_path, 'w')
+                f = open('%s/%s.xml' % (Settings.output_path, Settings.component), 'w')
             except IOError:
                 output("WARN:  Failed to save output to %s/dashboard.xml, saving to current working directory instead." % Settings.output_path)
-                f = open('dashboard.xml', 'w')
-            
+                f = open('%s.xml' % Settings.component, 'w')
+
         f.write('<?xml version="1.0" encoding="UTF-8"?>')
-        f.write('<?xml-stylesheet type="text/xsl" href="dashboard.xsl"?>')
+        f.write('<?xml-stylesheet type="text/xsl" href="%s.xsl"?>' % Settings.component)
         ET.ElementTree(root).write(f)
         f.close()
 
@@ -567,7 +592,7 @@ class Dashboard(object):
 
     def __init__(self, log_dir):
         Settings.log_dir = log_dir
-        self.pb = PageBuilder(Settings.log_dir)
+        self.pb = PageBuilder(Settings.log_dir, Settings.component)
 
     def update(self, log):
         pass
@@ -576,7 +601,7 @@ class Dashboard(object):
         self.pb.build_regression()
         self.pb.build_smoke()
         self.pb.build_main()
-        
+
 if __name__ == "__main__":
     s = Settings()
     s.argument_parser()

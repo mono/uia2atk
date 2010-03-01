@@ -12,7 +12,7 @@ def output(s, newline=True):
     if newline:
       print s
     else:
-      print s,
+      print s
 
 def abort(s):
     sys.exit(s)
@@ -25,26 +25,29 @@ class Settings(object):
         Settings.mask = EventsCodes.OP_FLAGS["IN_CREATE"]  # watched events
         Settings.is_quiet = False
         Settings.dashboard_path = None
+        Settings.component = None
 
     def argument_parser(self):
         opts = []
         args = []
         try:
-          opts, args = getopt.getopt(sys.argv[1:],"hqd:",["help","quiet","dashboard="])
+            opts, args = getopt.getopt(sys.argv[1:],"hqd:c:",["help","quiet","dashboard=","component="])
 
         except getopt.GetoptError:
-          self.help()
-          sys.exit(1)
+            self.help()
+            sys.exit(1)
 
         for o,a in opts:
-          if o in ("-q","--quiet"):
-            Settings.is_quiet = True
+            if o in ("-q","--quiet"):
+                Settings.is_quiet = True
         for o,a in opts:
-          if o in ("-h","--help"):
-            self.help()
-            sys.exit(0)
-          if o in ("-d","--dashboard"):
-            Settings.dashboard_path = a
+            if o in ("-h","--help"):
+                self.help()
+                sys.exit(0)
+            if o in ("-d","--dashboard"):
+                Settings.dashboard_path = a
+            if o in ("-c","--component"):
+                Settings.component = a
 
         try:
             Settings.monitor_path = args[0]
@@ -58,7 +61,10 @@ class Settings(object):
         output("Common Options:")
         output("  -h | --help        Print help information (this message)")
         output("  -q | --quiet       Don't print anything")
-        output("  -d | --dashboard=  The directory in which the dashboard files are stored or\n                     should be stored")
+        output("  -d | --dashboard=  The directory in which the dashboard files are stored or")
+        output("                     should be stored")
+        output("  -c | --component=  Select at least and only one component to test (i.e.,")
+        output("                     winforms or moonlight).")
         output("")
         output("Description:")
         output("  qamon will begin by monitoring <directory>.  Any new", False)
@@ -106,15 +112,17 @@ class PTmp(ProcessEvent):
             self.build_dashboard()
 
     def build_dashboard(self):
-            pb = None
-            if Settings.dashboard_path is not None:
-                pb = dashboard.PageBuilder(Settings.monitor_path,
-                                           Settings.dashboard_path)
-            else:
-                pb = dashboard.PageBuilder(Settings.monitor_path)
-            pb.build_regression()
-            pb.build_smoke()
-            pb.build_main()
+        pb = None
+        if Settings.dashboard_path is not None:
+            pb = dashboard.PageBuilder(Settings.monitor_path,
+                                       Settings.component,
+                                       Settings.dashboard_path)
+        else:
+            pb = dashboard.PageBuilder(Settings.monitor_path,
+                                       Settings.component)
+        pb.build_regression()
+        pb.build_smoke()
+        pb.build_main()
 
 if __name__ == "__main__":
     s = Settings()
