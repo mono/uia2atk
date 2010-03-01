@@ -1,4 +1,14 @@
-2110-02-26  Neville Gao  <nevillegao@gmail.com>
+2010-03-01  Neville Gao  <nevillegao@gmail.com>
+
+	* tools/dashboard/moonlight.xsl:
+	* tools/dashboard/winforms.xsl:
+	* tools/dashboard/component.xsl: Deleted component.xsl and then created
+	respective xsl file for moonlight and winforms.
+
+	* tools/dashboard/qamon.py:
+	* tools/dashboard/dashboard.py: Supported different components.
+
+2010-02-26  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py: Modified 'grep' argument.
 	* testers/moonlight/textbox-regression.py: Updated 'Search Box' test
