@@ -1,3 +1,7 @@
+2010-03-02  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/tests.py: Fixed typo.
+
 2010-03-01  Neville Gao  <nevillegao@gmail.com>
 
 	* tools/dashboard/dashboard.py: Fixed typo.
