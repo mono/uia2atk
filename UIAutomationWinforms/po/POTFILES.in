@@ -12,6 +12,7 @@ UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridViewProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/GroupBoxProvider.cs
+UIAutomationWinforms/Mono.UIAutomation.Winforms/Helper.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/LabelProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/LinkLabelProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs
@@ -35,6 +36,7 @@ UIAutomationWinforms/Mono.UIAutomation.Winforms/ProgressBarProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/RadioButtonProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs
+UIAutomationWinforms/Mono.UIAutomation.Winforms/SimpleControlProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitContainerProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitterProvider.cs
 UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs
