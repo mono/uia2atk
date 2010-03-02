@@ -5,6 +5,9 @@
 *.pidb
 *.userprefs
 *.usertasks
+*.swp
+*.suo
+*.csproj.user
 
 # /
 /*.userprefs
@@ -508,6 +511,8 @@
 /build/hudson/scripts/.xml_example.py.swp
 
 # /MoonAtkBridge
+/MoonAtkBridge/a11y.xml
+/MoonAtkBridge/descriptors.xml
 /MoonAtkBridge/Makefile
 /MoonAtkBridge/Makefile.in
 /MoonAtkBridge/configure
@@ -570,6 +575,7 @@
 /MoonAtkBridge/tests/assets/CalendarTest/*.html
 /MoonAtkBridge/tests/assets/CalendarTest/*.xap
 /MoonAtkBridge/tests/assets/CalendarTest/Makefile
+/MoonAtkBridge/tests/assets/CalendarTest/Makefile.in
 /MoonAtkBridge/tests/assets/CalendarTest/*.g.cs
 /MoonAtkBridge/tests/assets/CheckBoxTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/CheckBoxTest/*.dll
@@ -733,6 +739,15 @@
 /MoonAtkBridge/tests/assets/SliderTest/Makefile.in
 /MoonAtkBridge/tests/assets/SliderTest/*.mdb
 /MoonAtkBridge/tests/assets/SliderTest/*.xap
+/MoonAtkBridge/tests/assets/TabControlTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/TabControlTest/*.dll
+/MoonAtkBridge/tests/assets/TabControlTest/*.g.cs
+/MoonAtkBridge/tests/assets/TabControlTest/*.g.resources
+/MoonAtkBridge/tests/assets/TabControlTest/*.html
+/MoonAtkBridge/tests/assets/TabControlTest/Makefile
+/MoonAtkBridge/tests/assets/TabControlTest/Makefile.in
+/MoonAtkBridge/tests/assets/TabControlTest/*.mdb
+/MoonAtkBridge/tests/assets/TabControlTest/*.xap
 /MoonAtkBridge/tests/assets/TableTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/TableTest/*.dll
 /MoonAtkBridge/tests/assets/TableTest/*.g.cs
@@ -825,3 +840,28 @@
 /test/testers/uiaclient/Mono.UIAutomation.TestFramework/bin/
 /test/testers/uiaclient/Tests/bin/
 /test/testers/uiaclient/Tests/test-results/
+
+
+# /test/samples/moonlight/
+/test/samples/moonlight/Calendar/*.g.cs
+/test/samples/moonlight/Calendar/AppManifest.xaml
+/test/samples/moonlight/Calendar/*.g.resources
+/test/samples/moonlight/Calendar/*.dll
+/test/samples/moonlight/Calendar/*.dll.mdb
+/test/samples/moonlight/Calendar/*.xap
+/test/samples/moonlight/Calendar/*.html
+/test/samples/moonlight/DatePicker/*.g.cs
+/test/samples/moonlight/DatePicker/AppManifest.xaml
+/test/samples/moonlight/DatePicker/*.g.resources
+/test/samples/moonlight/DatePicker/*.dll.mdb
+/test/samples/moonlight/DatePicker/*.xap
+/test/samples/moonlight/DatePicker/*.html
+/test/samples/moonlight/DatePicker/*.dll
+/test/samples/moonlight/TabControl/*.g.cs
+/test/samples/moonlight/TabControl/AppManifest.xaml
+/test/samples/moonlight/TabControl/*.g.resources
+/test/samples/moonlight/TabControl/*.dll.mdb
+/test/samples/moonlight/TabControl/*.xap
+/test/samples/moonlight/TabControl/*.html
+/test/samples/moonlight/TabControl/*.dll
+
