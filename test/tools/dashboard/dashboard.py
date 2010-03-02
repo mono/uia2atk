@@ -89,7 +89,7 @@ class PageBuilder(object):
             Settings.output_path = output_dir
         Settings.component = component
         Settings.log_dir = os.path.join(log_dir, component)
-        self.xmlp = XMLParser(Settings.log_dir)
+        self.xmlp = XMLParser(os.path.join(log_dir, component))
         # a list of every unique machines that has been tested
         self.all_tested_machines = []
         self.controls = []

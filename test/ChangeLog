@@ -1,5 +1,10 @@
 2010-03-02  Neville Gao  <nevillegao@gmail.com>
 
+	* tools/dashboard/dashboard.py: Set 'Settings.log_dir' in XMLParser.
+	* testers/winforms/label-regresion.py: Renamed to 'label-regression.py'.
+
+2010-03-02  Neville Gao  <nevillegao@gmail.com>
+
 	* harness/tests.py: Fixed typo.
 
 2010-03-01  Neville Gao  <nevillegao@gmail.com>
