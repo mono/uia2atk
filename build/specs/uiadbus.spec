@@ -23,7 +23,7 @@ UiaDbus is another communication channel for UIA on Linux between the client and
 License:        MIT
 Summary:        Devel package for UiaDbus
 Group:          Development/Libraries/Mono
-Requires:       uiadbuscorebridge == %{version}-%{release}
+Requires:       uiadbus == %{version}-%{release}
 
 %description devel
 UiaDbus is another communication channel for UIA on Linux between the client and provider
