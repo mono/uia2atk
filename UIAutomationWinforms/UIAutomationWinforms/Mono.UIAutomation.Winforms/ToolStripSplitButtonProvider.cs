@@ -61,6 +61,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
+			SetBehavior (InvokePatternIdentifiers.Pattern,
+				     new InvokeProviderBehavior (this));
+
 			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				     new ExpandCollapseProviderBehavior (this));
 		}

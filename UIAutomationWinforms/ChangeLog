@@ -1,3 +1,13 @@
+2010-03-03  Matt Guo <matt@mattguo.com>
+
+	* UIAutomationWinforms/Makefile.am: 
+	* UIAutomationWinforms/UIAutomationWinforms.csproj: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/InvokeProviderBehavior.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/InvokePatternInvokedEvent.cs:
+	Fix bug#576050, [uiaclient-winforms]: The splitbutton's Invoke method doesn't work
+
 2010-03-02  Ray Wang  <rawang@novell.com>
 
 	* po/POTFILES.in: Add missing file in POTFILE.in.

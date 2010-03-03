@@ -195,6 +195,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TrackBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TrackBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs \
@@ -480,6 +481,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TrackBar/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternLargeChangeEvent.cs \

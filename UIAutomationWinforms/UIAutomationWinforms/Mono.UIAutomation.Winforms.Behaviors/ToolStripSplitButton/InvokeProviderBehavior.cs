@@ -17,10 +17,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2010 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Brad Taylor <brad@getcoded.net>
+//	Matt Guo <matt@mattguo.com>
 // 
 
 using System;
@@ -32,61 +32,61 @@ using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ToolStripButton;
+using Mono.UIAutomation.Winforms.Events.ToolStripSplitButton;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripButton
+namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripSplitButton
 {
-	internal class InvokeProviderBehavior 
+	internal class InvokeProviderBehavior
 		: ProviderBehavior, IInvokeProvider
 	{
 #region Constructor
-		public InvokeProviderBehavior (ToolStripButtonProvider provider)
+		public InvokeProviderBehavior (ToolStripSplitButtonProvider provider)
 			: base (provider)
 		{
-			button = (SWF.ToolStripButton) provider.Component;
+			button = (SWF.ToolStripSplitButton) provider.Component;
 		}
 #endregion
-		
+
 #region IProviderBehavior Interface
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent,
 			                   new InvokePatternInvokedEvent (Provider));
 		}
-		
+
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent,
 			                   null);
 		}
-		
-		public override AutomationPattern ProviderPattern { 
+
+		public override AutomationPattern ProviderPattern {
 			get { return InvokePatternIdentifiers.Pattern; }
 		}
 #endregion
-		
+
 #region IInvokeProvider Members
 		public virtual void Invoke ()
 		{
 			if (!button.Enabled)
 				throw new ElementNotEnabledException ();
 
-			PerformClick ();
+			PerformButtonClick ();
 		}
 
-		private void PerformClick ()
+		private void PerformButtonClick ()
 		{
 			SWF.ToolStrip toolstrip = button.Owner;
 			if (toolstrip.InvokeRequired) {
-				toolstrip.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+				toolstrip.BeginInvoke (new SWF.MethodInvoker (PerformButtonClick));
 				return;
 			}
-			button.PerformClick ();
+			button.PerformButtonClick ();
 		}
-#endregion	
+#endregion
 
 #region Private Fields
-		private SWF.ToolStripButton button;
+		private SWF.ToolStripSplitButton button;
 #endregion
 	}
 }

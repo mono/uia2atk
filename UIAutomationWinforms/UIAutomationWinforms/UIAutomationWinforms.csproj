@@ -607,11 +607,16 @@
     <Compile Include="Mono.UIAutomation.Winforms\WordToken.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenCollection.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenizer.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Events\ToolStripSplitButton\InvokePatternInvokedEvent.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Behaviors\ToolStripSplitButton\InvokeProviderBehavior.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="Hierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
         <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am">
           <BuildFilesVar Sync="true" Name="FILES" />
           <DeployFilesVar />
