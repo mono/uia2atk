@@ -1,3 +1,7 @@
+2010-03-03  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/winforms/label-regression.py: Added file.
+
 2010-03-02  Neville Gao  <nevillegao@gmail.com>
 
 	* tools/dashboard/dashboard.py: Set 'Settings.log_dir' in XMLParser.
