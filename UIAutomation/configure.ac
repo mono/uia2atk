@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([mono-uia], [2.0])
+AC_INIT([mono-uia],[2.0])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
 
 dnl pkg-config
@@ -62,6 +62,10 @@ if test -z "$CONFIG_REQUESTED" ; then
 	AM_CONDITIONAL(ENABLE_DEBUG, true)
 	enable_debug=yes
 fi
+AC_ARG_ENABLE(winfxcore,
+	AC_HELP_STRING([--enable-winfxcore],
+	        [force winfxcore to build with mono 2.6 [default=NO]]),
+	        enable_winfxcore=yes, enable_winfxcore=no)
 
 NUNIT_PATH=
 
@@ -80,13 +84,15 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 
 PKG_CHECK_MODULES([MONO], [mono >= 2.0])
-if pkg-config --atleast-version=2.5 mono; then
-	SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([
-		WindowsBase
-	])
-	WINDOWSBASE_LIBS=-r:WindowsBase
-	AC_SUBST(WINDOWSBASE_LIBS)
-	has_mono_2_5=yes
+if test "x$enable_winfxcore" = "xno"; then
+	if pkg-config --atleast-version=2.5 mono; then
+		SHAMROCK_CHECK_MONO_2_0_GAC_ASSEMBLIES([
+			WindowsBase
+		])
+		WINDOWSBASE_LIBS=-r:WindowsBase
+		AC_SUBST(WINDOWSBASE_LIBS)
+		has_mono_2_5=yes
+	fi
 fi
 AM_CONDITIONAL(HAS_MONO_2_5, test "x$has_mono_2_5" = "xyes")
 

@@ -1,3 +1,8 @@
+2010-03-04  Stephen Shaw <sshaw@decriptor.com>
+
+	* configure.ac: Added a flag to allow windowsbase to be built even
+	when mono 2.5 and later are present.
+
 2010-03-04  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationClientTests/UIAutomationClientTests/AutomationElementTest.cs:
