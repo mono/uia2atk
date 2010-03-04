@@ -52,7 +52,7 @@ WinFx components required by User Interface Automation (UIA) for use with Mono
 %setup -q
 
 %build
-%configure --disable-tests
+%configure --disable-tests --enable-winfxcore
 #Break build with parrallel make
 make
 
