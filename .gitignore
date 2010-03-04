@@ -595,6 +595,15 @@
 /MoonAtkBridge/tests/assets/ComboBoxTest/Makefile.in
 /MoonAtkBridge/tests/assets/ComboBoxTest/*.mdb
 /MoonAtkBridge/tests/assets/ComboBoxTest/*.xap
+/MoonAtkBridge/tests/assets/DatePickerTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/DatePickerTest/*.dll
+/MoonAtkBridge/tests/assets/DatePickerTest/*.g.cs
+/MoonAtkBridge/tests/assets/DatePickerTest/*.g.resources
+/MoonAtkBridge/tests/assets/DatePickerTest/*.html
+/MoonAtkBridge/tests/assets/DatePickerTest/Makefile
+/MoonAtkBridge/tests/assets/DatePickerTest/Makefile.in
+/MoonAtkBridge/tests/assets/DatePickerTest/*.mdb
+/MoonAtkBridge/tests/assets/DatePickerTest/*.xap
 /MoonAtkBridge/tests/assets/ExpandCollapseEventsTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/ExpandCollapseEventsTest/*.dll
 /MoonAtkBridge/tests/assets/ExpandCollapseEventsTest/*.g.cs

@@ -1,3 +1,13 @@
+2010-03-04  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/DatePickerTest/App.xaml:
+	* assets/DatePickerTest/App.xaml.cs:
+	* assets/DatePickerTest/Makefile.am:
+	* assets/DatePickerTest/Page.xaml:
+	* assets/DatePickerTest/Page.xaml.cs:
+	* test_datepicker.py:
+	* assets/Makefile.am: DatePicker test added.
+
 2010-02-22  Brad Taylor  <brad@getcoded.net>
 
 	* test_hyperlinkbutton.py:

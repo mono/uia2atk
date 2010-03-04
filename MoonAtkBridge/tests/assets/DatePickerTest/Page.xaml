@@ -1,0 +1,9 @@
+<UserControl x:Class="DatePickerTest.Page"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:basics="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+	Width="500" Height="800">
+	<Canvas x:Name="LayoutRoot" Background="White">
+		<basics:DatePicker x:Name="datetimePicker" />
+	</Canvas>
+</UserControl>
