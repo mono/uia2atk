@@ -1,3 +1,11 @@
+2010-03-04  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusBridge/Application.cs: 
+	* UiaDbusBridge/AutomationBridge.cs: 
+	* UiaDbusBridgeTests/dbusbridgetest.sh.in: 
+	* UiaDbusBridgeTests/AutomationBridgeTest.cs: Fix Bug 571799 - The
+	dialog who has parent has been found twice.
+
 2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaDbusSource/UiaDbusDockPattern.cs: Fix potential stack overflow.

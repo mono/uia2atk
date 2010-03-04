@@ -39,14 +39,14 @@ if [ "x$fixture" != "x" ]; then
 	echo "Running only the unit tests for fixture $fixture..."
 	echo
 
-	NUNIT_ARGS="--fixture=MonoTests.Mono.UIAutomation.UiaDbusCoreBridge.${fixture}"
+	NUNIT_ARGS="--fixture=MonoTests.Mono.UIAutomation.UiaDbusBridge.${fixture}"
 fi
 
 if [ "x$runtest" != "x" ]; then
 	echo "Running only the unit test $runtest from $fixture"
 	echo
 
-	NUNIT_ARGS="${NUNIT_ARGS} --run=MonoTests.Mono.UIAutomation.UiaDbusCoreBridge.${fixture}.${runtest}"
+	NUNIT_ARGS="${NUNIT_ARGS} --run=MonoTests.Mono.UIAutomation.UiaDbusBridge.${fixture}.${runtest}"
 fi
 
 if [ "x$labels" == "xyes" ]; then

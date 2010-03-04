@@ -130,5 +130,38 @@ namespace MonoTests.Mono.UIAutomation.UiaDbusBridge
 			                 element1.ControlTypeId,
 			                 "Root element control type");
 		}
+
+		[Test]
+		public void AutomationInteropProviderTest ()
+		{
+			Form f = new Form ();
+			Button btn = new Button ();
+			f.Controls.Add (btn);
+			f.Show ();
+
+			Thread.Sleep (1000);
+
+			string ourBus = TestHelper.CurrentBus;
+			IApplication app = TestHelper.GetApplication (ourBus);
+			Assert.IsNotNull (app, "Unable to get UiaDbus.IApplication");
+
+			var formElement = TestHelper.GetElement (
+				ourBus, "/org/mono/UIAutomation/Element/1");
+			var buttonElement = TestHelper.GetElement (
+				ourBus, "/org/mono/UIAutomation/Element/2");
+			CheckProviderFromHandle (formElement.NativeWindowHandle, "form");
+			CheckProviderFromHandle (buttonElement.NativeWindowHandle, "button");
+		}
+
+		static void CheckProviderFromHandle (int handle, string name)
+		{
+			var provider =
+				AutomationInteropProvider.HostProviderFromHandle (new IntPtr (handle));
+			Assert.IsNotNull (provider, string.Format ("{0}'s provider", name) );
+			Assert.AreEqual (
+			                 provider.GetPropertyValue (AEIds.NativeWindowHandleProperty.Id),
+			                 new IntPtr (handle),
+			                 string.Format ("{0}'s handle", name));
+		}
 	}
 }

@@ -240,10 +240,7 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button2Element, propertyEvents [0].Sender, "event sender");
 			Assert.AreEqual (AutomationElement.HasKeyboardFocusProperty, propertyEvents [0].Args.Property, "property");
 			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
-			if (Atspi)
-				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
-			else
-				Assert.AreEqual (null, propertyEvents [0].Args.OldValue, "old value");
+			Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
 
 			propertyEvents.Clear ();
 			button1Element.SetFocus ();
@@ -364,10 +361,7 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button3Element, propertyEvents [0].Sender, "event sender");
 			Assert.AreEqual (AutomationElement.IsEnabledProperty, propertyEvents [0].Args.Property, "property");
 			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
-			if (Atspi)
-				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
-			else
-				Assert.AreEqual (null, propertyEvents [0].Args.OldValue, "old value");
+			Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
 
 			RunCommand ("disable button3");
 			At.RemoveAutomationPropertyChangedEventHandler (button3Element,
@@ -1155,7 +1149,7 @@ Thread.Sleep(1000);
 		}
 
 		[Test]
-		public void FromPointTest ()
+		public void Z_FromPointTest ()
 		{
 			AutomationElement element;
 			if (!Atspi) {

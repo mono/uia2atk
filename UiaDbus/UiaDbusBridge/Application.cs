@@ -79,6 +79,15 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				OnRootElementsChanged ();
 		}
 
+		public int RootElementCount
+		{
+			get {
+				lock (rootElements) {
+					return rootElements.Count;
+				}
+			}
+		}
+
 		internal void RemoveProvider (IRawElementProviderSimple provider)
 		{
 			lock (automationEventHandlers)

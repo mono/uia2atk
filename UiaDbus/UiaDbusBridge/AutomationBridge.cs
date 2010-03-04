@@ -48,13 +48,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		// TODO: Determine if HostProviderFromHandle would break if only
 		//       one pointer/provider mapping were used
-		private Dictionary<IntPtr, IRawElementProviderSimple> pointerWindowProviderMapping =
-			new Dictionary<IntPtr, IRawElementProviderSimple> ();
 		private Dictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping =
 			new Dictionary<IntPtr, IRawElementProviderSimple> ();
 		private Dictionary<IRawElementProviderSimple, ProviderElementWrapper> providerWrapperMapping =
 			new Dictionary<IRawElementProviderSimple, ProviderElementWrapper> ();
-		private int windowProviderCount = 0;
 
 		private Application app = null;
 		private volatile bool mainLoopStarted = false;
@@ -97,11 +94,12 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		#endregion
 
 		#region IAutomationBridge implementation
-		
+
 		public object HostProviderFromHandle (IntPtr hwnd)
 		{
 			IRawElementProviderSimple provider = null;
-			pointerWindowProviderMapping.TryGetValue (hwnd, out provider);
+			lock (pointerProviderMapping)
+				pointerProviderMapping.TryGetValue (hwnd, out provider);
 			return provider;
 		}
 
@@ -182,12 +180,12 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					(IntPtr) providerHandleObj :
 					IntPtr.Zero;
 
-				bool isWindow = false;
+				bool isRootWindow = false;
 				if (ControlType.Window.Id == (int)
 				    simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
-					isWindow = true;
-					pointerWindowProviderMapping [providerHandle] = simpleProvider;
-					windowProviderCount++;
+					var fragmentProvider = simpleProvider as IRawElementProviderFragment;
+					isRootWindow = fragmentProvider != null &&
+						fragmentProvider == fragmentProvider.Navigate (NavigateDirection.Parent);
 				}
 
 				ProviderElementWrapper element = new ProviderElementWrapper (simpleProvider);
@@ -196,15 +194,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					providerWrapperMapping [simpleProvider] = element;
 				if (providerHandle != IntPtr.Zero)
 					lock (pointerProviderMapping) {
-						// TODO Add debug flag here, we'd better remove the ContainsKey check in the release version
+#if DEBUG
 						if (pointerProviderMapping.ContainsKey (providerHandle)) {
 							Log.Error ("Duplicate provider handle, {0}, {1}",
 								simpleProvider.GetPropertyValue (AEIds.NameProperty.Id),
 								simpleProvider.GetPropertyValue (AEIds.LocalizedControlTypeProperty.Id));
 						}
+#endif
 						pointerProviderMapping [providerHandle] = simpleProvider;
 					}
-				if (isWindow)
+				if (isRootWindow)
 					app.AddRootElement (element);
 
 				//The event shall be raised after the provider is added to providerWrapperMapping
@@ -328,67 +327,43 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		#region Private Methods - Element Management
 
-		private bool HandleTotalElementRemoval (IRawElementProviderSimple provider)
+		private void HandleTotalElementRemoval (IRawElementProviderSimple provider)
 		{
-			bool lastWindowProvider = false;
-			
 			IRawElementProviderFragment providerFragment =
 				provider as IRawElementProviderFragment;
 			if (providerFragment == null)
-				return false;
-			if (HandleDescendantElementRemoval (providerFragment))
-				lastWindowProvider = true;
-			if (HandleElementRemoval (providerFragment))
-				lastWindowProvider = true;
-
-			return lastWindowProvider;
+				return;
+			HandleDescendantElementRemoval (providerFragment);
+			HandleElementRemoval (providerFragment);
 		}
 
-		private bool HandleDescendantElementRemoval (IRawElementProviderFragment providerFragment)
+		private void HandleDescendantElementRemoval (IRawElementProviderFragment providerFragment)
 		{
-			bool lastWindowProvider = false;
 			var current = providerFragment.Navigate (NavigateDirection.FirstChild);
 			while (current != null) {
-				if (HandleElementRemoval (current))
-					lastWindowProvider = true;
-				if (HandleDescendantElementRemoval (current))
-					lastWindowProvider = true;
+				HandleDescendantElementRemoval (current);
+				HandleElementRemoval (current);
 				current = current.Navigate (NavigateDirection.NextSibling);
 			}
-			return lastWindowProvider;
 		}
 		
-		private bool HandleElementRemoval (IRawElementProviderSimple provider)
+		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
-			bool lastWindowProvider = false;
-			
 			ProviderElementWrapper element;
 			if (!providerWrapperMapping.TryGetValue (provider, out element))
-				return false;
+				return;
 
 			int controlTypeId = (int) provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.Window.Id)
+				app.RemoveRootElement (element);
 
-			IntPtr providerHandle = IntPtr.Zero;
 			lock (pointerProviderMapping) {
-				if (controlTypeId == ControlType.Window.Id) {
-					app.RemoveRootElement (element);
-					foreach (IntPtr pointer in pointerWindowProviderMapping.Keys) {
-						if (provider == pointerWindowProviderMapping [pointer]) {
-							providerHandle = pointer;
-							break;
-						}
-					}
-					pointerWindowProviderMapping.Remove (providerHandle);
-					windowProviderCount--;
-					if (windowProviderCount == 0)
-						lastWindowProvider = true;
-				} else {
-					foreach (IntPtr pointer in pointerProviderMapping.Keys) {
-						if (provider == pointerProviderMapping [pointer]) {
-							providerHandle = pointer;
-							break;
-						}
+				IntPtr providerHandle = IntPtr.Zero;
+				foreach (IntPtr pointer in pointerProviderMapping.Keys) {
+					if (provider == pointerProviderMapping [pointer]) {
+						providerHandle = pointer;
+						break;
 					}
 				}
 				if (providerHandle != IntPtr.Zero)
@@ -399,8 +374,6 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			lock (providerWrapperMapping)
 				providerWrapperMapping.Remove (provider);
 			app.RemoveProvider (provider);
-
-			return lastWindowProvider;
 		}
 
 		#endregion
