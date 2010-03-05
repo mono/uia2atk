@@ -33,24 +33,11 @@ class SliderFrame(accessibles.Frame):
                 "actual number of slider is:%s, expected is:%s" % \
                  (len(self.sliders), self.SLIDER_NUM)
 
-        # find horizontal slider and buttons
+        # find horizontal slider
         self.horizontal_slider = self.sliders[0]
-        self.hs_buttons = self.horizontal_slider.findAllPushButtons(None)
-        # BUG560711: extraneous push buttons
-        #assert len(self.hs_buttons) == self.BUTTON_NUM, \
-        #        "actual number of button is:%s, expected is:%s" % \
-        #         (len(self.hs_buttons), self.BUTTON_NUM)
 
-        self.horizontal_thumb = self.hs_buttons[1]
-
-        # find vertical slider and buttons
+        # find vertical slider
         self.vertical_slider = self.sliders[1]
-        self.vs_buttons = self.vertical_slider.findAllPushButtons(None)
-        # BUG560711: extraneous push buttons
-        #assert len(self.vs_buttons) == self.BUTTON_NUM, \
-        #        "actual number of button is:%s, expected is:%s" % \
-        #         (len(self.vs_buttons), self.BUTTON_NUM)
-        self.vertical_thumb = self.vs_buttons[1]
 
     def assertValue(self, accessible, expected_value):
         """

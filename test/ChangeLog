@@ -1,3 +1,9 @@
+2010-03-05  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/slider/sliderframe.py,
+	* testers/moonlight/slider/__init__.py,
+	* testers/moonlight/slider-regression.py: remove bug560711 reference
+
 2010-03-03  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/winforms/label-regression.py: Added file.

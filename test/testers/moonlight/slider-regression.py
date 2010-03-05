@@ -45,31 +45,14 @@ sFrame = app.sliderFrame
 # Check default States
 #######################
 statesCheck(sFrame.horizontal_slider, "Slider")
-
-for button in sFrame.hs_buttons:
-    if button == sFrame.hs_buttons[1]:
-        statesCheck(button, "Thumb")
-    # BUG560711: extraneous push buttons
-    #else:
-    #    statesCheck(button, "Thumb", invalid_states=["focusable"])
-
 statesCheck(sFrame.vertical_slider, "Slider")
 
-for button in sFrame.vs_buttons:
-    if button == sFrame.vs_buttons[1]:
-        statesCheck(button, "Thumb")
-    # BUG560711: extraneous push buttons
-    #else:
-    #    statesCheck(button, "Thumb", invalid_states=["focusable"])
-
 ###################################
-# Test horizontal slider and thumb
+# Test horizontal slider
 ###################################
-# test horizontal_thumb is focusable
 sFrame.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(sFrame.horizontal_slider, "Slider")
-statesCheck(sFrame.horizontal_thumb, "Thumb", add_states=["focused"])
 
 # test Value implementation
 sFrame.setValue(sFrame.horizontal_slider, 10)
@@ -91,7 +74,7 @@ sFrame.assertValue(sFrame.horizontal_slider, 0)
 sFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
 assertName(sFrame.label1, 'Horizontal Slider Value: 0.1')
-## BUG558289: Key Navigation doesn't update slider's value
+## BUG558289: Key Navigation Does Not Update Slider's Value with SmallChange Property
 #sFrame.assertValue(sFrame.horizontal_slider, 0.1)
 
 sFrame.keyCombo("Down", grabFocus=False)
@@ -106,9 +89,6 @@ sFrame.assertValue(sFrame.horizontal_slider, 0)
 sFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(sFrame.vertical_slider, "Slider")
-# Affect by BUG560711: extraneous push buttons
-#statesCheck(sFrame.vertical_thumb, "Thumb", add_states=["focused"])
-statesCheck(sFrame.horizontal_thumb, "Thumb")
 
 # test Value implementation
 sFrame.setValue(sFrame.vertical_slider, 20)

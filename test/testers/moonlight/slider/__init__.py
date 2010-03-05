@@ -17,7 +17,7 @@ init_dir = path[0]
 uiaqa_path = dirname(dirname(init_dir))
 # Variable the path of Firefox to run the application, Please install
 # Firefox3.5.1 first which is accessible by accerciser
-firefox_path = '/usr/local/bin/firefox'
+firefox_path = '/usr/bin/firefox'
 
 def launchSlider(exe=None):
     '''Launch Moonlight slider with accessibility enabled and return a
@@ -31,7 +31,7 @@ def launchSlider(exe=None):
 
     args = [firefox_path, exe]
 
-    (app, subproc) = cache.launchApplication(args=args, name="Minefield", \
+    (app, subproc) = cache.launchApplication(args=args, name="Firefox", \
                                                         wait=config.LONG_DELAY)
 
     slider = Slider(app, subproc)
