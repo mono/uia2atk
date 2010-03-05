@@ -17,7 +17,7 @@ init_dir = path[0]
 uiaqa_path = dirname(dirname(init_dir))
 # Variable the path of Firefox to run the application, Please install
 # Firefox3.5.1 first which is accessible by accerciser
-firefox_path = '/usr/local/bin/firefox'
+firefox_path = '/usr/bin/firefox'
 
 def launchListBox(exe=None):
     '''Launch Moonlight ListBox with accessibility enabled and return a
