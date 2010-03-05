@@ -88,7 +88,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			//BUG569846 [uiaclient-winforms]:UIA Client mathes wrong element
+			//BUG569846 [uiaclient-winforms]:UIA Client matches wrong element
 			//for LabeledByproperty on Linux
 			var fileNameComboBox = newPassDialog.Find<ComboBox> (Direction.Vertical, 1);
 			fileNameComboBox.SetValue ("TestCase101");
@@ -250,7 +250,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("\"Create New Password Database - Step 2\" dialog disappears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//102.8 Click the "Edit" menu item on the menu bar.
+			//102.8 Click the "Edit Group" menu item.
 			var menuBar = window.Find<MenuBar> ();
 			var editMenuItem = menuBar.Find<MenuItem> ("Edit");
 			editMenuItem.Click ();
@@ -399,7 +399,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.7 Check "Add Entry" window's default WindowPattern Property
+			//103.7 Check the properties of WindowPattern
 			var addEntryDialog = window.Find<Window> ("Add Entry");
 			procedureLogger.Action ("Check CanMaximize.");
 			procedureLogger.ExpectedResult ("The value of CanMaximize is false.");
@@ -437,7 +437,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (WindowVisualState.Normal, addEntryDialog.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.8 move "add entry" window to (200,200 )
+			//103.8 Check and move "Add Entry" window to (200,200)
 			procedureLogger.Action ("Check CanMove.");
 			procedureLogger.ExpectedResult ("The value of CanMove is true.");
 			Assert.AreEqual (true, addEntryDialog.CanMove);
@@ -468,7 +468,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.12 Check the scroll bar's ReadOnly property
+			//103.11 Check the IsReadOnly property
 			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
 			//var editAutoTypeDialog = autoTypeTabItem.Find<Window> ("Edit Auto-Type Item");
 			var editAutoTypeDialog = window.Find<Window> ("Edit Auto-Type Item");
@@ -478,53 +478,53 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, scrollBar.IsReadOnly);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.13 Drag the scroll bar to move
+			//103.12 Scroll the scroll bar a bit
 			scrollBar.SetValue (300);
 			procedureLogger.ExpectedResult ("The scroll bar scrolled 300.");
 			Assert.AreEqual (300, (int) scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.14 Drag the scroll bar to its maximum
+			//103.13 Scroll the scroll bar to maxinum
 			scrollBar.SetValue (scrollBar.Maximum);
 			procedureLogger.ExpectedResult (string.Format("Set the value of scroll bar to maximum {0}.", scrollBar.Maximum));
 			Assert.AreEqual (scrollBar.Maximum, scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.15 Drag the scroll bar to its minimum
+			//103.14 Scroll the scroll bar to minimum
 			scrollBar.SetValue (scrollBar.Minimum);
 			procedureLogger.ExpectedResult (string.Format("Set the value of scroll bar to minimum {0}.", scrollBar.Minimum));
 			Assert.AreEqual (scrollBar.Minimum, scrollBar.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.16 Drag the scroll bar to a LargeChange decrease
+			//103.15 Scroll the scroll bar LargeChange amount
 			scrollBar.SetValue (scrollBar.Maximum - scrollBar.LargeChange);
 			procedureLogger.ExpectedResult ("Set the value of scroll bar to large decrement from the maxinum.");
 			Assert.AreEqual (scrollBar.Maximum - scrollBar.Value, scrollBar.LargeChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.17 Drag the scroll bar to a SmallChange increase
+			//103.16 Scroll the scroll bar SmallChange amount
 			scrollBar.SetValue (scrollBar.Minimum + scrollBar.SmallChange);
 			procedureLogger.ExpectedResult ("Set the value of scroll bar to small increment from the mininum.");
 			Assert.AreEqual (scrollBar.Value - scrollBar.Minimum, scrollBar.SmallChange);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.18 Click "OK" button on the dialog
+			//103.17 Click "OK" button on the dialog
 			editAutoTypeDialog.OK ();
 			procedureLogger.ExpectedResult ("The \"Edit Auto-Type Item\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.14 Click the "Advanced" tab item on the "Add Entry" Window
+			//103.18 Click the "Advanced" tab item on the "Add Entry" Window
 			var advancedTabItem = addEntryDialog.Find<TabItem> ("Advanced");
 			advancedTabItem.Select ();
 			procedureLogger.ExpectedResult ("The \"Advanced\" tab item appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.15 Click the "Add" button on the "Add Entry" Window
+			//103.19 Click the "Add" button on the "Add Entry" Window
 			advancedTabItem.Find<Button> ("Add").Click ();
 			procedureLogger.ExpectedResult ("The \"Edit Entry String\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.16 Type the "a11y" into the "Name" edit
+			//103.20 Type "a11y" into the "Name" edit
 			var editEntryStringWindow = addEntryDialog.Find<Window> ("Edit Entry String");
 			/* BUG569846 - [uiaclient-winforms]:UIA Client mathes wrong element 
 			 * for LabeledByproperty on Linux
@@ -535,12 +535,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("\"a11y\" entered in the \"Name\" combo box.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.17 Click "OK" button on the "Edit Entry String" dialog
+			//103.21 Click "OK" button on the "Edit Entry String" dialog
 			editEntryStringWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Edit Entry String\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//103.18 Check the "a11y" text's TableItemPattern
+			//103.22 Check the properties of TableItemPattern
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			//var notesDataGrid = advancedTabItem.Find<DataGrid> ("Notes:");
 			//var a11yText = notesDataGrid.Find<Text> ("a11y");
@@ -576,8 +576,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 			 */
 
-			//103.19 Close the "Add Entry" Window
-			addEntryDialog.OK ();
+			//103.23 Close the "Add Entry" Window
+			addEntryDialog.Close ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" window closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
@@ -629,7 +629,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.7  Input the "email" to the "Title" edit
+			//104.7  Input "email" to the "Title" edit
 			var addEntryDialog = window.Find<Window> ("Add Entry");
 			addEntryDialog.Find<Edit> ("Title:").SetValue("email");
 			procedureLogger.ExpectedResult ("\"email\" has been issued.");
@@ -662,7 +662,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.11 Input the "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" into the title edit
+			//104.11 Input "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" into the "Title" edit
 			addEntryDialog = window.Find<Window> ("Add Entry");
 			var titleEdit = addEntryDialog.Find<Edit> ("Title:");
 			titleEdit.SetValue("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");

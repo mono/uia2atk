@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The method of ValuePattern
+#region ValuePattern
 		public void SetValue (string value)
 		{
 			SetValue (value, true);
@@ -53,7 +53,6 @@ namespace Mono.UIAutomation.TestFramework
 			vp.SetValue (value);
 		}
 
-		// The properties of ValuePattern
 		public string Value {
 			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
 		}
@@ -61,8 +60,9 @@ namespace Mono.UIAutomation.TestFramework
 		public bool IsReadOnly {
 			get { return (bool) element.GetCurrentPropertyValue (ValuePattern.IsReadOnlyProperty); }
 		}
+#endregion
 
-		// The method of TextPattern
+#region TextPattern
 		public TextPatternRange [] GetSelection ()
 		{
 			return GetSelection (true);
@@ -119,7 +119,15 @@ namespace Mono.UIAutomation.TestFramework
 			return (TextPatternRange) tp.RangeFromPoint (screenLocation);
 		}
 
-		// The properties of TableItemPattern
+		public TextPatternRange DocumentRange {
+			get {
+				TextPattern tp = (TextPattern) element.GetCurrentPattern (TextPattern.Pattern);
+				return (TextPatternRange) tp.DocumentRange;
+			}
+		}
+#endregion
+
+#region TableItemPattern
 		public int Column {
 			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnProperty); }
 		}
@@ -147,5 +155,6 @@ namespace Mono.UIAutomation.TestFramework
 		public AutomationElement[] RowHeaderItems {
 			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.RowHeaderItemsProperty); }
 		}
+#endregion
 	}
 }
