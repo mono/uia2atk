@@ -350,7 +350,7 @@ namespace UiaAtkBridge
 		public int GetSelectedColumns (out int [] selected)
 		{
 			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
-			selected = null;
+			selected = new int [0];
 			return 0;
 		}
 
