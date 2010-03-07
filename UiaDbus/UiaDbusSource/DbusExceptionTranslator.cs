@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Reflection;
 
 namespace Mono.UIAutomation.UiaDbusSource
@@ -37,6 +38,43 @@ namespace Mono.UIAutomation.UiaDbusSource
 	//
 	public class DbusExceptionTranslator
 	{
+		static DbusExceptionTranslator ()
+		{
+			dbusErrorList = new string [] {
+				"org.freedesktop.DBus.Error.Failed",
+				"org.freedesktop.DBus.Error.NoMemory",
+				"org.freedesktop.DBus.Error.ServiceUnknown",
+				"org.freedesktop.DBus.Error.NameHasNoOwner",
+				"org.freedesktop.DBus.Error.NoReply",
+				"org.freedesktop.DBus.Error.IOError",
+				"org.freedesktop.DBus.Error.BadAddress",
+				"org.freedesktop.DBus.Error.NotSupported",
+				"org.freedesktop.DBus.Error.LimitsExceeded",
+				"org.freedesktop.DBus.Error.AccessDenied",
+				"org.freedesktop.DBus.Error.AuthFailed",
+				"org.freedesktop.DBus.Error.NoServer",
+				"org.freedesktop.DBus.Error.Timeout",
+				"org.freedesktop.DBus.Error.NoNetwork",
+				"org.freedesktop.DBus.Error.AddressInUse",
+				"org.freedesktop.DBus.Error.Disconnected",
+				"org.freedesktop.DBus.Error.InvalidArgs",
+				"org.freedesktop.DBus.Error.FileNotFound",
+				"org.freedesktop.DBus.Error.UnknownMethod",
+				"org.freedesktop.DBus.Error.TimedOut",
+				"org.freedesktop.DBus.Error.MatchRuleNotFound",
+				"org.freedesktop.DBus.Error.MatchRuleInvalid",
+				"org.freedesktop.DBus.Error.Spawn.ExecFailed",
+				"org.freedesktop.DBus.Error.Spawn.ForkFailed",
+				"org.freedesktop.DBus.Error.Spawn.ChildExited",
+				"org.freedesktop.DBus.Error.Spawn.ChildSignaled",
+				"org.freedesktop.DBus.Error.Spawn.Failed",
+				"org.freedesktop.DBus.Error.UnixProcessIdUnknown",
+				"org.freedesktop.DBus.Error.InvalidSignature",
+				"org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown"
+			};
+			Array.Sort (dbusErrorList);
+		}
+
 		public static Exception Translate (Exception ex)
 		{
 			if (ex == null || ex.GetType () != typeof (Exception))
@@ -50,14 +88,20 @@ namespace Mono.UIAutomation.UiaDbusSource
 			int colonIndex = exceptionInfo.IndexOf (": ");
 			if (colonIndex == -1)
 				return null;
-			string typeName = exceptionInfo.Substring (0, colonIndex);
-			string message = exceptionInfo.Substring (colonIndex + 2);
+			string errorName = exceptionInfo.Substring (0, colonIndex);
+			string errorMessage = exceptionInfo.Substring (colonIndex + 2);
+
 			Exception ret = null;
-			try {
-				Type type = GetType (typeName);
-				ret = Activator.CreateInstance (type, message) as Exception;
-			} catch {
-				return null;
+			if (Array.BinarySearch (dbusErrorList, errorName) >= 0) {
+				ret = new ElementNotAvailableException (exceptionInfo);
+			} else {
+				try {
+					Type type = GetType (errorName);
+					if (type != null)
+						ret = Activator.CreateInstance (type, errorMessage) as Exception;
+				} catch {
+					ret = null;
+				}
 			}
 			return ret;
 		}
@@ -75,5 +119,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 			}
 			return null;
 		}
+
+		private static string [] dbusErrorList;
 	}
 }

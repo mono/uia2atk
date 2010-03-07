@@ -384,8 +384,10 @@ namespace MonoTests.System.Windows.Automation
 		[TestFixtureTearDown]
 		public void FixtureTearDown ()
 		{
-			p.Kill ();
-			p = null;
+			if (p != null) {
+				p.Kill ();
+				p = null;
+			}
 		}
 
 		#endregion
@@ -434,6 +436,19 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsTrue (exceptionRaised,
 			               string.Format ("Expected {0} when {1}",
 			                              typeof (T), message));
+		}
+
+		public static void AssertWontRaise<T> (Action a, string message) where T : Exception
+		{
+			T ex = null;
+			try {
+				a ();
+			} catch (T e) {
+				ex = e;
+			}
+			Assert.IsNull (ex,
+			               string.Format ("Didn't expected '{0}' when {1}",
+			                              ex, message));
 		}
 
 		public static string PrintRuntimeId (int [] runtimeId)

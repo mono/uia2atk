@@ -1,3 +1,13 @@
+2010-03-08  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationClientTests/SampleForm/Form1.cs: 
+	* UIAutomationClientTests/SampleForm/Form1.Designer.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/BaseTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/Makefile.am: 
+	* UIAutomationClientTests/UIAutomationClientTests/DynamicElementTest.cs: 
+	* UIAutomationClientTests/UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Test ElementNotAvailableException.
+
 2010-03-04  Stephen Shaw <sshaw@decriptor.com>
 
 	* configure.ac: Added a flag to allow windowsbase to be built even

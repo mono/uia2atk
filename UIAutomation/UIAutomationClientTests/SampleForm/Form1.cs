@@ -124,8 +124,10 @@ namespace SampleForm {
 				if (controlToDelete == null || controlToDelete.Top < c.Top)
 					controlToDelete = c;
 			}
-			if (controlToDelete != null)
+			if (controlToDelete != null) {
 				panel1.Controls.Remove (controlToDelete);
+				controlToDelete.Dispose ();
+			}
 		}
 
 		private void btnRun_Click (object sender, EventArgs e)
@@ -239,7 +241,9 @@ namespace SampleForm {
 					this.Invoke (invoker);
 				});
 				thread.Start ();
-			}
+			} else if (cmd == "toggle form border")
+				FormBorderStyle = (FormBorderStyle == FormBorderStyle.None) ?
+					FormBorderStyle.Sizable : FormBorderStyle.None;
 		}
 	}
 }
