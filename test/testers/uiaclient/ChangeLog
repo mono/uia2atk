@@ -1,3 +1,7 @@
+2010-03-08  Ray Wang  <rawang@novell.com>
+
+	* Tests/Winforms/KeePassTests.cs: Update bug reference and comments.
+
 2010-03-05  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Edit.cs: Update comments.

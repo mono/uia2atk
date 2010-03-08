@@ -88,9 +88,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//101.2 Enter "TestCase101" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			//BUG569846 [uiaclient-winforms]:UIA Client matches wrong element
-			//for LabeledByproperty on Linux
-			var fileNameComboBox = newPassDialog.Find<ComboBox> (Direction.Vertical, 1);
+			var fileNameComboBox = newPassDialog.Find<ComboBox> ("File name:");
 			fileNameComboBox.SetValue ("TestCase101");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("\"TestCase101\" entered in the \"File Name\" box.");
@@ -143,35 +141,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.9  Click the "Save" button of the dialog.
+			string key = "TestCase101.key";
+			if (File.Exists(key))
+			    File.Delete (key);
+
 			var newKeyFileDialog = window.Find<Window> ("Create a new key file");
 			newKeyFileDialog.Save ();
-
-			/*
-			 * BUG571799 - [uiaclient-Winforms]：The dialog
-			 * who has parent has been found twice
-			 * in case there is a TestCase101 key exist.
-			 */
-
-			/*
-			 * BUG573464 - [uiaclient-winforms]Some dialog's name has been
-			 * changed in Linux compares to in Windows
-			 * var comfirmDialog = newKeyFileDialog.Find<Window> ("Confirm Save As");
-			 */
-			var comfirmDialog = window.Find<Window> ("Save");
-			if (comfirmDialog != null) {
-				procedureLogger.ExpectedResult ("The \"Save\" dialog opens.");
-				Thread.Sleep (Config.Instance.ShortDelay);
-
-				comfirmDialog.OK ();
-				procedureLogger.ExpectedResult ("The \"Save\" dialog disappears.");
-				Thread.Sleep (Config.Instance.ShortDelay);
-			} else {
-				procedureLogger.ExpectedResult ("The \"Entropy Collection\" window opens.");
-				Thread.Sleep (Config.Instance.ShortDelay);
-			}
+			var entropyWindow = createMasterKeyWindow.Find<Window> ("Entropy Collection");
+			procedureLogger.ExpectedResult ("The \"Entropy Collection\" window opens.");
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//101.10 Click the "OK" button of the dialog.
-			createMasterKeyWindow.Find<Window> ("Entropy Collection").OK ();
+			entropyWindow.OK ();
 			procedureLogger.ExpectedResult ("The \"Entropy Collection\" window disappears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -215,7 +196,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//102.2 Enter "TestCase102" in the "File Name" combo box of the dailog.
 			var newPassDialog = window.Find<Window> ("Create New Password Database");
-			var fileNameComboBox = newPassDialog.Find<ComboBox> (Direction.Vertical, 1);
+			var fileNameComboBox = newPassDialog.Find<ComboBox> ("File name:");
 			fileNameComboBox.SetValue ("TestCase102");
 			procedureLogger.ExpectedResult ("\"TestCase102\" entered in the \"File Name\" box.");
 			Assert.AreEqual ("TestCase102", fileNameComboBox.Value);
@@ -469,9 +450,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.11 Check the IsReadOnly property
-			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
-			//var editAutoTypeDialog = autoTypeTabItem.Find<Window> ("Edit Auto-Type Item");
-			var editAutoTypeDialog = window.Find<Window> ("Edit Auto-Type Item");
+			var editAutoTypeDialog = addEntryDialog.Find<Window> ("Edit Auto-Type Item");
 			var scrollBar = editAutoTypeDialog.Find<ScrollBar> ();
 			procedureLogger.Action ("Check IsReadOnly of the vertical scroll bar.");
 			procedureLogger.ExpectedResult ("The value of IsReadOnly is false.");
@@ -526,11 +505,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.20 Type "a11y" into the "Name" edit
 			var editEntryStringWindow = addEntryDialog.Find<Window> ("Edit Entry String");
-			/* BUG569846 - [uiaclient-winforms]:UIA Client mathes wrong element 
-			 * for LabeledByproperty on Linux
-			 * nameCombobox = editEntryStringWindow.Find<ComboBox> ("Name:");
-			 */
-			var nameCombobox = editEntryStringWindow.Find<ComboBox> ("");
+			var nameCombobox = editEntryStringWindow.Find<ComboBox> ();
 			nameCombobox.SetValue("a11y");
 			procedureLogger.ExpectedResult ("\"a11y\" entered in the \"Name\" combo box.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -567,6 +542,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			/* 
+			 * BUG578244 [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux
 			 * BUG576455 All the "Text" controls are recognized as "Edit" on Linux
 			AutomationElement dataGridItem = notesDataGrid.GetItem (0, 0);
 			AutomationElement a11ytextItem = window.Find<Edit> ("a11y").AutomationElement;
@@ -670,7 +646,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.12 Click "OK" button on the "Add Entry" dialog
-			//BUG571799 - [uiaclient-Winforms]：The dialog who has parent has been found twice
 			addEntryDialog.OK ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog closes.");
 			Thread.Sleep (Config.Instance.ShortDelay);
