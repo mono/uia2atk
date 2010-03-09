@@ -1,3 +1,15 @@
+2010-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* assets/Makefile.am:
+	* test_controltype.py:
+	* assets/ControlTypeTest/App.xaml:
+	* assets/ControlTypeTest/Page.xaml:
+	* assets/ControlTypeTest/App.xaml.cs:
+	* assets/ControlTypeTest/Makefile.am:
+	* assets/ControlTypeTest/Page.xaml.cs:
+	* assets/ControlTypeTest/SwitchingButton.cs: Add test for peers
+	switching their ControlTypes.
+
 2010-03-04  Mario Carrion  <mcarrion@novell.com>
 
 	* assets/DatePickerTest/App.xaml:

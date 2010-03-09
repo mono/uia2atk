@@ -6,6 +6,7 @@ SUBDIRS = \
 	CalendarTest \
 	CheckBoxTest \
 	ComboBoxTest \
+	ControlTypeTest \
 	DatePickerTest \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \

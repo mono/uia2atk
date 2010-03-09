@@ -393,11 +393,8 @@ namespace Moonlight.AtkBridge
 				if (child == null)
 					return null;
 
-				if (!Adapters.ContainsKey (child))
-					Adapters[child] = DynamicAdapterFactory
-						.Instance.GetAdapter (child);
-
-				return Adapters[child];
+				return DynamicAdapterFactory
+					.Instance.GetAdapter (child);
 			}
 		}
 
@@ -469,13 +466,10 @@ namespace Moonlight.AtkBridge
 				return;
 
 			EmitChildrenChanged (ChildrenChangedDetail.Remove,
-			                     (uint) index, adapter);
+					     (uint) index, adapter);
 			children.Remove (peer);
 
 			DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
-
-			// We need to remove disposed adapter reference
-			Adapters.Remove (peer);
 		}
 
 		protected void AddChild (AutomationPeer peer)
@@ -493,8 +487,6 @@ namespace Moonlight.AtkBridge
 #region Protected Fields
 		protected List<AutomationPeer> children = null;
 		protected object ChildrenLock = new object ();
-		protected Dictionary<AutomationPeer, Atk.Object> Adapters
-			= new Dictionary<AutomationPeer, Atk.Object> ();
 #endregion
 
 #region Internal Events
@@ -539,10 +531,25 @@ namespace Moonlight.AtkBridge
 				EmitBoundsChanged ((System.Windows.Rect) args.NewValue);
 			} else if (args.Property == AEIds.NameProperty) {
 				Notify ("accessible-name");
+			} else if (args.Property == AEIds.ControlTypeProperty) {
+				// Assume that the RootVisual will never change
+				// its control type.
+				Adapter parent = Parent as Adapter;
+				if (parent != null)
+					parent.HandleControlTypeChange (Peer);
 			}
 
 			if (AutomationPropertyChanged != null)
 				AutomationPropertyChanged (args.Peer, args);
+		}
+
+		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
+		{
+			if (args.Event == AutomationEvents.StructureChanged)
+				HandleStructureChanged ();
+
+			if (AutomationEventRaised != null)
+				AutomationEventRaised (args.Peer, args);
 		}
 
 		internal void HandleStructureChanged ()
@@ -588,13 +595,31 @@ namespace Moonlight.AtkBridge
 			}
 		}
 
-		internal void HandleAutomationEventRaised (AutomationEventEventArgs args)
+		internal void HandleControlTypeChange (AutomationPeer peer)
 		{
-			if (args.Event == AutomationEvents.StructureChanged)
-				HandleStructureChanged ();
+			var adapter = DynamicAdapterFactory.Instance.GetAdapter (peer, false);
+			if (adapter == null) {
+				// If we've never created the adapter, we don't
+				// need to notify anyone that it's going away
+				// or recreate it.
+				return;
+			}
 
-			if (AutomationEventRaised != null)
-				AutomationEventRaised (args.Peer, args);
+			lock (ChildrenLock) {
+				int index = children.IndexOf (peer);
+				if (index < 0)
+					return;
+
+				// Invalidate the cached Adapter
+				EmitChildrenChanged (ChildrenChangedDetail.Remove,
+						     (uint) index, adapter);
+				DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
+
+				// Create a new adapter to reflect the current ControlType
+				adapter = DynamicAdapterFactory.Instance.GetAdapter (peer);
+				EmitChildrenChanged (ChildrenChangedDetail.Add,
+						     (uint) index, adapter);
+			}
 		}
 
 		internal void WindowToScreen (ref int x, ref int y)

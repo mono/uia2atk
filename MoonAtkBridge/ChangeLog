@@ -1,3 +1,7 @@
+2010-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Add ControlType switching test.
+
 2010-03-04  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: DatePicker test added.

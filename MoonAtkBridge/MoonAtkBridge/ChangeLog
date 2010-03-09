@@ -1,3 +1,8 @@
+2010-03-09  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs: Add support for peers changing their
+	ControlType.  Remove superflous Adapter dictionary.
+
 2010-02-19  Mario Carrion  <mcarrion@novell.com>
 
 	* MoonAtkBridge.sources: TabItem.cs added.
