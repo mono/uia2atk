@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 		
-		// The method of ValuePattern
+#region ValuePattern
 		public void SetValue (string value)
 		{
 			SetValue (value, true);
@@ -51,12 +51,12 @@ namespace Mono.UIAutomation.TestFramework
 			vp.SetValue (value);
 		}
 
-		// The property of ValuePattern
 		public string Value {
 			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
 		}
+#endregion
 
-		// The methods of ExpandCollapsePattern
+#region ExpandCollapsePattern
 		public void Expand ()
 		{
 			Expand (true);
@@ -86,9 +86,25 @@ namespace Mono.UIAutomation.TestFramework
 			ecp.Collapse ();
 		}
 
-		// The property of ExpandCollapsePattern
 		public ExpandCollapseState ExpandCollapseState {
 			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty); }
 		}
+#endregion
+
+#region SelectionPattern
+        public AutomationElement [] GetSelection ()
+        {
+            SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
+            return (AutomationElement []) sp.Current.GetSelection ();
+        }
+
+        public bool CanSelectMultiple {
+            get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty); }
+        }
+
+        public bool IsSelectionRequired {
+            get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
+        }
+#endregion
 	}
 }
