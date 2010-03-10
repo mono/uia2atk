@@ -1,0 +1,27 @@
+--- TagManager.cs	2010-03-10 12:16:00.000000000 -0700
++++ TagManager.cs.new	2010-03-10 14:15:44.000000000 -0700
+@@ -1,4 +1,4 @@
+-﻿// (c) Copyright Microsoft Corporation.
++// (c) Copyright Microsoft Corporation.
+ // This source is subject to the Microsoft Public License (Ms-PL).
+ // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+ // All other rights reserved.
+@@ -130,6 +130,10 @@
+             {
+                 tags.Add(attribute);
+             }
++
++            // 7. Type.Namespace
++            tags.Add (m.ReflectedType.Namespace);
++
+             _methodTags.Add(method, tags);
+ 
+             foreach (string tag in tags)
+@@ -162,4 +166,4 @@
+             return ExpressionEvaluator.Evaluate(this, tagExpression);
+         }
+     }
+-}
+\ No newline at end of file
++}
+
