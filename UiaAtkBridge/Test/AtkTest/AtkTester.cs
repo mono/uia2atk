@@ -781,8 +781,10 @@ namespace UiaAtkBridgeTest
 			if (atkText == null)
 				return;
 			string text;
+			// For some reason, gail might preface a slider's text
+			// with \x200e
 			if (type == BasicWidgetType.VTrackBar)
-				text = "\x200e" + GetCurrentValue (atkValue).ToString ();
+				text = GetCurrentValue (atkValue).ToString ().Replace ("\x2005", "");
 			else if (type == BasicWidgetType.Spinner)
 				text = GetCurrentValue (atkValue).ToString ();
 			else

@@ -38,11 +38,7 @@ namespace UiaAtkBridge
 #region Public Properties
 		public override string Text {
 			get {
-				if (resource is Slider)
-					// Tracking gail for now
-					return "\u200e" + rangeValueProvider.Value.ToString ();
-				else
-					return rangeValueProvider.Value.ToString ();
+				return rangeValueProvider.Value.ToString ();
 			}
 		}
 #endregion

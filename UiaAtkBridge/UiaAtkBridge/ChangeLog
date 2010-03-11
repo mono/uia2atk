@@ -1,3 +1,8 @@
+2010-03-11  Mike Gorse  <mgorse@novell.com>
+
+	* rangeValueProviderTextImplementor.cs: Remove extra characters from
+	beginning of text.
+
 2009-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* List.cs:
