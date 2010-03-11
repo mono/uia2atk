@@ -1,3 +1,10 @@
+2010-03-11  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/ComboBoxTest/Page.xaml:
+	* assets/ComboBoxTest/Page.xaml.cs:
+	* test_combobox.py: Testing ComboBox.ItemsSource.
+	* test_listbox.py: Testing item name.
+
 2010-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* assets/Makefile.am:

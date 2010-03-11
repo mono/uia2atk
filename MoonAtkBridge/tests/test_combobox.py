@@ -42,6 +42,8 @@ class ComboBox(TestCase):
     def setup_class(cls):
         cls.app = launchAddress(abspath('assets/ComboBoxTest/ComboBoxTest.html'))
         cls.combobox = cls.app.slControl.findComboBox('ComboBox')
+        # 'is' as in "ItemsSource"
+        cls.combobox_is = cls.app.slControl.findComboBox('ComboBoxItemsSource')
         cls.button = cls.app.slControl.findPushButton('Button');
 
         cls.action = cls.combobox._accessible.queryAction()
@@ -49,6 +51,8 @@ class ComboBox(TestCase):
         cls.ACTIONS_COUNT = 1
 
         cls.selection = cls.combobox._accessible.querySelection()
+        cls.selection_is = cls.combobox_is._accessible.querySelection()
+        cls.action_is = cls.combobox_is._accessible.queryAction()
 
     @classmethod
     def teardown_class(cls):
@@ -103,11 +107,11 @@ class ComboBox(TestCase):
         listener = EventListener()
         with listener.listenTo(self.combobox): # expanded
             self.assertTrue(self.action.doAction(0))
-	    assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
+            assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
 
         with listener.listenTo(self.combobox): # collapsed
             self.assertTrue(self.action.doAction(0))
-	    assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
+            assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
 
         self.assertEqual(5, self.combobox.childCount)
 
@@ -116,6 +120,8 @@ class ComboBox(TestCase):
             item = self.combobox.getChildAtIndex(x)
             self.assertFalse(item.selected)
             self.assertFalse(self.selection.isChildSelected(x))
+            # We also check Name
+            self.assertEqual('Item %d' % x,item.name)
 
         # Let's select and unselect
         for x in xrange(0, self.combobox.childCount):
@@ -144,17 +150,65 @@ class ComboBox(TestCase):
         self.assertFalse(self.selection.isChildSelected(0))
         self.assertEqual(self.selection.nSelectedChildren, 0)
 
+    def test_selection_is(self):
+        # We need to expand/collapse the combobox (ItemsSource) to get the children
+        listener = EventListener()
+        with listener.listenTo(self.combobox_is): # expanded
+            self.assertTrue(self.action_is.doAction(0))
+            assert listener.containsEvent(self.combobox_is, 'object:visible-data-changed', 1)
+
+        with listener.listenTo(self.combobox_is): # collapsed
+            self.assertTrue(self.action_is.doAction(0))
+            assert listener.containsEvent(self.combobox_is, 'object:visible-data-changed', 1)
+
+        self.assertEqual(3, self.combobox_is.childCount)
+
+        # By default everything is unselected
+        for x in xrange(0, self.combobox_is.childCount):
+            item = self.combobox_is.getChildAtIndex(x)
+            self.assertFalse(item.selected)
+            self.assertFalse(self.selection_is.isChildSelected(x))
+            # We also check Name. Type
+            self.assertEqual('ComboBoxTest.Car', item.name)
+
+        # Let's select and unselect
+        for x in xrange(0, self.combobox_is.childCount):
+            item = self.combobox_is.getChildAtIndex(x)
+
+            self.assertTrue(self.selection_is.selectChild(x))
+            self.assertTrue(item.selected)
+            self.assertTrue(self.selection_is.isChildSelected(x))
+            self.assertEqual(1, self.selection_is.nSelectedChildren)
+
+            self.selection_is.deselectSelectedChild(0)
+            self.assertFalse(item.selected)
+            self.assertFalse(self.selection_is.isChildSelected(x))
+
+        # ComboBox supports one selected item
+        self.assertFalse(self.selection_is.selectAll())
+
+        # First item is selected after calling selectAll
+        item = self.combobox_is.getChildAtIndex(0)
+        self.assertTrue(item.selected)
+        self.assertTrue(self.selection_is.isChildSelected(0))
+
+        # Unselect it
+        self.selection_is.deselectSelectedChild(0)
+        self.assertFalse(item.selected)
+        self.assertFalse(self.selection_is.isChildSelected(0))
+        self.assertEqual(self.selection_is.nSelectedChildren, 0)
+
     def test_selection_events(self):
         listener = EventListener()
 
         # We need to expand the combobox to get the children
         with listener.listenTo(self.combobox): # expanded
             self.assertTrue(self.action.doAction(0))
-	assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
+        assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
 
         with listener.listenTo(self.combobox): # collapsed
             self.assertTrue(self.action.doAction(0))
-	assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
+        assert listener.containsEvent(self.combobox, 'object:visible-data-changed', 1)
 
         self.assertFalse(self.selection.isChildSelected(0))
         self.assertEqual(5,self.combobox.childCount)

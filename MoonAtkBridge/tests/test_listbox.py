@@ -74,7 +74,7 @@ class ListBox(TestCase):
         for i in xrange(0, 21):
             item = self.list.getChildAtIndex(i)
             self.assertEqual(pyatspi.ROLE_LIST_ITEM, item.role)
-            self.assertEqual('', item.name)
+            self.assertEqual(LISTBOX_FRUITS[i], item.name)
 
             self.assertStates(item, [
                 'enabled', 'focusable', 'selectable',

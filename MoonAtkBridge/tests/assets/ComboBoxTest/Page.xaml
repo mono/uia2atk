@@ -11,5 +11,6 @@
             <ComboBoxItem Content="Item 3" />
             <ComboBoxItem Content="Item 4" />
         </ComboBox>
+        <ComboBox Width="100" Canvas.Left="85" Canvas.Top="30" x:Name="comboboxItemsSource" />
     </Canvas>
 </UserControl>

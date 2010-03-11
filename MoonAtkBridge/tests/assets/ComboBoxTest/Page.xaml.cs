@@ -28,6 +28,18 @@ namespace ComboBoxTest {
 				set = !set;
 			};
 
+			comboboxItemsSource.SetValue (AutomationProperties.NameProperty, "ComboBoxItemsSource");
+			List<Car> carList = new List<Car>();
+			carList.Add(new Car() { Name = "Ferrari", Price = 150000 });
+			carList.Add(new Car() { Name = "Honda", Price = 12500 });
+			carList.Add(new Car() { Name = "Toyota", Price = 11500 });
+			comboboxItemsSource.DisplayMemberPath = "Name";
+			comboboxItemsSource.ItemsSource = carList;
 		}
+	}
+
+	public class Car {
+		public string Name { get; set; }
+		public int Price { get; set; }
 	}
 }
