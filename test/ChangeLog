@@ -1,3 +1,7 @@
+2010-03-12  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/listbox-regression.py: move bug556463 reference
+
 2010-03-05  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/thumb/__init__.py,

@@ -80,11 +80,11 @@ lbFrame.select(lbFrame.list_box, 1)
 statesCheck(lbFrame.list_items[1], 'ListItem', add_states=['focused', 'selected'])
 # re-check 'Item 4' states
 statesCheck(lbFrame.list_items[3], 'ListItem')
-# BUG556463: clear selection crashed firefox
-#lbFrame.clearSelection(lbFrame.list_box)
-#sleep(config.SHORT_DELAY)
-#statesCheck(lbFrame.list_box, "List", add_states=["focused"], invalid_states=["focusable"])
-#statesCheck(lbFrame.list_items[0], "ListItem", add_states=["focused"], invalid_states=["focusable"])
+
+lbFrame.clearSelection(lbFrame.list_box)
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.list_box, "List")
+statesCheck(lbFrame.list_items[1], "ListItem", add_states=["focused"])
 
 print 'INFO:  Log written to: %s' % config.OUTPUT_DIR
 
