@@ -1,5 +1,27 @@
 2010-03-12  Calen Chen <cachen@novell.com>
 
+	* testers/moonlight/thumb/__init__.py,
+	* testers/moonlight/scrollviewer/__init__.py,
+	* testers/moonlight/image/__init__.py,
+	* testers/moonlight/listbox/__init__.py,
+	* testers/moonlight/checkbox/__init__.py,
+	* testers/moonlight/radiobutton/__init__.py,
+	* testers/moonlight/textbox/__init__.py,
+	* testers/moonlight/textblock/__init__.py,
+	* testers/moonlight/hyperlinkbutton/__init__.py,
+	* testers/moonlight/combobox/__init__.py,
+	* testers/moonlight/gridsplitter/__init__.py,
+	* testers/moonlight/repeatbutton/__init__.py,
+	* testers/moonlight/togglebutton/__init__.py,
+	* testers/moonlight/scrollbar/__init__.py,
+	* testers/moonlight/progressbar/__init__.py,
+	* testers/moonlight/button/__init__.py,
+	* testers/moonlight/passwordbox/__init__.py,
+	* testers/winforms/linklabel/linklabelframe.py: change 'Minefiled' 
+	to 'Firefox'
+
+2010-03-12  Calen Chen <cachen@novell.com>
+
 	* testers/moonlight/listbox-regression.py: move bug556463 reference
 
 2010-03-05  Calen Chen <cachen@novell.com>
@@ -21,7 +43,8 @@
 	* testers/moonlight/progressbar/__init__.py,
 	* testers/moonlight/button/__init__.py,
 	* testers/moonlight/passwordbox/__init__.py,
-	* testers/winforms/linklabel/linklabelframe.py: change path to /usr/bin/firefox
+	* testers/winforms/linklabel/linklabelframe.py: change path to 
+	/usr/bin/firefox
 
 2010-03-05  Calen Chen <cachen@novell.com>
 

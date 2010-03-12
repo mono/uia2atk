@@ -31,7 +31,7 @@ def launchTextBlock(exe=None):
   
     args = [firefox_path, exe]
 
-    (app, subproc) = cache.launchApplication(args=args, name="Minefield", \
+    (app, subproc) = cache.launchApplication(args=args, name="Firefox", \
                                                         wait=config.LONG_DELAY)
     textblock = TextBlock(app, subproc)
 
