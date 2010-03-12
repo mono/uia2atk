@@ -92,19 +92,19 @@ namespace Mono.UIAutomation.TestFramework
 #endregion
 
 #region SelectionPattern
-        public AutomationElement [] GetSelection ()
-        {
-            SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
-            return (AutomationElement []) sp.Current.GetSelection ();
-        }
+		public AutomationElement [] GetSelection ()
+		{
+			SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
+			return (AutomationElement []) sp.Current.GetSelection ();
+		}
 
-        public bool CanSelectMultiple {
-            get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty); }
-        }
+		public bool CanSelectMultiple {
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty); }
+		}
 
-        public bool IsSelectionRequired {
-            get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
-        }
+		public bool IsSelectionRequired {
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
+		}
 #endregion
 	}
 }
