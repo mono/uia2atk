@@ -125,7 +125,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			if (indexOf == 0)
 				listViewItem.Text = value;
 			else
-				listViewItem.SubItems [indexOf - 1].Text = value;
+				listViewItem.SubItems [indexOf].Text = value;
 		}
 
 		#endregion

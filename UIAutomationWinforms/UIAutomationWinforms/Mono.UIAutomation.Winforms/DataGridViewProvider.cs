@@ -164,9 +164,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			DataGridDataItemProvider provider = (DataGridDataItemProvider) item;
 			
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return provider.Row.Cells [0].Value as string;
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+				object cellvalue = provider.Row.Cells [0].FormattedValue;
+				return cellvalue != null ? cellvalue.ToString () : String.Empty;
+			} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return datagridview.CurrentCell == provider.Row.Cells [0] && datagridview.Focused;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				SD.Rectangle rectangle = datagridview.GetRowDisplayRectangle (provider.Row.Index, false);
@@ -683,9 +684,10 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return cell.Value as string;
-				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+					object cellvalue = cell.FormattedValue;
+					return cellvalue != null ? cellvalue.ToString () : String.Empty;
+				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return gridProvider.DataGridView.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return gridProvider.DataGridView.CurrentCell == cell && gridProvider.DataGridView.Focused;

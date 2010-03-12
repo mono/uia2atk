@@ -1,3 +1,10 @@
+2010-03-13  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs:
+	Fix bug#584340: In ListView, Calling ValuePattern.SetValue on one cell can take effect on another sibling cell.
+	Fix bug#586635: The NameProperty of DataGridView's Cell is not correctly returned.
+
 2010-03-03  Matt Guo <matt@mattguo.com>
 
 	* UIAutomationWinforms/Makefile.am: 
