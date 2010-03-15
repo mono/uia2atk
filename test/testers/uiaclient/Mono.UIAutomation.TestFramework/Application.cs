@@ -43,11 +43,11 @@ namespace Mono.UIAutomation.TestFramework
 			procedureLogger = new ProcedureLogger(sample);
 		}
 
-		public void Launch (string program, string param)
+		public void Launch (string program, params string[] args)
 		{
 			try {
 				procedureLogger.Action ("Launch " + this.sample);
-				Process.Start (program, param);
+				Process.Start (program, String.Join (" ", args));
 				Thread.Sleep (Config.Instance.ShortDelay);
 				procedureLogger.ExpectedResult (string.Format("{0} has been started.", this.sample));
 			} catch (Exception e) {
