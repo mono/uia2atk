@@ -36,29 +36,31 @@ Index: glib/Object.cs
  		
  		static bool PerformQueuedUnrefs ()
  		{
-+Console.WriteLine ("GTK-SHARP-INFO: PerformQueuedUnrefs");
++Console.WriteLine ("GTK-SHARP-INFO: PerformQueuedUnrefs -- stop_unreffing = {0}", stop_unreffing);
 +			if (stop_unreffing)
 +				return false;
 +
  			object [] references;
  
  			lock (PendingDestroys){
-@@ -74,6 +83,34 @@
+@@ -74,6 +83,36 @@
  			return false;
  		}
  
-+		public static void Shutdown ()
++		public static void StopUnreffing ()
 +		{
-+Console.WriteLine ("GTK-SHARP-INFO: Shutdown");
-+			// Prevent any idle-queued unreffing from happening
-+			// from this point on.  After Shutdown is called, the
-+			// domain will be unloaded, and if the idle is
-+			// triggered before app shutdown, it will cause a
-+			// segfault.
++Console.WriteLine ("GTK-SHARP-INFO: Stop Unreffing!");
++			// Prevent any queued unreffing from happening
++			// from this point on.  This prevents segfaults when
++			// GCs are occuring right before domain unloading.
 +			stop_unreffing = true;
 +			if (idle_queued && timeout_id > 0)
 +				Timeout.Remove (timeout_id);
++		}
 +
++		public static void Shutdown ()
++		{
++Console.WriteLine ("GTK-SHARP-INFO: Shutdown");
 +			// Detect any objects that have not already been
 +			// disposed and that will leak.
 +			lock (allObjects) {
@@ -66,7 +68,7 @@ Index: glib/Object.cs
 +					if (r.IsAlive && r.Target != null
 +					    && r.Target is GLib.Object
 +					    && !((GLib.Object) r.Target).disposed)
-+						Console.WriteLine ("GTK-SHARP WARNING: {0} was not disposed prior to plugin shutdown.{1}This object needs to be tracked with DynamicAdapterFactory.MarkExternalReference ().",
++						Console.WriteLine ("{0} was not disposed prior to plugin shutdown.{1}This object needs to be tracked with DynamicAdapterFactory.MarkExternalReference ().",
 +						                   r.Target, System.Environment.NewLine);
 +				}
 +
@@ -78,7 +80,7 @@ Index: glib/Object.cs
  		public virtual void Dispose ()
  		{
  			if (disposed)
-@@ -399,11 +436,19 @@
+@@ -399,11 +438,19 @@
  
  		protected Object (IntPtr raw)
  		{

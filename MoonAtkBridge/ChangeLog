@@ -1,5 +1,10 @@
 2010-03-16  Brad Taylor  <brad@getcoded.net>
 
+	* patches/006_gtk-sharp_gobject-debugging.diff: Update patch; fix build
+	error.
+
+2010-03-16  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am:
 	* patches/006_gtk-sharp_gobject-debugging.diff: Add shutdown and
 	debugging code to gtk-sharp to help with segfaults.
