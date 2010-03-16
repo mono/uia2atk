@@ -286,10 +286,10 @@ namespace UiaAtkBridge
 			internal Atk.KeySnoopFunc listener;
 		}
 		
-		[DllImport("libatk-bridge")]
+		[DllImport("libbridge-glue.so")]
 		static extern void gnome_accessibility_module_init ();
 
-		[DllImport("libatk-bridge")]
+		[DllImport("libbridge-glue.so")]
 		static extern void gnome_accessibility_module_shutdown ();
 		
 		private void LaunchAtkBridge ()

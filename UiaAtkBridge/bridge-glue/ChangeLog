@@ -1,3 +1,9 @@
+2010-03-16  Mike Gorse <mgorse@novell.com>
+
+	* main.c, main.h: Add gnome_accessibility_module_init and
+	gnome_accessibility_module_shutdown wrappers to find a relocated
+	at-spi if needed.
+
 2008-12-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* main.h:

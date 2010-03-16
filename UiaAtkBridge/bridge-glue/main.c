@@ -139,3 +139,90 @@ guint _add_global_event_listener (
 
 	return rc;
 }
+
+typedef void (*void_func)();
+typedef GObject *(*gconf_client_get_default_t) ();
+typedef gboolean (*gconf_client_get_bool_t)(GObject *, const char *, void *);
+
+static const char *
+get_bridge_path ()
+{
+  static const char *path = NULL;
+  void *gconf = NULL;
+  gconf_client_get_default_t gconf_client_get_default = NULL;
+  gconf_client_get_bool_t gconf_client_get_bool = NULL;
+  GObject *gconf_client;	/* really a GConfClient */
+  const char *append_str = "";
+
+  if (path)
+    return path;
+
+  gconf = dlopen ("libgconf-2.so", RTLD_LAZY);
+  if (gconf)
+    {
+      gconf_client_get_default = dlsym (gconf, "gconf_client_get_default");
+      if (gconf_client_get_default)
+	gconf_client = gconf_client_get_default ();
+      gconf_client_get_bool = dlsym (gconf, "gconf_client_get_bool");
+  }
+
+  if (gconf_client && gconf_client_get_bool)
+    {
+#ifdef RELOCATE_DBUS
+      if (gconf_client_get_bool (gconf_client, DBUS_GCONF_KEY, NULL))
+	append_str = "at-spi-dbus/modules/";
+#else
+      if (gconf_client_get_bool (gconf_client, CORBA_GCONF_KEY, NULL))
+	append_str = "at-spi-corba/modules/";
+#endif
+    }
+  if (gconf_client)
+    g_object_unref (gconf_client);
+  if (gconf)
+    dlclose (gconf);
+  path = g_strconcat (GTK_MODULES_DIR, "/", append_str, "libatk-bridge.so", NULL);
+  return path;
+}
+
+static void *
+get_library ()
+{
+  static void *library = NULL;
+
+  if (library)
+    return library;
+  library = dlopen (get_bridge_path (), RTLD_LAZY);
+  if (!library)
+    g_warning ("libbridgeglue: Couldn't find atk-bridge");
+  return library;
+}
+
+void
+gnome_accessibility_module_init ()
+{
+  void *library = get_library ();
+  void_func func;
+
+  if (!library)
+    return;
+  func = dlsym (library, "gnome_accessibility_module_init");
+  if (func)
+    func ();
+  else
+    g_warning ("libbridgeglue: Couldn't find gnome_accessibility_module_init");
+}
+
+void
+gnome_accessibility_module_shutdown ()
+{
+  void *library = get_library ();
+  void_func func;
+
+  if (!library)
+    return;
+  func = dlsym (library, "gnome_accessibility_module_shutdown");
+  if (func)
+    func ();
+  else
+    g_warning ("libbridgeglue: Couldn't find gnome_accessibility_module_shutdown");
+}

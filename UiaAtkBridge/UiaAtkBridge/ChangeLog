@@ -1,3 +1,9 @@
+2010-03-16  Mike Gorse  <mgorse@novell.com>
+
+	* UiaAtkBridge.dll.in, Monitor.cs: Use glue wrappers to call
+	gnome_accessibility_module_init and gnome_accessibility_module_shutdown
+	to support relocated atk-bridge.
+
 2010-03-11  Mike Gorse  <mgorse@novell.com>
 
 	* rangeValueProviderTextImplementor.cs: Remove extra characters from

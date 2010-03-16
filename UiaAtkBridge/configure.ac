@@ -112,6 +112,12 @@ PKG_CHECK_MODULES([GLIB_20], [glib-2.0])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+AC_ARG_ENABLE(relocate-dbus, [  --enable-relocate-dbus  At-spi2 is relocated to coexist with CORBA [default=no]], enable_relocate="$enableval", enable_relocate=no)
+if test x$enable_relocate_dbus = xyes ; then
+	AC_DEFINE(RELOCATE_DBUS, , [At-spi2 is relocated to coexist with CORBA])
+fi
+AM_CONDITIONAL(RELOCATE_DBUS, test x$enable_relocate_dbus = xyes)
+
 TOPDIR=$PWD
 AC_SUBST(TOPDIR)
 

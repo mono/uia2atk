@@ -31,6 +31,13 @@
 #include <glib-object.h>
 #include <atk/atkutil.h>
 #include <string.h>
+#include <dlfcn.h>
+
+#ifdef RELOCATE_DBUS
+#define DBUS_GCONF_KEY  "/desktop/gnome/interface/at-spi-dbus"
+#else
+#define CORBA_GCONF_KEY  "/desktop/gnome/interface/at-spi-corba"
+#endif
 
 void
 override_global_event_listener ();

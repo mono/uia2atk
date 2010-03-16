@@ -1,3 +1,7 @@
+2010-03-16  Mike Gorse <mgorse@novell.com>
+
+	* configure.ac: Add --enable-relocate-dbus.
+
 2010-03-08  Matt Guo  <matt@mattguo.com>
 
 	* UiaAtkBridge/TableImplementorHelper.cs: Fix a bug which can crash 
