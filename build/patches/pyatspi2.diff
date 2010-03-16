@@ -1,0 +1,34 @@
+diff --git a/pyatspi/application.py b/pyatspi/application.py
+index f65baad..1b608da 100644
+--- a/pyatspi/application.py
++++ b/pyatspi/application.py
+@@ -43,6 +43,14 @@ class Application(Accessible):
+                 func = self.get_dbus_method("GetLocale", dbus_interface=ATSPI_APPLICATION)
+                 return func(local_type)
+ 
++        def get_id(self):
++                return dbus.Int32(self._pgetter(ATSPI_APPLICATION, "Id"))
++        _idDoc = \
++                """
++                The application instance's unique ID as assigned by the registry.
++                """
++        id = property(fget=get_id, doc=_idDoc)
++
+         def get_toolkitName(self):
+                 return dbus.String(self._pgetter(ATSPI_APPLICATION, "ToolkitName"))
+         _toolkitNameDoc = \
+diff --git a/pyatspi/registry.py b/pyatspi/registry.py
+index 444c1b4..7bb9bda 100644
+--- a/pyatspi/registry.py
++++ b/pyatspi/registry.py
+@@ -122,7 +122,9 @@ class Registry(object):
+                 if main_loop_type == MAIN_LOOP_GLIB:
+                                 cache = AccessibleCache (app_name)
+ 
+-		factory = AccessibleFactory(cache)
++                factory = AccessibleFactory(cache)
++
++                _os.environ["AT_SPI_CLIENT"] = "1"
+ 
+                 # Set up the device event controllers
+                 _connection = SyncAccessibilityBus ()

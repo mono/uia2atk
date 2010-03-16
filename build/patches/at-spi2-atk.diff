@@ -1,0 +1,137 @@
+diff --git a/atk-adaptor/adaptors/accessible-adaptor.c b/atk-adaptor/adaptors/accessible-adaptor.c
+index dc46850..818fca4 100644
+--- a/atk-adaptor/adaptors/accessible-adaptor.c
++++ b/atk-adaptor/adaptors/accessible-adaptor.c
+@@ -292,7 +292,9 @@ impl_GetRelationSet (DBusConnection * bus,
+     {
+       goto oom;
+     }
+-  count = atk_relation_set_get_n_relations (set);
++  count = 0;
++  if (set)
++    count = atk_relation_set_get_n_relations (set);
+   for (i = 0; i < count; i++)
+     {
+       AtkRelation *r = atk_relation_set_get_relation (set, i);
+diff --git a/atk-adaptor/bridge.c b/atk-adaptor/bridge.c
+index 45bc15f..a2ab66c 100644
+--- a/atk-adaptor/bridge.c
++++ b/atk-adaptor/bridge.c
+@@ -158,7 +158,7 @@ spi_atk_bridge_get_bus (void)
+ 
+ /*---------------------------------------------------------------------------*/
+ 
+-static void
++static gboolean
+ register_application (SpiBridge * app)
+ {
+   DBusMessage *message, *reply;
+@@ -188,12 +188,21 @@ register_application (SpiBridge * app)
+       dbus_message_iter_init (reply, &iter);
+       dbus_message_iter_recurse (&iter, &iter_struct);
+       if (!(dbus_message_iter_get_arg_type (&iter_struct) == DBUS_TYPE_STRING))
+-            g_error ("AT-SPI: Could not obtain desktop path or name\n");
++        {
++          g_warning ("AT-SPI: Could not obtain desktop path or name\n");
++          return FALSE;
++        }
+       dbus_message_iter_get_basic (&iter_struct, &app_name);
+       if (!dbus_message_iter_next (&iter_struct))
+-            g_error ("AT-SPI: Could not obtain desktop name");
++        {
++          g_warning ("AT-SPI: Could not obtain desktop name");
++          return FALSE;
++        }
+       if (!(dbus_message_iter_get_arg_type (&iter_struct) == DBUS_TYPE_OBJECT_PATH))
+-            g_error ("AT-SPI: Could not obtain desktop path");
++        {
++          g_warning ("AT-SPI: Could not obtain desktop path");
++          return FALSE;
++        }
+       dbus_message_iter_get_basic (&iter_struct, &obj_path);
+ 
+       app->desktop_name = g_strdup (app_name);
+@@ -201,9 +210,10 @@ register_application (SpiBridge * app)
+     }
+   else
+     {
+-      g_error ("AT-SPI: Could not embed inside desktop: %s\n", error.message);
++      g_warning ("AT-SPI: Could not embed inside desktop: %s\n", error.message);
++      return FALSE;
+     }
+-
++  return TRUE;
+ }
+ 
+ /*---------------------------------------------------------------------------*/
+@@ -414,6 +424,12 @@ adaptor_init (gint * argc, gchar ** argv[])
+   treepath = droute_add_one (spi_global_app_data->droute,
+                              "/org/at_spi/cache", spi_global_cache);
+ 
++  if (!treepath)
++    {
++      g_warning ("atk-bridge: Error in droute_add_one().  Already running?");
++      return 0;
++    }
++
+   accpath = droute_add_many (spi_global_app_data->droute,
+                              "/org/a11y/atspi/accessible",
+                              NULL,
+diff --git a/atk-adaptor/event.c b/atk-adaptor/event.c
+index 34dcda3..69de709 100644
+--- a/atk-adaptor/event.c
++++ b/atk-adaptor/event.c
+@@ -72,7 +72,19 @@ send_and_allow_reentry (DBusConnection * bus, DBusMessage * message)
+   dbus_pending_call_set_notify (pending, set_reply, (void *) &closure, NULL);
+   closure.loop = g_main_loop_new (NULL, FALSE);
+ 
+-  g_main_loop_run  (closure.loop);
++  if (getenv ("AT_SPI_CLIENT"))
++    {
++      g_main_loop_run  (closure.loop);
++    }
++  else
++    {
++      closure.reply = NULL;
++      while (!closure.reply)
++        {
++          if (!dbus_connection_read_write_dispatch (spi_global_app_data->bus, 1000))
++            return NULL;
++        }
++    }
+   
+   g_main_loop_unref (closure.loop);
+   return closure.reply;
+diff --git a/atk-adaptor/object.c b/atk-adaptor/object.c
+index 33c50d9..0e6b6e2 100644
+--- a/atk-adaptor/object.c
++++ b/atk-adaptor/object.c
+@@ -176,6 +176,12 @@ spi_object_append_interfaces (DBusMessageIter * iter, AtkObject * obj)
+       dbus_message_iter_append_basic (iter, DBUS_TYPE_STRING, &itf);
+     }
+ 
++  if (atk_object_get_role (obj) == ATK_ROLE_APPLICATION)
++    {
++      itf = SPI_DBUS_INTERFACE_APPLICATION;
++      dbus_message_iter_append_basic (iter, DBUS_TYPE_STRING, &itf);
++    }
++
+   if (ATK_IS_COMPONENT (obj))
+     {
+       itf = SPI_DBUS_INTERFACE_COMPONENT;
+diff --git a/droute/droute.c b/droute/droute.c
+index f0b4f00..e2534e1 100644
+--- a/droute/droute.c
++++ b/droute/droute.c
+@@ -174,7 +174,10 @@ droute_add_one (DRouteContext *cnx,
+ 
+     registered = dbus_connection_register_object_path (cnx->bus, path, &droute_vtable, new_path);
+     if (!registered)
+-        oom();
++      {
++        path_free (new_path, NULL);
++        return NULL;
++      }
+ 
+     g_ptr_array_add (cnx->registered_paths, new_path);
+     return new_path;
