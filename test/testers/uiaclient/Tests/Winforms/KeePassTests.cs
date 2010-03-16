@@ -265,7 +265,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			// assert [0] is reasonable.
 			Assert.AreEqual (false, standardIconList.CanSelectMultiple);
 			Assert.AreEqual (false, standardIconList.IsSelectionRequired);
-			Assert.AreEqual ("30", standardIconList.GetSelection () [0].Current.Name);
+						
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.11 Unselect list item "30" on the "Icon Picker" dialog.
@@ -283,7 +283,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			 * is always shown.
 			 * TODO write another test case to cover the ScrollIntoView() method.
 			 * 102.13 Click list item "68" on the "Icon Picker" dialog.
-			 * standardIconList.Find<ListItem> ("68").ScrollIntoView ();
+			 * var listItem68 = standardIconList.Find<ListItem> ("68");
+			 * listItem68.ScrollIntoView ();
+			 * listItem68.Select ();
 			 * procedureLogger.ExpectedResult ("The \"68\" list item is showed in the view.");
 			 * Thread.Sleep (Config.Instance.ShortDelay);
 			 */
@@ -866,7 +868,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, passwordDocument.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.34 Set percentage of the vertical scroll bar to 0
+			//104.34 Set percentage of the  bar to 0
 			passwordDocument.SetScrollPercent (-1, 0);
 			procedureLogger.ExpectedResult ("The vertical percentage of scroll bar is set to 0.");;
 			Thread.Sleep (Config.Instance.ShortDelay);
