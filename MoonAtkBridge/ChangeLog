@@ -1,3 +1,9 @@
+2010-03-16  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am:
+	* patches/006_gtk-sharp_gobject-debugging.diff: Add shutdown and
+	debugging code to gtk-sharp to help with segfaults.
+
 2010-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac: Add ControlType switching test.

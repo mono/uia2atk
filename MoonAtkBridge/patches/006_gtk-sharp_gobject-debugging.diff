@@ -1,0 +1,153 @@
+Index: glib/Object.cs
+===================================================================
+--- glib/Object.cs	(revision 142361)
++++ glib/Object.cs	(working copy)
+@@ -33,12 +33,17 @@
+ 
+ 		IntPtr handle;
+ 		ToggleRef tref;
+-		bool disposed = false;
++		internal bool disposed = false;
+ 		Hashtable data;
+ 		static Hashtable Objects = new Hashtable();
+ 		static ArrayList PendingDestroys = new ArrayList ();
++		static System.Collections.Generic.List<WeakReference> allObjects
++			= new System.Collections.Generic.List<WeakReference> ();
+ 		static bool idle_queued;
+ 
++		static uint timeout_id = 0;
++		static volatile bool stop_unreffing = false;
++
+ 		~Object ()
+ 		{
+ 			lock (PendingDestroys) {
+@@ -47,8 +52,8 @@
+ 						PendingDestroys.Add (Objects [Handle]);
+ 					Objects.Remove (Handle);
+ 				}
+-				if (!idle_queued){
+-					Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
++				if (!idle_queued && !stop_unreffing) {
++					timeout_id = Timeout.Add (50, new TimeoutHandler (PerformQueuedUnrefs));
+ 					idle_queued = true;
+ 				}
+ 			}
+@@ -59,6 +64,10 @@
+ 		
+ 		static bool PerformQueuedUnrefs ()
+ 		{
++Console.WriteLine ("GTK-SHARP-INFO: PerformQueuedUnrefs");
++			if (stop_unreffing)
++				return false;
++
+ 			object [] references;
+ 
+ 			lock (PendingDestroys){
+@@ -74,6 +83,34 @@
+ 			return false;
+ 		}
+ 
++		public static void Shutdown ()
++		{
++Console.WriteLine ("GTK-SHARP-INFO: Shutdown");
++			// Prevent any idle-queued unreffing from happening
++			// from this point on.  After Shutdown is called, the
++			// domain will be unloaded, and if the idle is
++			// triggered before app shutdown, it will cause a
++			// segfault.
++			stop_unreffing = true;
++			if (idle_queued && timeout_id > 0)
++				Timeout.Remove (timeout_id);
++
++			// Detect any objects that have not already been
++			// disposed and that will leak.
++			lock (allObjects) {
++				foreach (WeakReference r in allObjects) {
++					if (r.IsAlive && r.Target != null
++					    && r.Target is GLib.Object
++					    && !((GLib.Object) r.Target).disposed)
++						Console.WriteLine ("GTK-SHARP WARNING: {0} was not disposed prior to plugin shutdown.{1}This object needs to be tracked with DynamicAdapterFactory.MarkExternalReference ().",
++						                   r.Target, System.Environment.NewLine);
++				}
++
++				allObjects.Clear ();
++			}
++Console.WriteLine ("GTK-SHARP-INFO: Done with Shutdown");
++		}
++
+ 		public virtual void Dispose ()
+ 		{
+ 			if (disposed)
+@@ -399,11 +436,19 @@
+ 
+ 		protected Object (IntPtr raw)
+ 		{
++			lock (allObjects) {
++				allObjects.Add (new WeakReference (this));
++			}
++
+ 			Raw = raw;
+ 		}
+ 
+ 		protected Object ()
+ 		{
++			lock (allObjects) {
++				allObjects.Add (new WeakReference (this));
++			}
++
+ 			CreateNativeObject (new string [0], new GLib.Value [0]);
+ 		}
+ 
+Index: glib/Timeout.cs
+===================================================================
+--- glib/Timeout.cs	(revision 142361)
++++ glib/Timeout.cs	(working copy)
+@@ -32,6 +32,8 @@
+ 
+ 	public class Timeout {
+ 
++		internal static bool SuspendTimeouts = false;
++
+ 		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+ 		delegate bool TimeoutHandlerInternal ();
+ 
+@@ -68,6 +70,9 @@
+ 
+ 			public bool Handler ()
+ 			{
++				if (Timeout.SuspendTimeouts)
++					return false;
++
+ 				try {
+ 					TimeoutHandler timeout_handler = (TimeoutHandler) real_handler;
+ 
+@@ -88,6 +93,9 @@
+ 
+ 		public static uint Add (uint interval, TimeoutHandler hndlr)
+ 		{
++			if (SuspendTimeouts)
++				return 0;
++
+ 			TimeoutProxy p = new TimeoutProxy (hndlr);
+ 
+ 			p.ID = g_timeout_add (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);
+@@ -102,6 +110,9 @@
+ 
+ 		public static uint Add (uint interval, TimeoutHandler hndlr, Priority priority)
+ 		{
++			if (SuspendTimeouts)
++				return 0;
++
+ 			TimeoutProxy p = new TimeoutProxy (hndlr);
+ 
+ 			p.ID = g_timeout_add_full ((int)priority, interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero, null);
+@@ -116,6 +127,9 @@
+ 
+ 		public static uint AddSeconds (uint interval, TimeoutHandler hndlr)
+ 		{
++			if (SuspendTimeouts)
++				return 0;
++
+ 			TimeoutProxy p = new TimeoutProxy (hndlr);
+ 
+ 			p.ID = g_timeout_add_seconds (interval, (TimeoutHandlerInternal) p.proxy_handler, IntPtr.Zero);

@@ -70,7 +70,7 @@ namespace Moonlight.AtkBridge
 			return GetAdapter (peer, true);
 		}
 
-		public Adapter GetAdapter (AutomationPeer peer, bool create_peer)
+		public Adapter GetAdapter (AutomationPeer peer, bool create)
 		{
 			if (peer == null)
 				return null;
@@ -85,7 +85,7 @@ namespace Moonlight.AtkBridge
 			if (activeAdapters.ContainsKey (peer))
 				return activeAdapters [peer];
 
-			if (!create_peer)
+			if (!create)
 				return null;
 
 			// Create a list of all potential implementors that
@@ -187,8 +187,14 @@ namespace Moonlight.AtkBridge
 					adapterTypes [typeName] = adapterType;
 			}
 
-			if (adapterType == null)
-				return null;
+			if (adapterType == null) {
+				Log.Warn ("Control should have a {0}, but no adapter of that type could be found.", typeName);
+
+				// Fall back to a basic adapter
+				adapter = new Adapter (peer);
+				activeAdapters.Add (peer, adapter);
+				return adapter;
+			}
 
 			Log.Debug ("Creating new instance of {0} for {1}",
 			           adapterType, peer.GetType ());
@@ -256,31 +262,99 @@ namespace Moonlight.AtkBridge
 
 		internal void UnloadAdapters ()
 		{
-			// TODO: Should we send events to at-spi about these
-			// adapters going away?  Fix this in #549195
+			Log.Info ("Initiating shutdown sequence:");
+
+			Log.Info (" * Stopping all queued idle and timeout handlers...");
+
+			// Halts all timeout-queued unreffing to prevent
+			// segfaults.
+			GLib.Object.StopUnreffing ();
+
+			// Stop all queued timeout handlers
+			//
+			// Note that we're leaking GLib.ValueArray objects as
+			// they have their own disposal cycle that we can't
+			// easily circumvent to ensure that it doesn't segfault
+			// our app.
+			GLib.Timeout.SuspendTimeouts = true;
+			lock (GLib.Source.source_handlers) {
+				foreach (uint tag in GLib.Source.source_handlers.Keys)
+					GLib.Source.Remove (tag);
+			}
+
 			patternImplementors.Clear ();
 			explicitImplementors.Clear ();
 			adapterTypes.Clear ();
 
-			// NOTE: rootVisualAdapter is included in the
-			// activeAdapters dictionary.
-			foreach (Adapter a in activeAdapters.Values)
+			Log.Info (" * Marking all adapters as defunct...");
+
+			// Mark the adapters as defunct first, and then do a
+			// second pass to dispose them later, so that ATs get a
+			// chance to release their references to the objects
+			// before we remove our managed objects.  Of course,
+			// this is quite race-prone, but what are you going to
+			// do?
+			if (rootVisualAdapter != null) {
+				rootVisualAdapter.Foreach (a => {
+					if (a.disposed)
+						return;
+
+					a.NotifyStateChange (Atk.StateType.Defunct,
+							     true);
+				}, false);
+			}
+
+			Log.Info (" * Disposing of all active adapters...");
+
+			Action<Adapter> disposeChild = (a) => {
+				if (a.disposed)
+					return;
+
+				Log.Info ("   - Disposing \"{0}\" ({1})",
+					  a.Name, a.GetType ());
+
+				activeAdapters.Remove (a.Peer);
+
 				a.Dispose ();
+			};
+
+			// Iterate the hierarchy in a depth-first manner,
+			// disposing from bottom up.
+			if (rootVisualAdapter != null)
+				rootVisualAdapter.Foreach (disposeChild, false);
+
+			Log.Info (" * Disposing remaining adapters...");
+
+			// If there are any adapters left dangling, dispose
+			// them too.
+			foreach (Adapter a in activeAdapters.Values)
+				disposeChild (a);
 
 			rootVisualAdapter = null;
-			activeAdapters.Clear ();
 
 			// Dispose of all of our external references now so
 			// they aren't queued to be unreffed later.
+			Log.Info (" * Freeing all external references...");
 			foreach (WeakReference r in externalReferences) {
-				if (r.IsAlive) {
-					IDisposable target = r.Target as IDisposable;
-					if (target != null)
-						target.Dispose ();
+				if (!r.IsAlive)
+					continue;
+
+				IDisposable target = r.Target as IDisposable;
+				if (target != null) {
+					Log.Info ("   - Disposing {0}", r.Target.GetType ());
+					target.Dispose ();
 				}
 			}
 
 			externalReferences.Clear ();
+
+			// Verify all GLib.Object subclasses have been
+			// disposed.  If they're not, print out debugging
+			// information.
+			GLib.Object.Shutdown ();
+			Atk.Util.GetRootHandler = null;
+
+			Log.Info ("Shutdown complete");
 		}
 #endregion
 

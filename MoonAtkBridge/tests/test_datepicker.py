@@ -44,7 +44,6 @@ class DatePicker(TestCase):
         cls.datepicker = cls.app.slControl.findAllComboBoxes('')[0]
 
         cls.action = cls.datepicker._accessible.queryAction()
-        cls.action_binding = cls.button._accessible.queryAction()
         cls.ACTIONS_COUNT = 1
 
         cls.text = cls.datepicker._accessible.queryEditableText()

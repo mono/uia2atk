@@ -326,6 +326,11 @@ namespace Moonlight.AtkBridge
 
 			DynamicAdapterFactory.Instance.MarkExternalReference (states);
 
+			if (disposed) {
+				states.AddState (Atk.StateType.Defunct);
+				return states;
+			}
+
 			if (Peer == null)
 				return states;
 
@@ -407,6 +412,9 @@ namespace Moonlight.AtkBridge
 
 		protected override Atk.Object OnGetParent ()
 		{
+			if (Peer == null)
+				return null;
+
 			AutomationPeer parent = Peer.GetParent ();
 
 			// XXX: This is a huge hack.
@@ -495,6 +503,25 @@ namespace Moonlight.AtkBridge
 #endregion
 
 #region Internal Methods
+		// Depth-first search the current adapter's children
+		internal void Foreach (Action<Adapter> func, bool create)
+		{
+			lock (ChildrenLock) {
+				if (children != null) {
+					foreach (AutomationPeer peer in children) {
+						var child = DynamicAdapterFactory
+							.Instance.GetAdapter (peer, create);
+						if (child == null)
+							continue;
+
+						child.Foreach (func, create);
+					}
+				}
+			}
+
+			func (this);
+		}
+
 		internal int GetIndexOfChild (Adapter child)
 		{
 			CacheChildren ();
@@ -598,7 +625,7 @@ namespace Moonlight.AtkBridge
 		internal void HandleControlTypeChange (AutomationPeer peer)
 		{
 			var adapter = DynamicAdapterFactory.Instance.GetAdapter (peer, false);
-			if (adapter == null) {
+			if (adapter == null || children == null) {
 				// If we've never created the adapter, we don't
 				// need to notify anyone that it's going away
 				// or recreate it.
@@ -610,9 +637,16 @@ namespace Moonlight.AtkBridge
 				if (index < 0)
 					return;
 
+				// Unregister and dispose the adapter's
+				// children so that they don't become orphans
+				adapter.Foreach (child => {
+					DynamicAdapterFactory.Instance.UnregisterAdapter (child.Peer);
+				}, false);
+
 				// Invalidate the cached Adapter
 				EmitChildrenChanged (ChildrenChangedDetail.Remove,
 						     (uint) index, adapter);
+				adapter.NotifyStateChange (Atk.StateType.Defunct, true);
 				DynamicAdapterFactory.Instance.UnregisterAdapter (peer);
 
 				// Create a new adapter to reflect the current ControlType

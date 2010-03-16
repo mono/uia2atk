@@ -1,3 +1,9 @@
+2010-03-16  Brad Taylor  <brad@getcoded.net>
+
+	* Moonlight.AtkBridge/Adapter.cs:
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Expand on the current
+	shutdown code, guarding against all kind of segfault-causing issues.
+
 2010-03-09  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs: Add support for peers changing their
