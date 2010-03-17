@@ -160,6 +160,8 @@ namespace Mono.UIAutomation.TestFramework
 				return new RadioButton (elm);
 			else if (elm.Current.ControlType == ControlType.TabItem)
 				return new TabItem (elm);
+			else if (elm.Current.ControlType == ControlType.Tab)
+				return new Tab (elm);
 			else if (elm.Current.ControlType == ControlType.Spinner)
 				return new Spinner (elm);
 			else if (elm.Current.ControlType == ControlType.ComboBox)
@@ -190,6 +192,10 @@ namespace Mono.UIAutomation.TestFramework
 				return new Menu (elm);
 			else if (elm.Current.ControlType == ControlType.SplitButton)
 				return new SplitButton (elm);
+			else if (elm.Current.ControlType == ControlType.Slider)
+				return new Slider (elm);
+			else if (elm.Current.ControlType == ControlType.TreeItem)
+				return new TreeItem (elm);
 
 			return new Element (elm);
 		}
