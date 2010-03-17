@@ -1,3 +1,9 @@
+2010-03-17  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Element.cs: Add IsOffscreen property
+	* Tests/Winforms/KeePassTests.cs: minor changes.
+	* Tests/Winforms/WindowPatternTests.cs: Add bug a reference.
+
 2010-03-12  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/ComboBox.cs: Remove whitespaces.

@@ -96,7 +96,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//106.4 Rotate the control for a given degree
 			//BUG574269 Cannot find pane control on Linux
-			var pane = window.Find<Pane> ("WindowAndTransformPatternProviderControl, r:0");
+			//BUG574242 Can't define custom provider by using the WM_GETOBJECT message
+			//var pane = window.Find<Pane> ("WindowAndTransformPatternProviderControl, r:0");
+			var pane = window.Find<Pane> ();
 			pane.Rotate (90.0);
 			procedureLogger.ExpectedResult ("The pane would be rotated for 90 degree.");
 			Thread.Sleep (Config.Instance.ShortDelay);

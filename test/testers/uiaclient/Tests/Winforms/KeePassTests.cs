@@ -102,7 +102,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The current view of the dialog is \"Large Icons\"");
 			/*
-			 * Bug 571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews()
+			 * BUG571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews()
 			 * method can't be shown as expected
 			 * Assert.AreEqual (itemViewList.GetViewName(itemViewList.CurrentView), "Large Icons");
 			 * Thread.Sleep (Config.Instance.ShortDelay);
@@ -265,7 +265,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			// assert [0] is reasonable.
 			Assert.AreEqual (false, standardIconList.CanSelectMultiple);
 			Assert.AreEqual (false, standardIconList.IsSelectionRequired);
-						
+			Assert.AreEqual ("30", standardIconList.GetSelection () [0].Current.Name);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//102.11 Unselect list item "30" on the "Icon Picker" dialog.
@@ -868,7 +868,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, passwordDocument.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//104.34 Set percentage of the  bar to 0
+			//104.34 Set percentage of the vertical scroll bar to 0
 			passwordDocument.SetScrollPercent (-1, 0);
 			procedureLogger.ExpectedResult ("The vertical percentage of scroll bar is set to 0.");;
 			Thread.Sleep (Config.Instance.ShortDelay);

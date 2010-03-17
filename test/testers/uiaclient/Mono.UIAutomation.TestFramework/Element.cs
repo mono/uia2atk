@@ -42,7 +42,7 @@ namespace Mono.UIAutomation.TestFramework
 			this.element = element;
 		}
 
-		// AutomationElement Name property.
+#region Properties
 		public string Name {
 			get { return element.Current.Name; }
 		}
@@ -55,6 +55,16 @@ namespace Mono.UIAutomation.TestFramework
 			get { return element; }
 		}
 
+		public bool IsOffscreen {
+			get { return element.Current.IsOffscreen; }
+		}
+
+		public Finder Finder {
+			get { return new Finder (this.AutomationElement); }
+		}
+#endregion
+
+#region Methods
 		public T Find<T> () where T : Element
 		{
 			return Find<T> (string.Empty, string.Empty);
@@ -191,10 +201,6 @@ namespace Mono.UIAutomation.TestFramework
 				ret [i] = Promote (elm [i]) as T;
 			return ret;
 		}
-
-		// Finder property
-		public Finder Finder {
-			get { return new Finder (this.AutomationElement); }
-		}
+#endregion
 	}
 }
