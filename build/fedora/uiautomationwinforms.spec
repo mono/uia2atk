@@ -1,11 +1,10 @@
 %define		debug_package %{nil}
-
 #
 # spec file for package UIAutomationWinforms
 #
 
 Name:           uiautomationwinforms
-Version:        2.0
+Version:        2.0.1
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -16,14 +15,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.4
 Requires:       mono-data >= 2.4
-Requires:       mono-uia >= 2.0
-Requires:       uiaatkbridge >= 2.0
+Requires:       mono-uia >= 2.0.1
+Requires:       uiaatkbridge >= 2.0.1
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:	mono-devel >= 2.4
 BuildRequires:  mono-data >= 2.4
 BuildRequires:	mono-nunit >= 2.4
-BuildRequires:  mono-uia >= 2.0
-BuildRequires:  mono-uia-devel >= 2.0
+BuildRequires:  mono-uia >= 2.0.1
+BuildRequires:  mono-uia-devel >= 2.0.1
 BuildRequires:  intltool
 
 Summary:        Implementation of UIA providers
@@ -57,6 +56,6 @@ rm -rf %{buildroot}
 
 %changelog
 * Mon Nov 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.8.90-1
-- Updates for the 2.0 release
+- Updates
 * Thu Apr 30 2009 Stephen Shaw <sshaw@decriptor.com> - 1.0-1
 - Initial RPM

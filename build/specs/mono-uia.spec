@@ -1,7 +1,7 @@
 #
 # spec file for package UIAutomation
 #
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 # 
@@ -12,7 +12,7 @@
 
 
 Name:           mono-uia
-Version:        2.0
+Version:        2.0.1
 Release:        1
 License:        MIT/X11
 Group:          System/Libraries

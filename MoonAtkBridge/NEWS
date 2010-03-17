@@ -3,6 +3,17 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.1: The "guesstimate" release
+* #579004 - Update google docs with new testcase descriptions
+* #554449 - ComboBox crashes when using ItemsSource
+* #576600 - Handle ControlType changes in bridges.
+* #494724 - Test TabControl control
+* #494709 - Test DatePicker control
+* #584340 - In ListView, Calling ValuePattern.SetValue on one cell can take effect on another sibling cell
+* #572683 - ElementNotAvailableException is not fired.
+* #558289 - Slider: Key Navigation Does Not Update Slider's Value with SmallChange Property
+* #586635 - The NameProperty of DataGridView's Cell is not correctly returned.
+
 Version 2.0: The "hypnotoad" release
 * #574269 - Cannot find pane control on Linux
 

@@ -1,9 +1,17 @@
 #
 # spec file for package UiaDbus
 #
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+# 
+# Please submit bugfixes or comments via http://bugs.opensuse.org/ 
+# 
+# norootforbuild 
+# 
 
 Name:           uiadbus
-Version:        2.0
+Version:        2.0.1
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -13,7 +21,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Summary:        UiaDbus components of UIA on Linux
 BuildRequires:	glib-sharp2
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia-devel >= 2.0
+BuildRequires:	mono-uia-devel >= 2.0.1
 BuildRequires:	ndesk-dbus
 
 %description
