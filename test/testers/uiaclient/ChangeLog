@@ -1,5 +1,9 @@
 2010-02-12  Felicia Mu  <fxmu@novell.com>
 
+	* Mono.UIAutomation.TestFramework/Slider.cs: Make a mistake to get compile through.
+
+2010-02-12  Felicia Mu  <fxmu@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Slider.cs: Add Slider class.
 	* Mono.UIAutomation.TestFramework/TreeItem.cs: Add TreeItem class.
 	* Mono.UIAutomation.TestFramework/Element.cs: Add Slider TreeItem classes.

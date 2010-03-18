@@ -30,7 +30,7 @@ namespace Mono.UIAutomation.TestFramework
 	public class Slider : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Slider;
-		public Slider (utomationElement elm)
+		public Slider (AutomationElement elm)
 			: base (elm)
 		{
 		}
