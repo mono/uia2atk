@@ -33,34 +33,17 @@ using Mono.UIAutomation.TestFramework;
 namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 {
 	[TestFixture]
-	public class SL2WithPrismTests : TestBase
+	public class SL2WithPrismTest : MoonlightTestBase
 	{
-		private Application app = null;
-		private Window window = null;
-		private string sample = "SL2WithPrism";
+		private Window window;
 
-		public SL2WithPrismTests ()
+		public SL2WithPrismTest (Window window) : base (window)
 		{
+			this.window = window;
 		}
 
-		protected override void LaunchSample ()
-		{
-			app = new Application (sample);
-			app.Launch ("/usr/local/bin/firefox",
-				    "http://www.xentree.com/SL2WithPrism/");
-		}
-
-		protected override void OnSetup ()
-		{
-			base.OnSetup ();
-			window = app.GetWindow (string.Format ("{0} - Mozilla Firefox", sample));
-		}
-
-		protected override void OnQuit ()
-		{
-			base.OnQuit ();
-			procedureLogger.Save ();
-			window.Close ();
+		public override string Sample {
+			get { return "SL2WithPrismTest"; }
 		}
 
 		[Test]
@@ -83,22 +66,27 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			eUserName.SetValue ("a11y");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("User Name should be entered in the TextBox.");
+
+			procedureLogger.Action (string.Format ("Check {0}'s Value.", eUserName));
+			procedureLogger.ExpectedResult (string.Format ("{0}'s Value is \"a11y\".", eUserName));
 			Assert.AreEqual ("a11y", eUserName.Value);
-			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 304.2: Enter "a11ya11y" into "Password" textbox on the top of main page
 			var ePassword = window.Find<Edit> (Direction.Vertical, 1);
 			ePassword.SetValue ("a11ya11y");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Password should be entered in the TextBox, and is displayed as dots.");
+
+			procedureLogger.Action (string.Format ("Check {0}'s Value.", ePassword));
+			procedureLogger.ExpectedResult (string.Format ("{0}'s Value is \"a11ya11y\".", ePassword));
 			Assert.AreEqual ("a11ya11y", ePassword.Value);
-			Thread.Sleep (Config.Instance.ShortDelay);
 
 			// 304.3: Click "LogIn" button
 			var bLogIn = window.Find<Button> ("LogIn");
 			bLogIn.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Account should be logged in successfully.");
+			Assert.IsTrue (bLogIn.IsOffscreen);
 		}
 
 		// 305: Move ScrollBar To Invoke HyperLink
@@ -106,15 +94,19 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		{
 			// 305.1: Move ScrollBar to the Maximum value
 			var sbRight = window.Find<ScrollBar> ();
-			sbRight.SetScrollPercent (0, 100.0);
+			sbRight.SetValue (sbRight.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.Action (string.Format ("Check {0}'s Maximum.", sbRight));
 			procedureLogger.ExpectedResult ("The web page should be scrolled to bottom.");
+			Assert.AreEqual (sbRight.Maximum, sbRight.Value);
 
 			// 305.2: Click "http://www.codeplex.com/SL2WithPrism" hyperlink
 			var hProject = window.Find<Hyperlink> ();
 			hProject.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.Action (string.Format ("Check if {0} exists.", hProject));
 			procedureLogger.ExpectedResult ("The link should be opened in the current page.");
+			Assert.IsNull (hProject);
 		}
 	}
 }

@@ -33,34 +33,17 @@ using Mono.UIAutomation.TestFramework;
 namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 {
 	[TestFixture]
-	public class PuzzleGameTests : TestBase
+	public class PuzzleGameTest : MoonlightTestBase
 	{
-		private Application app = null;
-		private Window window = null;
-		private string sample = "PuzzleGame";
+		private Window window;
 
-		public PuzzleGameTests ()
+		public PuzzleGameTest (Window window) : base (window)
 		{
+			this.window = window;
 		}
 
-		protected override void LaunchSample ()
-		{
-			app = new Application (sample);
-			app.Launch ("firefox",
-				    "http://www.silverlightshow.net/showcase/PuzzleGame/PuzzleGame.html");
-		}
-
-		protected override void OnSetup ()
-		{
-			base.OnSetup ();
-			window = app.GetWindow (string.Format ("{0} - Mozilla Firefox", sample));
-		}
-
-		protected override void OnQuit ()
-		{
-			base.OnQuit ();
-			procedureLogger.Save ();
-			window.Close ();
+		public override string Sample {
+			get { return "PuzzleGameTest"; }
 		}
 
 		[Test]
@@ -88,13 +71,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			var bScramble = window.Find<Button> ("Scramble");
 			bScramble.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The pictures should be placed disordered.");
+			procedureLogger.ExpectedResult (string.Format ("TextBlock \"Puzzle Not Solved.\" appears."));
+			var lPuzzleStatus = window.Find<Text> ("Puzzle Not Solved.");
+			Assert.IsNotNull (lPuzzleStatus);
 
 			// 301.2: Click "Reset" button
 			var bReset = window.Find<Button> ("Reset");
 			bReset.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The pictures should be placed to default position.");
+			procedureLogger.ExpectedResult (string.Format ("TextBlock \"Puzzle Not Solved.\" disappears."));
+			Assert.AreEqual (string.Empty, lPuzzleStatus.Name);
 		}
 
 		// 302: Show Help
@@ -104,26 +90,31 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			var cbShowHelp = window.Find<CheckBox> ("Show Help");
 			cbShowHelp.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("Every picture should be marked with a number.");
+			procedureLogger.ExpectedResult (string.Format ("{0}'s ToggleState is \"On\".", cbShowHelp));
+			Assert.AreEqual ("On", cbShowHelp.ToggleState);
 
 			// 302.2: Click "Show Help" checkbox again
 			cbShowHelp.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The number on each picture should disappeared.");
+			procedureLogger.ExpectedResult (string.Format ("{0}'s ToggleState is \"Off\".", cbShowHelp));
+			Assert.AreEqual ("Off", cbShowHelp.ToggleState);
 		}
 
 		// 303: Change Puzzle Dimension
 		private void TestCase303 ()
 		{
 			// 303.1: Check current ExpandCollapseState
-			var cbPuzzleDimension = window.Find<ComboBox> ("7 X 7");
-			Assert.AreEqual (cbPuzzleDimension.ExpandCollapseState, ExpandCollapseState.Collapsed);
-			Thread.Sleep (Config.Instance.ShortDelay);
+			var cbPuzzleDimension = window.Find<ComboBox> ();
+			procedureLogger.Action (string.Format ("Check {0}'s ExpandCollapseState.", cbPuzzleDimension));
+			procedureLogger.ExpectedResult (string.Format ("{0}'s ExpandCollapseState is Collapsed.", cbPuzzleDimension));
+			Assert.AreEqual (ExpandCollapseState.Collapsed, cbPuzzleDimension.ExpandCollapseState);
 
 			// 303.2: Check current Selection
-			// TODO:
-			//Assert.IsTrue ();
+			var li7X7 = cbPuzzleDimension.Find<ListItem> ("7 X 7");
+			var liChoice = cbPuzzleDimension.GetSelection ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult (string.Format ("{0} selects {1}.", cbPuzzleDimension, li7X7));
+			Assert.AreEqual (li7X7, liChoice);
 
 			// 303.3: Expand "cbPuzzleDimension" 7X7 combobox
 			cbPuzzleDimension.Expand ();
@@ -131,32 +122,35 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be expanded.");
 
 			// 303.4: Check current ExpandCollapseState
-			Assert.AreEqual (cbPuzzleDimension.ExpandCollapseState, ExpandCollapseState.Expanded);
-			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.Action (string.Format ("Check {0}'s ExpandCollapseState.", cbPuzzleDimension));
+			procedureLogger.ExpectedResult (string.Format ("{0}'s ExpandCollapseState is Expanded.", cbPuzzleDimension));
+			Assert.AreEqual (ExpandCollapseState.Expanded, cbPuzzleDimension.ExpandCollapseState);
 
 			// 303.5: Click "3X3" ListItem element to select it
 			var li3X3 = cbPuzzleDimension.Find<ListItem> ("3 X 3");
 			li3X3.Select ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The \"3 X 3\" item in ComboBox should be selected.");
-
-			// 303.6: Check "3X3" ListItem element current states
+			procedureLogger.ExpectedResult (string.Format ("{0}'s IsSelected is True.", li3X3));
 			Assert.IsTrue (li3X3.IsSelected);
-			Thread.Sleep (Config.Instance.ShortDelay);
 
-			// 303.7: Check current Selection of "ComboBox" element
-			// TODO:
-			//Assert.IsTrue ();
+			// 303.6: Check current Selection of "ComboBox" element
+			var liChoice1 = cbPuzzleDimension.GetSelection ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult (string.Format ("{0} selects {1}.", cbPuzzleDimension, li3X3));
+			Assert.AreEqual (li3X3, liChoice1);
 
-			// 303.8: Collapse "cbPuzzleDimension" 3X3 combobox
+			// 303.7: Collapse "cbPuzzleDimension" 3X3 combobox
 			cbPuzzleDimension.Collapse ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The PuzzleDemension ComboBox should be collapsed.");
+			procedureLogger.ExpectedResult (string.Format ("{0}'s ExpandCollapseState is Collapsed.", cbPuzzleDimension));
+			Assert.AreEqual (ExpandCollapseState.Collapsed, cbPuzzleDimension.ExpandCollapseState);
 
-			// 303.9: Check current ExpandCollapseState
-			Assert.AreEqual (cbPuzzleDimension.ExpandCollapseState, ExpandCollapseState.Collapsed);
+			// 303.8: Check AddToSelection method
+			li7X7.AddToSelection ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.Action (string.Format ("Check {0}'s IsSelected.", li7X7));
+			procedureLogger.ExpectedResult (string.Format ("{0}'s IsSelected is True.", li7X7));
+			Assert.IsTrue (li3X3.IsSelected);
 		}
 	}
 }
