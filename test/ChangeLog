@@ -1,3 +1,8 @@
+2010-03-18  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/threadexceptiondialog-regression.py: add 
+	bug575635 reference
+
 2010-03-15  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/uiaclient/Mono.UIAutomation.TestFramework/Application.cs:
