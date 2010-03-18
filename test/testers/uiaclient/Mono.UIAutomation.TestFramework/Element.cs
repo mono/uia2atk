@@ -160,8 +160,6 @@ namespace Mono.UIAutomation.TestFramework
 				return new RadioButton (elm);
 			else if (elm.Current.ControlType == ControlType.TabItem)
 				return new TabItem (elm);
-			else if (elm.Current.ControlType == ControlType.Tab)
-				return new Tab (elm);
 			else if (elm.Current.ControlType == ControlType.Spinner)
 				return new Spinner (elm);
 			else if (elm.Current.ControlType == ControlType.ComboBox)

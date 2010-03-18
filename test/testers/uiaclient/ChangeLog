@@ -1,8 +1,16 @@
-2010-02-12  Felicia Mu  <fxmu@novell.com>
+2010-03-18  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.TestFramework/Element.cs: Deleted Tab class.
+
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	* Mono.UIAutomation.TestFramework/Makefile.am: Added Slider.cs and
+	TreeItem.cs.
+
+2010-03-18  Felicia Mu  <fxmu@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Slider.cs: Make a mistake to get compile through.
 
-2010-02-12  Felicia Mu  <fxmu@novell.com>
+2010-03-17  Felicia Mu  <fxmu@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Slider.cs: Add Slider class.
 	* Mono.UIAutomation.TestFramework/TreeItem.cs: Add TreeItem class.

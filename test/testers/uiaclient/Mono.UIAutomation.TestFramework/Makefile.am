@@ -79,6 +79,8 @@ FILES = \
 	Window.cs \
 	Menu.cs \
 	Direction.cs \
+	Slider.cs \
+	TreeItem.cs \
 	AssemblyInfo.cs 
 
 DATA_FILES = 

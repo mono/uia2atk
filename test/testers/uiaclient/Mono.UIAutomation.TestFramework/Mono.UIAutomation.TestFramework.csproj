@@ -80,6 +80,8 @@
     <Compile Include="SplitButton.cs" />
     <Compile Include="Hyperlink.cs" />
     <Compile Include="DataItem.cs" />
+    <Compile Include="Slider.cs" />
+    <Compile Include="TreeItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
