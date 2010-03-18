@@ -1,3 +1,9 @@
+2010-03-18  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/uiaclient/Tests/Moonlight/DiggSearchTest.cs: Added file.
+	* testers/uiaclient/Tests/Moonlight/MoonlightTestBase.cs: Added a base
+	class for testing Moonlight.
+
 2010-03-18  Calen Chen <cachen@novell.com>
 
 	* testers/winforms/savefiledialog/savefiledialogframe.py: udpate cell's 
