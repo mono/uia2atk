@@ -1,9 +1,19 @@
+2010-03-18  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/savefiledialog/savefiledialogframe.py: udpate cell's 
+	image size to 16*16
+
 2010-03-18  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/uiaclient/Tests/Moonlight/PuzzleGameTests.cs: Renamed to
 	PuzzleGameTest.cs.
 	* testers/uiaclient/Tests/Moonlight/SL2WithPrismTests.cs: Renamed to
 	SL2WithPrismTest.cs.
+
+2010-03-18  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/savefiledialog/savefiledialogframe.py: update cell's 
+	image size
 
 2010-03-18  Calen Chen <cachen@novell.com>
 

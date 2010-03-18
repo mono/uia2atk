@@ -477,9 +477,9 @@ class SaveFileDialogFrame(accessibles.Frame):
         #for accessible in self.popup_toolbar_menuitems:
         #    self.assertImageSize(accessible, expected_width=32, expected_height=32)
 
-        # ensure cells' image size in file view treetable are 24*24(list style)
-        self.assertImageSize(self.a_blank_file_cell, expected_width=24, expected_height=24)
-        self.assertImageSize(self.apple_red_png_cell, expected_width=24, expected_height=24)
+        # ensure cells' image size in file view treetable are 16*16(list style)
+        self.assertImageSize(self.a_blank_file_cell, expected_width=16, expected_height=16)
+        self.assertImageSize(self.apple_red_png_cell, expected_width=16, expected_height=16)
 
     # assert the size of an image to test AtkImage implementation
     def assertImageSize(self, accessible, expected_width=0, expected_height=0):
