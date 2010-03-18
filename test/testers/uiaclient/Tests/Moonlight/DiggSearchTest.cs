@@ -182,14 +182,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase309 ()
 		{
 			// 309.1: Move the vertical scrollbar to bottom(Select the last list item, use "ScrollIntoView" method)
+			var lResults = window.Find<List> ();
 			double prevVerticalScrollPercent = lResults.VerticalScrollPercent;
+
 			var liResult = window.FindAll<ListItem> ()[9];
 			liResult.ScrollIntoView ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Window should scroll down. The ListItem which was out-of-screen appear now.");
 
 			// 309.2: Check if the list is scrolled
-			var lResults = window.Find<List> ();
 			procedureLogger.Action (string.Format ("Check {0}'s HorizontallyScrollable.", lResults));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s HorizontallyScrollable is False.", lResults));
 			Assert.IsFalse (lResults.HorizontallyScrollable);

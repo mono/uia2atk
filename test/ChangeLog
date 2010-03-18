@@ -1,3 +1,9 @@
+2010-03-18  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/uiaclient/Tests/Moonlight/DiggSearchTest.cs:
+	* testers/uiaclient/Tests/Tests.csproj:
+	* testers/uiaclient/Tests/Makefile.am: Updated project file and makefile.
+
 2010-03-18  Calen Chen <cachen@novell.com>
 
 	* testers/winforms/openfiledialog/openfiledialogframe.py: udpate cell's 
