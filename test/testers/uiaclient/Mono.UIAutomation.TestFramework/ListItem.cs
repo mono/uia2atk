@@ -36,6 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
+		// The method and property of SelectionItemPattern
 		public void ScrollIntoView ()
 		{
 			ScrollIntoView (true);

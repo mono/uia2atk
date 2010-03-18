@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The method and property of ValuePattern
+		// The methods and properties of RangeValuePattern
 		public void SetValue (double value)
 		{
 			SetValue (value, true);
@@ -51,8 +51,28 @@ namespace Mono.UIAutomation.TestFramework
 			rvp.SetValue (value);
 		}
 
-		public string Value {
-			get { return (string) element.GetCurrentPropertyValue (RangeValuePattern.ValueProperty); }
+		public bool IsReadOnly {
+			get { return (bool) element.GetCurrentPropertyValue (RangeValuePattern.IsReadOnlyProperty); }
+		}
+
+		public double LargeChange {
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.LargeChangeProperty); }
+		}
+
+		public double SmallChange {
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.SmallChangeProperty); }
+		}
+
+		public double Maximum {
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MaximumProperty); }
+		}
+
+		public double Minimum {
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MinimumProperty); }
+		}
+
+		public double Value {
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.ValueProperty); }
 		}
 	}
 }
