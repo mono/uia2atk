@@ -136,7 +136,7 @@ class PageBuilder(object):
                                   "OpenFileDialog",
                                   "PageSetupDialog",
                                   "Panel",
-                                  "Picturebox",
+                                  "PictureBox",
                                   "PrintPreviewControl",
                                   "PrintPreviewDialog",
                                   "ProgressBar",

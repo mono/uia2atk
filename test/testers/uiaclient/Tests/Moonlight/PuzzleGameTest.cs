@@ -111,7 +111,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 
 			// 303.2: Check current Selection
 			var li7X7 = cbPuzzleDimension.Find<ListItem> ("7 X 7");
-			var liChoice = cbPuzzleDimension.GetSelection ();
+			var liChoice = cbPuzzleDimension.GetCurrentSelection ()[0];
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("{0} selects {1}.", cbPuzzleDimension, li7X7));
 			Assert.AreEqual (li7X7, liChoice);

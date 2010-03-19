@@ -1,3 +1,11 @@
+2010-03-19  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/uiaclient/Tests/Moonlight/MoonlightTestBase.cs: Deleted unused
+	variable.
+	* testers/uiaclient/Tests/Moonlight/PuzzleGameTest.cs: Used
+	GetCurrentSelection().
+	* tools/dashboard/dashboard.py: Renamed Picturebox to PictureBox.
+
 2010-03-18  Calen Chen <cachen@novell.com>
 
 	* testers/winforms/printpreviewdialog-regression.py: fix an error, 

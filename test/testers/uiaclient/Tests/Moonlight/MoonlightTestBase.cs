@@ -36,7 +36,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 	{
 		private Application application;
 		private Window window;
-		private string sample;
 
 		public MoonlightTestBase (Window window)
 		{
@@ -57,9 +56,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 				Console.WriteLine ("** MOON_A11Y_BROWSER_PROFILE environment variable not found. Defaulting to {0}.", profile);
 			}
 
-			string uri = string.Format ("samples/{0}/{0}.html", sample);
+			string uri = string.Format ("samples/{0}/{0}.html", Sample);
 
-			application = new Application (sample);
+			application = new Application (Sample);
 			application.Launch (browser, "-no-remote", "-P", profile, uri);
 		}
 
@@ -73,7 +72,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 				Console.WriteLine ("** MOON_A11Y_BROWSER_NAME environment variable not found. Defaulting to {0}.", name);
 			}
 
-			window = application.GetWindow (string.Format ("{0} - {1}", sample, name));
+			window = application.GetWindow (string.Format ("{0} - {1}", Sample, name));
 		}
 
 		protected override void OnQuit ()
