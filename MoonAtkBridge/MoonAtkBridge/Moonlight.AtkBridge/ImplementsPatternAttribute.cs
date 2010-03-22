@@ -38,7 +38,7 @@ namespace Moonlight.AtkBridge
 			set;
 		}
 
-		public Type ElementType {
+		public string ElementType {
 			get;
 			set;
 		}
@@ -66,7 +66,7 @@ namespace Moonlight.AtkBridge
 			Pattern = pattern;
 		}
 
-		public ImplementsPatternAttribute (Type elementType)
+		public ImplementsPatternAttribute (string elementType)
 		{
 			ElementType = elementType;
 		}

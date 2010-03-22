@@ -229,6 +229,13 @@ namespace Moonlight.AtkBridge
 			if (Peer == null)
 				return Role.Unknown;
 
+			if (PatternImplementors.Length > 0
+			    && PatternImplementors [0].OverriddenRole != Role.Unknown) {
+				if (PatternImplementors.Length > 1)
+					Log.Warn ("Adapter has more than one PatternImplementor, we are going to use the first OverridenRole value");
+				return PatternImplementors [0].OverriddenRole;
+			}
+
 			if (Peer.IsPassword ())
 				return Role.PasswordText;
 

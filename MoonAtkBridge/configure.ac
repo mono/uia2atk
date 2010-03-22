@@ -159,6 +159,7 @@ tests/assets/ControlTypeTest/Makefile
 tests/assets/DatePickerTest/Makefile
 tests/assets/ExpandCollapseEventsTest/Makefile
 tests/assets/FakeBridgeTest/Makefile
+tests/assets/GridSplitterTest/Makefile
 tests/assets/HyperlinkButtonTest/Makefile
 tests/assets/ImageTest/Makefile
 tests/assets/ListBoxTest/Makefile

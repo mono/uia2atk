@@ -1,3 +1,7 @@
+2010-03-22  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: GridSplitterTest added.
+
 2010-03-16  Brad Taylor  <brad@getcoded.net>
 
 	* patches/006_gtk-sharp_gobject-debugging.diff: Update patch; fix build
@@ -518,4 +522,5 @@
 
 2009-05-26  Brad Taylor  <brad@getcoded.net>
 
-	* *: Initial import.
+	i *: Initial import.
+

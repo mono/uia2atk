@@ -10,6 +10,7 @@ SUBDIRS = \
 	DatePickerTest \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \
+	GridSplitterTest \
 	HyperlinkButtonTest \
 	ImageTest \
 	ListBoxTest \

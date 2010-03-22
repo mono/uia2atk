@@ -10,6 +10,7 @@ Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
 Moonlight.AtkBridge.PatternImplementors/Calendar.cs
 Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
 Moonlight.AtkBridge.PatternImplementors/GridTable.cs
+Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs
 Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
 Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
 Moonlight.AtkBridge.PatternImplementors/Selection.cs

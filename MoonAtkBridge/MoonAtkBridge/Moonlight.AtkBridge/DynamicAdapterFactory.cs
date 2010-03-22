@@ -96,16 +96,12 @@ namespace Moonlight.AtkBridge
 			List<PatternInterface> implementorBlacklist = new List<PatternInterface> ();
 
 			// Do we have any explict implementors for this type?
-			List<Type> explicitImpls;
-			if (explicitImplementors.TryGetValue (peer.GetType (),
-			                                      out explicitImpls)) {
-				if (explicitImpls != null) {
-					foreach (Type t in explicitImpls)
-						if (blacklist.ContainsKey (t))
-							implementorBlacklist.Add (blacklist [t]);
-
-					implementors.AddRange (explicitImpls);
-				}
+			Type explicitImpl;
+			if (explicitImplementors.TryGetValue (peer.GetType ().ToString (),
+			                                      out explicitImpl)) {
+				if (blacklist.ContainsKey (explicitImpl))
+					implementorBlacklist.Add (blacklist [explicitImpl]);
+				implementors.Add (explicitImpl);
 			}
 
 			// Do we have any implementors for this control type?
@@ -385,11 +381,11 @@ namespace Moonlight.AtkBridge
 					if (ipa.IsProvidesSet)
 						blacklist [t] = ipa.Provides;
 
-					if (ipa.ElementType != null) {
-						if (!explicitImplementors.ContainsKey (ipa.ElementType))
-							explicitImplementors [ipa.ElementType] = new List<Type> ();
-
-						explicitImplementors [ipa.ElementType].Add (t);
+					// If there's a explicit type to match we don't care
+					// about blacklisting it, because the adapter will *only*
+					// work with that peer.
+					if (!string.IsNullOrEmpty (ipa.ElementType)) {
+						explicitImplementors.Add (ipa.ElementType, t);
 						continue;
 					}
 
@@ -471,8 +467,8 @@ namespace Moonlight.AtkBridge
 		private Dictionary<PatternInterface, List<Type>> patternImplementors
 			= new Dictionary<PatternInterface, List<Type>> ();
 
-		private Dictionary<Type, List<Type>> explicitImplementors
-			= new Dictionary<Type, List<Type>> ();
+		private Dictionary<string, Type> explicitImplementors
+			= new Dictionary<string, Type> ();
 
 		private Dictionary<Type, PatternInterface> blacklist
 			= new Dictionary<Type, PatternInterface> ();

@@ -1,3 +1,14 @@
+2010-03-22  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/Makefile.am:
+	* assets/GridSplitterTest/App.xaml:
+	* assets/GridSplitterTest/App.xaml.cs:
+	* assets/GridSplitterTest/Makefile.am:
+	* assets/GridSplitterTest/Page.xaml:
+	* assets/GridSplitterTest/Page.xaml.cs:
+	* test_tabcontrol.py:
+	* test_gridsplitter.py: Testsing GridSplitter adapter.
+
 2010-03-16  Brad Taylor  <brad@getcoded.net>
 
 	* test_datepicker.py: Remove spurious line that was causing the test to

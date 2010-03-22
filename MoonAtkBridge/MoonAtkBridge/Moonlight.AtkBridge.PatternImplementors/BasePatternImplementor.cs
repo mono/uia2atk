@@ -48,6 +48,10 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 		}
 
+		public virtual Role OverriddenRole {
+			get { return Atk.Role.Unknown; }
+		}
+
 		IntPtr GLib.IWrapper.Handle {
 			get { return IntPtr.Zero; }
 		}

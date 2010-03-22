@@ -631,6 +631,15 @@
 /MoonAtkBridge/tests/assets/FakeBridgeTest/Makefile.in
 /MoonAtkBridge/tests/assets/FakeBridgeTest/*.mdb
 /MoonAtkBridge/tests/assets/FakeBridgeTest/*.xap
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.g.cs
+/MoonAtkBridge/tests/assets/GridSplitterTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.dll
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.dll.mdb
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.g.resources
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.html
+/MoonAtkBridge/tests/assets/GridSplitterTest/*.xap
+/MoonAtkBridge/tests/assets/GridSplitterTest/Makefile
+/MoonAtkBridge/tests/assets/GridSplitterTest/Makefile.in
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/*.dll
 /MoonAtkBridge/tests/assets/HyperlinkButtonTest/*.g.cs

@@ -97,6 +97,8 @@ class TabControl(TestCase):
             self.assertTrue(tabItem0.selected)
             self.assertFalse(tabItem1.selected)
 
+        sleep(config.SHORT_DELAY)
+
         assert listener.containsEvent(tabItem0, 'object:state-changed:selected', 1)
         assert listener.containsEvent(tabItem1, 'object:state-changed:selected', 1)
 
@@ -106,5 +108,7 @@ class TabControl(TestCase):
             self.assertFalse(tabItem0.selected)
             self.assertTrue(tabItem2.selected)
 
-        assert listener.containsEvent(tabItem1, 'object:state-changed:selected', 1)
+        sleep(config.SHORT_DELAY)
+
+        assert listener.containsEvent(tabItem0, 'object:state-changed:selected', 1)
         assert listener.containsEvent(tabItem2, 'object:state-changed:selected', 1)

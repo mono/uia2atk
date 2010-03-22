@@ -1,3 +1,17 @@
+2010-03-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs:
+	SWC.GridSpliter adapter.
+	* MoonAtkBridge.sources: GridSplitter added.
+	* Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs:
+	New property OverriddenRole.
+	* Moonlight.AtkBridge/Adapter.cs: Using first OverriddenRole to
+	override default implementation.
+	* Moonlight.AtkBridge/DynamicAdapterFactory.cs: Uses explicit
+	implementation set in attribute to create adapter.
+	* Moonlight.AtkBridge/ImplementsPatternAttribute.cs: ElementType type
+	changed to string.
+
 2010-03-16  Brad Taylor  <brad@getcoded.net>
 
 	* Moonlight.AtkBridge/Adapter.cs:
