@@ -18,11 +18,11 @@ SUBDIRS = \
 	TextBlock \
 	TextBox \
 	Thumb \
-	ToggleButton
-	#Calendar
-	#DataGrid
-	#DatePicker
-	#TabControl
+	ToggleButton \
+	Calendar \
+	DataGrid \
+	DatePicker \
+	TabControl
 
 all:
 	for i in $(SUBDIRS); do (cd $$i; make); done

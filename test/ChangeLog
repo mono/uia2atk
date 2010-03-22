@@ -1,3 +1,14 @@
+2010-03-22  Mario Carrion  <mcarrion@novell.com>
+
+	* samples/moonlight/Calendar/Makefile:
+	* samples/moonlight/DataGrid/Makefile:
+	* samples/moonlight/DatePicker/Makefile:
+	* samples/moonlight/GridSplitter/Makefile:
+	* samples/moonlight/Makefile:
+	* samples/moonlight/TabControl/Makefile: Building moonlight samples
+	requiring System.Windows.Controls.dll or
+	System.Windows.Controls.Data.dll.
+
 2010-03-19  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/uiaclient/Tests/Moonlight/MoonlightTestBase.cs: Deleted unused
