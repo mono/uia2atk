@@ -1,8 +1,7 @@
 2010-03-18  Felicia Mu  <fxmu@novell.com>
 
-	* Mono.UIAutomation.TestFramework/Spinner.cs: 
-	* Mono.UIAutomation.TestFramework/ListItem.cs: 
-	* Mono.UIAutomation.TestFramework/RadioButton.cs: Add method and property of SelectionItemPattern.
+	* Tests/GTK/Fspot.cs:  
+	* Tests/GTK/Banshee.cs: Update from the RB.  
 
 2010-03-18  Neville Gao  <nevillegao@gmail.com>
 
