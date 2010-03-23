@@ -1,4 +1,8 @@
-2010-03-18  Felicia Mu  <fxmu@novell.com>
+2010-03-23  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/FSpot.cs: Change the name from Fspot.cs to FSpot.cs.
+
+2010-03-23  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs:  
 	* Tests/GTK/Banshee.cs: Update from the RB.  
