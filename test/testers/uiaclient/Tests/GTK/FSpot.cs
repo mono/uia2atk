@@ -196,13 +196,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.8 Make the picture a small change enlarge
-			slider.SetValue(0 + slider.SmallChange);
+			slider.SetValue(slider.Minimum + slider.SmallChange);
 			procedureLogger.ExpectedResult ("Make the picture a small change large.");
 			Assert.AreEqual(slider.SmallChange ,slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.9 Make the picture a big change reduce
-			slider.SetValue(1 - slider.LargeChange);
+			slider.SetValue(slider.Maximum - slider.LargeChange);
 			procedureLogger.ExpectedResult ("Make the picture a big change large.");
 			Assert.AreEqual(slider.LargeChange ,1 - slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);

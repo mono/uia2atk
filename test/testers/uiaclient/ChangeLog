@@ -1,5 +1,9 @@
 2010-03-23  Felicia Mu  <fxmu@novell.com>
 
+	* Tests/GTK/FSpot.cs: Improve test case 202.8 202.9.
+
+2010-03-23  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/GTK/FSpot.cs: Change the name from Fspot.cs to FSpot.cs.
 
 2010-03-23  Felicia Mu  <fxmu@novell.com>
