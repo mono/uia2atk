@@ -96,7 +96,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//201.4 Input text "/usr/share/pixmaps/" into "Location:" Edit 
 			var appears = importDialog.Find<Edit> ("Location:");
 			locationEdit.SetValue ("/usr/share/pixmaps/");
-			procedureLogger.ExpectedResult ("\"/usr/share/pixmaps\" has been entered");
+			procedureLogger.ExpectedResult ("\"/usr/share/pixmaps\" has been entered.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			Assert.AreEqual ("/usr/share/pixmaps/", locationEdit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -110,9 +110,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 			var listItem = list.Find<ListItem> ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The pictures in \"/usr/share/pixmaps/\" are loaded");
-			Assert.IsNotNull (listItem);
+			procedureLogger.ExpectedResult ("The picture(s) in \"/usr/share/pixmaps/\" is(are) loaded.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			Assert.IsNotNull (listItem);
 
 			//201.6 Click "Import" Button
 			var importButton = importDialog.Find<Button> ("Import");
@@ -121,10 +121,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			var fspotList = window.Find<List> ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			var fspotListItem = fspotList.FFind<ListItem> ();
-			Assert.IsNotNull (fspotListItem);
-			procedureLogger.ExpectedResult ("The pictures in \"/usr/share/pixmaps/\" are imported");
+			var fspotListItem = fspotList.Find<ListItem> ();
+			procedureLogger.ExpectedResult ("The pictures in \"/usr/share/pixmaps/\" are imported.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			Assert.IsNotNull (fspotListItem);
 		}
 
 		//TestCase202 Find a pic Item
@@ -142,12 +142,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//202.1 Check the List's SelectionPattern's property
 			var List = window.Find<List> ();
 			procedureLogger.Action ("Check the List Can be Selected Multiple.");
-			procedureLogger.ExpectedResult ("The List can select multiple");
+			procedureLogger.ExpectedResult ("The List can select multiple.");
 			Assert.AreEqual (true, List.CanSelectMultiple);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check the List Is Selection Required.");
-			procedureLogger.ExpectedResult ("The List requires selection ");
+			procedureLogger.ExpectedResult ("The List requires selection .");
 			Assert.AreEqual (false, List.IsSelectionRequired);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -184,13 +184,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//202.6 Maximum the picture
 			var slider = window.Find<Slider> ();
-			slider.SetValue(1.0);
-			procedureLogger.ExpectedResult ("The picture is maximumed");
+			slider.SetValue(slider.Maximum);
+			procedureLogger.ExpectedResult ("The picture is maximumed.");
 			Assert.AreEqual (1.0, slider.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.7 Minimize the picture
-			slider.SetValue(0);
+			slider.SetValue(slider.Minimum);
 			procedureLogger.ExpectedResult ("The picture is minimized.");
 			Assert.AreEqual (0, slider.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -198,7 +198,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//202.8 Make the picture a small change enlarge
 			slider.SetValue(slider.Minimum + slider.SmallChange);
 			procedureLogger.ExpectedResult ("Make the picture a small change large.");
-			Assert.AreEqual(slider.SmallChange ,slider.Value);
+			Assert.AreEqual(slider.SmallChange - slider.Minimum,slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.9 Make the picture a big change reduce
@@ -208,15 +208,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.10 Give a comment "the last one" to the picture
-			var edit = window.Find<Edit> ();
+			var edit = window.Find<Edit> ("Comment:");
 			edit.SetValue("the last one");
-			procedureLogger.ExpectedResult ("The \"the last one\" is inputed into the edit");
+			procedureLogger.ExpectedResult ("The \"the last one\" is inputed into the edit.");
 			Assert.AreEqual ("the last one", edit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.11 Close the F-Spot window
 			window.Close();
-			procedureLogger.ExpectedResult ("The F-Spot window is closed");
+			procedureLogger.ExpectedResult ("The F-Spot window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
@@ -278,7 +278,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//203.8 Close the "Adjust Time" window
 			adjustTimeDialog.Close ();
-			procedureLogger.ExpectedResult ("The \"Adjust Time\" window is closed");
+			procedureLogger.ExpectedResult ("The \"Adjust Time\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
@@ -335,7 +335,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//204.7 Click "Close" Button
 			configureDialog.Close ();
-			procedureLogger.ExpectedResult ("The \"Configure Screensaver\" window is closed");
+			procedureLogger.ExpectedResult ("The \"Configure Screensaver\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
@@ -389,25 +389,25 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//205.6 Set the Spin Button's value to its Maximum
 			spinButton.SetValue (100);
-			procedureLogger.ExpectedResult ("The Spin Button's value is set to 100");
+			procedureLogger.ExpectedResult ("The Spin Button's value is set to 100.");
 			Assert.AreEqual (100, spinButton.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.7 Set the Spin Button's value to its Minimum
 			spinButton.SetValue (0);
-			procedureLogger.ExpectedResult ("The Spin Button's value is set to 0");
+			procedureLogger.ExpectedResult ("The Spin Button's value is set to 0.");
 			Assert.AreEqual (0, spinButton.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.10 Set the Spin Button's value to "50.0"
 			spinButton.SetValue (50);
-			procedureLogger.ExpectedResult ("The Spin Button's value is set to 50");
+			procedureLogger.ExpectedResult ("The Spin Button's value is set to 50.");
 			Assert.AreEqual (50, spinButton.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.11 Close the "Print" dialog
 			printDialog.Close ();
-			procedureLogger.ExpectedResult ("The \"Print\" window is closed");
+			procedureLogger.ExpectedResult ("The \"Print\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 

@@ -95,7 +95,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//208.2 Maximize the Banshee window
-			procedureLogger.Action ("Check the if bansheeWindow can be maximized.");
+			procedureLogger.Action ("Check the bansheeWindow can be maximized.");
 			procedureLogger.ExpectedResult ("The bansheeWindow can be maximized.");
 			Assert.AreEqual (true, bansheeWindow.CanMaximize);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -156,7 +156,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//209.1 Click "Media" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<Menu> ("Media").Click ();
+			menuBar.Find<MenuItem> ("Media").Click ();
 			procedureLogger.ExpectedResult ("The \"Media\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -166,7 +166,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"Import Playlist\" dialog shows.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.3 Input "/usr/lib" in the "Location" text
+			//209.3 Input "/usr" in the "Location" text
 			var importPlaylistDialog = window.Find<Window> ("Import Playlist");
 			var locationEdit = importPlaylistDialog.Find<Edit> ("Location");
 			locationEdit.SetValue ("/usr");
