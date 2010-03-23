@@ -486,19 +486,18 @@ class PageBuilder(object):
                     self.make_directory('smoke')
                 except OSError:
                     output("ERROR: Could not store output for %s" % control)
-                f = open('smoke/%s.xml' % control, 'w')
+                f = open('%s/smoke/%s.xml' % (Settings.component, control), 'w')
             else:
-                self.make_directory('%s/smoke' % Settings.output_path)
-                assert os.path.exists('%s/smoke' % Settings.output_path)
+                self.make_directory('%s/%s/smoke' % (Settings.output_path, Settings.component))
+                assert os.path.exists('%s/%s/smoke' % (Settings.output_path, Settings.component))
                 try:
-                    f = open('%s/smoke/%s.xml' % (Settings.output_path, control), 'w')
+                    f = open('%s/%s/smoke/%s.xml' % (Settings.output_path, Settings.component, control), 'w')
                 except IOError:
-                    output('WARN: Failed to save output to %s/smoke/%s.xml, saving to current working directory instead.' % (Settings.output_path, control))
+                    output('WARN: Failed to save output to %s/%s/smoke/%s.xml, saving to current working directory instead.' % (Settings.output_path, Settings.component, control))
                     try:
                         self.make_directory('smoke')
                     except OSError:
-                        output("ERROR: Could not store output for %s" % \
-                                                                       control)
+                        output("ERROR: Could not store output for %s" % control)
             if f is not None:
                 f.write('<?xml version="1.0" encoding="UTF-8"?>')
                 f.write('<?xml-stylesheet type="text/xsl" href="../smoke.xsl"?>')

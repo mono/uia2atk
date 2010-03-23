@@ -1,3 +1,9 @@
+2010-03-23  Neville Gao  <nevillegao@gmail.com>
+
+	* tools/dashboard/qamon.py: Deleted trailing whitespace.
+	* tools/dashboard/dashboard.py: Modified smoke test to write log in
+	component dir.
+
 2010-03-22  Mario Carrion  <mcarrion@novell.com>
 
 	* samples/moonlight/Calendar/Makefile:

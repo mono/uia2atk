@@ -54,7 +54,7 @@ class Settings(object):
         except IndexError, e:
             output("Error: directory to monitor argument is required")
             self.help()
-            abort(1) 
+            abort(1)
 
     def help(self):
         output("Usage: qamon.py <directory>")
