@@ -1,3 +1,12 @@
+2010-03-24  Ray Wang  <rawang@novell.com>
+
+	* Tests/Tests.csproj: Add Gtk tests into project.
+	* Tests/GTK: 
+	* Tests/GTK/FSpot.cs:
+	* Tests/GTK/Banshee.cs:
+	* Tests/Gtk/Fspot.cs:
+	Rename directory from GTK to Gtk.
+
 2010-03-23  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs:  
