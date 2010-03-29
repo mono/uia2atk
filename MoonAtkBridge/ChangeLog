@@ -1,3 +1,7 @@
+2010-03-29  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: DataGridTests added.
+
 2010-03-29  Stephen Shaw <sshaw@decriptor.com>
 
 	* patches/moon_trunk: Added directory for patches that apply against

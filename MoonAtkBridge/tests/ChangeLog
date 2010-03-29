@@ -1,3 +1,14 @@
+2010-03-29  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/DataGridTest/App.xaml:
+	* assets/DataGridTest/App.xaml.cs:
+	* assets/DataGridTest/Makefile.am:
+	* assets/DataGridTest/Page.xaml:
+	* assets/DataGridTest/Page.xaml.cs:
+	* test_datagrid.py:
+	* test_datagridcolumn.py:
+	* test_datagriditem.py: Testing DataGrid control.
+
 2010-03-22  Mario Carrion  <mcarrion@novell.com>
 
 	* assets/Makefile.am:

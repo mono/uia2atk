@@ -156,6 +156,7 @@ tests/assets/CalendarTest/Makefile
 tests/assets/CheckBoxTest/Makefile
 tests/assets/ComboBoxTest/Makefile
 tests/assets/ControlTypeTest/Makefile
+tests/assets/DataGridTest/Makefile
 tests/assets/DatePickerTest/Makefile
 tests/assets/ExpandCollapseEventsTest/Makefile
 tests/assets/FakeBridgeTest/Makefile
