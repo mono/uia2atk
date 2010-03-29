@@ -35,16 +35,15 @@ namespace UiaAtkBridge
 	internal class EditableTextImplementorHelper
 	{
 		
-		public EditableTextImplementorHelper (Adapter adapter, Atk.TextImplementor textImplementor)
+		public EditableTextImplementorHelper (Adapter adapter, Atk.TextImplementor textImplementor, ITextImplementor textExpert)
 		{
 			this.adapter = adapter;
-			this.textImplementor = textImplementor;
 
 			valueProvider 
 				= adapter.Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id)
 					as IValueProvider;
 
-			textExpert = TextImplementorFactory.GetImplementor (adapter, adapter.Provider);
+			this.textExpert = textExpert;
 
 			if (valueProvider != null)
 				editable = !valueProvider.IsReadOnly;
@@ -251,24 +250,24 @@ namespace UiaAtkBridge
 				                                   false))
 					return true;
 
-				Atk.TextAdapter textAdapter = new Atk.TextAdapter (textImplementor);
 				string newText = textExpert.Text;
 
 				// First delete all text, then insert the new text
-				textAdapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 
-				                             0, 
-				                             oldText.Length);
+				textExpert.EmitTextChanged (Atk.TextChangedDetail.Delete, 
+				                            0, 
+				                            oldText.Length,
+				                            oldText);
 
-				textAdapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 
-				                             0,
-				                             newText == null ? 0 : newText.Length);
+				textExpert.EmitTextChanged (Atk.TextChangedDetail.Insert, 
+				                            0,
+				                            newText == null ? 0 : newText.Length);
 
 				if (caretProvider == null)
 					caretOffset = textExpert.Length;
 
 				oldText = newText;
 
-				GLib.Signal.Emit (adapter, "visible-data-changed");
+				adapter.EmitVisibleDataChanged ();
 
 				return true;
 			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
@@ -293,7 +292,7 @@ namespace UiaAtkBridge
 
 				return true;
 			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
-				GLib.Signal.Emit (adapter, "text_selection_changed");
+				adapter.EmitSignal ("text_selection_changed");
 				return true;
 			} 
 			
@@ -320,7 +319,6 @@ namespace UiaAtkBridge
 		private bool editable;
 		private string oldText;
 		private ITextImplementor textExpert;		
-		private Atk.TextImplementor textImplementor;
 		private IValueProvider valueProvider;
 		private IInsertDeleteTextProvider insertDeleteProvider;
 

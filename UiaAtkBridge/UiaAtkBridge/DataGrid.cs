@@ -53,7 +53,7 @@ namespace UiaAtkBridge
 					Atk.Focus.TrackerNotify (this);
 			}
 			if (itemFocused)
-				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+				EmitSignal ("active-descendant-changed", item.Handle);
 			hasFocus = tableFocused;
 		}
 

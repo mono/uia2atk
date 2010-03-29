@@ -98,7 +98,7 @@ namespace UiaAtkBridge
 			}
 			//we may want that a child has 2 parents
 			if (child.Parent == null)
-				child.Parent = this;
+				SetParent (child, this);
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 			Adapter adapter = child as Adapter;
 			if (adapter != null)
@@ -169,6 +169,15 @@ namespace UiaAtkBridge
 				RequestChildren ();
 			}
 		}
+
+		protected new void EmitChildrenChanged (ChildrenChangedDetail detail, uint child_index, Atk.Object child)
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+			base.EmitChildrenChanged (detail, child_index, child);
+				return false;
+			}));
+		}
+			
 #endregion
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)

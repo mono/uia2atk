@@ -287,12 +287,10 @@ namespace UiaAtkBridge
 			if (textExpert.HandleSimpleChange (ref oldText, ref caretOffset))
 				return;
 
-			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
 			// First delete all text, then insert the new text
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
+			textExpert.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length, oldText);
 
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+			textExpert.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                 newText == null ? 0 : newText.Length);
 			oldText = newText;
 		}

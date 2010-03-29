@@ -147,11 +147,10 @@ namespace UiaAtkBridge
 				if (changed_selected_child) {
 					Atk.SelectionImplementor selImplementor = this as Atk.SelectionImplementor;
 					if (selImplementor != null) {
-						var sel_adapter = new Atk.SelectionAdapter (selImplementor);
 						if (any_child_was_selected)
 							//2 times: because we deselect a child and select another one
-							sel_adapter.EmitSelectionChanged ();
-						sel_adapter.EmitSelectionChanged ();
+							EmitSelectionChanged ();
+						EmitSelectionChanged ();
 					}
 				}
 			}

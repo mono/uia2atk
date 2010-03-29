@@ -1,3 +1,13 @@
+2010-03-29  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs, AutomationBridge.cs, BaseTextImplementor.cs,
+	Button.cs, ComboBox.cs, DataGrid.cs, EditableTextImplementorHelper.cs,
+	Hyperlink.cs, ITextImplementor.cs, List.cs, ListItem.cs, Menu.cs,
+	Monitor.cs, ParentAdapter.cs, Slider.cs, Spinner.cs, Tab.cs, Table.cs,
+	TextBoxEntryView.cs, TextContainer.cs, TextLabel.cs, Tree.cs,
+	TreeItem.cs, Window.cs:
+	Bug 515507: Move signal emissions to the GLib thread.
+
 2010-03-16  Mike Gorse  <mgorse@novell.com>
 
 	* UiaAtkBridge.dll.in, Monitor.cs: Use glue wrappers to call

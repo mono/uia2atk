@@ -50,7 +50,8 @@ FILES =  \
 	AtSpiEvent.cs \
 	BasicWidgetType.cs \
 	EventCollection.cs \
-	EventMonitor.cs
+	EventMonitor.cs \
+	TestBase.cs
 
 DATA_FILES = 
 

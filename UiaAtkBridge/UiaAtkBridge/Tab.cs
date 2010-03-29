@@ -61,7 +61,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == SelectionPatternIdentifiers.SelectionProperty) {
-				GLib.Signal.Emit (this, "selection_changed");
+				EmitSignal ("selection_changed");
 				EmitVisibleDataChanged ();
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);

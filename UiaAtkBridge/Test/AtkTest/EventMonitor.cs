@@ -38,6 +38,7 @@ namespace UiaAtkBridgeTest
 		static object locking = new object ();
 		
 		public static void Start () {
+			TestBase.GlibSync ();
 			lock (locking) {
 				if (singleton == null)
 					singleton = new EventMonitor ();
@@ -76,6 +77,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		public static EventCollection Pause () {
+			TestBase.GlibSync ();
 			lock (locking) {
 				if (singleton == null)
 					throw new Exception ("EventMonitor has not been started yet");

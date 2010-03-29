@@ -51,8 +51,6 @@ namespace UiaAtkBridge
 			else
 				Role = Atk.Role.Text;
 
-			editableTextExpert = new EditableTextImplementorHelper (this, this);
-
 			if (provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id) == null
 			    && provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) == null)
 				throw new ArgumentException ("Provider for TextBox should either implement IValue or IText");
@@ -61,6 +59,8 @@ namespace UiaAtkBridge
 			if ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 			    == ControlType.Document.Id)
 				multiLine = true;
+
+			editableTextExpert = new EditableTextImplementorHelper (this, this, textExpert);
 		}
 
 		protected bool IsTableCell {

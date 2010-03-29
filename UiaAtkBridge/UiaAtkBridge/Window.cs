@@ -116,19 +116,19 @@ namespace UiaAtkBridge
 				WindowVisualState newValue = (WindowVisualState) e.NewValue;
 				
 				if (newValue == WindowVisualState.Maximized)
-					GLib.Signal.Emit (this, "maximize");
+					EmitSignal ("maximize");
 				else if (newValue == WindowVisualState.Minimized)
-					GLib.Signal.Emit (this, "minimize");
+					EmitSignal ("minimize");
 				else // Back to Normal, so is Restored
-					GLib.Signal.Emit (this, "restore");
+					EmitSignal ("restore");
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				Rect oldValue = (Rect) e.OldValue;
 				Rect newValue = (Rect) e.NewValue;
 				
 				if (oldValue.X != newValue.X || oldValue.Y != newValue.Y)
-					GLib.Signal.Emit (this, "move");
+					EmitSignal ("move");
 				if (oldValue.Width != newValue.Width || oldValue.Height != newValue.Height)
-					GLib.Signal.Emit (this, "resize");
+					EmitSignal ("resize");
 
 				base.RaiseAutomationPropertyChangedEvent (e);
 			} else
@@ -203,7 +203,7 @@ namespace UiaAtkBridge
 						continue;
 					}
 					RemoveChild (obj, false);
-					obj.Parent = child;
+					SetParent (obj, child);
 					splitter.AddOneChild (obj);
 					count--;
 				}
@@ -221,7 +221,7 @@ namespace UiaAtkBridge
 				while (count > 0) {
 					Atk.Object obj = parentAdapter.RefAccessibleChild (0);
 					parentAdapter.RemoveChild (obj, false);
-					obj.Parent = this;
+					SetParent (obj, this);
 					AddOneChild (obj);
 					count--;
 				}
@@ -235,7 +235,7 @@ namespace UiaAtkBridge
 				return;
 			this.active = active;
 			if (active)
-				GLib.Signal.Emit (this, "activate");
+				EmitSignal ("activate");
 			needStateChange = true;
 		}
 		

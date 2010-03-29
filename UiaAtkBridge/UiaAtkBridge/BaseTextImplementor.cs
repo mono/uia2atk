@@ -303,7 +303,9 @@ namespace UiaAtkBridge
 
 		public string GetText (int startOffset, int endOffset)
 		{
-			string text = (deleteHack != null? deleteHack: Text);
+			if (cachedText != null && cachedTextStart == startOffset && cachedTextEnd == endOffset)
+				return cachedText;
+			string text = Text;
 			if ((endOffset == -1) || (endOffset > text.Length))
 				endOffset = text.Length;
 			if (endOffset < startOffset)
@@ -377,11 +379,10 @@ namespace UiaAtkBridge
 			int offset;
 			if (newLength > oldLength) {
 				if (IsAddition (text, oldText, out offset)) {
-					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
-					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
+					EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
 					if (updateCaret) {
 						caretOffset = offset + (newLength - oldLength);
-						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+						resource.EmitSignal ("text_caret_moved", caretOffset);
 					}
 					oldText = text;
 					return true;
@@ -389,15 +390,12 @@ namespace UiaAtkBridge
 			}
 			else if (oldLength > newLength) {
 				if (IsAddition (oldText, text, out offset)) {
-					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					// Atk-bridge expects the text not to
 					// have been deleted yet
-					deleteHack = oldText;
-					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
-					deleteHack = null;
+					EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength, oldText);
 					if (updateCaret) {
 						caretOffset = offset;
-						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+						resource.EmitSignal ("text_caret_moved", caretOffset);
 					}
 					oldText = text;
 					return true;
@@ -435,12 +433,32 @@ namespace UiaAtkBridge
 				int newCaretOffset = caretProvider.CaretOffset;
 				if (newCaretOffset != caretOffset) {
 					caretOffset = newCaretOffset;
-					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+					resource.EmitSignal ("text_caret_moved", caretOffset);
 				}
 				return true;
 			}
 				
 			return false;
+		}
+
+		public void EmitTextChanged (Atk.TextChangedDetail detail, int position, int length)
+		{
+			EmitTextChanged (detail, position, length, null);
+		}
+
+		public void EmitTextChanged (Atk.TextChangedDetail detail, int position, int length, string curText)
+		{
+			if (curText == null)
+				curText = Text;
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				cachedText = curText.Substring (position, length);
+				cachedTextStart = position;
+				cachedTextEnd = position + length;
+				GLib.Signal.Emit (resource, "text_changed::" + detail.ToString ().ToLower (),
+					position, length);
+				cachedText = null;
+				return false;
+			}));
 		}
 #endregion
 
@@ -633,7 +651,9 @@ namespace UiaAtkBridge
 
 		private ICaretProvider caretProvider;
 		private int caretOffset;
-		private string deleteHack = null;
+		private string cachedText = null;
+		private int cachedTextStart = 0;
+		private int cachedTextEnd = 0;
 #endregion
 	}
 }

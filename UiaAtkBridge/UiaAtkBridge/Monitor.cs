@@ -124,9 +124,7 @@ namespace UiaAtkBridge
 				return;
 			}
 
-			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
-			glibThread.IsBackground = true;
-			glibThread.Start ();
+			CheckMainLoop ();
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, null);
 				LaunchAtkBridge ();
@@ -139,6 +137,16 @@ namespace UiaAtkBridge
 			Environment.SetEnvironmentVariable (GTK_MODULES_ENVVAR_NAME, gtk_modules_envvar_content);
 		}
 		
+		public void CheckMainLoop ()
+		{
+			if (mainLoop != null && mainLoop.IsRunning)
+				return;
+
+			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
+			glibThread.IsBackground = true;
+			glibThread.Start ();
+		}
+
 		private void GLibMainLoopThread ()
 		{
 			mainLoop = new GLib.MainLoop ();
@@ -159,7 +167,10 @@ namespace UiaAtkBridge
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;
-				mainLoop.Quit ();
+				// Not going to quit--causes problems with
+				// ORBit if we re-create a window (ie, the
+				// dialog bridge tests).  The thread is
+				// backgrounded, so should die with the app.
 			});
 			sync.WaitOne ();
 			sync.Close ();

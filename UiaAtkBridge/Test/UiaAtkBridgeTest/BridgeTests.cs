@@ -296,6 +296,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (accessible, "Adapter should not be null");
 			// 2 groups
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			GlibSync ();
 			Atk.Object group1 = FindObjectByName (accessible, groupName);
 			Assert.IsNotNull (group1, "FindObjectByName (" + groupName + ")");
 			Assert.AreEqual (Atk.Role.LayeredPane, group1.Role, "Group1 role");
@@ -373,6 +374,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("item2", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
 			row2 = (atkTable.NRows == 4? 2: 1);
 			col2 = 0;
+			GlibSync ();
 			Assert.AreEqual ("item3", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
 			row2 = (atkTable.NRows == 4? 3: 1);
 			col2 = (atkTable.NRows == 4? 0: 1);
@@ -525,6 +527,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren");
 
 			Atk.Object cell = accessible.RefAccessibleChild (2);
+			GlibSync ();
 			Assert.AreEqual (Atk.Role.TableCell, cell.Role, "cell Role");
 
 			// Calling Focus on the DataGrid appears not to work.
@@ -639,6 +642,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren #1");
 			
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
+			GlibSync ();
 			Assert.AreEqual (Atk.Role.Label, child1.Role, "Child role #1");
 			InterfaceText (child1, "first item");
 			
@@ -809,7 +813,9 @@ namespace UiaAtkBridgeTest
 				Atk.Object accessible = GetAdapterForWidget (b);
 				Atk.Action atkAction
 					= CastToAtkInterface <Atk.Action> (accessible);
-				atkAction.DoAction (0);
+				RunInGuiThread (delegate () {
+					atkAction.DoAction (0);
+				});
 
 				States (accessible,
 					Atk.StateType.Focused,
@@ -893,6 +899,7 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			Assert.AreEqual (panel.NAccessibleChildren, 0, "StatusBar panel should not have children");
+			GlibSync ();
 			Assert.AreEqual (panelText, panel.Name, "Panel name should match the text");
 			InterfaceText (panel, panelText);
 
@@ -1181,6 +1188,7 @@ namespace UiaAtkBridgeTest
 			lab.IsLink = true;
 			toolStrip.Items.Add (lab);
 			Atk.Object accessible = GetAdapterForWidget (lab);
+			GlibSync ();
 			Assert.AreEqual (Atk.Role.Label, accessible.Role, "A ToolStripLabel with IsLink==True should not have an unknown role");
 			toolStrip.Items.Remove (lab);
 		}
@@ -1462,6 +1470,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (accessible.RefAccessibleChild (1).NAccessibleChildren > 0);
 
 			//BNC#479113
+			GlibSync ();
 			bool a11yFound = false;
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				var table = accessible.RefAccessibleChild (i).RefAccessibleChild (0);

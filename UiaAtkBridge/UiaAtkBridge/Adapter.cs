@@ -53,6 +53,112 @@ namespace UiaAtkBridge
 			NotifyStateChange (state, RefStateSet ().ContainsState (state));
 		}
 		
+		internal new void NotifyStateChange (Atk.StateType state, bool val)
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				base.NotifyStateChange (state, val);
+				return false;
+			}));
+		}
+
+		internal void EmitSignal (string name)
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				GLib.Signal.Emit (this, name);
+				return false;
+			}));
+		}
+
+		internal void EmitSignal (string name, object o)
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				GLib.Signal.Emit (this, name, o);
+				return false;
+			}));
+		}
+
+		internal void EmitSignal (string name, object o1, object o2)
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				GLib.Signal.Emit (this, name, o1, o2);
+				return false;
+			}));
+		}
+
+		internal void EmitSelectionChanged ()
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				GLib.Signal.Emit (this, "selection_changed");
+				return false;
+			}));
+		}
+
+		internal new void EmitVisibleDataChanged ()
+		{
+			GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+				base.EmitVisibleDataChanged ();
+				return false;
+			}));
+		}
+
+		// Unfortunately, we can't just override atk's set name/parent/
+		// role, since atk calls g_object_notify, which must be called
+		// in the glib thread.
+		public new Atk.Object Parent {
+			get {
+				return parent;
+			}
+			set {
+				parent = value;
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+					base.Parent = value;
+					return false;
+				}));
+			}
+		}
+
+		protected static void SetParent (Atk.Object child, Atk.Object newParent)
+		{
+			if (child is Adapter)
+				((Adapter)child).Parent = newParent;
+			else
+				child.Parent = newParent;
+		}
+
+		protected static Atk.Object GetParent (Atk.Object child)
+		{
+			if (child is Adapter)
+				return ((Adapter)child).Parent;
+			else
+				return child.Parent;
+		}
+
+		public new string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+					base.Name = value;
+					return false;
+				}));
+			}
+		}
+
+		public new Atk.Role Role {
+			get {
+				return role;
+			}
+			set {
+				role = value;
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+					base.Role = value;
+					return false;
+				}));
+			}
+		}
+
 		protected void NotifyFocused (bool focused)
 		{
 			NotifyStateChange (Atk.StateType.Focused, focused);
@@ -76,8 +182,12 @@ namespace UiaAtkBridge
 				}
 			}
 
-			if (focused)
-				Atk.Focus.TrackerNotify (this);
+			if (focused) {
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+					Atk.Focus.TrackerNotify (this);
+					return false;
+				}));
+			}
 			if (focusWindow != null)
 				focusWindow.SendActiveStateChange ();
 		}
@@ -104,7 +214,7 @@ namespace UiaAtkBridge
 					Log.Error ("Parent of an object should not be null");
 					return;
 				}
-				parent = parent.Parent;
+				parent = GetParent (parent);
 			}
 			TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)parent);
 		}
@@ -151,8 +261,10 @@ namespace UiaAtkBridge
 			if (parent == Parent)
 				Parent = null;
 
-			if (terminate)
+			if (terminate && !defunct) {
 				defunct = true;
+				NotifyStateChange (Atk.StateType.Defunct, true);
+			}
 		}
 		
 		internal virtual void PostInit ()
@@ -310,6 +422,9 @@ namespace UiaAtkBridge
 #endregion
 
 #region Private Fields
+		private Atk.Object parent;
+		private Atk.Role role;
+		private string name;
 		private bool defunct = false;
 #endregion
 
@@ -363,7 +478,7 @@ namespace UiaAtkBridge
 			atkRect.Y = (int)rect.Y;
 			atkRect.Width = (int)rect.Width;
 			atkRect.Height = (int)rect.Height;
-			GLib.Signal.Emit (this, "bounds_changed", atkRect);
+			EmitSignal ("bounds_changed", atkRect);
 		}
 
 		internal virtual Window PrivateWindow {

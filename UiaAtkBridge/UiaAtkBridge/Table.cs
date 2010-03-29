@@ -43,7 +43,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == GridPatternIdentifiers.ColumnReorderedEvent)
-				GLib.Signal.Emit (this, "column_reordered");
+				EmitSignal ("column_reordered");
 			else
 				base.RaiseAutomationEvent (eventId, e);
 			// TODO
@@ -222,8 +222,8 @@ namespace UiaAtkBridge
 
 		internal void EmitRowReorderingSignal ()
 		{
-			GLib.Signal.Emit (this, "row-reordered");
-			GLib.Signal.Emit (this, "visible-data-changed");
+			EmitSignal ("row-reordered");
+			EmitVisibleDataChanged ();
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

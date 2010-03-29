@@ -54,7 +54,7 @@ namespace UiaAtkBridge
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			imageExpert = new ImageImplementorHelper (this);
 			actionExpert = new ActionImplementorHelper ();
-			editableTextExpert = new EditableTextImplementorHelper (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this, textExpert);
 
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
@@ -182,12 +182,12 @@ namespace UiaAtkBridge
 				if (list != null)
 					list.NotifyItemSelected (this);
 				else
-				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+				NotifyStateChange (Atk.StateType.Selected, true);
 			}
 			else if (eventId == SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
-				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+				NotifyStateChange (Atk.StateType.Selected, true);
 			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
-				NotifyStateChange ((ulong) Atk.StateType.Selected, false);
+				NotifyStateChange (Atk.StateType.Selected, false);
 		}
 		
 		public int CaretOffset {

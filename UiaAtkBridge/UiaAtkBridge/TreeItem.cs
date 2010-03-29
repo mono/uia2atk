@@ -73,7 +73,7 @@ namespace UiaAtkBridge
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 
 			imageExpert = new ImageImplementorHelper (this);
-			editableTextExpert = new EditableTextImplementorHelper (this, this);
+			editableTextExpert = new EditableTextImplementorHelper (this, this, textExpert);
 		}
 		
 		protected IToggleProvider ToggleProvider {
@@ -217,12 +217,12 @@ namespace UiaAtkBridge
 				if (list != null)
 					list.NotifyItemSelected (this);
 				else
-				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+				NotifyStateChange (Atk.StateType.Selected, true);
 			}
 			else if (eventId == SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
-				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+				NotifyStateChange (Atk.StateType.Selected, true);
 			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent) {
-				NotifyStateChange ((ulong) Atk.StateType.Selected, false);
+				NotifyStateChange (Atk.StateType.Selected, false);
 				Tree list = Parent as Tree;
 				if (list != null)
 					list.NotifyItemSelectionRemoved (this);

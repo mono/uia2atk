@@ -734,8 +734,8 @@ namespace UiaAtkBridge
 			} else if (controlTypeId == ControlType.Window.Id) {
 				// We should do the following, but it would
 				// reintroduce bug 427857.
-				//GLib.Signal.Emit (adapter, "deactivate");
-				//GLib.Signal.Emit (adapter, "destroy");
+				//Adapter.EmitSignal ("deactivate");
+				//Adapter.EmitSignal ("destroy");
 				TopLevelRootItem.Instance.RemoveChild (adapter);
 				windowProviders--;
 				if (windowProviders == 0)
@@ -850,6 +850,9 @@ namespace UiaAtkBridge
 
 		private static void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
+			// make sure we have a main loop.  We may not, ie, if
+			// a form has already been created and then destroyed.
+			Monitor.Instance.CheckMainLoop ();
 			var newWindow = CreateAdapter<Window> (provider);
 
 			if (newWindow == null)
@@ -860,7 +863,7 @@ namespace UiaAtkBridge
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = provider;
 
-			GLib.Signal.Emit (newWindow, "create");
+			newWindow.EmitSignal ("create");
 			
 			windowProviders++;
 		}

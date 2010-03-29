@@ -1,3 +1,10 @@
+2010-03-29  Mike Gorse  <mgorse@novell.com>
+
+	* TestBase.cs, AtkTester.cs, EventMonitor.cs, Makefile.am:
+	Move some AtkTester functionality to TestBase to potentially help
+	with dialog tests.
+	Add GlibSync.
+
 2010-03-11  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Do not assume that a slider's text will be

@@ -167,7 +167,7 @@ namespace UiaAtkBridge
 				name = String.Empty;
 			
 			Name = name;
-			GLib.Signal.Emit (this, "selection-changed");
+			EmitSelectionChanged ();
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

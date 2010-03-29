@@ -214,7 +214,7 @@ namespace UiaAtkBridge
 				// it is excessively verbose.
 				if (!CanSelectMultiple)
 					NotifyItemSelected (item);
-				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+				EmitSignal ("active-descendant-changed", item.Handle);
 			}
 			hasFocus = listFocused;
 		}
@@ -422,7 +422,7 @@ namespace UiaAtkBridge
 				if (IsListItem (child))
 					rowCount++;
 			if (rowCount > 0) {
-				GLib.Signal.Emit (this, (expanded? "row-inserted": "row-deleted"), row + 1, rowCount);
+				EmitSignal ((expanded? "row-inserted": "row-deleted"), row + 1, rowCount);
 				EmitVisibleDataChanged ();
 			}
 		}

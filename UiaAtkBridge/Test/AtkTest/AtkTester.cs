@@ -33,7 +33,7 @@ using NUnit.Framework;
 namespace UiaAtkBridgeTest
 {
 	
-	public abstract class AtkTester {
+	public abstract class AtkTester : TestBase {
 
 		public abstract Atk.Object GetAccessible (BasicWidgetType type);
 		
@@ -350,6 +350,7 @@ namespace UiaAtkBridgeTest
 				               "menu child of combobox should be visible and showing NOW!");
 			}
 
+			GlibSync ();
 			if (type == BasicWidgetType.ComboBoxItem)
 				Assert.AreEqual (accessible.Name, accessible.Parent.Parent.Name, "action on combobox item should yield selection");
 			
@@ -571,6 +572,7 @@ namespace UiaAtkBridgeTest
 				         type == BasicWidgetType.ListBox ||
 				         type == BasicWidgetType.CheckedListBox)
 					accName = null;
+				GlibSync ();
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i + ", we got: " + accessible.Name);
 
 				Atk.Object refSelObj = implementor.RefSelection (0);
@@ -961,6 +963,7 @@ namespace UiaAtkBridgeTest
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
+			GlibSync ();
 			Atk.Role role = GetRole (type);
 			Assert.AreEqual (role, accessible.Role, "Atk.Role, we got " + accessible.Role);
 		}
@@ -1930,39 +1933,6 @@ namespace UiaAtkBridgeTest
 			                   " contains the following states: " + res);
 		}
 			
-		public static void States (Atk.Object accessible, params Atk.StateType [] expected)
-		{
-			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);
-			List <Atk.StateType> missingStates = new List <Atk.StateType> ();
-			List <Atk.StateType> superfluousStates = new List <Atk.StateType> ();
-			
-			Atk.StateSet stateSet = accessible.RefStateSet ();
-			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType))) {
-				if (expectedStates.Contains (state) && 
-				    (!(stateSet.ContainsState (state))))
-					missingStates.Add (state);
-				else if ((!expectedStates.Contains (state)) && 
-					     (stateSet.ContainsState (state)))
-					superfluousStates.Add (state);
-			}
-
-			string missingStatesMsg = string.Empty;
-			string superfluousStatesMsg = string.Empty;
-
-			if (missingStates.Count != 0) {
-				missingStatesMsg = "Missing states: ";
-				foreach (Atk.StateType state in missingStates)
-					missingStatesMsg += state.ToString () + ",";
-			}
-			if (superfluousStates.Count != 0) {
-				superfluousStatesMsg = "Superfluous states: ";
-				foreach (Atk.StateType state in superfluousStates)
-					superfluousStatesMsg += state.ToString () + ",";
-			}
-			Assert.IsTrue ((missingStates.Count == 0) && (superfluousStates.Count == 0),
-				missingStatesMsg + " .. " + superfluousStatesMsg);
-		}
-
 		protected void Relations (Atk.Object accessible, BasicWidgetType type)
 		{
 			if (type != BasicWidgetType.RadioButton) {
@@ -2179,7 +2149,9 @@ namespace UiaAtkBridgeTest
 
 			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			EventMonitor.Start ();
-			atkComponent.GrabFocus ();
+			RunInGuiThread (delegate () {
+				atkComponent.GrabFocus ();
+			});
 			EventCollection events = EventMonitor.Pause ();
 			int expectedCount = (transient ? 1 : 2);
 			string evType = (transient? "object:active-descendant-changed": "object:state-changed:focused");
@@ -2221,50 +2193,6 @@ namespace UiaAtkBridgeTest
 			else
 				gv.Val = n;
 			return value.SetCurrentValue (gv);
-		}
-
-		private EventCollection events = null;
-
-		protected void StartEventMonitor ()
-		{
-			events = null;
-			EventMonitor.Start ();
-		}
-
-		protected void ExpectEvents (int count, Atk.Role role, string evType)
-		{
-			if (events == null)
-				events = EventMonitor.Pause ();
-			EventCollection evs = events.FindByRole (role).FindByType (evType);
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
-		}
-
-		protected void ExpectEvents (int count, Atk.Role role, string evType, int detail1)
-		{
-			if (events == null)
-				events = EventMonitor.Pause ();
-			EventCollection evs = events.FindByRole (role).FindByType (evType).FindWithDetail1 (detail1.ToString ());
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
-		}
-
-		protected void ExpectEvents (int count, Atk.Role role, string evType, string name)
-		{
-			if (events == null)
-				events = EventMonitor.Pause ();
-			EventCollection evs = events.FindByRole (role).FindByType (evType).FindByName (name);
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
-		}
-
-		protected void ExpectEvents (int min, int max, Atk.Role role, string evType)
-		{
-			if (events == null)
-				events = EventMonitor.Pause ();
-			EventCollection evs = events.FindByRole (role).FindByType (evType);
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.IsTrue (evs.Count >= min && evs.Count <= max, "Expected " + min +"-" + max +" " + evType + " events but got " + evs.Count +": " + eventsInXml);
 		}
 
 		protected bool DoActionByName (Atk.Object accessible, string name)

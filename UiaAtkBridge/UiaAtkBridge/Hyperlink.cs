@@ -100,12 +100,10 @@ namespace UiaAtkBridge
 					return;
 				}
 
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
 				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+				textExpert.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				textExpert.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 
 				// Accessible name and label text are one and

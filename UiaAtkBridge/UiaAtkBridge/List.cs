@@ -189,7 +189,7 @@ AtkObject,
 					Atk.Focus.TrackerNotify (this);
 			}
 			if (itemFocused)
-				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+				EmitSignal ("active-descendant-changed", item.Handle);
 			hasFocus = listFocused;
 		}
 
@@ -294,8 +294,8 @@ AtkObject,
 				throw new ArgumentException ("Provider does not implement IValue");
 			}
 
-			editableTextExpert = new EditableTextImplementorHelper (this, this);
 			text_helper = TextImplementorFactory.GetImplementor (this, provider);
+			editableTextExpert = new EditableTextImplementorHelper (this, this, text_helper);
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

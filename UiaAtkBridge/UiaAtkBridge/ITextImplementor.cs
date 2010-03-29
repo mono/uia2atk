@@ -82,5 +82,7 @@ namespace UiaAtkBridge
 
 		bool RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
 		bool RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
+		void EmitTextChanged (Atk.TextChangedDetail detail, int position, int length);
+		void EmitTextChanged (Atk.TextChangedDetail detail, int position, int length, string curText);
 	}
 }

@@ -116,16 +116,9 @@ namespace UiaAtkBridgeTest
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 		
-		private static void OnError (string message)
-		{
-			Assert.Fail (message);
-		}
-		
 		[TestFixtureSetUp]
 		public virtual void BridgeTesterInit ()
 		{
-			Mono.UIAutomation.Services.Log.ErrorHappened += OnError;
-			
 			InitializeA11y ();
 			
 			form.Show ();
@@ -275,6 +268,7 @@ namespace UiaAtkBridgeTest
 		public override void RunInGuiThread (System.Action d)
 		{
 			d ();
+			GlibSync ();
 		}
 
 		public override Atk.Object GetTopLevelRootItem ()
@@ -691,6 +685,7 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
+			GlibSync ();
 			return accessible;
 		}
 		
@@ -1019,6 +1014,7 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
+			GlibSync ();
 			return accessible;
 		}
 
@@ -1060,6 +1056,7 @@ namespace UiaAtkBridgeTest
 				contextMenu.Show (lab1, 0, 0);
 				widget = contextMenu;
 			}
+			GlibSync ();
 			return GetAdapterForWidget (widget);
 		}
 
@@ -1254,8 +1251,6 @@ namespace UiaAtkBridgeTest
 			//BridgeTearDown ();
 
 			EventMonitor.Stop ();
-			
-			Mono.UIAutomation.Services.Log.ErrorHappened -= OnError;
 		}
 
 		public static void BridgeTearDown ()
