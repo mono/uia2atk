@@ -1,0 +1,110 @@
+Index: plugin/plugin.cpp
+===================================================================
+--- plugin/plugin.cpp	(revision 148917)
++++ plugin/plugin.cpp	(working copy)
+@@ -11,6 +11,11 @@
+  *
+  */
+ 
++#include <mono/metadata/assembly.h>
++#include <mono/metadata/class.h>
++#include <mono/metadata/object.h>
++#define INCLUDED_MONO_HEADERS 1
++
+ #include <config.h>
+ 
+ #include <glib.h>
+@@ -2163,6 +2168,33 @@
+ 	return rootobject;
+ }
+ 
++gpointer
++PluginInstance::GetRootAccessible ()
++{
++	Deployment::SetCurrent (deployment);
++
++	MonoAssembly *system_windows_assembly;
++	
++	system_windows_assembly = mono_assembly_load_with_partial_name (
++		"System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
++		NULL);
++
++	if (!system_windows_assembly)
++		return NULL;
++
++	MonoImage *image;
++	MonoClass *a11y_helper;
++	MonoMethod *get_accessible;
++	MonoObject *atk_obj_ptr;
++
++	image = mono_assembly_get_image (system_windows_assembly);
++	a11y_helper = mono_class_from_name (image, "Mono", "A11yHelper");
++	get_accessible = mono_class_get_method_from_name (a11y_helper, "GetAccessible", 0);
++	atk_obj_ptr = mono_runtime_invoke (get_accessible, NULL, NULL, NULL);
++
++	return *(gpointer*) mono_object_unbox (atk_obj_ptr);
++}
++
+ NPP
+ PluginInstance::GetInstance ()
+ {
+Index: plugin/moz-sdk/npapi.h
+===================================================================
+--- plugin/moz-sdk/npapi.h	(revision 148917)
++++ plugin/moz-sdk/npapi.h	(working copy)
+@@ -370,8 +370,13 @@
+ 
+   NPNVSupportsWindowless = 17,
+ 
+-  NPNVSupportsWindowlessCursors = 18
++  NPNVSupportsWindowlessCursors = 18,
+ 
++  /* Same value in 192src/base/public/nsplugindefs.h:
++   * nsPluginInstanceVariable_NativeAccessible
++   */ 
++  NPNVNativeAccessible = 21
++
+ #ifdef XP_MACOSX
+   /* Used for negotiating drawing models */
+   , NPNVpluginDrawingModel = 1000
+Index: plugin/plugin.h
+===================================================================
+--- plugin/plugin.h	(revision 148917)
++++ plugin/plugin.h	(working copy)
+@@ -116,6 +116,7 @@
+ 	BrowserBridge *GetBridge () { return bridge; }
+ 	
+ 	MoonlightScriptControlObject *GetRootObject ();
++	gpointer GetRootAccessible ();
+ 	NPP GetInstance ();
+ 	NPWindow *GetWindow ();
+ 	/* @GenerateCBinding,GeneratePInvoke */
+Index: plugin/plugin-glue.cpp
+===================================================================
+--- plugin/plugin-glue.cpp	(revision 148917)
++++ plugin/plugin-glue.cpp	(working copy)
+@@ -160,6 +160,7 @@
+ NPP_GetValue (NPP instance, NPPVariable variable, void *result)
+ {
+ 	NPError err = NPERR_NO_ERROR;
++	PluginInstance *plugin;
+ 
+ 	switch (variable) {
+ 	case NPPVpluginNeedsXEmbed:
+@@ -171,11 +172,15 @@
+ 	case NPPVpluginDescriptionString:
+ 		*((char **)result) = (char *) PLUGIN_DESCRIPTION;
+ 		break;
++	case NPNVNativeAccessible:
++		plugin = (PluginInstance *) instance->pdata;
++		*((void**) result) = (void*) plugin->GetRootAccessible ();
++		break;
+ 	default:
+ 		if (instance == NULL)
+ 			return NPERR_INVALID_INSTANCE_ERROR;
+ 		
+-		PluginInstance *plugin = (PluginInstance *) instance->pdata;
++		plugin = (PluginInstance *) instance->pdata;
+ 		err = plugin->GetValue (variable, result);
+ 		break;
+ 	}
