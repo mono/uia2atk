@@ -93,6 +93,14 @@ fi
 # Convert relative path to absolute path
 MOON_PATH=`(cd $MOON_PATH && pwd)`
 
+CURRENT_MOON_VERSION=`(cd $MOON_PATH && cat moon.pc | grep Version | awk -F ' ' '{ print $2 }')`
+if test "x$CURRENT_MOON_VERSION" = "x"; then
+	AC_MSG_ERROR([Moonlight's moon.pc file not found.])
+fi
+
+MOONLIGHT_VERSION="${CURRENT_MOON_VERSION}accessibility"
+AC_SUBST(MOONLIGHT_VERSION)
+
 PKG_CHECK_MODULES(CECIL, cecil)
 
 LINKING_PATH=$MOON_PATH/class/lib/tuner

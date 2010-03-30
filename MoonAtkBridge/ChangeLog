@@ -1,3 +1,9 @@
+2010-03-30  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac:
+	* resources/install.rdf.in: Make the required Moonlight version number
+	dependent on the version of moonlight installed in MOON_PATH.
+
 2010-03-29  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: DataGridTests added.
