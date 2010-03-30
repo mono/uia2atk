@@ -53,6 +53,8 @@ namespace AtspiUiaSource
 		public IElement [] GetSelection ()
 		{
 			int nSelectedChildren = AtspiSelection.NSelectedChildren;
+			if (nSelectedChildren < 0)
+				nSelectedChildren = 0;
 			IElement [] currentSelection = new IElement [nSelectedChildren];
 			Selection selection = AtspiSelection;
 			for (int i = 0; i < nSelectedChildren; i++)

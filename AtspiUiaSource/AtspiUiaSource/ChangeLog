@@ -1,3 +1,7 @@
+2010-03-30  Mike Gorse  <mgorse@novell.com>
+
+	* SelectionSource.cs: Check for NSelectedChildren < 0.
+
 2010-02-24  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationSource.cs: Assume that we will receive a ChildrenChanged
