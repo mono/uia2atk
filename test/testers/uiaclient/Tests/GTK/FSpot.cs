@@ -22,7 +22,7 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//.Felicia Mu <fxmu@novell.com>
+//	Felicia Mu <fxmu@novell.com>
 
 using System;
 using System.Collections.Generic;
@@ -31,10 +31,11 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using Mono.UIAutomation.TestFramework;
 using NUnit.Framework;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.TestFramework;
+
 
 namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 {
@@ -42,24 +43,66 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 	public class FSpot : TestBase
 	{
 		Window window = null;
-		Application app;
+		Application app = null;
 
 		protected override void LaunchSample ()
 		{
-			app = new Application ("f-spot");
-			app.Launch("bash", "f-spot");
+			// Log the filename.
+			app = new Application ("GtkFspotTests");
+			app.Launch ("f-spot");
 		}
 
 		protected override void OnSetup ()
 		{
 			base.OnSetup ();
-			window = app.GetWindow("F-Spot");
+			window = app.GetWindow ("F-Spot");
 		}
 
 		protected override void OnQuit ()
 		{
 			base.OnQuit ();
 			window.Close ();
+		}
+
+		protected void ImportPictures ()
+		{
+			//Click "photo" menu
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<MenuItem> ("Photo").Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//Select the "Import" menu item.
+			var importMenuItem = menuBar.Find<MenuItem> ("Import");
+			importMenuItem.Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//Select the "Select Folder" menu item in its combo box.
+			var importSourceCombobox = window.Find<ComboBox> ("Import Source:");
+			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			var importDialog = window.Find<Window> ("Import");
+			var locationEdit = importDialog.Find<Edit> ("Location:");
+			locationEdit.SetValue ("/usr/share/pixmaps/");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//Click "Open" Button
+			var openButton = importDialog.Find<Button> ("Open");
+			openButton.Click ();
+			Thread.Sleep (Config.Instance.LongDelay);
+
+			var list = importDialog.Find<List> ();
+			var listItem = list.Find<ListItem> ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//Click "Import" Button
+			var importButton = importDialog.Find<Button> ("Import");
+			importButton.Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			var fspotList = window.Find<List> ();
+			var fspotListItem = fspotList.Find<ListItem> ();
+			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
 		//TestCase201 Import the pictures into the F-Spot Editor
@@ -79,13 +122,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//201.2 Select the "Import" menu item.
 			var importMenuItem = menuBar.Find<MenuItem> ("Import");
-			importMenuItem.Click();
+			importMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
 			var importSourceCombobox = window.Find<ComboBox> ("Import Source:");
-			importSourceCombobox.Find<MenuItem> ("Select Folder").Click();
+			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			var importDialog = window.Find<Window> ("Import");
@@ -93,8 +136,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//201.4 Input text "/usr/share/pixmaps/" into "Location:" Edit 
-			var appears = importDialog.Find<Edit> ("Location:");
+			//201.4 Input text "/usr/share/pixmaps/" into "Location:" Edit
+			var locationEdit = importDialog.Find<Edit> ("Location:");
 			locationEdit.SetValue ("/usr/share/pixmaps/");
 			procedureLogger.ExpectedResult ("\"/usr/share/pixmaps\" has been entered.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -103,13 +146,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//201.5 Click "Open" Button
 			var openButton = importDialog.Find<Button> ("Open");
-			openButton.Click();
+			openButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 
 			var list = importDialog.Find<List> ();
-			Thread.Sleep (Config.Instance.ShortDelay);
 			var listItem = list.Find<ListItem> ();
-			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The picture(s) in \"/usr/share/pixmaps/\" is(are) loaded.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			Assert.IsNotNull (listItem);
@@ -137,13 +178,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		private void TestCase202 ()
 		{
 			//Do the action to load the list items.
-			TestCase201();
+			ImportPictures ();
 
 			//202.1 Check the List's SelectionPattern's property
 			var List = window.Find<List> ();
 			procedureLogger.Action ("Check the List Can be Selected Multiple.");
 			procedureLogger.ExpectedResult ("The List can select multiple.");
-			Assert.AreEqual (true, List.CanSelectMultiple);
+			Assert.IsTrue (List.CanSelectMultiple);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check the List Is Selection Required.");
@@ -162,18 +203,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var fiftyThirdListItem = window.FindAll<ListItem> () [53];
 			fiftyThirdListItem.ScrollIntoView ();
 			procedureLogger.ExpectedResult ("The fifty-third icon is shown.");
-			Assert.AreEqual (false, fiftyThirdListItem .fiftyThirdListItem.IsOffscreen);
+			Assert.AreEqual (false, fiftyThirdListItem.IsOffscreen);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.4 Select and Unselect the fifty-third icon in List
 			fiftyThirdListItem.Select ();
 			procedureLogger.ExpectedResult ("The fifty-third icon is selected.");
-			Assert.AreEqual (true, fiftyThirdListItem .IsSelected);
+			Assert.IsTrue (fiftyThirdListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			fiftyThirdListItem.RemoveFromSelection ();
 			procedureLogger.ExpectedResult ("The fifty-third icon is unselected.");
-			Assert.AreEqual (false, fiftyThirdListItem .IsSelected);
+			Assert.AreEqual (false, fiftyThirdListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.5 Click "Edit Image" menu item on the toolbar
@@ -184,38 +225,38 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//202.6 Maximum the picture
 			var slider = window.Find<Slider> ();
-			slider.SetValue(slider.Maximum);
+			slider.SetValue (slider.Maximum);
 			procedureLogger.ExpectedResult ("The picture is maximumed.");
 			Assert.AreEqual (1.0, slider.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.7 Minimize the picture
-			slider.SetValue(slider.Minimum);
+			slider.SetValue (slider.Minimum);
 			procedureLogger.ExpectedResult ("The picture is minimized.");
 			Assert.AreEqual (0, slider.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.8 Make the picture a small change enlarge
-			slider.SetValue(slider.Minimum + slider.SmallChange);
+			//202.8 Give the picture a small enlarge
+			slider.SetValue (slider.Minimum + slider.SmallChange);
 			procedureLogger.ExpectedResult ("Make the picture a small change large.");
-			Assert.AreEqual(slider.SmallChange - slider.Minimum,slider.Value);
+			Assert.AreEqual (slider.SmallChange - slider.Minimum, slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.9 Make the picture a big change reduce
-			slider.SetValue(slider.Maximum - slider.LargeChange);
+			//202.9 Make the picture a big reduce
+			slider.SetValue (slider.Maximum - slider.LargeChange);
 			procedureLogger.ExpectedResult ("Make the picture a big change large.");
-			Assert.AreEqual(slider.LargeChange ,1 - slider.Value);
+			Assert.AreEqual (slider.LargeChange, 1 - slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.10 Give a comment "the last one" to the picture
 			var edit = window.Find<Edit> ("Comment:");
-			edit.SetValue("the last one");
+			edit.SetValue ("the last one");
 			procedureLogger.ExpectedResult ("The \"the last one\" is inputed into the edit.");
 			Assert.AreEqual ("the last one", edit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.11 Close the F-Spot window
-			window.Close();
+			window.Close ();
 			procedureLogger.ExpectedResult ("The F-Spot window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
@@ -230,13 +271,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		private void TestCase203 ()
 		{
 			//Do the action to load the list items.
-			TestCase201();
+			ImportPictures ();
 
 			//203.1 Select the third icon
 			var thirdItem = window.FindAll<ListItem> () [3];
 			thirdItem.Select ();
 			procedureLogger.ExpectedResult ("The third icon is selected.");
-			Assert.AreEqual (true, thirdItem.IsSelected);
+			Assert.IsTrue (thirdItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.2 Select the "Edit" Menu
@@ -247,18 +288,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//203.3 Select the "Adjust Time" Menu Item
 			var adjustTimeMenuItem = editMenuItem.Find<MenuItem> ("Adjust Time...");
-			adjustTimeMenuItem.Click();
+			adjustTimeMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Adjust Time\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.4 Click the "Calendar" button
 			var adjustTimeDialog = window.Find<Window> ("Adjust Time");
-			adjustTimeDialog.Find<Button> ("Select date").Click();
+			adjustTimeDialog.Find<Button> ("Select date").Click ();
 			procedureLogger.ExpectedResult ("The \"Calendar\" is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.5 Select "10" Day of the Calendar
-			adjustTimeDialog.Find<Button> ("10").Click();
+			adjustTimeDialog.Find<Button> ("10").Click ();
 			procedureLogger.ExpectedResult ("The \"10\" day is selected.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -273,7 +314,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var timeListItem = selectTiemCombox.Find<ListItem> ("08:30");
 			timeListItem.Select ();
 			procedureLogger.ExpectedResult ("The \"08:30\" listitem is selected.");
-			Assert.AreEqual (true, timeListItem.IsSelected);
+			Assert.IsTrue (timeListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.8 Close the "Adjust Time" window
@@ -299,7 +340,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//204.2 Select "Configure Screensaver" Menu Item
 			var configureMenuItem = menuBar.Find<MenuItem> ("Configure Screensaver");
-			configureMenuItem.Click();
+			configureMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Configure Screensaver\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -308,7 +349,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
-			Assert.AreEqual (true, allImageRadioButton.IsSelected);
+			Assert.IsTrue (allImageRadioButton.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//204.4 Unselect "Images tagged with:" radio button on the "Screensaver Configure" dialog
@@ -320,13 +361,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//204.5 Select "All Image" radio button "on the Screensaver Configure" dialog
 			configureDialog.Find<RadioButton> ("All Image").AddToSelection ();
 			procedureLogger.ExpectedResult ("The \"All Image\" radio button is selected again.");
-			Assert.AreEqual (true, allImageRadioButton .IsSelected);
+			Assert.IsTrue (allImageRadioButton.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//204.6 Move the dialog to (x,y)
 			procedureLogger.Action ("Check CanMove.");
 			procedureLogger.ExpectedResult ("The value of CanMove is true.");
-			Assert.AreEqual (true, configureDialog.CanMove);
+			Assert.IsTrue ( configureDialog.CanMove);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			configureDialog.Move (200, 200);
@@ -356,7 +397,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//205.2 "Print" Menu Item
 			var printMenuItem = menuBar.Find<MenuItem> ("Print");
-			printMenuItem.Click();
+			printMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Print\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -371,7 +412,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var printFileCheckBox = printDialog.Find<CheckBox> ("Print file name");
 			printFileCheckBox.Toggle ();
 			procedureLogger.ExpectedResult ("The \"Print file name\" check box is checked.");
-			Assert.AreEqual(ToggleState.On, printFileCheckBox.ToggleState);
+			Assert.AreEqual (ToggleState.On, printFileCheckBox.ToggleState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.5 Select "General" tab
@@ -432,7 +473,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"Components\" sub menu appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//206.3 Select "Sidebar" Menu Item 
+			//206.3 Select "Sidebar" Menu Item
 			var SidebarMenuItem = ComponentsMenuItem.Find<MenuItem> ("Sidebar");
 			SidebarMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Filesystem\" tree appears.");
@@ -440,10 +481,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//206.4 Select the "Folders" item in the combobox
 			var combobox = window.Find<ComboBox> ();
-			combobox.Find<ListItem> ("Folders").Select ();
-			procedureLogger.ExpectedResult ("The \"Folders\" list item has been selected.");
-			Assert.AreEqual(true, sear);
+			var listItem = combobox.Find<ListItem> ("Folders");
+			listItem.Select ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The \"Folders\" list item has been selected.");
+			Assert.IsTrue (listItem.IsSelected);
 
 			//206.5 Expand "Filesystem" tree Item
 			var filesystemTreeItem = window.Find<TreeItem> ("Filesystem");
