@@ -157,13 +157,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			using (Form f = new Form ()) {
 				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
 				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
-				
+
 				f.Show ();
-				
-				Assert.AreEqual (WindowInteractionState.Running,
+				Thread.Sleep (500);
+				Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction,
 				                 pattern.InteractionState,
 				                 "Interaction state while running normally");
-				
+
+				var dialog = new Form ();
+				WindowInteractionState interactionState
+					= (WindowInteractionState) (-1);
+				dialog.Activated += delegate {
+					interactionState = pattern.InteractionState;
+					Thread.Sleep (1000);
+					dialog.Close ();
+				};
+				dialog.ShowDialog ();
+				Assert.AreEqual (WindowInteractionState.BlockedByModalWindow,
+				                 interactionState,
+				                 "Interaction state while blocked by modal dialog");
+
 				bool formClosed = false;
 				bool formClosingChecked = false;
 				f.Closed += delegate (Object sender, EventArgs e) {

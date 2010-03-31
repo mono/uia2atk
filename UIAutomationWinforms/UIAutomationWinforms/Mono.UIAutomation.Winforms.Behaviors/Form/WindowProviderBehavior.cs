@@ -189,9 +189,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			get {
 				if (closing)
 					return WindowInteractionState.Closing;
-				return WindowInteractionState.Running;
-				// TODO: How to check for things like
-				//       NotResponding and BlockedByModalWindow?
+				var activeForm = SWF.Form.ActiveForm;
+				if (activeForm != null && activeForm != form && activeForm.Modal)
+					return WindowInteractionState.BlockedByModalWindow;
+				return WindowInteractionState.ReadyForUserInteraction;
+				// TODO: I failed to find any example (on Win 7) to make WindowInteractionState
+				// be NotResponding or Running,
+				// Even if I set form.UseWaitCursor = true, the state is still ReadyForUserInteraction.
+				// And if I sleep a long time in a button click handler to hang the form, then the UIA
+				// client will also hang when trying to get the Form's UIA infomation, but not return
+				// "NotResponding" as I expected.
 			}
 		}
 		
