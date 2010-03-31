@@ -56,13 +56,22 @@ namespace Mono.UIAutomation.TestFramework
 			}
 		}
 
-		public Window GetWindow (String title)
+		public Window GetWindow (string title)
 		{
 			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, 
 			                                                  new PropertyCondition (
 			                                                  AutomationElementIdentifiers.NameProperty, 
 			                                                  title));
 			return new Window (ae);
+		}
+
+		public Window FindGtkSubWindow (Window mainWindow, string name)
+		{
+			AndCondition cond = new AndCondition(
+			                    new PropertyCondition (AutomationElementIdentifiers.ProcessIdProperty, 
+			                                           mainWindow.AutomationElement.Current.ProcessId),  
+			                    new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
+			return new Window (AutomationElement.RootElement.FindFirst (TreeScope.Children, cond));
 		}
 	}
 }

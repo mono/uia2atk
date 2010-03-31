@@ -1,3 +1,12 @@
+2010-03-31  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/TreeItem.cs: Remove whitespace
+	* Mono.UIAutomation.TestFramework/Utils.cs: Remove whitespace
+	* Mono.UIAutomation.TestFramework/Application.cs: Fix a typo and add
+	new FindGtkSubWindow method.
+	* Tests/Moonlight/PuzzleGameTest.cs Tests/Winforms/KeePassTests.cs:
+	Update bug reference.
+
 2010-03-24  Ray Wang  <rawang@novell.com>
 
 	* Tests/Tests.csproj: Add Gtk tests into project.

@@ -707,11 +707,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.19 Set the horizontal scroll bar large increment
-			//BUG580431: [UIAClient-Winforms] Scroll bar of datagrid could not be detected on Linux
-			//dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
-			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large increment.");
-			//Assert.AreEqual (43, dataGrid.HorizontalScrollPercent);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
+			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large increment.");
+			Assert.AreNotEqual (0, dataGrid.HorizontalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.20 Set the horizontal scroll bar large decrement
 			dataGrid.Scroll (ScrollAmount.LargeDecrement, ScrollAmount.NoAmount);
@@ -720,11 +719,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.21 Set the horizontal scroll bar small increment
-			//BUG580431: [UIAClient-Winforms] Scroll bar of datagrid could not be detected on Linux
-			//dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
-			//procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small increment.");
-			//Assert.AreEqual (1, dataGrid.HorizontalScrollPercent);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
+			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small increment.");
+			Assert.AreNotEqual (0, dataGrid.HorizontalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.22 Set the horizontal scroll bar small decrement
 			dataGrid.ScrollHorizontal (ScrollAmount.SmallDecrement);

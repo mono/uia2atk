@@ -16,7 +16,6 @@
 // Copyright (c) 2010 Novell, Inc (http://www.novell.com)
 //
 // Authors:
-//	Ray Wang  (rawang@novell.com)
 //	Felicia Mu  (fxmu@novell.com)
 
 using System;
@@ -83,6 +82,5 @@ namespace Mono.UIAutomation.TestFramework
 		public ExpandCollapseState ExpandCollapseState {
 			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty); }
 		}
-
-}
+	}
 }
