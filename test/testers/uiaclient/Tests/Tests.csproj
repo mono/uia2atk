@@ -72,12 +72,12 @@
     <Compile Include="Moonlight\DiggSearchTest.cs" />
     <Compile Include="Moonlight\PuzzleGameTest.cs" />
     <Compile Include="Moonlight\SL2WithPrismTest.cs" />
-    <Compile Include="Gtk\Banshee.cs" />
-    <Compile Include="Gtk\FSpot.cs" />
+    <Compile Include="GTK\Banshee.cs" />
+    <Compile Include="GTK\FSpot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Moonlight\" />
-    <Folder Include="Gtk\" />
+    <Folder Include="GTK\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
