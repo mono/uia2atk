@@ -37,9 +37,9 @@ class ComboBoxFrame(accessibles.Frame):
         self.text2 = self.frame.findLabel(self.TEXT2)
         self.text3 = self.frame.findLabel(self.TEXT3)
 
-        self.add_button = self.frame.findPushBUtton(self.BUTTON1)
-        self.del_button = self.frame.findPushBUtton(self.BUTTON2)
-        self.reset_button = self.frame.findPushBUtton(self.BUTTON3)
+        self.add_button = self.frame.findPushButton(self.BUTTON1)
+        self.del_button = self.frame.findPushButton(self.BUTTON2)
+        self.reset_button = self.frame.findPushButton(self.BUTTON3)
 
         self.text = self.frame.findText(None)
 

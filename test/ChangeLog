@@ -1,5 +1,9 @@
 2010-03-31  Neville Gao  <nevillegao@gmail.com>
 
+	* testers/moonlight/combobox/comboboxframe.py: Fixed typos.
+
+2010-03-31  Neville Gao  <nevillegao@gmail.com>
+
 	* testers/uiaclient/Tests/Moonlight/MoonlightTestBase.cs: Passed
 	MainWindow variable to subclass.
 
