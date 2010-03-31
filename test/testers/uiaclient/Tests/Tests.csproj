@@ -72,8 +72,8 @@
     <Compile Include="Moonlight\DiggSearchTest.cs" />
     <Compile Include="Moonlight\PuzzleGameTest.cs" />
     <Compile Include="Moonlight\SL2WithPrismTest.cs" />
-    <Compile Include="GTK\Banshee.cs" />
-    <Compile Include="GTK\FSpot.cs" />
+    <Compile Include="Gtk\Banshee.cs" />
+    <Compile Include="Gtk\FSpot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Moonlight\" />
