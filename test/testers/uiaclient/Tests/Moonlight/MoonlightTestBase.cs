@@ -37,11 +37,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private Application application;
 		private Window window;
 
-		public MoonlightTestBase (Window window)
-		{
-			this.window = window;
-		}
-
 		protected override void LaunchSample ()
 		{
 			string browser = Environment.GetEnvironmentVariable ("MOON_A11Y_BROWSER");
@@ -52,7 +47,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 
 			string profile = Environment.GetEnvironmentVariable ("MOON_A11Y_BROWSER_PROFILE");
 			if (profile == null) {
-				profile = "dev";
+				profile = "default";
 				Console.WriteLine ("** MOON_A11Y_BROWSER_PROFILE environment variable not found. Defaulting to {0}.", profile);
 			}
 
@@ -81,6 +76,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 
 			procedureLogger.Save ();
 			window.Close ();
+		}
+
+		public Window MainWindow {
+			get { return window; }
 		}
 
 		public abstract string Sample {

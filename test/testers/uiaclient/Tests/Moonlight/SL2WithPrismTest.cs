@@ -35,15 +35,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 	[TestFixture]
 	public class SL2WithPrismTest : MoonlightTestBase
 	{
-		private Window window;
-
-		public SL2WithPrismTest (Window window) : base (window)
-		{
-			this.window = window;
-		}
-
 		public override string Sample {
-			get { return "SL2WithPrismTest"; }
+			get { return "SL2WithPrism"; }
 		}
 
 		[Test]
@@ -62,7 +55,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase304 ()
 		{
 			// 304.1: Enter "a11y" into "User Name" textbox on the top of main page
-			var eUserName = window.Find<Edit> (Direction.Vertical, 0);
+			var eUserName = MainWindow.Find<Edit> (Direction.Vertical, 0);
 			eUserName.SetValue ("a11y");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("User Name should be entered in the TextBox.");
@@ -72,7 +65,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual ("a11y", eUserName.Value);
 
 			// 304.2: Enter "a11ya11y" into "Password" textbox on the top of main page
-			var ePassword = window.Find<Edit> (Direction.Vertical, 1);
+			var ePassword = MainWindow.Find<Edit> (Direction.Vertical, 1);
 			ePassword.SetValue ("a11ya11y");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Password should be entered in the TextBox, and is displayed as dots.");
@@ -82,7 +75,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual ("a11ya11y", ePassword.Value);
 
 			// 304.3: Click "LogIn" button
-			var bLogIn = window.Find<Button> ("LogIn");
+			var bLogIn = MainWindow.Find<Button> ("LogIn");
 			bLogIn.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Account should be logged in successfully.");
@@ -93,7 +86,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase305 ()
 		{
 			// 305.1: Move ScrollBar to the Maximum value
-			var sbRight = window.Find<ScrollBar> ();
+			var sbRight = MainWindow.Find<ScrollBar> ();
 			sbRight.SetValue (sbRight.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.Action (string.Format ("Check {0}'s Maximum.", sbRight));
@@ -101,7 +94,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual (sbRight.Maximum, sbRight.Value);
 
 			// 305.2: Click "http://www.codeplex.com/SL2WithPrism" hyperlink
-			var hProject = window.Find<Hyperlink> ();
+			var hProject = MainWindow.Find<Hyperlink> ();
 			hProject.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.Action (string.Format ("Check if {0} exists.", hProject));

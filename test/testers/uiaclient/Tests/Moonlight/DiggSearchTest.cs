@@ -35,15 +35,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 	[TestFixture]
 	public class DiggSearchTest : MoonlightTestBase
 	{
-		private Window window;
-
-		public DiggSearchTest (Window window) : base (window)
-		{
-			this.window = window;
-		}
-		
 		public override string Sample {
-			get { return "DiggSearchTest"; }
+			get { return "DiggSearch"; }
 		}
 
 		[Test]
@@ -74,7 +67,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase306 ()
 		{
 			// 306.1: Run the application, there is not listitems on the page
-			var lResults = window.Find<List> ();
+			var lResults = MainWindow.Find<List> ();
 			procedureLogger.Action (string.Format ("Check {0}'s HorizontallyScrollable.", lResults));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s HorizontallyScrollable is False.", lResults));
 			Assert.IsFalse (lResults.HorizontallyScrollable);
@@ -104,7 +97,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase307 ()
 		{
 			// 307.1: Enter "basketball" into textbox on the top right side of the main page
-			var eSearch = window.Find<Edit> ();
+			var eSearch = MainWindow.Find<Edit> ();
 			eSearch.SetValue ("basketball");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -113,13 +106,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual ("basketball", eSearch.Value);
 
 			// 307.2: Click "Search" button
-			var bSearch = window.Find<Button> ("Search");
+			var bSearch = MainWindow.Find<Button> ("Search");
 			bSearch.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Some contents should display on the page.");
 
 			// 307.3: Check if the list is scrollable
-			var lResults = window.Find<List> ();
+			var lResults = MainWindow.Find<List> ();
 			procedureLogger.Action (string.Format ("Check {0}'s HorizontallyScrollable.", lResults));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s HorizontallyScrollable is True.", lResults));
 			Assert.IsFalse (lResults.HorizontallyScrollable);
@@ -137,13 +130,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase308 ()
 		{
 			// 308.1: Check the  "list item" is not selected, listitem[3] for example
-			var liResult = window.FindAll<ListItem> ()[3];
+			var liResult = MainWindow.FindAll<ListItem> ()[3];
 			procedureLogger.Action (string.Format ("Check {0}'s IsSelected.", liResult));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s IsSelected is False.", liResult));
 			Assert.IsFalse (liResult.IsSelected);
 
 			// 308.2: Select the "list item" with "Select" method, listitem[3] for example
-			var bClose = window.Find<Button> ("Close");
+			var bClose = MainWindow.Find<Button> ("Close");
 			liResult.Select ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("{0}'s IsOffscreen is False.", bClose));
@@ -166,7 +159,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.IsTrue (liResult.IsSelected);
 
 			// 308.5: Check the current selection of "list" element
-			var lResults = window.Find<List> ();
+			var lResults = MainWindow.Find<List> ();
 			var liResult1 = lResults.GetSelection ();
 			procedureLogger.ExpectedResult (string.Format ("{0} selects {1}.", lResults, liResult1));
 			Assert.AreEqual (liResult, liResult1);
@@ -182,10 +175,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase309 ()
 		{
 			// 309.1: Move the vertical scrollbar to bottom(Select the last list item, use "ScrollIntoView" method)
-			var lResults = window.Find<List> ();
+			var lResults = MainWindow.Find<List> ();
 			double prevVerticalScrollPercent = lResults.VerticalScrollPercent;
 
-			var liResult = window.FindAll<ListItem> ()[9];
+			var liResult = MainWindow.FindAll<ListItem> ()[9];
 			liResult.ScrollIntoView ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("Window should scroll down. The ListItem which was out-of-screen appear now.");

@@ -1,3 +1,18 @@
+2010-03-31  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/uiaclient/Tests/Moonlight/MoonlightTestBase.cs: Passed
+	MainWindow variable to subclass.
+
+	* testers/uiaclient/Tests/Moonlight/DiggSearchTest.cs:
+	* testers/uiaclient/Tests/Moonlight/PuzzleGameTest.cs:
+	* testers/uiaclient/Tests/Moonlight/SL2WithPrismTest.cs: Updated scripts
+	following MoonlightTestBase changes.
+
+2010-03-25  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/uiaclient/Tests/Moonlight/PuzzleGameTest.cs: Modified GetCurrentSelection to
+	GetSelection.
+
 2010-03-23  Neville Gao  <nevillegao@gmail.com>
 
 	* tools/dashboard/qamon.py: Deleted trailing whitespace.

@@ -35,15 +35,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 	[TestFixture]
 	public class PuzzleGameTest : MoonlightTestBase
 	{
-		private Window window;
-
-		public PuzzleGameTest (Window window) : base (window)
-		{
-			this.window = window;
-		}
-
 		public override string Sample {
-			get { return "PuzzleGameTest"; }
+			get { return "PuzzleGame"; }
 		}
 
 		[Test]
@@ -68,15 +61,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase301 ()
 		{
 			// 301.1: Click "Scramble" button
-			var bScramble = window.Find<Button> ("Scramble");
+			var bScramble = MainWindow.Find<Button> ("Scramble");
 			bScramble.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("TextBlock \"Puzzle Not Solved.\" appears."));
-			var lPuzzleStatus = window.Find<Text> ("Puzzle Not Solved.");
+			var lPuzzleStatus = MainWindow.Find<Text> ("Puzzle Not Solved.");
 			Assert.IsNotNull (lPuzzleStatus);
 
 			// 301.2: Click "Reset" button
-			var bReset = window.Find<Button> ("Reset");
+			var bReset = MainWindow.Find<Button> ("Reset");
 			bReset.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("TextBlock \"Puzzle Not Solved.\" disappears."));
@@ -87,7 +80,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase302 ()
 		{
 			// 302.1: Click "Show Help" checkbox
-			var cbShowHelp = window.Find<CheckBox> ("Show Help");
+			var cbShowHelp = MainWindow.Find<CheckBox> ("Show Help");
 			cbShowHelp.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("{0}'s ToggleState is \"On\".", cbShowHelp));
@@ -104,7 +97,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		private void TestCase303 ()
 		{
 			// 303.1: Check current ExpandCollapseState
-			var cbPuzzleDimension = window.Find<ComboBox> ();
+			var cbPuzzleDimension = MainWindow.Find<ComboBox> ();
 			procedureLogger.Action (string.Format ("Check {0}'s ExpandCollapseState.", cbPuzzleDimension));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s ExpandCollapseState is Collapsed.", cbPuzzleDimension));
 			Assert.AreEqual (ExpandCollapseState.Collapsed, cbPuzzleDimension.ExpandCollapseState);
