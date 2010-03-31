@@ -111,7 +111,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		}
 
 		public IRawElementProviderSimple GetItem (int row, int column)
-		{		
+		{
 			int rowCount = RowCount;
 			int columnCount = ColumnCount;
 
@@ -125,11 +125,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				// FIXME: In Vista when listView.Groups == 0 no Groups are added,
 				// and we should iterate when listView.Groups > 0
 				SWF.ListViewItem item = listView.Items [row];
-				ListViewProvider.ListViewGroupProvider groupProvider 
-					= provider.GetGroupProviderFrom (provider.GetGroupFrom (item));
-				
-				ListViewProvider.ListViewListItemProvider itemProvider 
-					= (ListViewProvider.ListViewListItemProvider) groupProvider.GetItem (item);
+				ListViewProvider.ListViewListItemProvider itemProvider = null;
+				if (listView.Groups == null || listView.Groups.Count == 0 || !listView.ShowGroups)
+					itemProvider = provider.GetItem (item);
+				else {
+					ListViewProvider.ListViewGroupProvider groupProvider
+						= provider.GetGroupProviderFrom (provider.GetGroupFrom (item));
+					itemProvider
+						= (ListViewProvider.ListViewListItemProvider) groupProvider.GetItem (item);
+				}
 				return itemProvider.GetEditProviderAtColumn (column);
 			} else //Is View.List
 				return provider.GetChildProviderAt ((column * rowCount) + row);

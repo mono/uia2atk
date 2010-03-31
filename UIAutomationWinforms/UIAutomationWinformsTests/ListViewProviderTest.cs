@@ -1219,10 +1219,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				element.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id), "View.Details: data grid");
 
 			TestDataGridPatterns (element);
+			GetItemTest (element);
 			view.ShowGroups = false;
 			TestDataGridPatterns (element);
+			GetItemTest (element);
 			view.ShowGroups = true;
 			TestDataGridPatterns (element);
+			GetItemTest (element);
 
 			//Lets test the group
 			child = element.Navigate (NavigateDirection.FirstChild);
@@ -2746,5 +2749,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#endregion
 	
+		private void GetItemTest (IRawElementProviderSimple listViewProvider)
+		{
+			int rowCount = (int) listViewProvider.GetPropertyValue (
+				GridPatternIdentifiers.RowCountProperty.Id);
+			int colCount = (int) listViewProvider.GetPropertyValue (
+				GridPatternIdentifiers.ColumnCountProperty.Id);
+			IGridProvider gridProvider = (IGridProvider)
+				listViewProvider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			var rowPropId = GridItemPatternIdentifiers.RowProperty.Id;
+			var colPropId = GridItemPatternIdentifiers.ColumnProperty.Id;
+			for (int i = 0; i < rowCount; i++)
+				for (int j = 0; j < colCount; j++) {
+					var itemProvider = gridProvider.GetItem (i, j);
+					Assert.AreEqual (i,
+						itemProvider.GetPropertyValue (rowPropId),
+						string.Format ("Check item [{0}, {1}]'s row", i, j));
+					Assert.AreEqual (j,
+						itemProvider.GetPropertyValue (colPropId),
+						string.Format ("Check item [{0}, {1}]'s column", i, j));
+				}
+		}
 	}
 }

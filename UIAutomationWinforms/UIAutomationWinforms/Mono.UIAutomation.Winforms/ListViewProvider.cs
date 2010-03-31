@@ -110,6 +110,17 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
+		internal ListViewListItemProvider GetItem (SWF.ListViewItem item)
+		{
+			foreach (var provider in this) {
+				var itemProvider = provider as ListViewListItemProvider;
+				if (itemProvider != null &&
+				    itemProvider.ListViewItem == item)
+					return itemProvider;
+			}
+			return null;
+		}
+
 		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
 		                                                                  ListItemProvider listItem)
 		{

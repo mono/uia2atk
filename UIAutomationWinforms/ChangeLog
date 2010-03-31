@@ -1,5 +1,12 @@
 2010-03-31  Matt Guo  <matt@mattguo.com>
 
+	* UIAutomationWinformsTests/ListViewProviderTest.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	Fix bug#578244
+
+2010-03-31  Matt Guo  <matt@mattguo.com>
+
 	* UIAutomationWinformsTests/FormProviderTest.cs: 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs:
 	Fixed bug#576450 by making WindowInteractionState.ReadyForUserInteraction as the default state.
