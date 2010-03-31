@@ -38,7 +38,7 @@ AC_ARG_ENABLE(tests,
 
 NUNIT_PATH=
 
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.1])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.2])
 PKG_CHECK_MODULES(NUNIT, mono-nunit >= 2.4, nunit_24=yes, nunit_24=no)
 if test "x$nunit_24" = "xno"; then
 	AC_MSG_WARN([Could not find mono-nunit >= 2.4; unit tests will not be available.])
@@ -75,7 +75,7 @@ fi
 
 # package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
-PKG_CHECK_MODULES([ATSPI_SHARP], [at-spi-sharp >= 0.9.2])
+PKG_CHECK_MODULES([ATSPI_SHARP], [at-spi-sharp >= 1.0.1])
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
 

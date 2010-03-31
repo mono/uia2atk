@@ -3,6 +3,20 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.2: The "heliport" release
+* #587792 - TabControl: select invisible label child make the application crashed
+* #563890 - GridSplitter: run with Orca couldn't use Up|Down Right|Left to move splitter
+* #587783 - TabControl: 'page tab' has 2 extraneous labels
+* #555165 - Couldn't show GridSplitter sample which is build by mxap
+* #546068 - Block bugs from moonlight
+* #494708 - Test DataGrid control
+* #588941 - Task of review ClientAPI-Gtk tests on dashboard-Ray
+* #588942 - Task of review ClientAPI-Gtk tests on dashboard-Neville
+* #571772 - In scrollable list, listitem[0] missing ScrollItemPattern 
+* #571786 - In non-scrollable list, listitems support extraneous ScrollItemPattern
+* #576450 - [uiaclient-winforms] The dialog's Window Pattern' WindowInteractionState will be different between Windows and Linux
+* #578244 - [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux
+
 Version 2.0.1: The "guesstimate" release
 * #579004 - Update google docs with new testcase descriptions
 * #554449 - ComboBox crashes when using ItemsSource

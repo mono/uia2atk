@@ -93,7 +93,7 @@ PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES(GTK_SHARP_2_12_10, gtk-sharp-2.0 >= 2.12.10, [last_gtk_sharp=yes], [last_gtk_sharp=no])
 AM_CONDITIONAL(HAVE_OLD_ATK_SHARP, test x$last_gtk_sharp = xno)
 
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.1])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.2])
 
 #Bridge-glue checks
 PKG_CHECK_MODULES(ATK, atk)

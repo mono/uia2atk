@@ -81,7 +81,7 @@ AC_SUBST(NUNIT_PATH)
 AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
 dnl package checks, common for all configs
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.1])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.2])
 PKG_CHECK_MODULES([MONO], [mono >= 2.4])
 
 gacutil -l  System.Data | grep "Version=2"
