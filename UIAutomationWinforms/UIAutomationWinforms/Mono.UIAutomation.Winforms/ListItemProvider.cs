@@ -109,9 +109,16 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
 			                                                          this));
-			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (ScrollItemPatternIdentifiers.Pattern,
-			                                                          this));
+
+			Action updateScrollItemPattern = () => {
+				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
+					listProvider.GetListItemBehaviorRealization (
+						ScrollItemPatternIdentifiers.Pattern,
+						this));
+			};
+			updateScrollItemPattern ();
+			listProvider.ScrollPatternSupportChanged += updateScrollItemPattern;
+
 			SetBehavior (TogglePatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (TogglePatternIdentifiers.Pattern,
 			                                                          this));

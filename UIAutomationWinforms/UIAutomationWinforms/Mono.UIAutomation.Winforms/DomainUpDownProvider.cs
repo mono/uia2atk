@@ -180,6 +180,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			throw new NotSupportedException ();
 		}
+
+		public event Action ScrollPatternSupportChanged;
 #endregion
 
 		internal IRawElementProviderSimple GetSelectedItem ()

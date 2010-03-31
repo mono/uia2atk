@@ -551,6 +551,8 @@ namespace Mono.UIAutomation.Winforms
 				throw new NotSupportedException ();
 			}
 
+			public event Action ScrollPatternSupportChanged;
+
 			public ListItemProvider GetSelectedItem ()
 			{
 				DateTime cur = dateTimePicker.Value;

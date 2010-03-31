@@ -69,5 +69,7 @@ namespace Mono.UIAutomation.Winforms
 
 		// Scrolling
 		void ScrollItemIntoView (ListItemProvider item);
+
+		event Action ScrollPatternSupportChanged;
 	}
 }

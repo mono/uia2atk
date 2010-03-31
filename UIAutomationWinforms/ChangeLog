@@ -1,3 +1,14 @@
+2010-03-31  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/IListProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListItemProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:
+	Fix bug#571772 and bug#571786, i.e. update ScollItemPattern with
+	ScrollPattern
+
 2010-03-13  Matt Guo  <matt@mattguo.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridViewProvider.cs: 

@@ -186,7 +186,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			UpdateScrollBehavior ();
 		}
-		
+
 		private void UpdateScrollBehavior ()
 		{
 			if (observer.SupportsScrollPattern == true)
@@ -194,8 +194,10 @@ namespace Mono.UIAutomation.Winforms
 				             new ScrollProviderBehavior (this));
 			else
 				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			if (ScrollPatternSupportChanged != null)
+				ScrollPatternSupportChanged ();
 		}
-		
+
 		#endregion
 
 		#region IListProvider realization
@@ -323,7 +325,9 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return null;
 		}
-		
+
+		public event Action ScrollPatternSupportChanged;
+
 		#endregion
 
 		#region Private Methods

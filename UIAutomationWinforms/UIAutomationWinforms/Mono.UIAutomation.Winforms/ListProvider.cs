@@ -252,6 +252,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return null;
 		}
+
+		public event Action ScrollPatternSupportChanged;
 		#endregion
 
 		#region Scroll Methods and Properties
@@ -289,6 +291,8 @@ namespace Mono.UIAutomation.Winforms
 				             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
 			else
 				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			if (ScrollPatternSupportChanged != null)
+				ScrollPatternSupportChanged ();
 		}
 		
 		#endregion
