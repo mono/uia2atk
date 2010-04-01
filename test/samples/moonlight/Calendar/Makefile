@@ -1,5 +1,7 @@
+include ../Makefile.include
+
 all:
-	cp `which mono | sed -e 's/bin\/mono//'`/lib/mono/moonlight/System.Windows.Controls.dll .
+	cp $(GLOBAL_SWC) .
 	mxap --application-name=CalendarSample
 
 clean:

@@ -1,6 +1,8 @@
+include ../Makefile.include
+
 all:
-	cp `which mono | sed -e 's/bin\/mono//'`/lib/mono/moonlight/System.Windows.Controls.dll .
-	cp `which mono | sed -e 's/bin\/mono//'`/lib/mono/moonlight/System.Windows.Controls.Data.dll .
+	cp $(GLOBAL_SWC) .
+	cp $(GLOBAL_SWCD) .
 	mxap --application-name=DataGridSample
 
 clean:

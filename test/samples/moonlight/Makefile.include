@@ -1,0 +1,3 @@
+# These values are always the same, because of the signed key
+GLOBAL_SWC=`which mono | sed -e 's/bin\/mono//'`/lib/mono/gac/System.Windows.Controls/2.0.5.0__0738eb9f132ed756/System.Windows.Controls.dll
+GLOBAL_SWCD=`which mono | sed -e 's/bin\/mono//'`/lib/mono/gac/System.Windows.Controls.Data/2.0.5.0__0738eb9f132ed756/System.Windows.Controls.Data.dll
