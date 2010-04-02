@@ -1,11 +1,17 @@
+2010-04-02  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/DataGrid.cs: Change a grammar error.
+	* Tests/Winforms/KeePassTests.cs: Update bug references.
+
 2010-03-31  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/TreeItem.cs: Remove whitespace
 	* Mono.UIAutomation.TestFramework/Utils.cs: Remove whitespace
 	* Mono.UIAutomation.TestFramework/Application.cs: Fix a typo and add
 	new FindGtkSubWindow method.
-	* Tests/Moonlight/PuzzleGameTest.cs Tests/Winforms/KeePassTests.cs:
-	Update bug reference.
+	* Tests/Moonlight/PuzzleGameTest.cs: Rename from GetCurrentSelection
+	to GetSelection.
+	* Tests/Winforms/KeePassTests.cs: Update bug reference.
 
 2010-03-24  Ray Wang  <rawang@novell.com>
 

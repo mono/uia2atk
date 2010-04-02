@@ -1,4 +1,3 @@
-// KeePassTests.cs: Tests for KeePass
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -63,10 +62,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			base.OnQuit ();
 			procedureLogger.Save ();
 			window.Close ();
-			/* BUG 573464 - [uiaclient-winforms]Some dialog's name has been changed in Linux 
-			 * compares to in Windows 
-			 * window.Find<Button> ("Discard changes").Click ();
-			 */
 			window.Find<Button> ("No").Click ();
 			procedureLogger.ExpectedResult ("The window quit successfully");
 		}
@@ -247,7 +242,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			var generalTabItem = editGroupWindow.Find<TabItem> ("General");
 
 			/*
-			 * BUG 574226 - [uiaclient-winforms]The name of Button is "Icon" 
+			 * BUG574226 - [uiaclient-winforms]The name of Button is "Icon" 
 			 * in Windows but in linux is ""
 			 * generalTabItem.Find<Button> ("Icon:").Click ();
 			 */
@@ -376,7 +371,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//103.6 Click "Add Entry" button on the toolstripbar
 			//BUG574620 :On linux a control who's control type is "SplitButton" on Windows is "Button"
-			//BUG576050- [uiaclient-winforms]: The splitbutton's Invoke method doesn't work
 			var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
 			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
@@ -404,16 +398,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (false, addEntryDialog.IsTopmost);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			/*
-			 * BUG576450 - [uiaclient-winforms] The dialog's Window Pattern' 
-			 * WindowInteractionState will be different between Windows and Linux 
-			 */
-			/*
-			 * procedureLogger.Action ("Check WindowInteractionState.");
-			 * procedureLogger.ExpectedResult ("The value of WindowInteractionState is ReadyForUserInteraction.");
-			 * Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, addEntryDialog.WindowInteractionState);
-			 * Thread.Sleep (Config.Instance.ShortDelay);
-			 */
+			procedureLogger.Action ("Check WindowInteractionState.");
+			procedureLogger.ExpectedResult ("The value of WindowInteractionState is ReadyForUserInteraction.");
+			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, addEntryDialog.WindowInteractionState);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check WindowVisualState.");
 			procedureLogger.ExpectedResult ("The value of WindowVisualState is Normal.");
@@ -518,41 +506,35 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.22 Check the properties of TableItemPattern
-			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			//var notesDataGrid = advancedTabItem.Find<DataGrid> ("Notes:");
-			//var a11yText = notesDataGrid.Find<Text> ("a11y");
-			var a11yText = addEntryDialog.Find<Edit> ("a11y");
-
+			var a11yDataItem = advancedTabItem.Find<DataItem> ("a11y");
 			procedureLogger.Action ("Check Column.");
 			procedureLogger.ExpectedResult ("The value of Colum is 0.");
-			Assert.AreEqual (0, a11yText.Column);
+			Assert.AreEqual (0, a11yDataItem.Column);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check ColumnSpan.");
 			procedureLogger.ExpectedResult ("The value of ColumnSpan 1.");
-			Assert.AreEqual (1, a11yText.ColumnSpan);
+			Assert.AreEqual (1, a11yDataItem.ColumnSpan);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check Row.");
 			procedureLogger.ExpectedResult ("The value of Row is 0.");
-			Assert.AreEqual (0, a11yText.Row);
+			Assert.AreEqual (0, a11yDataItem.Row);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check RowSpan.");
 			procedureLogger.ExpectedResult ("The value of RowSpan is 1.");
-			Assert.AreEqual (1, a11yText.RowSpan);
+			Assert.AreEqual (1, a11yDataItem.RowSpan);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			/* 
-			 * BUG578244 [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux
-			 * BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			AutomationElement dataGridItem = notesDataGrid.GetItem (0, 0);
-			AutomationElement a11ytextItem = window.Find<Edit> ("a11y").AutomationElement;
-			procedureLogger.Action ("Check ContainingGrid.");
-			procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
-			Assert.AreEqual (dataGridItem, a11ytextItem);
-			Thread.Sleep (Config.Instance.ShortDelay);
-			 */
+			//BUG578244 [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux
+			//AutomationElement firstItem = topDataGrid.GetItem (0, 0);
+			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
+			//AutomationElement a11y = topDataGrid.Find<Edit> ("a11y").AutomationElement;
+			//procedureLogger.Action ("Check ContainingGrid.");
+			//procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
+			//Assert.AreEqual (firstItem, a11y);
+			//Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.23 Close the "Add Entry" Window
 			addEntryDialog.Close ();
@@ -601,7 +583,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.6  Click "Add Entry" button on the toolstripbar
 			//BUG574620: Button recognized as SplitButton on Linux, but it's Button on Windows
-			//BUG576050: The splitbutton's Invoke method doesn't work
 			var addEntryButton = toolBar.Find<SplitButton> ("Add Entry");
 			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
@@ -635,7 +616,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.10 Click "Add Entry" button on the toolstripbar
 			//BUG574620: Button recognized as SplitButton on Linux, but it's Button on Windows
-			//BUG576050: The splitbutton's Invoke method doesn't work
 			addEntryButton.Find<MenuItem> ().Click ();
 			procedureLogger.ExpectedResult ("The \"Add Entry\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -665,13 +645,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.14 Get the (0,0) element of the datagrid , check if it is "Sample Entry"
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			//var sampleText = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
-			//var sampleText = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
-			//BUG578244: The datagrid's GetItem method can't be run on Linux.
-			//var entryText = dataGrid.GetItem (0, 0);
-			//procedureLogger.ExpectedResult ("The (0,0) item of the datagrid is \"Sample Entry\".");
-			//Assert.AreEqual (sampleText, entryText);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			//var sampleEntry = dataGrid.Find<Text> ("Sample Entry").AutomationElement;
+			var sampleEntry = dataGrid.Find<Edit> ("Sample Entry").AutomationElement;
+			var firstItem = dataGrid.GetItem (0, 0);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The (0,0) item of the datagrid is \"Sample Entry\".");
+			Assert.AreEqual (sampleEntry, firstItem);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.15 Resize window
 			//Resize the window smaller in order to make horizontal scroll bar could be displayed.
@@ -708,35 +688,37 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 
 			//104.19 Set the horizontal scroll bar large increment
 			dataGrid.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large increment.");
 			Assert.AreNotEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.20 Set the horizontal scroll bar large decrement
 			dataGrid.Scroll (ScrollAmount.LargeDecrement, ScrollAmount.NoAmount);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll large decrement.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.21 Set the horizontal scroll bar small increment
 			dataGrid.ScrollHorizontal (ScrollAmount.SmallIncrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small increment.");
 			Assert.AreNotEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.22 Set the horizontal scroll bar small decrement
 			dataGrid.ScrollHorizontal (ScrollAmount.SmallDecrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The horizontal scroll bar scroll small decrement.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
 			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//104.23 Check HorizontalViewSize of dataGrid
-			//BUG580433: [UIAClient-Winforms] The window is same size on Window and Linux,
-			//but the horizontal or vertical view size is not identical
-			//procedureLogger.Action ("Check HorizontalViewSize.");
-			//procedureLogger.ExpectedResult ("The value of HorizontalViewSize is.");
-			//Assert.AreEqual (, dataGrid.HorizontalViewSize);
-			//Thread.Sleep (Config.Instance.MediumDelay);
+			procedureLogger.Action ("Check HorizontalViewSize.");
+			procedureLogger.ExpectedResult ("The value of HorizontalViewSize is not 0.");
+			Assert.AreNotEqual (0, dataGrid.HorizontalViewSize);
+			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//104.24 Check VerticalViewSize of dataGrid
 			procedureLogger.Action ("Check VerticalViewSize.");
@@ -883,35 +865,37 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.36 Set the vertical scroll bar large increment
-			//BUG580452: [UIAClient-Winforms] The window is same size on Window and Linux,
-			//but the horizontal or vertical scroll percentage is not identical
-			//passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
-			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll large increment.");
-			//Assert.AreEqual (24, passwordDocument.VerticalScrollPercent);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The vertical scroll bar scroll large increment.");
+			Assert.AreNotEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.37 Set the vertical scroll bar large decrement
 			passwordDocument.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll large decrement.");
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.38 Set the vertical scroll bar small increment
-			//BUG580452: [UIAClient-Winforms] The window is same size on Window and Linux,
-			//but the horizontal or vertical scroll percentage is not identical
-			//passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
-			//procedureLogger.ExpectedResult ("The vertical scroll bar scroll small increment.");
-			//Assert.AreEqual (, passwordDocument.VerticalScrollPercent);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			passwordDocument.ScrollVertical (ScrollAmount.SmallIncrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The vertical scroll bar scroll small increment.");
+			// SmallIncrement increase only 1, it's too small to make VerticalScrollPercent to change.
+			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.39 Set the vertical scroll bar small decrement
 			passwordDocument.ScrollVertical (ScrollAmount.SmallDecrement);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll small decrement.");
 			Assert.AreEqual (0, passwordDocument.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.40 Set the Scroll vertica percent to 100
 			passwordDocument.SetScrollPercent (-1, 100);
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The vertical percentage of scroll bar is set to 100.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -922,12 +906,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.42 Check VerticalViewSize of passwordDocument
-			//BUG580433: [UIAClient-Winforms] The window is same size on Window and Linux,
-			//but the horizontal or vertical view size is not identical
-			//procedureLogger.Action ("Check VerticalViewSize.");
-			//procedureLogger.ExpectedResult ("The value of VerticalViewSize is.");
-			//Assert.AreEqual(, passwordDocument.VerticalViewSize);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.Action ("Check VerticalViewSize.");
+			procedureLogger.ExpectedResult ("The value of VerticalViewSize is.");
+			Assert.AreNotEqual(0, passwordDocument.VerticalViewSize);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//104.43 Check HorizontalViewSize of passwordDocument
 			procedureLogger.Action ("Check HorizontalViewSize.");
