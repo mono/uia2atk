@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Automation;
@@ -42,6 +43,101 @@ namespace AtspiUiaSource
 
 		private static int id;
 		private static Dictionary<Accessible, Element> elements;
+
+		private static AutomationProperty [] allProperties = {
+			AutomationElementIdentifiers.IsControlElementProperty,
+			AutomationElementIdentifiers.ControlTypeProperty,
+			AutomationElementIdentifiers.IsContentElementProperty,
+			AutomationElementIdentifiers.LabeledByProperty,
+			AutomationElementIdentifiers.NativeWindowHandleProperty,
+			AutomationElementIdentifiers.AutomationIdProperty,
+			AutomationElementIdentifiers.ItemTypeProperty,
+			AutomationElementIdentifiers.IsPasswordProperty,
+			AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			AutomationElementIdentifiers.NameProperty,
+			AutomationElementIdentifiers.AcceleratorKeyProperty,
+			AutomationElementIdentifiers.AccessKeyProperty,
+			AutomationElementIdentifiers.HasKeyboardFocusProperty,
+			AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			AutomationElementIdentifiers.IsEnabledProperty,
+			AutomationElementIdentifiers.BoundingRectangleProperty,
+			AutomationElementIdentifiers.ProcessIdProperty,
+			AutomationElementIdentifiers.RuntimeIdProperty,
+			AutomationElementIdentifiers.ClassNameProperty,
+			AutomationElementIdentifiers.HelpTextProperty,
+			AutomationElementIdentifiers.ClickablePointProperty,
+			AutomationElementIdentifiers.CultureProperty,
+			AutomationElementIdentifiers.IsOffscreenProperty,
+			AutomationElementIdentifiers.OrientationProperty,
+			AutomationElementIdentifiers.FrameworkIdProperty,
+			AutomationElementIdentifiers.IsRequiredForFormProperty,
+			AutomationElementIdentifiers.ItemStatusProperty,
+			// Comment Is*PatternAvailableProperty since MS.Net never include those 
+			// properties in the return value of AutomationElement.GetSupportedProperties ()
+			//AutomationElementIdentifiers.IsDockPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsGridItemPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsGridPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsInvokePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsSelectionPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsScrollPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsTablePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsTableItemPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsTextPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsTogglePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsTransformPatternAvailableProperty,
+			//AutomationElementIdentifiers.IsValuePatternAvailableProperty,
+			//AutomationElementIdentifiers.IsWindowPatternAvailableProperty,
+			ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			GridItemPatternIdentifiers.RowProperty,
+			GridItemPatternIdentifiers.ColumnProperty,
+			GridItemPatternIdentifiers.RowSpanProperty,
+			GridItemPatternIdentifiers.ColumnSpanProperty,
+			GridItemPatternIdentifiers.ContainingGridProperty,
+			GridPatternIdentifiers.RowCountProperty,
+			GridPatternIdentifiers.ColumnCountProperty,
+			MultipleViewPatternIdentifiers.CurrentViewProperty,
+			MultipleViewPatternIdentifiers.SupportedViewsProperty,
+			RangeValuePatternIdentifiers.ValueProperty,
+			RangeValuePatternIdentifiers.IsReadOnlyProperty,
+			RangeValuePatternIdentifiers.MinimumProperty,
+			RangeValuePatternIdentifiers.MaximumProperty,
+			RangeValuePatternIdentifiers.LargeChangeProperty,
+			RangeValuePatternIdentifiers.SmallChangeProperty,
+			ScrollPatternIdentifiers.HorizontalScrollPercentProperty,
+			ScrollPatternIdentifiers.HorizontalViewSizeProperty,
+			ScrollPatternIdentifiers.VerticalScrollPercentProperty,
+			ScrollPatternIdentifiers.VerticalViewSizeProperty,
+			ScrollPatternIdentifiers.HorizontallyScrollableProperty,
+			ScrollPatternIdentifiers.VerticallyScrollableProperty,
+			SelectionItemPatternIdentifiers.IsSelectedProperty,
+			SelectionItemPatternIdentifiers.SelectionContainerProperty,
+			SelectionPatternIdentifiers.SelectionProperty,
+			SelectionPatternIdentifiers.CanSelectMultipleProperty,
+			SelectionPatternIdentifiers.IsSelectionRequiredProperty,
+			TablePatternIdentifiers.RowHeadersProperty,
+			TablePatternIdentifiers.ColumnHeadersProperty,
+			TablePatternIdentifiers.RowOrColumnMajorProperty,
+			TogglePatternIdentifiers.ToggleStateProperty,
+			TransformPatternIdentifiers.CanMoveProperty,
+			TransformPatternIdentifiers.CanResizeProperty,
+			TransformPatternIdentifiers.CanRotateProperty,
+			ValuePatternIdentifiers.ValueProperty,
+			ValuePatternIdentifiers.IsReadOnlyProperty,
+			WindowPatternIdentifiers.CanMaximizeProperty,
+			WindowPatternIdentifiers.CanMinimizeProperty,
+			WindowPatternIdentifiers.IsModalProperty,
+			WindowPatternIdentifiers.WindowVisualStateProperty,
+			WindowPatternIdentifiers.WindowInteractionStateProperty,
+			WindowPatternIdentifiers.IsTopmostProperty,
+			DockPatternIdentifiers.DockPositionProperty,
+			TableItemPatternIdentifiers.RowHeaderItemsProperty,
+			TableItemPatternIdentifiers.ColumnHeaderItemsProperty
+		};
 
 		public Element (Accessible accessible)
 		{
@@ -84,7 +180,61 @@ namespace AtspiUiaSource
 
 		public virtual bool SupportsProperty (AutomationProperty property)
 		{
-			// TODO
+			if ((property.Id == AutomationElementIdentifiers.ControlTypeProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.LabeledByProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.AutomationIdProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.IsPasswordProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.NameProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.AcceleratorKeyProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.AccessKeyProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.IsEnabledProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.BoundingRectangleProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.ProcessIdProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.RuntimeIdProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.HelpTextProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.ClickablePointProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.OrientationProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.FrameworkIdProperty.Id))
+				return true;
+			if (property.Id == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
+				return SupportsExpandCollapse ();
+			if ((property.Id == GridItemPatternIdentifiers.RowProperty.Id) ||
+				(property.Id == GridItemPatternIdentifiers.ColumnProperty.Id) ||
+				(property.Id == GridItemPatternIdentifiers.RowSpanProperty.Id) ||
+				(property.Id == GridItemPatternIdentifiers.ColumnSpanProperty.Id) ||
+				(property.Id == GridItemPatternIdentifiers.ContainingGridProperty.Id))
+				return SupportsGridItem ();
+			if ((property.Id == GridPatternIdentifiers.RowCountProperty.Id) ||
+				(property.Id == GridPatternIdentifiers.ColumnCountProperty.Id))
+				return SupportsGrid ();
+			if ((property.Id == RangeValuePatternIdentifiers.ValueProperty.Id) ||
+				(property.Id == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id) ||
+				(property.Id == RangeValuePatternIdentifiers.MinimumProperty.Id) ||
+				(property.Id == RangeValuePatternIdentifiers.MaximumProperty.Id) ||
+				(property.Id == RangeValuePatternIdentifiers.SmallChangeProperty.Id))
+				return SupportsRangeValue ();
+			if ((property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) ||
+				(property.Id == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id))
+				return SupportsSelectionItem ();
+			if ((property.Id == SelectionPatternIdentifiers.SelectionProperty.Id) ||
+				(property.Id == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id) ||
+				(property.Id == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id))
+				return SupportsSelection ();
+			if ((property.Id == TablePatternIdentifiers.RowHeadersProperty.Id) ||
+				(property.Id == TablePatternIdentifiers.ColumnHeadersProperty.Id))
+				return SupportsTable ();
+			if (property.Id == TogglePatternIdentifiers.ToggleStateProperty.Id)
+				return SupportsToggle ();
+			if ((property.Id == ValuePatternIdentifiers.ValueProperty.Id) ||
+				(property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id))
+				return SupportsValue ();
+			if ((property.Id == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id) ||
+				(property.Id == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id))
+				return SupportsTableItem ();
 			return false;
 		}
 
@@ -492,7 +642,9 @@ namespace AtspiUiaSource
 
 		public AutomationProperty [] GetSupportedProperties ()
 		{
-			throw new NotImplementedException ();
+				return allProperties
+					.Where (property => SupportsProperty (property))
+					.ToArray ();
 		}
 
 		public void SetFocus ()

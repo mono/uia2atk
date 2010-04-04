@@ -48,6 +48,10 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AcceleratorKeyProperty),
 				button1Element.Current.AcceleratorKey,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AcceleratorKeyProperty, true),
+					button1Element.Current.AcceleratorKey,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 			// TODO: Complete actual test (mostly unimplemented in Linux right now)
 		}
 
@@ -57,6 +61,10 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AccessKeyProperty),
 				button1Element.Current.AccessKey,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AccessKeyProperty, true),
+					button1Element.Current.AccessKey,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual ("Alt+u",
 				button1Element.Current.AccessKey,
@@ -72,6 +80,10 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AutomationIdProperty),
 				button1Element.Current.AutomationId,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.AutomationIdProperty, true),
+					button1Element.Current.AutomationId,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 			// TODO: Complete actual test (implemented incorrectly in Linux right now)
 		}
 
@@ -81,6 +93,10 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.BoundingRectangleProperty),
 				button1Element.Current.BoundingRectangle,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.BoundingRectangleProperty, true),
+					button1Element.Current.BoundingRectangle,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			// TODO: Coordinates, not just size (not matching in Linux yet)
 			Rect button2Rect = button2Element.Current.BoundingRectangle;
@@ -148,6 +164,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.ControlTypeProperty),
 				button1Element.Current.ControlType,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.ControlTypeProperty, true),
+					button1Element.Current.ControlType,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual (ControlType.Window,
 				testFormElement.Current.ControlType,
@@ -173,6 +193,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.FrameworkIdProperty),
 				button1Element.Current.FrameworkId,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.FrameworkIdProperty, true),
+					button1Element.Current.FrameworkId,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual ("WinForm",
 				testFormElement.Current.FrameworkId,
@@ -221,6 +245,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.HasKeyboardFocusProperty),
 				button1Element.Current.HasKeyboardFocus,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.HasKeyboardFocusProperty, true),
+					button1Element.Current.HasKeyboardFocus,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			var propertyEventsArray = new [] {
 				new {Sender = (object) null, Args = (AutomationPropertyChangedEventArgs) null}};
@@ -263,6 +291,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button3Element.GetCurrentPropertyValue (AEIds.HelpTextProperty),
 				button3Element.Current.HelpText,
 				"button3 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button3Element.GetCurrentPropertyValue (AEIds.HelpTextProperty, true),
+					button3Element.Current.HelpText,
+					"button3 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual ("help text 3",
 				button3Element.Current.HelpText,
@@ -328,6 +360,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsEnabledProperty),
 				button1Element.Current.IsEnabled,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsEnabledProperty, true),
+					button1Element.Current.IsEnabled,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.IsTrue (testFormElement.Current.IsEnabled,
 				"window");
@@ -374,6 +410,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsKeyboardFocusableProperty),
 				button1Element.Current.IsKeyboardFocusable,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsKeyboardFocusableProperty, true),
+					button1Element.Current.IsKeyboardFocusable,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.IsTrue (testFormElement.Current.IsKeyboardFocusable,
 				"window");
@@ -395,6 +435,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsOffscreenProperty),
 				button1Element.Current.IsOffscreen,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsOffscreenProperty, true),
+					button1Element.Current.IsOffscreen,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 			// TODO: Complete actual test (requires pattern support to move window)
 		}
 
@@ -404,6 +448,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsPasswordProperty),
 				button1Element.Current.IsPassword,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.IsPasswordProperty, true),
+					button1Element.Current.IsPassword,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.IsFalse (textbox1Element.Current.IsPassword,
 				"textbox1");
@@ -444,6 +492,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.LabeledByProperty),
 				button1Element.Current.LabeledBy,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.LabeledByProperty, true),
+					button1Element.Current.LabeledBy,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual (label1Element,
 				button1Element.Current.LabeledBy,
@@ -465,6 +517,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.LocalizedControlTypeProperty),
 				button1Element.Current.LocalizedControlType,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.LocalizedControlTypeProperty, true),
+					button1Element.Current.LocalizedControlType,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual (ControlType.Window.LocalizedControlType,
 				testFormElement.Current.LocalizedControlType,
@@ -480,6 +536,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.NameProperty),
 				button1Element.Current.Name,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.NameProperty, true),
+					button1Element.Current.Name,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual ("TestForm1",
 				testFormElement.Current.Name,
@@ -539,6 +599,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.OrientationProperty),
 				button1Element.Current.Orientation,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.OrientationProperty, true),
+					button1Element.Current.Orientation,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual (OrientationType.None,
 				testFormElement.Current.Orientation,
@@ -565,6 +629,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.ProcessIdProperty),
 				button1Element.Current.ProcessId,
 				"button1 AutomationElementInformation vs GetCurrentPropertyValue");
+			if (Atspi)
+				Assert.AreEqual (button1Element.GetCurrentPropertyValue (AEIds.ProcessIdProperty, true),
+					button1Element.Current.ProcessId,
+					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 
 			Assert.AreEqual (p.Id,
 				testFormElement.Current.ProcessId,

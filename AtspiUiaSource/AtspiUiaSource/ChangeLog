@@ -1,3 +1,7 @@
+2010-04-04  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs: Implement GetSupportedProperties.
+
 2010-03-30  Mike Gorse  <mgorse@novell.com>
 
 	* SelectionSource.cs: Check for NSelectedChildren < 0.
