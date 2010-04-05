@@ -1,3 +1,7 @@
+2010-04-05  Mike Gorse <mgorse@novell.com>
+
+	* main.c: Do not dlclose gconf [fixes BNC#590708]
+
 2010-03-16  Mike Gorse <mgorse@novell.com>
 
 	* main.c, main.h: Add gnome_accessibility_module_init and

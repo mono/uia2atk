@@ -148,7 +148,7 @@ static const char *
 get_bridge_path ()
 {
   static const char *path = NULL;
-  void *gconf = NULL;
+  static void *gconf = NULL;
   gconf_client_get_default_t gconf_client_get_default = NULL;
   gconf_client_get_bool_t gconf_client_get_bool = NULL;
   GObject *gconf_client;	/* really a GConfClient */
@@ -157,7 +157,10 @@ get_bridge_path ()
   if (path)
     return path;
 
-  gconf = dlopen ("libgconf-2.so", RTLD_LAZY);
+  g_type_init ();
+
+  if (!gconf)
+    gconf = dlopen ("libgconf-2.so", RTLD_LAZY);
   if (gconf)
     {
       gconf_client_get_default = dlsym (gconf, "gconf_client_get_default");
@@ -178,8 +181,8 @@ get_bridge_path ()
     }
   if (gconf_client)
     g_object_unref (gconf_client);
-  if (gconf)
-    dlclose (gconf);
+  /* Not going to close gconf, since it brings in ORBit and would leave
+   * a dangling main loop context (see BNC#590708) */
   path = g_strconcat (GTK_MODULES_DIR, "/", append_str, "libatk-bridge.so", NULL);
   return path;
 }
