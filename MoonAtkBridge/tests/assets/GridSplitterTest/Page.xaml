@@ -23,7 +23,7 @@
                 <TextBlock Text="Two!" Grid.Row="1" Grid.Column="1" Margin="10,10,0,0"/>
                 <TextBlock Text="Three!" Grid.Row="2" Grid.Column="2" Margin="10,10,0,0" />
                 <TextBlock Text="Four!" Grid.Row="3" Grid.Column="3" Margin="10,10,0,0"  />
-                <control:GridSplitter Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"
+                <control:GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
                                Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                ShowsPreview="True"
                                 />

@@ -107,8 +107,13 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 			if (gridsplitter == null)
 				value = new GLib.Value (0);
-			else
-				value = new GLib.Value ((GetSectionSize (0) * 100) / TotalSize);
+			else {
+				int totalSize = TotalSize;
+				if (totalSize == 0)
+					value = new GLib.Value (0);
+				else
+					value = new GLib.Value ((GetSectionSize (0) * 100) / totalSize);
+			}
 		}
 
 		public bool SetCurrentValue (GLib.Value value)
@@ -149,9 +154,6 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		private int GetSectionSize (int index)
 		{
-			if (row == 0 || column == 0)
-				return 0;
-
 			// Use by Rows
 			if (gridsplitter.HorizontalAlignment == HorizontalAlignment.Stretch) {
 				int count = GetPropertyValue<int> (gridRowDefinitions, "Count");

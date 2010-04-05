@@ -1,3 +1,8 @@
+2010-04-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs: Fix NRE.
+	BNC #590765.
+
 2010-03-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs:

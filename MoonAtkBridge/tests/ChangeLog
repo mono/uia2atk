@@ -1,3 +1,7 @@
+2010-04-05  Mario Carrion  <mcarrion@novell.com>
+
+	* assets/GridSplitterTest/Page.xaml: Fix NRE. BNC #590765.
+
 2010-03-29  Mario Carrion  <mcarrion@novell.com>
 
 	* assets/DataGridTest/App.xaml:
