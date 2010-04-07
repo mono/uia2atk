@@ -126,7 +126,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				// and we should iterate when listView.Groups > 0
 				SWF.ListViewItem item = listView.Items [row];
 				ListViewProvider.ListViewListItemProvider itemProvider = null;
-				if (listView.Groups == null || listView.Groups.Count == 0 || !listView.ShowGroups)
+				if ((listView.Groups == null || listView.Groups.Count == 0) && !listView.ShowGroups)
 					itemProvider = provider.GetItem (item);
 				else {
 					ListViewProvider.ListViewGroupProvider groupProvider
