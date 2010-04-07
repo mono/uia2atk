@@ -30,6 +30,7 @@ BuildRequires:  atk-devel
 BuildRequires:  dbus-1-glib-devel
 BuildRequires:  fdupes
 BuildRequires:  gtk2-devel
+BuildRequires:  intltool
 BuildRequires:  libxml2-devel
 # The GTK+ module is useful only if the at-spi registry is running. But it's
 # not a strict runtime dependency.
