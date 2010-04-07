@@ -18,7 +18,7 @@
 
 
 Name:           at-spi2-atk
-Version:        0.1.6
+Version:        0.1.8
 Release:        85
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
@@ -29,6 +29,7 @@ Source99:       %{name}-rpmlintrc
 BuildRequires:  atk-devel
 BuildRequires:  dbus-1-glib-devel
 BuildRequires:  fdupes
+BuildRequires:  gconf2-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  intltool
 BuildRequires:  libxml2-devel
@@ -44,6 +45,7 @@ Conflicts:      at-spi < 1.29.3
 # stack already installed
 Supplements:    packageand(at-spi2-core:gtk2)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+#%gconf_schemas_prereq
 
 %description
 AT-SPI is a general interface for applications to make use of the
@@ -51,6 +53,7 @@ accessibility toolkit. This version is based on dbus.
 
 This package contains a GTK+ module for at-spi, based on ATK.
 
+%lang_package
 %prep
 %setup -q
 
@@ -60,14 +63,30 @@ This package contains a GTK+ module for at-spi, based on ATK.
 
 %install
 %makeinstall
+# en@shaw isn't supported in openSUSE <= 11.2
+%if 0%{?suse_version} <= 1120
+%{__rm} %{buildroot}%{_datadir}/locale/en@shaw/LC_MESSAGES/*
+%endif
+
 find %{buildroot} -type f -name "*.la" -delete -print
+%find_gconf_schemas
+%find_lang %{name}
+
 
 %clean
 rm -rf %{buildroot}
 
-%files
+%pre -f %{name}.schemas_pre
+
+%preun -f %{name}.schemas_preun
+
+%posttrans -f %{name}.schemas_posttrans
+
+%files -f %{name}.schemas_list
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
+
+%files lang -f %{name}.lang
 
 %changelog
