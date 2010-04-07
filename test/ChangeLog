@@ -1,3 +1,8 @@
+2010-04-07  Ray Wang  <rawang@novell.com>
+
+	* testers/winforms/trackbar-regression.py: Update test due to
+	bug484189 resolved.
+
 2010-04-07  Calen Chen <cachen@novell.com>
 
 	* testers/moonlight/scrollviewer-regression.py: remove bug 553160 
