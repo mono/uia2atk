@@ -194,6 +194,8 @@ namespace Mono.UIAutomation.TestFramework
 				return new Slider (elm);
 			else if (elm.Current.ControlType == ControlType.TreeItem)
 				return new TreeItem (elm);
+			else if (elm.Current.ControlType == ControlType.Group)
+				return new Group (elm);
 
 			return new Element (elm);
 		}
@@ -204,6 +206,14 @@ namespace Mono.UIAutomation.TestFramework
 			for (int i = 0; i < elm.Count; i++)
 				ret [i] = Promote (elm [i]) as T;
 			return ret;
+		}
+
+		public T CheckAndReturnProperty<T> (AutomationProperty property)
+		{
+			object ret = element.GetCurrentPropertyValue (property, true);
+			if (ret  == AutomationElement.NotSupported)
+				throw new Exception ("The property is not supported.");
+			return (T) ret;
 		}
 #endregion
 	}

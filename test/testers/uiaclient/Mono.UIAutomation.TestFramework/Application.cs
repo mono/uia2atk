@@ -68,10 +68,13 @@ namespace Mono.UIAutomation.TestFramework
 		public Window FindGtkSubWindow (Window mainWindow, string name)
 		{
 			AndCondition cond = new AndCondition(
-			                    new PropertyCondition (AutomationElementIdentifiers.ProcessIdProperty, 
-			                                           mainWindow.AutomationElement.Current.ProcessId),  
-			                    new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
-			return new Window (AutomationElement.RootElement.FindFirst (TreeScope.Children, cond));
+			                        new PropertyCondition (AutomationElementIdentifiers.ProcessIdProperty, 
+			                                               mainWindow.AutomationElement.Current.ProcessId), 
+			                        new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, 
+			                                               ControlType.Window), 
+			                        new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
+			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, cond);
+			return new Window (ae);
 		}
 	}
 }

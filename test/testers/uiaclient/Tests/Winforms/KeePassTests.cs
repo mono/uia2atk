@@ -506,7 +506,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.22 Check the properties of TableItemPattern
-			var a11yDataItem = advancedTabItem.Find<DataItem> ("a11y");
+			var topDataGrid = advancedTabItem.Find<Group> (Direction.Vertical, 0).Find<DataGrid> (Direction.Vertical, 0);
+			var a11yDataItem = topDataGrid.Find<DataItem> ("a11y");
 			procedureLogger.Action ("Check Column.");
 			procedureLogger.ExpectedResult ("The value of Colum is 0.");
 			Assert.AreEqual (0, a11yDataItem.Column);
@@ -527,14 +528,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms
 			Assert.AreEqual (1, a11yDataItem.RowSpan);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//BUG578244 [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux
-			//AutomationElement firstItem = topDataGrid.GetItem (0, 0);
+			AutomationElement firstItem = topDataGrid.GetItem (0, 0);
 			//BUG576455 All the "Text" controls are recognized as "Edit" on Linux
-			//AutomationElement a11y = topDataGrid.Find<Edit> ("a11y").AutomationElement;
-			//procedureLogger.Action ("Check ContainingGrid.");
-			//procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
-			//Assert.AreEqual (firstItem, a11y);
-			//Thread.Sleep (Config.Instance.ShortDelay);
+			AutomationElement a11y = topDataGrid.Find<Edit> ("a11y").AutomationElement;
+			procedureLogger.ExpectedResult ("The value of ContainingGrid is the AutomationElement of its parent.");
+			Assert.AreEqual (firstItem, a11y);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//103.23 Close the "Add Entry" Window
 			addEntryDialog.Close ();

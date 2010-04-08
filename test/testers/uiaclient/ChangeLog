@@ -1,3 +1,13 @@
+2010-04-02  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Application.cs: Add ControlType
+	check.
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/Group.cs:
+	Add Group class into project.
+	* Tests/Winforms/KeePassTests.cs: Remove bug 578244 reference.
+
 2010-04-07  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs:Make the program blocked to reproduce a bug.  
