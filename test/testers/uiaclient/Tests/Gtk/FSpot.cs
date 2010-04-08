@@ -68,16 +68,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//Click "photo" menu
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("Photo").Click ();
+			menuBar.Find<Menu> ("Photo").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Select the "Import" menu item.
-			var importMenuItem = menuBar.Find<MenuItem> ("Import");
+			var importMenuItem = menuBar.Find<MenuItem> ("Import...");
 			importMenuItem.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = window.Find<ComboBox> ("Import Source:");
+			var importSourceCombobox = window.Find<ComboBox> ("Select Folder");
 			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -91,18 +91,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			openButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 
-			var list = importDialog.Find<List> ();
-			var listItem = list.Find<ListItem> ();
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//var list = importDialog.Find<List> ();
+			//var listItem = list.Find<ListItem> ();
+			//Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Click "Import" Button
 			var importButton = importDialog.Find<Button> ("Import");
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			var fspotList = window.Find<List> ();
-			var fspotListItem = fspotList.Find<ListItem> ();
-			Thread.Sleep (Config.Instance.ShortDelay);
+			//var fspotList = window.Find<List> ();
+			//var fspotListItem = fspotList.Find<ListItem> ();
+			//Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
 		//TestCase201 Import the pictures into the F-Spot Editor
@@ -116,18 +116,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//201.1 Click "photo" menu
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("Photo").Click ();
+			menuBar.Find<Menu> ("Photo").Click ();
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.2 Select the "Import" menu item.
-			var importMenuItem = menuBar.Find<MenuItem> ("Import");
+			var importMenuItem = menuBar.Find<MenuItem> ("Import...");
 			importMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = window.Find<ComboBox> ("Import Source:");
+			var importSourceCombobox = window.Find<ComboBox> ("Select Folder");
 			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
