@@ -675,6 +675,11 @@ namespace AtspiUiaSource
 
 		internal static Element GetElement (Accessible accessible)
 		{
+			return GetElement (accessible, true);
+		}
+
+		internal static Element GetElement (Accessible accessible, bool create)
+		{
 			if (accessible == null)
 				return null;
 			// We expose the children of Applications as top-level,
@@ -685,6 +690,8 @@ namespace AtspiUiaSource
 				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
 			return elements [accessible];
+			if (!create)
+				return null;
 			Element element;
 			if (IsTable (accessible))
 				element = new TableElement (accessible);

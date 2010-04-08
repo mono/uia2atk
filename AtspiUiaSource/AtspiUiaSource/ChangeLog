@@ -1,3 +1,11 @@
+2010-04-08  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationSource.cs, Element.cs: Don't send StructureChanged events for
+	non-existent elements, except for ChildAdded events.
+
+	* AutomationSource.cs: Send RootElementsChanged for children of
+	applications [BNC#593973]
+
 2010-04-04  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs: Implement GetSupportedProperties.

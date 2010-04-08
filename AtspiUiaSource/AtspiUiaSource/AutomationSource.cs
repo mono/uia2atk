@@ -333,7 +333,8 @@ namespace AtspiUiaSource
 
 		internal static void RaiseStructureChangedEvent (Accessible accessible, StructureChangeType type)
 		{
-			IElement element = Element.GetElement (accessible);
+			bool create = (type == StructureChangeType.ChildAdded);
+			IElement element = Element.GetElement (accessible, create);
 			RaiseStructureChangedEvent (element, type);
 		}
 
@@ -478,7 +479,7 @@ namespace AtspiUiaSource
 				RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
 			if (child.Role == Role.Frame)
 				RaiseAutomationEvent (child, WindowPattern.WindowOpenedEvent);
-			if (sender == Desktop.Instance)
+			if (sender.Role == Role.Application)
 				OnRootElementsChanged ();
 		}
 
@@ -486,7 +487,7 @@ namespace AtspiUiaSource
 		{
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
 			RaiseStructureChangedEvent (sender, StructureChangeType.ChildRemoved);
-			if (sender == Desktop.Instance)
+			if (sender == Desktop.Instance || sender.Role == Role.Application)
 				OnRootElementsChanged ();
 		}
 
