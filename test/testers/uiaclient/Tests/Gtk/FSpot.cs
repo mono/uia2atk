@@ -77,7 +77,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = window.Find<ComboBox> ("Select Folder");
+			var importSourceCombobox = app.FindGtkSubWindow (window, "Import").Find<ComboBox> ("Select Folder");
 			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -91,18 +91,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			openButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 
-			//var list = importDialog.Find<List> ();
-			//var listItem = list.Find<ListItem> ();
-			//Thread.Sleep (Config.Instance.ShortDelay);
-
 			//Click "Import" Button
 			var importButton = importDialog.Find<Button> ("Import");
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//var fspotList = window.Find<List> ();
-			//var fspotListItem = fspotList.Find<ListItem> ();
-			//Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
 		//TestCase201 Import the pictures into the F-Spot Editor
@@ -127,7 +119,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = window.Find<ComboBox> ("Select Folder");
+			var importSourceCombobox = app.FindGtkSubWindow (window, "Import").Find<ComboBox> ("Select Folder");
 			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 

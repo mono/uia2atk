@@ -1,4 +1,8 @@
-2010-04-02  Ray Wang  <rawang@novell.com>
+2010-04-09  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs:Using "FindGtkSubWindow" to find the sub window. 
+
+2010-04-07  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Application.cs: Add ControlType
 	check.
