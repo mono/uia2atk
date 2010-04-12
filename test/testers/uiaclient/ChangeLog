@@ -1,3 +1,8 @@
+2010-04-12  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/uiaclient/Mono.UIAutomation.TestFramework/Application.cs:
+	Add FindAllGtkSubWindow() method. 
+
 2010-04-09  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs:Using "FindGtkSubWindow" to find the sub window. 

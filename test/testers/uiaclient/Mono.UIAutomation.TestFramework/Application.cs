@@ -26,6 +26,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Automation;
+using System.Collections;
 
 namespace Mono.UIAutomation.TestFramework
 {
@@ -67,7 +68,7 @@ namespace Mono.UIAutomation.TestFramework
 
 		public Window FindGtkSubWindow (Window mainWindow, string name)
 		{
-			AndCondition cond = new AndCondition(
+			AndCondition cond = new AndCondition (
 			                        new PropertyCondition (AutomationElementIdentifiers.ProcessIdProperty, 
 			                                               mainWindow.AutomationElement.Current.ProcessId), 
 			                        new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, 
@@ -75,6 +76,23 @@ namespace Mono.UIAutomation.TestFramework
 			                        new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
 			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, cond);
 			return new Window (ae);
+		}
+
+		public Window [] FindAllGtkSubWindow (Window mainWindow, string name)
+		{
+			List<Window> retval = new List<Window> ();
+			AndCondition cond = new AndCondition (
+			                        new PropertyCondition (AutomationElementIdentifiers.ProcessIdProperty, 
+			                                               mainWindow.AutomationElement.Current.ProcessId), 
+			                        new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, 
+			                                               ControlType.Window), 
+			                        new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
+			var elements = AutomationElement.RootElement.FindAll (TreeScope.Children, cond);
+			foreach (AutomationElement ae in elements) {
+				retval.Add (new Window (ae));
+			}
+				
+			return retval.ToArray();
 		}
 	}
 }
