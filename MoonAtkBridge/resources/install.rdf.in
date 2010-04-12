@@ -8,11 +8,10 @@
     <em:description>Enables Accessibility for Moonlight on Linux desktops.</em:description>
     <em:iconURL>chrome://moonlight/skin/icon.png</em:iconURL>
     <!--em:updateURL>http://mono-a11y.org/archive/moonlight-plugins/updates/update-@SL_PROFILE@-@INSTALL_ARCH@.rdf</em:updateURL-->
-    <em:updateURL>http://mono-a11y.org/archive/moonlight-a11y-plugins/updates/update-2.0-noarch.rdf</em:updateURL>
-    <!-- No updateKey for now (this is the moonlight and default key : https://developer.mozilla.org/en/Install.rdf#updateKey) -->
-    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi8rEWjKukJk4igOKjOU3RLj3vri9pff1znkb12M4N6
-                  irBv4vbTSBjjrDOzOOB+g6C/fAP8LsFCDHgqmXmRbsCxAycED/TKzbevpTkX0ywlUL6nfVwegwQMclzP5
-                  rjxQ1fXagEg2+6S4SlGVZnj8jXCybdz+giz53M5QeoaacuFwIDAQAB
+    <em:updateURL>http://mono-a11y.org/archives/moonlight-a11y-plugins/updates/update-2.0-noarch.rdf</em:updateURL>
+    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLNHCnYztf++md55ta8GFKM7cLrnt1RBmPZkCZ0TcLW
+                  bc0DlzChLbC2kcbLGeuo50BfPfE3CDA3m+J2lgj+lIAPb7wCTKfIYby7rtPAjEQU9i0lrMtTJ4+DSVo7h
+                  +FdQIaaKFmphfA1TAmmOnhw4r5wb3iCj4zWxCyNMa50X0rlQIDAQAB
     </em:updateKey>
 
     <em:homepageURL>http://mono-project.com/Moonlight</em:homepageURL>
@@ -21,7 +20,8 @@
     <em:contributor>Brad Taylor</em:contributor>
     <em:contributor>Mario Carrión</em:contributor>
 
-    <em:targetApplication>
+    <em:targetPlatform>Linux</em:targetPlatform>
+    <em:targetApplication> <!-- Firefox -->
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>3.5</em:minVersion>

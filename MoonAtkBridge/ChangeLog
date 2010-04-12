@@ -1,3 +1,12 @@
+2010-03-30  Stephen Shaw <sshaw@decriptor.com>
+
+	* resources/install.rdf.in: Added our updateKey, targetPlatform, and
+	a new updateURL
+	* patches/moonlight-a11y-core-extension.diff: Updated with our
+	updateKey and new updateURL
+	* patches/moon_trunk/moonlight-a11y-core-extension.diff: Updated with
+	our updateKey and new updateURL
+
 2010-03-30  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac:
