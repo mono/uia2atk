@@ -81,6 +81,7 @@ FILES = \
 	Direction.cs \
 	Slider.cs \
 	TreeItem.cs \
+	Group.cs \
 	AssemblyInfo.cs 
 
 DATA_FILES = 

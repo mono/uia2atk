@@ -1,3 +1,8 @@
+2010-04-13  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.TestFramework/Makefile.am: Added Group.cs to fix build
+	problem.
+
 2010-04-12  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/uiaclient/Mono.UIAutomation.TestFramework/Application.cs:
