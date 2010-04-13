@@ -1,3 +1,7 @@
+2010-04-13  Calen Chen  <cachen@novell.com>
+
+	* Tests/Moonlight/SL2WithPrismTest.cs: update tests and add bug596065 reference
+
 2010-04-13  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.TestFramework/Makefile.am: Added Group.cs to fix build
@@ -26,6 +30,7 @@
 
 	* Tests/GTK/Fspot.cs:Make the program blocked to reproduce a bug.  
 
+>>>>>>> .r155302
 2010-04-02  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/DataGrid.cs: Change a grammar error.
