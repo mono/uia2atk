@@ -1,3 +1,7 @@
+2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* GtkForm/Makefile.am: Fix distcheck.
+
 2010-04-04  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/AutomationElementTest.cs: Test

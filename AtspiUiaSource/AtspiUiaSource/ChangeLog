@@ -1,3 +1,7 @@
+2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Fix distcheck.
+
 2010-04-08  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationSource.cs, Element.cs: Don't send StructureChanged events for

@@ -1,3 +1,7 @@
+2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Fix distcheck.
+
 2010-02-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: By default,

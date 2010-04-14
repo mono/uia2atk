@@ -2,7 +2,7 @@ ASSEMBLY_COMPILER_FLAGS =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk
 
 ASSEMBLY = bin/Debug/AtkTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -17,7 +17,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk
 ASSEMBLY = bin/Release/AtkTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library

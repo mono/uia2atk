@@ -15,7 +15,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk
 ASSEMBLY = bin/Release/UiaAtkBridgeTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library

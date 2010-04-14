@@ -1,3 +1,7 @@
+2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Fix distcheck.
+
 2009-11-24  Mike Gorse  <mgorse@novell.com>
 
 	* IElementTest.cs: Track some AtspiUiaSource changes.
