@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-#region MultipleViewPattern
+		#region MultipleView Pattern
 		public string GetViewName (int viewId)
 		{
 			MultipleViewPattern mvp = (MultipleViewPattern) element.GetCurrentPattern (MultipleViewPattern.Pattern);
@@ -64,11 +64,11 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public int CurrentView {
-			get { return (int) element.GetCurrentPropertyValue (MultipleViewPattern.CurrentViewProperty); }
+			get { return (int) element.GetCurrentPropertyValue (MultipleViewPattern.CurrentViewProperty, true); }
 		}
-#endregion
+		#endregion
 
-#region SelectionPattern
+		#region SelectionPattern
 		public AutomationElement [] GetSelection ()
 		{
 			SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
@@ -76,38 +76,38 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool CanSelectMultiple {
-			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty, true); }
 		}
 
 		public bool IsSelectionRequired {
-			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty, true); }
 		}
-#endregion
+		#endregion
 
-#region ScrollPattern
+		#region ScrollPattern
 		public bool HorizontallyScrollable {
-			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.HorizontallyScrollableProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.HorizontallyScrollableProperty, true); }
 		}
 
 		public double HorizontalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty, true); }
 		}
 
 		public double HorizontalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty, true); }
 		}
 
 		public bool VerticallyScrollable {
-			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty, true); }
 		}
 
 		public double VerticalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty, true); }
 		}
 
 		public double VerticalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty, true); }
 		}
-#endregion
+		#endregion
 	}
 }

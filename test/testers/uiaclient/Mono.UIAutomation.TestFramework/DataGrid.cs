@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The method and properties of GridPattern
+		#region Grid Pattern
 		public AutomationElement GetItem (int row, int column)
 		{
 			return GetItem (row, column, true);
@@ -53,14 +53,15 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public int RowCount {
-			get { return (int) element.GetCurrentPropertyValue (GridPattern.RowCountProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridPattern.RowCountProperty, true); }
 		}
 
 		public int ColumnCount {
-			get { return (int) element.GetCurrentPropertyValue (GridPattern.ColumnCountProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridPattern.ColumnCountProperty, true); }
 		}
+		#endregion
 
-		// The methods and properties of TablePattern
+		#region Table Pattern
 		public AutomationElement [] GetColumnHeaders ()
 		{
 			return GetColumnHeaders (true);
@@ -90,18 +91,19 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public AutomationElement [] ColumnHeaders {
-			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.ColumnHeadersProperty); }
+			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.ColumnHeadersProperty, true); }
 		}
 
 		public AutomationElement [] RowHeaders {
-			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.RowHeadersProperty); }
+			get { return (AutomationElement []) element.GetCurrentPropertyValue (TablePattern.RowHeadersProperty, true); }
 		}
 
 		public RowOrColumnMajor RowOrColumnMajor {
-			get { return (RowOrColumnMajor) element.GetCurrentPropertyValue (TablePattern.RowOrColumnMajorProperty); }
+			get { return (RowOrColumnMajor) element.GetCurrentPropertyValue (TablePattern.RowOrColumnMajorProperty, true); }
 		}
+		#endregion
 
-		// The methods and properties of MultipleViewPattern
+		#region MultipleView Pattern
 		public string GetViewName (int viewId)
 		{
 			return GetViewName(viewId, true);
@@ -134,14 +136,15 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public int CurrentView {
-			get { return (int) element.GetCurrentPropertyValue (MultipleViewPattern.CurrentViewProperty); }
+			get { return (int) element.GetCurrentPropertyValue (MultipleViewPattern.CurrentViewProperty, true); }
 		}
 
 		public int [] SupportedViews {
-			get { return (int []) element.GetCurrentPropertyValue (MultipleViewPattern.SupportedViewsProperty); }
+			get { return (int []) element.GetCurrentPropertyValue (MultipleViewPattern.SupportedViewsProperty, true); }
 		}
+		#endregion
 
-		// The methods and properties of ScrollPattern
+		#region Scroll Pattern
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
 			Scroll (horizontalAmount, verticalAmount, true);
@@ -206,23 +209,24 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public double HorizontalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty, true); }
 		}
 
 		public double HorizontalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty, true); }
 		}
 
 		public bool VerticallyScrollable {
-			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty, true); }
 		}
 
 		public double VerticalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty, true); }
 		}
 
 		public double VerticalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty, true); }
 		}
+		#endregion
 	}
 }

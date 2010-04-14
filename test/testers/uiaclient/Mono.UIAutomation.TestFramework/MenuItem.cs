@@ -36,6 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
+		#region Invoke Pattern
 		public void Click ()
 		{
 			Click (true);
@@ -49,5 +50,6 @@ namespace Mono.UIAutomation.TestFramework
 			InvokePattern ip = (InvokePattern) element.GetCurrentPattern (InvokePattern.Pattern);
 			ip.Invoke ();
 		}
+		#endregion
 	}
 }

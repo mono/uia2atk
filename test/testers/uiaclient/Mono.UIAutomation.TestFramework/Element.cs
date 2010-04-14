@@ -42,7 +42,7 @@ namespace Mono.UIAutomation.TestFramework
 			this.element = element;
 		}
 
-#region Properties
+		#region Public Properties
 		public string Name {
 			get { return element.Current.Name; }
 		}
@@ -62,9 +62,9 @@ namespace Mono.UIAutomation.TestFramework
 		public Finder Finder {
 			get { return new Finder (this.AutomationElement); }
 		}
-#endregion
+		#endregion
 
-#region Methods
+		#region Public Methods
 		public T Find<T> () where T : Element
 		{
 			return Find<T> (string.Empty, string.Empty);
@@ -215,6 +215,6 @@ namespace Mono.UIAutomation.TestFramework
 				throw new Exception ("The property is not supported.");
 			return (T) ret;
 		}
-#endregion
+		#endregion
 	}
 }

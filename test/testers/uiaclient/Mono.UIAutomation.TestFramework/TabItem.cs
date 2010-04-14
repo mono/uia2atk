@@ -36,6 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
+		#region SelectionItem Pattern
 		public void Select ()
 		{
 			Select (true);
@@ -49,5 +50,6 @@ namespace Mono.UIAutomation.TestFramework
 			SelectionItemPattern sp = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sp.Select ();
 		}
+		#endregion
 	}
 }

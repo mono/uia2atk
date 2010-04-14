@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The methods and properties of DockPattern
+		#region Dock Pattern
 		public void SetDockPosition (DockPosition position)
 		{
 			SetDockPosition (position, true);
@@ -52,10 +52,11 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public DockPosition DockPosition {
-			get { return (DockPosition) element.GetCurrentPropertyValue (DockPattern.DockPositionProperty); }
+			get { return (DockPosition) element.GetCurrentPropertyValue (DockPattern.DockPositionProperty, true); }
 		}
+		#endregion
 
-		// The method and properties of TransformPattern
+		#region Transform Pattern
 		public void Rotate (double degree)
 		{
 			Rotate (degree, true);
@@ -71,7 +72,8 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool CanRotate {
-			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanRotateProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanRotateProperty, true); }
 		}
+		#endregion
 	}
 }

@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The method of TogglePattern.
+		#region TogglePattern.
 		public void Toggle ()
 		{
 			Toggle (true);
@@ -51,9 +51,9 @@ namespace Mono.UIAutomation.TestFramework
 			tp.Toggle ();
 		}
 
-		// The property of TogglePattern
 		public ToggleState ToggleState {
-			get { return (ToggleState) element.GetCurrentPropertyValue (TogglePattern.ToggleStateProperty); }
+			get { return (ToggleState) element.GetCurrentPropertyValue (TogglePattern.ToggleStateProperty, true); }
 		}
+		#endregion
 	}
 }

@@ -39,9 +39,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			get { return "SL2WithPrism"; }
 		}
 		
-		public override string Url {
-			get { return "http://www.xentree.com/SL2WithPrism"; }
-		}
+//		public override string Url {
+//			get { return "http://www.xentree.com/SL2WithPrism"; }
+//		}
 
 		[Test]
 		public void RunTestCase304 ()

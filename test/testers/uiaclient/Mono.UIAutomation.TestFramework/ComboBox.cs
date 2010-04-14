@@ -35,8 +35,8 @@ namespace Mono.UIAutomation.TestFramework
 			: base (elm)
 		{
 		}
-		
-#region ValuePattern
+
+		#region Value Pattern
 		public void SetValue (string value)
 		{
 			SetValue (value, true);
@@ -52,11 +52,11 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public string Value {
-			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
+			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty, true); }
 		}
-#endregion
+		#endregion
 
-#region ExpandCollapsePattern
+		#region ExpandCollapse Pattern
 		public void Expand ()
 		{
 			Expand (true);
@@ -87,11 +87,11 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public ExpandCollapseState ExpandCollapseState {
-			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty); }
+			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty, true); }
 		}
-#endregion
+		#endregion
 
-#region SelectionPattern
+		#region Selection Pattern
 		public AutomationElement [] GetSelection ()
 		{
 			SelectionPattern sp = (SelectionPattern) element.GetCurrentPattern (SelectionPattern.Pattern);
@@ -99,12 +99,12 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool CanSelectMultiple {
-			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.CanSelectMultipleProperty, true); }
 		}
 
 		public bool IsSelectionRequired {
-			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (SelectionPattern.IsSelectionRequiredProperty, true); }
 		}
-#endregion
+		#endregion
 	}
 }

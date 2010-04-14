@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-#region ValuePattern
+		#region Value Pattern
 		public void SetValue (string value)
 		{
 			SetValue (value, true);
@@ -54,15 +54,15 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public string Value {
-			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty); }
+			get { return (string) element.GetCurrentPropertyValue (ValuePattern.ValueProperty, true); }
 		}
 
 		public bool IsReadOnly {
-			get { return (bool) element.GetCurrentPropertyValue (ValuePattern.IsReadOnlyProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ValuePattern.IsReadOnlyProperty, true); }
 		}
-#endregion
+		#endregion
 
-#region TextPattern
+		#region Text Pattern
 		public TextPatternRange [] GetSelection ()
 		{
 			return GetSelection (true);
@@ -125,36 +125,36 @@ namespace Mono.UIAutomation.TestFramework
 				return (TextPatternRange) tp.DocumentRange;
 			}
 		}
-#endregion
+		#endregion
 
-#region TableItemPattern
+		#region TableItem Pattern
 		public int Column {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnProperty); }
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnProperty, true); }
 		}
 
 		public int ColumnSpan {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnSpanProperty); }
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.ColumnSpanProperty, true); }
 		}
 
 		public int Row {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowProperty); }
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowProperty, true); }
 		}
 
 		public int RowSpan {
-			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowSpanProperty); }
+			get { return (int) element.GetCurrentPropertyValue (TableItemPattern.RowSpanProperty, true); }
 		}
 
 		public AutomationElement ContainingGrid {
-			get { return (AutomationElement) element.GetCurrentPropertyValue (TableItemPattern.ContainingGridProperty); }
+			get { return (AutomationElement) element.GetCurrentPropertyValue (TableItemPattern.ContainingGridProperty, true); }
 		}
 
 		public AutomationElement[] ColumnHeaderItems {
-			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.ColumnHeaderItemsProperty); }
+			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.ColumnHeaderItemsProperty, true); }
 		}
 
 		public AutomationElement[] RowHeaderItems {
-			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.RowHeaderItemsProperty); }
+			get { return (AutomationElement[]) element.GetCurrentPropertyValue (TableItemPattern.RowHeaderItemsProperty, true); }
 		}
-#endregion
+		#endregion
 	}
 }

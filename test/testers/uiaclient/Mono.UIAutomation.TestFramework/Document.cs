@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The methods and properties of ScrollPattern
+		#region Scroll Pattern
 		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
 			Scroll (horizontalAmount, verticalAmount, true);
@@ -96,27 +96,28 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool HorizontallyScrollable {
-			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.HorizontallyScrollableProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.HorizontallyScrollableProperty, true); }
 		}
 
 		public double HorizontalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalScrollPercentProperty, true); }
 		}
 
 		public double HorizontalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.HorizontalViewSizeProperty, true); }
 		}
 
 		public bool VerticallyScrollable {
-			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (ScrollPattern.VerticallyScrollableProperty, true); }
 		}
 
 		public double VerticalScrollPercent {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalScrollPercentProperty, true); }
 		}
 
 		public double VerticalViewSize {
-			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (ScrollPattern.VerticalViewSizeProperty, true); }
 		}
+		#endregion
 	}
 }

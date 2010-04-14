@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The methods and properties of RangeValuePattern
+		#region RangeValue Pattern
 		public void SetValue (double value)
 		{
 			SetValue (value, true);
@@ -52,27 +52,28 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool IsReadOnly {
-			get { return (bool) element.GetCurrentPropertyValue (RangeValuePattern.IsReadOnlyProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (RangeValuePattern.IsReadOnlyProperty, true); }
 		}
 
 		public double LargeChange {
-			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.LargeChangeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.LargeChangeProperty, true); }
 		}
 
 		public double SmallChange {
-			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.SmallChangeProperty); }
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.SmallChangeProperty, true); }
 		}
 
 		public double Maximum {
-			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MaximumProperty); }
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MaximumProperty, true); }
 		}
 
 		public double Minimum {
-			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MinimumProperty); }
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.MinimumProperty, true); }
 		}
 
 		public double Value {
-			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.ValueProperty); }
+			get { return (double) element.GetCurrentPropertyValue (RangeValuePattern.ValueProperty, true); }
 		}
+		#endregion
 	}
 }

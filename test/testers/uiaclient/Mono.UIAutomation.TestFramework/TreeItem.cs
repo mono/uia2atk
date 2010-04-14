@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The method and property of SelectionItemPattern
+		#region SelectionItem Pattern
 		public void Select ()
 		{
 			Select (true);
@@ -49,8 +49,9 @@ namespace Mono.UIAutomation.TestFramework
 			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
 			sip.Select ();
 		}
+		#endregion
 
-		// The method and property of ExpandCollapse Pattern
+		#region ExpandCollapse Pattern
 		public void Expand ()
 		{
 			Expand (true);
@@ -80,7 +81,8 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public ExpandCollapseState ExpandCollapseState {
-			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty); }
+			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty, true); }
 		}
+		#endregion
 	}
 }

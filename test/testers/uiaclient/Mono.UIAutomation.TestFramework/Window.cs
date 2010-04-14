@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The methods and properties of TransformPattern
+		#region Transform Pattern
 		public void Move (double x, double y)
 		{
 			Move (x, y, true);
@@ -81,18 +81,19 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool CanMove {
-			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanMoveProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanMoveProperty, true); }
 		}
 
 		public bool CanResize {
-			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanResizeProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanResizeProperty, true); }
 		}
 
 		public bool CanRotate {
-			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanRotateProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (TransformPattern.CanRotateProperty, true); }
 		}
+		#endregion
 
-		// The methods and properties of WindowPattern
+		#region Window Pattern
 		public void SetWindowVisualState (WindowVisualState state)
 		{
 			SetWindowVisualState (state, true);
@@ -122,29 +123,31 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool CanMaximize {
-			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.CanMaximizeProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.CanMaximizeProperty, true); }
 		}
 
 		public bool CanMinimize {
-			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.CanMinimizeProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.CanMinimizeProperty, true); }
 		}
 
 		public bool IsModal {
-			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.IsModalProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.IsModalProperty, true); }
 		}
 
 		public bool IsTopmost {
-			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.IsTopmostProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (WindowPattern.IsTopmostProperty, true); }
 		}
 
 		public WindowVisualState WindowVisualState {
-			get { return (WindowVisualState) element.GetCurrentPropertyValue (WindowPattern.WindowVisualStateProperty); }
+			get { return (WindowVisualState) element.GetCurrentPropertyValue (WindowPattern.WindowVisualStateProperty, true);}
 		}
 
 		public WindowInteractionState WindowInteractionState {
-			get { return (WindowInteractionState) element.GetCurrentPropertyValue (WindowPattern.WindowInteractionStateProperty); }
+			get { return (WindowInteractionState) element.GetCurrentPropertyValue (WindowPattern.WindowInteractionStateProperty, true);  }
 		}
+		#endregion
 
+		#region Methods
 		// Click "OK" button of the window.
 		public void OK ()
 		{
@@ -210,5 +213,6 @@ namespace Mono.UIAutomation.TestFramework
 				Console.WriteLine (e);
 			}
 		}
+		#endregion
 	}
 }

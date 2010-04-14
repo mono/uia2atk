@@ -1,3 +1,33 @@
+2010-04-14  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Button.cs:
+	* Mono.UIAutomation.TestFramework/Spinner.cs:
+	* Mono.UIAutomation.TestFramework/Document.cs:
+	* Mono.UIAutomation.TestFramework/TreeItem.cs:
+	* Mono.UIAutomation.TestFramework/Slider.cs:
+	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
+	* Mono.UIAutomation.TestFramework/CheckBox.cs:
+	* Mono.UIAutomation.TestFramework/DataItem.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/RadioButton.cs:
+	* Mono.UIAutomation.TestFramework/ListItem.cs:
+	* Mono.UIAutomation.TestFramework/Hyperlink.cs:
+	* Mono.UIAutomation.TestFramework/Window.cs:
+	* Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* Mono.UIAutomation.TestFramework/List.cs:
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Mono.UIAutomation.TestFramework/Pane.cs:
+	* Mono.UIAutomation.TestFramework/MenuItem.cs:
+	* Mono.UIAutomation.TestFramework/Text.cs:
+	* Mono.UIAutomation.TestFramework/TabItem.cs:
+	* Mono.UIAutomation.TestFramework/Edit.cs:
+	* Mono.UIAutomation.TestFramework/SplitButton.cs:
+	* Mono.UIAutomation.TestFramework/Config.xml:
+	* Mono.UIAutomation.TestFramework/Menu.cs:
+	Add #region information; make all the properties don't return
+	igoreDefaultValue.
+	* Tests/Moonlight/SL2WithPrismTest.cs: Fix build issue.
+
 2010-04-13  Calen Chen  <cachen@novell.com>
 
 	* Tests/Moonlight/SL2WithPrismTest.cs: update tests and add bug596065 reference

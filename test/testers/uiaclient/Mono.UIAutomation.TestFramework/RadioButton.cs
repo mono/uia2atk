@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-				// The method and property of SelectionItemPattern
+		#region SelectionItem Pattern
 		public void ScrollIntoView ()
 		{
 			ScrollIntoView (true);
@@ -94,7 +94,8 @@ namespace Mono.UIAutomation.TestFramework
 		}
 
 		public bool IsSelected {
-			get { return (bool) element.GetCurrentPropertyValue (SelectionItemPattern.IsSelectedProperty); }
+			get { return (bool) element.GetCurrentPropertyValue (SelectionItemPattern.IsSelectedProperty, true); }
 		}
+		#endregion
 	}
 }

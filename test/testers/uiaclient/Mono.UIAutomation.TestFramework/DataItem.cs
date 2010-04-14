@@ -36,25 +36,26 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		// The properties of GridItemPattern
+		#region GridItem Pattern
 		public int Column {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnProperty, true); }
 		}
 
 		public int ColumnSpan {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnSpanProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.ColumnSpanProperty, true); }
 		}
 
 		public AutomationElement ContainingGrid {
-			get { return (AutomationElement) element.GetCurrentPropertyValue (GridItemPattern.ContainingGridProperty); }
+			get { return (AutomationElement) element.GetCurrentPropertyValue (GridItemPattern.ContainingGridProperty, true); }
 		}
 
 		public int Row {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowProperty, true); }
 		}
 
 		public int RowSpan {
-			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowSpanProperty); }
+			get { return (int) element.GetCurrentPropertyValue (GridItemPattern.RowSpanProperty, true); }
 		}
+		#endregion
 	}
 }
