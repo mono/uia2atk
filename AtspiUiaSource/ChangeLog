@@ -1,3 +1,8 @@
+2010-03-14  Stephen Shaw <sshaw@decriptor.com>
+
+	* configure.ac: Added data/atspiuiasource.spec
+	* data/atspiuiasource.spec.in: Updated with @VERSION@ macro
+
 2010-02-22  Mike Gorse  <mgorse@novell.com>
 
 	* configure.ac: Add gtk-sharp.

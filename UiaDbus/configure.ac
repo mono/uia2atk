@@ -99,6 +99,7 @@ AC_CONFIG_FILES([
 Makefile
 data/Makefile
 data/mono-uia-dbus.pc.in
+data/uiadbus.spec
 UiaDbus/Makefile
 UiaDbusBridge/Makefile
 UiaDbusBridgeTests/Makefile

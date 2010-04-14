@@ -1,3 +1,8 @@
+2010-03-14  Stephen Shaw <sshaw@decriptor.com>
+
+	* configure.ac: Added data/uiaatkbridge.spec
+	* data/uiaatkbridge.spec.in: Updated with @VERSION@ macro
+
 2010-03-16  Mike Gorse <mgorse@novell.com>
 
 	* configure.ac: Add --enable-relocate-dbus.

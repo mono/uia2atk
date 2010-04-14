@@ -1,3 +1,9 @@
+2010-03-14  Stephen Shaw <sshaw@decriptor.com>
+
+	* configure.ac: Added data/uiadbus.spec
+	* data/uiadbus.spec.in: Updated with @VERSION@ macro
+
+
 2010-03-08  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusSource/DbusExceptionTranslator.cs: Support

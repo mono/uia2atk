@@ -87,6 +87,7 @@ Makefile
 AtspiUiaSource/Makefile
 AtspiUiaSourceTests/Makefile
 AtspiUiaSourceTests/atspiuiasourcetest.sh
+data/atspiuiasource.spec
 ])
 
 AC_OUTPUT

@@ -122,6 +122,7 @@ UIAutomationProvider/Makefile
 UIAutomationProvider/AssemblyInfo.cs
 data/Makefile
 data/mono-uia.pc.in
+data/mono-uia.spec
 Makefile
 build/common/Consts.cs
 ])

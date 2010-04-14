@@ -99,6 +99,7 @@ UIAutomationWinformsTests/providertest.sh
 UIAutomationWinformsTests/Makefile
 UIAutomationWinforms/Globals.cs
 UIAutomationWinforms/Makefile
+data/uiautomationwinforms.spec
 po/Makefile.in
 Makefile
 ])
