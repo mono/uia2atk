@@ -1,5 +1,10 @@
 2010-04-14  Ray Wang  <rawang@novell.com>
 
+	* Tests/Gtk/Banshee.cs: Partially update tests, and add bug
+	references.
+
+2010-04-14  Ray Wang  <rawang@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Button.cs:
 	* Mono.UIAutomation.TestFramework/Spinner.cs:
 	* Mono.UIAutomation.TestFramework/Document.cs:

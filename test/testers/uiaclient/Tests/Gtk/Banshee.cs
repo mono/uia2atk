@@ -19,7 +19,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2010 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Felicia Mu <fxmu@novell.com>
@@ -32,9 +32,8 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Automation;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.TestFramework;
 using NUnit.Framework;
+using Mono.UIAutomation.TestFramework;
 
 namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 {
@@ -46,8 +45,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		protected override void LaunchSample ()
 		{
-			// Log the filename.
-			app = new Application ("GtkBansheeTests");
+			app = new Application ("Banshee");
 			app.Launch ("banshee-1");
 		}
 
@@ -72,91 +70,79 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase208 ()
 		{
-			//208.1 Check "Banshee Media Player" WindowsPattern's property
-			var bansheeWindow = window.Find<Window> ("Banshee Media Player");
-			procedureLogger.Action ("Check the bansheeWindow isnot modal.");
-			procedureLogger.ExpectedResult ("The bansheeWindow's Ismodal is false.");
-			Assert.IsFalse (bansheeWindow.IsModal);
-
-			procedureLogger.Action ("Check the bansheeWindow is topmost.");
-			procedureLogger.ExpectedResult ("The bansheeWindow's IsTopmost is true.");
-			Assert.IsTrue (bansheeWindow.IsTopmost);
-
-			procedureLogger.Action ("Check the bansheeWindow's WindowInteractionState.");
-			procedureLogger.ExpectedResult ("The bansheeWindow's WindowInteractionState is ReadyForUserInteraction.");
-			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, bansheeWindow.WindowInteractionState);
+			//208.1 Check the properties of WindowPattern for banshee window
+			//BUG595149 WindowPattern is not finished?
+			procedureLogger.Action ("Check IsModal.");
+			procedureLogger.ExpectedResult ("The value of Ismodal is false.");
+			Assert.IsFalse (window.IsModal);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check the bansheeWindow's WindowVisualState.");
-			procedureLogger.ExpectedResult ("The bansheeWindow's WindowVisualState is Normal.");
-			Assert.AreEqual (WindowVisualState.Normal, bansheeWindow.WindowVisualState);
+			procedureLogger.Action ("Check IsTopmost.");
+			procedureLogger.ExpectedResult ("The value of IsTopmost is false.");
+			Assert.IsFalse (window.IsTopmost);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//208.2 Maximize the Banshee window
-			procedureLogger.Action ("Check the bansheeWindow can be maximized.");
-			procedureLogger.ExpectedResult ("The bansheeWindow can be maximized.");
-			Assert.IsTrue (bansheeWindow.CanMaximize);
+			procedureLogger.Action ("Check WindowInteractionState."); 
+			procedureLogger.ExpectedResult ("The value of WindowInteractionState is ReadyForUserInteraction.");
+			Assert.AreEqual (WindowInteractionState.ReadyForUserInteraction, window.WindowInteractionState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			bansheeWindow.SetWindowVisualState (WindowVisualState.Maximized);
-			procedureLogger.ExpectedResult ("The bansheeWindow is Maximized.");
-			Assert.AreEqual (WindowVisualState.Maximized, bansheeWindow.WindowVisualState);
+			procedureLogger.Action ("Check WindowVisualState.");
+			procedureLogger.ExpectedResult ("The value of WindowVisualState is Normal.");
+			Assert.AreEqual (WindowVisualState.Normal, window.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//208.3 Minimize the Banshee window
-			procedureLogger.Action ("Check the bansheeWindow can be minimized.");
-			procedureLogger.ExpectedResult ("The bansheeWindow can be minimized.");
-			Assert.IsTrue (bansheeWindow.CanMinimize);
+			//208.2 Maximize the banshee window
+			procedureLogger.Action ("Check CanMaximize.");
+			procedureLogger.ExpectedResult ("The value of CanMaximize is true.");
+			Assert.IsTrue (window.CanMaximize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			bansheeWindow.SetWindowVisualState (WindowVisualState.Minimized);
-			procedureLogger.ExpectedResult ("The bansheeWindow is Minimized");
-			Assert.AreEqual (WindowVisualState.Minimized, bansheeWindow.WindowVisualState);
+			window.SetWindowVisualState (WindowVisualState.Maximized);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The window is maximized.");
+			Assert.AreEqual (WindowVisualState.Maximized, window.WindowVisualState);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//208.4 Make the Banshee window to normal
-			bansheeWindow.SetWindowVisualState (WindowVisualState.Normal);
-			procedureLogger.ExpectedResult ("Make the bansheeWindow to normal.");
-			Assert.AreEqual (WindowVisualState.Normal, bansheeWindow.WindowVisualState);
+			//208.3 Minimize the banshee window
+			procedureLogger.Action ("Check CanMinimize.");
+			procedureLogger.ExpectedResult ("The value of CanMinimize is true.");
+			Assert.IsTrue (window.CanMinimize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//208.5 Check Banshee window's TransformPattern's property
+			window.SetWindowVisualState (WindowVisualState.Minimized);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The window is minimized");
+			Assert.AreEqual (WindowVisualState.Minimized, window.WindowVisualState);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//208.4 Restore the banshee window to normal
+			window.SetWindowVisualState (WindowVisualState.Normal);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("Restore the banshee window to normal.");
+			Assert.AreEqual (WindowVisualState.Normal, window.WindowVisualState);
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//208.5 Check the properties of TransformPattern for banshee window
 			procedureLogger.Action ("Check CanMove.");
 			procedureLogger.ExpectedResult ("The value of CanMove is true.");
-			Assert.IsTrue (bansheeWindow.CanMove);
+			Assert.IsTrue (window.CanMove);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			procedureLogger.Action ("Check CanSize.");
-			procedureLogger.ExpectedResult ("The value of CanSize is false.");
-			Assert.AreEqual (true, bansheeWindow.CanResize);
+			procedureLogger.Action ("Check CanReSize.");
+			procedureLogger.ExpectedResult ("The value of CanReSize is true.");
+			Assert.IsTrue (window.CanResize);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check CanRotate.");
-			procedureLogger.ExpectedResult ("The value of CanRotate is false.");
-			Assert.AreEqual (false, bansheeWindow.CanRotate);
+			procedureLogger.ExpectedResult ("The value of CanRotate is true.");
+			Assert.IsTrue (window.CanRotate);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//208.6 Move the Banshee Window
-			bansheeWindow.Move (0, 0);
-			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(0, 0).");
+			//208.6 Move the banshee window to (200,200)
+			window.Move (200, 200);
 			Thread.Sleep (Config.Instance.ShortDelay);
-			
-			bansheeWindow.Move (200, 200);
-			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(200, 200).");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			bansheeWindow.Move (20000, 20000);
-			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(20000, 20000).");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//208.7 Resize the Banshee Window to (0, 0)
-			bansheeWindow.Resize(0, 0);
-			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(0, 0).");
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			//208.8 Resize the Banshee Window to (400, 400)
-			bansheeWindow.Resize(400, 400);
-			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(400, 400).");
+			procedureLogger.ExpectedResult ("Move \"Add Entry\" dialog to coordinates(200, 200 ).");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
@@ -171,33 +157,38 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//209.1 Click "Media" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("Media").Click ();
+			// here is MenuItem on Windows, but is Menu on Linux
+			var mediaMenuItem = menuBar.Find<Menu> ("Media");
+			mediaMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Media\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//209.2 Select "Import Playlist" Menu Item
-			var importPlaylistMenuItem = menuBar.Find<MenuItem> ("Import Playlist...");
+			var importPlaylistMenuItem = mediaMenuItem.Find<MenuItem> ("Import Playlist...");
 			importPlaylistMenuItem.Click ();
-			procedureLogger.ExpectedResult ("The \"Import Playlist...\" dialog shows.");
+			procedureLogger.ExpectedResult ("The \"Import Playlist\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//209.3 Input "/usr" in the "Location" text
-			var importPlaylistDialog = window.Find<Window> ("Import Playlist");
-			procedureLogger.Action ("Check the importPlaylistDialog is modal.");
-			procedureLogger.ExpectedResult ("The bansheeWindow's Ismodal is true.");
-			Assert.IsTrue (importPlaylistDialog.IsModal);
+			//BUG593973: GTK sub window can not be refreshed
+			var importPlaylistDialog = app.FindGtkSubWindow (window, "Import Playlist");
+			//BUG595149 WindowPattern is not finished?
+			//procedureLogger.Action ("Check IsModal of the dialog.");
+			//procedureLogger.ExpectedResult ("The value of Ismodal is true.");
+			//Assert.IsTrue (importPlaylistDialog.IsModal);
+			//Thread.Sleep (Config.Instance.ShortDelay);
 
-			var locationEdit = importPlaylistDialog.Find<Edit> ("Location:");
+			var locationEdit = importPlaylistDialog.Find<Edit> ();
 			locationEdit.SetValue ("/usr");
-			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("the \"/user\" is entered in the \"Location:\" Edit.");
+			procedureLogger.ExpectedResult ("The \"/usr\" is entered in the \"Location\" edit.");
 			Assert.AreEqual("/usr", locationEdit.Value);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//209.4 Check the count of columns and rows of Datagrid
 			var dataGrid = importPlaylistDialog.Find<DataGrid> ();
 			procedureLogger.Action ("Check the count of columns of datagrid.");
 			procedureLogger.ExpectedResult ("The count of columns of datagrid is 2.");
-			Assert.AreEqual (3, dataGrid.ColumnCount);
+			//Assert.AreEqual (3, dataGrid.ColumnCount);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check the count of rows of datagrid.");
@@ -259,11 +250,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			}
 
 			//209.10 Check ColumnHeaders of Datagrid
+			procedureLogger.Action ("Check ColumnHeaders.");
 			procedureLogger.ExpectedResult (string.Format ("The ColumnHeaders is {0}.", dataGrid.ColumnHeaders));
 			Assert.AreEqual (dataGrid.ColumnHeaders, dataGrid.GetColumnHeaders ());
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//209.11 Check RowHeaders of Datagrid
+			procedureLogger.Action ("Check RowHeaders.");
 			procedureLogger.ExpectedResult ("The count of RowHeaders is 0.");
 			Assert.AreEqual (0, dataGrid.GetRowHeaders ().Length);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -303,10 +296,45 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (dataGridItem, firsttextItem);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.14 Check HorizontallyScrollable and VerticallyScrollable of Datagrid
+			//209.14 Close the "Import Playlist" dialog
+			importPlaylistDialog.Close ();
+			procedureLogger.ExpectedResult ("The \"Import Playlist\" window is closed");
+			Thread.Sleep (Config.Instance.ShortDelay);
+		}
+
+		//TestCase210 Init Sample, create a new account
+		[Test]
+		public void RunTestCase210 ()
+		{
+			Run (TestCase210);
+		}
+
+		private void TestCase210 ()
+		{
+			//210.1 Click "Edit" Menu Item
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<Menu> ("Edit").Click ();
+			procedureLogger.ExpectedResult ("The \"Edit\" sub menu opens.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//210.2 Select "Preferences" Menu Item
+			menuBar.Find<MenuItem> ("Preferences").Click ();
+			procedureLogger.ExpectedResult ("The \"Preferences\" dialog appears.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//210.3 Select "Extensions" tab
+			var preferencesDialog = app.FindGtkSubWindow (window, "Preferences");
+			var extensionsTabItem = preferencesDialog.Find<TabItem> ("Extensions");
+			extensionsTabItem.Select ();
+			procedureLogger.ExpectedResult ("The \"Extensions\" tab item is displayed.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//210.4 Check HorizontallyScrollable and VerticallyScrollable of Datagrid
+			//BUG595158 Scroll Pane without ScrollPattern support 
+			var dataGrid = extensionsTabItem.Find<DataGrid> ();
 			procedureLogger.Action ("Check the datagrid's VerticallyScrollable.");
 			procedureLogger.ExpectedResult ("The value of VerticallyScrollable is true.");
-			Assert.IsTrue (dataGrid.VerticallyScrollable);
+			Assert.AreEqual (true, dataGrid.VerticallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			procedureLogger.Action ("Check the datagrid's HorizontallyScrollable.");
@@ -314,12 +342,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (false, dataGrid.HorizontallyScrollable);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.15 Set the scroll bar horizontal percent to 0
+			//210.5 Set the scroll bar horizontal percent to 0
 			dataGrid.SetScrollPercent (0, -1);
 			procedureLogger.ExpectedResult ("The horizontal percentage of scroll bar is set to 0.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.16 Check HorizontalScrollPercent and VerticalScrollPercent
+			//210.6 Check HorizontalScrollPercent and VerticalScrollPercent
 			procedureLogger.Action ("Check the datagrid's HorizontalScrollPercent.");
 			procedureLogger.ExpectedResult ("The value of HorizontalScrollPercent is 0.");
 			Assert.AreEqual (0, dataGrid.HorizontalScrollPercent);
@@ -330,44 +358,44 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (-1, dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.17 Set the vertical scroll bar large increment
+			//210.7 Set the vertical scroll bar large increment
 			dataGrid.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll large increment.");
 			Assert.AreEqual (24, dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.18 Set the vertical scroll bar large decrement
+			//210.8 Set the vertical scroll bar large decrement
 			dataGrid.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeDecrement);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll large decrement.");
 			Assert.AreEqual (0, dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.19 Set the vertical scroll bar small increment
+			//210.9 Set the vertical scroll bar small increment
 			dataGrid.ScrollVertical (ScrollAmount.SmallIncrement);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll small increment.");
-			Assert.AreEqual (0, dataGrid.VerticalScrollPercent);
+			Assert.AreEqual ("", dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.20 Set the vertical scroll bar small decrement
+			//210.10 Set the vertical scroll bar small decrement
 			dataGrid.ScrollVertical (ScrollAmount.SmallDecrement);
 			procedureLogger.ExpectedResult ("The vertical scroll bar scroll small decrement.");
 			Assert.AreEqual (0, dataGrid.VerticalScrollPercent);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//209.21 Check HorizontalViewSize of Datagrid
+			//210.11 Check HorizontalViewSize of Datagrid
 			procedureLogger.Action ("Check the datagrid's HorizontalViewSize.");
 			procedureLogger.ExpectedResult ("The value of HorizontalViewSize is.");
 			Assert.AreEqual ("", dataGrid.HorizontalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
 
-			//209.22 Check VerticalViewSize of Datagrid
+			//210.12 Check VerticalViewSize of Datagrid
 			procedureLogger.Action ("Check the datagrid's VerticalViewSize.");
 			procedureLogger.ExpectedResult ("The value of VerticalViewSize is 100.");
 			Assert.AreEqual (100, dataGrid.VerticalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
 
-			//209.23 Close the "Import Playlist" dialog
-			window.Close ();
+			//210.13 Close the "Import Playlist" dialog
+			preferencesDialog.Close ();
 			procedureLogger.ExpectedResult ("The \"Import Playlist\" window is closed");
 			Thread.Sleep (Config.Instance.ShortDelay);
 		}
