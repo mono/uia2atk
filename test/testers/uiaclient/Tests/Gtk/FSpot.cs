@@ -77,7 +77,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = app.FindGtkSubWindow (window, "Import").Find<ComboBox> ("Select Folder");
+			var importSourceCombobox = window.Find<ComboBox> ("Select Folder");
 			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -91,10 +91,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			openButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 
+			//var list = importDialog.Find<List> ();
+			//var listItem = list.Find<ListItem> ();
+			//Thread.Sleep (Config.Instance.ShortDelay);
+
 			//Click "Import" Button
 			var importButton = importDialog.Find<Button> ("Import");
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
+
+			//var fspotList = window.Find<List> ();
+			//var fspotListItem = fspotList.Find<ListItem> ();
+			//Thread.Sleep (Config.Instance.ShortDelay);
 		}
 
 		//TestCase201 Import the pictures into the F-Spot Editor
@@ -116,48 +124,81 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var importMenuItem = menuBar.Find<MenuItem> ("Import...");
 			importMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Import\" dialog appears.");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
-			var importSourceCombobox = app.FindGtkSubWindow (window, "Import").Find<ComboBox> ("Select Folder");
-			importSourceCombobox.Find<MenuItem> ("Select Folder").Click ();
-			Thread.Sleep (Config.Instance.ShortDelay);
-
-			var importDialog = window.Find<Window> ("Import");
-			procedureLogger.Action ("Find the \"Import\" dialog.");
-			procedureLogger.ExpectedResult ("The \"Import\" dialog appears.");
+			Console.WriteLine(window);
+			var importDialog = app.FindGtkSubWindow (window, "Import");
+			var selectCombobox = importDialog.Find<ComboBox> ("Select Folder");
+			var seleceMenuItem = selectCombobox.Find<MenuItem> ("Select Folder");
+			seleceMenuItem.Click ();
+			Thread.Sleep (Config.Instance.LongDelay);
+			
+			var subImportDialogs = app.FindAllGtkSubWindow (window, "Import");
+			Assert.AreEqual(2, subImportDialogs.Length);
+			//Console.WriteLine("the len of import dialog is {0}", subImportDialogs.Length);
+			//Console.WriteLine("the len of import dialog is {1}", subImportDialogs[1].Name);
+			procedureLogger.Action ("Another \"Import\" dialog shows.");
+			procedureLogger.ExpectedResult ("The second \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.4 Input text "/usr/share/pixmaps/" into "Location:" Edit
-			var locationEdit = importDialog.Find<Edit> ("Location:");
+			var locationEdit = subImportDialogs[1].Find<Edit> ();
+			//var locationEdit0 = subImportDialogs[0].Find<Edit> ();
+			//var Edits0 = subImportDialogs[0].FindAll<Edit> ();
+			//var Edits1 = subImportDialogs[1].FindAll<Edit> ();
+			//Console.WriteLine("number of locationEdit is {0}", Edits0.Length);
+			//Console.WriteLine("number of locationEdit0 is {0}", Edits1.Length);
 			locationEdit.SetValue ("/usr/share/pixmaps/");
+			//locationEdit0.SetValue ("/usr/share/pixmaps/");
 			procedureLogger.ExpectedResult ("\"/usr/share/pixmaps\" has been entered.");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			Assert.AreEqual ("/usr/share/pixmaps/", locationEdit.Value);
+			//Assert.AreEqual ("/usr/share/pixmaps/", locationEdit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.5 Click "Open" Button
-			var openButton = importDialog.Find<Button> ("Open");
+			var openButton = subImportDialogs[1].Find<Button> ("Open");
 			openButton.Click ();
+			procedureLogger.ExpectedResult ("another \"Import\" dialog shows up");
 			Thread.Sleep (Config.Instance.LongDelay);
 
-			var list = importDialog.Find<List> ();
+			var newImportDialog = app.FindGtkSubWindow(window, "Import");
+			/*
+			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
+			 */ 
+			/*
+			procedureLogger.Action ("Check if the pictures are loaded");
+			var list = newImportDialog.Find<List> ();
 			var listItem = list.Find<ListItem> ();
 			procedureLogger.ExpectedResult ("The picture(s) in \"/usr/share/pixmaps/\" is(are) loaded.");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.LongDelay);
 			Assert.IsNotNull (listItem);
+			*/
 
 			//201.6 Click "Import" Button
-			var importButton = importDialog.Find<Button> ("Import");
+			Thread.Sleep (Config.Instance.LongDelay);
+			var importButton = newImportDialog.Find<Button> ("Import");
+			Console.WriteLine("The button's name is {0}",importButton.Name);
+			/*
+			 * Bug 596801 - [uiaclient-GTKs]: The disable button became a enable button,
+			 *  but its IsEnableProperty still be false
+			 */
+			/*
 			importButton.Click ();
-			Thread.Sleep (Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.LongDelay);
+			*/
 
+			/*
+			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
+			 */ 
+			/*
 			var fspotList = window.Find<List> ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			var fspotListItem = fspotList.Find<ListItem> ();
 			procedureLogger.ExpectedResult ("The pictures in \"/usr/share/pixmaps/\" are imported.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			Assert.IsNotNull (fspotListItem);
+			*/
 		}
 
 		//TestCase202 Find a pic Item

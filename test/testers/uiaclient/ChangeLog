@@ -1,3 +1,7 @@
+2010-03-23  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Add bug rerence 596801 596461. 
+
 2010-04-14  Ray Wang  <rawang@novell.com>
 
 	* Tests/Gtk/Banshee.cs: Partially update tests, and add bug
@@ -65,7 +69,6 @@
 
 	* Tests/GTK/Fspot.cs:Make the program blocked to reproduce a bug.  
 
->>>>>>> .r155302
 2010-04-02  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/DataGrid.cs: Change a grammar error.
