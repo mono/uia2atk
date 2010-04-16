@@ -196,27 +196,32 @@ namespace Mono.UIAutomation.Winforms
 					Helper.AddPrivateEvent (typeof (ToolBarButton), toolBarButton, "UIAStyleChanged",
 					                        this, "OnStyleChanged");
 				} catch (NotSupportedException) { }
-				SetStyleBehaviours ();
+				SetStyleBehaviors ();
 			}
 
-			private void SetStyleBehaviours ()
+			private void SetStyleBehaviors ()
 			{
-				SetBehavior (InvokePatternIdentifiers.Pattern, null);
-				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
-				SetBehavior (TogglePatternIdentifiers.Pattern, null);
-				
 				if (style == ToolBarButtonStyle.DropDownButton) {
-
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
 					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 					             new ToolBarButtonExpandCollapseProviderBehavior (this));
-				} else if (style == ToolBarButtonStyle.PushButton)
+					SetBehavior (TogglePatternIdentifiers.Pattern, null);
+				} else if (style == ToolBarButtonStyle.PushButton) {
 					SetBehavior (InvokePatternIdentifiers.Pattern,
 					             new ToolBarButtonInvokeProviderBehavior (this));
-				else if (style == ToolBarButtonStyle.ToggleButton)
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
+					SetBehavior (TogglePatternIdentifiers.Pattern, null);
+				} else if (style == ToolBarButtonStyle.ToggleButton) {
+					SetBehavior (InvokePatternIdentifiers.Pattern, null);
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
 					SetBehavior (TogglePatternIdentifiers.Pattern,
 					             new ToolBarButtonToggleProviderBehavior (this));
+				} else
+					SetBehavior (InvokePatternIdentifiers.Pattern, null);
+					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
+					SetBehavior (TogglePatternIdentifiers.Pattern, null);
+				}
 			}
 			
 			#endregion
@@ -295,7 +300,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			private void OnStyleChanged (object sender, EventArgs args)
 			{
-				SetStyleBehaviours ();
+				SetStyleBehaviors ();
 			}
 #pragma warning restore 169
 			

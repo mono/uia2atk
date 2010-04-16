@@ -1,3 +1,10 @@
+2010-04-16  Matt Guo  <matt@mattguo.com>
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs: 
+	Rename "SetStyleBehaviours" to "SetStyleBehaviors", since in other
+	places, we used "behavior", and avoid SetStyleBehaviors to fire
+	unnecessary property-changed events of Is*PatternAvailable.
+
+
 2010-03-14  Stephen Shaw <sshaw@decriptor.com>
 
 	* configure.ac: Added data/uiautomationwinforms.spec
