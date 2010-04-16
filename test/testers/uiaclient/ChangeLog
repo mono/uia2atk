@@ -1,9 +1,13 @@
+2010-04-16  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Add bug rerence 596841 597263
+
 2010-04-16  Calen Chen  <cachen@novell.com>
 
 	* Tests/Moonlight/SL2WithPrismTest.cs: update HyperLink test and add 
 	bug597216 reference
 
-2010-03-23  Felicia Mu  <fxmu@novell.com>
+2010-04-15  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Add bug rerence 596801 596461. 
 

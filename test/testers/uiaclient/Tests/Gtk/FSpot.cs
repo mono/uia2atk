@@ -162,7 +162,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("another \"Import\" dialog shows up");
 			Thread.Sleep (Config.Instance.LongDelay);
 
-			var newImportDialog = app.FindGtkSubWindow(window, "Import");
+			var newImportDialog = app.FindGtkSubWindow (window, "Import");
 			/*
 			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
 			 */ 
@@ -210,10 +210,34 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase202 ()
 		{
+			
+			//202.1 Check the button on toolbar's can be focusd
+			var browseButton = window.Find<Button> ("Browse");
+			procedureLogger.Action ("Set focus on browseButton.");
+			browseButton.AutomationElement.SetFocus();
+			procedureLogger.ExpectedResult ("The browseButton has been focused.");
+			Assert.IsTrue (browseButton.AutomationElement.Current.HasKeyboardFocus);
+			Thread.Sleep (Config.Instance.ShortDelay);
+				
+			var editButton = window.Find<Button> ("Edit Image");
+			procedureLogger.Action ("Set focus on editButton.");
+			editButton.AutomationElement.SetFocus();
+			procedureLogger.ExpectedResult ("The editButton has been focused.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			/*
+			 * BUG597263 [uiaclient-GTKs]: The Invoke method can't make button 's 
+			 * HasKeyboardFocus property to be true
+			 */ 
+//			browseButton.Click();
+//			Thread.Sleep (Config.Instance.LongDelay);
+//			procedureLogger.ExpectedResult ("The browseButton has been invoked and focused.");
+//			Assert.IsTrue (browseButton.AutomationElement.Current.HasKeyboardFocus);
+			
 			//Do the action to load the list items.
 			ImportPictures ();
 
-			//202.1 Check the List's SelectionPattern's property
+			//202.2 Check the List's SelectionPattern's property
 			var List = window.Find<List> ();
 			procedureLogger.Action ("Check the List Can be Selected Multiple.");
 			procedureLogger.ExpectedResult ("The List can select multiple.");
@@ -225,21 +249,21 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (false, List.IsSelectionRequired);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.2 Select the List's first icon
+			//202.3 Select the List's first icon
 			var firstListItem = window.FindAll<ListItem> () [0];
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The first icon is selected.");
 			Assert.AreEqual (firstListItem.Name, List.GetSelection () [0].Current.Name);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.3 Make the fifty-third icon in List visible
+			//202.4 Make the fifty-third icon in List visible
 			var fiftyThirdListItem = window.FindAll<ListItem> () [53];
 			fiftyThirdListItem.ScrollIntoView ();
 			procedureLogger.ExpectedResult ("The fifty-third icon is shown.");
 			Assert.AreEqual (false, fiftyThirdListItem.IsOffscreen);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.4 Select and Unselect the fifty-third icon in List
+			//202.5 Select and Unselect the fifty-third icon in List
 			fiftyThirdListItem.Select ();
 			procedureLogger.ExpectedResult ("The fifty-third icon is selected.");
 			Assert.IsTrue (fiftyThirdListItem.IsSelected);
@@ -250,45 +274,45 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (false, fiftyThirdListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.5 Click "Edit Image" menu item on the toolbar
+			//202.6 Click "Edit Image" menu item on the toolbar
 			var editButton = window.Find<Button> ("Edit Image");
 			editButton.Click ();
 			procedureLogger.ExpectedResult ("Only the selected icon is stayed on the window.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.6 Maximum the picture
+			//202.7 Maximum the picture
 			var slider = window.Find<Slider> ();
 			slider.SetValue (slider.Maximum);
 			procedureLogger.ExpectedResult ("The picture is maximumed.");
 			Assert.AreEqual (1.0, slider.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.7 Minimize the picture
+			//202.8 Minimize the picture
 			slider.SetValue (slider.Minimum);
 			procedureLogger.ExpectedResult ("The picture is minimized.");
 			Assert.AreEqual (0, slider.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.8 Give the picture a small enlarge
+			//202.9 Give the picture a small enlarge
 			slider.SetValue (slider.Minimum + slider.SmallChange);
 			procedureLogger.ExpectedResult ("Make the picture a small change large.");
 			Assert.AreEqual (slider.SmallChange - slider.Minimum, slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.9 Make the picture a big reduce
+			//202.10 Make the picture a big reduce
 			slider.SetValue (slider.Maximum - slider.LargeChange);
 			procedureLogger.ExpectedResult ("Make the picture a big change large.");
 			Assert.AreEqual (slider.LargeChange, 1 - slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.10 Give a comment "the last one" to the picture
+			//202.11 Give a comment "the last one" to the picture
 			var edit = window.Find<Edit> ("Comment:");
 			edit.SetValue ("the last one");
 			procedureLogger.ExpectedResult ("The \"the last one\" is inputed into the edit.");
 			Assert.AreEqual ("the last one", edit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//202.11 Close the F-Spot window
+			//202.12 Close the F-Spot window
 			window.Close ();
 			procedureLogger.ExpectedResult ("The F-Spot window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -366,7 +390,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		private void TestCase204 ()
 		{
 			//204.1 Select "Tools" Menu Item
+			/*
+			 *Bug 596841 - [uiaclient-GTKs]: A menu control on the menubar
+			 * is recognized as menu item. 
+			 * if the bug is fixed please use the following expression:
+			 *  menuBar.Find<Menu> ("Tools").Click ();
+			 */ 
 			var menuBar = window.Find<MenuBar> ();
+			//menuBar.Find<Menu> ("Tools").Click ();
 			menuBar.Find<MenuItem> ("Tools").Click ();
 			procedureLogger.ExpectedResult ("The \"Tools\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -378,7 +409,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//204.3 Select "All Image" radio button on the "Screensaver Configure" dialog
-			var configureDialog = window.Find<Window> ("Screensaver Configuration");
+			//var configureDialog = window.Find<Window> ("Screensaver Configuration");
+			Console.WriteLine("app is {0}", app);
+			//Console.WriteLine("window is {0}");
+			var configureDialog = app.FindGtkSubWindow (window, "Screensaver Configuration");
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
@@ -424,8 +458,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//205.1 "Photo" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("Photo").Click ();
-			procedureLogger.ExpectedResult ("The \"Import\" sub menu opens.");
+			menuBar.Find<Menu> ("Photo").Click ();
+			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.2 "Print" Menu Item
