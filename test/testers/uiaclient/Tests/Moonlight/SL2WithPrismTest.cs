@@ -103,12 +103,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual (sbRight.Maximum, sbRight.Value);
 
 			// 305.2: Click "http://www.codeplex.com/SL2WithPrism" hyperlink
-			var hProject = MainWindow.Find<Hyperlink> ();
-			hProject.Click ();
-			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.Action (string.Format ("Check if {0} exists.", hProject));
-			procedureLogger.ExpectedResult ("The link should be opened in the current page.");
-			Assert.IsNull (hProject);
+			var hProject = MainWindow.Find<Button> ("http://www.codeplex.com/SL2WithPrism/");
+			//BUG597216: HyperLink is missing InvokePattern
+			//hProject.Click ();
+			//Thread.Sleep (Config.Instance.ShortDelay);
+			//procedureLogger.Action (string.Format ("Check if {0} exists.", hProject));
+			//procedureLogger.ExpectedResult ("The link should be opened in the current page.");
+			//Assert.IsNull (hProject);
 		}
 	}
 }
