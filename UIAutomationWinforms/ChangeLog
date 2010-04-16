@@ -1,4 +1,8 @@
 2010-04-16  Matt Guo  <matt@mattguo.com>
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	Fix a missing "{" in last commit
+
+2010-04-16  Matt Guo  <matt@mattguo.com>
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs: 
 	Rename "SetStyleBehaviours" to "SetStyleBehaviors", since in other
 	places, we used "behavior", and avoid SetStyleBehaviors to fire

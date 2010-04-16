@@ -217,7 +217,7 @@ namespace Mono.UIAutomation.Winforms
 					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
 					SetBehavior (TogglePatternIdentifiers.Pattern,
 					             new ToolBarButtonToggleProviderBehavior (this));
-				} else
+				} else {
 					SetBehavior (InvokePatternIdentifiers.Pattern, null);
 					SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, null);
 					SetBehavior (TogglePatternIdentifiers.Pattern, null);
