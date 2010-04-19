@@ -275,7 +275,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//202.6 Click "Edit Image" menu item on the toolbar
-			var editButton = window.Find<Button> ("Edit Image");
 			editButton.Click ();
 			procedureLogger.ExpectedResult ("Only the selected icon is stayed on the window.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -391,7 +390,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//204.1 Select "Tools" Menu Item
 			/*
-			 *Bug 596841 - [uiaclient-GTKs]: A menu control on the menubar
+			 * BUG596841 - [uiaclient-GTKs]: A menu control on the menubar
 			 * is recognized as menu item. 
 			 * if the bug is fixed please use the following expression:
 			 *  menuBar.Find<Menu> ("Tools").Click ();
@@ -414,7 +413,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//Console.WriteLine("window is {0}");
 			var configureDialog = app.FindGtkSubWindow (window, "Screensaver Configuration");
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
-			allImageRadioButton.Select ();
+			/*
+			 * BUG597696 - [uiaclient-GTKs]: RadioButton doesn't support the SelectionItemPattern
+			 * BUG597716 - [uiaclient-GTKs]: RadioButton should not support the TextPattern
+			 */ 
+			//allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
 			Assert.IsTrue (allImageRadioButton.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);

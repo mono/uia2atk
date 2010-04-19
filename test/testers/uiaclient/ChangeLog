@@ -1,3 +1,7 @@
+2010-04-19  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Add bug rerence 597696 597716
+
 2010-04-16  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Add bug rerence 596841 597263
