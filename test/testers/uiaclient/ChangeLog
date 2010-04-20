@@ -1,10 +1,10 @@
 2010-04-19  Felicia Mu  <fxmu@novell.com>
 
-	* Tests/GTK/Fspot.cs: Add bug rerence 597696 597716
+	* Tests/GTK/Fspot.cs: Add bug reference 597696 597716
 
 2010-04-16  Felicia Mu  <fxmu@novell.com>
 
-	* Tests/GTK/Fspot.cs: Add bug rerence 596841 597263
+	* Tests/GTK/Fspot.cs: Add bug reference 596841 597263
 
 2010-04-16  Calen Chen  <cachen@novell.com>
 
@@ -13,7 +13,7 @@
 
 2010-04-15  Felicia Mu  <fxmu@novell.com>
 
-	* Tests/GTK/Fspot.cs: Add bug rerence 596801 596461. 
+	* Tests/GTK/Fspot.cs: Add bug reference 596801 596461. 
 
 2010-04-14  Ray Wang  <rawang@novell.com>
 
