@@ -1,34 +1,461 @@
+diff --git a/pyatspi/accessible.py b/pyatspi/accessible.py
+index 373d3ff..f13168e 100644
+--- a/pyatspi/accessible.py
++++ b/pyatspi/accessible.py
+@@ -25,6 +25,9 @@ from dbus import UnknownMethodException, DBusException
+ 
+ from exceptions import *
+ 
++import registry
++import dbus
++
+ __all__ = [
+            "LOCALE_TYPE",
+            "LOCALE_TYPE_COLLATE",
+@@ -284,7 +287,7 @@ class Accessible(BaseProxy):
+ 		else:
+                         func = self.get_dbus_method("GetApplication", dbus_interface=ATSPI_ACCESSIBLE)
+ 			name, path = func ()
+-		return self._acc_factory (name, path, ATSPI_ACCESSIBLE)
++		return self._acc_factory (name, path, ATSPI_APPLICATION)
+ 
+         def getAttributes(self):
+                 """
+@@ -328,7 +331,7 @@ class Accessible(BaseProxy):
+                 an in parameter indicating which child is requested (zero-indexed).
+                 @return : the 'nth' Accessible child of this object.
+                 """
+-                if self.cached:
++                if self.cached and not(self._cached_data.state[0] & (1 << STATE_MANAGES_DESCENDANTS)):
+                         (name, path) = self._cached_data.children[index]
+                 else:
+                         count = Int32(self._pgetter(ATSPI_ACCESSIBLE, "ChildCount"))
+@@ -337,7 +340,11 @@ class Accessible(BaseProxy):
+                         func = self.get_dbus_method("GetChildAtIndex", dbus_interface=ATSPI_ACCESSIBLE)
+                         (name, path) = func (index)
+ 
+-                return self._acc_factory (name, path, ATSPI_ACCESSIBLE)
++                if (path == ATSPI_ROOT_PATH):
++                        itf = ATSPI_APPLICATION
++                else:
++                        itf = ATSPI_ACCESSIBLE
++                return self._acc_factory (name, path, itf)
+ 
+         def getIndexInParent(self):
+                 """
+@@ -428,7 +435,7 @@ class Accessible(BaseProxy):
+                 return self.__eq__(other)
+ 
+         def _get_childCount(self):
+-                if self.cached:
++                if self.cached and not(self._cached_data.state[0] & (1 << STATE_MANAGES_DESCENDANTS)):
+                         return len(self._cached_data.children)
+                 else:
+                         return Int32(self._pgetter(ATSPI_ACCESSIBLE, "ChildCount"))
+@@ -467,7 +474,12 @@ class Accessible(BaseProxy):
+                         name, path = self._cached_data.parent
+                 else:
+ 		        name, path = self._pgetter (ATSPI_ACCESSIBLE, "Parent")
+-                return self._acc_factory (name, path, ATSPI_ACCESSIBLE)
++
++                if (path == ATSPI_ROOT_PATH):
++                        itf = ATSPI_APPLICATION
++                else:
++                        itf = ATSPI_ACCESSIBLE
++                return self._acc_factory (name, path, itf)
+         _parentDoc = \
+                 """
+                 an Accessible object which is this object's containing object.
+@@ -486,4 +498,22 @@ class Accessible(BaseProxy):
+                 """
+         interfaces = property(fget=_get_interfaces, doc=_interfacesDoc)
+ 
++        def _getConstantProperty(self, interface, name):
++                if self.cached:
++                        try:
++                                getattr(self, "extraData")
++                        except (AttributeError):
++                                self.extraData = dict()
++                        try:
++                                return self.extraData[name]
++                        except (KeyError):
++                                r = registry.Registry()
++                                r.freezeEvents()
++                                try:
++                                        self.extraData[name] = dbus.String(self._pgetter(interface, name))
++                                finally:
++                                        r.thawEvents()
++                                return self.extraData[name]
++                return dbus.String(self._pgetter(interface, name))
++
+ #END----------------------------------------------------------------------------
+diff --git a/pyatspi/appevent.py b/pyatspi/appevent.py
+index d530e8c..4b295df 100644
+--- a/pyatspi/appevent.py
++++ b/pyatspi/appevent.py
+@@ -13,12 +13,14 @@
+ #Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ 
+ import string
++import gobject
+ import interfaces
+ from accessible import BoundingBox
+ from exceptions import *
+ 
+ from factory import AccessibleFactory
+ from busutils import *
++import registry
+ 
+ __all__ = [
+                 "Event",
+@@ -157,9 +159,9 @@ def signal_spec_to_event_type (interface, name, minor):
+         if klass == "focus":
+                 return EventType ("focus:")
+ 
+-        event_string = klass + ':' + major + ':'
++        event_string = klass + ':' + major
+         if minor:
+-                event_string += minor
++                event_string += ":" + minor
+         return EventType (event_string)
+ 
+ def event_type_to_signal_reciever(bus, factory, event_handler, event_type):
+@@ -197,7 +199,7 @@ def event_type_to_signal_reciever(bus, factory, event_handler, event_type):
+                 if   type.is_subtype (EventType ("object:bounds-changed")):
+                         any_data = BoundingBox(*any_data)
+                 elif (type.is_subtype (EventType ("object:children-changed")) or
+-                      type.is_subtype (EventType ("object:property-change:parent"))):
++                      type.is_subtype (EventType ("object:property-change:accessible-parent"))):
+                         data_name, data_path = any_data;
+                         any_data = factory (data_name, data_path, interfaces.ATSPI_ACCESSIBLE)
+ 
+@@ -208,7 +210,11 @@ def event_type_to_signal_reciever(bus, factory, event_handler, event_type):
+                 # Create the source
+                 source_name = sender
+                 source_path = path
+-                source = factory (source_name, source_path, interfaces.ATSPI_ACCESSIBLE)
++                if (path == interfaces.ATSPI_ROOT_PATH):
++                        source_itf = interfaces.ATSPI_APPLICATION
++                else:
++                        source_itf = interfaces.ATSPI_ACCESSIBLE
++                source = factory (source_name, source_path, source_itf)
+ 
+                 event = Event (type,
+                                detail1,
+@@ -216,7 +222,12 @@ def event_type_to_signal_reciever(bus, factory, event_handler, event_type):
+                                any_data,
+                                source_application,
+                                source)
+-                return event_handler(event)
++                depth = gobject.main_depth()
++                r = registry.Registry()
++                if (r.asyncInternal() and depth > 1):
++                    r.enqueueEvent(event_handler, event)
++                else:
++                        return event_handler(event)
+ 
+         return bus.add_signal_receiver(handler_wrapper, **kwargs)
+ 
 diff --git a/pyatspi/application.py b/pyatspi/application.py
-index f65baad..1b608da 100644
+index 1b608da..9a6196e 100644
 --- a/pyatspi/application.py
 +++ b/pyatspi/application.py
-@@ -43,6 +43,14 @@ class Application(Accessible):
-                 func = self.get_dbus_method("GetLocale", dbus_interface=ATSPI_APPLICATION)
-                 return func(local_type)
+@@ -52,7 +52,7 @@ class Application(Accessible):
+         id = property(fget=get_id, doc=_idDoc)
  
-+        def get_id(self):
-+                return dbus.Int32(self._pgetter(ATSPI_APPLICATION, "Id"))
-+        _idDoc = \
-+                """
-+                The application instance's unique ID as assigned by the registry.
-+                """
-+        id = property(fget=get_id, doc=_idDoc)
-+
          def get_toolkitName(self):
-                 return dbus.String(self._pgetter(ATSPI_APPLICATION, "ToolkitName"))
+-                return dbus.String(self._pgetter(ATSPI_APPLICATION, "ToolkitName"))
++                return self._getConstantProperty(ATSPI_APPLICATION, "ToolkitName")
          _toolkitNameDoc = \
+                 """
+                 A string indicating the type of user interface toolkit which
+diff --git a/pyatspi/cache.py b/pyatspi/cache.py
+index 8c52ed2..3f66de8 100644
+--- a/pyatspi/cache.py
++++ b/pyatspi/cache.py
+@@ -14,9 +14,12 @@
+ 
+ import os
+ import dbus
++import registry
++import string
+ 
+ from interfaces import *
+-from role import ROLE_UNKNOWN
++from role import ROLE_DESKTOP_FRAME
++import state
+ 
+ from busutils import *
+ 
+@@ -42,6 +45,7 @@ class _CacheData(object):
+                         'name',
+                         'description',
+                         'state',
++                        'extraData'
+                     ]
+ 
+         def __init__(self, data):
+@@ -111,7 +115,7 @@ class DesktopCacheManager (object):
+                                        apps,                                    #Children 
+                                        [ATSPI_ACCESSIBLE, ATSPI_COMPONENT],     #Interfaces
+                                        "main",                                  #Name
+-                                       ROLE_UNKNOWN,                            #Role
++                                       ROLE_DESKTOP_FRAME,                            #Role
+                                        "",                                      #Description
+                                        [0,0]                                    #State
+                                      )
+@@ -121,11 +125,12 @@ class DesktopCacheManager (object):
+                                 self._application_list[bus_name] = ApplicationCacheManager (cache, bus_name)
+ 
+ 	def _children_changed_handler (self, 
+-                                       app, minor, detail1, detail2, any_data,
++                                       minor, detail1, detail2, any_data, app,
+ 				       interface=None, sender=None, member=None, path=None):
+                 if interface==_ATSPI_EVENT_OBJECT_INTERFACE and sender == self._unique_name and path == ATSPI_ROOT_PATH:
+ 		        if minor == "add":
+                                 bus_name, object_path = any_data
++                                r = registry.Registry()
+                                 self._application_list[bus_name] = ApplicationCacheManager(self._cache, bus_name)
+ 		        elif minor == "remove":
+                                 bus_name, object_path = any_data
+@@ -163,7 +168,10 @@ class ApplicationCacheManager (object):
+ 
+                 cache_obj = bus.get_object (bus_name, _ATSPI_CACHE_PATH, introspect=False)
+                 cache_itf = dbus.Interface (cache_obj, _ATSPI_CACHE_INTERFACE)
++                r = registry.Registry()
++                r.freezeEvents()
+                 self._add_objects(cache_itf.GetItems())
++                r.thawEvents()
+ 
+                 self._property_change =  \
+                         bus.add_signal_receiver(self._property_change_handler,
+@@ -185,6 +193,16 @@ class ApplicationCacheManager (object):
+                                                 sender_keyword="sender",
+                                                 path_keyword="path")
+ 
++                self._state_changed = \
++                        bus.add_signal_receiver(self._state_changed_handler,
++                                                bus_name=self._bus_name,
++                                                dbus_interface=_ATSPI_EVENT_OBJECT_INTERFACE,
++                                                signal_name="StateChanged",
++                                                interface_keyword="interface",
++                                                member_keyword="member",
++                                                sender_keyword="sender",
++                                                path_keyword="path")
++
+ 		self._cache_add = \
+                         bus.add_signal_receiver(self._add_object,
+                                                 bus_name=self._bus_name,
+@@ -207,14 +225,17 @@ class ApplicationCacheManager (object):
+ 
+         def _remove_object(self, reference):
+ 		bus_name, object_path = reference
+-                del(self._cache[(bus_name, object_path)])
++                try:
++                        del(self._cache[(bus_name, object_path)])
++                except KeyError:
++                        pass
+ 
+         def _add_objects (self, objects):
+                 for data in objects:
+                         self._add_object (data)
+ 
+ 	def _property_change_handler (self,
+-                                      app, minor, detail1, detail2, any_data,
++                                      minor, detail1, detail2, any_data, app,
+ 				      interface=None, sender=None, member=None, path=None):
+                 if interface==_ATSPI_EVENT_OBJECT_INTERFACE:
+                         if (sender, path) in self._cache:
+@@ -227,16 +248,32 @@ class ApplicationCacheManager (object):
+ 				        item.parent = any_data
+ 
+ 	def _children_changed_handler (self,
+-                                       app, minor, detail1, detail2, any_data,
++                                       minor, detail1, detail2, any_data, app,
+ 				       interface=None, sender=None, member=None, path=None):
+                 if interface==_ATSPI_EVENT_OBJECT_INTERFACE:
+ 		        if (sender, path) in self._cache:
+ 			        item = self._cache[(sender, path)]
++                                if item.state[0] & (1 << state.STATE_MANAGES_DESCENDANTS):
++                                        return
+ 			        if minor == "add":
+ 				        item.children.insert (detail1, any_data)
+ 			        elif minor == "remove":
+ 				        del (item.children[detail1])
+ 
++	def _state_changed_handler (self,
++                                       minor, detail1, detail2, any_data, app,
++				       interface=None, sender=None, member=None, path=None):
++                if interface==_ATSPI_EVENT_OBJECT_INTERFACE:
++		        if (sender, path) in self._cache:
++			        item = self._cache[(sender, path)]
++                                val = eval("int(state.STATE_" + string.upper(minor) + ")")
++                                high = int(val / 32)
++                                low = val % 32
++                                if (detail1 == 1):
++                                        item.state[high] |= (1 << low)
++                                else:
++                                        item.state[high] &= ~(1 << low)
++
+         def remove_all (self):
+                 for bus_name, object_path in self._cache.keys():
+                         if bus_name == self._bus_name:
+diff --git a/pyatspi/component.py b/pyatspi/component.py
+index a833956..460ed82 100644
+--- a/pyatspi/component.py
++++ b/pyatspi/component.py
+@@ -99,7 +99,7 @@ class Component(Accessible):
+                 @return the Accessible child whose bounding box contains the
+                 specified point.
+                 """
+-                func = self.get_dbus_method("getAccessibleAtPoint", dbus_interface=ATSPI_COMPONENT)
++                func = self.get_dbus_method("GetAccessibleAtPoint", dbus_interface=ATSPI_COMPONENT)
+                 (name, path) = func(x, y, UInt32(coord_type))
+                 if (name == ""):
+                         name = self._app_name
+diff --git a/pyatspi/hyperlink.py b/pyatspi/hyperlink.py
+index 2554198..180973d 100644
+--- a/pyatspi/hyperlink.py
++++ b/pyatspi/hyperlink.py
+@@ -49,7 +49,7 @@ class Hyperlink(Accessible):
+                 ith anchor, or through which the content associated with the
+                 ith anchor can be accessed.
+                 """
+-                func = self.get_dbus_method("getObject", dbus_interface=ATSPI_HYPERLINK)
++                func = self.get_dbus_method("GetObject", dbus_interface=ATSPI_HYPERLINK)
+                 return self._acc_factory (self._app_name, func(index), ATSPI_ACCESSIBLE)
+ 
+         def getURI(self, index):
+diff --git a/pyatspi/hypertext.py b/pyatspi/hypertext.py
+index 75b1013..94de1b0 100644
+--- a/pyatspi/hypertext.py
++++ b/pyatspi/hypertext.py
+@@ -38,7 +38,7 @@ class Hypertext(Accessible):
+                 an integer from 0 to getNLinks() - 1. 
+                 @return the Hyperlink in this Hypertext object.
+                 """
+-                func = self.get_dbus_method("getLink", dbus_interface=ATSPI_HYPERTEXT)
++                func = self.get_dbus_method("GetLink", dbus_interface=ATSPI_HYPERTEXT)
+                 return self._acc_factory (self._app_name, func(index), interfaces.ATSPI_HYPERLINK)
+ 
+         def getLinkIndex(self, character_index):
 diff --git a/pyatspi/registry.py b/pyatspi/registry.py
-index 444c1b4..7bb9bda 100644
+index 7bb9bda..6884876 100644
 --- a/pyatspi/registry.py
 +++ b/pyatspi/registry.py
-@@ -122,7 +122,9 @@ class Registry(object):
-                 if main_loop_type == MAIN_LOOP_GLIB:
-                                 cache = AccessibleCache (app_name)
+@@ -23,6 +23,8 @@
  
--		factory = AccessibleFactory(cache)
-+                factory = AccessibleFactory(cache)
+ import dbus
+ import os as _os
++import Queue
++import traceback
+ 
+ from busutils import *
+ 
+@@ -80,6 +82,12 @@ class Registry(object):
+         def __init__(self):
+                 self.__dict__ = self.__shared_state
+ 
++                try:
++                        if (self.has_implementations):
++                                return
++                except (AttributeError):
++                        pass
 +
-+                _os.environ["AT_SPI_CLIENT"] = "1"
+                 self.has_implementations = False
  
-                 # Set up the device event controllers
-                 _connection = SyncAccessibilityBus ()
+                 self.device_event_register = None
+@@ -116,6 +124,8 @@ class Registry(object):
+                 @param app_name: D-Bus name of the application to connect to when not using the registry daemon.
+                 """
+ 
++		self.queue = Queue.Queue()
++                self.frozen = 0
+ 
+                 # Set up the cache
+ 		cache = None
+@@ -143,6 +153,7 @@ class Registry(object):
+ 			name = _bus_object.GetNameOwner (_ATSPI_REGISTRY_NAME)
+                         self.desktop = factory (name, _ATSPI_ROOT_PATH, _ATSPI_DESKTOP)
+ 
++		self.async = False	# not fully supported yet
+                 self.has_implementations = True
+ 
+         def _set_default_registry (self):
+@@ -322,17 +333,46 @@ class Registry(object):
+ 
+         # -------------------------------------------------------------------------------
+ 
++	def enqueueEvent (self, handler, event):
++		"""
++		Queue an event for later delivery.
++		"""
++		self.queue.put((handler, event))
++
+         def pumpQueuedEvents (self):
+                 """
+-                No Longer needed all application events are asyncronous.
++                Dispatch events that have been queued.
+                 """
+-                pass
++		while (not(self.queue.empty())):
++			(handler, event) = self.queue.get()
++			handler(event)
+ 
+         def flushEvents (self):
+                 """
+-                No Longer needed all application events are asyncronous.
++                Empty the event queue.
++                """
++                self.queue = Queue.QUeue()
++
++        def asyncInternal (self):
++                """
++                Tests whether events should currently be delivered
++                asynchronously
++                """
++                return self.async or self.frozen
++
++        def freezeEvents (self):
++                """
++                Temporarily stop delivering events, queueing them until thaw() is called
++                """
++                self.frozen = self.frozen + 1
++
++        def thawEvents (self):
++                """
++                Start delivering events again
+                 """
+-                pass
++                self.frozen = self.frozen - 1
++                if (self.frozen == 0):
++                        self.pumpQueuedEvents ()
+ 
+         # -------------------------------------------------------------------------------
+ 
+diff --git a/pyatspi/table.py b/pyatspi/table.py
+index 01fbf82..9eb3235 100644
+--- a/pyatspi/table.py
++++ b/pyatspi/table.py
+@@ -308,7 +308,7 @@ class Table(Accessible):
+                 @return True if the specified row was successfully de-selected,
+                 False if not.
+                 """
+-                func = self.get_dbus_method("removeRowSelection", dbus_interface=ATSPI_TABLE)
++                func = self.get_dbus_method("RemoveRowSelection", dbus_interface=ATSPI_TABLE)
+                 return func(row)
+ 
+         def get_caption(self):
+diff --git a/pyatspi/text.py b/pyatspi/text.py
+index c798df8..b1a177e 100644
+--- a/pyatspi/text.py
++++ b/pyatspi/text.py
+@@ -532,7 +532,7 @@ class Text(Accessible):
+                 @return True if the selection corresponding to selectionNum is
+                 successfully modified, False otherwise.
+                 """
+-                func = self.get_dbus_method("setSelection", dbus_interface=ATSPI_TEXT)
++                func = self.get_dbus_method("SetSelection", dbus_interface=ATSPI_TEXT)
+                 return func(selectionNum, startOffset, endOffset)
+ 
+         def get_caretOffset(self):

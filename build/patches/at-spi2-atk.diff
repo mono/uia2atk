@@ -1,137 +1,3309 @@
+diff --git a/AUTHORS b/AUTHORS
+index c86484d..6f89ab4 100644
+--- a/AUTHORS
++++ b/AUTHORS
+@@ -2,7 +2,7 @@
+ Authors of AT-SPI D-Bus implementation
+ --------------------------------------
+ 
+-Mike Gorse <mike.gorse@novell.com>
++Mike Gorse <mgorse@novell.com>
+ Mark Doffman <mark.doffman@codethink.co.uk>
+ 
+ 
+diff --git a/Makefile.am b/Makefile.am
+index ca33cea..9fb6883 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1 +1,23 @@
+-SUBDIRS=dbind droute common atk-adaptor
++SUBDIRS=dbind droute common atk-adaptor po
++
++schemasdir       = $(GCONF_SCHEMA_FILE_DIR)
++schemas_in_files = at-spi2.schemas.in
++schemas_DATA     = $(schemas_in_files:.schemas.in=.schemas)
++@INTLTOOL_SCHEMAS_RULE@
++
++if GCONF_SCHEMAS_INSTALL
++install-data-local:
++                if test -z "$(DESTDIR)" ; then \
++                        for p in $(schemas_DATA) ; do \
++                                GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(top_builddir)/data/$$p ; \
++                        done \
++                fi
++else
++install-data-local:
++endif
++
++EXTRA_DIST = \
++	$(schemas_in_files)
++
++CLEANFILES = \
++	$(schemas_data)
+diff --git a/at-spi2.schemas.in b/at-spi2.schemas.in
+new file mode 100644
+index 0000000..7872a47
+--- /dev/null
++++ b/at-spi2.schemas.in
+@@ -0,0 +1,28 @@
++<?xml version="1.0"?>
++<gconfschemafile>
++  <schemalist>
++    <schema>
++      <key>/schemas/apps/gnome_settings_daemon/gtk-modules/gail:atk-bridge</key>
++      <applyto>/apps/gnome_settings_daemon/gtk-modules/gail:atk-bridge</applyto>
++      <owner>gnome</owner>
++      <type>string</type>
++      <default>/desktop/gnome/interface/accessibility</default>
++      <locale name="C">
++        <short>GTK+ modules for accessibility support</short>
++        <long>This key determines the GTK+ modules to load for accessibility
++support.</long>
++      </locale>
++    </schema>
++    <schema>
++      <key>/schemas/desktop/gnome/interface/at-spi-dbus</key>
++      <applyto>/desktop/gnome/interface/at-spi-dbus</applyto>
++      <owner>gnome</owner>
++      <type>bool</type>
++      <default>true</default>
++      <locale name="C">
++        <short>Enable DBus-based AT-SPI infrastructure</short>
++        <long>In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-SPI infrastructure has been relocated.  It is ignored if the DBus-based AT-SPI infrastructure has not been relocated.</long>
++      </locale>
++    </schema>
++  </schemalist>
++</gconfschemafile>
+diff --git a/atk-adaptor/adaptors/Makefile.am b/atk-adaptor/adaptors/Makefile.am
+index 28991fb..59a6ece 100644
+--- a/atk-adaptor/adaptors/Makefile.am
++++ b/atk-adaptor/adaptors/Makefile.am
+@@ -25,6 +25,7 @@ libatk_bridge_adaptors_la_SOURCES =\
+ 	hypertext-adaptor.c	\
+ 	image-adaptor.c		\
+ 	selection-adaptor.c	\
++	socket-adaptor.c	\
+ 	table-adaptor.c		\
+ 	text-adaptor.c		\
+ 	value-adaptor.c
 diff --git a/atk-adaptor/adaptors/accessible-adaptor.c b/atk-adaptor/adaptors/accessible-adaptor.c
-index dc46850..818fca4 100644
+index 818fca4..b40c5f9 100644
 --- a/atk-adaptor/adaptors/accessible-adaptor.c
 +++ b/atk-adaptor/adaptors/accessible-adaptor.c
-@@ -292,7 +292,9 @@ impl_GetRelationSet (DBusConnection * bus,
-     {
-       goto oom;
-     }
--  count = atk_relation_set_get_n_relations (set);
-+  count = 0;
-+  if (set)
-+    count = atk_relation_set_get_n_relations (set);
-   for (i = 0; i < count; i++)
-     {
-       AtkRelation *r = atk_relation_set_get_relation (set, i);
-diff --git a/atk-adaptor/bridge.c b/atk-adaptor/bridge.c
-index 45bc15f..a2ab66c 100644
---- a/atk-adaptor/bridge.c
-+++ b/atk-adaptor/bridge.c
-@@ -158,7 +158,7 @@ spi_atk_bridge_get_bus (void)
- 
- /*---------------------------------------------------------------------------*/
- 
--static void
-+static gboolean
- register_application (SpiBridge * app)
- {
-   DBusMessage *message, *reply;
-@@ -188,12 +188,21 @@ register_application (SpiBridge * app)
-       dbus_message_iter_init (reply, &iter);
-       dbus_message_iter_recurse (&iter, &iter_struct);
-       if (!(dbus_message_iter_get_arg_type (&iter_struct) == DBUS_TYPE_STRING))
--            g_error ("AT-SPI: Could not obtain desktop path or name\n");
-+        {
-+          g_warning ("AT-SPI: Could not obtain desktop path or name\n");
-+          return FALSE;
-+        }
-       dbus_message_iter_get_basic (&iter_struct, &app_name);
-       if (!dbus_message_iter_next (&iter_struct))
--            g_error ("AT-SPI: Could not obtain desktop name");
-+        {
-+          g_warning ("AT-SPI: Could not obtain desktop name");
-+          return FALSE;
-+        }
-       if (!(dbus_message_iter_get_arg_type (&iter_struct) == DBUS_TYPE_OBJECT_PATH))
--            g_error ("AT-SPI: Could not obtain desktop path");
-+        {
-+          g_warning ("AT-SPI: Could not obtain desktop path");
-+          return FALSE;
-+        }
-       dbus_message_iter_get_basic (&iter_struct, &obj_path);
- 
-       app->desktop_name = g_strdup (app_name);
-@@ -201,9 +210,10 @@ register_application (SpiBridge * app)
-     }
-   else
-     {
--      g_error ("AT-SPI: Could not embed inside desktop: %s\n", error.message);
-+      g_warning ("AT-SPI: Could not embed inside desktop: %s\n", error.message);
-+      return FALSE;
-     }
--
-+  return TRUE;
+@@ -496,27 +496,6 @@ impl_GetInterfaces (DBusConnection * bus,
+   return reply;
  }
  
- /*---------------------------------------------------------------------------*/
-@@ -414,6 +424,12 @@ adaptor_init (gint * argc, gchar ** argv[])
-   treepath = droute_add_one (spi_global_app_data->droute,
-                              "/org/at_spi/cache", spi_global_cache);
+-static DBusMessage *
+-impl_Embedded (DBusConnection *bus,
+-                    DBusMessage *message,
+-                    void *user_data)
+-{
+-  AtkObject *object = (AtkObject *) user_data;
+-  char *path;
+-  gchar *id;
+-
+-  if (!dbus_message_get_args (message, NULL, DBUS_TYPE_STRING, &path, DBUS_TYPE_INVALID))
+-    {
+-      return droute_invalid_arguments_error (message);
+-    }
+-  id = g_object_get_data (G_OBJECT (object), "dbus-plug-parent");
+-  if (id)
+-    g_free (id);
+-  id = g_strconcat (dbus_message_get_sender (message), ":", path, NULL);
+-  g_object_set_data (G_OBJECT (object), "dbus-plug-parent", id);
+-  return dbus_message_new_method_return (message);
+-}
+-
+ static DRouteMethod methods[] = {
+   {impl_GetChildAtIndex, "GetChildAtIndex"},
+   {impl_GetChildren, "GetChildren"},
+@@ -529,7 +508,6 @@ static DRouteMethod methods[] = {
+   {impl_GetAttributes, "GetAttributes"},
+   {impl_GetApplication, "GetApplication"},
+   {impl_GetInterfaces, "GetInterfaces"},
+-  {impl_Embedded, "Embedded"},
+   {NULL, NULL}
+ };
  
-+  if (!treepath)
-+    {
-+      g_warning ("atk-bridge: Error in droute_add_one().  Already running?");
-+      return 0;
-+    }
+diff --git a/atk-adaptor/adaptors/collection-adaptor.c b/atk-adaptor/adaptors/collection-adaptor.c
+index 0edf896..4162acf 100644
+--- a/atk-adaptor/adaptors/collection-adaptor.c
++++ b/atk-adaptor/adaptors/collection-adaptor.c
+@@ -538,7 +538,8 @@ sort_order_rev_canonical (MatchRulePrivate * mrp, GList * ls,
+   /* Add to the list if it matches */
+   if (flag && match_interfaces_lookup (obj, mrp)
+       && match_states_lookup (obj, mrp)
+-      && match_roles_lookup (obj, mrp) && match_attributes_lookup (obj, mrp))
++      && match_roles_lookup (obj, mrp) && match_attributes_lookup (obj, mrp)
++      && (max == 0 || kount < max))
+     {
+       ls = g_list_append (ls, obj);
+       kount++;
+@@ -551,7 +552,7 @@ sort_order_rev_canonical (MatchRulePrivate * mrp, GList * ls,
+   indexinparent = atk_object_get_index_in_parent (obj);
+   parent = atk_object_get_parent (obj);
+ 
+-  if (indexinparent > 0)
++  if (indexinparent > 0 && (max == 0 || kount < max))
+     {
+       /* there are still some siblings to visit so get the previous sibling
+          and get it's last descendant.
+@@ -571,7 +572,7 @@ sort_order_rev_canonical (MatchRulePrivate * mrp, GList * ls,
+       kount = sort_order_rev_canonical (mrp, ls, kount, max,
+                                         nextobj, TRUE, pobj);
+     }
+-  else
++  else if (max == 0 || kount < max)
+     {
+       /* no more siblings so next node must be the parent */
+       kount = sort_order_rev_canonical (mrp, ls, kount, max,
+@@ -844,7 +845,7 @@ inorder (AtkObject * collection, MatchRulePrivate * mrp,
+       obj = parent;
+     }
+ 
+-  if (kount < max)
++  if (max == 0 || kount < max)
+     {
+       kount = sort_order_canonical (mrp, ls, kount, max,
+                                     obj, i + 1, TRUE, FALSE, TRUE, TRUE);
+diff --git a/atk-adaptor/adaptors/hyperlink-adaptor.c b/atk-adaptor/adaptors/hyperlink-adaptor.c
+index 4853848..cd0a924 100644
+--- a/atk-adaptor/adaptors/hyperlink-adaptor.c
++++ b/atk-adaptor/adaptors/hyperlink-adaptor.c
+@@ -43,7 +43,7 @@ static dbus_bool_t
+ impl_get_NAnchors (DBusMessageIter * iter, void *user_data)
+ {
+   AtkHyperlink *link = (AtkHyperlink *) user_data;
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data), FALSE);
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link), FALSE);
+   return droute_return_v_int32 (iter, atk_hyperlink_get_n_anchors (link));
+ }
+ 
+@@ -52,7 +52,7 @@ static dbus_bool_t
+ impl_get_StartIndex (DBusMessageIter * iter, void *user_data)
+ {
+   AtkHyperlink *link = get_hyperlink (user_data);
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data), FALSE);
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link), FALSE);
+   return droute_return_v_int32 (iter, atk_hyperlink_get_start_index (link));
+ }
+ 
+@@ -60,7 +60,7 @@ static dbus_bool_t
+ impl_get_EndIndex (DBusMessageIter * iter, void *user_data)
+ {
+   AtkHyperlink *link = get_hyperlink (user_data);
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data), FALSE);
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link), FALSE);
+   return droute_return_v_int32 (iter, atk_hyperlink_get_end_index (link));
+ }
+ 
+@@ -72,7 +72,7 @@ impl_GetObject (DBusConnection * bus, DBusMessage * message, void *user_data)
+   dbus_int32_t i;
+   AtkObject *atk_object;
+ 
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data),
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link),
+                         droute_not_yet_handled_error (message));
+   dbus_error_init (&error);
+   if (!dbus_message_get_args
+@@ -93,7 +93,7 @@ impl_GetURI (DBusConnection * bus, DBusMessage * message, void *user_data)
+   gchar *rv;
+   DBusMessage *reply;
+ 
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data),
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link),
+                         droute_not_yet_handled_error (message));
+   dbus_error_init (&error);
+   if (!dbus_message_get_args
+@@ -122,7 +122,7 @@ impl_IsValid (DBusConnection * bus, DBusMessage * message, void *user_data)
+   dbus_bool_t rv;
+   DBusMessage *reply;
+ 
+-  g_return_val_if_fail (ATK_IS_HYPERLINK (user_data),
++  g_return_val_if_fail (ATK_IS_HYPERLINK (link),
+                         droute_not_yet_handled_error (message));
+ 
+   rv = atk_hyperlink_is_valid (link);
+diff --git a/atk-adaptor/adaptors/socket-adaptor.c b/atk-adaptor/adaptors/socket-adaptor.c
+new file mode 100644
+index 0000000..58d19d5
+--- /dev/null
++++ b/atk-adaptor/adaptors/socket-adaptor.c
+@@ -0,0 +1,205 @@
++/*
++ * AT-SPI - Assistive Technology Service Provider Interface
++ * (Gnome Accessibility Project; http://developer.gnome.org/projects/gap)
++ *
++ * Copyright 2008 Novell, Inc.
++ * Copyright 2001, 2002 Sun Microsystems Inc.,
++ * Copyright 2001, 2002 Ximian, Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
 +
-   accpath = droute_add_many (spi_global_app_data->droute,
-                              "/org/a11y/atspi/accessible",
-                              NULL,
-diff --git a/atk-adaptor/event.c b/atk-adaptor/event.c
-index 34dcda3..69de709 100644
---- a/atk-adaptor/event.c
-+++ b/atk-adaptor/event.c
-@@ -72,7 +72,19 @@ send_and_allow_reentry (DBusConnection * bus, DBusMessage * message)
-   dbus_pending_call_set_notify (pending, set_reply, (void *) &closure, NULL);
-   closure.loop = g_main_loop_new (NULL, FALSE);
- 
--  g_main_loop_run  (closure.loop);
-+  if (getenv ("AT_SPI_CLIENT"))
++#include <atk/atk.h>
++#include <droute/droute.h>
++
++#include "common/spi-dbus.h"
++#include "common/spi-stateset.h"
++#include "object.h"
++#include "introspection.h"
++#include "bridge.h"
++
++static DBusMessage *
++new_socket_call_message (AtkComponent *component, const char *member)
++{
++  char *id = g_object_get_data (G_OBJECT (component), "dbus-plug-parent");
++  char *bus_parent;
++  char *path_parent;
++
++  if (!id)
 +    {
-+      g_main_loop_run  (closure.loop);
++      g_warning ("new_socket_call_message: no id");
++      return NULL;
++    }
++  bus_parent = g_strdup (id);
++  if (bus_parent && (path_parent = g_utf8_strchr (bus_parent + 1, -1, ':')))
++    {
++      DBusMessage *message;
++      *(path_parent++) = '\0';
++      message = dbus_message_new_method_call (bus_parent, path_parent,
++                                              SPI_DBUS_INTERFACE_COMPONENT,
++                                              member);
++      g_free (bus_parent);
++      return message;
++    }
++  return NULL;
++}
++
++static void
++atspi_plug_component_get_extents (AtkComponent *component, gint *x, gint *y,
++                                  gint *width, gint *height,
++                                  AtkCoordType coord_type)
++{
++  DBusMessage *message = new_socket_call_message (component, "GetExtents");
++  DBusMessage *reply;
++  dbus_uint32_t coord_type_dbus = coord_type;
++  DBusError error;
++  const char *signature;
++  DBusMessageIter iter, iter_struct;
++  dbus_int32_t tmp;
++
++  dbus_error_init (&error);
++  dbus_message_append_args (message, DBUS_TYPE_UINT32, &coord_type_dbus, DBUS_TYPE_INVALID);
++  reply = dbus_connection_send_with_reply_and_block (spi_global_app_data->bus,
++                                                     message, -1, &error);
++  dbus_message_unref (message);
++  if (!reply)
++    return;
++  signature = dbus_message_get_signature (reply);
++  if (g_strcmp0 (signature, "(iiii)") != 0)
++  {
++    g_warning ("Got unexpected signature %s from GetExtents\n", signature);
++    dbus_message_unref (reply);
++    return;
++  }
++  dbus_message_iter_init (reply, &iter);
++  dbus_message_iter_recurse (&iter, &iter_struct);
++  dbus_message_iter_get_basic (&iter_struct, &tmp);
++  *x = tmp;
++  dbus_message_iter_next (&iter_struct);
++  dbus_message_iter_get_basic (&iter_struct, &tmp);
++  *y = tmp;
++  dbus_message_iter_next (&iter_struct);
++  dbus_message_iter_get_basic (&iter_struct, &tmp);
++  *width = tmp;
++  dbus_message_iter_next (&iter_struct);
++  dbus_message_iter_get_basic (&iter_struct, &tmp);
++  *height = tmp;
++  dbus_message_unref (reply);
++}
++
++static void
++atspi_plug_component_get_position (AtkComponent *component, gint *x, gint *y,
++                                  AtkCoordType coord_type)
++{
++  DBusMessage *message = new_socket_call_message (component, "GetPosition");
++  DBusMessage *reply;
++  dbus_uint32_t coord_type_dbus = coord_type;
++  DBusError error;
++  dbus_int32_t x_dbus, y_dbus;
++
++  dbus_error_init (&error);
++  dbus_message_append_args (message, DBUS_TYPE_UINT32, &coord_type_dbus, DBUS_TYPE_INVALID);
++  reply = dbus_connection_send_with_reply_and_block (spi_global_app_data->bus,
++                                                     message, -1, &error);
++  dbus_message_unref (message);
++  if (!reply)
++    return;
++  if (!dbus_message_get_args (reply, &error, DBUS_TYPE_INT32, &x_dbus,
++                              DBUS_TYPE_INT32, &y_dbus, DBUS_TYPE_INVALID))
++    {
++      g_warning ("GetPosition failed: %s", error.message);
++      dbus_error_free (&error);
 +    }
 +  else
 +    {
-+      closure.reply = NULL;
-+      while (!closure.reply)
-+        {
-+          if (!dbus_connection_read_write_dispatch (spi_global_app_data->bus, 1000))
-+            return NULL;
-+        }
++      *x = x_dbus;
++      *y = y_dbus;
 +    }
-   
-   g_main_loop_unref (closure.loop);
-   return closure.reply;
-diff --git a/atk-adaptor/object.c b/atk-adaptor/object.c
-index 33c50d9..0e6b6e2 100644
---- a/atk-adaptor/object.c
-+++ b/atk-adaptor/object.c
-@@ -176,6 +176,12 @@ spi_object_append_interfaces (DBusMessageIter * iter, AtkObject * obj)
-       dbus_message_iter_append_basic (iter, DBUS_TYPE_STRING, &itf);
-     }
- 
-+  if (atk_object_get_role (obj) == ATK_ROLE_APPLICATION)
-+    {
-+      itf = SPI_DBUS_INTERFACE_APPLICATION;
-+      dbus_message_iter_append_basic (iter, DBUS_TYPE_STRING, &itf);
-+    }
++  dbus_message_unref (reply);
++}
 +
-   if (ATK_IS_COMPONENT (obj))
++static void
++atspi_plug_component_get_size (AtkComponent *component,
++                               gint *width, gint *height)
++{
++  DBusMessage *message = new_socket_call_message (component, "GetSize");
++  DBusMessage *reply;
++  DBusError error;
++  dbus_uint32_t width_dbus, height_dbus;
++
++  dbus_error_init (&error);
++  reply = dbus_connection_send_with_reply_and_block (spi_global_app_data->bus,
++                                                     message, -1, &error);
++  dbus_message_unref (message);
++  if (!reply)
++    return;
++  if (!dbus_message_get_args (reply, &error, DBUS_TYPE_INT32, &width_dbus,
++                              DBUS_TYPE_INT32, &height_dbus, DBUS_TYPE_INVALID))
++    {
++      g_warning ("GetSize failed: %s", error.message);
++      dbus_error_free (&error);
++    }
++  else
++    {
++      *width = width_dbus;
++      *height = height_dbus;
++    }
++  dbus_message_unref (reply);
++}
++
++static DBusMessage *
++impl_Embedded (DBusConnection *bus,
++                    DBusMessage *message,
++                    void *user_data)
++{
++  AtkObject *object = (AtkObject *) user_data;
++  char *path;
++  gchar *id;
++
++  if (!dbus_message_get_args (message, NULL, DBUS_TYPE_STRING, &path, DBUS_TYPE_INVALID))
++    {
++      return droute_invalid_arguments_error (message);
++    }
++  id = g_object_get_data (G_OBJECT (object), "dbus-plug-parent");
++  if (id)
++    g_free (id);
++  id = g_strconcat (dbus_message_get_sender (message), ":", path, NULL);
++  g_object_set_data (G_OBJECT (object), "dbus-plug-parent", id);
++
++  if (ATK_IS_COMPONENT (object))
++    {
++      AtkComponent *component = ATK_COMPONENT (object);
++      AtkComponentIface *iface = ATK_COMPONENT_GET_IFACE (component);
++      iface->get_extents = atspi_plug_component_get_extents;
++      iface->get_size = atspi_plug_component_get_size;
++      iface->get_position = atspi_plug_component_get_position;
++    }
++  return dbus_message_new_method_return (message);
++}
++
++static DRouteMethod methods[] = {
++  {impl_Embedded, "Embedded"},
++  {NULL, NULL}
++};
++
++void
++spi_initialize_socket (DRoutePath * path)
++{
++  droute_path_add_interface (path,
++                             SPI_DBUS_INTERFACE_SOCKET,
++                             NULL, /* spi_org_a11y_atspi_Socket,	 */
++                             methods, NULL);
++};
+diff --git a/atk-adaptor/bridge.c b/atk-adaptor/bridge.c
+index a2ab66c..dd66515 100644
+--- a/atk-adaptor/bridge.c
++++ b/atk-adaptor/bridge.c
+@@ -156,6 +156,31 @@ spi_atk_bridge_get_bus (void)
+   return bus;
+ }
+ 
++static void
++set_reply (DBusPendingCall *pending, void *user_data)
++{
++    void **replyptr = (void **)user_data;
++
++    *replyptr = dbus_pending_call_steal_reply (pending);
++}
++
++static DBusMessage *
++send_and_allow_reentry (DBusConnection *bus, DBusMessage *message, DBusError *error)
++{
++    DBusPendingCall *pending;
++    DBusMessage *reply = NULL;
++
++    if (!dbus_connection_send_with_reply (bus, message, &pending, -1))
++    {
++        return NULL;
++    }
++    dbus_pending_call_set_notify (pending, set_reply, (void *)&reply, NULL);
++    while (!reply)
++    {
++      if (!dbus_connection_read_write_dispatch (bus, -1)) return NULL;
++    }
++    return reply;
++}
+ /*---------------------------------------------------------------------------*/
+ 
+ static gboolean
+@@ -174,8 +199,8 @@ register_application (SpiBridge * app)
+ 
+   dbus_message_iter_init_append (message, &iter);
+   spi_object_append_reference (&iter, app->root);
+-
+-  reply = dbus_connection_send_with_reply_and_block (app->bus, message, -1, &error);
++  
++  reply = send_and_allow_reentry (app->bus, message, &error);
+ 
+   if (message)
+     dbus_message_unref (message);
+@@ -305,7 +330,7 @@ socket_embed_hook (AtkSocket * socket, gchar * plug_id)
      {
-       itf = SPI_DBUS_INTERFACE_COMPONENT;
+       DBusMessage *message;
+       *(plug_path++) = '\0';
+-      message = dbus_message_new_method_call (plug_name, plug_path, "org.a11y.atspi.Accessible", "Embedded");
++      message = dbus_message_new_method_call (plug_name, plug_path, SPI_DBUS_INTERFACE_SOCKET, "Embedded");
+       dbus_message_append_args (message, DBUS_TYPE_STRING, &path, DBUS_TYPE_INVALID);
+       dbus_connection_send (spi_global_app_data->bus, message, NULL);
+     }
+@@ -450,6 +475,7 @@ adaptor_init (gint * argc, gchar ** argv[])
+   spi_initialize_hypertext (accpath);
+   spi_initialize_image (accpath);
+   spi_initialize_selection (accpath);
++  spi_initialize_socket (accpath);
+   spi_initialize_table (accpath);
+   spi_initialize_text (accpath);
+   spi_initialize_value (accpath);
+@@ -461,7 +487,7 @@ adaptor_init (gint * argc, gchar ** argv[])
+   install_plug_hooks ();
+ 
+   /* Register this app by sending a signal out to AT-SPI registry daemon */
+-  if (!atspi_no_register)
++  if (!atspi_no_register && (!root || !ATK_IS_PLUG (root)))
+     register_application (spi_global_app_data);
+ 
+   g_atexit (exit_func);
+diff --git a/configure.ac b/configure.ac
+index 08faf7a..97f0d04 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -22,11 +22,17 @@ AC_SUBST(LT_AGE)
+ 
+ AM_INIT_AUTOMAKE([-Wall foreign])
+ 
++dnl translation of any at-spi strings: used only for .server
++IT_PROG_INTLTOOL([0.40.0])
++
+ AC_PROG_CC
+ AM_DISABLE_STATIC
+ AM_PROG_LIBTOOL
+ PKG_PROG_PKG_CONFIG
+ 
++GETTEXT_PACKAGE="${PACKAGE}"
++AC_SUBST(GETTEXT_PACKAGE)
++
+ AC_CONFIG_HEADERS([config.h])
+ 
+ PKG_CHECK_MODULES(DBUS, [dbus-1 >= 1.0])
+@@ -61,6 +67,10 @@ PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.10.0])
+ AC_SUBST(GTK_LIBS)
+ AC_SUBST(GTK_CFLAGS)
+ 
++dnl GConf checks
++AC_PATH_PROG(GCONFTOOL, gconftool-2)
++AM_GCONF_SOURCE_2
++
+ AC_PATH_XTRA
+ 
+ if test x$no_x = xyes ; then
+@@ -110,6 +120,7 @@ AC_CONFIG_FILES([Makefile
+ 		 common/Makefile
+ 		 atk-adaptor/Makefile
+ 		 atk-adaptor/adaptors/Makefile
++		 po/Makefile.in
+ 		])
+ 
+ AC_OUTPUT
+diff --git a/droute/droute-pairhash.c b/droute/droute-pairhash.c
+index f3b8da2..c2f2c29 100644
+--- a/droute/droute-pairhash.c
++++ b/droute/droute-pairhash.c
+@@ -60,7 +60,7 @@ str_pair_hash (gconstpointer key)
+     if (*(pair->two) != '\0')
+       {
+         hash = *(pair->two);
+-        hash = str_hash (hash, ++(pair->two));
++        hash = str_hash (hash, pair->two);
+         hash = str_hash (hash, pair->one);
+       }
+ 
 diff --git a/droute/droute.c b/droute/droute.c
-index f0b4f00..e2534e1 100644
+index e2534e1..24ccea4 100644
 --- a/droute/droute.c
 +++ b/droute/droute.c
-@@ -174,7 +174,10 @@ droute_add_one (DRouteContext *cnx,
- 
-     registered = dbus_connection_register_object_path (cnx->bus, path, &droute_vtable, new_path);
-     if (!registered)
--        oom();
-+      {
-+        path_free (new_path, NULL);
-+        return NULL;
-+      }
- 
-     g_ptr_array_add (cnx->registered_paths, new_path);
-     return new_path;
+@@ -286,7 +286,7 @@ impl_prop_GetAll (DBusMessage *message,
+                         (&iter_dict, DBUS_TYPE_DICT_ENTRY, NULL, &iter_dict_entry))
+               oom ();
+            dbus_message_iter_append_basic (&iter_dict_entry, DBUS_TYPE_STRING,
+-                                           key->two);
++                                           &key->two);
+            (value->get) (&iter_dict_entry, datum);
+            if (!dbus_message_iter_close_container (&iter_dict, &iter_dict_entry))
+                oom ();
+diff --git a/po/LINGUAS b/po/LINGUAS
+new file mode 100644
+index 0000000..19c591b
+--- /dev/null
++++ b/po/LINGUAS
+@@ -0,0 +1,44 @@
++# please keep this list sorted alphabetically
++#
++ar
++ast
++bg
++bn
++ca
++cs
++cy
++de
++el
++en_GB
++en@shaw
++es
++et
++eu
++fi
++fr
++gl
++he
++hu
++it
++ko
++lt
++nb
++nl
++nn
++pl
++pt_BR
++pt
++ro
++ru
++sk
++sl
++sr@latin
++sr
++sv
++ta
++th
++uk
++vi
++zh_CN
++zh_HK
++zh_TW
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+new file mode 100644
+index 0000000..ebb0efe
+--- /dev/null
++++ b/po/POTFILES.in
+@@ -0,0 +1,3 @@
++# List of source files containing translatable strings.
++# Please keep this file sorted alphabetically.
++at-spi2.schemas.in
+diff --git a/po/ar.po b/po/ar.po
+new file mode 100644
+index 0000000..bfccd4b
+--- /dev/null
++++ b/po/ar.po
+@@ -0,0 +1,66 @@
++# Arabic AT-SPI translation.
++# Copyright (C) 2003 Free Software Foundation, Inc.
++# This file is distributed under the same license as the AT-SPI package.
++# Arafat Medini <lumina@silverpen.de>, 2004.
++# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: AT-SPI 1.3.5\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-01-12 17:19+0200\n"
++"PO-Revision-Date: 2010-01-12 17:19+0300\n"
++"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
++"Language-Team: Arabic <doc@arabeyes.org>\n"
++"Language: ar\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
++"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
++"X-Generator: Virtaal 0.5.0\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "فعّل بنية AT-SPI المبنية على DBus>"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "وحدات جتك+ لدعم الإتاحة"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr ""
++"بالإضافة إلى /desktop/gnome/interface/accessibility، تحتاج هذا المفتاح "
++"لتفعيل بنية AT-SPI المبنية على DBus وإلا ستستخدم تلك المبنية على D-Bus."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "يحدد هذا المفتاح وحدات جتك+ التي ستُحمّل لدعم الإتاحة."
++
++# CHECK
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "مضبطة AT-SPI"
++
++# CHECK
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "مضبطة الإتاحة"
++
++# CHECK
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "مضبطة AT SPI"
++
++# CHECK
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "غلاف مضبطة AT SPI"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "فشل لم يوجد متحكم لأحداث الأجهزة.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "تنبيه: وقع تقرير حدث مصفر."
+diff --git a/po/ast.po b/po/ast.po
+new file mode 100644
+index 0000000..a1602e1
+--- /dev/null
++++ b/po/ast.po
+@@ -0,0 +1,49 @@
++# Asturian translation for at-spi
++# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
++# This file is distributed under the same license as the at-spi package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2009-12-14 15:39+0000\n"
++"PO-Revision-Date: 2010-01-03 21:02+0100\n"
++"Last-Translator: astur <malditoastur@gmail.com>\n"
++"Language-Team: Asturian <ast@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Launchpad-Export-Date: 2008-09-23 02:23+0000\n"
++"X-Generator: Launchpad (build Unknown)\n"
++"X-Poedit-Language: asturian\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activar la infraestructura de AT-SPI basada en DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Módulos GTK+ pal sofitu d'accesibilidá"
++
++#: ../at-spi2.schemas.in.h:3
++msgid "In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus AT-SPI infrastructure will be used."
++msgstr "En combinación con /desktop/gnome/interface/accessibility , esta clave necesítase p'activar la infraestructura AT-SPI basada en DBus. D'otramiente, usaráse la infraestructura AT-SPI basada en D-Bus."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Esta clave determina los módulos GTK+ que cargar pal sofitu d'accesibilidá."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Rexistru AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Rexistru d'Accesibilidá"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "Rexistru AT SPI"
++
+diff --git a/po/bg.po b/po/bg.po
+new file mode 100644
+index 0000000..7a5bc2b
+--- /dev/null
++++ b/po/bg.po
+@@ -0,0 +1,53 @@
++# Bulgarian translation of at-spi po-file.
++# Copyright (C) 2004, 2005, 2008, 2009, 2010 Free Software Foundation
++# This file is distributed under the same license as the at-spi package.
++# Vladimir Petkov <kaladan@gmail.com>, 2004.
++# Alexander Shopov <ash@kambanaria.org>, 2005, 2008, 2009, 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi master\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-23 07:36+0200\n"
++"PO-Revision-Date: 2010-02-23 07:36+0200\n"
++"Last-Translator:  Alexander Shopov <ash@kambanaria.org>\n"
++"Language-Team: Bulgarian <dict@fsa-bg.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=n != 1;\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Включване на инфраструктурата за AT-SPI базирана на DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Модули на GTK+ за поддръжка на достъпност"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"В комбинация с „/desktop/gnome/interface/accessibility“ ключът е необходим "
++"за включване на инфраструктурата за AT-SPI базирана на DBus, ако тя е била "
++"преместена. Ако не е била, ключът се пренебрегва."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Този ключ определя кои модули на GTK+ за достъпност да бъдат заредени."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Регистър AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Регистър за достъпност"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Регистър AT-SPI"
+diff --git a/po/bn.po b/po/bn.po
+new file mode 100644
+index 0000000..6e9b97e
+--- /dev/null
++++ b/po/bn.po
+@@ -0,0 +1,61 @@
++# Bengali translation of at-spi.
++# Copyright (C) 2003 THE at-spi'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the at-spi package.
++# Sayamindu Dasgupta <unmadindu@bengalinux.org>, 2003.
++# Loba Yeasmeen <loba@ankur.org.bd>, 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi HEAD\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2009-11-26 09:06+0000\n"
++"PO-Revision-Date: 2010-01-21 18:15+0600\n"
++"Last-Translator: Loba Yeasmeen <loba@ankur.org.bd>\n"
++"Language-Team: Bengali <ankur-bd-l10n@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus-ভিত্তিক AT-SPI অবকাঠামো সক্রিয় করা হবে"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "প্রবেশযোগ্যতা সমর্থনের জন্য GTK+ মডিউল"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr ""
++"/desktop/gnome/interface/accessibility এর সাথে সম্পৃক্ততা হিসেবে, "
++"DBus-ভিত্তিক AT-SPI অবকাঠামো সক্রিয় করতে এই কী প্রয়োজন। অন্যথায়, D-Bus AT-"
++"SPI অবকাঠামো ব্যবহৃত হবে।"
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"প্রবেশযোগ্যতা সমর্থনের জন্য লোড করতে এই কী দ্বারা GTK+ মডিউল নির্ধারণ করা "
++"হয়।"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI রেজিস্ট্রি"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "সহায়ক প্রযুক্তি রেজিস্ট্রি"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "AT SPI রেজিস্ট্রি"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "ব্যর্থ: কোন ডিভাইস ইভেন্ট কন্ট্রোলার খুঁজে পাওয়া গেল না।\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "সাবধান: NULL কী ইভেন্ট রিপোর্ট করা হয়েছে। "
+diff --git a/po/ca.po b/po/ca.po
+new file mode 100644
+index 0000000..e18937b
+--- /dev/null
++++ b/po/ca.po
+@@ -0,0 +1,67 @@
++# Traducció del at-spi de l'equip de Softcatalà.
++# Copyright © 2003, 2008 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Jordi Mallach <jordi@sindominio.net>, 2003.
++# Joan Duran <jodufi@gmail.com>, 2008-2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-03-10 15:21+0100\n"
++"PO-Revision-Date: 2010-03-09 22:41+0100\n"
++"Last-Translator: Joan Duran <jodufi@gmail.com>\n"
++"Language-Team: Catalan <tradgnome@softcatala.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=n!=1;\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr ""
++"Habilita la infraestructura del servei d'accessibilitat (AT-SPI) basada en "
++"DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Mòduls del GTK+ per permetre l'ús de l'accessibilitat"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Aquesta clau és necessària en combinació amb /desktop/gnome/interface/"
++"accessibility per habilitar la infraestructura del servei d'accessibilitat "
++"(AT-SPI) basada en DBus si s'ha reubicat. S'ignorarà si la infraestructura "
++"del servei d'accessibilitat (AT-SPI) basada en DBus no s'ha reubicat."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Aquesta clau determina els mòduls del GTK+ que es carregaran per permetre "
++"l'ús de l'accessibilitat."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registre del servei d'accessibilitat (AT-SPI)"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registre d'accessibilitat"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registre del servei d'accessibilitat (AT SPI)"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Embolcall del registre del servei d'accessibilitat (AT SPI)"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "falla: no s'ha trobat un controlador d'events de dispositiu\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "AVÍS: s'ha rebut un event de tecla NULA."
+diff --git a/po/cs.po b/po/cs.po
+new file mode 100644
+index 0000000..7bf6068
+--- /dev/null
++++ b/po/cs.po
+@@ -0,0 +1,54 @@
++# Czech translation of at-spi.
++# Copyright (C) 2008 the author(s) of at-spi.
++# This file is distributed under the same license as the at-spi package.
++# Miloslav Trmac <mitr@volny.cz>, 2003.
++# Lucas Lommer <llommer@svn.gnome.org>, 2008, 2009, 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-03-01 19:14+0100\n"
++"PO-Revision-Date: 2010-01-21 21:23+0100\n"
++"Last-Translator: Lucas Lommer <llommer@svn.gnome.org>\n"
++"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=utf-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Povolit infrastrukturu AT-SPI založenou na standardu DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Moduly GTK+ sloužící k podpoře přístupnosti"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Tento klíč spolu s /desktop/gnome/interface/accessibility vám umožní použití "
++"infrastruktury AT-SPI založené na standardu DBus, pokud byla přemístěna. "
++"Pokud přemístěna nebyla, bude klíč ignorován."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Tento klíč způsobí, že budou nahrány moduly GTK+ sloužící k podpoře "
++"přístupnosti."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registr AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registr usnadnění"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registr AT SPI"
+diff --git a/po/cy.po b/po/cy.po
+new file mode 100644
+index 0000000..f4b4e3d
+--- /dev/null
++++ b/po/cy.po
+@@ -0,0 +1,50 @@
++# at-spi yn Gymraeg.
++# Copyright (C) 2003 The Free Software Foundation
++# This file is distributed under the same license as the at-spi package.
++# Dafydd Harries <daf@parnassus.ath.cx>, 2003.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2009-12-18 13:26+0000\n"
++"PO-Revision-Date: 2009-12-18 13:47+0100\n"
++"Last-Translator: Iestyn Pryce <dylunio@gmail.com>\n"
++"Language-Team: Cymraeg <gnome-cy@www.linux.org.uk>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Galluogi'r strwythur mewnol AT-SPI sydd wedi'i seilio ar DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Modiwlau GTK+ sydd ar gyfer cymorth hygyrchedd"
++
++#: ../at-spi2.schemas.in.h:3
++msgid "In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus AT-SPI infrastructure will be used."
++msgstr "Yng hyd â /desktop/gnome/interface/accessibility, mae'r allwedd hon ei hangen er mwyn galluogi'r strwythur mewnol AT-SPI sydd wedi'i selio ar DBus. Fel arall mi fydd y strwythur mewnol D-BUS AT-SPI yn cael ei ddefnyddio."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Mae'r allwedd hon yn pennu pa modiwlau cymorth hygyrchedd GTK+ sydd am gael eu llwytho."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Cofrestrfa AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Cofrestrfa Hygyrchedd"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Cofrestrfa AT SPI"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "methiant: dim rheolwr digwyddiad dyfaid wedi ei ganfod.\n"
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "RHYBUDD: adroddwyd digwyddiad allwedd NULL."
++
+diff --git a/po/de.po b/po/de.po
+new file mode 100644
+index 0000000..5ffd227
+--- /dev/null
++++ b/po/de.po
+@@ -0,0 +1,71 @@
++# German AT-SPI translation.
++# Copyright (C) 2003 Free Software Foundation, Inc.
++# This file is distributed under the same license as the AT-SPI package.
++# Christian Neumair <chris@gnome-de.org>, 2003.
++# Hendrik Richter <hendrikr@gnome.org>, 2008.
++# Philipp Kerling <k.philipp@gmail.com>, 2008.
++# Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: AT-SPI master\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-27 15:14+0100\n"
++"PO-Revision-Date: 2010-02-27 15:17+0100\n"
++"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
++"Language-Team: Deutsch <gnome-de@gnome.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=(n != 1)\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus-basierte AT-SPI-Infrastruktur aktivieren"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+-Module für Barrierefreiheits-Unterstützung"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Dieser Schlüssel wird in Verbindung mit /desktop/gnome/interface/"
++"accessibility zur Aktivierung der DBus-basierten AT-SPI-Infrastruktur "
++"benötigt, falls jene Infrastruktur verschoben wurde. Der Schlüssel wird "
++"ignoriert, wenn die auf DBus basierte AT-SPI-Infrastruktur nicht verschoben "
++"wurde."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Legt fest, welche GTK+-Module für Barrierefreiheits-Unterstützung geladen "
++"werden sollen."
++
++# CHECK
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-Registrierung"
++
++# CHECK
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Barrierefreiheits-Registrierung"
++
++# CHECK
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI-Registrierung"
++
++# CHECK
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Wrapper der AT-SPI-Registrierung"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "Fehlgeschlagen: Kein Geräteereignis-Controller gefunden.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "WARNUNG: SChlüsselereignis »NULL« berichtet."
+diff --git a/po/el.po b/po/el.po
+new file mode 100644
+index 0000000..97f90a6
+--- /dev/null
++++ b/po/el.po
+@@ -0,0 +1,50 @@
++# translation of el.po to Greek
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# Kostas Papadimas <pkst@gmx.net>, 2003
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: el\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-03-16 23:05+0200\n"
++"Last-Translator: Nikos Bakaoukas <nikolaosx1@gmail.com>\n"
++"Language-Team: Greek <team@gnome.gr>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Ενεργοποίηση της βασισμένη σε DBus υποδομή AT-SPI"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Αρθρώματα GTK+ για υποστήριξη προσιτότητας"
++
++#: ../at-spi2.schemas.in.h:3
++#| msgid ""
++#| "In combination with /desktop/gnome/interface/accessibility, this key is "
++#| "needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-"
++#| "Bus AT-SPI infrastructure will be used."
++msgid "In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-SPI infrastructure has been relocated. It is ignored if the DBus-based AT-SPI infrastructure has not been relocated."
++msgstr "Σε συνδυασμό με το /desktop/gnome/interface/accessibility, αυτό το κλειδί είναι απαραίτητο για την ενεργοποίηση της , βασισμένης σε DBus, υποδομής AT-SPI εάν η βασισμένη σε DBus, υποδομή AT-SPI έχει μεταφερθεί σε νέα θέση. Θα αγνοηθεί εάν η βασισμένη σε DBus υποδομή AT-SPI δεν έχει μετακινηθεί."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Αυτό το κλειδί καθορίζει τα αρθρώματα GTK+ που θα φορτωθούν για την υποστήριξη προσιτότητας."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Μητρώο AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Μητρώο προσιτότητας"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "Μητρώο AT SPI"
++
+diff --git a/po/en@shaw.po b/po/en@shaw.po
+new file mode 100644
+index 0000000..cb716b2
+--- /dev/null
++++ b/po/en@shaw.po
+@@ -0,0 +1,51 @@
++# Shavian translation..
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the PACKAGE package.
++# Thomas Thurman <tthurman@gnome.org>, 2009.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2009-10-29 17:49+0000\n"
++"PO-Revision-Date: 2009-11-01 15:02-0500\n"
++"Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
++"Language-Team: Shavian <ubuntu-l10n-en-shaw@lists.launchpad.net>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "𐑦𐑯𐑱𐑚𐑩𐑤 DBus-𐑚𐑱𐑕𐑑 AT-SPI 𐑦𐑯𐑓𐑮𐑩𐑕𐑑𐑮𐑩𐑒𐑗𐑻"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ 𐑥𐑪𐑛𐑿𐑤𐑟 𐑓𐑹 𐑨𐑒𐑕𐑧𐑕𐑩𐑚𐑦𐑤𐑦𐑑𐑰 𐑕𐑩𐑐𐑹𐑑"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr ""
++"𐑦𐑯 𐑒𐑪𐑥𐑚𐑦𐑯𐑱𐑖𐑩𐑯 𐑢𐑦𐑞 /desktop/gnome/interface/accessibility, 𐑞𐑦𐑕 𐑒𐑰 𐑦𐑟 𐑯𐑰𐑛𐑩𐑛 𐑑 "
++"𐑦𐑯𐑱𐑚𐑩𐑤 𐑞 DBus-𐑚𐑱𐑕𐑑 AT-SPI 𐑦𐑯𐑓𐑮𐑩𐑕𐑑𐑮𐑩𐑒𐑗𐑻. 𐑳𐑞𐑼𐑢𐑲𐑟, 𐑞 D-Bus AT-SPI "
++"𐑦𐑯𐑓𐑮𐑩𐑕𐑑𐑮𐑩𐑒𐑗𐑻 𐑢𐑦𐑤 𐑚𐑰 𐑿𐑟𐑛."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "𐑞𐑦𐑕 𐑒𐑰 𐑛𐑦𐑑𐑻𐑥𐑦𐑯𐑟 𐑞 GTK+ 𐑥𐑪𐑛𐑿𐑤𐑟 𐑑 𐑤𐑴𐑛 𐑓𐑹 𐑨𐑒𐑕𐑧𐑕𐑩𐑚𐑦𐑤𐑦𐑑𐑰 𐑕𐑩𐑐𐑹𐑑."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI 𐑮𐑧𐑡𐑦𐑕𐑑𐑮𐑰"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "𐑨𐑒𐑕𐑧𐑕𐑩𐑚𐑦𐑤𐑦𐑑𐑰 𐑮𐑧𐑡𐑦𐑕𐑑𐑮𐑰"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry Wrapper"
++msgstr "AT SPI 𐑮𐑧𐑡𐑦𐑕𐑑𐑮𐑰 𐑮𐑨𐑐𐑻"
+diff --git a/po/en_GB.po b/po/en_GB.po
+new file mode 100644
+index 0000000..0b10c8a
+--- /dev/null
++++ b/po/en_GB.po
+@@ -0,0 +1,65 @@
++# English (British) translation.
++# Copyright (C) 2004 at-spi's COPYRIGHT HOLDER
++# This file is distributed under the same licence as the at-spi package.
++# Gareth Owen <gowen72@yahoo.com> 2004.
++# Bruce Cowan <bcowan@fastmail.co.uk>, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-23 22:31+0000\n"
++"PO-Revision-Date: 2010-02-23 22:32+0100\n"
++"Last-Translator: Bruce Cowan <bcowan@fastmail.co.uk>\n"
++"Language-Team: British English <en@li.org>\n"
++"Language: en_GB\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++"X-Generator: Virtaal 0.5.2\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Enable DBus-based AT-SPI infrastructure"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ modules for accessibility support"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based "
++"AT-SPI infrastructure has been relocated. It is ignored if the DBus-based "
++"AT-SPI infrastructure has not been relocated."
++msgstr ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based "
++"AT-SPI infrastructure has been relocated. It is ignored if the DBus-based "
++"AT-SPI infrastructure has not been relocated."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"This key determines the GTK+ modules to load for accessibility support."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI Registry"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Accessibility Registry"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI Registry"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT SPI Registry Wrapper"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "failure: no device event controller found.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "WARNING: NULL key event reported."
+diff --git a/po/es.po b/po/es.po
+new file mode 100644
+index 0000000..483b3de
+--- /dev/null
++++ b/po/es.po
+@@ -0,0 +1,65 @@
++# translation of at-spi.HEAD.po to Spanish
++# Spanish Translation for AT-SPI.
++# Copyright (C) The Free Software Foundation
++# This file is distributed under the same license as the AT-SPI package.
++# Pablo Gonzalo del Campo <pablodc@bigfoot.com>, 2003.
++# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003.
++# Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi.HEAD\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-02-05 20:15+0100\n"
++"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
++"Language-Team: Español <gnome-es-list@gnome.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.0.2\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activar la infraestructura de AT-SPI basada en DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Módulos GTK+ para el soporte de accesibilidad"
++
++#: ../at-spi2.schemas.in.h:3
++#| msgid ""
++#| "In combination with /desktop/gnome/interface/accessibility, this key is "
++#| "needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-"
++#| "Bus AT-SPI infrastructure will be used."
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Esta clave es necesaria junto con /desktop/gnome/interface/accessibility "
++"para activar la infraestructura AT-SPI basada en DBus si ésta se ha "
++"reubicado. De otra forma se usará la infraestructura AT-SPI basada en D-Bus."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Esta clave determina los módulos GTK+ que cargar para el soporte de "
++"accesibilidad."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registro de AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registro de accesibilidad"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registro de AT-SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Envolvente del registro de AT-SPI"
+diff --git a/po/et.po b/po/et.po
+new file mode 100644
+index 0000000..5db2441
+--- /dev/null
++++ b/po/et.po
+@@ -0,0 +1,53 @@
++# AT-SPI eesti keele tõlge.
++# Estonian translation for At-spi
++#
++# Copyright (C) 1999-2003 Free Software Foundation, Inc.
++# Copyright (C) 2008, 2009 The GNOME Project.
++# This file is distributed under the same license as the At-spi package.
++#
++# Priit Laes <amd tt ee>, 2003.
++# Ivar Smolin <okul linux ee>, 2008, 2009.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: At-spi MASTER\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-03-08 10:37+0000\n"
++"PO-Revision-Date: 2010-03-09 11:25+0300\n"
++"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
++"Language-Team: Estonian <gnome-et@linux.ee>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus-l põhineva AT-SPI infrastruktuuri lubamine"
++
++msgid "GTK+ modules for accessibility support"
++msgstr "Hõlbustuste toetamiseks määratud GTK+ moodulid"
++
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Seda võtit on koos /desktop/gnome/interface/accessibility võtmega vaja DBus-"
++"l põhineva AT-SPI infrastruktuuri kasutamiseks, kui viimane on ümber "
++"paigutatud. Seda eiratakse, kui DBus-l põhinev AT-SPI infrastruktuuri ei "
++"ole ümberpaigutatud."
++
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Selle võtmega määratakse hõlbustuste toetamiseks laaditavaf GTK+ moodulid."
++
++msgid "AT-SPI Registry"
++msgstr "AT-SPI register"
++
++msgid "Accessibility Registry"
++msgstr "Hõlbustuste register"
++
++msgid "AT SPI Registry"
++msgstr "AT SPI register"
+diff --git a/po/eu.po b/po/eu.po
+new file mode 100644
+index 0000000..bd29eac
+--- /dev/null
++++ b/po/eu.po
+@@ -0,0 +1,57 @@
++# translation of eu.po to Basque
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++#
++# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2003, 2008, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: eu\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-03-02 12:29+0100\n"
++"PO-Revision-Date: 2010-03-02 12:30+0100\n"
++"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
++"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.11.4\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Gaitu DBusn oinarritutako AT-SPI azpiegitura"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ moduloak erabilgarritasunaren euskarriarentzako"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Gako hau behar da, /desktop/gnome/interface/accessibility-rekin konbinatuta, "
++"DBusn oinarritutako AT-SPI azpiegitura gaitzeko (baldin eta DBusn oinarritutako "
++"AT-SPI azpiegitura lekuz aldatu bada). Ezikusi egingo zaio DBusn oinarritutako "
++"AT-SPI azpiegitura ez bada lekuz aldatu."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Gako honek kargatuko diren GTK+ moduluak zehazten ditu erabilgarritasunaren "
++"euskarriarentzako."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI Erregistroa"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Erabilerraztasun Erregistroa"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI erregistroa"
++
+diff --git a/po/fi.po b/po/fi.po
+new file mode 100644
+index 0000000..6b36422
+--- /dev/null
++++ b/po/fi.po
+@@ -0,0 +1,58 @@
++# at-spi Finnish translation.
++# Copyright (C) 2003-2008 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Ilkka Tuohela <hile@iki.fi>, 2008.
++# Sami Pesonen <sampeson@iki.fi>, 2003.
++# Tommi Vainikainen <thv@iki.fi>, 2009-2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-03-15 10:47+0200\n"
++"PO-Revision-Date: 2010-03-15 10:47+0200\n"
++"Last-Translator: Tommi Vainikainen <thv@iki.fi>\n"
++"Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Ota käyttöön DBus-pohjainen AT-SPI-infrastruktuuri"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Esteettömyystuen GTK+-modulit"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Yhdessä avaimen /desktop/gnome/interface/accessibility kanssa tätä avainta "
++"käytetään ottamaan käyttöön DBus-pohjainen AT-SPI-infrastruktuuri mikäli "
++"DBus-pohjainen AT-SPI-infrastruktuuri on uudelleensijoitettu. Tämän avaimen "
++"arvolla ei ole merkitystä mikäli DBus-pohjaista AT-SPI-infrastruktuuria ei "
++"ole uudelleensijoitettu."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Tämä avain määrittää esteettömyystuelle ladattavat GTK+-modulit."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-rekisteri"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Esteettömyysrekisteri"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI-rekisteri"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT-SPI-rekisteripäällyste"
+diff --git a/po/fr.po b/po/fr.po
+new file mode 100644
+index 0000000..d3ea8a6
+--- /dev/null
++++ b/po/fr.po
+@@ -0,0 +1,56 @@
++# French translation of at-spi.
++# Copyright (C) 2003-2010 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++#
++# Christophe Merlet <redfox@redfoxcenter.org>, 2003.
++# Claude Paroz <claude@2xlibre.net>, 2008-2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi HEAD\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-02-27 11:08+0100\n"
++"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
++"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activer l'infrastructure AT-SPI basée sur DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Modules GTK+ pour la prise en charge de l'accessibilité"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"En lien avec /desktop/gnome/interface/accessibility, cette clé est "
++"nécessaire pour activer l'infrastructure AT-SPI basée sur DBus dans le cas où "
++"celle-ci a été déplacée. Sinon, cette clé est ignorée."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Cette clé indique les modules GTK+ à charger pour prendre en charge "
++"l'accessibilité."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registre AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registre d'accessibilité"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registre AT SPI"
+diff --git a/po/gl.po b/po/gl.po
+new file mode 100644
+index 0000000..1ba6dd2
+--- /dev/null
++++ b/po/gl.po
+@@ -0,0 +1,68 @@
++# translation of at-spi-master-po-gl-48694.po to Galician
++# Galician translation of at-spi.
++# Copyright (C) The Free Software Foundation
++# This file is distributed under the same license as the AT-SPI package.
++# Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
++# colaborar connosco, podes atopar máis información en http://www.trasno.net
++#
++# First Version: 2004-09-14 00:31+0200
++#
++# Jesús Bravo Álvarez <suso@trasno.net>, 2004.
++# Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
++# Antón Méixome <meixome@mancomun.org>, 2009.
++# Fran Diéguez <frandieguez@ubuntu.com>, 200, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi-master-po-gl-48694\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-15 13:07+0100\n"
++"PO-Revision-Date: 2010-02-11 18:13+0100\n"
++"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
++"Language-Team: Gallician <proxecto@trasno.net>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Language: gl\n"
++"Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
++"X-Generator: KBabel 1.11.4\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activar a infraestrutura AT-SPI baseada en DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Módulos GTK+ para a asistencia de accesibilidade"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"En combinación con /desktop/gnome/interface/accessibility, esta chave "
++"necesítase para activar a infraestrutura AT-SPI baseada en DBus se o AT-SPI "
++"baseado en DBus fora movido de lugar. Isto ignórase no caso de que a "
++"infraestrutura AT-SPI baseada en DBus fora movida de lugar."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Esta chave determina que módulos GTK+ se cargarán para a asistencia de "
++"accesibilidade."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Rexistro de AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Rexistro de accesibilidade"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Rexistro de AT SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Embalaxe de rexistro AT SPI "
+diff --git a/po/he.po b/po/he.po
+new file mode 100644
+index 0000000..c971dbe
+--- /dev/null
++++ b/po/he.po
+@@ -0,0 +1,59 @@
++# translation of at-spi.HEAD.he.po to Hebrew
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2003
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi.HEAD.he\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2009-11-26 09:06+0000\n"
++"PO-Revision-Date: 2003-07-04 20:53+0300\n"
++"Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
++"Language-Team: Hebrew <he@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.0.1\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Enable DBus-based AT-SPI infrastructure"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ modules for accessibility support"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr  ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "This key determines the GTK+ modules to load for accessibility support."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "רישום AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "רישום נגישות"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "רישום AT SPI"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "כשלון: לא נמצא בקר אירוע התקן.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "אזהרה: דיווח על אירוע מפתח ריק."
+diff --git a/po/hu.po b/po/hu.po
+new file mode 100644
+index 0000000..eeaa130
+--- /dev/null
++++ b/po/hu.po
+@@ -0,0 +1,54 @@
++# translation of at-spi to Hungarian
++# This file is distributed under the same license as the at-spi package.
++# Copyright (C) 2005, 2008, 2009, 2010, Free Software Foundation, Inc.
++#
++# Szabolcs Varga <shirokuma at shirokuma dot hu>, 2005.
++# Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2008, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi master\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-25 21:49+0100\n"
++"PO-Revision-Date: 2010-02-25 21:52+0100\n"
++"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
++"Language-Team: Hungarian <gnome at fsf dot hu>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.11.4\n"
++"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus-alapú AT-SPI infrastruktúra engedélyezése"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ modulok az akadálymentesítés támogatásához"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "A /desktop/gnome/interface/accessibility kulccsal együtt ez a kulcs a DBus-alapú AT-SPI infrastruktúra engedélyezéséhez szükséges, ha azt áthelyezték. Ellenkező esetben figyelmen kívül marad."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Ez a kulcs meghatározza az akadálymentesítés támogatásához betöltendő GTK+ "
++"modulokat."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI nyilvántartás"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Akadálymentesítési nyilvántartás"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI nyilvántartás"
++
+diff --git a/po/it.po b/po/it.po
+new file mode 100644
+index 0000000..c82f5e0
+--- /dev/null
++++ b/po/it.po
+@@ -0,0 +1,55 @@
++# at-spi Italian translation.
++# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 The Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++#
++# Alessio Frusciante <algol@firenze.linux.it>, 2003.
++# Luca Ferretti <lferrett@gnome.org>, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-03-06 00:54+0100\n"
++"Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
++"Language-Team: Italiano <tp@lists.linux.it>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Abilita l'infrastruttura AT-SPI basata su DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Moduli GTK+ per supporto accessibilità"
++
++#: ../at-spi2.schemas.in.h:3
++#| msgid ""
++#| "In combination with /desktop/gnome/interface/accessibility, this key is "
++#| "needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-"
++#| "Bus AT-SPI infrastructure will be used."
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "In combinazione con /desktop/gnome/interface/accessibility, questa chiave è necessaria per abilitare l'infrastruttura AT-SPI basata su DBus, qualora l'infrastruttura AT-SPI basata su DBus sia stata trasferita. Viene ignorata se tale infrastruttura non è stat trasferita."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Questa chiave determina i moduli GTK+ da caricare per il supporto "
++"all'accessibilità."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registro AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registro accessibilità"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registro AT SPI"
+diff --git a/po/ko.po b/po/ko.po
+new file mode 100644
+index 0000000..25b2e0a
+--- /dev/null
++++ b/po/ko.po
+@@ -0,0 +1,49 @@
++# at-spi
++# This file is distributed under the same license as the at-spi package.
++#
++# Changwoo Ryu <cwryu@debian.org>, 2003, 2009, 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2010-02-17 01:51+0900\n"
++"PO-Revision-Date: 2010-02-17 01:54+0900\n"
++"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
++"Language-Team: Korean <gnome-kr@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=1; plural=0;\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus 기반 AT-SPI 인프라를 사용"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "접근성 지원 기능 GTK+ 모듈"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "이 키는 DBus 기반 AT-SPI 인프라의 위치가 바뀌었을 때 이 인프라를 사용하는데 필요합니다. /desktop/gnome/interface/accessibility 키와 함께 사용합니다. DBus 기반 AT-SPI 인프라의 위치가 바뀌지 않으면 이 키는 사용하지 않습니다."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "이 키는 접근성 지원 기능에 읽어들일 GTK+ 모듈을 지정합니다."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI 레지스트리"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "접근성 레지스트리"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI 레지스트리"
+diff --git a/po/lt.po b/po/lt.po
+new file mode 100644
+index 0000000..df63ff5
+--- /dev/null
++++ b/po/lt.po
+@@ -0,0 +1,67 @@
++# Lithuanian translation of at-spi.
++# Copyright (C) 2003 Free Software Foundation, Inc.
++# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
++# Rimas Kudelis <rq@akl.lt>, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-23 23:32+0200\n"
++"PO-Revision-Date: 2010-02-23 23:32+0200\n"
++"Last-Translator: Rimas Kudelis <rq@akl.lt>\n"
++"Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=utf-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Language: lt\n"
++"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
++"100<10 || n%100>=20) ? 1 : 2);\n"
++"X-Generator: Virtaal 0.5.2\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Įjungti DBus pagrįstą AT-SPI infrastruktūrą"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ moduliai pritaikymo neįgaliesiems palaikymui"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Šis raktas, kartu su /desktop/gnome/interface/accessibility, yra reikalingas "
++"norint įjungti DBus pagrįstą AT-SPI infrastruktūrą, kai DBus pagrįsta AT-"
++"SPI infrastruktūra buvo perkelta. Šio rakto nepaisoma, jei DBus pagrįsta AT-"
++"SPI infrastruktūra nebuvo perkelta."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Šis raktas nustato GTK+ modulius, įkraunamus pritaikymo neįgaliesiems "
++"palaikymui."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI registras"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Prieinamumo registras"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI registras"
++
++#, fuzzy
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT-SPI registras"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "triktis: nerastas įrengimo įvykio valdiklis.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "DĖMESIO: pranešta apie nulinį įvykį"
+diff --git a/po/nb.po b/po/nb.po
+new file mode 100644
+index 0000000..e22775e
+--- /dev/null
++++ b/po/nb.po
+@@ -0,0 +1,50 @@
++# Norwegian translations for at-spi package.
++# Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the PACKAGE package.
++# Kjartan Maraas <kmaraas@broadpark.no>, 2003-2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: AT-SPI 2.29.x\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-10 19:51+0100\n"
++"PO-Revision-Date: 2010-02-10 19:52+0100\n"
++"Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
++"Language-Team: Norwegian\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Aktiver DBus-basert AT-SPI-infrastruktur"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+-moduler for tilgjengelighet"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "Denne nøkkelen kreves sammen med /desktop/gnome/interface/accessibility for å aktivere den DBus-baserte AT-SPI-infrastrukturen hvis har blitt omplassert. Ellers vil AT-SPI-infrastruktur basert på D-Bus bli brukt. "
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Denne nøkkelen bestemmer GTK+ moduler som skal lastes for tilgjengelighet."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-register"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Register for hjelpefunksjoner"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI-register"
+diff --git a/po/nl.po b/po/nl.po
+new file mode 100644
+index 0000000..6203950
+--- /dev/null
++++ b/po/nl.po
+@@ -0,0 +1,56 @@
++# Dutch translation for at-spi
++#
++# This file is distributed under the same license as the at-spi package.
++#
++# Vincent van Adrighem <adrighem@gnome.org>, 2003
++# Wouter Bolsterlee <wbolster@gnome.org>, 2008–2010
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-03-16 23:21+0100\n"
++"PO-Revision-Date: 2010-03-16 23:21+0100\n"
++"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
++"Language-Team: Dutch\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "DBus-gebaseerd AT-SPI-infrastructuur inschakelen"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+-modules voor toegankelijkheidsondersteuning"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"In combinatie met ‘/desktop/gnome/interface/accessibility’ is deze sleutel "
++"nodig om de DBus-gebaseerde AT-SPI-infrastructuur in te schakelen indien de "
++"DBus-gebaseerde AT-SPI-infrastructuur is verplaatst. Deze sleutel wordt "
++"genegeerd als de DBus-gebaseerde AT-SPI-infrastructuur niet verplaatst is."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Deze sleutel bepaalt de te laden GTK+-modules voor "
++"toegankelijkheidsondersteuning."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-register"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Toegankelijkheidsregister"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT-SPI-register"
+diff --git a/po/nn.po b/po/nn.po
+new file mode 100644
+index 0000000..c631b78
+--- /dev/null
++++ b/po/nn.po
+@@ -0,0 +1,69 @@
++# translation of nn.no.po to Norsk nynorsk
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
++#
++# Åsmund Skjæveland <aasmunds@ulrik.uio.no>, 2003,2009.
++# Torstein Adolf Winterseth <kvikende@fsfe>, 2010.
++# Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: nn.no\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
++"cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-02-27 13:58+0100\n"
++"Last-Translator: Torstein Adolf Winterseth <kvikende@fsfe.org>\n"
++"Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: Lokalize 1.0\n"
++"Plural-Forms: nplurals=2; plural=(n != 1);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Slå på DBus-basert AT-SPI-infrastruktur"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+-modular for tilgjengestøtte"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"I kombinasjon med /dekstop/gnome/interface/accessibility trenst denne "
++"nøkkelen for å slå på DBus-basert AT-SPI-infrastruktur om den DBus- "
++"baserte AT-SPI-infrastrukturen har vorte flytta. Han vert ignorert om "
++"den DBus-baserte AT-SPI-infrastrukturen ikkje har vorte flytta."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Denne nøkkelen avgjer kva GTK+-modular som skal lastast for "
++"tilgjengestøtte."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-register"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Tilgjengeregister"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "AT-SPI-register"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT-SPI register-innpakning"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "mislykka: fann ingen kontroller for einingshendingar.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "ÅTVARING: NULL-tastehending rapportert."
+diff --git a/po/pl.po b/po/pl.po
+new file mode 100644
+index 0000000..3e5e18e
+--- /dev/null
++++ b/po/pl.po
+@@ -0,0 +1,58 @@
++# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
++# Aviary.pl
++# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
++# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
++# gnomepl@aviary.pl
++# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-19 11:24+0100\n"
++"PO-Revision-Date: 2010-02-18 20:43+0100\n"
++"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
++"Language-Team: Polish <gnomepl@aviary.pl>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
++"|| n%100>=20) ? 1 : 2);\n"
++"X-Poedit-Language: Polish\n"
++"X-Poedit-Country: Poland\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Włączenie infrastruktury AT-SPI opartej na DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Moduły GTK+ do obsługi ułatwień dostępu"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Ten klucz jest wymagany w połączeniu z kluczem /desktop/gnome/interface/"
++"accessibility, aby włączyć infrastrukturę AT-SPI opartą na DBus, jeśli "
++"została ona przeniesiona. Zostaje zignorowany, jeśli nie została ona "
++"przeniesiona."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Ten klucz określa moduły GTK+ do wczytania do obsługi ułatwień dostępu."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Rejestr AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Rejestr dostępności"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Rejestr AT-SPI"
+diff --git a/po/pt.po b/po/pt.po
+new file mode 100644
+index 0000000..4007a06
+--- /dev/null
++++ b/po/pt.po
+@@ -0,0 +1,53 @@
++# at-spi Portuguese translation.
++# Copyright © 2003, 2008, 2009 at-spi
++# This file is distributed under the same license as the at-spi package.
++# Duarte Loreto <happyguy_pt@hotmail.com>, 2003, 2008, 2009.
++# Rui Batista <ruiandrebatista@gmail.com>, 2010
++msgid ""
++msgstr ""
++"Project-Id-Version: 2.28\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-22 01:04+0000\n"
++"PO-Revision-Date: 2010-12-16 11:25+0000\n"
++"Last-Translator: Rui Batista <ruiandrebatista@gmail.com> \n"
++"Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activar a infrastrutura AT-SPI baseada em DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Módulos GTK+ de suporte à acessibilidade"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Em combminação com /desktop/gnome/interface/accessibility, esta chave é  "
++"necessária para activar a infrastrutura AT-SPI baseada em DBus Caso o AT-"
++"SPI baseado em DBus tenha sido realocado. É ignorada caso o AT-SPI baseado "
++"em DBus não tenha sido realocado."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Esta chave determina os módulos GTK+ a ler para suportar a acessibilidade."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registo AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registo de Acessibilidade"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registo AT-SPI"
+diff --git a/po/pt_BR.po b/po/pt_BR.po
+new file mode 100644
+index 0000000..fb9b6e3
+--- /dev/null
++++ b/po/pt_BR.po
+@@ -0,0 +1,60 @@
++# Brazilian Portuguese Translation for AT-SPI
++# Copyright (C) 2003, 2009 Gnome Foundation
++# This file is distributed under the same license as the at-spi package.
++# Gustavo Noronha Silva <kov@debian.org>, 2003.
++# Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008.
++# Og Maciel <ogmaciel@gnome.org>, 2009.
++# Enrico Nicoletto <liverig@gmail.com>, 2009.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-28 08:45-0300\n"
++"PO-Revision-Date: 2010-02-27 18:04-0300\n"
++"Last-Translator: Vladimir Melo <vmelo@gnome.org>\n"
++"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Ativar infra-estrutura AT-SPI baseada no DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Módulos de GTK+ para suporte a acessibilidade"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Esta chave é necessária em combinação com /desktop/gnome/interface/"
++"accessibility para habilitar a infra-estrutura AT-SPI baseada no DBus se "
++"esta for realocada. Será ignorada se a infra-estrutura AT-SPI baseada no "
++"DBus não for realocada."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Esta chave determina quais módulos GTK+ carregar para dar suporte a "
++"acessibilidade."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registro AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registro de acessibilidade"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registro AT-SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Wrapper de registro AT SPI"
+diff --git a/po/ro.po b/po/ro.po
+new file mode 100644
+index 0000000..7eca22a
+--- /dev/null
++++ b/po/ro.po
+@@ -0,0 +1,61 @@
++# Romanian translation of at-spi
++# Copyright (C) 2003 - 2009 at-spi Free Software Foundation
++# This file is distributed under the same license as the at-spi package.
++# Mișu Moldovan dumol@gnome.ro, 2003 - 2009.
++# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-10 18:52+0000\n"
++"PO-Revision-Date: 2010-02-11 23:27+0300\n"
++"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
++"Language-Team: Romanian GNOME Team <gnomero-list@lists.sourceforge.net>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Language: ro\n"
++"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
++"20)) ? 1 : 2);;\n"
++"X-Generator: Virtaal 0.5.2\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Activează infrastructura AT-SPI bazată pe DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Module GTK+ pentru accesibilitate"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"În combinație cu /desktop/gnome/interface/accessibility, această cheie este "
++"necesară pentru a activa infrastructura AT-SPI bazată pe DBus dacă aceasta "
++"a fost relocată. Cheia este ignorată dacă infrastructura AT-SPI bazată pe "
++"DBus nu a fost relocată."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Această cheie desemnează modulele GTK+ de încărcat pentru accesibilitate"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Registru AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registru de accesibilitate"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Registru AT SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Încapsulare a registrului AT-SPI"
+diff --git a/po/ru.po b/po/ru.po
+new file mode 100644
+index 0000000..f4a1178
+--- /dev/null
++++ b/po/ru.po
+@@ -0,0 +1,54 @@
++# at-spi Russian translation.
++# Copyright (C) 2003, 2010 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++#
++# Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2003.
++# Leonid Kanter <leon@asplinux.ru>, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: ru\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-24 10:54+0200\n"
++"PO-Revision-Date: 2010-02-24 11:00+0200\n"
++"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
++"Language-Team: Russian <ru@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.11.4\n"
++"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Включить AT-SPI инфраструктуру на основе DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Модули GTK+ для поддержки специальных возможностей"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "В сочетании с /desktop/gnome/interface/accessibility этот ключ необходим, чтобы включить AT-SPI инфраструктуру на основе DBus если AT-SPI инфраструктура на основе DBus была перемещена. Он игнорируется, если AT-SPI инфраструктура на основе DBus не была перемещена."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Этот ключ определяет, загружаются ли модули GTK+ для поддержки специальных "
++"возможностей."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Реестр системы AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Реестр системы специальных возможностей"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Реестр AT SPI"
++
+diff --git a/po/sk.po b/po/sk.po
+new file mode 100644
+index 0000000..c5710bd
+--- /dev/null
++++ b/po/sk.po
+@@ -0,0 +1,56 @@
++# Slovak translation for at-spi.
++# Copyright (C) 2003, 2010 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Marcel Telka <marcel@telka.sk>, 2003, 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-22 00:51+0000\n"
++"PO-Revision-Date: 2010-02-23 00:36+0100\n"
++"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
++"Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Povoliť infraštruktúru AT-SPI založenú na technológii DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Moduly GTK+ pre podporu prístupnosti"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"Tento kľúč, v kombinácii s /desktop/gnome/interface/accessibility, je "
++"potrebný na povolenie infraštruktúry AT-SPI založenej na technológii DBus, "
++"ak infraštruktúra AT-SPI založená na technológii DBus bola premiestnená. Je "
++"to ignorované, ak infraštruktúra AT-SPI založená na technológii DBus nebola "
++"premiestnená."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Tento kľúč určuje moduly GTK+, ktoré majú byť zavedené na podporu "
++"prístupnosti."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Register AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Register prístupnosti"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Register AT SPI"
+diff --git a/po/sl.po b/po/sl.po
+new file mode 100644
+index 0000000..458fe20
+--- /dev/null
++++ b/po/sl.po
+@@ -0,0 +1,60 @@
++# Slovenian translation file for at-spi.
++# Copyright (C) 2002 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++#
++# Andraz Tori <andraz.tori1@guest.arnes.si>, 2002
++# Matej Urbančič <mateju@svn.gnome.org>, 2008 - 2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-spi&component=general\n"
++"POT-Creation-Date: 2010-02-09 01:59+0000\n"
++"PO-Revision-Date: 2010-02-10 09:30+0100\n"
++"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
++"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
++"X-Launchpad-Export-Date: 2007-10-05 05:48+0000\n"
++"X-Generator: Launchpad (build Unknown)\n"
++"X-Poedit-Country: SLOVENIA\n"
++"X-Poedit-Language: Slovenian\n"
++"X-Poedit-SourceCharset: utf-8\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Omogoči DBus AT-SPI infrastrukturo"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Moduli GTK+ za podporo dostopnosti"
++
++#: ../at-spi2.schemas.in.h:3
++msgid "In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-SPI infrastructure has been relocated. It is ignored if the DBus-based AT-SPI infrastructure has not been relocated."
++msgstr "V povezavi z /desktop/gnome/interface/accessibility je ključ namenjen omogočanju DBus AT-SPI infrastrukture, v kolikor je DBus AT-SPI infrastruktura premaknjena. Možnost bo prezrta, če DBus AT-SPI infrastruktura ni premaknjena."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Ključ določa module GTK+, ki se morajo naložiti pred uporabo podpore dostopnosti."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Vpisnik AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Vpisnik dostopnosti"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Vpisnik AT-SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Ovijalnik vpisnika AT-SPI"
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "napaka: ni mogoče najti ustreznega nadzornika dogodkov.\n"
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "OPOZORILO: poslano sporočilo ključa NULL."
++
+diff --git a/po/sr.po b/po/sr.po
+new file mode 100644
+index 0000000..71bf80f
+--- /dev/null
++++ b/po/sr.po
+@@ -0,0 +1,68 @@
++# Serbian translation of at-spi
++# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004.
++#
++# This file is distributed under the same license as the at-spi package.
++#
++# Maintainer: Данило Шеган <dsegan@gmx.net>
++# Reviewed on 2004-02-12 by: Данило Шеган <dsegan@gmx.net>
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-03-06 13:19+0100\n"
++"Last-Translator: Горан Ракић <grakic@devbase.net>\n"
++"Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Укључи АТ-СПИ структуру базирану на КОРБИ"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "ГТК+ модули подршке за приступачност"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"У комбинацији са /desktop/gnome/interface/accessibility, овај кључ укључује "
++"АТ-СПИ структуру базирану на КОРБИ, уколико је она премештена. У супротном, "
++"ово се занемарује."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Овај кључ одређује ГТК+ модуле који се учитавају ради подршке за "
++"приступачност."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "АТ-СПИ регистар"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Регистар за приступачност"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "АТ-СПИ регистар"
++
++#~| msgid "AT-SPI Registry"
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "омотач AT-SPI регистра"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "грешка: није нађен управљач за догађаје на уређају.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "УПОЗОРЕЊЕ: Примио је NULL тастер."
+diff --git a/po/sr@latin.po b/po/sr@latin.po
+new file mode 100644
+index 0000000..d46e49c
+--- /dev/null
++++ b/po/sr@latin.po
+@@ -0,0 +1,68 @@
++# Serbian translation of at-spi
++# Courtesy of Prevod.org team (http://prevod.org/) -- 2003, 2004.
++#
++# This file is distributed under the same license as the at-spi package.
++#
++# Maintainer: Danilo Šegan <dsegan@gmx.net>
++# Reviewed on 2004-02-12 by: Danilo Šegan <dsegan@gmx.net>
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-03-06 13:19+0100\n"
++"Last-Translator: Goran Rakić <grakic@devbase.net>\n"
++"Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Uključi AT-SPI strukturu baziranu na KORBI"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+ moduli podrške za pristupačnost"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"U kombinaciji sa /desktop/gnome/interface/accessibility, ovaj ključ uključuje "
++"AT-SPI strukturu baziranu na KORBI, ukoliko je ona premeštena. U suprotnom, "
++"ovo se zanemaruje."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr ""
++"Ovaj ključ određuje GTK+ module koji se učitavaju radi podrške za "
++"pristupačnost."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI registar"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Registar za pristupačnost"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "AT-SPI registar"
++
++#~| msgid "AT-SPI Registry"
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "omotač AT-SPI registra"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "greška: nije nađen upravljač za događaje na uređaju.\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "UPOZORENJE: Primio je NULL taster."
+diff --git a/po/sv.po b/po/sv.po
+new file mode 100644
+index 0000000..92f6589
+--- /dev/null
++++ b/po/sv.po
+@@ -0,0 +1,55 @@
++# Swedish messages for at-spi.
++# Copyright (C) 2003, 2008, 2009, 2010 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Christian Rose <menthos@menthos.com>, 2003.
++# Daniel Nylander <po@danielnylander.se>, 2008, 2009, 2010.
++#
++# $Id: sv.po,v 1.2 2003/07/02 07:58:39 menthos Exp $
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-21 16:57+0100\n"
++"PO-Revision-Date: 2010-02-21 16:58+0100\n"
++"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
++"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Aktivera DBus-baserad AT-SPI-infrastruktur"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "GTK+-moduler för hjälpmedelsstöd"
++
++#: ../at-spi2.schemas.in.h:3
++msgid "In combination with /desktop/gnome/interface/accessibility, this key is needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-SPI infrastructure has been relocated. It is ignored if the DBus-based AT-SPI infrastructure has not been relocated."
++msgstr "I kombination med /desktop/gnome/interface/accessibility så behövs denna nyckel för att aktivera den DBus-baserade AT-SPI-infrastrukturen om den DBus-baserade AT-SPI-infrastrukturen har flyttats. Den ignoreras om den DBus-baserade AT-SPI-infrastrukturen inte har flyttats."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Denna nyckel bestämmer vilka GTK+-moduler som ska läsas in för hjälpmedelsstöd."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI-register"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Hjälpmedelsregister"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI-register"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "Omslag för AT-SPI-register"
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "misslyckande: ingen enhetshändelsekontroller hittades.\n"
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "VARNING: NULL-tangenthändelse rapporterades."
++
+diff --git a/po/ta.po b/po/ta.po
+new file mode 100644
+index 0000000..2f9b535
+--- /dev/null
++++ b/po/ta.po
+@@ -0,0 +1,52 @@
++# translation of at-spi.master.ta.po to Tamil
++# translation of at-spi.HEAD.ta.po to
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
++#
++# Jayaradha N <jaya@pune.redhat.com>, 2004.
++# I. Felix <ifelix@redhat.com>, 2009.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi.master.ta\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2009-11-03 14:41+0530\n"
++"PO-Revision-Date: 2009-08-24 13:44+0530\n"
++"Last-Translator: I. Felix <ifelix@redhat.com>\n"
++"Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"X-Generator: KBabel 1.11.4\n"
++"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "கார்பா அடிப்படையிலான அட்ஸ்பி கட்டுமானத்தை செயல்படுத்துக."
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "அணுகல் சேவைக்கு GTK+ தொகுதிகள்"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr "/மேல்மேசை/க்னோம்/இடைமுகம்/அணுகல் உடன்  கார்பா அடிப்படையிலான அட்-ஸ்பி கட்டுமானத்தை செயல்படுத்த இந்த விசை தேவை."
++" இல்லையானால் டிபஸ்  அட்-ஸ்பி கட்டுமானம் பயன்படுத்தப்படும்."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "இந்த விசை GTK+ தொகுதிகளை ஏற்றுவதற்கான அணுகல் சேவை."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI பதிவேடு"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "அணுகல் பதிவேடு"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry Wrapper"
++msgstr "AT-SPI பதிவக ரேப்பர்"
+diff --git a/po/th.po b/po/th.po
+new file mode 100644
+index 0000000..a0a2ba2
+--- /dev/null
++++ b/po/th.po
+@@ -0,0 +1,55 @@
++# Thai translation of at-spi.
++# Copyright (C) 2005-2010 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2010.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2010-02-05 19:10+0000\n"
++"PO-Revision-Date: 2010-02-08 11:20+0700\n"
++"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
++"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "เปิดใช้โครงสร้างพื้นฐาน AT-SPI แบบ DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "มอดูล GTK+ สำหรับการรองรับเทคโนโลยีสิ่งอำนวยความสะดวก"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"คีย์นี้ใช้ประกอบกับคีย์ /desktop/gnome/interface/accessibility โดยถ้าโครงสร้างพื้นฐาน AT-"
++"SPI แบบ DBus มีการย้ายตำแหน่ง ก็ต้องระบุคีย์นี้เพื่อเปิดใช้โครงสร้างพื้นฐาน AT-SPI แบบ DBus "
++"แต่ถ้าโครงสร้างพื้นฐาน AT-SPI แบบ DBus ไม่มีการย้ายตำแหน่ง คีย์นี้ก็จะไม่มีผล"
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "คีย์นี้กำหนดมอดูล GTK+ ที่จะโหลดเพื่อรองรับเทคโนโลยีสิ่งอำนวยความสะดวก"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "เรจิสตรี AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "เรจิสตรีระบบอำนวยการใช้งาน"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "เรจิสตรี AT SPI"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "โปรแกรมครอบเรจิสตรี AT SPI"
+diff --git a/po/uk.po b/po/uk.po
+new file mode 100644
+index 0000000..0888444
+--- /dev/null
++++ b/po/uk.po
+@@ -0,0 +1,52 @@
++# translation of at-spi.HEAD.po to ukrainian
++# This file is distributed under the same license as the PACKAGE package.
++# Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
++# Taras Boychuk <btr1@torba.com>, 2003
++# Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2005-2010
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi.HEAD\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-01-04 15:29+0200\n"
++"PO-Revision-Date: 2010-01-04 09:33+0300\n"
++"Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
++"Language-Team: Ukrainian <uk@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Увімкнути основану на DBus інфраструктуру AT-SPI"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Підтримка модулів допоміжних можливостей GTK+"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr ""
++"У комбінації з /desktop/gnome/interface/accessibility, цей ключ "
++"потрібен для вмикання основаної на DBus інфраструктури AT-SPI. У іншому разі, використовується інфраструктура на базі D-Bus."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Цей ключ визначає модулі GTK+ для підтримки допоміжних можливостей."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Реєстр системи AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Реєстр системи спеціальних можливостей"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "Реєстр AT SPI"
++
++
+diff --git a/po/vi.po b/po/vi.po
+new file mode 100644
+index 0000000..8a8d3dd
+--- /dev/null
++++ b/po/vi.po
+@@ -0,0 +1,51 @@
++# Vietnamese translation for AT-SPI.
++# Copyright © 2009 Free Software Foundation, Inc.
++# Nguyn Thái Ngc Duy <pclouds@gmail.com>, 2003, 2009.
++# Clytie Siddall <clytie@riverland.net.au>, 2009.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi TRUNK\n"
++"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=at-"
++"spi&component=general\n"
++"POT-Creation-Date: 2009-12-14 15:39+0000\n"
++"PO-Revision-Date: 2009-12-18 15:38+0700\n"
++"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
++"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++"Plural-Forms: nplurals=1; plural=0;\n"
++"X-Generator: LocFactoryEditor 1.8\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "Bật hạ tầng AT-SPI dựa trên DBus"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "Mô-đun GTK+ hỗ trợ khả năng truy cập"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure. Otherwise, the D-Bus "
++"AT-SPI infrastructure will be used."
++msgstr "Kết hợp với /desktop/gnome/interface/accessibility, khoá này cho phép bật hạ tầng AT-SPI dựa trên DBus. Nếu không, AT-SPI dựa trên D-BUS sẽ được dùng."
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "Khóa này quyết định việc nạp các module để hỗ trợ khả năng truy cập."
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "Đăng ký AT-SPI"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "Đăng ký Khả năng Truy cập"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++#| msgid "AT-SPI Registry"
++msgid "AT SPI Registry"
++msgstr "Đăng ký AT SPI"
+diff --git a/po/zh_CN.po b/po/zh_CN.po
+new file mode 100644
+index 0000000..143098e
+--- /dev/null
++++ b/po/zh_CN.po
+@@ -0,0 +1,60 @@
++# translation of at-spi.po to zh_CN
++# Copyright (C) 2009 Free Software Foundation, Inc.
++# This file is distributed under the same license as the at-spi package.
++# Yi Yang <yang_yi_cn@yahoo.com>, 2003.
++# 甘露(Gan Lu) <rhythm.gan@gmail.com>, 2009.
++# Aron Xu <happyaron.xu@gmail.com>, 2009.
++# Ray Wang <raywang@gnome.org>, 2009, 2010.
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi master\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-04-08 10:11+0800\n"
++"PO-Revision-Date: 2010-04-08 10:10+0800\n"
++"Last-Translator: Ray Wang <raywang@gnome.org>\n"
++"Language-Team: Chinese (Simplified) <i18n-zh@googlegroups.com>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: utf-8\n"
++"Plural-Forms: nplurals=1; plural=0;\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "打开基于 DBus 的 AT-SPI"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "提供辅助功能支持的 GTK+ 模块"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"由于与 /desktop/gnome/interface/accessibility 键进行了绑定，如果要开启安装文"
++"件位置被重定位的基于 DBus 的 AT-SPI，则该键需要被勾选。如果基于 DBus 的 AT-"
++"SPI 安装文件位置未被重定位，则该键被忽略。"
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "该键值决定 GTK+ 模块是否载入辅助功能支持。"
++
++#~ msgid "AT-SPI Registry"
++#~ msgstr "AT-SPI 注册项"
++
++#~ msgid "Accessibility Registry"
++#~ msgstr "辅助功能注册项"
++
++#~ msgid "AT SPI Registry"
++#~ msgstr "AT SPI 注册项"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT-SPI 注册项封装器"
++
++#~ msgid "failure: no device event controller found.\n"
++#~ msgstr "失败：找不到设备事件控制器。\n"
++
++#~ msgid "WARNING: NULL key event reported."
++#~ msgstr "警告：报告了为空的关键事件。"
+diff --git a/po/zh_HK.po b/po/zh_HK.po
+new file mode 100644
+index 0000000..29fa00a
+--- /dev/null
++++ b/po/zh_HK.po
+@@ -0,0 +1,51 @@
++# Chinese (Hong Kong) translation of at-spi.
++# Copyright (C) 2004 Free Software Foundation
++# This file is distributed under the same license as the at-spi package.
++# Li-Jen Hsin <hsin@med.cgu.edu.tw>, 2004
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi 1.29.90\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-15 11:04+0800\n"
++"PO-Revision-Date: 2010-02-15 11:09+0800\n"
++"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
++"Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "啟用以 DBus 為基礎的 AT-SPI 基礎架構"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "無障礙支援的 GTK+ 模組"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr "為了結合 /desktop/gnome/interface/accessibility，這個鍵值是在以 DBus 為基礎的 AT-SPI 基礎架構重新分配時要啟用它所需的。如果沒有重新分配則會忽略它。"
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "這個鍵值決定 GTK+ 模組是否載入對無障礙功能的支援。"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI 註冊表"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "無障礙功能註冊表"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI 註冊表"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT SPI 註冊表包裹器"
+diff --git a/po/zh_TW.po b/po/zh_TW.po
+new file mode 100644
+index 0000000..313f2a8
+--- /dev/null
++++ b/po/zh_TW.po
+@@ -0,0 +1,53 @@
++# traditional Chinese translation of at-spi.
++# Copyright (C) 2004 Free Software Foundation
++# This file is distributed under the same license as the at-spi package.
++# Li-Jen Hsin <hsin@med.cgu.edu.tw>, 2004
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: at-spi 1.29.90\n"
++"Report-Msgid-Bugs-To: \n"
++"POT-Creation-Date: 2010-02-15 11:04+0800\n"
++"PO-Revision-Date: 2010-02-12 22:48+0800\n"
++"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
++"Language-Team: Chinese (traditional) <zh-l10n@lists.linuxhall.org.tw>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=UTF-8\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ../at-spi2.schemas.in.h:1
++msgid "Enable DBus-based AT-SPI infrastructure"
++msgstr "啟用以 DBus 為基礎的 AT-SPI 基礎架構"
++
++#: ../at-spi2.schemas.in.h:2
++msgid "GTK+ modules for accessibility support"
++msgstr "無障礙支援的 GTK+ 模組"
++
++#: ../at-spi2.schemas.in.h:3
++msgid ""
++"In combination with /desktop/gnome/interface/accessibility, this key is "
++"needed to enable the DBus-based AT-SPI infrastructure if the DBus-based AT-"
++"SPI infrastructure has been relocated. It is ignored if the DBus-based AT-"
++"SPI infrastructure has not been relocated."
++msgstr ""
++"為了結合 /desktop/gnome/interface/accessibility，這個鍵值是在以 DBus 為基礎"
++"的 AT-SPI 基礎架構重新分配時要啟用它所需的。如果沒有重新分配則會忽略它。"
++
++#: ../at-spi2.schemas.in.h:4
++msgid "This key determines the GTK+ modules to load for accessibility support."
++msgstr "這個鍵值決定 GTK+ 模組是否載入對無障礙功能的支援。"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:1
++msgid "AT-SPI Registry"
++msgstr "AT-SPI 註冊表"
++
++#: ../registryd/Accessibility_Registry.server.in.in.h:2
++msgid "Accessibility Registry"
++msgstr "無障礙功能註冊表"
++
++#: ../registryd/at-spi-registryd.desktop.in.in.in.h:1
++msgid "AT SPI Registry"
++msgstr "AT SPI 註冊表"
++
++#~ msgid "AT SPI Registry Wrapper"
++#~ msgstr "AT SPI 註冊表包裹器"
