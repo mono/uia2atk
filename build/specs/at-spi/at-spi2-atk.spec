@@ -1,7 +1,7 @@
 #
-# spec file for package at-spi2-atk (Version 0.1.6)
+# spec file for package at-spi2-atk (Version 0.1.8)
 #
-# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,11 +15,11 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-
+%define IS_DEFAULT_ATSPI_STACK 1
 
 Name:           at-spi2-atk
 Version:        0.1.8
-Release:        85
+Release:        1
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
 Group:          System/Libraries
@@ -33,6 +33,9 @@ BuildRequires:  gconf2-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  intltool
 BuildRequires:  libxml2-devel
+%if ! %IS_DEFAULT_ATSPI_STACK
+BuildRequires:  update-desktop-files
+%endif
 # The GTK+ module is useful only if the at-spi registry is running. But it's
 # not a strict runtime dependency.
 Recommends:     at-spi2-core
@@ -58,7 +61,13 @@ This package contains a GTK+ module for at-spi, based on ATK.
 %setup -q
 
 %build
-%configure --disable-relocate
+# We pass --enable-relocate when we want another at-spi stack (like at-spi) by default.
+%configure \
+%if %IS_DEFAULT_ATSPI_STACK
+        --disable-relocate
+%else
+        --enable-relocate
+%endif
 %__make %{?jobs:-j%jobs}
 
 %install
@@ -71,7 +80,11 @@ This package contains a GTK+ module for at-spi, based on ATK.
 find %{buildroot} -type f -name "*.la" -delete -print
 %find_gconf_schemas
 %find_lang %{name}
-
+%if ! %IS_DEFAULT_ATSPI_STACK
+%{__install} -d -m 0755 %{buildroot}%{_sysconfdir}/xdg/autostart
+%{__mv} %{buildroot}%{_datadir}/gnome/autostart/atk-bridge.desktop %{buildroot}%{_sysconfdir}/xdg/autostart/
+%suse_update_desktop_file atk-bridge
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -85,8 +98,11 @@ rm -rf %{buildroot}
 %files -f %{name}.schemas_list
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
+%if %IS_DEFAULT_ATSPI_STACK
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
-
-%files lang -f %{name}.lang
+%else
+%{_libdir}/gtk-2.0/modules/at-spi-dbus/
+%{_sysconfdir}/xdg/autostart/atk-bridge.desktop
+%endif
 
 %changelog
