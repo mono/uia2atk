@@ -51,5 +51,39 @@ namespace Mono.UIAutomation.TestFramework
 			ip.Invoke ();
 		}
 		#endregion
+		
+		#region ExpandCollapse Pattern
+		public void Expand ()
+		{
+			Expand (true);
+		}
+
+		public void Expand (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Expand {0}.", this.NameAndType));
+
+			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
+			ecp.Expand ();
+		}
+
+		public void Collapse ()
+		{
+			Collapse (true);
+		}
+
+		public void Collapse (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Collapse {0}.", this.NameAndType));
+
+			ExpandCollapsePattern ecp = (ExpandCollapsePattern) element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
+			ecp.Collapse ();
+		}
+
+		public ExpandCollapseState ExpandCollapseState {
+			get { return (ExpandCollapseState) element.GetCurrentPropertyValue (ExpandCollapsePattern.ExpandCollapseStateProperty, true); }
+		}
+		#endregion
 	}
 }

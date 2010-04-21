@@ -36,7 +36,21 @@ namespace Mono.UIAutomation.TestFramework
 		{
 		}
 
-		#region SelectionItem Pattern
+				#region SelectionItem Pattern
+		public void ScrollIntoView ()
+		{
+			ScrollIntoView (true);
+		}
+
+		public void ScrollIntoView (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Scroll {0} into view.", this.NameAndType));
+
+			ScrollItemPattern sip = (ScrollItemPattern) element.GetCurrentPattern (ScrollItemPattern.Pattern);
+			sip.ScrollIntoView ();
+		}
+
 		public void Select ()
 		{
 			Select (true);
@@ -47,8 +61,40 @@ namespace Mono.UIAutomation.TestFramework
 			if (log)
 				procedureLogger.Action (string.Format ("Select {0}.", this.NameAndType));
 
-			SelectionItemPattern sp = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
-			sp.Select ();
+			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
+			sip.Select ();
+		}
+
+		public void RemoveFromSelection ()
+		{
+			RemoveFromSelection (true);
+		}
+
+		public void RemoveFromSelection (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Unselect {0}.", this.NameAndType));
+
+			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
+			sip.RemoveFromSelection ();
+		}
+
+		public void AddToSelection ()
+		{
+			AddToSelection (true);
+		}
+
+		public void AddToSelection (bool log)
+		{
+			if (log)
+				procedureLogger.Action (string.Format ("Select {0}.", this.NameAndType));
+
+			SelectionItemPattern sip = (SelectionItemPattern) element.GetCurrentPattern (SelectionItemPattern.Pattern);
+			sip.AddToSelection ();
+		}
+
+		public bool IsSelected {
+			get { return (bool) element.GetCurrentPropertyValue (SelectionItemPattern.IsSelectedProperty, true); }
 		}
 		#endregion
 	}

@@ -1,5 +1,12 @@
 2010-04-21  Felicia Mu  <fxmu@novell.com>
 
+	* Mono.UIAutomation.TestFramework/TableItem.cs:add SelectionItem
+	Pattern 
+	* Mono.UIAutomation.TestFramework/MenuItem.cs:add ExpandCollapse
+	Pattern.
+
+2010-04-21  Felicia Mu  <fxmu@novell.com>
+
 	* Tests/GTK/Fspot.cs: Add bug reference 598010 598030 597997 598036,
 	remove bug reference 596801 597716.
 
