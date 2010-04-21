@@ -1,3 +1,8 @@
+2010-04-21  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Add bug reference 598010 598030 597997 598036,
+	remove bug reference 596801 597716.
+
 2010-04-19  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Add bug reference 597696 597716

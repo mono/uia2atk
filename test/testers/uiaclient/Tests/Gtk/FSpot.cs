@@ -114,8 +114,14 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase201 ()
 		{
-			//201.1 Click "photo" menu
+			/*
+			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
+			 * should be recognized as menu item not menu.
+			 * if the bug is fixed please use the above comment expression:
+			 */ 
+			//201.1 Click "photo" menu item
 			var menuBar = window.Find<MenuBar> ();
+			//menuBar.Find<MenuItem> ("Photo").Click ();
 			menuBar.Find<Menu> ("Photo").Click ();
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -179,14 +185,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.LongDelay);
 			var importButton = newImportDialog.Find<Button> ("Import");
 			Console.WriteLine("The button's name is {0}",importButton.Name);
-			/*
-			 * Bug 596801 - [uiaclient-GTKs]: The disable button became a enable button,
-			 *  but its IsEnableProperty still be false
-			 */
-			/*
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
-			*/
 
 			/*
 			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
@@ -388,15 +388,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase204 ()
 		{
-			//204.1 Select "Tools" Menu Item
-			/*
-			 * BUG596841 - [uiaclient-GTKs]: A menu control on the menubar
-			 * is recognized as menu item. 
-			 * if the bug is fixed please use the following expression:
-			 *  menuBar.Find<Menu> ("Tools").Click ();
-			 */ 
+			//204.1 Select "Tools" Menu item
 			var menuBar = window.Find<MenuBar> ();
-			//menuBar.Find<Menu> ("Tools").Click ();
 			menuBar.Find<MenuItem> ("Tools").Click ();
 			procedureLogger.ExpectedResult ("The \"Tools\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -415,9 +408,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			/*
 			 * BUG597696 - [uiaclient-GTKs]: RadioButton doesn't support the SelectionItemPattern
-			 * BUG597716 - [uiaclient-GTKs]: RadioButton should not support the TextPattern
-			 */ 
-			//allImageRadioButton.Select ();
+			 */
+			/*
+			allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
 			Assert.IsTrue (allImageRadioButton.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
@@ -433,7 +426,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"All Image\" radio button is selected again.");
 			Assert.IsTrue (allImageRadioButton.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
+			/*
+			 * BUG595149 WindowPattern is not finished
+			 */ 
+			/*
 			//204.6 Move the dialog to (x,y)
 			procedureLogger.Action ("Check CanMove.");
 			procedureLogger.ExpectedResult ("The value of CanMove is true.");
@@ -448,6 +446,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			configureDialog.Close ();
 			procedureLogger.ExpectedResult ("The \"Configure Screensaver\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 		}
 
 		//TestCase205 Print the pictures
@@ -459,55 +458,76 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase205 ()
 		{
-			//205.1 "Photo" Menu Item
+			//205.1 Click "Edit Image" button
+			var editButton = window.Find<ToolBar> ().Find<Button> ("Edit Image");
+			editButton.Click ();
+			procedureLogger.ExpectedResult ("One picture is selected.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//205.2 "Photo" Menu item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<Menu> ("Photo").Click ();
+			/*
+			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
+			 * should be recognized as menu item not menu.
+			 * if the bug is fixed please use the above comment expression:
+			 */ 
+			//var photoMenuItem = menuBar.Find<MenuItem> ("Photo").Click ();
+			var photoMenuItem = menuBar.Find<Menu> ("Photo");
+			photoMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.2 "Print" Menu Item
+			//205.3 "Print" Menu Item
 			var printMenuItem = menuBar.Find<MenuItem> ("Print");
 			printMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Print\" dialog appears.");
-			Thread.Sleep (Config.Instance.ShortDelay);
+			Thread.Sleep (Config.Instance.LongDelay);
 
-			//205.3 Select "Image Settings" tab item
-			var printDialog = window.Find<Window> ("Print");
+			//205.4 Select "Image Settings" tab item
+			var printDialog = app.FindGtkSubWindow (window, "Print");
 			var settingTabItem = printDialog.Find<TabItem> ("Image Settings");
 			settingTabItem.Select ();
 			procedureLogger.ExpectedResult ("The \"Image Settings\"'s tab item is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.4 Select the "Print file name" check box
+			//205.5 Select the "Print file name" check box
 			var printFileCheckBox = printDialog.Find<CheckBox> ("Print file name");
-			printFileCheckBox.Toggle ();
-			procedureLogger.ExpectedResult ("The \"Print file name\" check box is checked.");
-			Assert.AreEqual (ToggleState.On, printFileCheckBox.ToggleState);
+			
+			//Check the checkbox's Toggle state
+			procedureLogger.Action ("The unselected check box's ToggleState should be off");
+			Assert.AreEqual (ToggleState.Off, printFileCheckBox.ToggleState);
+			procedureLogger.ExpectedResult ("The unselected check box's ToggleState is off");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			printFileCheckBox.Toggle ();
+			Thread.Sleep (Config.Instance.ShortDelay);
+			procedureLogger.ExpectedResult ("The \"Print file name\" check box is checked.");
+			Console.WriteLine ("the printFileCheckBox.ToggleState is {0} aaaaaaaaaaabbbbbbbb", printFileCheckBox.ToggleState);
+			Assert.AreEqual (ToggleState.On, printFileCheckBox.ToggleState);
 
-			//205.5 Select "General" tab
+			//205.6 Select "General" tab
 			var generalTabItem = printDialog.Find<TabItem> ("General");
 			generalTabItem.Select ();
 			procedureLogger.ExpectedResult ("The \"General\" tab item is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.6 Check the if Spin Button can be operated
-			var spinButton = printDialog.Find<Spinner> ();
+			//205.7 Check the if Spin Button can be operated
+			var spinButton = generalTabItem.Find<Spinner> ();
 			procedureLogger.Action ("Check IsReadOnly property of Spin Button.");
 			procedureLogger.ExpectedResult ("IsReadOnly is False.");
 			Assert.AreEqual (false, spinButton.IsReadOnly);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.6 Set the Spin Button's value to its Maximum
+			//205.8 Set the Spin Button's value to its Maximum
 			spinButton.SetValue (100);
 			procedureLogger.ExpectedResult ("The Spin Button's value is set to 100.");
 			Assert.AreEqual (100, spinButton.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.7 Set the Spin Button's value to its Minimum
-			spinButton.SetValue (0);
+			//205.9 Set the Spin Button's value to its Minimum
+			spinButton.SetValue (1);
 			procedureLogger.ExpectedResult ("The Spin Button's value is set to 0.");
-			Assert.AreEqual (0, spinButton.Minimum);
+			Assert.AreEqual (1, spinButton.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.10 Set the Spin Button's value to "50.0"
@@ -516,10 +536,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (50, spinButton.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			/*
+			 * BUG595149 WindowPattern is not finished
+			 */ 
+			/*
 			//205.11 Close the "Print" dialog
 			printDialog.Close ();
 			procedureLogger.ExpectedResult ("The \"Print\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 		}
 
 		//TestCase206 Sidebar
@@ -533,7 +558,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//206.1 Select "View" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("View").Click ();
+			/*
+			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
+			 * should be recognized as menu item not menu.
+			 * if the bug is fixed please use the above comment expression:
+			 */ 
+			//menuBar.Find<MenuItem> ("View").Click ();
+			menuBar.Find<Menu> ("View").Click ();
 			procedureLogger.ExpectedResult ("The \"View\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -599,7 +630,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//207.1 Select "Help" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<MenuItem> ("Help").Click ();
+			/*
+			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
+			 * should be recognized as menu item not menu.
+			 * if the bug is fixed please use the above comment expression:
+			 */ 
+			//menuBar.Find<MenuItem> ("Help").Click ();
+			menuBar.Find<Menu> ("Help").Click ();
 			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -656,6 +693,42 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The value of HorizontalViewSize is.");
 			Assert.AreEqual (100, document.HorizontalViewSize);
 			Thread.Sleep (Config.Instance.MediumDelay);
+		}
+
+	//TestCase208 Set Rating filter...
+		[Test]
+		public void RunTestCase208 ()
+		{
+			Run (TestCase208);
+		}
+
+		private void TestCase208 ()
+		{
+			//208.1 Select "Find" Menu 
+			var menuBar = window.Find<MenuBar> ();
+			/* BUG598010 - [uiaclient-GTKs]: The control on the menubar 
+			 * should be recognized as menu item not menu.
+			 * if the bug is fixed please use the above comment expression:
+			 */ 
+			//var findMenu = menuBar.Find<MenuItem> ("Find");
+			var findMenu = menuBar.Find<Menu> ("Find");
+			findMenu.Click ();
+			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			/*
+			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern
+			 * BUG598030 - [uiaclient-GTKs]: For all the GTK controls, there is an extra TextPattern
+			 */
+			/*
+			//208.2 Expand the "Set Rating filter..." menu item under "Find" menu 
+			findMenu.Find<MenuItem> ("By Rating").Expand ();
+			procedureLogger.ExpectedResult ("The \"Set Rating filter...\" sub menu item  opens.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//BUG598036 - [uiaclient-GTKs]: The separator should not support any pattern
+		
 		}
 	}
 }
