@@ -564,7 +564,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		private void FetchUiaDbusNames ()
 		{
 			List<Thread> threads = new List<Thread> ();
-			uiaDbusNames = new List<string> ();
+			var busNames = new List<string> ();
 			Object listLock  = new Object ();
 
 			IBus ibus = Bus.Session.GetObject<IBus> (DBusName,
@@ -580,7 +580,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 					var currentBus = (string) busNameObj;
 					if (IsUiaDbusName (currentBus))
 						lock (listLock)
-							uiaDbusNames.Add (currentBus);
+							busNames.Add (currentBus);
 				};
 				Thread thread = new Thread (start);
 				thread.Start (busName);
@@ -590,6 +590,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 			Thread.Sleep (1000);
 			foreach (Thread thread in threads)
 				thread.Abort ();
+			lock (uiaDbusNamesLock)
+				uiaDbusNames = busNames;
 		}
 
 		private Dictionary<string, DCI.IApplication> GetUiaApplications ()

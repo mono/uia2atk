@@ -1,3 +1,8 @@
+2010-04-21  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusSource/UiaDbusAutomationSource.cs: 
+	Fix a concurrent bug when fetching UIA bus names.
+
 2010-03-14  Stephen Shaw <sshaw@decriptor.com>
 
 	* configure.ac: Added data/uiadbus.spec
