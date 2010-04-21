@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([UiaDbus], [2.0.2])
+AC_INIT([UiaDbus], [2.0.3])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
@@ -90,7 +90,7 @@ AM_CONDITIONAL(ENABLE_EXTERNAL_NDESK_DBUS, test "x$enable_external_ndesk_dbus" =
 
 # package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.2])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.3])
 
 TOPDIR=$PWD
 AC_SUBST(TOPDIR)

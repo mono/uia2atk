@@ -4,7 +4,7 @@
 #
 
 Name:           uiadbus
-Version:        2.0.2
+Version:        2.0.3
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -14,7 +14,7 @@ Patch0:         uiadbus-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:  mono-devel >= 2.4
-BuildRequires:  mono-uia-devel >= 2.0.2
+BuildRequires:  mono-uia-devel >= 2.0.3
 BuildRequires:  ndesk-dbus
 Summary:        UiaDbus components of UIA on Linux
 

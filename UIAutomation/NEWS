@@ -3,6 +3,14 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.3: The "infotainment" release
+* #590765 - GridSpliter: Crash When Selected
+* #590708 - Fail to run IronPython Winforms application after install at-spi2
+* #586360 - Ironpython sample doesn't accessible after install at-spi1 and at-spi2
+* #596801 - [uiaclient-GTKs]: The disable button became a enable button, but its IsEnableProperty still be false
+* #593973 - GTK sub window can not be refreshed
+* #592185 - Supported AutomationElement returns AutomationElement.NotSupported
+
 Version 2.0.2: The "heliport" release
 * #587792 - TabControl: select invisible label child make the application crashed
 * #563890 - GridSplitter: run with Orca couldn't use Up|Down Right|Left to move splitter

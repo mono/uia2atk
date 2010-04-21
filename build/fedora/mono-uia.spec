@@ -4,7 +4,7 @@
 #
 
 Name:           mono-uia
-Version:        2.0.2
+Version:        2.0.3
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -47,7 +47,7 @@ WinFx components required by User Interface Automation (UIA) for use with Mono
 
 %build
 %configure --disable-tests --enable-winfxcore
-#Break build with parrallel make
+# Parallel build fails
 make
 
 %install

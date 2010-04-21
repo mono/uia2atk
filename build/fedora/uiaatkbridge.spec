@@ -4,7 +4,7 @@
 #
 
 Name:           uiaatkbridge
-Version:        2.0.2
+Version:        2.0.3
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -15,14 +15,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       at-spi >= 1.24.0
 Requires:       gtk-sharp2 >= 2.12.8
 Requires:       mono-core >= 2.4
-Requires:       mono-uia >= 2.0.2
+Requires:       mono-uia >= 2.0.3
 BuildRequires:  atk-devel >= 1.24
 BuildRequires:  gtk2-devel >= 2.14
 #BuildRequires:  gtk-sharp2 >= 2.12.8
 BuildRequires:  gtk-sharp2-devel >= 2.12.8
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia >= 2.0.2
-BuildRequires:	mono-uia-devel >= 2.0.2
+BuildRequires:	mono-uia >= 2.0.3
+BuildRequires:	mono-uia-devel >= 2.0.3
 
 Summary:        Bridge between UIA providers and ATK
 
