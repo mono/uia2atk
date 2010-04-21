@@ -291,6 +291,7 @@
 /UIAutomation/data/Makefile.in
 /UIAutomation/data/mono-uia.pc
 /UIAutomation/data/mono-uia.pc.in
+/UIAutomation/data/mono-uia.spec
 
 # /UIAutomationWinforms/
 /UIAutomationWinforms/*.userprefs
@@ -346,6 +347,9 @@
 /UIAutomationWinforms/po/Makefile.in
 /UIAutomationWinforms/po/Makefile.in.in
 
+# /UIAutomationWinforms/data/
+/UIAutomationWinforms/data/uiautomationwinforms.spec
+
 # /UiaAtkBridge/
 /UiaAtkBridge/bin
 /UiaAtkBridge/*.pidb
@@ -361,6 +365,9 @@
 /UiaAtkBridge/depcomp
 /UiaAtkBridge/libtool
 /UiaAtkBridge/ltmain.sh
+
+# /UiaAtkBridge/data/
+/UiaAtkBridge/data/uiaatkbridge.spec
 
 # /UiaAtkBridge/Test/
 /UiaAtkBridge/Test/Makefile.in
@@ -477,6 +484,7 @@
 /UiaDbus/data/Makefile.in
 /UiaDbus/data/mono-uia-dbus.pc
 /UiaDbus/data/mono-uia-dbus.pc.in
+/UiaDbus/data/uiadbus.spec
 
 # /UiaDbus/UiaDbus/
 /UiaDbus/UiaDbus/bin
@@ -862,6 +870,7 @@
 /AtspiUiaSource/AtspiUiaSourceTests/Makefile.in
 /AtspiUiaSource/AtspiUiaSourceTests/bin
 /AtspiUiaSource/AtspiUiaSourceTests/atspiuiasourcetest.sh
+/AtspiUiaSource/data/atspiuiasource.spec
 
 # /test/testers/uiaclient
 /test/testers/uiaclient/Mono.UIAutomation.TestFramework/bin/
