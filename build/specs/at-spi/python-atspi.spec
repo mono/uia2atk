@@ -1,7 +1,7 @@
 #
-# spec file for package python-atspi (Version 0.1.3)
+# spec file for package python-atspi (Version 0.1.8)
 #
-# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,14 +15,14 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-
+%define IS_DEFAULT_ATSPI_STACK 1
 
 Name:           python-atspi
 %define _name   pyatspi
-Version:        0.1.6
-Release:        51
+Version:        0.1.8
+Release:        1
 Summary:        Assistive Technology Service Provider Interface - Python bindings
-License:        LGPL v2.0
+License:        LGPLv2.0
 Group:          Development/Libraries/Python
 Url:            http://www.gnome.org/
 Source0:        %{_name}-%{version}.tar.bz2
@@ -36,9 +36,11 @@ Requires:       python-gtk
 Recommends:     at-spi2-core
 # Old versions of at-spi 1.x provided the same files
 Conflicts:      at-spi < 1.29.3
-# Virtual package, so that it's possible to use either python-atspi or
-# python-atspi-corba
+%if %IS_DEFAULT_ATSPI_STACK
+# Virtual package, so that apps can depend on it, without having to know which
+# at-spi stack is used. Only the default at-spi stack should define it.
 Provides:       pyatspi
+%endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if %suse_version > 1110
 BuildArch:      noarch
@@ -58,7 +60,13 @@ This package contains the python bindings for AT-SPI.
 %setup -q -n %{_name}-%{version}
 
 %build
-%configure --disable-relocate
+# We pass --enable-relocate when we want another at-spi stack (like at-spi) by default.
+%configure \
+%if %IS_DEFAULT_ATSPI_STACK
+        --disable-relocate
+%else
+        --enable-relocate
+%endif
 %__make %{?jobs:-j%jobs}
 
 %install
@@ -71,6 +79,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
+%if %IS_DEFAULT_ATSPI_STACK
 %{python_sitelib}/pyatspi/
+%else
+%{python_sitelib}/pyatspi_dbus/
+%endif
 
 %changelog

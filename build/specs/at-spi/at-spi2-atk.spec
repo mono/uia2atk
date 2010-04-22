@@ -105,4 +105,6 @@ rm -rf %{buildroot}
 %{_sysconfdir}/xdg/autostart/atk-bridge.desktop
 %endif
 
+%files lang -f %{name}.lang
+
 %changelog

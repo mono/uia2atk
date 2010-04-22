@@ -1,7 +1,7 @@
 #
-# spec file for package at-spi2-core (Version 0.1.6)
+# spec file for package at-spi2-core (Version 0.1.8)
 #
-# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -18,8 +18,9 @@
 
 
 Name:           at-spi2-core
-Version:        0.1.7
-Release:        122
+Version:        0.1.8
+Release:        1
+# FIXME: check that tarballs > 0.1.6 ship bus/ directory, and if they do, reapply patch0 and call to suse_update_desktop_file
 Summary:        Assistive Technology Service Provider Interface - D-Bus based implementation
 License:        GPLv2+
 Group:          System/Libraries
