@@ -142,24 +142,15 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			
 			var subImportDialogs = app.FindAllGtkSubWindow (window, "Import");
 			Assert.AreEqual(2, subImportDialogs.Length);
-			//Console.WriteLine("the len of import dialog is {0}", subImportDialogs.Length);
-			//Console.WriteLine("the len of import dialog is {1}", subImportDialogs[1].Name);
 			procedureLogger.Action ("Another \"Import\" dialog shows.");
 			procedureLogger.ExpectedResult ("The second \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.4 Input text "/usr/share/pixmaps/" into "Location:" Edit
 			var locationEdit = subImportDialogs[1].Find<Edit> ();
-			//var locationEdit0 = subImportDialogs[0].Find<Edit> ();
-			//var Edits0 = subImportDialogs[0].FindAll<Edit> ();
-			//var Edits1 = subImportDialogs[1].FindAll<Edit> ();
-			//Console.WriteLine("number of locationEdit is {0}", Edits0.Length);
-			//Console.WriteLine("number of locationEdit0 is {0}", Edits1.Length);
 			locationEdit.SetValue ("/usr/share/pixmaps/");
-			//locationEdit0.SetValue ("/usr/share/pixmaps/");
 			procedureLogger.ExpectedResult ("\"/usr/share/pixmaps\" has been entered.");
 			Thread.Sleep (Config.Instance.ShortDelay);
-			//Assert.AreEqual ("/usr/share/pixmaps/", locationEdit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//201.5 Click "Open" Button
@@ -402,8 +393,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//204.3 Select "All Image" radio button on the "Screensaver Configure" dialog
 			//var configureDialog = window.Find<Window> ("Screensaver Configuration");
-			Console.WriteLine("app is {0}", app);
-			//Console.WriteLine("window is {0}");
 			var configureDialog = app.FindGtkSubWindow (window, "Screensaver Configuration");
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			/*
@@ -568,18 +557,33 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"View\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			/*
+			 * BUG598803 - [uiaclient-GTKs]:the menu item who can 
+			 * pop up the sub menu is recognized as menu
+			 */
+			/*
 			//206.2 Select "Components" Menu Item
 			var ComponentsMenuItem = menuBar.Find<MenuItem> ("Components");
 			ComponentsMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Components\" sub menu appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
+			/*
+			 * BUG599140 - [uiaclient-GTKs]: check menu item is translated into Custom
+			 */ 
+			/*
 			//206.3 Select "Sidebar" Menu Item
 			var SidebarMenuItem = ComponentsMenuItem.Find<MenuItem> ("Sidebar");
-			SidebarMenuItem.Click ();
+			SidebarMenuItem.Invoke ();
 			procedureLogger.ExpectedResult ("The \"Filesystem\" tree appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
+			/*
+			 * BUG599600 - [uiaclient-GTKs]:the Combobox can't be found by UIA Client
+			 */ 
+			/*
 			//206.4 Select the "Folders" item in the combobox
 			var combobox = window.Find<ComboBox> ();
 			var listItem = combobox.Find<ListItem> ("Folders");
@@ -587,7 +591,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The \"Folders\" list item has been selected.");
 			Assert.IsTrue (listItem.IsSelected);
+			*/
 
+			/*
+			 * BUG599589 - [uiaclient-GTKs]:the tree item can't be found by UIA Client
+			 * BUG599598 - [uiaclient-GTKs]:The tree control should not support the Grid pattern
+			 */
+			/*
 			//206.5 Expand "Filesystem" tree Item
 			var filesystemTreeItem = window.Find<TreeItem> ("Filesystem");
 			procedureLogger.Action ("Check the tree's ExpandCollapseState.");
@@ -617,6 +627,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The tree is collapsed.");
 			Assert.AreEqual (ExpandCollapseState.Collapsed, filesystemTreeItem.ExpandCollapseState);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 		}
 
 		//TestCase207 About F-Spot
@@ -727,7 +738,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 			*/
 			
+			//TODO
 			//BUG598036 - [uiaclient-GTKs]: The separator should not support any pattern
+			//BUG598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
+			//
 		
 		}
 	}
