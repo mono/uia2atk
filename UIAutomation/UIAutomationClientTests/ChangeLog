@@ -1,3 +1,15 @@
+2010-04-30  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/AutomationElementTest.cs,
+	UIAutomationClientTests/BaseTest.cs: Move VerifyPatterns to BaseTest.
+
+	* UIAutomationClientTests/BaseTest.cs, SampleForm/Form1.cs,
+	GtkForm/GtkForm.cs, UIAutomationClientTests/Menutest.cs,
+	AtspiUiaClientTests/menuTest.cs, UIAutomationClientTests/Makefile.am,
+	AtspiUiaClientTests/Makefile.am,
+	UIAutomationClientTests/UIAutomationClientTests.csproj:
+	Add tests for some gtk menu bugs.
+
 2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* GtkForm/Makefile.am: Fix distcheck.

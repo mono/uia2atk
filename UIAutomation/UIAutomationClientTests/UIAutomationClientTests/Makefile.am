@@ -91,6 +91,7 @@ FILES =  \
 	FocusTest.cs \
 	InvokePatternTest.cs \
 	LocalProviderTest.cs \
+	MenuTest.cs \
 	MultipleViewPatternTest.cs \
 	Properties/AssemblyInfo.cs \
 	RangeValuePatternTest.cs \

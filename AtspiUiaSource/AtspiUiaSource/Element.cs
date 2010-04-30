@@ -291,6 +291,8 @@ namespace AtspiUiaSource
 						return ControlType.Calendar;
 					case Role.CheckBox:
 						return ControlType.CheckBox;
+					case Role.CheckMenuItem:
+						return ControlType.MenuItem;
 					case Role.ComboBox:
 						return ControlType.ComboBox;
 					case Role.Dialog:
@@ -312,7 +314,7 @@ namespace AtspiUiaSource
 					case Role.ListItem:
 						return ControlType.ListItem;
 					case Role.Menu:
-						return ControlType.Menu;
+						return ControlType.MenuItem;
 					case Role.MenuBar:
 						return ControlType.MenuBar;
 					case Role.MenuItem:
@@ -773,6 +775,8 @@ namespace AtspiUiaSource
 
 		internal bool SupportsInvoke ()
 		{
+			if (accessible.Role == Role.Separator)
+				return false;
 			Atspi.Action action = accessible.QueryAction ();
 			if (action == null)
 				return false;
@@ -790,6 +794,8 @@ namespace AtspiUiaSource
 
 		internal bool SupportsSelectionItem ()
 		{
+			if (accessible.Role == Role.Separator)
+				return false;
 			return (accessible.Parent.QuerySelection () != null);
 		}
 
@@ -812,11 +818,14 @@ namespace AtspiUiaSource
 
 		internal bool SupportsToggle ()
 		{
-			return (accessible.Role == Role.CheckBox || accessible.Role == Role.ToggleButton);
+			return (accessible.Role == Role.CheckBox || accessible.Role == Role.CheckMenuItem || accessible.Role == Role.ToggleButton);
 		}
 
 		internal bool SupportsText ()
 		{
+			if (accessible.Role != Role.Text &&
+				accessible.Role != Role.PasswordText)
+				return false;
 			return (accessible.QueryText () != null);
 		}
 

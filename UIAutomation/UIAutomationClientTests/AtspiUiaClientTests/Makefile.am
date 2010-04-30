@@ -77,6 +77,7 @@ FILES =  \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \
 	InvokePatternTest.cs \
+	MenuTest.cs \
 	RangeValuePatternTest.cs \
 	SelectionPatternTest.cs \
 	TableTest.cs \

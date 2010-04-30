@@ -146,6 +146,25 @@ namespace GtkForm
 			hbox.Add (hboxPanel);
 			hbox.Add (scaleButton1);
 
+			Gtk.Menu file = new Gtk.Menu ();
+			file.Append (new Gtk.MenuItem ("_New"));
+			file.Append (new Gtk.MenuItem ("_Open"));
+			file.Append (new Gtk.CheckMenuItem ("Check"));
+			Gtk.MenuItem fileItem = new Gtk.MenuItem ("File");
+			fileItem.Submenu = file;
+			Gtk.Menu edit = new Gtk.Menu ();
+			edit.Append (new Gtk.MenuItem ("_Undo"));
+			edit.Append (new Gtk.SeparatorMenuItem ());
+			edit.Append (new Gtk.MenuItem ("_Cut"));
+			edit.Append (new Gtk.MenuItem ("Copy"));
+			edit.Append (new Gtk.MenuItem ("_Paste"));
+			Gtk.MenuItem editItem = new Gtk.MenuItem ("Edit");
+			editItem.Submenu = edit;
+			Gtk.MenuBar menuBar = new Gtk.MenuBar ();
+			menuBar.Append (fileItem);
+			menuBar.Append (editItem);
+			hbox.Add (menuBar);
+
 			window.Add (hbox);
 			window.ShowAll ();
 		}

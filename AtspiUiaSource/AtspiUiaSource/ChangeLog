@@ -1,3 +1,10 @@
+2010-04-30  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs: Handle CheckMenuItem.
+	Disable TextPattern for roles other than Text and PasswordText.
+	Return ControlType.MenuItem for Role.Menu (BNC#598803)
+	Remove patterns from separator (BNC#598036)
+
 2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Fix distcheck.

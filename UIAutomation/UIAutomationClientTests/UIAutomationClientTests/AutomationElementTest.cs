@@ -1343,34 +1343,6 @@ Thread.Sleep(1000);
 			}
 		}
 
-		private void VerifyPatterns (AutomationElement element, params AutomationPattern [] expected)
-		{
-			List<AutomationPattern> expectedPatterns = new List<AutomationPattern> (expected);
-			List<AutomationPattern> supportedPatterns = new List<AutomationPattern> (element.GetSupportedPatterns ());
-				object pattern1, pattern2;
-
-			foreach (AutomationPattern pattern in patternProperties.Keys) {
-				bool patternProperty = (bool) element.GetCurrentPropertyValue (patternProperties [pattern]);
-				if (expectedPatterns.Contains (pattern)) {
-					pattern1 = element.GetCurrentPattern (pattern);
-					Assert.IsNotNull (pattern1, "GetCurrentPattern should not return null: " + pattern.ProgrammaticName);
-					Assert.IsTrue (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return true: " + pattern.ProgrammaticName);
-					Assert.IsNotNull (pattern2, "TryGetCurrentPattern should not return null: " + pattern.ProgrammaticName);
-					Assert.IsTrue (supportedPatterns.Contains (pattern), "GetSupportedPatterns should return pattern: " + pattern.ProgrammaticName);
-					Assert.IsTrue (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
-				} else {
-					try {
-						pattern1 = element.GetCurrentPattern (pattern);
-						Assert.Fail ("GetCurrentPattern should return an InvalidOperation exception: " + pattern.ProgrammaticName);
-					} catch (InvalidOperationException) { }
-					Assert.IsFalse (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return false: " + pattern.ProgrammaticName);
-					Assert.IsFalse (supportedPatterns.Contains (pattern), "GetSupportedPatterns should not return pattern: " + pattern.ProgrammaticName);
-					Assert.IsFalse (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
-				}
-			}
-
-		}
-
 		private void SupportedPropertiesTestInternal (AutomationElement element)
 		{
 			var supportedProperties = element.GetSupportedProperties ();

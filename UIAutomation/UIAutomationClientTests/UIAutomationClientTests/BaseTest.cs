@@ -64,7 +64,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement textbox3Element;
 		protected AutomationElement tb3horizontalScrollBarElement;
 		protected AutomationElement tb3verticalScrollBarElement;
-		//protected AutomationElement horizontalMenuStripElement;
+		protected AutomationElement horizontalMenuStripElement;
 		//protected AutomationElement verticalMenuStripElement;
 		protected AutomationElement checkbox1Element;
 		protected AutomationElement checkbox2Element;
@@ -175,7 +175,7 @@ namespace MonoTests.System.Windows.Automation
 
 			if (!Atspi)
 				Assert.IsNotNull (listView1Element);
-			//Assert.IsNotNull (horizontalMenuStripElement);
+			Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
 		}
 
@@ -274,9 +274,9 @@ namespace MonoTests.System.Windows.Automation
 				new PropertyCondition (AEIds.NameProperty, "listView1"));
 			button8Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty, "button8"));
-			//horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
-			//        new PropertyCondition (AEIds.NameProperty,
-			//                "menuStrip1"));
+			horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
+			        new PropertyCondition (AEIds.NameProperty,
+			                "menuStrip1"));
 			//verticalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip2"));
@@ -363,6 +363,9 @@ namespace MonoTests.System.Windows.Automation
 			listView1Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"listView1"));
+			horizontalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
+			        new PropertyCondition (AEIds.ControlTypeProperty,
+			                ControlType.MenuBar));
 		}
 
 		protected void DisableControls ()
@@ -462,6 +465,34 @@ namespace MonoTests.System.Windows.Automation
 			else
 				sb.Append ("]");
 			return sb.ToString ();
+		}
+
+		protected void VerifyPatterns (AutomationElement element, params AutomationPattern [] expected)
+		{
+			List<AutomationPattern> expectedPatterns = new List<AutomationPattern> (expected);
+			List<AutomationPattern> supportedPatterns = new List<AutomationPattern> (element.GetSupportedPatterns ());
+				object pattern1, pattern2;
+
+			foreach (AutomationPattern pattern in patternProperties.Keys) {
+				bool patternProperty = (bool) element.GetCurrentPropertyValue (patternProperties [pattern]);
+				if (expectedPatterns.Contains (pattern)) {
+					pattern1 = element.GetCurrentPattern (pattern);
+					Assert.IsNotNull (pattern1, "GetCurrentPattern should not return null: " + pattern.ProgrammaticName);
+					Assert.IsTrue (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return true: " + pattern.ProgrammaticName);
+					Assert.IsNotNull (pattern2, "TryGetCurrentPattern should not return null: " + pattern.ProgrammaticName);
+					Assert.IsTrue (supportedPatterns.Contains (pattern), "GetSupportedPatterns should return pattern: " + pattern.ProgrammaticName);
+					Assert.IsTrue (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
+				} else {
+					try {
+						pattern1 = element.GetCurrentPattern (pattern);
+						Assert.Fail ("GetCurrentPattern should return an InvalidOperation exception: " + pattern.ProgrammaticName);
+					} catch (InvalidOperationException) { }
+					Assert.IsFalse (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return false: " + pattern.ProgrammaticName);
+					Assert.IsFalse (supportedPatterns.Contains (pattern), "GetSupportedPatterns should not return pattern: " + pattern.ProgrammaticName);
+					Assert.IsFalse (patternProperty, "Pattern property: " + pattern.ProgrammaticName);
+				}
+			}
+
 		}
 	}
 }

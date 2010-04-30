@@ -37,6 +37,7 @@ namespace SampleForm {
 
 		private DataTable table = new DataTable ();
 		private Form childForm;
+		private MenuStrip menuStrip1 = new MenuStrip ();
 
 		public Form1 ()
 		{
@@ -90,6 +91,21 @@ namespace SampleForm {
 			myCtrl.AccessibleName = "My Control";
 			myCtrl.Bounds = new Rectangle (5, 5, 30, 15);
 			Controls.Add (myCtrl);
+
+			menuStrip1.AccessibleName = "menuStrip1";
+			menuStrip1.Dock = DockStyle.Top;
+			var file = new ToolStripMenuItem ("&File");
+			file.DropDownItems.Add (new ToolStripMenuItem ("&New"));
+			file.DropDownItems.Add (new ToolStripMenuItem ("&Open"));
+			var edit = new ToolStripMenuItem ("&Edit");
+			edit.DropDownItems.Add (new ToolStripMenuItem ("&Undo"));
+			edit.DropDownItems.Add (new ToolStripSeparator ());
+			edit.DropDownItems.Add (new ToolStripMenuItem ("&Cut"));
+			edit.DropDownItems.Add (new ToolStripMenuItem ("&Copy"));
+			edit.DropDownItems.Add (new ToolStripMenuItem ("&Paste"));
+			menuStrip1.Items.Add (file);
+			menuStrip1.Items.Add (edit);
+			Controls.Add (menuStrip1);
 		}
 
 		private void button1_Click (object sender, EventArgs e)
@@ -103,6 +119,7 @@ namespace SampleForm {
 		{
 			numericUpDown1.Enabled = !numericUpDown1.Enabled;
 			treeView1.Enabled = !treeView1.Enabled;
+			menuStrip1.Enabled = !menuStrip1.Enabled;
 		}
 
 		private void btnAddTextbox_Click (object sender, EventArgs e)
