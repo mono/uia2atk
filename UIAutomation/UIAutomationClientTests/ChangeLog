@@ -1,3 +1,8 @@
+2010-05-03  Mario Carrion  <mcarrion@novell.com>
+
+	* AtspiUiaClientTests/Makefile.am: Copy UIAutomationBridge.dll to 
+	build tests.
+
 2010-04-30  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/AutomationElementTest.cs,
