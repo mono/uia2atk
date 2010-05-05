@@ -27,9 +27,9 @@ class GridSplitterFrame(accessibles.Frame):
         self.label2 = self.filler.findLabel(self.LABEL2)
         self.label3 = self.filler.findLabel(self.LABEL3)
         self.label4 = self.filler.findLabel(self.LABEL4)
-        # 2 thumbs with PushButton role name, gridsplitter is a Thumb 
+        # 2 thumbs with SplitPane role name, gridsplitter is a Thumb 
         # controltype
-        self.thumbs = self.filler.findAllPushButtons("")
+        self.thumbs = self.filler.findAllSplitPanes("")
         assert len(self.thumbs) == self.THUMB_NUM, \
                 "actual number of thumb is:%s, expected is:%s" % \
                  (len(self.thumbs), self.THUMB_NUM)
