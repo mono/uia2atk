@@ -57,7 +57,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.ToolBar.Id;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
-			else if (propertyId == AEIds.NameProperty.Id)
+			else if (propertyId == AEIds.NameProperty.Id &&
+				string.IsNullOrEmpty (strip.AccessibleName))
 				return Helper.StripAmpersands (strip.Text);
 			else if (propertyId == AEIds.IsContentElementProperty.Id)
 				return true;

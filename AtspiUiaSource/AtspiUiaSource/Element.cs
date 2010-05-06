@@ -180,7 +180,9 @@ namespace AtspiUiaSource
 
 		public virtual bool SupportsProperty (AutomationProperty property)
 		{
-			if ((property.Id == AutomationElementIdentifiers.ControlTypeProperty.Id) ||
+			if ((property.Id == AutomationElementIdentifiers.IsControlElementProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.ControlTypeProperty.Id) ||
+				(property.Id == AutomationElementIdentifiers.IsContentElementProperty.Id) ||
 				(property.Id == AutomationElementIdentifiers.LabeledByProperty.Id) ||
 				(property.Id == AutomationElementIdentifiers.AutomationIdProperty.Id) ||
 				(property.Id == AutomationElementIdentifiers.IsPasswordProperty.Id) ||
@@ -753,29 +755,41 @@ namespace AtspiUiaSource
 
 		internal bool SupportsExpandCollapse ()
 		{
-			Atspi.Action action = accessible.QueryAction ();
+			Accessible testAccessible;
+			Atspi.Action action;
+			if (this is DataItemElement) {
+				Element child = FirstChild as Element;
+				if (child == null)
+					return false;
+				testAccessible = child.accessible;
+			} else
+				testAccessible = accessible;
+			action = testAccessible.QueryAction ();
 			if (action == null)
 				return false;
 			ActionDescription [] actions = action.Actions;
 			for (int i = 0; i < actions.Length; i++)
 				if (actions [i].Name == "expand or contract")
-					return accessible.StateSet.Contains (StateType.Expandable);
+					return testAccessible.StateSet.Contains (StateType.Expandable);
 			return false;
 		}
 
 		internal bool SupportsGridItem ()
 		{
-			return (accessible.Parent.QueryTable () != null);
+			return (accessible.Parent.QueryTable () != null &&
+				ControlType != ControlType.TreeItem);
 		}
 
 		internal bool SupportsGrid ()
 		{
-			return (accessible.QueryTable () != null);
+			return (accessible.QueryTable () != null &&
+				ControlType != ControlType.Tree);
 		}
 
 		internal bool SupportsInvoke ()
 		{
-			if (accessible.Role == Role.Separator)
+			if (accessible.Role == Role.Separator ||
+				accessible.Role == Role.CheckBox)
 				return false;
 			Atspi.Action action = accessible.QueryAction ();
 			if (action == null)
@@ -801,6 +815,8 @@ namespace AtspiUiaSource
 
 		internal bool SupportsSelection ()
 		{
+			if (accessible.Role == Role.MenuBar)
+				return false;
 			return (accessible.QuerySelection () != null);
 		}
 

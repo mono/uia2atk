@@ -337,7 +337,11 @@ Thread.Sleep(1000);
 
 			Assert.IsTrue (testFormElement.Current.IsContentElement,
 				"window");
-			Assert.IsFalse (label1Element.Current.IsContentElement,
+			if (Atspi)
+				Assert.IsTrue (label1Element.Current.IsContentElement,
+				"label1");
+			else	// this is weird; not replicating it in Atspi
+				Assert.IsFalse (label1Element.Current.IsContentElement,
 				"label1");
 		}
 
@@ -1142,6 +1146,13 @@ Thread.Sleep(1000);
 		{
 			VerifyPatterns (button1Element,
 				InvokePatternIdentifiers.Pattern);
+
+			VerifyPatterns (checkBox1Element,
+				TogglePatternIdentifiers.Pattern);
+
+			object pattern;
+			Assert.IsFalse (numericUpDown1Element.TryGetCurrentPattern (InvokePatternIdentifiers.Pattern, out pattern),
+				"NumericUpDown should not support Invoke");
 		}
 
 		[Test]

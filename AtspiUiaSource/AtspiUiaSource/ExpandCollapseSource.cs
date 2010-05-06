@@ -42,7 +42,9 @@ namespace AtspiUiaSource
 
 		public ExpandCollapseSource (Element element)
 		{
-			accessible = element.Accessible;
+			accessible = (element is DataItemElement
+				? ((Element)element.FirstChild).Accessible
+			: element.Accessible);
 			action = accessible.QueryAction ();
 
 			ActionDescription [] actions = action.Actions;

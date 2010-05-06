@@ -1,3 +1,14 @@
+2010-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs, ExpandCollapseSource.cs: Use child accessible for
+	ExpandCollapsePattern in a DataItem.
+
+	* Element.cs: Mark IsControlElement and IsContentElement as supported.
+
+	* Element.cs: Do not expose Grid/GridItem for a Tree/TreeItem.
+	Do not expose InvokePattern for a CheckBox.
+	Do not expose SelectionPattern for a MenuBar.
+
 2010-04-30  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs: Handle CheckMenuItem.

@@ -1,3 +1,8 @@
+2010-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Give
+	AccessibleName preedence over Text.
+
 2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Fix distcheck.

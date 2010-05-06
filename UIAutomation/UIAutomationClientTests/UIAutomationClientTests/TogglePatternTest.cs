@@ -52,7 +52,7 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void ToggleTest ()
 		{
-			TogglePattern pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
+			TogglePattern pattern = (TogglePattern) checkBox1Element.GetCurrentPattern (TogglePattern.Pattern);
 			Assert.AreEqual (ToggleState.Off, pattern.Current.ToggleState, "ToggleState before Toggle");
 			pattern.Toggle ();
 			// TODO: Enable this after resolving at-spi-sharp threading/MainLoop issues
@@ -66,9 +66,9 @@ namespace MonoTests.System.Windows.Automation
 			TogglePattern pattern = null;
 			if (!Atspi) {
 				RunCommand ("disable checkBox1");
-				pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
+				pattern = (TogglePattern) checkBox1Element.GetCurrentPattern (TogglePattern.Pattern);
 			} else {
-				pattern = (TogglePattern) checkbox2Element.GetCurrentPattern (TogglePattern.Pattern);
+				pattern = (TogglePattern) checkBox2Element.GetCurrentPattern (TogglePattern.Pattern);
 			}
 
 			try {
@@ -85,10 +85,10 @@ namespace MonoTests.System.Windows.Automation
 		{
 			int eventCount = 0;
 			AutomationPropertyChangedEventHandler handler = (o, e) => eventCount++;
-			At.AddAutomationPropertyChangedEventHandler (checkbox1Element, TreeScope.Element, handler,
+			At.AddAutomationPropertyChangedEventHandler (checkBox1Element, TreeScope.Element, handler,
 			                                             TogglePattern.ToggleStateProperty);
 
-			TogglePattern pattern = (TogglePattern) checkbox1Element.GetCurrentPattern (TogglePattern.Pattern);
+			TogglePattern pattern = (TogglePattern) checkBox1Element.GetCurrentPattern (TogglePattern.Pattern);
 			pattern.Toggle ();
 			//We should expect an AutomationPropertyChangedEvent here,
 			//But since no such event fired on Windows Winforms,

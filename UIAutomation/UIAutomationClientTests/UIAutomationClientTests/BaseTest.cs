@@ -56,6 +56,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement button6Element;
 		protected AutomationElement button7Element;
 		protected AutomationElement checkBox1Element;
+		protected AutomationElement checkBox2Element;
 		protected AutomationElement label1Element;
 		protected AutomationElement numericUpDown1Element;
 		protected AutomationElement numericUpDown2Element;
@@ -66,8 +67,6 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement tb3verticalScrollBarElement;
 		protected AutomationElement horizontalMenuStripElement;
 		//protected AutomationElement verticalMenuStripElement;
-		protected AutomationElement checkbox1Element;
-		protected AutomationElement checkbox2Element;
 		protected AutomationElement panel1Element;
 		protected AutomationElement btnAddTextboxElement;
 		protected AutomationElement btnRemoveTextboxElement;
@@ -162,7 +161,7 @@ namespace MonoTests.System.Windows.Automation
 				Assert.IsNotNull (tb3horizontalScrollBarElement);
 				Assert.IsNotNull (tb3verticalScrollBarElement);
 			}
-			Assert.IsNotNull (checkbox1Element);
+			Assert.IsNotNull (checkBox1Element);
 			Assert.IsNotNull (panel1Element);
 			Assert.IsNotNull (btnAddTextboxElement);
 			Assert.IsNotNull (btnRemoveTextboxElement);
@@ -243,7 +242,7 @@ namespace MonoTests.System.Windows.Automation
 			groupBox2Element = groupBox1Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"groupBox2"));
-			checkbox1Element = groupBox2Element.FindFirst (TreeScope.Children,
+			checkBox1Element = groupBox2Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.CheckBox));
 			panel1Element = testFormElement.FindFirst (TreeScope.Children,
@@ -298,6 +297,12 @@ namespace MonoTests.System.Windows.Automation
 			groupBox1Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Group));
+			groupBox2Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"groupBox2"));
+			groupBox3Element = groupBox1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"groupBox3"));
 			button1Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Button));
@@ -328,13 +333,13 @@ namespace MonoTests.System.Windows.Automation
 			button7Element = groupBox1Element.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"button7"));
+			checkBox1Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.CheckBox));
 			textbox3Element = groupBoxElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.Document));
-			checkbox1Element = groupBoxElement.FindFirst (TreeScope.Descendants,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.CheckBox));
-			checkbox2Element = groupBoxElement.FindFirst (TreeScope.Descendants,
+			checkBox2Element = groupBoxElement.FindFirst (TreeScope.Descendants,
 				new PropertyCondition (AEIds.NameProperty,
 					"checkbox2"));
 			btnAddTextboxElement = groupBoxElement.FindFirst (TreeScope.Descendants,
@@ -471,12 +476,16 @@ namespace MonoTests.System.Windows.Automation
 		{
 			List<AutomationPattern> expectedPatterns = new List<AutomationPattern> (expected);
 			List<AutomationPattern> supportedPatterns = new List<AutomationPattern> (element.GetSupportedPatterns ());
-				object pattern1, pattern2;
+				object pattern1 = null, pattern2;
 
 			foreach (AutomationPattern pattern in patternProperties.Keys) {
 				bool patternProperty = (bool) element.GetCurrentPropertyValue (patternProperties [pattern]);
 				if (expectedPatterns.Contains (pattern)) {
-					pattern1 = element.GetCurrentPattern (pattern);
+					try {
+						pattern1 = element.GetCurrentPattern (pattern);
+					} catch (InvalidOperationException) {
+						Assert.Fail ("GetCurrentPattern should not throw InvalidOperationException: " + pattern.ProgrammaticName);
+					}
 					Assert.IsNotNull (pattern1, "GetCurrentPattern should not return null: " + pattern.ProgrammaticName);
 					Assert.IsTrue (element.TryGetCurrentPattern (pattern, out pattern2), "TryGetCurrentPattern should return true: " + pattern.ProgrammaticName);
 					Assert.IsNotNull (pattern2, "TryGetCurrentPattern should not return null: " + pattern.ProgrammaticName);

@@ -13,7 +13,8 @@ namespace GtkForm
 		private Gtk.TextView textBox3;
 		private Gtk.TreeView treeView1;
 		private Gtk.TreeView treeView2;
-		private Gtk.TreeView treeView3;
+		private Gtk.TreeView listView1;
+		private Gtk.TreeView dataGridView1;
 		private Gtk.TreeStore tableStore;
 		private Gtk.ScaleButton scaleButton1;
 		private Gtk.HBox hboxPanel;
@@ -75,32 +76,38 @@ namespace GtkForm
 			Gtk.CheckButton checkbox2 = new Gtk.CheckButton ("checkbox2");
 			checkbox2.Sensitive = false;
 
-			Gtk.TreeStore store = new Gtk.TreeStore (typeof (string));
+			Gtk.TreeStore store = new Gtk.TreeStore (typeof (string), typeof (string));
 			Gtk.TreeIter [] iters = new Gtk.TreeIter [2];
 			iters [0] = store.AppendNode ();
-			store.SetValue (iters [0], 0, "item 1");
+			store.SetValues (iters [0], "item 1", "item 1 (2)");
 			iters [1] = store.AppendNode (iters [0]);
-			store.SetValue (iters [1], 0, "item 1a");
+			store.SetValues (iters [1], "item 1a", "item 1a (2)");
 			iters [0] = store.AppendNode ();
-			store.SetValue (iters [0], 0, "item 2");
+			store.SetValues (iters [0], "item 2", "item 2 (2)");
 			iters [1] = store.AppendNode (iters [0]);
-			store.SetValue (iters [1], 0, "item 2a");
+			store.SetValues (iters [1], "item 2a", "item 2a (2)");
 			iters [1] = store.AppendNode (iters [0]);
-			store.SetValue (iters [1], 0, "item 2b");
+			store.SetValues (iters [1], "item 2b", "item 2b (2)");
 			treeView1 = new Gtk.TreeView (store);
 			AddTreeViewColumn (treeView1, 0, "column 1");
 			treeView1.CollapseAll ();
 
+			treeView2 = new Gtk.TreeView (store);
+			AddTreeViewColumn (treeView2, 0, "column 1");
+			AddTreeViewColumn (treeView2, 1, "column 2");
+			treeView2.CollapseAll ();
+			treeView2.Accessible.Name = "treeView2";
+
 			tableStore = new Gtk.TreeStore (typeof (string), typeof (string), typeof (string), typeof (string));
 			iters [0] = tableStore.AppendNode ();
-			tableStore.SetValues (iters [0], "false", "Alice", "24", "");
+			tableStore.SetValues (iters [0], "False", "Alice", "24", "");
 			iters [0] = tableStore.AppendNode ();
-			tableStore.SetValues (iters [0], "true", "Bob", "28", "");
-			treeView2 = new Gtk.TreeView (tableStore);
-			AddTreeViewColumn (treeView2, 0, "Gender");
-			AddTreeViewColumn (treeView2, 1, "Name");
-			AddTreeViewColumn (treeView2, 2, "Age");
-			treeView2.Accessible.Name = "dataGridView1";
+			tableStore.SetValues (iters [0], "True", "Bob", "28", "");
+			dataGridView1 = new Gtk.TreeView (tableStore);
+			AddTreeViewColumn (dataGridView1, 0, "Gender");
+			AddTreeViewColumn (dataGridView1, 1, "Name");
+			AddTreeViewColumn (dataGridView1, 2, "Age");
+			dataGridView1.Accessible.Name = "dataGridView1";
 
 			hboxPanel = new Gtk.HBox ();
 			Gtk.Button btnRemoveTextBox = new Gtk.Button ("Remove");
@@ -119,19 +126,21 @@ namespace GtkForm
 			treeStore.SetValue (iter, 0, "Item 0");
 			iter = treeStore.AppendNode ();
 			treeStore.SetValue (iter, 0, "Item 1");
-			treeView3 = new Gtk.TreeView (treeStore);
-			AddTreeViewColumn (treeView3, 0, "items");
-			treeView3.Accessible.Name = "listView1";
-			treeView3.ExpandAll ();
+			listView1 = new Gtk.TreeView (treeStore);
+			AddTreeViewColumn (listView1, 0, "items");
+			listView1.Accessible.Name = "listView1";
+			listView1.ExpandAll ();
 
 			hbox2.Add (button5);
 			hbox2.Add (checkbox1);
 			hbox2.Add (checkbox2);
 			hbox2.Add (button4);
+			hbox2.Accessible.Name = "groupBox2";
 
 			hbox3.Add (button7);
 			hbox3.Add (button6);
 			hbox3.Sensitive = false;
+			hbox3.Accessible.Name = "groupBox3";
 
 			hbox.Add (textBox3);
 			hbox.Add (textBox2);
@@ -140,7 +149,8 @@ namespace GtkForm
 			hbox.Add (button1);
 			hbox.Add (treeView1);
 			hbox.Add (treeView2);
-			hbox.Add (treeView3);
+			hbox.Add (listView1);
+			hbox.Add (dataGridView1);
 			hbox.Add (txtCommand);
 			hbox.Add (btnRun);
 			hbox.Add (hboxPanel);
@@ -247,9 +257,9 @@ namespace GtkForm
 			} else if (cmd == "add table column")
 			AddTreeViewColumn (treeView2, 3, "more");
 			else if (cmd == "enable multiselect")
-				treeView3.Selection.Mode = Gtk.SelectionMode.Multiple;
+				listView1.Selection.Mode = Gtk.SelectionMode.Multiple;
 			else if (cmd == "disable multiselect")
-				treeView3.Selection.Mode = Gtk.SelectionMode.Single;
+				listView1.Selection.Mode = Gtk.SelectionMode.Single;
 			else if (cmd == "change button3 name")
 				button3.Accessible.Name = "xyzzy";
 			else if (cmd == "change button3 helptext")

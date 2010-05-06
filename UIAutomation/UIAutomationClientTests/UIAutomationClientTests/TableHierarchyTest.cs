@@ -79,12 +79,12 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("ControlType.DataItem",
 				dataItemElement.Current.ControlType.ProgrammaticName,
 				"DataItem ControlType");
-			//VerifyPatterns (dataItemElement);
 			AutomationElement textElement = TreeWalker.RawViewWalker.GetFirstChild (dataItemElement);
 			Assert.IsNotNull (textElement, "text");
-			Assert.AreEqual ("ControlType.Edit",
+			string expected = (Atspi? "Edit" : "CheckBox");
+			Assert.AreEqual ("ControlType." + expected,
 				textElement.Current.ControlType.ProgrammaticName,
-				"Edit ControlType");
+				expected + "ControlType");
 			Assert.AreEqual (dataItemElement,
 				TreeWalker.RawViewWalker.GetParent (textElement),
 				"Text parent should be DataItem");
@@ -92,7 +92,7 @@ namespace MonoTests.System.Windows.Automation
 				"TextElement FirstChild");
 				Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (textElement),
 				"TextElement PreviousSibling");
-			Assert.AreEqual ("false",
+			Assert.AreEqual ("False",
 				textElement.Current.Name,
 				"TextElement Name");
 			//VerifyPatterns (textElement,
@@ -154,8 +154,11 @@ Thread.Sleep(500);
 				Assert.IsNull (TreeWalker.RawViewWalker.GetPreviousSibling (treeItemSubElement), "Item1a previous");
 				Assert.IsNull (TreeWalker.RawViewWalker.GetNextSibling (treeItemSubElement), "Item1a next");
 				Assert.IsNull (TreeWalker.RawViewWalker.GetFirstChild (treeItemSubElement), "Item1a child");
-			} else
-				Assert.IsNull (TreeWalker.RawViewWalker.GetFirstChild (treeItemElement), "Item1 shouldn't have children when not expanded");
+			} else {
+				AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (treeItemElement);
+				if (child != null)
+					Assert.IsTrue (child.Current.IsOffscreen, "Child should be of-screen when not expanded");
+			}
 			treeItemElement = TreeWalker.RawViewWalker.GetNextSibling (treeItemElement);
 			Assert.AreEqual ("item 2",
 				treeItemElement.Current.Name, "item 2");
@@ -174,6 +177,13 @@ Thread.Sleep(500);
 			treeItemElement = TreeWalker.RawViewWalker.GetPreviousSibling (treeItemElement);
 			Assert.AreEqual ("item 1",
 				treeItemElement.Current.Name, "item 2 previous");
+		}
+
+		[Test]
+		public void TreeViewPatternsTest ()
+		{
+			VerifyPatterns (treeView1Element,
+				SelectionPatternIdentifiers.Pattern);
 		}
 		#endregion
 	}

@@ -1,3 +1,29 @@
+2010-05-06  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/TableHierarchyTest.cs, GtkForm/GtkForm.cs:
+	Expect check boxes in the table for Winforms.
+	Fix name of boolean cells to be the same in Gtk as in Winforms.
+	Do not assume that a treeItem has no children when collapsed.
+	Test TreeView patterns.
+
+	* UIAutomationClientTests/AutomationElementTest.cs:
+	Assume that IsContentElement is true for a label in gtk.
+	Check that a Spinner does not expose InvokePattern.
+
+	* UIAutomationClientTests/AutomationElementTest.cs, GtkForm/GtkForm.cs:
+	Test checkBox patterns.
+
+	* UIAutomationClientTests/BaseTest.cs,
+	UIAutomationClientTests/TogglePatternTest.cs: Fix checkboxes.
+
+	* UIAutomationClientTests/BaseTest.cs: Catch
+	InvalidOperationException and display pattern name in VerifyPatterns.
+
+	* UIAutomationClientTests/MenuTest.cs: Test MenuBar patterns.
+
+	* AtspiUiaClientTests/TableHierarchyTest.cs, GtkForm/GtkForm.cs:
+	Test DataItem patterns.
+
 2010-05-03  Mario Carrion  <mcarrion@novell.com>
 
 	* AtspiUiaClientTests/Makefile.am: Copy UIAutomationBridge.dll to 

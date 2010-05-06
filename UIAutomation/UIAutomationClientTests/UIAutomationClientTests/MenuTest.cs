@@ -47,6 +47,8 @@ namespace MonoTests.System.Windows.Automation
 				horizontalMenuStripElement.Current.ControlType.ProgrammaticName,
 				"MenuBar control type");
 
+			VerifyPatterns (horizontalMenuStripElement);
+
 			AutomationElement file = TreeWalker.RawViewWalker.GetFirstChild (horizontalMenuStripElement);
 			Assert.IsNotNull (file, "File");
 			Assert.AreEqual ("File", file.Current.Name, "File name");

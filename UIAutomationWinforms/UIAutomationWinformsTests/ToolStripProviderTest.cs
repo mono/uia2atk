@@ -96,5 +96,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              false);
 		}
+
+		[Test]
+		public void Z_AccessibleNamePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			control.AccessibleName = "xyzzy";
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "xyzzy");
+		}
 	}
 }
