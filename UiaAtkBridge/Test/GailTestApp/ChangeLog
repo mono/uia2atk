@@ -1,3 +1,7 @@
+2010-05-11  Mike Gorse  <mgorse@novell.com>
+
+	* makefile.am: Remove Debug/Release.
+
 2009-02-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* gtk-gui/gui.stetic:

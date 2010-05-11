@@ -1,33 +1,17 @@
 
 EXTRA_DIST =  UiaAtkBridge.dll.config.in
 
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk -warnaserror
 
-ASSEMBLY = bin/Debug/UiaAtkBridge.dll
+ASSEMBLY = bin/UiaAtkBridge.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = bin/Debug
+BUILD_DIR = bin
 
-UIAATKBRIDGE_DLL_MDB_SOURCE=bin/Debug/UiaAtkBridge.dll.mdb
+UIAATKBRIDGE_DLL_MDB_SOURCE=bin/UiaAtkBridge.dll.mdb
 UIAATKBRIDGE_DLL_MDB=$(BUILD_DIR)/UiaAtkBridge.dll.mdb
-
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk -warnaserror
-ASSEMBLY = bin/Release/UiaAtkBridge.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release
-
-UIAATKBRIDGE_DLL_MDB=
-
-endif
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=.resources.dll

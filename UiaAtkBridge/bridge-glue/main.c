@@ -191,12 +191,14 @@ static void *
 get_library ()
 {
   static void *library = NULL;
+  const char *path;
 
   if (library)
     return library;
-  library = dlopen (get_bridge_path (), RTLD_LAZY);
+  path = get_bridge_path ();
+  library = dlopen (path, RTLD_LAZY);
   if (!library)
-    g_warning ("libbridgeglue: Couldn't find atk-bridge");
+    g_warning ("libbridgeglue: Couldn't find atk-bridge: expecting %s\n", path);
   return library;
 }
 

@@ -1,3 +1,7 @@
+2010-05-11  Mike Gorse <mgorse@novell.com>
+
+	* main.c: Add verbosity to g_warning when unable to fined atk-bridge.
+
 2010-04-05  Mike Gorse <mgorse@novell.com>
 
 	* main.c: Do not dlclose gconf [fixes BNC#590708]

@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using Mono.UIAutomation.Winforms;
 using NUnit.Framework;
 
 using System.Windows.Automation;

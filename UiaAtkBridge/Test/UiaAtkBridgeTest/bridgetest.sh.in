@@ -47,7 +47,7 @@ else
 	echo libatk-bridge.so not found && exit
 fi
 
-(cd bin/Debug; \
+(cd bin; \
 	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
 
 if [ "x$xephyr" == "xyes" ]; then

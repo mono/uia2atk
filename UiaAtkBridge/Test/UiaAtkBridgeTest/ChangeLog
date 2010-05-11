@@ -1,3 +1,10 @@
+2010-05-11  Mike Gorse  <mgorse@novell.com>
+
+	* Makefile.am: Remove Debug/Release.
+
+	* Makefile.am, BridgeTester.cs, BridgeTests.cs, bridgetest.sh.in:
+	Remove build-time UIAutomationWinforms dependency; fixes dist-check.
+
 2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Fix distcheck.

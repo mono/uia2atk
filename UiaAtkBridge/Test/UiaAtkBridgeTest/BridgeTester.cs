@@ -25,6 +25,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,8 +35,6 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
-
-using Mono.UIAutomation.Winforms;
 
 using NUnit.Framework;
 
@@ -486,16 +485,58 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, null, real, true);
 		}
 
+		public static IRawElementProviderSimple ProviderFactoryGetProvider (System.ComponentModel.Component widget)
+		{
+			return ProviderFactoryGetProvider (widget, true, false);
+		}
+
+		public static IRawElementProviderSimple ProviderFactoryGetProvider (System.ComponentModel.Component widget,
+			bool initialize,
+			bool forceInitializeChildren)
+		{
+			const string UIA_WINFORMS_ASSEMBLY = 
+			  "UIAutomationWinforms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+			MethodInfo getProviderMethod;
+			Assembly mwf_providers = null;
+			IRawElementProviderSimple provider = null;
+			try {
+				mwf_providers = Assembly.Load (UIA_WINFORMS_ASSEMBLY);
+			} catch { }
+			
+			if (mwf_providers == null)
+				throw new Exception ("Warning: Couldn't locate UIAutomationWinforms");
+
+			const string UIA_WINFORMS_TYPE     = "Mono.UIAutomation.Winforms.ProviderFactory";
+			const string UIA_WINFORMS_METHOD   = "GetProvider";
+			try {
+				Type global_type = mwf_providers.GetType (UIA_WINFORMS_TYPE, false);
+				if (global_type != null) {
+					getProviderMethod = global_type.GetMethod (UIA_WINFORMS_METHOD, 
+						new System.Type [] {
+							typeof (System.ComponentModel.Component),
+							typeof (bool),
+							typeof (bool)});
+					if (getProviderMethod != null)
+						provider = (IRawElementProviderSimple) getProviderMethod.Invoke (null, new object [] {widget, initialize, forceInitializeChildren});
+					else
+						throw new Exception (String.Format ("Method {0} not found in type {1}.",
+						                                    UIA_WINFORMS_METHOD, UIA_WINFORMS_TYPE));
+				}
+				else
+					throw new Exception (String.Format ("Type {0} not found in assembly {1}.",
+					                                    UIA_WINFORMS_TYPE, UIA_WINFORMS_ASSEMBLY));
+			} catch (Exception ex) {
+				throw new Exception ("Error setting up UIA: " + ex);
+			}
+			return provider;
+		}
+
 		public static Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
 			if (widget == null)
 				throw new ArgumentNullException ("widget");
 			
-//			return GetAdapterForWidget (widget, true);
-//		}
-//		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
-//		{
-			var provider = ProviderFactory.GetProvider (widget);
+			IRawElementProviderSimple provider = ProviderFactoryGetProvider (widget);
 			Assert.IsNotNull (provider, "ProviderFactory returned null for this widget");
 			Atk.Object acc = GetAdapterForProvider (provider);
 			mappings [acc] = widget;
@@ -562,7 +603,7 @@ namespace UiaAtkBridgeTest
 					accessible = GetAdapterForWidget (listBox);
 				else
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
-					                                    ProviderFactory.GetProvider (listBox, true, true));
+					                                    ProviderFactoryGetProvider (listBox, true, true));
 				break;
 
 			case BasicWidgetType.CheckedListBox:
@@ -577,7 +618,7 @@ namespace UiaAtkBridgeTest
 					accessible = GetAdapterForWidget (clistBox);
 				else
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
-					                                    ProviderFactory.GetProvider (clistBox, true, true));
+					                                    ProviderFactoryGetProvider (clistBox, true, true));
 				break;
 
 			case BasicWidgetType.ListView:
@@ -716,7 +757,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (lab);
 				else
-					accessible = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
+					accessible = new UiaAtkBridge.TextLabel (ProviderFactoryGetProvider (lab, true, true));
 				break;
 				
 			case BasicWidgetType.NormalButton:
@@ -762,7 +803,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (frm);
 				else
-					accessible = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
+					accessible = new UiaAtkBridge.Window (ProviderFactoryGetProvider (frm, true, true));
 				break;
 				
 			case BasicWidgetType.CheckBox:
@@ -773,7 +814,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (chk);
 				else
-					accessible = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
+					accessible = new UiaAtkBridge.CheckBoxButton (ProviderFactoryGetProvider (chk, true, true));
 				break;
 				
 			case BasicWidgetType.RadioButton:
@@ -795,7 +836,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (sb);
 				else
-					accessible = new UiaAtkBridge.TextContainer (ProviderFactory.GetProvider (sb, true, true));
+					accessible = new UiaAtkBridge.TextContainer (ProviderFactoryGetProvider (sb, true, true));
 				break;
 
 			case BasicWidgetType.HScrollBar:
@@ -838,7 +879,7 @@ namespace UiaAtkBridgeTest
 					pb = pb1;
 					accessible = GetAdapterForWidget (pb);
 				} else {
-					accessible = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
+					accessible = new UiaAtkBridge.ProgressBar (ProviderFactoryGetProvider (pb, true, true));
 				}
 				break;
 
@@ -852,7 +893,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (nud);
 				else
-					accessible = new UiaAtkBridge.SpinnerWithValue (ProviderFactory.GetProvider (nud, true, true));
+					accessible = new UiaAtkBridge.SpinnerWithValue (ProviderFactoryGetProvider (nud, true, true));
 				break;
 
 			case BasicWidgetType.TextBoxEntry:
@@ -901,7 +942,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (pbox);
 				else
-					accessible = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
+					accessible = new UiaAtkBridge.Image (ProviderFactoryGetProvider (pbox, true, true));
 				break;
 
 			case BasicWidgetType.ToolStripLabel:

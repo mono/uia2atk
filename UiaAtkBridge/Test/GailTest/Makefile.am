@@ -1,32 +1,17 @@
 EXTRA_DIST =
 
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
-ASSEMBLY = bin/Debug/GailTest.dll
+ASSEMBLY = bin/GailTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = $(GAILTESTAPP)
-BUILD_DIR = bin/Debug
+BUILD_DIR = bin
 
-GAILTEST_DLL_MDB_SOURCE=bin/Debug/GailTest.dll.mdb
+GAILTEST_DLL_MDB_SOURCE=bin/GailTest.dll.mdb
 GAILTEST_DLL_MDB=$(BUILD_DIR)/GailTest.dll.mdb
 
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk
-ASSEMBLY = bin/Release/GailTest.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release
-
-GAILTEST_DLL_MDB=
-
-endif
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=.resources.dll
@@ -62,11 +47,10 @@ REFERENCES =  \
 DLL_REFERENCES = $(ATKTEST)
 
 CLEANFILES = $(PROGRAMFILES) \
-	bin/Debug/GailTestApp.exe \
-	bin/Debug/GailTestApp.exe.mdb \
-	bin/Debug/AtkTest.dll \
-	bin/Debug/AtkTest.dll.mdb \
-	bin/Release/GailTestApp.exe
+	bin/GailTestApp.exe \
+	bin/GailTestApp.exe.mdb \
+	bin/AtkTest.dll \
+	bin/AtkTest.dll.mdb
 
 MAINTAINERCLEANFILES = \
 	gailtest.sh
@@ -81,22 +65,14 @@ $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
-bin/Debug/GailTestApp.exe: ../GailTestApp/bin/Debug/GailTestApp.exe
-	@mkdir -p bin/Debug
+bin/GailTestApp.exe: ../GailTestApp/bin/GailTestApp.exe
+	@mkdir -p bin
 	cp -a $< $@
 
-bin/Release/GailTestApp.exe: ../GailTestApp/bin/Release/GailTestApp.exe
-	@mkdir -p bin/Release
-	cp -a $< $@
-
-bin/Debug/AtkTest.dll: ../AtkTest/bin/Debug/AtkTest.dll
-	@mkdir -p bin/Debug
+bin/AtkTest.dll: ../AtkTest/bin/AtkTest.dll
+	@mkdir -p bin
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
-
-bin/Release/AtkTest.dll: ../AtkTest/bin/Release/AtkTest.dll
-	@mkdir -p bin/Release
-	cp -a $< $@
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
 	@mkdir -p $(shell dirname $(ASSEMBLY))

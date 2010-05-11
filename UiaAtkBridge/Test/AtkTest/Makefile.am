@@ -1,32 +1,17 @@
 ASSEMBLY_COMPILER_FLAGS = 
 
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk
 
-ASSEMBLY = bin/Debug/AtkTest.dll
+ASSEMBLY = bin/AtkTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = bin/Debug
+BUILD_DIR = bin
 
-ATKTEST_DLL_MDB_SOURCE=bin/Debug/AtkTest.dll.mdb
+ATKTEST_DLL_MDB_SOURCE=bin/AtkTest.dll.mdb
 ATKTEST_DLL_MDB=$(BUILD_DIR)/AtkTest.dll.mdb
 
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS += -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk
-ASSEMBLY = bin/Release/AtkTest.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release
-
-ATKTEST_DLL_MDB=
-
-endif
 
 if HAVE_OLD_ATK_SHARP
 ASSEMBLY_COMPILER_FLAGS += -define:HAVE_OLD_ATK_SHARP
