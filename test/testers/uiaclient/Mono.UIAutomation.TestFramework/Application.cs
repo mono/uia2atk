@@ -57,12 +57,14 @@ namespace Mono.UIAutomation.TestFramework
 			}
 		}
 
-		public Window GetWindow (string title)
+		public Window GetWindow (string name)
 		{
-			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, 
-			                                                  new PropertyCondition (
-			                                                  AutomationElementIdentifiers.NameProperty, 
-			                                                  title));
+			AndCondition cond = new AndCondition (
+			                        new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, 
+			                                               ControlType.Window),
+			                        new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
+
+			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, cond);
 			return new Window (ae);
 		}
 
@@ -74,6 +76,7 @@ namespace Mono.UIAutomation.TestFramework
 			                        new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty, 
 			                                               ControlType.Window), 
 			                        new PropertyCondition (AutomationElementIdentifiers.NameProperty, name));
+
 			var ae = AutomationElement.RootElement.FindFirst (TreeScope.Children, cond);
 			return new Window (ae);
 		}

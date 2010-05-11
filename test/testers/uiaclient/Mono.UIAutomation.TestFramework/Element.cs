@@ -148,54 +148,56 @@ namespace Mono.UIAutomation.TestFramework
 		// in order to get more specific mothods.
 		public static Element Promote (AutomationElement elm)
 		{
-			if (elm.Current.ControlType == ControlType.Window)
-				return new Window (elm);
-			else if (elm.Current.ControlType == ControlType.Button)
+			if (elm.Current.ControlType == ControlType.Button) 
 				return new Button (elm);
-			else if (elm.Current.ControlType == ControlType.Edit)
-				return new Edit (elm);
-			else if (elm.Current.ControlType == ControlType.CheckBox)
+			else if (elm.Current.ControlType == ControlType.CheckBox) 
 				return new CheckBox (elm);
-			else if (elm.Current.ControlType == ControlType.RadioButton)
-				return new RadioButton (elm);
-			else if (elm.Current.ControlType == ControlType.TabItem)
-				return new TabItem (elm);
-			else if (elm.Current.ControlType == ControlType.Spinner)
-				return new Spinner (elm);
-			else if (elm.Current.ControlType == ControlType.ComboBox)
+			else if (elm.Current.ControlType == ControlType.ComboBox) 
 				return new ComboBox (elm);
-			else if (elm.Current.ControlType == ControlType.MenuBar)
-				return new MenuBar (elm);
-			else if (elm.Current.ControlType == ControlType.MenuItem)
-				return new MenuItem (elm);
-			else if (elm.Current.ControlType == ControlType.List)
-				return new List (elm);
-			else if (elm.Current.ControlType == ControlType.ListItem)
-				return new ListItem (elm);
-			else if (elm.Current.ControlType == ControlType.ToolBar)
-				return new ToolBar (elm);
-			else if (elm.Current.ControlType == ControlType.DataGrid)
+			else if (elm.Current.ControlType == ControlType.DataGrid) 
 				return new DataGrid (elm);
-			else if (elm.Current.ControlType == ControlType.DataItem)
+			else if (elm.Current.ControlType == ControlType.DataItem) 
 				return new DataItem (elm);
-			else if (elm.Current.ControlType == ControlType.Document)
+			else if (elm.Current.ControlType == ControlType.Document) 
 				return new Document (elm);
-			else if (elm.Current.ControlType == ControlType.ScrollBar)
-				return new ScrollBar (elm);
-			else if (elm.Current.ControlType == ControlType.Text)
-				return new Text (elm);
-			else if (elm.Current.ControlType == ControlType.Pane)
-				return new Pane (elm);
-			else if (elm.Current.ControlType == ControlType.Menu)
-				return new Menu (elm);
-			else if (elm.Current.ControlType == ControlType.SplitButton)
-				return new SplitButton (elm);
-			else if (elm.Current.ControlType == ControlType.Slider)
-				return new Slider (elm);
-			else if (elm.Current.ControlType == ControlType.TreeItem)
-				return new TreeItem (elm);
-			else if (elm.Current.ControlType == ControlType.Group)
+			else if (elm.Current.ControlType == ControlType.Edit) 
+				return new Edit (elm);
+			else if (elm.Current.ControlType == ControlType.Group) 
 				return new Group (elm);
+			else if (elm.Current.ControlType == ControlType.ListItem) 
+				return new ListItem (elm);
+			else if (elm.Current.ControlType == ControlType.List) 
+				return new List (elm);
+			else if (elm.Current.ControlType == ControlType.MenuBar) 
+				return new MenuBar (elm);
+			else if (elm.Current.ControlType == ControlType.MenuItem) 
+				return new MenuItem (elm);
+			else if (elm.Current.ControlType == ControlType.Menu) 
+				return new Menu (elm);
+			else if (elm.Current.ControlType == ControlType.Pane) 
+				return new Pane (elm);
+			else if (elm.Current.ControlType == ControlType.RadioButton) 
+				return new RadioButton (elm);
+			else if (elm.Current.ControlType == ControlType.ScrollBar) 
+				return new ScrollBar (elm);
+			else if (elm.Current.ControlType == ControlType.Slider) 
+				return new Slider (elm);
+			else if (elm.Current.ControlType == ControlType.Spinner) 
+				return new Spinner (elm);
+			else if (elm.Current.ControlType == ControlType.SplitButton) 
+				return new SplitButton (elm);
+			else if (elm.Current.ControlType == ControlType.TabItem) 
+				return new TabItem (elm);
+			else if (elm.Current.ControlType == ControlType.Table) 
+				return new Table (elm);
+			else if (elm.Current.ControlType == ControlType.Text) 
+				return new Text (elm);
+			else if (elm.Current.ControlType == ControlType.ToolBar) 
+				return new ToolBar (elm);
+			else if (elm.Current.ControlType == ControlType.TreeItem) 
+				return new TreeItem (elm);
+			else if (elm.Current.ControlType == ControlType.Window) 
+				return new Window (elm);
 
 			return new Element (elm);
 		}

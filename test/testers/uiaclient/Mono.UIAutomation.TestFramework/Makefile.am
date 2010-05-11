@@ -69,6 +69,7 @@ FILES = \
 	ScrollBar.cs \
 	Spinner.cs \
 	SplitButton.cs \
+	Table.cs \
 	TabItem.cs \
 	TestBase.cs \
 	ProcedureLogger.cs \

@@ -83,6 +83,7 @@
     <Compile Include="Slider.cs" />
     <Compile Include="TreeItem.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="Table.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
