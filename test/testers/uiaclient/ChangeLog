@@ -1,3 +1,12 @@
+2010-05-11  Ray Wang  <rawang@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Element.cs: Reorder some statements.
+	* Mono.UIAutomation.TestFramework/Application.cs: Code format.
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	* Mono.UIAutomation.TestFramework/Table.cs:
+	* Mono.UIAutomation.TestFramework/Makefile.am:
+	Add Table control.
+
 2010-04-21  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Add bug reference 598803, 599140, 599600,
