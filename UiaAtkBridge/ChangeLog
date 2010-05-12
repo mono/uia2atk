@@ -1,3 +1,7 @@
+2010-05-10  Mike Gorse <mgorse@novell.com>
+
+	* configure.ac: Up gtk-sharp dependency [BNC#600049]
+
 2010-03-14  Stephen Shaw <sshaw@decriptor.com>
 
 	* configure.ac: Added data/uiaatkbridge.spec

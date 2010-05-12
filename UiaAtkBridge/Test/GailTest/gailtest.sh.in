@@ -11,7 +11,7 @@ cp ${NUNIT_PATH}/nunit-console.exe \
 	${NUNIT_PATH}/nunit-console-runner.dll \
 	${NUNIT_PATH}/nunit.util.dll \
 	${NUNIT_PATH}/nunit.core.dll \
-	${NUNIT_PATH}/nunit.core.interfaces.dll bin/Debug/
+	${NUNIT_PATH}/nunit.core.interfaces.dll bin/
 (cd bin; \
 	@MONO@ --debug ./nunit-console.exe -labels ${NUNIT_FLAGS} ${DLL} $*)
 

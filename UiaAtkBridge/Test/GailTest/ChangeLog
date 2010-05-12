@@ -1,5 +1,9 @@
 2010-05-11  Mike Gorse  <mgorse@novell.com>
 
+	* gailtest.sh.in: Remove Debug/Release.
+
+2010-05-11  Mike Gorse  <mgorse@novell.com>
+
 	* makefile.am: Remove Debug/Release.
 
 2010-04-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
