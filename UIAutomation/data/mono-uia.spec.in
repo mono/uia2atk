@@ -21,7 +21,7 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       mono-core >= 2.4
 Requires:       mono-winfxcore
-BuildRequires:  gtk-sharp2 >= 2.12.8
+BuildRequires:  gtk-sharp2 >= 2.12.10
 BuildRequires:  mono-core >= 2.4
 BuildRequires:  mono-devel >= 2.4
 BuildRequires:  mono-nunit >= 2.4
