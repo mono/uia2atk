@@ -3,6 +3,36 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.90: The "jabberwocky" release
+* #600024 - Weird problems in Gtk app when using managed AT to detect it
+* #600049 - ListView_details: navigate treetable's children in accerciser crash the application
+* #571577 - [uiaclient-Winforms]: the Openfiledialog's itemViewList.GetSupportedViews() method can't be shown as expected
+* #585111 - MoonlightAtkBridge 2.0 release test
+* #597333 - UiaAtkBridge Currently is failing make distcheck
+* #580447 - [UIAClient-Winforms] The viewId is difference between on Linux and Windows
+* #567496 - [uiaclient-winforms]The AutomationElement can't be found under OpenSuse 11.1
+* #515457 - CheckedListBox: treetable remain 'focused' state after focus is moved
+* #590708 - Fail to run IronPython Winforms application after install at-spi2
+* #593272 - Accerciser crash when Refrash Node using at-spi2
+* #596801 - [uiaclient-GTKs]: The disable button became a enable button, but its IsEnableProperty still be false
+* #598010 - [uiaclient-GTKs]: The control on the menubar should be recognized as menu item not menu.
+* #599140 - [uiaclient-GTKs]: check menu item is translated into Custom
+* #599598 - [uiaclient-GTKs]:The tree control should not support the Grid pattern
+* #600816 - [uiaclient-GTKs]:The menubar should not support SelectionPattern
+* #602254 - [uiaclient-GTKs]:Chcke Box control should not support InvokePattern
+* #602294 - [uiaclient-GTKs]:The CheckBox has not implemented IsContentElementProperty
+* #602296 - [uiaclient-GTKs]:The CheckBox has not implemented IsControlElementProperty
+* #576050 - [uiaclient-winforms]: The splitbutton's Invoke method doesn't work
+* #598053 - [uiaclient-GTKs]: The enable button's IsEnabledProperty is false
+* #598803 - [uiaclient-GTKs]:the menu item who can pop up the sub menu is recognized as menu
+* #600803 - [uiaclient-GTKs]:The Document has not implemented IsContentElementProperty
+* #600805 - [uiaclient-GTKs]:The Document has not implemented IsControlElementProperty
+* #602716 - [uiaclient-GTKs]:The ComboBox's IsContentElementProperty should be true
+* #602721 - [uiaclient-GTKs]:The ComboBox's IsControlElementProperty should be true
+* #575995 - [UIAexplore]: When call Invoke method twice, the UIAexplore will crash
+* #598030 - [uiaclient-GTKs]:For all the GTK controls, there is an extra TextPattern
+* #598036 - [uiaclient-GTKs]: The separator should not support any pattern
+
 Version 2.0.3: The "infotainment" release
 * #590765 - GridSpliter: Crash When Selected
 * #590708 - Fail to run IronPython Winforms application after install at-spi2
