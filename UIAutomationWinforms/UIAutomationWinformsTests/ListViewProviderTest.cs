@@ -2291,7 +2291,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void Bug459152Test ()
 		{
-			string imagePath = LookForParentDir ("*.gif");
+			string imagePath = System.IO.Path.Combine (LookForUia2AtkDir (), "test/samples/winforms");
 
 			ListView listview = new ListView ();
 			listview.Width = 350;

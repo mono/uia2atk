@@ -1,3 +1,9 @@
+2010-05-12  Matt Guo  <matt@mattguo.com>
+
+	* UIAutomationWinformsTests/BaseProviderTest.cs: 
+	* UIAutomationWinformsTests/ListViewProviderTest.cs:
+	Added a helper method to find the uia2atk base dir, and then find the image files needed by the test.
+
 2010-04-16  Matt Guo  <matt@mattguo.com>
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:
 	Fix a missing "{" in last commit

@@ -26,6 +26,7 @@
 
 
 using System;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
@@ -1053,6 +1054,32 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if (imgDir != "/")
 				return imgDir;
 	
+			return null;
+		}
+
+		protected string LookForUia2AtkDir ()
+		{
+			var dirInfo = new DirectoryInfo (Directory.GetCurrentDirectory ());
+			var rootInfo = dirInfo.Root;
+			string [] subDirToTest = {
+				"AtspiUiaSource",
+				"MoonAtkBridge",
+				"test",
+				"UiaDbus",
+				"UIAutomation",
+				"UIAutomationWinforms",
+				"UiaAtkBridge"
+			};
+			while (!dirInfo.Equals(rootInfo)) {
+				int hitCount = 0;
+				foreach (var childInfo in dirInfo.GetDirectories()) {
+					if (Array.Exists (subDirToTest, item => item == childInfo.Name))
+						hitCount++;
+				}
+				if (hitCount == subDirToTest.Length)
+					return dirInfo.FullName;
+				dirInfo = dirInfo.Parent;
+			}
 			return null;
 		}
 
