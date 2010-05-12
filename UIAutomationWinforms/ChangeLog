@@ -1,5 +1,12 @@
 2010-05-12  Matt Guo  <matt@mattguo.com>
 
+	* UIAutomationWinformsTests/ListViewProviderTest.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs:
+	Change to implement ListView's MultiViewPattern in the "correct way", and update related tests.
+
+2010-05-12  Matt Guo  <matt@mattguo.com>
+
 	* UIAutomationWinformsTests/BaseProviderTest.cs: 
 	* UIAutomationWinformsTests/ListViewProviderTest.cs:
 	Added a helper method to find the uia2atk base dir, and then find the image files needed by the test.

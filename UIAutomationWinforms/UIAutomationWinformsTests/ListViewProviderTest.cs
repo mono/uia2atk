@@ -269,14 +269,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		// Note: this test will fail on Windows 7, since on Win 7 the MultipleView pattern
+		// is not correctly implemented on ListView, while the pattern is perfectly implemented
+		// in the native Windows Explorer (and FileDialog), so considering both correctness
+		// and consistency, we choose to implement MultipleView Pattern on ListView in "perfect"
+		// way. see reviewboard #730 for more discussions.
 		public void MultipleView_GetSupportedViewsTest ()
 		{
 			ListView listView = GetControlInstance () as ListView;
-			int []supportedViews = null;
+			int [] supportedViews = null;
 			IRawElementProviderFragment listViewProvider = null;
 			IMultipleViewProvider pattern;
 
-			foreach (View viewVal in Enum.GetValues (typeof (View))) {
+			var allViewValues = Enum.GetValues (typeof (View));
+			foreach (View viewVal in allViewValues) {
 				listView.View = viewVal;
 				listViewProvider = (IRawElementProviderFragment) GetProviderFromControl (listView);
 				Assert.IsNotNull (listViewProvider, "Provider not implemented for ListView");
@@ -285,36 +291,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsNotNull (pattern, string.Format ("MultipleView Pattern SHOULD NOT be null {0}", listView.View));
 				
 				supportedViews = pattern.GetSupportedViews ();
-				Assert.AreEqual (1, supportedViews.Length, string.Format ("GetSupportedViews Length: {0}", viewVal));
-				Assert.AreEqual (0, supportedViews [0], string.Format ("GetSupportedViews Value ", viewVal));
+				Assert.AreEqual (allViewValues.Length, supportedViews.Length, string.Format ("GetSupportedViews Length: {0}", viewVal));
+				Assert.AreEqual (pattern.CurrentView, (int) viewVal);
 			}
 		}
 
 		[Test]
-		public void MultipleView_CurrentViewTest ()
+		// Note: this test will fail on Windows 7, see comment of "MultipleView_GetSupportedViewsTest"
+		public void MultipleView_ViewNameTest ()
 		{
 			ListView listView = GetControlInstance () as ListView;
 			IRawElementProviderFragment listViewProvider;
 			IMultipleViewProvider pattern;
-
-			foreach (View viewVal in Enum.GetValues (typeof (View))) {
-				listView.View = viewVal;
-				listViewProvider = (IRawElementProviderFragment) GetProviderFromControl (listView);
-				Assert.IsNotNull (listViewProvider, "Provider not implemented for ListView");
-
-				pattern = listViewProvider.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id) as IMultipleViewProvider;
-				Assert.IsNotNull (pattern, string.Format ("MultipleView Pattern SHOULD NOT be null {0}", listView.View));
-
-				Assert.AreEqual (0, pattern.CurrentView, string.Format ("CurrentView Value = 0 -> {0}", listView.View));
-			}
-		}
-
-		[Test]
-		public void MultipleView_ViewNameTest ()
-		{
-		    ListView listView = GetControlInstance () as ListView;
-		    IRawElementProviderFragment listViewProvider;
-		    IMultipleViewProvider pattern;
 			int []supportedViews = null;
 
 			foreach (View viewVal in Enum.GetValues (typeof (View))) {
@@ -329,7 +317,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				int lastViewId = 0;
 				foreach (int viewId in supportedViews) {
 					pattern.SetCurrentView (viewId);
-					Assert.AreEqual ("Icons", pattern.GetViewName (viewId), 
+					string viewName = Enum.GetName (typeof (View), viewId);
+					Assert.AreEqual (viewName, pattern.GetViewName (viewId),
 						string.Format ("GetViewName -> {0}", listView.View));
 				}
 				//We should throw an exception
@@ -342,36 +331,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		// Note: this test will fail on Windows 7, see comment of "MultipleView_GetSupportedViewsTest"
 		public void MultipleView_SetCurrentViewTest ()
 		{
 			ListView listView = GetControlInstance () as ListView;
-			IRawElementProviderFragment listViewProvider;
-			IMultipleViewProvider pattern;
-			int [] supportedViews = null;
 
-			foreach (View viewVal in Enum.GetValues (typeof (View))) {
-				listView.View = viewVal;
-				listViewProvider = (IRawElementProviderFragment) GetProviderFromControl (listView);
-				Assert.IsNotNull (listViewProvider, "Provider not implemented for ListView");
-				
-				pattern = listViewProvider.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id) as IMultipleViewProvider;
-				Assert.IsNotNull (pattern, string.Format ("MultipleView Pattern SHOULD NOT be null {0}", listView.View));
-
-				supportedViews = pattern.GetSupportedViews ();
-				int lastViewId = 0;
-				foreach (int viewId in supportedViews) {
-					pattern.SetCurrentView (viewId);
-					Assert.AreEqual ("Icons", pattern.GetViewName (viewId),
-						string.Format ("GetViewName -> {0}", listView.View));
-					lastViewId = viewId;
-				}
-				//We should throw an exception
-				try {
-					lastViewId += 12345;
-					pattern.SetCurrentView (lastViewId);
-					Assert.Fail ("Should throw ArgumentException");
-				} catch (ArgumentException) { }
+			IRawElementProviderFragment listViewProvider = (IRawElementProviderFragment) GetProviderFromControl (listView);
+			Assert.IsNotNull (listViewProvider, "Provider not implemented for ListView");
+			
+			IMultipleViewProvider pattern = listViewProvider.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id) as IMultipleViewProvider;
+			Assert.IsNotNull (pattern, string.Format ("MultipleView Pattern SHOULD NOT be null {0}", listView.View));
+			
+			foreach (var viewId in pattern.GetSupportedViews ()) {
+				pattern.SetCurrentView (viewId);
+				Assert.AreEqual (pattern.CurrentView, viewId, "SetCurrentView");
 			}
+			try {
+				pattern.SetCurrentView (123456);
+				Assert.Fail ("Should throw ArgumentException");
+			} catch (ArgumentException) { }
 		}
 
 		#endregion

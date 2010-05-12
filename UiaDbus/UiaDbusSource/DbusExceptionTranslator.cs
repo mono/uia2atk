@@ -57,7 +57,6 @@ namespace Mono.UIAutomation.UiaDbusSource
 				"org.freedesktop.DBus.Error.NoNetwork",
 				"org.freedesktop.DBus.Error.AddressInUse",
 				"org.freedesktop.DBus.Error.Disconnected",
-				"org.freedesktop.DBus.Error.InvalidArgs",
 				"org.freedesktop.DBus.Error.FileNotFound",
 				"org.freedesktop.DBus.Error.UnknownMethod",
 				"org.freedesktop.DBus.Error.TimedOut",
@@ -92,6 +91,8 @@ namespace Mono.UIAutomation.UiaDbusSource
 			string errorMessage = exceptionInfo.Substring (colonIndex + 2);
 
 			Exception ret = null;
+			if (errorName == dbusInvalidArgsError)
+				ret = new ArgumentException (exceptionInfo);
 			if (Array.BinarySearch (dbusErrorList, errorName) >= 0) {
 				ret = new ElementNotAvailableException (exceptionInfo);
 			} else {
@@ -121,5 +122,6 @@ namespace Mono.UIAutomation.UiaDbusSource
 		}
 
 		private static string [] dbusErrorList;
+		private const string dbusInvalidArgsError = "org.freedesktop.DBus.Error.InvalidArgs";
 	}
 }

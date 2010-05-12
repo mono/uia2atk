@@ -121,6 +121,16 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 
+		internal SWF.View View {
+			get { return lastView; }
+			set {
+				if (listView.View != value) {
+					listView.View = value;
+					OnUIAViewChanged (this, EventArgs.Empty);
+				}
+			}
+		}
+
 		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
 		                                                                  ListItemProvider listItem)
 		{

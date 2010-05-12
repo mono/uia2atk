@@ -1,3 +1,8 @@
+2010-05-12  Matt Guo  <matt@mattguo.com>
+
+	* UiaDbusSource/DbusExceptionTranslator.cs:
+	Translate dbus's InvalidArgs error into ArgumentException.
+
 2010-04-21  Matt Guo  <matt@mattguo.com>
 
 	* UiaDbusSource/UiaDbusAutomationSource.cs: 

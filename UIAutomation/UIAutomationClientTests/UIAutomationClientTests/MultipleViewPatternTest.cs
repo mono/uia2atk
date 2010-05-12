@@ -37,6 +37,8 @@ using MonoTests.System.Windows.Automation;
 namespace MonoTests.System.Windows.Automation
 {
 	[TestFixture]
+	// Note: this TestFixture will fail on Windows 7, see comment of
+	// "ListViewProviderTest.MultipleView_GetSupportedViewsTest" in UIAutomationWinformsTest
 	public class MultipleViewPatternTest : BaseTest
 	{
 		private MultipleViewPattern pattern = null;
@@ -59,47 +61,20 @@ namespace MonoTests.System.Windows.Automation
 		{
 			var currentView = pattern.Current.CurrentView;
 			var supportedViews = pattern.Current.GetSupportedViews ();
-			Assert.AreEqual (1, supportedViews.Length, "GetSupportedViews.Length");
-			Assert.AreEqual (currentView, supportedViews [0], "GetSupportedViews.Value");
+			Assert.Greater (supportedViews.Length, 1, "GetSupportedViews.Length");
+			Assert.AreEqual (1, currentView, "GetSupportedViews.Value");
 			Assert.AreEqual ("Details", pattern.GetViewName (currentView), "Current view name" );
 			int argumentExceptionCount = 0;
-			int indexOutOfRangeExceptionCount = 0;
-			try {
-				pattern.GetViewName (-1);
-			} catch (ArgumentException) {
-				argumentExceptionCount++;
-			}
-			try {
-				//On Windows, below line won't throw any exception
-				//Valid view names are: 0-LargeIcon, 1-Details, 2-SmallIcon, 3-List, 4-Tile
-				pattern.GetViewName (supportedViews.Length);
-			} catch (ArgumentException) {
-				argumentExceptionCount++;
-			}
-			try {
-				//It's weird that on Windows, below line will throw an IndexOutOfRangeException
-				pattern.GetViewName (5);
-			} catch (IndexOutOfRangeException) {
-				indexOutOfRangeExceptionCount++;
-			}
-			try {
-				pattern.GetViewName (6);
-			} catch (ArgumentException) {
-				argumentExceptionCount++;
-			}
-			Assert.AreEqual (2, argumentExceptionCount, "check ArgumentException");
-			Assert.AreEqual (1, indexOutOfRangeExceptionCount, "check IndexOutOfRangeException");
+			AssertRaises<ArgumentException> (() => pattern.GetViewName (-1), "get view name from -1");
+			AssertRaises<ArgumentException> (() => pattern.GetViewName (supportedViews.Length),
+				"get view name from supportedViews.Length");
 		}
 
 		[Test]
-		//Logically The View can't be changed since supportedViews.Length == 1.
-		//However on Windows/.Net, pattern.SetCurrentView (errorViewId) will just pass silently,
-		//while with our implemention, an exception will throw saying:
-		//System.ArgumentException : Value does not fall within the expected range.
 		public void SetErrorViewTest ()
 		{
 			var oldView = pattern.Current.CurrentView;
-			pattern.SetCurrentView (oldView + 1);
+			AssertRaises<ArgumentException> (() => pattern.SetCurrentView (123456), "Set invalid viewId");
 			var newView = pattern.Current.CurrentView;
 			Assert.AreEqual (newView, oldView, "Current view isn't changed");
 		}

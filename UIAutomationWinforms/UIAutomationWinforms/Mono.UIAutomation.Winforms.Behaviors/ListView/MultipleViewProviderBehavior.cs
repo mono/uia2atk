@@ -30,7 +30,11 @@ using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-
+	// Note: The difference between our implemenation and Windows 7: on Win 7 the MultipleView
+	// pattern is not correctly implemented on ListView, while the pattern is perfectly implemented
+	// in the native Windows Explorer (and FileDialog), so considering both correctness
+	// and consistency, we choose to implement MultipleView Pattern on ListView in "perfect"
+	// way. see reviewboard #730 for more discussions.
 	internal class MultipleViewProviderBehavior 
 		: ProviderBehavior, IMultipleViewProvider
 	{
@@ -40,6 +44,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public MultipleViewProviderBehavior (ListViewProvider provider)
 			: base (provider)
 		{
+			listViewProvider = provider;
 		}
 
 		#endregion
@@ -75,35 +80,34 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#endregion
 
 		#region IMultipleViewProvider implementation 
-		
+
 		public int[] GetSupportedViews ()
 		{
-			return new int [] { 0 }; //NOTE: Value returned from Tests
+			return viewIds;
 		}
-		
+
 		public string GetViewName (int viewId)
 		{
 			if (Array.IndexOf (GetSupportedViews (), viewId) == -1)
 				throw new ArgumentException ();
-			
-			return "Icons"; //NOTE: Value returned from Tests
+			return Enum.GetName (typeof (SWF.View), viewId);
 		}
-		
+
 		public void SetCurrentView (int viewId)
 		{
 			if (Array.IndexOf (GetSupportedViews (), viewId) == -1)
 				throw new ArgumentException ();
-			
-			//Doesn't do anything, because the value to set is the only 
-			//value available (according to tests in Vista)
+			listViewProvider.View = (SWF.View) viewId;
 		}
-		
+
 		public int CurrentView {
-			get { return 0; } //NOTE: Value returned from Tests
+			get { return (int) listViewProvider.View; }
 		}
-		
+
 		#endregion 
 
+		private static readonly int [] viewIds =
+			(int []) Enum.GetValues (typeof (SWF.View));
+		private ListViewProvider listViewProvider = null;
 	}
-				                      
 }
