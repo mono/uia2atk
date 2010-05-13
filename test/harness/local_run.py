@@ -16,6 +16,7 @@ from urlparse import urljoin
 import signal
 import subprocess as s
 import fileinput
+import re
 global tests
 
 UPDATE_SCRIPT = "update_uia2atk_pkgs.sh"
@@ -80,8 +81,10 @@ class Settings(object):
   is_force = False
   is_nodeps = False
   component = None
+  branchcomponent = None
   # this is returned to the console.  it will get set to 1 if any tests fail
   return_code = 0
+  uiadll_path = "uiaclient/Tests/bin/Debug"
 
   # any applications that are run from our tests should be listed here.
   # this is so we can clean them up if they don't get closed due to a
@@ -96,7 +99,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:c:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree=","component="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:c:b:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree=","component=", "branchcomponent="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -130,6 +133,9 @@ class Settings(object):
       if o in ("-c","--component"):
         Settings.component = a
 
+      if o in ("-b", "--branchcomponent"):
+        Settings.branchcomponent = a
+
       if Settings.tree == BRANCHES:
         assert Settings.version is not None, \
                             "You must specify a branch version using --version"
@@ -160,6 +166,8 @@ class Settings(object):
     output("  -c | --component=  Select at least and only one component to test (i.e.,")
     output("                     winforms or moonlight).")
     output("  -v | --version=    The tags or branches version desired")
+    output("  -b | --branchcomponent = Select at least and only one branch component to test uiaclient (i.e.,")
+    output("                     winforms or moonlight or gtk).")
 
   def set_uiaqa_home(self):
     harness_dir = sys.path[0]
@@ -178,12 +186,20 @@ class Test(object):
       import tests as tests
 
     self.component = str(Settings.component)
+    self.branchcomponent = str(Settings.branchcomponent)
     # dynamically evaluate tests_list with component name
-    try:
-      self.tests = eval('tests.%s_tests_list' % self.component)
-    except AttributeError:
-      output("ERROR:  No component found!")
-      abort(1)
+    if self.component == "winforms" or self.component == "moonlight":
+        try:
+          self.tests = eval('tests.%s_tests_list' % self.component)
+        except AttributeError:
+          output("ERROR:  No component found!")
+          abort(1)
+    else:
+        try:
+          self.tests = eval('tests.%s_%s_tests_list' % (self.component, self.branchcomponent))
+        except AttributeError:
+          output("ERROR:  No component found!")
+          abort(1)
 
     self.set_log_path()
 
@@ -509,10 +525,16 @@ class Test(object):
     # XXX: change the log files to reference the resources from
     # a static location so we don't have to copy these every time and
     # waste time/space
-    os.system("echo %s > %s/time" % (time.time(), self.log_dir))
-    os.system("echo %s > %s/status" % (self.status, self.log_dir))
-    os.system("cp -r /tmp/strongwind/* %s" % self.log_dir)
-    os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, self.log_dir))
+    if self.component is not re.compile('^uiaclient'):
+        os.system("echo %s > %s/time" % (time.time(), self.log_dir))
+        os.system("echo %s > %s/status" % (self.status, self.log_dir))
+        os.system("cp -r /tmp/strongwind/* %s" % self.log_dir)
+        os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, self.log_dir))
+    else:
+        uiaclient_test_path = os.path.join(Settings.uiaqa_home, Settings.uiadll_path)
+        os.system("cp %s/*.png %s" % (uiatestclient_test_path, self.log_dir))
+        os.system("cp %s/procedures.xml %s" % (uiaclient_test_path, self.log_dir))
+        os.system("cp -r %s/Resources/* %s" % (uiaclient_test_path, self.log_dir))
 
   def kill_process(self, pid):
     try:

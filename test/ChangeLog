@@ -1,3 +1,8 @@
+2010-05-13  Calen Chen <cachen@novell.com>
+
+	* harness/tests.py: add uiaclient test list
+	* harness/local_run.py: add -b argument, integrate uiaclient test
+ 
 2010-05-05  Neville Gao  <nevillegao@gmail.com>
 
 	* testers/moonlight/gridsplitter/gridsplitterframe.py: Modified

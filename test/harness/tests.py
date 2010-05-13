@@ -107,3 +107,35 @@ moonlight_tests_list = [
 	"thumb-regression.py",
 	"togglebutton-regression.py"
 ]
+
+uiaclient_winforms_tests_list = [
+	"Winforms-KeePassTests-RunTestCase101-regression.py",
+	"Winforms-KeePassTests-RunTestCase102-regression.py",
+	"Winforms-KeePassTests-RunTestCase103-regression.py",
+	"Winforms-KeePassTests-RunTestCase104-regression.py",
+	"Winforms-DockPatternTests-RunTestCase105-regression.py",
+	"Winforms-WindowPatternTests-RunTestCase106-regression.py"
+]
+
+uiaclient_moonlight_tests_list = [
+	"Moonlight-PuzzleGameTest-RunTestCase301-regression.py",
+	"Moonlight-PuzzleGameTest-RunTestCase302-regression.py",
+	"Moonlight-PuzzleGameTest-RunTestCase303-regression.py",
+	"Moonlight-SL2WithPrismTest-RunTestCase304-regression.py",
+	"Moonlight-SL2WithPrismTest-RunTestCase305-regression.py",
+	"Moonlight-DiggSearchTest-RunTestCase306-regression.py",
+	"Moonlight-DiggSearchTest-RunTestCase307-regression.py",
+	"Moonlight-DiggSearchTest-RunTestCase308-regression.py",
+	"Moonlight-DiggSearchTest-RunTestCase309-regression.py"
+]
+
+uiaclient_gtk_tests_list = [
+	"Gtk-FSpot-RunTestCase201-regression.py",
+	"Gtk-FSpot-RunTestCase202-regression.py"
+	"Gtk-FSpot-RunTestCase203-regression.py"
+	"Gtk-FSpot-RunTestCase204-regression.py"
+	"Gtk-FSpot-RunTestCase205-regression.py"
+	"Gtk-FSpot-RunTestCase206-regression.py"
+	"Gtk-FSpot-RunTestCase207-regression.py"
+	"Gtk-FSpot-RunTestCase208-regression.py"
+]

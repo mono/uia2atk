@@ -1,3 +1,13 @@
+2010-05-13  Calen Chen  <cachen@novell.com>
+
+	* Winforms-KeePassTests-RunTestCase101-regression.py,
+	* Winforms-KeePassTests-RunTestCase102-regression.py,
+	* Winforms-KeePassTests-RunTestCase103-regression.py,
+	* Winforms-KeePassTests-RunTestCase104-regression.py,
+	* Winforms-DockPatternTests-RunTestCase105-regression.py,
+	* Winforms-WindowPatternTests-RunTestCase106-regression.py: 
+	add scripts for harness to auto run
+
 2010-05-11  Ray Wang  <rawang@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Element.cs: Reorder some statements.
