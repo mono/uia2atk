@@ -1,3 +1,8 @@
+2010-05-14  Mario Carrion  <mcarrion@novell.com>
+
+	* samples/moonlight/Makefile: Building tests when SWC.dlla and
+	SWCD.dll exist.
+
 2010-05-13  Calen Chen <cachen@novell.com>
 
 	* harness/tests.py: add uiaclient test list

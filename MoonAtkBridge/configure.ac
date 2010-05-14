@@ -85,6 +85,7 @@ PKG_CHECK_MODULES([MONO], [mono >= 2.5])
 # System.Windows.Controls.Data.dll
 MOON_LIBDIR=${prefix}/lib/mono/moonlight/
 AC_SUBST(MOON_LIBDIR)
+AM_CONDITIONAL(MOON_LIBDIR_EXISTS, test -e "$MOON_LIBDIR/System.Windows.Controls.dll")
 
 AC_ARG_VAR(MOON_PATH, "Path to built checkout of moon")
 if test "x$MOON_PATH" = "x"; then
@@ -194,3 +195,14 @@ tests/assets/ValueTest/Makefile
 ])
 
 AC_OUTPUT
+
+echo ""
+echo "Configuration:"
+echo ""
+echo " - mono: $MONO"
+echo " - gmcs: $GMCS"
+echo " - smcs: $SMCS"
+echo " - mxap: $MXAP"
+echo " - moonlight path: $MOON_PATH"
+echo " - Version: $MOONLIGHT_VERSION"
+echo ""

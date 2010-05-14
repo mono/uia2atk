@@ -3,14 +3,11 @@ SUBDIRS = \
 	AddRemoveAdapterTest \
 	ApplicationNullTest \
 	ButtonTest \
-	CalendarTest \
 	CheckBoxTest \
 	ComboBoxTest \
 	ControlTypeTest \
-	DatePickerTest \
 	ExpandCollapseEventsTest \
 	FakeBridgeTest \
-	GridSplitterTest \
 	HyperlinkButtonTest \
 	ImageTest \
 	ListBoxTest \
@@ -25,7 +22,6 @@ SUBDIRS = \
 	ScrollViewerTest \
 	SelectionTest \
 	SliderTest \
-	TabControlTest \
 	TableTest \
 	TextBlockTest \
 	ThumbTest \
@@ -33,3 +29,12 @@ SUBDIRS = \
 	ToggleEventsTest \
 	ValueEventsTest \
 	ValueTest
+
+# Tests depending on SWC.dll and SWCD.dll
+if MOON_LIBDIR_EXISTS
+SUBDIRS += \
+	CalendarTest \
+	DatePickerTest \
+	GridSplitterTest \
+	TabControlTest
+endif

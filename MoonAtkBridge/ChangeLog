@@ -1,3 +1,8 @@
+2010-05-14  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: New variable MOON_LIBDIR_EXISTS.
+	* tests/assets/Makefile.am:
+
 2010-03-30  Stephen Shaw <sshaw@decriptor.com>
 
 	* resources/install.rdf.in: Added our updateKey, targetPlatform, and
