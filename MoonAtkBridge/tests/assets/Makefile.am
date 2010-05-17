@@ -33,6 +33,7 @@ SUBDIRS = \
 # Tests depending on SWC.dll and SWCD.dll
 if MOON_LIBDIR_EXISTS
 SUBDIRS += \
+	DataGridTest \
 	CalendarTest \
 	DatePickerTest \
 	GridSplitterTest \
