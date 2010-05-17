@@ -14,7 +14,7 @@ all: $(XAP)
 $(SWCD): $(GLOBAL_SWCD)
 	cp $(GLOBAL_SWCD) $(SWCD)
 
-$(XAP): $(FILES)
+$(XAP): $(SWCD) $(FILES)
 	$(MXAP) -ares:$(SWCD)
 
 clean:

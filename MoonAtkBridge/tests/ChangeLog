@@ -1,5 +1,10 @@
 2010-05-17  Mario Carrion  <mcarrion@novell.com>
 
+	* assets/DataGridTest/Makefile.am: Add local
+	System.Windows.Control.Data.dll as a dependency.
+
+2010-05-17  Mario Carrion  <mcarrion@novell.com>
+
 	* assets/Makefile.am: Add DataGrid test to Makefile.
 
 2010-05-17  Mario Carrion  <mcarrion@novell.com>

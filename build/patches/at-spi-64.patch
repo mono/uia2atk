@@ -1,0 +1,32 @@
+diff --git a/registryd/registry-main.c b/registryd/registry-main.c
+index a745878..634bce7 100644
+--- a/registryd/registry-main.c
++++ b/registryd/registry-main.c
+@@ -322,7 +322,7 @@ set_gtk_path (DBusGProxy *gsm)
+ 				       "at-spi-corba",
+ 				       NULL);
+ 
+-        old = g_getenv ("GTK_PATH");
++        old = g_getenv ("GTK_PATH64");
+         if (old != NULL) {
+                 char **old_path;
+                 char **path;
+@@ -357,15 +357,15 @@ set_gtk_path (DBusGProxy *gsm)
+ 	if (gsm != NULL) {
+ 		error = NULL;
+ 		if (!dbus_g_proxy_call (gsm, "Setenv", &error,
+-					G_TYPE_STRING, "GTK_PATH",
++					G_TYPE_STRING, "GTK_PATH64",
+ 					G_TYPE_STRING, value,
+ 					G_TYPE_INVALID,
+ 					G_TYPE_INVALID)) {
+-			g_warning ("Could not set GTK_PATH: %s", error->message);
++			g_warning ("Could not set GTK_PATH64: %s", error->message);
+ 			g_error_free (error);
+ 		}
+ 	} else {
+-		g_setenv ("GTK_PATH", value, TRUE);
++		g_setenv ("GTK_PATH64", value, TRUE);
+ 	}
+ 
+         g_free (value);
