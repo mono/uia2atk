@@ -1,3 +1,22 @@
+2010-05-13  Calen Chen  <cachen@novell.com>
+
+	* Gtk_FSpot_RunTestCase201-regression.py,
+	* Gtk_FSpot_RunTestCase202-regression.py,
+	* Gtk_FSpot_RunTestCase203-regression.py,
+	* Gtk_FSpot_RunTestCase204-regression.py,
+	* Gtk_FSpot_RunTestCase205-regression.py,
+	* Gtk_FSpot_RunTestCase206-regression.py,
+	* Gtk_FSpot_RunTestCase207-regression.py,
+	* Gtk_FSpot_RunTestCase208-regression.py,
+	* Moonlight_PuzzleGameTest_RunTestCase301-regression.py,
+	* Moonlight_PuzzleGameTest_RunTestCase302-regression.py,
+	* Moonlight_PuzzleGameTest_RunTestCase303-regression.py,
+	* Moonlight_SL2WithPrismTest_RunTestCase304-regression.py,
+	* Moonlight_SL2WithPrismTest_RunTestCase305-regression.py,
+	* Moonlight_DiggSearchTest_RunTestCase306-regression.py,
+	* Moonlight_DiggSearchTest_RunTestCase307-regression.py: 
+	add scripts for harness to auto run
+
 2010-05-17  Neville Gao  <nevillegao@gmail.com>
 
 	* Tests/Moonlight/MoonlightTestBase.cs:
