@@ -1,3 +1,8 @@
+2010-05-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Element.cs:
+	* InvokeSource.cs: Action added: "jump" (BNC#597216)
+
 2010-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* Element.cs, ExpandCollapseSource.cs: Use child accessible for

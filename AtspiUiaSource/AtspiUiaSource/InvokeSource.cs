@@ -53,7 +53,8 @@ namespace AtspiUiaSource
 
 			ActionDescription [] actions = action.Actions;
 			for (int i = 0; i < actions.Length; i++) {
-				if (actions [i].Name == "activate" || actions [i].Name == "invoke" || actions [i].Name == "click") {
+				if (actions [i].Name == "activate" || actions [i].Name == "invoke"
+				    || actions [i].Name == "click" || actions [i].Name == "jump") {
 					action.DoAction (i);
 					return;
 				}

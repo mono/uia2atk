@@ -75,7 +75,7 @@ class TestCase(unittest.TestCase):
         """
         ifaces = pyatspi.listInterfaces(control._accessible)
 
-        ifaces = map(str.lower, ifaces)
+        ifaces = map(unicode.lower, ifaces)
         expected_ifaces = map(str.lower, expected_ifaces)
 
         for iface in ifaces:

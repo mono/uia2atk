@@ -1,3 +1,7 @@
+2010-05-17  Mario Carrion  <mcarrion@novell.com>
+
+	* moonlight/testing.py: Using unicode.lower instead of str.lower.
+
 2010-05-14  Mario Carrion  <mcarrion@novell.com>
 
 	* assets/Makefile.am: Using MOON_LIBDIR_EXISTS to build tests
