@@ -1,3 +1,9 @@
+2010-05-17  Neville Gao  <nevillegao@gmail.com>
+
+	* Tests/Moonlight/MoonlightTestBase.cs:
+	* Tests/Moonlight/DiggSearchTest.cs: Modified test and added bug
+	references.
+
 2010-05-13  Calen Chen  <cachen@novell.com>
 
 	* Winforms-KeePassTests-RunTestCase101-regression.py,
