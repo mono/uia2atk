@@ -34,7 +34,7 @@ winforms_tests_list = [
 	"groupbox-regression.py",
 	"helpprovider-regression.py",
 	"hscrollbar-regression.py",
-	"label-regression.py",
+	#"label-regression.py",
 	"linklabel-regression.py",
 	"listbox-regression.py",
 	"listview_largeimage-regression.py",
@@ -108,34 +108,34 @@ moonlight_tests_list = [
 	"togglebutton-regression.py"
 ]
 
-uiaclient_winforms_tests_list = [
-	"Winforms-KeePassTests-RunTestCase101-regression.py",
-	"Winforms-KeePassTests-RunTestCase102-regression.py",
-	"Winforms-KeePassTests-RunTestCase103-regression.py",
-	"Winforms-KeePassTests-RunTestCase104-regression.py",
-	"Winforms-DockPatternTests-RunTestCase105-regression.py",
-	"Winforms-WindowPatternTests-RunTestCase106-regression.py"
+uiaclientwinforms_tests_list = [
+	"Winforms_KeePassTests_RunTestCase101-regression.py",
+	"Winforms_KeePassTests_RunTestCase102-regression.py",
+	"Winforms_KeePassTests_RunTestCase103-regression.py",
+	"Winforms_KeePassTests_RunTestCase104-regression.py",
+	"Winforms_DockPatternTests_RunTestCase105-regression.py",
+	"Winforms_WindowPatternTests_RunTestCase106-regression.py"
 ]
 
-uiaclient_moonlight_tests_list = [
-	"Moonlight-PuzzleGameTest-RunTestCase301-regression.py",
-	"Moonlight-PuzzleGameTest-RunTestCase302-regression.py",
-	"Moonlight-PuzzleGameTest-RunTestCase303-regression.py",
-	"Moonlight-SL2WithPrismTest-RunTestCase304-regression.py",
-	"Moonlight-SL2WithPrismTest-RunTestCase305-regression.py",
-	"Moonlight-DiggSearchTest-RunTestCase306-regression.py",
-	"Moonlight-DiggSearchTest-RunTestCase307-regression.py",
-	"Moonlight-DiggSearchTest-RunTestCase308-regression.py",
-	"Moonlight-DiggSearchTest-RunTestCase309-regression.py"
+uiaclientmoonlight_tests_list = [
+	"Moonlight_PuzzleGameTest_RunTestCase301-regression.py",
+	"Moonlight_PuzzleGameTest_RunTestCase302-regression.py",
+	"Moonlight_PuzzleGameTest_RunTestCase303-regression.py",
+	"Moonlight_SL2WithPrismTest_RunTestCase304-regression.py",
+	"Moonlight_SL2WithPrismTest_RunTestCase305-regression.py",
+	"Moonlight_DiggSearchTest_RunTestCase306-regression.py",
+	"Moonlight_DiggSearchTest_RunTestCase307-regression.py",
+	"Moonlight_DiggSearchTest_RunTestCase308-regression.py",
+	"Moonlight_DiggSearchTest_RunTestCase309-regression.py"
 ]
 
-uiaclient_gtk_tests_list = [
-	"Gtk-FSpot-RunTestCase201-regression.py",
-	"Gtk-FSpot-RunTestCase202-regression.py"
-	"Gtk-FSpot-RunTestCase203-regression.py"
-	"Gtk-FSpot-RunTestCase204-regression.py"
-	"Gtk-FSpot-RunTestCase205-regression.py"
-	"Gtk-FSpot-RunTestCase206-regression.py"
-	"Gtk-FSpot-RunTestCase207-regression.py"
-	"Gtk-FSpot-RunTestCase208-regression.py"
+uiaclientgtk_tests_list = [
+	"Gtk_FSpot_RunTestCase201-regression.py",
+	"Gtk_FSpot_RunTestCase202-regression.py",
+	"Gtk_FSpot_RunTestCase203-regression.py",
+	"Gtk_FSpot_RunTestCase204-regression.py",
+	"Gtk_FSpot_RunTestCase205-regression.py",
+	"Gtk_FSpot_RunTestCase206-regression.py",
+	"Gtk_FSpot_RunTestCase207-regression.py",
+	"Gtk_FSpot_RunTestCase208-regression.py"
 ]

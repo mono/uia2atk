@@ -1,3 +1,11 @@
+
+2010-05-17  Calen Chen <cachen@novell.com>
+
+	* harness/tests.py: update uiaclient test list
+	* harness/local_run.py: remove -b argument, update log_path and 
+	test_path
+	* testers/uiaclient/Winforms_*.py: rename "-" to "_" for files
+
 2010-05-14  Mario Carrion  <mcarrion@novell.com>
 
 	* samples/moonlight/Makefile: Building tests when SWC.dlla and
