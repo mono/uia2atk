@@ -39,9 +39,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			get { return "SL2WithPrism"; }
 		}
 		
-//		public override string Url {
-//			get { return "http://www.xentree.com/SL2WithPrism"; }
-//		}
+		public override string Uri {
+			get { return "http://www.xentree.com/SL2WithPrism"; }
+		}
 
 		[Test]
 		public void RunTestCase304 ()
@@ -103,7 +103,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			Assert.AreEqual (sbRight.Maximum, sbRight.Value);
 
 			// 305.2: Click "http://www.codeplex.com/SL2WithPrism" hyperlink
-			var hProject = MainWindow.Find<Button> ("http://www.codeplex.com/SL2WithPrism/");
+			//var hProject = MainWindow.Find<Button> ("http://www.codeplex.com/SL2WithPrism/");
 			//BUG597216: HyperLink is missing InvokePattern
 			//hProject.Click ();
 			//Thread.Sleep (Config.Instance.ShortDelay);

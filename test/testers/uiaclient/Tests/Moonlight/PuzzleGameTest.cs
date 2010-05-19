@@ -38,6 +38,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		public override string Sample {
 			get { return "PuzzleGame"; }
 		}
+		
+		public override string Uri {
+			get { return "http://www.silverlightshow.net/showcase/PuzzleGame/PuzzleGame.html"; }
+		}
 
 		[Test]
 		public void RunTestCase301 ()
