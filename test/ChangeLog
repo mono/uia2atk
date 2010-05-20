@@ -1,3 +1,7 @@
+2010-05-20  Calen Chen <cachen@novell.com>
+
+	* testers/winforms/checkedlistbox-regression.py: remove bug515457 
+	reference
 
 2010-05-17  Calen Chen <cachen@novell.com>
 
