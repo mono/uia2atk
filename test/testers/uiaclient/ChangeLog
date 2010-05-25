@@ -1,3 +1,8 @@
+2010-05-25  Neville Gao  <nevillegao@gmail.com>
+
+	* Tests/Moonlight/PuzzleGameTest.cs: Modified test script, added bug
+	references.
+
 2010-05-13  Calen Chen  <cachen@novell.com>
 
 	* Gtk_FSpot_RunTestCase201-regression.py,

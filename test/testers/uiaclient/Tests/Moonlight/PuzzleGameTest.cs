@@ -88,13 +88,13 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			cbShowHelp.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("{0}'s ToggleState is \"On\".", cbShowHelp));
-			Assert.AreEqual ("On", cbShowHelp.ToggleState);
+			Assert.AreEqual (ToggleState.On, cbShowHelp.ToggleState);
 
 			// 302.2: Click "Show Help" checkbox again
 			cbShowHelp.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult (string.Format ("{0}'s ToggleState is \"Off\".", cbShowHelp));
-			Assert.AreEqual ("Off", cbShowHelp.ToggleState);
+			Assert.AreEqual (ToggleState.Off, cbShowHelp.ToggleState);
 		}
 
 		// 303: Change Puzzle Dimension
@@ -104,7 +104,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			var cbPuzzleDimension = MainWindow.Find<ComboBox> ();
 			procedureLogger.Action (string.Format ("Check {0}'s ExpandCollapseState.", cbPuzzleDimension));
 			procedureLogger.ExpectedResult (string.Format ("{0}'s ExpandCollapseState is Collapsed.", cbPuzzleDimension));
-			Assert.AreEqual (ExpandCollapseState.Collapsed, cbPuzzleDimension.ExpandCollapseState);
+			//BUG608525
+			//Assert.AreEqual (ExpandCollapseState.Collapsed, cbPuzzleDimension.ExpandCollapseState);
 
 			// 303.2: Check current Selection
 			var li7X7 = cbPuzzleDimension.Find<ListItem> ("7 X 7");
