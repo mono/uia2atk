@@ -3,6 +3,10 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.91: The "knowledgebase" release
+* #593283 - Find Silverlight child via UIAClientApi cause firefox crashed
+* #597216 - Moonlight HyperLink is missing Invoke Pattern
+
 Version 2.0.90: The "jabberwocky" release
 * #600024 - Weird problems in Gtk app when using managed AT to detect it
 * #600049 - ListView_details: navigate treetable's children in accerciser crash the application

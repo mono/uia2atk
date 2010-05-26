@@ -20,10 +20,10 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Summary:        At-spi uia source
-BuildRequires:	at-spi-sharp-devel >= 1.0.90
+BuildRequires:	at-spi-sharp-devel >= 1.0.91
 BuildRequires:	glib-sharp2 >= 2.12.10
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia-devel >= 2.0.90
+BuildRequires:	mono-uia-devel >= 2.0.91
 BuildRequires:	pkg-config
 
 %description
