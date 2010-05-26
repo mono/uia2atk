@@ -1,3 +1,10 @@
+2010-05-26  Mike Gorse  <mgorse@novell.com>
+
+	* Monitor.cs: Set AT_BRIDGE_SHUTDOWN so that atk-bridge will shut
+	down Bonobo.
+	Quit the main loop again when shutting down.
+	Fix for BNC#596673: UiaAtkBridge tests hang.
+
 2010-05-11  Mike Gorse  <mgorse@novell.com>
 
 	* Makefile.am: Remove Debug/Release.

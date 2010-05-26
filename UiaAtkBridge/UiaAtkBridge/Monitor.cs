@@ -167,10 +167,7 @@ namespace UiaAtkBridge
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;
-				// Not going to quit--causes problems with
-				// ORBit if we re-create a window (ie, the
-				// dialog bridge tests).  The thread is
-				// backgrounded, so should die with the app.
+				mainLoop.Quit ();
 			});
 			sync.WaitOne ();
 			sync.Close ();
@@ -310,6 +307,7 @@ namespace UiaAtkBridge
 
 		private static void ShutdownAtkBridge ()
 		{
+			Environment.SetEnvironmentVariable ("AT_BRIDGE_SHUTDOWN", "1");
 			gnome_accessibility_module_shutdown ();
 		}
 		
