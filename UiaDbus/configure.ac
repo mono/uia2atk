@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([UiaDbus], [2.0.91])
+AC_INIT([UiaDbus], [2.0.92])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
