@@ -81,6 +81,8 @@ namespace Mono.UIAutomation.TestFramework
 			ControlType type = uiaType.GetValue (null) as ControlType;
 			return Find (type, name, automationId) as T;
 		}
+		
+		
 
 		protected Element Find (ControlType type, string name, string automationId)
 		{
@@ -150,6 +152,8 @@ namespace Mono.UIAutomation.TestFramework
 		{
 			if (elm.Current.ControlType == ControlType.Button) 
 				return new Button (elm);
+			else if (elm.Current.ControlType == ControlType.Calendar) 
+				return new Calendar(elm);
 			else if (elm.Current.ControlType == ControlType.CheckBox) 
 				return new CheckBox (elm);
 			else if (elm.Current.ControlType == ControlType.ComboBox) 
@@ -164,6 +168,14 @@ namespace Mono.UIAutomation.TestFramework
 				return new Edit (elm);
 			else if (elm.Current.ControlType == ControlType.Group) 
 				return new Group (elm);
+			else if (elm.Current.ControlType == ControlType.Header) 
+				return new Header (elm);
+			else if (elm.Current.ControlType == ControlType.HeaderItem) 
+				return new HeaderItem (elm);
+			else if (elm.Current.ControlType == ControlType.Hyperlink) 
+				return new Hyperlink (elm);
+			else if (elm.Current.ControlType == ControlType.Image) 
+				return new Image (elm);
 			else if (elm.Current.ControlType == ControlType.ListItem) 
 				return new ListItem (elm);
 			else if (elm.Current.ControlType == ControlType.List) 
@@ -180,20 +192,34 @@ namespace Mono.UIAutomation.TestFramework
 				return new RadioButton (elm);
 			else if (elm.Current.ControlType == ControlType.ScrollBar) 
 				return new ScrollBar (elm);
+			else if (elm.Current.ControlType == ControlType.Separator) 
+				return new Separator (elm);
 			else if (elm.Current.ControlType == ControlType.Slider) 
 				return new Slider (elm);
 			else if (elm.Current.ControlType == ControlType.Spinner) 
 				return new Spinner (elm);
 			else if (elm.Current.ControlType == ControlType.SplitButton) 
 				return new SplitButton (elm);
+			else if (elm.Current.ControlType == ControlType.StatusBar) 
+				return new StatusBar (elm);
+			else if (elm.Current.ControlType == ControlType.Tab) 
+				return new Tab (elm);
 			else if (elm.Current.ControlType == ControlType.TabItem) 
 				return new TabItem (elm);
 			else if (elm.Current.ControlType == ControlType.Table) 
 				return new Table (elm);
 			else if (elm.Current.ControlType == ControlType.Text) 
 				return new Text (elm);
+			else if (elm.Current.ControlType == ControlType.Thumb) 
+				return new Thumb (elm);
+			else if (elm.Current.ControlType == ControlType.TitleBar) 
+				return new TitleBar (elm);
 			else if (elm.Current.ControlType == ControlType.ToolBar) 
 				return new ToolBar (elm);
+			else if (elm.Current.ControlType == ControlType.ToolTip) 
+				return new ToolTip (elm);
+			else if (elm.Current.ControlType == ControlType.Tree) 
+				return new Tree (elm);
 			else if (elm.Current.ControlType == ControlType.TreeItem) 
 				return new TreeItem (elm);
 			else if (elm.Current.ControlType == ControlType.Window) 

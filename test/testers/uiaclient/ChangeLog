@@ -1,3 +1,21 @@
+2010-04-21  Felicia Mu  <fxmu@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Element.cs: 
+	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
+	* Mono.UIAutomation.TestFramework/Thumb.cs:
+	* Mono.UIAutomation.TestFramework/Header.cs:
+	* Mono.UIAutomation.TestFramework/ProgressBar.cs:
+	* Mono.UIAutomation.TestFramework/ToolTip.cs:
+	* Mono.UIAutomation.TestFramework/Tree.cs:
+	* Mono.UIAutomation.TestFramework/TitleBar.cs:
+	* Mono.UIAutomation.TestFramework/StatusBar.cs:
+	* Mono.UIAutomation.TestFramework/Image.cs:
+	* Mono.UIAutomation.TestFramework/Separator.cs:
+	* Mono.UIAutomation.TestFramework/Tab.cs:
+	* Mono.UIAutomation.TestFramework/HeaderItem.cs:
+	* Mono.UIAutomation.TestFramework/Calendar.cs:add the above classes to
+	the framework.
+
 2010-05-25  Neville Gao  <nevillegao@gmail.com>
 
 	* Tests/Moonlight/PuzzleGameTest.cs: Modified test script, added bug

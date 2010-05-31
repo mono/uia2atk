@@ -84,6 +84,19 @@
     <Compile Include="TreeItem.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Table.cs" />
+    <Compile Include="Calendar.cs" />
+    <Compile Include="Header.cs" />
+    <Compile Include="HeaderItem.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="ProgressBar.cs" />
+    <Compile Include="Separator.cs" />
+    <Compile Include="StatusBar.cs" />
+    <Compile Include="Tab.cs" />
+    <Compile Include="Thumb.cs" />
+    <Compile Include="TitleBar.cs" />
+    <Compile Include="ToolTip.cs" />
+    <Compile Include="Tree.cs" />
+    <Compile Include="Separator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config.xml">
