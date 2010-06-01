@@ -1,4 +1,40 @@
-2010-04-21  Felicia Mu  <fxmu@novell.com>
+2010-05-31  Felicia Mu  <fxmu@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Button.cs:
+	* Mono.UIAutomation.TestFramework/Spinner.cs:
+	* Mono.UIAutomation.TestFramework/Document.cs:
+	* Mono.UIAutomation.TestFramework/TreeItem.cs:
+	* Mono.UIAutomation.TestFramework/Slider.cs:
+	* Mono.UIAutomation.TestFramework/ScrollBar.cs:
+	* Mono.UIAutomation.TestFramework/CheckBox.cs:
+	* Mono.UIAutomation.TestFramework/DataItem.cs:
+	* Mono.UIAutomation.TestFramework/Element.cs:
+	* Mono.UIAutomation.TestFramework/RadioButton.cs:
+	* Mono.UIAutomation.TestFramework/ListItem.cs:
+	* Mono.UIAutomation.TestFramework/Hyperlink.cs:
+	* Mono.UIAutomation.TestFramework/Window.cs:
+	* Mono.UIAutomation.TestFramework/ComboBox.cs:
+	* Mono.UIAutomation.TestFramework/List.cs:
+	* Mono.UIAutomation.TestFramework/DataGrid.cs:
+	* Mono.UIAutomation.TestFramework/Pane.cs:
+	* Mono.UIAutomation.TestFramework/MenuItem.cs:
+	* Mono.UIAutomation.TestFramework/Text.cs:
+	* Mono.UIAutomation.TestFramework/TabItem.cs:
+	* Mono.UIAutomation.TestFramework/Thumb.cs:
+	* Mono.UIAutomation.TestFramework/Header.cs:
+	* Mono.UIAutomation.TestFramework/Thumb.cs:
+	* Mono.UIAutomation.TestFramework/Header.cs:
+	* Mono.UIAutomation.TestFramework/ProgressBar.cs:
+	* Mono.UIAutomation.TestFramework/ToolTip.cs:
+	* Mono.UIAutomation.TestFramework/Tree.cs:
+	* Mono.UIAutomation.TestFramework/TitleBar.cs:
+	* Mono.UIAutomation.TestFramework/StatusBar.cs:
+	* Mono.UIAutomation.TestFramework/Image.cs:
+	* Mono.UIAutomation.TestFramework/Separator.cs:
+	* Mono.UIAutomation.TestFramework/Tab.cs:add the supported patterns
+	for each control.
+
+2010-05-30  Felicia Mu  <fxmu@novell.com>
 
 	* Mono.UIAutomation.TestFramework/Element.cs: 
 	* Mono.UIAutomation.TestFramework/Mono.UIAutomation.TestFramework.csproj:
