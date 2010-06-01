@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Text : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Text;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Text (AutomationElement elm)
 			: base (elm)

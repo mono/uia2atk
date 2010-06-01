@@ -31,6 +31,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class SplitButton : Element
 	{
 		public static readonly ControlType UIAType = ControlType.SplitButton;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"Invoke", "ExpandCollapse"};
 	
 		public SplitButton (AutomationElement elm)
 			: base (elm)

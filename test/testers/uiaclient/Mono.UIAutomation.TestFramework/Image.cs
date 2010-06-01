@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Image : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Image;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Image (AutomationElement elm)
 			: base (elm)

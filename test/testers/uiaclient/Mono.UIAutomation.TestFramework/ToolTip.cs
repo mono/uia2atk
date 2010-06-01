@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class ToolTip : Element
 	{
 		public static readonly ControlType UIAType = ControlType.ToolTip;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public ToolTip (AutomationElement elm)
 			: base (elm)

@@ -29,6 +29,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Group : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Group;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};	
 
 		public Group (AutomationElement elm)
 			: base (elm)

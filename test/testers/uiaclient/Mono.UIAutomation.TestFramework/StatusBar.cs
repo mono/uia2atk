@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class StatusBar : Element
 	{
 		public static readonly ControlType UIAType = ControlType.StatusBar;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public StatusBar (AutomationElement elm)
 			: base (elm)
@@ -37,17 +40,4 @@ namespace Mono.UIAutomation.TestFramework
 		}
 	}
 }
-using System;
 
-namespace Mono.UIAutomation.TestFramework
-{
-
-
-	public class StatusBar
-	{
-
-		public StatusBar ()
-		{
-		}
-	}
-}

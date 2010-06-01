@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class ProgressBar : Element
 	{
 		public static readonly ControlType UIAType = ControlType.ProgressBar;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {""};
 
 		public ProgressBar (AutomationElement elm)
 			: base (elm)

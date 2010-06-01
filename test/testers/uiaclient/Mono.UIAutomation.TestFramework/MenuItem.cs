@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class MenuItem : Element
 	{
 		public static readonly ControlType UIAType = ControlType.MenuItem;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public MenuItem (AutomationElement elm)
 			: base (elm)

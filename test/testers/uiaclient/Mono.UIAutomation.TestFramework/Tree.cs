@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Tree : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Tree;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Tree (AutomationElement elm)
 			: base (elm)

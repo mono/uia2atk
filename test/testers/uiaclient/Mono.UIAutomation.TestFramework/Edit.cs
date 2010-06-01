@@ -32,6 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Edit : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Edit;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Edit (AutomationElement elm)
 			: base (elm)

@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class DataItem : Element
 	{
 		public static readonly ControlType UIAType = ControlType.DataItem;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"SelectionItem"};
 
 		public DataItem (AutomationElement elm)
 			:base(elm)

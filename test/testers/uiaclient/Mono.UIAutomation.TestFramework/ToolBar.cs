@@ -1,4 +1,4 @@
-﻿// ToolBar.cs: ToolBar control class wrapper.
+// ToolBar.cs: ToolBar control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class ToolBar : Element
 	{
 		public static readonly ControlType UIAType = ControlType.ToolBar;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public ToolBar (AutomationElement elm)
 			: base (elm)

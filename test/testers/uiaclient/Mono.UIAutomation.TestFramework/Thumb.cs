@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Thumb : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Thumb;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"Transform"};
 
 		public Thumb (AutomationElement elm)
 			: base (elm)

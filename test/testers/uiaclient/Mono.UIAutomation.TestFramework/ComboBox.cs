@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class ComboBox : Element
 	{
 		public static readonly ControlType UIAType = ControlType.ComboBox;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"ExpandCollapse"};
 
 		public ComboBox (AutomationElement elm)
 			: base (elm)

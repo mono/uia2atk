@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Separator : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Separator;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Separator (AutomationElement elm)
 			: base (elm)

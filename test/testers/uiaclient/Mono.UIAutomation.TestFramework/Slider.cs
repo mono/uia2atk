@@ -30,6 +30,10 @@ namespace Mono.UIAutomation.TestFramework
 	public class Slider : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Slider;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
+		
 		public Slider (AutomationElement elm)
 			: base (elm)
 		{

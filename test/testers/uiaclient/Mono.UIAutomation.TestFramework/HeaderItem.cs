@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class HeaderItem : Element
 	{
 		public static readonly ControlType UIAType = ControlType.HeaderItem;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public HeaderItem (AutomationElement elm)
 			: base (elm)

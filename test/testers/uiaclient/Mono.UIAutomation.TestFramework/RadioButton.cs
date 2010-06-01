@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class RadioButton : Element
 	{
 		public static readonly ControlType UIAType = ControlType.RadioButton;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"SelectionItem"};
 
 		public RadioButton (AutomationElement elm)
 			: base (elm)

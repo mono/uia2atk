@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class TitleBar : Element
 	{
 		public static readonly ControlType UIAType = ControlType.TitleBar;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public TitleBar (AutomationElement elm)
 			: base (elm)

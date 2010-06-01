@@ -29,6 +29,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class TreeItem : Element
 	{
 		public static readonly ControlType UIAType = ControlType.TreeItem;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"ExpandCollapse"};
 
 		public TreeItem (AutomationElement elm)
 			: base (elm)

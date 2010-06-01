@@ -31,12 +31,15 @@ namespace Mono.UIAutomation.TestFramework
 	public class Button : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Button;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {};
 
 		public Button (AutomationElement elm)
 			: base (elm)
 		{
 		}
-
+		
 		#region Invoke Pattern
 		// Perform "Click" action.
 		public void Click ()

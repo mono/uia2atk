@@ -30,6 +30,9 @@ namespace Mono.UIAutomation.TestFramework
 	public class Tab : Element
 	{
 		public static readonly ControlType UIAType = ControlType.Tab;
+		
+		//List the patterns that the control must support
+		string[] SupportedPatterns = new string[] {"Selection"};
 
 		public Tab (AutomationElement elm)
 			: base (elm)
