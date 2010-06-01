@@ -18,7 +18,7 @@
 %define IS_DEFAULT_ATSPI_STACK 1
 
 Name:           at-spi2-atk
-Version:        0.1.8
+Version:        0.3.2
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
@@ -100,8 +100,10 @@ rm -rf %{buildroot}
 %doc AUTHORS COPYING README
 %if %IS_DEFAULT_ATSPI_STACK
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
+%{_libdir}/gtk-3.0/modules/libatk-bridge.so
 %else
 %{_libdir}/gtk-2.0/modules/at-spi-dbus/
+%{_libdir}/gtk-3.0/modules/at-spi-dbus/
 %{_sysconfdir}/xdg/autostart/atk-bridge.desktop
 %endif
 
