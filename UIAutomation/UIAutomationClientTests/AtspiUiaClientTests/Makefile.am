@@ -81,6 +81,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	AutomationElementTest.cs \
 	AutomationEventTest.cs \
+	DialogTest.cs \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \
 	InvokePatternTest.cs \

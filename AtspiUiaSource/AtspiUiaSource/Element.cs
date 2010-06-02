@@ -40,9 +40,11 @@ namespace AtspiUiaSource
 		internal Accessible accessible;
 		private List<ISourceEventHandler> patterns;
 		private int runtimeId;
+		internal Element parent;
+		internal List<Element> extraChildren;
 
 		private static int id;
-		private static Dictionary<Accessible, Element> elements;
+		private static Dictionary<Accessible, Element> elements = new Dictionary<Accessible, Element> ();
 
 		private static AutomationProperty [] allProperties = {
 			AutomationElementIdentifiers.IsControlElementProperty,
@@ -141,10 +143,42 @@ namespace AtspiUiaSource
 
 		public Element (Accessible accessible)
 		{
+			extraChildren = new List<Element> ();
+			if (!elements.ContainsKey (accessible))
+				elements [accessible] = this;
 			patterns = new List<ISourceEventHandler> ();
 			this.accessible = accessible;
 			runtimeId = -1;
-			AddEvents ();
+
+			if (accessible.Role == Role.Dialog &&
+				accessible.Parent.Role == Role.Application &&
+				accessible.QueryComponent () != null) {
+				// Try to figure out if the dialog is painted
+				// on top of another window
+				BoundingBox curExtents = accessible.QueryComponent ().GetExtents (CoordType.Screen);
+				int count = accessible.Parent.Children.Count;
+				for (int i = 0; i < count; i++) {
+					Accessible child = accessible.Parent.Children [i];
+					if (child == null ||
+						child.Role != Role.Frame)
+						continue;
+					Component childComponent = child.QueryComponent ();
+					if (childComponent == null)
+						continue;
+					BoundingBox windowExtents = childComponent.GetExtents (CoordType.Screen);
+					if (windowExtents.X <= curExtents.X &&
+						windowExtents.Y <= curExtents.Y &&
+						(windowExtents.X + windowExtents.Width) > curExtents.X &&
+						(windowExtents.Y + windowExtents.Height) > curExtents.Y) {
+						parent = GetElement (child);
+						parent.extraChildren.Add (this);
+						break;
+					}
+				}
+			}
+			if (parent == null)
+				parent = GetElement (accessible.Parent);
+			AddEvents (true);
 		}
 
 		~Element ()
@@ -152,7 +186,7 @@ namespace AtspiUiaSource
 			RemoveEvents ();
 		}
 
-		private void AddEvents ()
+		protected virtual void AddEvents (bool fromElementConstructor)
 		{
 			// TODO: Only listen for events where we have
 			// PropertyChange listeners for them
@@ -509,20 +543,28 @@ namespace AtspiUiaSource
 
 		public virtual IElement Parent {
 			get {
-				return GetElement (accessible.Parent);
+				return parent;
 			}
 		}
 
 		public virtual IElement FirstChild {
 			get {
-				if (accessible.Children.Count == 0)
-					return null;
-				return GetElement (accessible.Children [0]);
+				int count = accessible.Children.Count;
+				for (int i = 0; i < count; i++) {
+					Element e = GetElement (accessible.Children [i]);
+					if (e.parent == this)
+						return e;
+				}
+				if (extraChildren.Count > 0)
+					return extraChildren [0];
+				return null;
 			}
 		}
 
 		public virtual IElement LastChild {
 			get {
+				if (extraChildren.Count > 0)
+					return extraChildren.Last ();
 				if (accessible.Children.Count == 0)
 					return null;
 				return GetElement (accessible.Children [accessible.Children.Count - 1]);
@@ -531,19 +573,50 @@ namespace AtspiUiaSource
 
 		public virtual IElement NextSibling {
 			get {
-				int index = accessible.IndexInParent;
-				if (index < 0 || accessible.Parent.Children.Count <= index + 1)
+				int index;
+				index = parent.extraChildren.IndexOf (this);
+				if (index >= 0 && index >= parent.extraChildren.Count - 1)
 					return null;
-				return GetElement (accessible.Parent.Children [index + 1]);
+				if (index >= 0)
+					return parent.extraChildren [index + 1];
+				index = accessible.IndexInParent;
+				int childCount = accessible.Parent.Children.Count;
+				if (index == childCount - 1) {
+					if (parent.extraChildren.Count > 0)
+						return parent.extraChildren [0];
+					return null;
+				}
+				if (index < 0)
+					return null;
+				for (int i = index + 1; i < childCount; i++) {
+					Element e = GetElement (accessible.Parent.Children [i]);
+					if (e.parent == parent)
+						return e;
+				}
+				if (parent.extraChildren.Count > 0)
+					return parent.extraChildren [0];
+				return null;
 			}
 		}
 
 		public virtual IElement PreviousSibling {
 			get {
-				int index = accessible.IndexInParent;
-				if (index <= 0)
-					return null;
-				return GetElement (accessible.Parent.Children [index - 1]);
+				int index = -1;
+				if (parent != null) {
+					index = parent.extraChildren.IndexOf (this);
+					if (index > 0)
+						return parent.extraChildren [index - 1];
+					else if (index == 0)
+						index = parent.accessible.Children.Count;
+				}
+				if (index == -1)
+					index = accessible.IndexInParent;
+				while (--index >= 0) {
+					Element child = GetElement (parent.accessible.Children [index]);
+					if (child.Parent == parent)
+						return child;
+				}
+				return null;
 			}
 		}
 
@@ -690,8 +763,6 @@ namespace AtspiUiaSource
 			// to be more like UIA
 			if (accessible.Role == Role.Application)
 				return null;
-			if (elements == null)
-				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
 			return elements [accessible];
 			if (!create)
@@ -701,9 +772,10 @@ namespace AtspiUiaSource
 				element = new TableElement (accessible);
 			else if (IsTableHeaderItem (accessible))
 				element = new TableHeaderItemElement (accessible);
+			else if (IsTreeItem (accessible))
+				element = new TreeItemElement (accessible);
 			else
 				element = new Element (accessible);
-			elements [accessible] = element;
 			return element;
 		}
 
@@ -711,8 +783,6 @@ namespace AtspiUiaSource
 		{
 			if (accessible == null)
 				return null;
-			if (elements == null)
-				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
 				return elements [accessible];
 			elements [accessible] = new TreeItemElement (accessible, parent, row);
@@ -723,8 +793,6 @@ namespace AtspiUiaSource
 		{
 			if (accessible == null)
 				return null;
-			if (elements == null)
-				elements = new Dictionary<Accessible, Element> ();
 			if (elements.ContainsKey (accessible))
 				return elements [accessible];
 			elements [accessible] = new TableCellElement (accessible, parent, column);
@@ -745,6 +813,16 @@ namespace AtspiUiaSource
 		{
 			return (accessible.Role == Role.TableRowHeader
 				|| accessible.Role == Role.TableColumnHeader);
+		}
+
+		private static bool IsTreeItem (Accessible accessible)
+		{
+			if (accessible.Role != Role.TableCell)
+				return false;
+			Accessible parentAccessible = accessible.Parent;
+			Element parent = GetElement (parentAccessible);
+			return (parent is TreeItemElement ||
+				parent.ControlType == ControlType.Tree);
 		}
 
 		internal Accessible Accessible {

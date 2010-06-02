@@ -48,6 +48,14 @@ namespace AtspiUiaSource
 			RefreshTreeMode (true);
 			accessible.ObjectEvents.RowInserted += OnRowInserted;
 			accessible.ObjectEvents.RowDeleted += OnRowDeleted;
+			AddEvents (false);
+		}
+
+		protected override void AddEvents (bool fromElementConstructor)
+		{
+			if (fromElementConstructor)
+				return;	// don't do this yet; not fully set up
+			base.AddEvents (false);
 		}
 
 		~TableElement ()

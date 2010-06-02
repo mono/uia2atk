@@ -36,18 +36,18 @@ namespace AtspiUiaSource
 {
 	public class TableCellElement : Element
 	{
-		internal DataItemElement parent;
+		internal DataItemElement containingElement;
 		private int column;
 
-		public TableCellElement (Accessible accessible, DataItemElement parent, int column) : base (accessible)
+		public TableCellElement (Accessible accessible, DataItemElement containingElement, int column) : base (accessible)
 		{
-			this.parent = parent;
+			this.containingElement = containingElement;
 			this.column = column;
 		}
 
 		public override IElement Parent {
 			get {
-				return parent;
+				return containingElement;
 			}
 		}
 
@@ -56,9 +56,9 @@ namespace AtspiUiaSource
 				if (column == 0)
 					return null;
 				for (int i = column - 1; i >= 0; i--) {
-					Accessible cell = parent.parent.table.GetAccessibleAt (parent.row, i);
+					Accessible cell = containingElement.containingGrid.table.GetAccessibleAt (containingElement.row, i);
 					if (cell != null)
-						return Element.GetElement (cell, parent, i);
+						return Element.GetElement (cell, containingElement, i);
 				}
 				return null;
 			}
@@ -66,13 +66,13 @@ namespace AtspiUiaSource
 
 		public override IElement NextSibling {
 			get {
-			int nColumns = parent.parent.table.NColumns;
+			int nColumns = containingElement.containingGrid.table.NColumns;
 				if (column >= nColumns)
 					return null;
 				for (int i = column + 1; i < nColumns; i++) {
-					Accessible cell = parent.parent.table.GetAccessibleAt (parent.row, i);
+					Accessible cell = containingElement.containingGrid.table.GetAccessibleAt (containingElement.row, i);
 					if (cell != null)
-						return Element.GetElement (cell, parent, i);
+						return Element.GetElement (cell, containingElement, i);
 				}
 				return null;
 			}

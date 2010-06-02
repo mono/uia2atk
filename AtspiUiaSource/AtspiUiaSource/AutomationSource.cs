@@ -65,7 +65,8 @@ namespace AtspiUiaSource
 			List<Accessible> elements = new List<Accessible> ();
 			foreach (Accessible element in Desktop.Instance.Children)
 				foreach (Accessible child in element.Children)
-					elements.Add (child);
+					if (Element.GetElement (child).Parent == null)
+						elements.Add (child);
 			IElement [] ret = new IElement [elements.Count];
 			int i = 0;
 			foreach (Accessible accessible in elements)
@@ -331,13 +332,6 @@ namespace AtspiUiaSource
 			}
 		}
 
-		internal static void RaiseStructureChangedEvent (Accessible accessible, StructureChangeType type)
-		{
-			bool create = (type == StructureChangeType.ChildAdded);
-			IElement element = Element.GetElement (accessible, create);
-			RaiseStructureChangedEvent (element, type);
-		}
-
 		internal static void RaiseStructureChangedEvent (IElement element, StructureChangeType type)
 		{
 			StructureChangedEventArgs e;
@@ -471,12 +465,13 @@ namespace AtspiUiaSource
 
 		private void OnChildAdded (Accessible sender, Accessible child)
 		{
-			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
+			IElement childElement = Element.GetElement (child, true);
+			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
 			// Assuming that we'll get ChildrenChanged for the
 			// Application's children. If we find that sometimes
 			// we don't, then we'll need to rethink this.
 			if (child.Role != Role.Application)
-				RaiseStructureChangedEvent (child, StructureChangeType.ChildAdded);
+				RaiseStructureChangedEvent (childElement, StructureChangeType.ChildAdded);
 			if (child.Role == Role.Frame)
 				RaiseAutomationEvent (child, WindowPattern.WindowOpenedEvent);
 			if (sender.Role == Role.Application)
@@ -485,8 +480,13 @@ namespace AtspiUiaSource
 
 		private void OnChildRemoved (Accessible sender, Accessible child)
 		{
-			RaiseStructureChangedEvent (sender, StructureChangeType.ChildrenInvalidated);
-			RaiseStructureChangedEvent (sender, StructureChangeType.ChildRemoved);
+			Element childElement = Element.GetElement (child, false);
+			if (childElement == null)
+				return;
+			if (childElement.parent.extraChildren.IndexOf (childElement) != -1)
+				childElement.parent.extraChildren.Remove (childElement);
+			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
+			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildRemoved);
 			if (sender == Desktop.Instance || sender.Role == Role.Application)
 				OnRootElementsChanged ();
 		}

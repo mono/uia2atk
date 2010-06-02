@@ -1,3 +1,13 @@
+2010-06-02  Mike Gorse  <mgorse@novell.com>
+
+	* Element.cs, TableCellElement.cs, AutomationSource.cs,
+	TableElement.cs, DataItemElement.cs: Fix issues with TreeItems
+	sometimes not being created correctly.
+	Expose a dialog painted on a window as a child of the window, even if
+	at-spi exposes it as a child of the application [BNC#590768]
+
+	* TextSource.cs, SelectionSource.cs: Support SupportedTextSelection.
+
 2010-05-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Element.cs:

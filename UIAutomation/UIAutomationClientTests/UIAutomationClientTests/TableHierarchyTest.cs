@@ -79,6 +79,9 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("ControlType.DataItem",
 				dataItemElement.Current.ControlType.ProgrammaticName,
 				"DataItem ControlType");
+			Assert.AreEqual (table1Element,
+				TreeWalker.RawViewWalker.GetParent (dataItemElement),
+				"DataItem parent should be Table");
 			AutomationElement textElement = TreeWalker.RawViewWalker.GetFirstChild (dataItemElement);
 			Assert.IsNotNull (textElement, "text");
 			string expected = (Atspi? "Edit" : "CheckBox");

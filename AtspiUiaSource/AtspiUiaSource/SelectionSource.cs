@@ -64,8 +64,7 @@ namespace AtspiUiaSource
 
 		public bool CanSelectMultiple {
 			get {
-				// TODO: have at-spi support this
-				return false;
+				return accessible.StateSet.Contains (StateType.Multiselectable);
 			}
 		}
 

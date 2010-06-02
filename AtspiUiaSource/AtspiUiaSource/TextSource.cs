@@ -56,8 +56,9 @@ namespace AtspiUiaSource
 
 		public SupportedTextSelection SupportedTextSelection {
 			get {
-				// TODO (BNC#551109)
-				return SupportedTextSelection.Single;
+				return (accessible.StateSet.Contains (StateType.Multiselectable)
+					? SupportedTextSelection.Multiple
+					: SupportedTextSelection.Single);
 			}
 		}
 

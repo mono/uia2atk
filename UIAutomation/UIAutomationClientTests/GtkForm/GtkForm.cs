@@ -23,6 +23,7 @@ namespace GtkForm
 		private Gtk.Button button1;
 		private Gtk.Button button2;
 		private Gtk.Button button3;
+		private Gtk.FileChooserDialog chooser;
 
 		public static void Main (string[] args)
 		{
@@ -274,6 +275,14 @@ namespace GtkForm
 				button2.GrabFocus ();
 			else if (cmd.StartsWith ("change title:"))
 				window.Title = cmd.Substring (cmd.IndexOf (':') + 1);
+			else if (cmd == "open FileChooser" && chooser == null) {
+				chooser = new Gtk.FileChooserDialog ("FileChooser", window, FileChooserAction.Open, "data", 0);
+				chooser.Show ();
+			}
+			else if (cmd == "close FileChooser" && chooser != null) {
+				chooser.Destroy ();
+				chooser = null;
+			}
 		}
 
 		private void WindowDelete (object o, DeleteEventArgs args)

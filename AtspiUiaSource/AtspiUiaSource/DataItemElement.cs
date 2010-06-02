@@ -37,19 +37,20 @@ namespace AtspiUiaSource
 	public class DataItemElement : Element
 	{
 		internal int row;
-			internal TableElement parent;
+		internal TableElement containingGrid;
 
-		public DataItemElement (TableElement parent, int row) : base (parent.accessible)
+		public DataItemElement (TableElement containingGrid, int row) : base (containingGrid.accessible)
 		{
-			this.parent = parent;
+			this.containingGrid = containingGrid;
 			this.row = row;
+			parent = containingGrid;
 		}
 
 		public override IElement FirstChild {
 			get {
-				int nColumns = parent.table.NColumns;
+				int nColumns = containingGrid.table.NColumns;
 				for (int i = 0; i < nColumns; i++) {
-					Accessible cell = parent.table.GetAccessibleAt (row, i);
+					Accessible cell = containingGrid.table.GetAccessibleAt (row, i);
 					if (cell != null)
 						return Element.GetElement (cell, this, i);
 				}
@@ -60,16 +61,16 @@ namespace AtspiUiaSource
 		public override IElement PreviousSibling {
 			get {
 				if (row == 0)
-					return parent.Header;
-				return parent.rows [row - 1];
+					return containingGrid.Header;
+				return containingGrid.rows [row - 1];
 			}
 		}
 
 		public override IElement NextSibling {
 			get {
-				if (row >= parent.rows.Count - 1)
+				if (row >= containingGrid.rows.Count - 1)
 					return null;
-				return parent.rows [row + 1];
+				return containingGrid.rows [row + 1];
 			}
 		}
 
