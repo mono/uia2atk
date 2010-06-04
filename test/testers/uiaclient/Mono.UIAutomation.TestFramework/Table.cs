@@ -31,7 +31,10 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Table;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Grid", "Grid Item", "Table", "Table Item"};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {GridPattern.Pattern, GridItemPattern.Pattern, TablePattern.Pattern, 
+				TableItemPattern.Pattern};}
+		}
 
 		public Table (AutomationElement elm)
 			: base (elm)

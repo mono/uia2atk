@@ -33,7 +33,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Window;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Transform", "Window"};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {TransformPattern.Pattern, WindowPattern.Pattern};}
+		}
 
 		public Window (AutomationElement elm)
 			: base (elm)

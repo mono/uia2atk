@@ -32,7 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Spinner;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return null; }
+		}
 
 		public Spinner (AutomationElement elm)
 			: base (elm)

@@ -68,6 +68,7 @@ namespace Mono.UIAutomation.TestFramework
 		protected virtual void OnQuit ()
 		{
 		}
+		
 
 		public void HandleException (Exception ex)
 		{

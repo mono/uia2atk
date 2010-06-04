@@ -58,6 +58,10 @@ namespace Mono.UIAutomation.TestFramework
 		public bool IsOffscreen {
 			get { return element.Current.IsOffscreen; }
 		}
+		
+		public virtual List<AutomationPattern> SupportedPatterns {
+			get { return null; }
+		}
 
 		public Finder Finder {
 			get { return new Finder (this.AutomationElement); }
@@ -81,8 +85,6 @@ namespace Mono.UIAutomation.TestFramework
 			ControlType type = uiaType.GetValue (null) as ControlType;
 			return Find (type, name, automationId) as T;
 		}
-		
-		
 
 		protected Element Find (ControlType type, string name, string automationId)
 		{
@@ -243,6 +245,7 @@ namespace Mono.UIAutomation.TestFramework
 				throw new Exception ("The property is not supported.");
 			return (T) ret;
 		}
+
 		#endregion
 	}
 }

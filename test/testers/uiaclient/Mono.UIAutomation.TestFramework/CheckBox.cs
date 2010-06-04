@@ -32,7 +32,10 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.CheckBox;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Toggle"};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {TogglePattern.Pattern}; }
+			
+		}
 
 		public CheckBox (AutomationElement elm)
 			: base (elm)

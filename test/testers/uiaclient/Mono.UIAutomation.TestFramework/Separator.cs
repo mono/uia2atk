@@ -1,4 +1,4 @@
-// Separator.cs: Separator control class wrapper.
+// Group.cs: Group control class wrapper.
 //
 // This program is free software; you can redistribute it and/or modify it under
 // the terms of the GNU General Public License version 2 as published by the
@@ -32,7 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Separator;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return null; }
+		}
 
 		public Separator (AutomationElement elm)
 			: base (elm)

@@ -32,7 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Calendar;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Grid", "Table"};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {GridPattern.Pattern, TablePattern.Pattern}; }
+		}
 
 		public Calendar (AutomationElement elm)
 			: base (elm)

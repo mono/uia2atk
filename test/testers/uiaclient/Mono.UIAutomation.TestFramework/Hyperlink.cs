@@ -32,7 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.Hyperlink;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Invoke"};
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {InvokePattern.Pattern}; }
+		}
 
 		public Hyperlink(AutomationElement elm)
 			: base (elm)

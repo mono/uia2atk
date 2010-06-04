@@ -32,7 +32,9 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.ListItem;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"SelectionItem"};	
+		public override List<AutomationPattern> SupportedPatterns {
+			get { return new List<AutomationPattern>() {SelectionItemPattern.Pattern}; }
+		}
 
 		public ListItem (AutomationElement elm)
 			: base (elm)

@@ -32,7 +32,10 @@ namespace Mono.UIAutomation.TestFramework
 		public static readonly ControlType UIAType = ControlType.DataGrid;
 		
 		//List the patterns that the control must support
-		string[] SupportedPatterns = new string[] {"Grid"};
+		public override List<AutomationPattern> SupportedPatterns {
+			//get { return new List<string>() {"Grid"}; }
+			get { return new List<AutomationPattern>() {GridPattern.Pattern}; }
+		}
 
 		public DataGrid (AutomationElement elm)
 			: base (elm)
