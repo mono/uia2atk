@@ -3,6 +3,11 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.92: The "liger" release
+* #599589 - [uiaclient-GTKs]:the tree item can't be found by UIA Client
+* #590768 - The popup window is in the same tree level with its main window
+* #551109 - Support TextPatern.SupportedTextSelection
+
 Version 2.0.91: The "knowledgebase" release
 * #593283 - Find Silverlight child via UIAClientApi cause firefox crashed
 * #597216 - Moonlight HyperLink is missing Invoke Pattern
