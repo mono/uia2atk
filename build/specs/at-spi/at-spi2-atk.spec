@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi2-atk (Version 0.1.8)
+# spec file for package at-spi2-atk (Version 0.3.3)
 #
 # Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -18,7 +18,7 @@
 %define IS_DEFAULT_ATSPI_STACK 1
 
 Name:           at-spi2-atk
-Version:        0.3.2
+Version:        0.3.3
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
@@ -32,7 +32,6 @@ BuildRequires:  fdupes
 BuildRequires:  gconf2-devel
 BuildRequires:  gtk2-devel
 BuildRequires:  intltool
-BuildRequires:  libxml2-devel
 %if ! %IS_DEFAULT_ATSPI_STACK
 BuildRequires:  update-desktop-files
 %endif
@@ -48,7 +47,6 @@ Conflicts:      at-spi < 1.29.3
 # stack already installed
 Supplements:    packageand(at-spi2-core:gtk2)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-#%gconf_schemas_prereq
 
 %description
 AT-SPI is a general interface for applications to make use of the
