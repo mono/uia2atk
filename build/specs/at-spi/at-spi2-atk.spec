@@ -26,6 +26,8 @@ Group:          System/Libraries
 Url:            http://www.gnome.org/
 Source0:        %{name}-%{version}.tar.bz2
 Source99:       %{name}-rpmlintrc
+# PATCH-FIX-OPENSUSE at-spi2-atk-gtk-64-fix.patch bnc611766 sshaw@decriptor.com -- at-spi2 should set GTK_PATH64 rather than GTK_PATH
+Patch0:         at-spi2-atk-gtk-64-fix.patch
 BuildRequires:  atk-devel
 BuildRequires:  dbus-1-glib-devel
 BuildRequires:  fdupes
@@ -57,6 +59,9 @@ This package contains a GTK+ module for at-spi, based on ATK.
 %lang_package
 %prep
 %setup -q
+%ifarch x86_64
+%patch0 -p1
+%endif
 
 %build
 # We pass --enable-relocate when we want another at-spi stack (like at-spi) by default.
@@ -96,6 +101,8 @@ rm -rf %{buildroot}
 %files -f %{name}.schemas_list
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
+# FIXME when gtk 3.0 comes out
+%{_libdir}/gtk-3.0
 %if %IS_DEFAULT_ATSPI_STACK
 %{_libdir}/gtk-2.0/modules/libatk-bridge.so
 %{_libdir}/gtk-3.0/modules/libatk-bridge.so
