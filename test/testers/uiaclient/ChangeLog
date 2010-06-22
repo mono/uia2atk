@@ -1,4 +1,9 @@
-2010-04-21  Felicia Mu  <fxmu@novell.com>
+2010-06-22  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Add testcase 208.
+
+
+2010-06-22  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Remove bug reference 598010, add some TODO tips.
 

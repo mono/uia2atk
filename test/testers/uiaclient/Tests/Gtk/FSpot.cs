@@ -449,7 +449,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			
 			//205.2 "Photo" Menu item
 			var menuBar = window.Find<MenuBar> (); 
-			var photoMenuItem = menuBar.Find<MenuItem> ("Photo").Click ();
+			var photoMenuItem = menuBar.Find<MenuItem> ("Photo");
+			photoMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -696,13 +697,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			 * BUG600816 - [uiaclient-GTKs]:The menubar should not support SelectionPattern
 			 */
 			var menuBar = window.Find<MenuBar> ();
-			//string[] menubarCanSupported = new string[] {"ExpandCollapse", "Dock", "Transform"};
-			//var patterns = menuBar.GetSupportedPatterns();
-			//for pattern in patterns:
-				//Assert.is
-				//if Automation.PatternName(pattern)
-				
-			
+			System.Windows.Forms.MenuStrip menuStrip= new System.Windows.Forms.MenuStrip ();
+			AutomationElement ae = AutomationElement.FromHandle (menuStrip.Handle);
+			AutomationPattern[] addPatterns = {ExpandCollapsePattern.Pattern};
+			helper.PatternChcek (menuBar, ae, addPatterns, null);
 			
 			//208.1 Select "Find" Menu 
 			var findMenu = menuBar.Find<MenuItem> ("Find");
@@ -710,17 +708,37 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
-			//208.2 Expand the "Set Rating filter..." menu item under "Find" menu 			
+			//208.2 Collapse the "Find" menu item. 
+			/*
+			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern			 */
+			/*
+			findMenu.Find<MenuItem> ("Find").Collapse ();
+			procedureLogger.ExpectedResult ("The \"Find\" sub menu item collapses.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//208.3 Expand the "Find" menu item.
 			/*
 			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern			 */
 			/*
 			findMenu.Find<MenuItem> ("By Rating").Expand ();
-			procedureLogger.ExpectedResult ("The \"Set Rating filter...\" sub menu item  opens.");
+			procedureLogger.ExpectedResult ("The \"Find\" sub menu item expands.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			*/
 			
 			//208.3 Select the "Set Rating filter..." menu item.
+			var setMenu = menuBar.Find<MenuItem> ("Set Rating filter...");
+			setMenu.Click ();
+			procedureLogger.ExpectedResult ("The \"Set Rating filter\" dialog appears.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
 			//208.4 BUG610269 - [uiaclient-GTKs]:The Image control can't be found by UIA Client
+			var ratingDialog = window.Find<Window> ("Set Rating filter");
+			var image = ratingDialog.Find<Image>();
+			Assert.IsNotNull (image);
+			procedureLogger.Action ("Find the image on \"Set Rating filter\" dialog .");
+			procedureLogger.ExpectedResult ("The image can't be found by uia.");
+			
 		}
 		
 
@@ -769,12 +787,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//BUG606666 - [uiaclient-GTKs]:The Window control supports none Patterns
 			//BUG607040 - [uiaclient-GTKs]:The slider control should not support Invoke Pattern
 			//BUG607790 - [uiaclient-GTKs]:The Progressbar control 's RangeValue Pattern is not implemented completely
-			//BUG
-			//BUG
-			//BUG
-
-
-
 		
 			//Banshee
 			//BUG608190 - [uiaclient-GTKs]:The Toggle button should not support Invoke pattern
