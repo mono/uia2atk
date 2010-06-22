@@ -23,20 +23,20 @@ Requires:       glib-sharp2 >= 2.12.10
 Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
 Requires:       mono-data >= 2.4
-Requires:       mono-uia >= 2.0.91
+Requires:       mono-uia >= 2.0.93
 Requires:       mono-winfxcore
-Requires:       uiaatkbridge >= 2.0.91
+Requires:       uiaatkbridge >= 2.0.93
 BuildRequires:  gtk-sharp2 >= 2.12.10
 BuildRequires:  glib-sharp2 >= 2.12.10 
 BuildRequires:  intltool
 BuildRequires:	mono-devel >= 2.4
 BuildRequires:  mono-data >= 2.4
 BuildRequires:	mono-nunit >= 2.4
-BuildRequires:  mono-uia >= 2.0.91
-BuildRequires:  mono-uia-devel >= 2.0.91
+BuildRequires:  mono-uia >= 2.0.93
+BuildRequires:  mono-uia-devel >= 2.0.93
 BuildRequires:  mono-winfxcore
 BuildRequires:  pkg-config
-BuildRequires:  uiaatkbridge >= 2.0.91
+BuildRequires:  uiaatkbridge >= 2.0.93
 
 Summary:        Implementation of UIA providers
 

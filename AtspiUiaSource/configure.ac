@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([AtspiUiaSource], [2.0.92])
+AC_INIT([AtspiUiaSource], [2.0.93])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config

@@ -21,13 +21,13 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       at-spi >= 1.24.0
 Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
-Requires:       mono-uia >= 2.0.91
+Requires:       mono-uia >= 2.0.93
 BuildRequires:  atk-devel >= 1.24
 BuildRequires:  gtk2-devel >= 2.14
 BuildRequires:  gtk-sharp2 >= 2.12.10
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia >= 2.0.91
-BuildRequires:	mono-uia-devel >= 2.0.91
+BuildRequires:	mono-uia >= 2.0.93
+BuildRequires:	mono-uia-devel >= 2.0.93
 
 Summary:        Bridge between UIA providers and ATK
 
