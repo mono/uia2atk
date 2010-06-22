@@ -114,15 +114,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase201 ()
 		{
-			/*
-			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
-			 * should be recognized as menu item not menu.
-			 * if the bug is fixed please use the above comment expression:
-			 */ 
 			//201.1 Click "photo" menu item
 			var menuBar = window.Find<MenuBar> ();
-			//menuBar.Find<MenuItem> ("Photo").Click ();
-			menuBar.Find<Menu> ("Photo").Click ();
+			menuBar.Find<MenuItem> ("Photo").Click ();	
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -454,15 +448,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
 			//205.2 "Photo" Menu item
-			var menuBar = window.Find<MenuBar> ();
-			/*
-			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
-			 * should be recognized as menu item not menu.
-			 * if the bug is fixed please use the above comment expression:
-			 */ 
-			//var photoMenuItem = menuBar.Find<MenuItem> ("Photo").Click ();
-			var photoMenuItem = menuBar.Find<Menu> ("Photo");
-			photoMenuItem.Click ();
+			var menuBar = window.Find<MenuBar> (); 
+			var photoMenuItem = menuBar.Find<MenuItem> ("Photo").Click ();
 			procedureLogger.ExpectedResult ("The \"Photo\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -547,13 +534,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//206.1 Select "View" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			/*
-			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
-			 * should be recognized as menu item not menu.
-			 * if the bug is fixed please use the above comment expression:
-			 */ 
-			//menuBar.Find<MenuItem> ("View").Click ();
-			menuBar.Find<Menu> ("View").Click ();
+			menuBar.Find<MenuItem> ("View").Click ();
 			procedureLogger.ExpectedResult ("The \"View\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -641,13 +622,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		{
 			//207.1 Select "Help" Menu Item
 			var menuBar = window.Find<MenuBar> ();
-			/*
-			 * BUG598010 - [uiaclient-GTKs]: The control on the menubar 
-			 * should be recognized as menu item not menu.
-			 * if the bug is fixed please use the above comment expression:
-			 */ 
-			//menuBar.Find<MenuItem> ("Help").Click ();
-			menuBar.Find<Menu> ("Help").Click ();
+			menuBar.Find<MenuItem> ("Help").Click ();
 			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
@@ -707,6 +682,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 		}
 
 	//TestCase208 Set Rating filter...
+	//Mainly testing the patterns about menu item	
 		[Test]
 		public void RunTestCase208 ()
 		{
@@ -715,34 +691,107 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase208 ()
 		{
-			//208.1 Select "Find" Menu 
+			//208.1 Test the menu bar's supported patterns.
+			/*
+			 * BUG600816 - [uiaclient-GTKs]:The menubar should not support SelectionPattern
+			 */
 			var menuBar = window.Find<MenuBar> ();
-			/* BUG598010 - [uiaclient-GTKs]: The control on the menubar 
-			 * should be recognized as menu item not menu.
-			 * if the bug is fixed please use the above comment expression:
-			 */ 
-			//var findMenu = menuBar.Find<MenuItem> ("Find");
-			var findMenu = menuBar.Find<Menu> ("Find");
+			//string[] menubarCanSupported = new string[] {"ExpandCollapse", "Dock", "Transform"};
+			//var patterns = menuBar.GetSupportedPatterns();
+			//for pattern in patterns:
+				//Assert.is
+				//if Automation.PatternName(pattern)
+				
+			
+			
+			//208.1 Select "Find" Menu 
+			var findMenu = menuBar.Find<MenuItem> ("Find");
 			findMenu.Click ();
 			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
+			//208.2 Expand the "Set Rating filter..." menu item under "Find" menu 			
 			/*
-			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern
-			 * BUG598030 - [uiaclient-GTKs]: For all the GTK controls, there is an extra TextPattern
-			 */
+			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern			 */
 			/*
-			//208.2 Expand the "Set Rating filter..." menu item under "Find" menu 
 			findMenu.Find<MenuItem> ("By Rating").Expand ();
 			procedureLogger.ExpectedResult ("The \"Set Rating filter...\" sub menu item  opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			*/
 			
+			//208.3 Select the "Set Rating filter..." menu item.
+			//208.4 BUG610269 - [uiaclient-GTKs]:The Image control can't be found by UIA Client
+		}
+		
+
+			
 			//TODO
+			//BUG604598 - [uiaclient-GTKs]:The IsKeyboardFocusableProperty of disable button should be false
 			//BUG598036 - [uiaclient-GTKs]: The separator should not support any pattern
 			//BUG598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
-			//
+			//BUG599993 - [uiaclient-GTKs]: The ScrollBar's value can't set to its maximum value
+			//BUG600360 - [uiaclient-GTKs]: The ScrollBar does not support SmallChangeProperty
+			//& LargeChangeProperty for RangeValuePattern
+			//BUG600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false,
+			//if the scrollbar's value can be set
+			//BUG600420 - [uiaclient-GTKs]:Tab 's IsSelectionRequired Property should be
+			//true if there is at one child being selected
+			//BUG600430 - [uiaclient-GTKs]:A Document should not support value pattern
+			//BUG600432 - [uiaclient-GTKs]:A document whose content can be scrollable should support scroll pattern
+			//BUG600803 - [uiaclient-GTKs]:The Document has not implemented IsContentElementProperty 
+			//BUG600805 - [uiaclient-GTKs]:The Document has not implemented IsControlElementProperty 
+			//BUG
+			//BUG602254 - [uiaclient-GTKs]:Chcke Box control should not support InvokePattern
+			//BUG602294 - [uiaclient-GTKs]:The The CheckBox has not implemented IsContentElementProperty
+			//BUG602296 - [uiaclient-GTKs]:The CheckBox has not implemented IsControlElementProperty
+			//BUG602676 - [uiaclient-GTKs]:ComboBox can dropdown menu not menuitem
+			//BUG602699 - [uiaclient-GTKs]:The ComboBox control should support the ExpandCollapsePattern
+			//BUG602710 - [uiaclient-GTKs]:The ComboBox control should support the SelectionPattern
+			//BUG602716 - [uiaclient-GTKs]:The ComboBox's IsContentElementProperty should be true
+			//BUG602721 - [uiaclient-GTKs]:The ComboBox's IsControlElementProperty should be true
+			//BUG603639 - [uiaclient-GTKs]:The Edit control should support the InvokePattern
+			//BUG604197 - [uiaclient-GTKs]:The RadioButton control should not support the InvokePattern
+			//BUG604200 - [uiaclient-GTKs]:all the RadioButtons control should support SelectionItem Pattern
+			//BUG604219 - [uiaclient-GTKs]:For all the GTK controls,the ClassName property is not implemented
+			//BUG604649 - [uiaclient-GTKs]:The Header control supports the wrong patterns
+			//BUG604660 - [uiaclient-GTKs]:The Table control should not support Selection pattern
+			//BUG605087 - [uiaclient-GTKs]:The Table has not implemented RowOrColumnMajorProperty
+			//BUG605093 - [uiaclient-GTKs]:The Header control's IsContentElementProperty should be false
+			//BUG605114 - [uiaclient-GTKs]:The uia-explore can't find the Header Item control
+			//BUG606293 - [uiaclient-GTKs]:The Data Item control should not support Selection ,Grid & Table Pattern
+			//BUG606295 - [uiaclient-GTKs]:The Data Item can be expanded or collapsed should support ExpandCollapse Pattern
+			//BUG606297 - [uiaclient-GTKs]:All Data Item should support SelectionItem Pattern
+			//BUG606300 - [uiaclient-GTKs]:The Data Item can can typically be traversed by using 
+			//the keyboard should support GridItem pattern
+			//BUG606301 - [uiaclient-GTKs]:The Data Item which is Table control's child should support TableItem pattern	
+			//BUG606305 - [uiaclient-GTKs]:The Data Item contains a state that can be cycled through should support Toggle Pattern
+			//BUG606656 - [uiaclient-GTKs]:The child of Data Item is recognized as edit and custom
+			//BUG606666 - [uiaclient-GTKs]:The Window control supports none Patterns
+			//BUG607040 - [uiaclient-GTKs]:The slider control should not support Invoke Pattern
+			//BUG607790 - [uiaclient-GTKs]:The Progressbar control 's RangeValue Pattern is not implemented completely
+			//BUG
+			//BUG
+			//BUG
+
+
+
 		
+			//Banshee
+			//BUG608190 - [uiaclient-GTKs]:The Toggle button should not support Invoke pattern
+			//BUG608200 - [uiaclient-GTKs]:The Tree who has a scrollbar should support ScrollPattern
+			//BUG608231 - [uiaclient-GTKs]:The Button under ListItem doesn't support Invoke pattern
+			
+			//firefox
+			//BUG608920 - [uiaclient-GTKs]:The Edit control who's role name is "entry" is not implemented yet.
+			//BUG608923 - [uiaclient-GTKs]:The Header under List can't be found by UIA Client
+			//BUG	 - [uiaclient-GTKs]:The Hyperlink control supports the wrong pattern
+			//BUG608967 - [uiaclient-GTKs]:The Edit control in Document is not implemented yet.
+			
+			//GTK app
+			//BUG609361 - [uiaclient-GTKs]:The Calendar control does not support any pattern
+			//BUG609377 - [uiaclient-GTKs]:The Calendar' children can't be found by UIA Client
+			//BUG609765 - [uiaclient-GTKs]:The control who's role name is "ColorChooser" is not implemented yet.
+			//BUG609780 - [uiaclient-GTKs]:The Pane control supports wrong pattern
+			//BUG
 		}
 	}
-}
