@@ -41,6 +41,7 @@ namespace Mono.UIAutomation.TestFramework
 	public class TestBase
 	{
 		protected ProcedureLogger procedureLogger = new ProcedureLogger ();
+		protected Helper helper = new Helper ();
 
 		[SetUp]
 		public void Init ()
