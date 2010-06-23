@@ -88,7 +88,7 @@ FILES = \
 	TestBase.cs \
 	Text.cs \
 	Thumb.cs \
-	TitileBar.cs \
+	TitleBar.cs \
 	ToolBar.cs \
 	ToolTip.cs \
 	Tree.cs \

@@ -1,5 +1,9 @@
 2010-06-23  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.TestFramework/Makefile.am: Fixed a typo.
+
+2010-06-23  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.TestFramework/Makefile.am: Added files.
 
 2010-06-23  Felicia Mu  <fxmu@novell.com>
