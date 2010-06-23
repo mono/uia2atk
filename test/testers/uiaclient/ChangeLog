@@ -1,27 +1,26 @@
-2010-06-23  Felicia Mu  <fxmu@novell.com>
+2010-06-23  Neville Gao  <nevillegao@gmail.com>
 
-	* Mono.UIAutomation.TestFramework/Makefile.am:Add the  Helper class.
-
-
-2010-06-23  Felicia Mu  <fxmu@novell.com>
-
-	* Mono.UIAutomation.TestFramework/Testbase.cs:Initialize the  Helper class.
-
+	* Mono.UIAutomation.TestFramework/Makefile.am: Added files.
 
 2010-06-23  Felicia Mu  <fxmu@novell.com>
 
-	* Mono.UIAutomation.TestFramework/Helper.cs:Update the Helper class.
+	* Mono.UIAutomation.TestFramework/Makefile.am: Add the  Helper class.
 
+2010-06-23  Felicia Mu  <fxmu@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Testbase.cs: Initialize the  Helper class.
+
+2010-06-23  Felicia Mu  <fxmu@novell.com>
+
+	* Mono.UIAutomation.TestFramework/Helper.cs: Update the Helper class.
 
 2010-06-22  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Add testcase 208.
 
-
 2010-06-22  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Remove bug reference 598010, add some TODO tips.
-
 
 2010-06-04  Felicia Mu  <fxmu@novell.com>
 
@@ -94,7 +93,7 @@
 	* Mono.UIAutomation.TestFramework/StatusBar.cs:
 	* Mono.UIAutomation.TestFramework/Image.cs:
 	* Mono.UIAutomation.TestFramework/Separator.cs:
-	* Mono.UIAutomation.TestFramework/Tab.cs:add the supported patterns
+	* Mono.UIAutomation.TestFramework/Tab.cs: add the supported patterns
 	for each control.
 
 2010-05-30  Felicia Mu  <fxmu@novell.com>
@@ -112,7 +111,7 @@
 	* Mono.UIAutomation.TestFramework/Separator.cs:
 	* Mono.UIAutomation.TestFramework/Tab.cs:
 	* Mono.UIAutomation.TestFramework/HeaderItem.cs:
-	* Mono.UIAutomation.TestFramework/Calendar.cs:add the above classes to
+	* Mono.UIAutomation.TestFramework/Calendar.cs: add the above classes to
 	the framework.
 
 2010-05-25  Neville Gao  <nevillegao@gmail.com>

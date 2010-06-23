@@ -49,42 +49,53 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	Application.cs \
+	AssemblyInfo.cs \
 	Button.cs \
+	Calendar.cs \
 	CheckBox.cs \
 	ComboBox.cs \
 	Config.cs \
 	DataGrid.cs \
 	DataItem.cs \
+	Direction.cs \
 	Document.cs \
 	Edit.cs \
 	Element.cs \
 	Finder.cs \
-	Hyperlink.cs \
+	Group.cs \
+	Header.cs \
+	HeaderItem.cs \
 	Helper.cs \
+	Hyperlink.cs \
+	Image.cs \
 	List.cs \
 	ListItem.cs \
 	MenuBar.cs \
+	Menu.cs \
 	MenuItem.cs \
 	Pane.cs \
+	ProcedureLogger.cs \
 	RadioButton.cs \
 	ScrollBar.cs \
+	Separator.cs \
+	Slider.cs \
 	Spinner.cs \
 	SplitButton.cs \
-	Table.cs \
+	StatusBar.cs \
+	Tab.cs \
 	TabItem.cs \
+	Table.cs \
 	TestBase.cs \
-	ProcedureLogger.cs \
 	Text.cs \
+	Thumb.cs \
+	TitileBar.cs \
 	ToolBar.cs \
+	ToolTip.cs \
+	Tree.cs \
+	TreeItem.cs \
 	UIAutomationMetadata.cs \
 	Utils.cs \
-	Window.cs \
-	Menu.cs \
-	Direction.cs \
-	Slider.cs \
-	TreeItem.cs \
-	Group.cs \
-	AssemblyInfo.cs 
+	Window.cs
 
 DATA_FILES = 
 
