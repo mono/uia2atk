@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.TestFramework
 	{
 		protected ProcedureLogger procedureLogger = new ProcedureLogger ();
 		//Check the patterns that a control must support according to MSDN.
-		protected void PatternChcek (Element e, AutomationElement ae, AutomationPattern[] addStates, AutomationPattern[] invalidState)
+		public void PatternChcek (Element e, AutomationElement ae, AutomationPattern[] addStates, AutomationPattern[] invalidState)
 		{
 			procedureLogger.Action (string.Format ("Check {0}'s supported patterns.", e));
 			
@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.TestFramework
 				e.SupportedPatterns.Add(addStates [j]);
 
 			//Get list of actual patterns of this control
-			AutomationPattern[] actualPatterns = ae.GetSupportedPatterns();
+			AutomationPattern[] actualPatterns = ae.GetSupportedPatterns ();
 			procedureLogger.ExpectedResult (string.Format ("supported patterns :"));
 			for (int k = 0; k < actualPatterns.Length; k++)
 				procedureLogger.ExpectedResult (string.Format ("{0} ", actualPatterns [k]));
@@ -58,12 +58,12 @@ namespace Mono.UIAutomation.TestFramework
 			List<AutomationPattern> missPattern = new List<AutomationPattern>();
 			List<AutomationPattern> extraPattern = new List<AutomationPattern>();
 			for (int p = 0; p < e.SupportedPatterns.Count; p++)
-					if(!(actualPatterns.Contains (e.SupportedPatterns[p])))
-						missPattern.Add(e.SupportedPatterns[p]);
-				
+				if(!(actualPatterns.Contains (e.SupportedPatterns[p])))
+					missPattern.Add(e.SupportedPatterns[p]);
+
 			for (int q = 0; q < actualPatterns.Length; q++)
-					if(!(e.SupportedPatterns.Contains (actualPatterns[q])))
-						extraPattern.Add(actualPatterns[q]);
+				if(!(e.SupportedPatterns.Contains (actualPatterns[q])))
+					extraPattern.Add(actualPatterns[q]);
 
 			//If missingPatterns and extraPatterns are empty, the test case passes
 			//otherwise, throw an exception
