@@ -1,5 +1,10 @@
 2010-06-23  Felicia Mu  <fxmu@novell.com>
 
+	* Mono.UIAutomation.TestFramework/Makefile.am:Add the  Helper class.
+
+
+2010-06-23  Felicia Mu  <fxmu@novell.com>
+
 	* Mono.UIAutomation.TestFramework/Testbase.cs:Initialize the  Helper class.
 
 

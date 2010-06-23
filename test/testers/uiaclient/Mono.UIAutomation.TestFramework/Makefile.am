@@ -60,6 +60,7 @@ FILES = \
 	Element.cs \
 	Finder.cs \
 	Hyperlink.cs \
+	Helper.cs \
 	List.cs \
 	ListItem.cs \
 	MenuBar.cs \
