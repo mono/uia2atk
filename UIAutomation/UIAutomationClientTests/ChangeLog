@@ -1,3 +1,23 @@
+2010-06-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationClientTests/BaseTest.cs:
+	* UIAutomationClientTests/TableTest.cs:
+	* UIAutomationClientTests/ScrollTest.cs:
+	* UIAutomationClientTests/TextPatternTest.cs:
+	* UIAutomationClientTests/CustomControlTest.cs:
+	* UIAutomationClientTests/SelectionPatternTest.cs:
+	* UIAutomationClientTests/MultipleViewPatternTest.cs:
+	Ensure that TestFixtureTearDown is called when TestFixtureSetUp fails,
+	to prevent having stray SampleForm processes running amok.
+
+	* UIAutomationClientTests/AutomationTest.cs:
+	* UIAutomationClientTests/RootElementTest.cs:
+	Track other SampleForm processes to ensure they are cleand up
+	during TearDown.
+
+	* UIAutomationClientTests/RangeValuePatternTest.cs:
+	Fix broken condition for location horizontal scroll bar element.
+
 2010-06-02  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/TableHierarchyTest.cs: Test parent of DataItemElement.

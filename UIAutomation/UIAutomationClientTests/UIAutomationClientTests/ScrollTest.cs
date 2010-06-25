@@ -137,9 +137,9 @@ namespace MonoTests.System.Windows.Automation
 			return listView1Element.FindFirst (TreeScope.Children, cond);
 		}
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
 			scrollPattern = (ScrollPattern)
 				listView1Element.GetCurrentPattern (ScrollPattern.Pattern);
 			listItem0Element = FindItem ("Item 0");

@@ -50,9 +50,9 @@ namespace MonoTests.System.Windows.Automation
 		AutomationElement child3Element;
 		AutomationElement child4Element;
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
 			child1Element = treeView1Element.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
 					ControlType.TreeItem));

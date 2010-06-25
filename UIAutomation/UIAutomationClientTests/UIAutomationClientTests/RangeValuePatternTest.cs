@@ -43,16 +43,20 @@ namespace MonoTests.System.Windows.Automation
 	public class RangeValuePatternTest : BaseTest
 	{
 		private AutomationElement hScrollBarElement = null;
+		private AndCondition horizontalScrollCondition =
+			new AndCondition (
+				new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty,
+					ControlType.ScrollBar),
+				new PropertyCondition (AutomationElementIdentifiers.OrientationProperty,
+					OrientationType.Horizontal));
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp();
+			base.CustomFixtureSetUp ();
 			if (!Atspi) {
 				// to enable textBox3's horizontal scroll bar.
 				RunCommand ("set textBox3 long text");
-				hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
-				                                               new PropertyCondition (AutomationElementIdentifiers.NameProperty,
-				                                                                      "Horizontal Scroll Bar"));
+				hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children, horizontalScrollCondition);
 				Assert.IsNotNull (hScrollBarElement);
 			}
 		}
@@ -149,9 +153,7 @@ namespace MonoTests.System.Windows.Automation
 			else {
 				RunCommand ("disable textBox3");
 				try {
-					hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children,
-				                                               new PropertyCondition (AutomationElementIdentifiers.NameProperty,
-				                                                                      "Horizontal Scroll Bar"));
+					hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children, horizontalScrollCondition);
 					Assert.IsNotNull (hScrollBarElement);
 					pattern = (RangeValuePattern) hScrollBarElement.GetCurrentPattern (RangeValuePattern.Pattern);
 					Assert.Fail ("Should throw InvalidOperationException " +

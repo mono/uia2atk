@@ -43,9 +43,9 @@ namespace MonoTests.System.Windows.Automation
 	{
 		private MultipleViewPattern pattern = null;
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
 			pattern = (MultipleViewPattern) listView1Element.GetCurrentPattern (MultipleViewPattern.Pattern);
 			Assert.IsNotNull (pattern);
 		}
@@ -64,7 +64,6 @@ namespace MonoTests.System.Windows.Automation
 			Assert.Greater (supportedViews.Length, 1, "GetSupportedViews.Length");
 			Assert.AreEqual (1, currentView, "GetSupportedViews.Value");
 			Assert.AreEqual ("Details", pattern.GetViewName (currentView), "Current view name" );
-			int argumentExceptionCount = 0;
 			AssertRaises<ArgumentException> (() => pattern.GetViewName (-1), "get view name from -1");
 			AssertRaises<ArgumentException> (() => pattern.GetViewName (supportedViews.Length),
 				"get view name from supportedViews.Length");

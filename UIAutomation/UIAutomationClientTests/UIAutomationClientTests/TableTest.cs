@@ -43,9 +43,9 @@ namespace MonoTests.System.Windows.Automation
 		private GridPattern gridPattern = null;
 		private TablePattern tablePattern = null;
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
 			gridPattern = (GridPattern) table1Element.GetCurrentPattern (GridPattern.Pattern);
 			tablePattern = (TablePattern) table1Element.GetCurrentPattern (TablePattern.Pattern);
 		}

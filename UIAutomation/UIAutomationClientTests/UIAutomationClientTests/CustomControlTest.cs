@@ -41,9 +41,9 @@ namespace MonoTests.System.Windows.Automation
 	{
 		private AutomationElement myControlElement;
 
-		public override void FixtureSetUp ()
+		protected override void CustomFixtureSetUp ()
 		{
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
 			if (!Atspi) {
 				myControlElement = testFormElement.FindFirst (TreeScope.Children,
 					new PropertyCondition (AEIds.NameProperty, "My Control"));

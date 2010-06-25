@@ -39,6 +39,18 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class AutomationTest
 	{
+		List<Process> potentiallyRunningProcesses =
+			new List<Process> ();
+
+		[TearDown]
+		public void TearDown ()
+		{
+			foreach (var p in potentiallyRunningProcesses)
+				if (!p.HasExited)
+					p.Kill ();
+			potentiallyRunningProcesses.Clear ();
+		}
+
 		// TODO: Test event handling methods
 		[Test]
 		public void ComparerRuntimeIdsTest ()
@@ -770,6 +782,7 @@ namespace MonoTests.System.Windows.Automation
 		{
 			int eventCount = 0;
 			Process p = BaseTest.StartApplication (@"SampleForm.exe", string.Empty);
+			potentiallyRunningProcesses.Add (p);
 			SWA.AutomationEventHandler handler = (o, e) => eventCount++;
 			Thread.Sleep (2000); // Waiting a little bit for the application to show up
 

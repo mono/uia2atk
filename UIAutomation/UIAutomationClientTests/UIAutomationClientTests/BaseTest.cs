@@ -37,7 +37,7 @@ using System.Text;
 
 namespace MonoTests.System.Windows.Automation
 {
-	public class BaseTest
+	public abstract class BaseTest
 	{
 		#region Setup/Teardown
 
@@ -115,8 +115,7 @@ namespace MonoTests.System.Windows.Automation
 			}
 		}
 
-		[TestFixtureSetUp]
-		public virtual void FixtureSetUp ()
+		protected virtual void CustomFixtureSetUp ()
 		{
 			patternProperties = new Dictionary<AutomationPattern, AutomationProperty> ();
 			patternProperties.Add (DockPatternIdentifiers.Pattern, AEIds.IsDockPatternAvailableProperty);
@@ -176,6 +175,26 @@ namespace MonoTests.System.Windows.Automation
 				Assert.IsNotNull (listView1Element);
 			Assert.IsNotNull (horizontalMenuStripElement);
 			//Assert.IsNotNull (verticalMenuStripElement);
+		}
+
+		[TestFixtureSetUp]
+		public void FixtureSetUp ()
+		{
+			try {
+				CustomFixtureSetUp ();
+			} catch {
+				FixtureTearDown ();
+				throw;
+			}
+		}
+
+		[TestFixtureTearDown]
+		public void FixtureTearDown ()
+		{
+			if (p != null && !p.HasExited) {
+				p.Kill ();
+			}
+			p = null;
 		}
 
 		private void SWFSetup ()
@@ -387,15 +406,6 @@ namespace MonoTests.System.Windows.Automation
 			pattern.Invoke ();
 			if (Atspi)
 				Thread.Sleep (2000);
-		}
-
-		[TestFixtureTearDown]
-		public void FixtureTearDown ()
-		{
-			if (p != null) {
-				p.Kill ();
-				p = null;
-			}
 		}
 
 		#endregion

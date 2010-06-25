@@ -40,20 +40,27 @@ namespace MonoTests.System.Windows.Automation
 	public class RootElementTest : BaseTest
 	{
 		Condition findTestForm = null;
+		List<Process> potentiallyRunningProcesses =
+			new List<Process> ();
 
-		public RootElementTest ()
+		protected override void CustomFixtureSetUp ()
 		{
 			findTestForm = new AndCondition (new PropertyCondition (
 				AEIds.NameProperty, "TestForm1"),
 				new PropertyCondition (AEIds.ControlTypeProperty, ControlType.Window));
-		}
-
-		public override void FixtureSetUp ()
-		{
 			var firstChild =AutomationElement.RootElement.FindFirst (
 				TreeScope.Children, findTestForm);
 			Assert.IsNull (firstChild);
-			base.FixtureSetUp ();
+			base.CustomFixtureSetUp ();
+		}
+
+		[TearDown]
+		public void TearDown ()
+		{
+			foreach (var p in potentiallyRunningProcesses)
+				if (!p.HasExited)
+					p.Kill ();
+			potentiallyRunningProcesses.Clear ();
 		}
 
 		[Test]
@@ -155,6 +162,7 @@ namespace MonoTests.System.Windows.Automation
 				p = StartApplication ("GtkForm.exe", String.Empty);
 			else
 				p = StartApplication ("SampleForm.exe", String.Empty);
+			potentiallyRunningProcesses.Add (p);
 			return p.Id;
 		}
 
