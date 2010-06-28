@@ -20,7 +20,7 @@ uiatest_dll = os.path.join(uiatest_path, test_dll)
 if not os.path.exists(uiatest_dll):
     os.system("%s/uiaclient/autogen.sh && make" % test_path)
 
-os.system("nunit-console2 %s -run=MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight.DiggSearchTestTest.RunTestCase307 >%s%s" % \
+os.system("nunit-console2 %s -run=MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight.DiggSearchTest.RunTestCase307 >%s%s" % \
 (uiatest_dll, uiatest_path, "/Resources/logs"))
 
 

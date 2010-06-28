@@ -1,3 +1,8 @@
+2010-06-28  Calen Chen  <cachen@novell.com>
+
+	* Moonlight_DiggSearchTest_RunTestCase306-regression.py,
+	* Moonlight_DiggSearchTest_RunTestCase307-regression.py: Fixed a typo
+
 2010-06-23  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.TestFramework/Makefile.am: Fixed a typo.
