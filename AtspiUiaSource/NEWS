@@ -3,6 +3,9 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.93: The "machinima" release
+* #585147 - Initial work started
+
 Version 2.0.92: The "liger" release
 * #599589 - [uiaclient-GTKs]:the tree item can't be found by UIA Client
 * #590768 - The popup window is in the same tree level with its main window
