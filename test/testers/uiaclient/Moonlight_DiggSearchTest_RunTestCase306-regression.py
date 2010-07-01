@@ -12,15 +12,12 @@ from sys import path
 test_dir = path[0]
 i = test_dir.rfind("/")
 test_path = test_dir[:i]
-dll_path = "uiaclient/Tests/bin/Debug"
-test_dll = "MonoTests.Mono.UIAutomation.UIAClientAPI.dll"
-uiatest_path = os.path.join(test_path, dll_path)
-uiatest_dll = os.path.join(uiatest_path, test_dll)
+test_dll = "uiaclient/Tests/bin/Debug/MonoTests.Mono.UIAutomation.UIAClientAPI.dll"
+uiatest_dll = os.path.join(test_path, test_dll)
     
 if not os.path.exists(uiatest_dll):
     os.system("%s/uiaclient/autogen.sh && make" % test_path)
 
-os.system("nunit-console2 %s -run=MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight.DiggSearchTest.RunTestCase306 >%s%s" % \
-(uiatest_dll, uiatest_path, "/Resources/logs"))
+os.system("nunit-console2 %s -run=MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight.DiggSearchTest.RunTestCase306" % uiatest_dll)
 
 
