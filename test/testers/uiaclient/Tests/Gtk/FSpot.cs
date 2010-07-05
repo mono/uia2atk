@@ -66,9 +66,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		protected void ImportPictures ()
 		{
-			//Click "photo" menu
+			//Click "photo" menu item
 			var menuBar = window.Find<MenuBar> ();
-			menuBar.Find<Menu> ("Photo").Click ();
+			menuBar.Find<MenuItem> ("Photo").Click ();
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//Select the "Import" menu item.
@@ -128,12 +128,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
 			Console.WriteLine(window);
-			var importDialog = app.FindGtkSubWindow (window, "Import");
+			var importDialog = window.Find<Window> ("Import");
 			var selectCombobox = importDialog.Find<ComboBox> ("Select Folder");
 			var seleceMenuItem = selectCombobox.Find<MenuItem> ("Select Folder");
 			seleceMenuItem.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 			
+			/*
+			 * BUG619425 - [uiaclient-GTKs]:The hierarchy of the window who has two subwindows is different from accerciser.
+			 */
+			/*
 			var subImportDialogs = app.FindAllGtkSubWindow (window, "Import");
 			Assert.AreEqual(2, subImportDialogs.Length);
 			procedureLogger.Action ("Another \"Import\" dialog shows.");
@@ -154,6 +158,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.LongDelay);
 
 			var newImportDialog = app.FindGtkSubWindow (window, "Import");
+			*/
 			/*
 			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
 			 */ 
@@ -165,14 +170,40 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.LongDelay);
 			Assert.IsNotNull (listItem);
 			*/
-
-			//201.6 Click "Import" Button
+			
+			//201.6 Test the Progressbar control's supported patterns & properties
+			/*
+			 * BUG607790 - [uiaclient-GTKs]:The Progressbar control 's RangeValue Pattern 
+			 * is not implemented completely
+			 */
+			/*
+			var progressbar = newImportDialog.Find<Process> ();
+			SWF.ProgressBar progressbarControl = new SWF.ProgressBar ();
+			AutomationElement progressbarAe = new AutomationElement.FromHandle (progressbarControl.Handle);
+			AutomationPattern[] addPatterns = {RangeValuePattern.Pattern};
+			helper.PatternChcek (progressbar, progressbarAe, addPatterns, null);
+			
+			procedureLogger.Action ("Test the LargeChange of progressbar");
+			procedureLogger.ExpectedResult ("The LargeChange of progressbar should be 20");
+			Assert.AreEqual (20, progressbar.LargeChange);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			procedureLogger.Action ("Test the SmallChange of progressbar");
+			procedureLogger.ExpectedResult ("The SmallChange of progressbar should be false");
+			Assert.AreEqual (1, progressbar.SmallChange);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//201.7 Click "Import" Button
+			// if the bug 619425 is fixed, uncomment below codes.
+			/*
 			Thread.Sleep (Config.Instance.LongDelay);
 			var importButton = newImportDialog.Find<Button> ("Import");
 			Console.WriteLine("The button's name is {0}",importButton.Name);
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
-
+			*/
+			
 			/*
 			 * BUG596461 - [uiaclient-GTKs]: The TableItems can not be found by UIAClient.
 			 */ 
@@ -183,6 +214,18 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The pictures in \"/usr/share/pixmaps/\" are imported.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			Assert.IsNotNull (fspotListItem);
+			*/
+			
+			//201.8 Check the pane control's pattern
+			/*
+			 * BUG609780 - [uiaclient-GTKs]:The Pane control supports wrong pattern
+			 */
+			/*
+			var pane = window.Find<Pane> ();
+			SWF.Panel paneControl = new SWF.Panel ();
+			AutomationElement paneAe = AutomationElement.FromHandle (paneControl.Handle);
+			AutomationPattern[] addPatterns = {TransformPattern.Pattern};
+			helper.PatternChcek (pane, paneAe, addPatterns, null);
 			*/
 		}
 
@@ -198,28 +241,37 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			
 			//202.1 Check the button on toolbar's can be focusd
 			var browseButton = window.Find<Button> ("Browse");
+			
+			/*
+			 * BUG619448 - [uiaclient-GTKs]: The button can't be focused by SetFocus() method.
+			 */
+			var editButton = window.Find<Button> ("Edit Image");
+			
+			/*
 			procedureLogger.Action ("Set focus on browseButton.");
 			browseButton.AutomationElement.SetFocus();
 			procedureLogger.ExpectedResult ("The browseButton has been focused.");
 			Assert.IsTrue (browseButton.AutomationElement.Current.HasKeyboardFocus);
 			Thread.Sleep (Config.Instance.ShortDelay);
 				
-			var editButton = window.Find<Button> ("Edit Image");
 			procedureLogger.Action ("Set focus on editButton.");
 			editButton.AutomationElement.SetFocus();
 			procedureLogger.ExpectedResult ("The editButton has been focused.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 			
+			browseButton.Click();
+			Thread.Sleep (Config.Instance.LongDelay);
+			procedureLogger.ExpectedResult ("The browseButton has been invoked and focused.");
 			/*
 			 * BUG597263 [uiaclient-GTKs]: The Invoke method can't make button 's 
 			 * HasKeyboardFocus property to be true
 			 */ 
-//			browseButton.Click();
-//			Thread.Sleep (Config.Instance.LongDelay);
-//			procedureLogger.ExpectedResult ("The browseButton has been invoked and focused.");
-//			Assert.IsTrue (browseButton.AutomationElement.Current.HasKeyboardFocus);
+			//Assert.IsTrue (browseButton.AutomationElement.Current.HasKeyboardFocus);
 			
+			//If the BUG619425 has been fixed, uncomment the below codes.
 			//Do the action to load the list items.
+			/*
 			ImportPictures ();
 
 			//202.2 Check the List's SelectionPattern's property
@@ -258,6 +310,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The fifty-third icon is unselected.");
 			Assert.AreEqual (false, fiftyThirdListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
 			//202.6 Click "Edit Image" menu item on the toolbar
 			editButton.Click ();
@@ -266,6 +319,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//202.7 Maximum the picture
 			var slider = window.Find<Slider> ();
+			//TODO
+			/*
+			 * BUG607040 - [uiaclient-GTKs]:The slider control should not support Invoke Pattern
+			 */
+			
 			slider.SetValue (slider.Maximum);
 			procedureLogger.ExpectedResult ("The picture is maximumed.");
 			Assert.AreEqual (1.0, slider.Maximum);
@@ -391,7 +449,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			/*
 			 * BUG597696 - [uiaclient-GTKs]: RadioButton doesn't support the SelectionItemPattern
+			 * BUG604197 - [uiaclient-GTKs]:The RadioButton control should not support the InvokePattern
 			 */
+			//TODO
 			/*
 			allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
@@ -488,8 +548,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"General\" tab item is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
-			//205.7 Check the if Spin Button can be operated
+			//205.7 Check the Spin Button's supported pattern
 			var spinButton = generalTabItem.Find<Spinner> ();
+			/*
+			 * BUG598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
+			 */
+			//TODO
 			procedureLogger.Action ("Check IsReadOnly property of Spin Button.");
 			procedureLogger.ExpectedResult ("IsReadOnly is False.");
 			Assert.AreEqual (false, spinButton.IsReadOnly);
@@ -682,8 +746,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.MediumDelay);
 		}
 
-	//TestCase208 Set Rating filter...
-	//Mainly testing the patterns about menu item	
+		//TestCase208 Set Rating filter...
+		//Mainly testing the patterns about menu item	
 		[Test]
 		public void RunTestCase208 ()
 		{
@@ -697,42 +761,44 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			 * BUG600816 - [uiaclient-GTKs]:The menubar should not support SelectionPattern
 			 */
 			var menuBar = window.Find<MenuBar> ();
-			System.Windows.Forms.MenuStrip menuStrip= new System.Windows.Forms.MenuStrip ();
+			SWF.MenuStrip menuStrip= new SWF.MenuStrip ();
 			AutomationElement ae = AutomationElement.FromHandle (menuStrip.Handle);
 			AutomationPattern[] addPatterns = {ExpandCollapsePattern.Pattern};
 			helper.PatternChcek (menuBar, ae, addPatterns, null);
 			
-			//208.1 Select "Find" Menu 
+			//208.2 Select "Find" Menu 
 			var findMenu = menuBar.Find<MenuItem> ("Find");
 			findMenu.Click ();
 			procedureLogger.ExpectedResult ("The \"Help\" sub menu opens.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
-			//208.2 Collapse the "Find" menu item. 
+			//208.3 Collapse the "Find" menu item. 
 			/*
 			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern			 */
 			/*
 			findMenu.Find<MenuItem> ("Find").Collapse ();
 			procedureLogger.ExpectedResult ("The \"Find\" sub menu item collapses.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			Assert.AreEqual (ExpandCollapseState.Collapsed, findMenu.ExpandCollapseState);
 			*/
 			
-			//208.3 Expand the "Find" menu item.
+			//208.4 Expand the "Find" menu item.
 			/*
 			 * BUG597997 - [uiaclient-GTKs]: MenuItem doesn't support the ExpandCollapsePattern			 */
 			/*
 			findMenu.Find<MenuItem> ("By Rating").Expand ();
 			procedureLogger.ExpectedResult ("The \"Find\" sub menu item expands.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			Assert.AreEqual (ExpandCollapseState.Expanded, findMenu.ExpandCollapseState);
 			*/
 			
-			//208.3 Select the "Set Rating filter..." menu item.
+			//208.5 Select the "Set Rating filter..." menu item.
 			var setMenu = menuBar.Find<MenuItem> ("Set Rating filter...");
 			setMenu.Click ();
 			procedureLogger.ExpectedResult ("The \"Set Rating filter\" dialog appears.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
-			//208.4 BUG610269 - [uiaclient-GTKs]:The Image control can't be found by UIA Client
+			//208.6 BUG610269 - [uiaclient-GTKs]:The Image control can't be found by UIA Client
 			var ratingDialog = window.Find<Window> ("Set Rating filter");
 			var image = ratingDialog.Find<Image>();
 			Assert.IsNotNull (image);
@@ -741,69 +807,400 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			
 		}
 		
+		//TestCase209 Extension Manager
+		[Test]
+		public void RunTestCase209 ()
+		{
+			Run (TestCase209);
+		}
 
+		private void TestCase209 ()
+		{
+			//209.1 Select "Edit" menu item
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<MenuItem> ("Edit").Click ();
+			procedureLogger.ExpectedResult ("The \"Edit\" menu item's sub menu is shown.");
+			Thread.Sleep (Config.Instance.ShortDelay);
 			
+			//209.2 Select "Manage Extensions" Menu item 
+			menuBar.Find<MenuItem> ("Manage Extensions").Click ();
+			procedureLogger.ExpectedResult ("The \"Extension Manager\" window is shown.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//209.3 Test the Window's supported patterns
+			/*
+			 * BUGBUG606666 - [uiaclient-GTKs]:The Window control supports none Patterns
+			 * BUG595149 WindowPattern is not finished?		
+			*/
+			//TODO-Testing
+			/*
+			var extensionWindow = window.Find<Window> ("Extension Manager");
+			SWF.Form window = new SWF.Form ();
+			AutomationElement windowAe = AutomationElement.FromHandle (window.Handle);
+			helper.PatternChcek (extensionWindow, windowAe, null, null);
+			*/
+			
+			//209.4 Test the disable button's IsKeyboardFocusableProperty 
+			/*
+			 * BUG604598 - [uiaclient-GTKs]:The IsKeyboardFocusableProperty of disable button should be false
+			*/
+			/*
+			var disableButton = extensionWindow.Find<Button> ("uninstall...");
+			procedureLogger.Action ("Test the IsKeyboardFocusableProperty of disable button");
+			procedureLogger.ExpectedResult ("The IsKeyboardFocusableProperty of disable button should be false");
+			Assert.IsFalse(disableButton.AutomationElement.Current.IsKeyboardFocusable);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//209.5 Test the GTK controls's ClassName property
+			/*
+			 * BUG604219 - [uiaclient-GTKs]:For all the GTK controls,the ClassName property is not implemented
+			*/
+			/*
+			procedureLogger.Action ("Test the IsKeyboardFocusableProperty of disable button");
+			procedureLogger.ExpectedResult ("The IsKeyboardFocusableProperty of disable button should be false");
+			Assert.AreEqual ("Button", disableButton.AutomationElement.Current.ClassName);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//209.6 Test the separator's supportd patterns
 			//TODO
-			//BUG604598 - [uiaclient-GTKs]:The IsKeyboardFocusableProperty of disable button should be false
-			//BUG598036 - [uiaclient-GTKs]: The separator should not support any pattern
-			//BUG598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
-			//BUG599993 - [uiaclient-GTKs]: The ScrollBar's value can't set to its maximum value
-			//BUG600360 - [uiaclient-GTKs]: The ScrollBar does not support SmallChangeProperty
-			//& LargeChangeProperty for RangeValuePattern
-			//BUG600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false,
-			//if the scrollbar's value can be set
-			//BUG600420 - [uiaclient-GTKs]:Tab 's IsSelectionRequired Property should be
-			//true if there is at one child being selected
-			//BUG600430 - [uiaclient-GTKs]:A Document should not support value pattern
-			//BUG600432 - [uiaclient-GTKs]:A document whose content can be scrollable should support scroll pattern
-			//BUG600803 - [uiaclient-GTKs]:The Document has not implemented IsContentElementProperty 
-			//BUG600805 - [uiaclient-GTKs]:The Document has not implemented IsControlElementProperty 
-			//BUG
-			//BUG602254 - [uiaclient-GTKs]:Chcke Box control should not support InvokePattern
-			//BUG602294 - [uiaclient-GTKs]:The The CheckBox has not implemented IsContentElementProperty
-			//BUG602296 - [uiaclient-GTKs]:The CheckBox has not implemented IsControlElementProperty
-			//BUG602676 - [uiaclient-GTKs]:ComboBox can dropdown menu not menuitem
-			//BUG602699 - [uiaclient-GTKs]:The ComboBox control should support the ExpandCollapsePattern
-			//BUG602710 - [uiaclient-GTKs]:The ComboBox control should support the SelectionPattern
-			//BUG602716 - [uiaclient-GTKs]:The ComboBox's IsContentElementProperty should be true
-			//BUG602721 - [uiaclient-GTKs]:The ComboBox's IsControlElementProperty should be true
-			//BUG603639 - [uiaclient-GTKs]:The Edit control should support the InvokePattern
-			//BUG604197 - [uiaclient-GTKs]:The RadioButton control should not support the InvokePattern
-			//BUG604200 - [uiaclient-GTKs]:all the RadioButtons control should support SelectionItem Pattern
-			//BUG604219 - [uiaclient-GTKs]:For all the GTK controls,the ClassName property is not implemented
-			//BUG604649 - [uiaclient-GTKs]:The Header control supports the wrong patterns
-			//BUG604660 - [uiaclient-GTKs]:The Table control should not support Selection pattern
-			//BUG605087 - [uiaclient-GTKs]:The Table has not implemented RowOrColumnMajorProperty
-			//BUG605093 - [uiaclient-GTKs]:The Header control's IsContentElementProperty should be false
-			//BUG605114 - [uiaclient-GTKs]:The uia-explore can't find the Header Item control
-			//BUG606293 - [uiaclient-GTKs]:The Data Item control should not support Selection ,Grid & Table Pattern
-			//BUG606295 - [uiaclient-GTKs]:The Data Item can be expanded or collapsed should support ExpandCollapse Pattern
-			//BUG606297 - [uiaclient-GTKs]:All Data Item should support SelectionItem Pattern
-			//BUG606300 - [uiaclient-GTKs]:The Data Item can can typically be traversed by using 
-			//the keyboard should support GridItem pattern
-			//BUG606301 - [uiaclient-GTKs]:The Data Item which is Table control's child should support TableItem pattern	
-			//BUG606305 - [uiaclient-GTKs]:The Data Item contains a state that can be cycled through should support Toggle Pattern
-			//BUG606656 - [uiaclient-GTKs]:The child of Data Item is recognized as edit and custom
-			//BUG606666 - [uiaclient-GTKs]:The Window control supports none Patterns
-			//BUG607040 - [uiaclient-GTKs]:The slider control should not support Invoke Pattern
-			//BUG607790 - [uiaclient-GTKs]:The Progressbar control 's RangeValue Pattern is not implemented completely
+			/*
+			var separator = window.Find<Separator> ();
+			SWF.ToolStripSeparator stripSeparator = new SWF.ToolStripSeparator ();
+			AutomationElement separatorAe = AutomationElement.FromHandle (stripSeparator.);
+			helper.PatternChcek (menuBar, separatorAe, null, null);
+			*/
+		}
 		
-			//Banshee
-			//BUG608190 - [uiaclient-GTKs]:The Toggle button should not support Invoke pattern
-			//BUG608200 - [uiaclient-GTKs]:The Tree who has a scrollbar should support ScrollPattern
-			//BUG608231 - [uiaclient-GTKs]:The Button under ListItem doesn't support Invoke pattern
+		//TestCase210 The Table control
+		[Test]
+		public void RunTestCase210 ()
+		{
+			Run (TestCase210);
+		}
+
+		private void TestCase210 ()
+		{
+			//210.1 Select "Edit" menu item
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<MenuItem> ("Edit").Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
 			
-			//firefox
-			//BUG608920 - [uiaclient-GTKs]:The Edit control who's role name is "entry" is not implemented yet.
-			//BUG608923 - [uiaclient-GTKs]:The Header under List can't be found by UIA Client
-			//BUG	 - [uiaclient-GTKs]:The Hyperlink control supports the wrong pattern
-			//BUG608967 - [uiaclient-GTKs]:The Edit control in Document is not implemented yet.
+			//210.2 Select "Manage Extensions" Menu item 
+			menuBar.Find<MenuItem> ("Manage Extensions").Click ();
+			Thread.Sleep (Config.Instance.ShortDelay);
 			
-			//GTK app
-			//BUG609361 - [uiaclient-GTKs]:The Calendar control does not support any pattern
-			//BUG609377 - [uiaclient-GTKs]:The Calendar' children can't be found by UIA Client
-			//BUG609765 - [uiaclient-GTKs]:The control who's role name is "ColorChooser" is not implemented yet.
-			//BUG609780 - [uiaclient-GTKs]:The Pane control supports wrong pattern
-			//BUG
+			//210.3 Test the Table control's supported patterns & property
+			/*
+			 * BUG604660 - [uiaclient-GTKs]:The Table control should not support Selection pattern
+			*/
+			var extensionWindow = window.Find<Window> ("Extension Manager");
+			var table = extensionWindow.Find<Table> ();
+			/*
+			SWF.DataGrid table = new SWF.DataGrid ();
+			AutomationElement tableAe = AutomationElement.FromHandle (table.Handle);
+			AutomationPattern[] delPatterns = {GridItemPattern.Pattern.Pattern, SelectionPattern.Pattern};
+			helper.PatternChcek (menuBar, ae, null, delPatterns);
+			*/
+			
+			/*
+			 *  BUG605087 - [uiaclient-GTKs]:The Table has not implemented RowOrColumnMajorProperty
+			 */
+			/*
+			procedureLogger.Action ("Test the RowOrColumnMajorProperty of table");
+			procedureLogger.ExpectedResult ("The RowOrColumnMajorProperty of table should be Indeterminate");
+			Assert.AreEqual (RowOrColumnMajor.Indeterminate, TablePattern.RowOrColumnMajorProperty);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//210.4 Test the Header control's supported patterns & property
+			/*
+			 * BUG604649 - [uiaclient-GTKs]:The Header control supports the wrong patterns
+			*/
+			var header = table.Find<Header> ();
+		
+			/*
+			 * BUG605093 - [uiaclient-GTKs]:The Header control's IsContentElementProperty should be false
+			 */
+			/*
+			procedureLogger.Action ("Test the IsContentElementProperty of header");
+			procedureLogger.ExpectedResult ("The IsContentElementProperty of header should be false");
+			Assert.AreEqual (false, header.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//210.5 Test the Header Item control's supported patterns
+			/*
+			 * BUG605114 - [uiaclient-GTKs]:The uia-explore can't find the Header Item control
+			*/
+			var headerItem = table.Find<HeaderItem> ();
+			
+			//210.6 Test the Data Item control's supportd patterns
+			/*
+			 * BUG606293 - [uiaclient-GTKs]:The Data Item control should not support Selection ,Grid & Table Pattern
+			 * BUG606297 - [uiaclient-GTKs]:All Data Item should support SelectionItem Pattern
+			 * BUG606300 - [uiaclient-GTKs]:The Data Item can can typically be traversed by using 
+			 * the keyboard should support GridItem pattern
+			 * BUG606301 - [uiaclient-GTKs]:The Data Item which is Table control's child should support TableItem pattern	
+			 * BUG606305 - [uiaclient-GTKs]:The Data Item contains a state that can be cycled through should support Toggle Pattern
+			*/
+			var dataItem = window.Find<DataItem> ();
+			
+			//210.7 Expand the Data Item control
+			/*
+			 * BUG606295 - [uiaclient-GTKs]:The Data Item can be expanded or collapsed should support ExpandCollapse Pattern
+			 */
+			/*
+			dataItem.Expand ();
+			procedureLogger.ExpectedResult ("The data grid is expanded.");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//210.8 Test the control type of Data Item control's child
+			/*
+			 * BUG606656 - [uiaclient-GTKs]:The child of Data Item is recognized as edit and custom 
+			 */ 
+			//var subDataItem = window.Find<DataItem> ();
+		}
+		
+		//TestCase211 About F-Spot dialog
+		[Test]
+		public void RunTestCase211 ()
+		{
+			Run (TestCase211);
+		}
+
+		private void TestCase211 ()
+		{
+			//211.1 Select "Help" menu item
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<MenuItem> ("Help").Click ();
+			procedureLogger.ExpectedResult ("the \"Help\"'s sub menu is shown");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//211.2 Select "About" Menu item 
+			menuBar.Find<MenuItem> ("About").Click ();
+			procedureLogger.ExpectedResult ("the \"About F-Spot\" window is shown");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//211.3 Click "Credits" button
+			var aboutDialog = window.Find<Window> ("About F-Spot");
+			var creditsButton = aboutDialog.Find<Button> ("Credits");
+			creditsButton.Click ();
+			procedureLogger.ExpectedResult ("the \"Credits\" window is shown");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//211.4 Test the Document control's supported patterns & property
+			var creditsDialog = window.Find<Window> ("Credits");
+			var writtenByTabItem = creditsDialog.Find<TabItem> ("Written by");
+			var writtenByDocument = creditsDialog.Find<Document> ();
+			/*
+			 * BUG600432 - [uiaclient-GTKs]:A document whose content can be scrollable should support scroll pattern
+			 * BUG600430 - [uiaclient-GTKs]:A Document should not support value pattern
+			*/
+			/*
+			SWF.TextBox document = new SWF.TextBox ();
+			AutomationElement documentAe = AutomationElement.FromHandle (document.Handle);
+			AutomationPattern[] addPatterns = {ScrollPattern.Pattern};
+			helper.PatternChcek (document, documentAe, addPatterns, null);
+			*/
+			
+			var header = creditsDialog.Find<Header> ();
+			
+			/*
+			 * BUG600805 - [uiaclient-GTKs]:The Document has not implemented IsControlElementProperty
+			 */
+			/*
+			procedureLogger.Action ("Test the IsControlElementProperty of document");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of document should be false");
+			Assert.AreEqual (false, writtenByDocument.AutomationElement.Current.IsControlElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			/*
+			 *BUG600803 - [uiaclient-GTKs]:The Document has not implemented IsContentElementProperty 
+			 */
+			/*
+			procedureLogger.Action ("Test the IsContentElementProperty of document");
+			procedureLogger.ExpectedResult ("The IsContentElementProperty of document should be false");
+			Assert.AreEqual (false, writtenByDocument.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+
+			//211.5 Test scrollbar control's supported patterns & properties
+			var scrollbar = window.Find<ScrollBar> ();
+			SWF.ScrollableControl scrollbarControl = new SWF.ScrollableControl ();
+			AutomationElement scrollbarAe = AutomationElement.FromHandle (scrollbarControl.Handle);
+			AutomationPattern[] addPatterns = {InvokePattern.Pattern, RangeValuePattern.Pattern};
+			helper.PatternChcek (scrollbar, scrollbarAe, addPatterns, null);
+			/*
+			 * BUG600360 - [uiaclient-GTKs]: The ScrollBar does not support SmallChangeProperty
+			*/
+			/*
+			procedureLogger.Action ("Test the SmallChange of scrollbar");
+			procedureLogger.ExpectedResult ("The SmallChange of scrollbar should be 5");
+			Assert.AreEqual ("5", scrollbar.SmallChange);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			/*
+			 * BUG600360 - [uiaclient-GTKs]: The ScrollBar does not support SmallChangeProperty
+			*/
+			/*
+			procedureLogger.Action ("Test the LargeChange of scrollbar");
+			procedureLogger.ExpectedResult ("The LargeChange of scrollbar should be 30");
+			Assert.AreEqual ("30", scrollbar.LargeChange);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//211.6 Set the scrollbar to its maximum value
+			/*
+			 * 599993 - [uiaclient-GTKs]: The ScrollBar's value can't set to its maximum value
+			 * & LargeChangeProperty for RangeValuePattern
+			*/
+			/*
+			scrollbar.SetValue (752);
+			procedureLogger.ExpectedResult ("the scrollbar is set to its maximum.");
+			Assert.AreEqual ("752", scrollbar.Maximum);
+			*/
+			/*
+			 * BUG600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false, 
+			 * if the scrollbar's value can be set
+			 */
+			/*
+			procedureLogger.Action ("Test the IsreadOnly of scrollbar");
+			procedureLogger.ExpectedResult ("The IsreadOnly of scrollbar should be false,if the scrollbar's value can be set.");
+			Assert.AreEqual (false, scrollbar.IsReadOnly);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//211.7 Test the tab control's pattern & property
+			var tab = creditsDialog.Find<Tab> ();
+			SWF.TabControl tabControl = new SWF.TabControl ();
+			AutomationElement tabAe = AutomationElement.FromHandle (tabControl.Handle);
+			helper.PatternChcek (tab, tabAe, null, null);
+			/*
+			 * BUG600420 - [uiaclient-GTKs]:Tab 's IsSelectionRequired Property should be
+			 * true if there is at one child being selected
+			 */
+			/*
+			procedureLogger.Action ("Test the IsSelectionRequired of tab");
+			procedureLogger.ExpectedResult ("The IsSelectionRequired of tab shoulld be true.");
+			Assert.AreEqual (true, tab.IsSelectionRequired);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+		}
+		
+		//TestCase212 Create New Tag
+		[Test]
+		public void RunTestCase212 ()
+		{
+			Run (TestCase212);
+		}
+
+		private void TestCase212 ()
+		{
+			//212.1 Select "Tags" menu item
+			var menuBar = window.Find<MenuBar> ();
+			menuBar.Find<MenuItem> ("Tags").Click ();
+			procedureLogger.ExpectedResult ("the \"Tags\"'s sub menu is shown");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//212.2 Select "Create New Tag..." Menu item 
+			menuBar.Find<MenuItem> ("Create New Tag...").Click ();
+			procedureLogger.ExpectedResult ("the \"Create New Tag\" window is shown");
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			//212.3 Test the check box control's supported patterns & property
+			var tagDialog = window.Find<Window> ("Create New Tag");
+			var checkBox = tagDialog.Find<CheckBox> ();
+			
+			System.Windows.Forms.CheckBox checkboxControl = new System.Windows.Forms.CheckBox ();
+			AutomationElement checkboxAe = AutomationElement.FromHandle (checkboxControl.Handle);
+			helper.PatternChcek (menuBar, checkboxAe, null, null);
+			
+			/*
+			 * BUG602294 - [uiaclient-GTKs]:The The CheckBox has not implemented IsContentElementProperty
+			 */
+			/*
+			procedureLogger.Action ("Test the IsContentElementProperty of check box");
+			procedureLogger.ExpectedResult ("The IsContentElementProperty of check box should be false");
+			Assert.AreEqual (false, checkBox.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			/*
+			 * BUG602296 - [uiaclient-GTKs]:The CheckBox has not implemented IsControlElementProperty 
+			 */
+			/*
+			procedureLogger.Action ("Test the IsControlElementProperty of check box");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of check box should be false");
+			Assert.AreEqual (false, checkBox.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//212.4 Test the combobox control's supported patterns & property
+			var combobox = window.Find<ComboBox> ();
+			
+			/*
+			 * BUG602699 - [uiaclient-GTKs]:The ComboBox control should support the ExpandCollapsePatte
+			 * BUG602710 - [uiaclient-GTKs]:The ComboBox control should support the SelectionPattern
+			 */
+			/*
+			SWF.ComboBox comboboxControl= new SWF.ComboBox ();
+			AutomationElement comboboxAe = AutomationElement.FromHandle (comboboxControl.Handle);
+			AutomationPattern[] addPatterns = {SelectionPattern.Pattern};
+			helper.PatternChcek (comboboxControl, comboboxAe, addPatterns, null);
+			*/
+			
+			/*
+			 * BUG602716 - [uiaclient-GTKs]:The ComboBox's IsContentElementProperty should be true
+			 */
+			/*
+			procedureLogger.Action ("Test the IsControlElementProperty of combobox");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of combobox should be false");
+			Assert.AreEqual (true, combobox.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			/*
+			 * BUG602721 - [uiaclient-GTKs]:The ComboBox's IsControlElementProperty should be true
+			 */
+			/*
+			procedureLogger.Action ("Test the IsControlElementProperty of combobox");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of combobox should be false");
+			Assert.AreEqual (true, combobox.AutomationElement.Current.IsControlElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
+			
+			//212.5 Find the combobox's sub menu
+			/*
+			 * BUG602676 - [uiaclient-GTKs]:ComboBox can dropdown menu not menuitem
+			*/
+			//var subMenu = combobox.Find<Menu> ();
+			
+			//212.6 Test the edit control's supported patterns & property
+			var edit = window.Find<Edit> ();
+			/*
+			 * BUG603639 - [uiaclient-GTKs]:The Edit control should support the InvokePattern
+			*/
+			/*
+			SWF.TextBox editControl = new SWF.TextBox ();
+			AutomationElement editAe = AutomationElement.FromHandle (editControl.Handle);
+			AutomationPattern[] addPatterns = {TextPattern.Pattern, ValuePattern.Pattern};
+			helper.PatternChcek (editControl, editAe, addPatterns, null);	
+			*/
+			
+			procedureLogger.Action ("Test the IsControlElementProperty of edit");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of edit should be false");
+			Assert.AreEqual (true, edit.AutomationElement.Current.IsContentElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
+			
+			procedureLogger.Action ("Test the IsControlElementProperty of edit");
+			procedureLogger.ExpectedResult ("The IsControlElementProperty of edit should be false");
+			Assert.AreEqual (true, edit.AutomationElement.Current.IsControlElement);
+			Thread.Sleep (Config.Instance.ShortDelay);
 		}
 	}
+}

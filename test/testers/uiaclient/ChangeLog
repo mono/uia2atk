@@ -1,3 +1,8 @@
+2010-06-22  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: 
+	* Tests/GTK/Banshee.cs: Add testcase for bugs about pattern check. 
+
 2010-06-28  Calen Chen  <cachen@novell.com>
 
 	* Moonlight_DiggSearchTest_RunTestCase306-regression.py,
