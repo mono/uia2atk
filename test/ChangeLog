@@ -1,5 +1,9 @@
 2010-07-05  Neville Gao  <nevillegao@gmail.com>
 
+	* harness/machines.py: Added test machines in Beijing.
+
+2010-07-05  Neville Gao  <nevillegao@gmail.com>
+
 	* harness/local_run.py: Deleted 'branchcontrol' argument.
 
 2010-05-20  Calen Chen <cachen@novell.com>
