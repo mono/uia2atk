@@ -80,7 +80,7 @@ class Settings(object):
   is_force = False
   is_nodeps = False
   component = None
-  #branchcomponent = None
+  control = None
   # this is returned to the console.  it will get set to 1 if any tests fail
   return_code = 0
   uiadll_path = "uiaclient/Tests/bin/Debug"
@@ -98,7 +98,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:c:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree=","component="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:c:o:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree=","component=","control="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -131,6 +131,8 @@ class Settings(object):
         Settings.tree = t
       if o in ("-c","--component"):
         Settings.component = a
+      if o in ("-o","--control"):
+        Settings.control = a
 
       #if o in ("-b", "--branchcomponent"):
       #  Settings.branchcomponent = a
@@ -164,6 +166,7 @@ class Settings(object):
     output("                     trunk).  The default is trunk.")
     output("  -c | --component=  Select at least and only one component to test (i.e.,")
     output("                     winforms or moonlight).")
+    output("  -o | --control=    Select a control to test.")
     output("  -v | --version=    The tags or branches version desired")
     #output("  -b | --branchcomponent = Select at least and only one branch component to test uiaclient (i.e.,")
     #output("                     winforms or moonlight or gtk).")
@@ -188,16 +191,21 @@ class Test(object):
     #self.branchcomponent = str(Settings.branchcomponent)
     # dynamically evaluate tests_list with component name
     try:
-        self.tests = eval('tests.%s_tests_list' % self.component)
+      ttests = eval('tests.%s_tests_list' % self.component)
     except AttributeError:
-        output("ERROR:  No component found!")
+      output("ERROR:  No component found!")
+      abort(1)
+
+    if Settings.control != 'None':
+      self.control = str('%s-regression.py' % Settings.control)
+      if self.control in ttests:
+        self.tests = []
+        self.tests.append(self.control)
+      else:
+        output("ERROR:  No control found!")
         abort(1)
-    #else:
-    #    try:
-    #      self.tests = eval('tests.%s_%s_tests_list' % (self.component, self.branchcomponent))
-    #    except AttributeError:
-    #     output("ERROR:  No component found!")
-    #      abort(1)
+    else:
+      self.tests = ttests
 
     self.set_log_path()
 
@@ -571,7 +579,7 @@ class Test(object):
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
     p3 = s.Popen(["grep", "-v", "grep"], stdin=p2.stdout, stdout=s.PIPE)
-    p4 = s.Popen(["awk", "{print $1, $6}"], stdin=p3.stdout, stdout=s.PIPE)
+    p4 = s.Popen(["awk", "{print $1, $7}"], stdin=p3.stdout, stdout=s.PIPE)
     processes = dict(line.strip().split() for line in p4.stdout)
     if final and len(processes) > 0:
       output("WARNING:  The following processes never exited:")
