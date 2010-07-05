@@ -1,7 +1,7 @@
-# the tests_list list keeps track of enabled tests.  A test will be
+# the tests_list list keeps track of enabled tests.  a test will be
 # executed only after the tests sample application is added to this list
 
-# this allows tests to be worked on and developed in SVN, but only executed
+# this allows tests to be worked on and developed in svn, but only executed
 # as part of the test suite when they are ready
 
 # only add finished tests that should execute successfully to this list
@@ -109,33 +109,33 @@ moonlight_tests_list = [
 ]
 
 uiaclientwinforms_tests_list = [
-	"Winforms_KeePassTests_RunTestCase101-regression.py",
-	"Winforms_KeePassTests_RunTestCase102-regression.py",
-	"Winforms_KeePassTests_RunTestCase103-regression.py",
-	"Winforms_KeePassTests_RunTestCase104-regression.py",
-	"Winforms_DockPatternTests_RunTestCase105-regression.py",
-	"Winforms_WindowPatternTests_RunTestCase106-regression.py"
+	"winforms_keepasstests_runtestcase101-regression.py",
+	"winforms_keepasstests_runtestcase102-regression.py",
+	"winforms_keepasstests_runtestcase103-regression.py",
+	"winforms_keepasstests_runtestcase104-regression.py",
+	"winforms_dockpatterntests_runtestcase105-regression.py",
+	"winforms_windowpatterntests_runtestcase106-regression.py"
 ]
 
 uiaclientmoonlight_tests_list = [
-	"Moonlight_PuzzleGameTest_RunTestCase301-regression.py",
-	"Moonlight_PuzzleGameTest_RunTestCase302-regression.py",
-	"Moonlight_PuzzleGameTest_RunTestCase303-regression.py",
-	"Moonlight_SL2WithPrismTest_RunTestCase304-regression.py",
-	"Moonlight_SL2WithPrismTest_RunTestCase305-regression.py",
-	"Moonlight_DiggSearchTest_RunTestCase306-regression.py",
-	"Moonlight_DiggSearchTest_RunTestCase307-regression.py",
-	"Moonlight_DiggSearchTest_RunTestCase308-regression.py",
-	"Moonlight_DiggSearchTest_RunTestCase309-regression.py"
+	"moonlight_puzzlegametest_runtestcase301-regression.py",
+	"moonlight_puzzlegametest_runtestcase302-regression.py",
+	"moonlight_puzzlegametest_runtestcase303-regression.py",
+	"moonlight_sl2withprismtest_runtestcase304-regression.py",
+	"moonlight_sl2withprismtest_runtestcase305-regression.py",
+	"moonlight_diggsearchtest_runtestcase306-regression.py",
+	"moonlight_diggsearchtest_runtestcase307-regression.py",
+	"moonlight_diggsearchtest_runtestcase308-regression.py",
+	"moonlight_diggsearchtest_runtestcase309-regression.py"
 ]
 
 uiaclientgtk_tests_list = [
-	"Gtk_FSpot_RunTestCase201-regression.py",
-	"Gtk_FSpot_RunTestCase202-regression.py",
-	"Gtk_FSpot_RunTestCase203-regression.py",
-	"Gtk_FSpot_RunTestCase204-regression.py",
-	"Gtk_FSpot_RunTestCase205-regression.py",
-	"Gtk_FSpot_RunTestCase206-regression.py",
-	"Gtk_FSpot_RunTestCase207-regression.py",
-	"Gtk_FSpot_RunTestCase208-regression.py"
+	"gtk_fspot_runtestcase201-regression.py",
+	"gtk_fspot_runtestcase202-regression.py",
+	"gtk_fspot_runtestcase203-regression.py",
+	"gtk_fspot_runtestcase204-regression.py",
+	"gtk_fspot_runtestcase205-regression.py",
+	"gtk_fspot_runtestcase206-regression.py",
+	"gtk_fspot_runtestcase207-regression.py",
+	"gtk_fspot_runtestcase208-regression.py"
 ]
