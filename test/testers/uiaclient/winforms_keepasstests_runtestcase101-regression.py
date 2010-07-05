@@ -7,6 +7,7 @@
 ###############################################################################
 
 import os
+import subprocess as s
 from sys import path
 
 test_dir = path[0]

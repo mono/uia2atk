@@ -1,3 +1,21 @@
+2010-07-05  Calen Chen  <cachen@novell.com>
+
+	* gtk_fspot_runtestcase201-regression.py,
+	* gtk_fspot_runtestcase202-regression.py,
+	* gtk_fspot_runtestcase203-regression.py,
+	* gtk_fspot_runtestcase204-regression.py,
+	* gtk_fspot_runtestcase205-regression.py,
+	* gtk_fspot_runtestcase206-regression.py,
+	* gtk_fspot_runtestcase207-regression.py,
+	* gtk_fspot_runtestcase208-regression.py,
+	* moonlight_puzzlegameTest_runtestcase301-regression.py,
+	* moonlight_puzzlegameTest_runtestcase302-regression.py,
+	* moonlight_puzzlegameTest_runtestcase303-regression.py,
+	* moonlight_sl2withprismtest_runtestcase304-regression.py,
+	* moonlight_sl2withprismtest_runtestcase305-regression.py,
+	* moonlight_diggsearchTest_runtestcase306-regression.py,
+	* moonlight_diggsearchTest_runtestcase307-regression.py: lower file name
+
 2010-06-22  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: 
