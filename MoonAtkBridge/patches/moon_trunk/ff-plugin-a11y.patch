@@ -1,0 +1,777 @@
+diff -r 563c5c2f8def accessible/src/atk/Makefile.in
+--- a/accessible/src/atk/Makefile.in	Wed Jun 30 23:24:05 2010 +0200
++++ b/accessible/src/atk/Makefile.in	Tue Jul 06 16:47:33 2010 -0400
+@@ -47,6 +47,7 @@
+ 
+ 
+ CPPSRCS = \
++  nsAtkSocketAccessible.cpp \
+   nsAccessNodeWrap.cpp \
+   nsAccessibleWrap.cpp \
+   nsDocAccessibleWrap.cpp \
+@@ -67,6 +68,7 @@
+   $(NULL)
+ 
+ EXPORTS = \
++  nsAtkSocketAccessible.h \
+   nsAccessNodeWrap.h \
+   nsARIAGridAccessibleWrap.h \
+   nsAccessibleWrap.h \
+diff -r 563c5c2f8def accessible/src/atk/nsApplicationAccessibleWrap.cpp
+--- a/accessible/src/atk/nsApplicationAccessibleWrap.cpp	Wed Jun 30 23:24:05 2010 +0200
++++ b/accessible/src/atk/nsApplicationAccessibleWrap.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -66,6 +66,13 @@
+ static const char sAccessibilityKey [] =
+     "config.use_system_prefs.accessibility";
+ 
++// Soft references to AtkSocket
++typedef void (* AtkSocketEmbedType) (AtkSocket*, gchar*);
++AtkSocketEmbedType g_atk_socket_embed = NULL;
++GType g_atk_socket_type = G_TYPE_INVALID;
++static const char sATKSocketEmbedSymbol[] = "atk_socket_embed";
++static const char sATKSocketGetTypeSymbol[] = "atk_socket_get_type";
++
+ /* gail function pointer */
+ static guint (* gail_add_global_event_listener) (GSignalEmissionHook listener,
+                                                  const gchar *event_type);
+@@ -703,6 +710,11 @@
+             if (pfn_atk_hyperlink_impl_get_type) {
+                 g_atk_hyperlink_impl_type = pfn_atk_hyperlink_impl_get_type();
+             }
++            AtkGetTypeType pfn_atk_socket_get_type = (AtkGetTypeType) PR_FindFunctionSymbol(sATKLib, sATKSocketGetTypeSymbol);
++            if (pfn_atk_socket_get_type) {
++                g_atk_socket_type = pfn_atk_socket_get_type();
++                g_atk_socket_embed = (AtkSocketEmbedType) PR_FindFunctionSymbol(sATKLib, sATKSocketEmbedSymbol);
++            }
+         }
+         sATKChecked = PR_TRUE;
+     }
+diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.cpp
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/accessible/src/atk/nsAtkSocketAccessible.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -0,0 +1,221 @@
++/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
++/* vim:expandtab:shiftwidth=4:tabstop=4:
++ */
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is mozilla.org code.
++ *
++ * The Initial Developer of the Original Code is
++ * Novell, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2010
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *   Brad Taylor <brad@getcoded.net> (original author)
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either the GNU General Public License Version 2 or later (the "GPL"), or
++ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++#include <atk/atk.h>
++#include "nsAtkSocketAccessible.h"
++#include "nsMai.h"
++#include "nsMaiInterfaceComponent.h"
++
++// Defined in nsApplicationAccessibleWrap.cpp
++extern "C" void (*g_atk_socket_embed) (AtkSocket*, gchar*);
++extern "C" GType g_atk_socket_type;
++
++/* MaiAtkSocket */
++
++#define MAI_TYPE_ATK_SOCKET              (mai_atk_socket_get_type ())
++#define MAI_ATK_SOCKET(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
++                                          MAI_TYPE_ATK_SOCKET, MaiAtkSocket))
++#define MAI_IS_ATK_SOCKET(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
++                                          MAI_TYPE_ATK_SOCKET))
++#define MAI_ATK_SOCKET_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass),\
++                                          MAI_TYPE_ATK_SOCKET,\
++                                          MaiAtkSocketClass))
++#define MAI_IS_ATK_SOCKET_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass),\
++                                          MAI_TYPE_ATK_SOCKET))
++#define MAI_ATK_SOCKET_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj),\
++                                          MAI_TYPE_ATK_SOCKET,\
++                                          MaiAtkSocketClass))
++
++typedef struct _MaiAtkSocket             MaiAtkSocket;
++typedef struct _MaiAtkSocketClass        MaiAtkSocketClass;
++
++struct _MaiAtkSocket
++{
++  AtkSocket parent;
++
++  nsAccessibleWrap *accWrap;
++};
++
++struct _MaiAtkSocketClass
++{
++  AtkSocketClass parent_class;
++};
++
++G_BEGIN_DECLS
++
++GType mai_atk_socket_get_type(void);
++AtkObject* mai_atk_socket_new(nsAccessibleWrap *aAccWrap);
++
++void mai_atk_component_iface_init(AtkComponentIface *iface);
++AtkObject* mai_atk_socket_ref_accessible_at_point(AtkComponent *aComponent,
++                                                  gint aAccX,
++                                                  gint aAccY,
++                                                  AtkCoordType aCoordType);
++void mai_atk_socket_get_extents(AtkComponent *aComponent,
++                                gint *aAccX,
++                                gint *aAccY,
++                                gint *aAccWidth,
++                                gint *aAccHeight,
++                                AtkCoordType aCoordType);
++
++G_END_DECLS
++
++G_DEFINE_TYPE_EXTENDED(MaiAtkSocket, mai_atk_socket, g_atk_socket_type, 0,
++                       G_IMPLEMENT_INTERFACE(ATK_TYPE_COMPONENT,
++                                             mai_atk_component_iface_init))
++
++void
++mai_atk_socket_class_init(MaiAtkSocketClass* acc)
++{
++}
++
++void
++mai_atk_socket_init(MaiAtkSocket* acc)
++{
++}
++
++AtkObject*
++mai_atk_socket_new(nsAccessibleWrap *aAccWrap)
++{
++  NS_ENSURE_TRUE(aAccWrap, NULL);
++
++  MaiAtkSocket* acc;
++  acc = (MaiAtkSocket*)g_object_new(MAI_TYPE_ATK_SOCKET, NULL);
++  NS_ENSURE_TRUE(acc, NULL);
++  acc->accWrap = aAccWrap;
++  return ATK_OBJECT(acc);
++}
++
++void
++mai_atk_component_iface_init(AtkComponentIface *aIface)
++{
++  NS_ASSERTION(aIface, "Invalid Interface");
++
++  aIface->ref_accessible_at_point = mai_atk_socket_ref_accessible_at_point;
++  aIface->get_extents = mai_atk_socket_get_extents;
++}
++
++AtkObject*
++mai_atk_socket_ref_accessible_at_point(AtkComponent *aComponent,
++                                       gint aAccX, gint aAccY,
++                                       AtkCoordType aCoordType)
++{
++  NS_ENSURE_TRUE(MAI_IS_ATK_SOCKET(aComponent), nsnull);
++
++  return refAccessibleAtPointHelper(MAI_ATK_SOCKET(aComponent)->accWrap,
++                                    aAccX,
++                                    aAccY,
++                                    aCoordType);
++}
++
++void
++mai_atk_socket_get_extents(AtkComponent *aComponent,
++                           gint *aAccX,
++                           gint *aAccY,
++                           gint *aAccWidth,
++                           gint *aAccHeight,
++                           AtkCoordType aCoordType)
++{
++  *aAccX = *aAccY = *aAccWidth = *aAccHeight = 0;
++
++  if (!MAI_IS_ATK_SOCKET(aComponent))
++    return;
++
++  getExtentsHelper(MAI_ATK_SOCKET(aComponent)->accWrap,
++                   aAccX, aAccY, aAccWidth, aAccHeight, aCoordType);
++}
++
++nsAtkSocketAccessible::nsAtkSocketAccessible(nsIContent *aContent,
++                                             nsIWeakReference *aShell):
++  nsAccessibleWrap(aContent, aShell)
++{
++}
++
++NS_IMETHODIMP
++nsAtkSocketAccessible::GetNativeInterface(void **aOutAccessible)
++{
++  *aOutAccessible = nsnull;
++
++  if (!mAtkObject) {
++    if (!mWeakShell || !nsAccUtils::IsEmbeddedObject(this)) {
++      // We don't create ATK objects for node which has been shutdown, or
++      // nsIAccessible plain text leaf nodes
++      return NS_ERROR_FAILURE;
++    }
++    mAtkObject = mai_atk_socket_new(this);
++  }
++
++  *aOutAccessible = mAtkObject;
++  return NS_OK;
++}
++
++void
++nsAtkSocketAccessible::Shutdown()
++{
++  if (mAtkObject) {
++    if (MAI_IS_ATK_SOCKET(mAtkObject)) {
++      MAI_ATK_SOCKET(mAtkObject)->accWrap = nsnull;
++    }
++    g_object_unref(mAtkObject);
++    mAtkObject = nsnull;
++  }
++  nsAccessibleWrap::Shutdown();
++}
++
++void
++nsAtkSocketAccessible::Embed(nsCString plugId)
++{
++  void* acc;
++  nsresult rv = GetNativeInterface(&acc);
++  if (NS_FAILED(rv))
++    return;
++
++  // Using G_TYPE macros instead of ATK_SOCKET macros
++  // to avoid undefined symbols.
++  if (g_atk_socket_type != G_TYPE_INVALID &&
++      G_TYPE_CHECK_INSTANCE_TYPE(acc, g_atk_socket_type) &&
++      !plugId.IsVoid()) {
++    if (g_atk_socket_embed) {
++      AtkSocket *accSocket;
++      accSocket = G_TYPE_CHECK_INSTANCE_CAST ((acc), g_atk_socket_type, AtkSocket);
++      g_atk_socket_embed(accSocket, (gchar*)plugId.get());
++    }
++  }
++}
+diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.h
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/accessible/src/atk/nsAtkSocketAccessible.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -0,0 +1,70 @@
++/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
++/* vim:expandtab:shiftwidth=4:tabstop=4:
++ */
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is mozilla.org code.
++ *
++ * The Initial Developer of the Original Code is
++ * Novell, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2010
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *   Brad Taylor <brad@getcoded.net> (original author)
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either the GNU General Public License Version 2 or later (the "GPL"), or
++ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++#ifndef _nsAtkSocketAccessible_H_
++#define _nsAtkSocketAccessible_H_
++
++#include "nsAccessibleWrap.h"
++#include "nsCoreUtils.h"
++#include "nsAccUtils.h"
++
++/**
++ * Provides a nsAccessibleWrap wrapper around AtkSocket for out-of-process
++ * accessibles.
++ */
++class nsAtkSocketAccessible: public nsAccessibleWrap
++{
++public:
++  nsAtkSocketAccessible(nsIContent *aContent, nsIWeakReference *aShell);
++
++  // nsAccessibleWrap
++  NS_IMETHODIMP GetNativeInterface(void **aOutAccessible);
++
++  // nsAccessNode
++  void Shutdown();
++
++  /*
++   * Embeds the children of an AtkPlug, specified by plugId, as the children of
++   * this socket.
++   */
++  void Embed(nsCString plugId);
++};
++
++#endif
+diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.cpp
+--- a/accessible/src/atk/nsMaiInterfaceComponent.cpp	Wed Jun 30 23:24:05 2010 +0200
++++ b/accessible/src/atk/nsMaiInterfaceComponent.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -72,9 +72,42 @@
+                        gint aAccX, gint aAccY,
+                        AtkCoordType aCoordType)
+ {
++    return refAccessibleAtPointHelper(GetAccessibleWrap(ATK_OBJECT(aComponent)),
++                                      aAccX, aAccY, aCoordType);
++}
++
++void
++getExtentsCB(AtkComponent *aComponent,
++             gint *aAccX,
++             gint *aAccY,
++             gint *aAccWidth,
++             gint *aAccHeight,
++             AtkCoordType aCoordType)
++{
++    getExtentsHelper(GetAccessibleWrap(ATK_OBJECT(aComponent)),
++                     aAccX, aAccY, aAccWidth, aAccHeight, aCoordType);
++}
++
++gboolean
++grabFocusCB(AtkComponent *aComponent)
++{
+     nsAccessibleWrap *accWrap = GetAccessibleWrap(ATK_OBJECT(aComponent));
+-    if (!accWrap || nsAccUtils::MustPrune(accWrap))
++    if (!accWrap)
++        return FALSE;
++
++    nsresult rv = accWrap->TakeFocus();
++    return (NS_FAILED(rv)) ? FALSE : TRUE;
++}
++
++AtkObject*
++refAccessibleAtPointHelper(nsAccessibleWrap *accWrap,
++                           gint aAccX,
++                           gint aAccY,
++                           AtkCoordType aCoordType)
++{
++    if (!accWrap || nsAccUtils::MustPrune(accWrap)) {
+         return nsnull;
++    }
+ 
+     // nsIAccessible getChildAtPoint (x,y) is in screen pixels.
+     if (aCoordType == ATK_XY_WINDOW) {
+@@ -98,16 +131,15 @@
+ }
+ 
+ void
+-getExtentsCB(AtkComponent *aComponent,
+-             gint *aAccX,
+-             gint *aAccY,
+-             gint *aAccWidth,
+-             gint *aAccHeight,
+-             AtkCoordType aCoordType)
++getExtentsHelper(nsAccessibleWrap *accWrap,
++                 gint *aAccX,
++                 gint *aAccY,
++                 gint *aAccWidth,
++                 gint *aAccHeight,
++                 AtkCoordType aCoordType)
+ {
+     *aAccX = *aAccY = *aAccWidth = *aAccHeight = 0;
+ 
+-    nsAccessibleWrap *accWrap = GetAccessibleWrap(ATK_OBJECT(aComponent));
+     if (!accWrap)
+         return;
+ 
+@@ -129,14 +161,3 @@
+     *aAccWidth = nsAccWidth;
+     *aAccHeight = nsAccHeight;
+ }
+-
+-gboolean
+-grabFocusCB(AtkComponent *aComponent)
+-{
+-    nsAccessibleWrap *accWrap = GetAccessibleWrap(ATK_OBJECT(aComponent));
+-    if (!accWrap)
+-        return FALSE;
+-
+-    nsresult rv = accWrap->TakeFocus();
+-    return (NS_FAILED(rv)) ? FALSE : TRUE;
+-}
+diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.h
+--- a/accessible/src/atk/nsMaiInterfaceComponent.h	Wed Jun 30 23:24:05 2010 +0200
++++ b/accessible/src/atk/nsMaiInterfaceComponent.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -59,6 +59,13 @@
+  */
+ gboolean grabFocusCB(AtkComponent *aComponent);
+ 
++AtkObject* refAccessibleAtPointHelper(nsAccessibleWrap *accWrap,
++                                      gint aAccX, gint aAccY,
++                                      AtkCoordType aCoordType);
++void getExtentsHelper(nsAccessibleWrap *accWrap,
++                      gint *aAccX, gint *aAccY, gint *aAccWidth,
++                      gint *aAccHeight, AtkCoordType aCoordType);
++
+ /* what are missing now for atk component */
+ 
+ /* ==================================================
+diff -r 563c5c2f8def accessible/src/base/nsAccessibilityService.cpp
+--- a/accessible/src/base/nsAccessibilityService.cpp	Wed Jun 30 23:24:05 2010 +0200
++++ b/accessible/src/base/nsAccessibilityService.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -93,6 +93,12 @@
+ #include "nsHTMLWin32ObjectAccessible.h"
+ #endif
+ 
++// For embedding plugin accessibles
++#ifdef MOZ_ACCESSIBILITY_ATK
++#include <dlfcn.h>
++#include "nsAtkSocketAccessible.h"
++#endif
++
+ #ifndef DISABLE_XFORMS_HOOKS
+ #include "nsXFormsFormControlsAccessible.h"
+ #include "nsXFormsWidgetsAccessible.h"
+@@ -347,11 +353,12 @@
+       return CreateOuterDocAccessible(aContent, aPresShell);
+   }
+ 
++#if defined(XP_WIN) || defined(MOZ_ACCESSIBILITY_ATK)
++  // 2) for plugins
++  nsCOMPtr<nsIPluginInstance> pluginInstance;
++  if (NS_SUCCEEDED(aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance))) &&
++      pluginInstance) {
+ #ifdef XP_WIN
+-  // 2) for plugins
+-  nsCOMPtr<nsIPluginInstance> pluginInstance ;
+-  aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance));
+-  if (pluginInstance) {
+     // Note: pluginPort will be null if windowless.
+     HWND pluginPort = nsnull;
+     aFrame->GetPluginPort(&pluginPort);
+@@ -361,6 +368,33 @@
+                                                                     pluginPort);
+     NS_IF_ADDREF(accessible);
+     return accessible;
++#elif MOZ_ACCESSIBILITY_ATK
++    void* atk = dlopen("libatk-1.0.so", RTLD_LAZY);
++
++    // The AtkSocket API is a soft dependency, as it was introduced in ATK 1.30
++    // and Firefox requires ATK 1.19.
++    void* atk_socket_new = dlsym(atk, "atk_socket_new");
++    if (!atk_socket_new) {
++      dlclose(atk);
++      return nsnull;
++    }
++
++    dlclose(atk);
++
++    nsAtkSocketAccessible* socketAccessible = nsnull;
++
++    nsCString plugId;
++    nsresult rv = pluginInstance->GetValueFromPlugin(
++      NPPVpluginNativeAccessibleAtkPlugId, &plugId);
++    if (NS_SUCCEEDED(rv) && !plugId.IsVoid()) {
++      socketAccessible = new nsAtkSocketAccessible(aContent, weakShell);
++
++      socketAccessible->Embed(plugId);
++
++      NS_IF_ADDREF(socketAccessible);
++      return socketAccessible;
++    }
++#endif
+   }
+ #endif
+ 
+diff -r 563c5c2f8def dom/plugins/PPluginInstance.ipdl
+--- a/dom/plugins/PPluginInstance.ipdl	Wed Jun 30 23:24:05 2010 +0200
++++ b/dom/plugins/PPluginInstance.ipdl	Tue Jul 06 16:47:33 2010 -0400
+@@ -77,6 +77,8 @@
+     returns (nullable PPluginScriptableObject value, NPError result);
+ 
+   rpc NPP_SetValue_NPNVprivateModeBool(bool value) returns (NPError result);
++  rpc NPP_GetValue_NPPVpluginNativeAccessibleAtkPlugId()
++    returns (nsCString plug_id, NPError result);
+ 
+   rpc NPP_HandleEvent(NPRemoteEvent event)
+     returns (int16_t handled);
+diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.cpp
+--- a/dom/plugins/PluginInstanceChild.cpp	Wed Jun 30 23:24:05 2010 +0200
++++ b/dom/plugins/PluginInstanceChild.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -513,6 +513,35 @@
+ }
+ 
+ bool
++PluginInstanceChild::AnswerNPP_GetValue_NPPVpluginNativeAccessibleAtkPlugId(
++                                          nsCString* aPlugId,
++                                          NPError* aResult)
++{
++    AssertPluginThread();
++
++#if MOZ_ACCESSIBILITY_ATK
++
++    char* plugId = NULL;
++    NPError result = NPERR_GENERIC_ERROR;
++    if (mPluginIface->getvalue) {
++        result = mPluginIface->getvalue(GetNPP(),
++                                        NPPVpluginNativeAccessibleAtkPlugId,
++                                        &plugId);
++    }
++
++    *aPlugId = nsCString(plugId, -1);
++    *aResult = result;
++    return true;
++
++#else
++
++    NS_RUNTIMEABORT("shouldn't be called on non-ATK platforms");
++    return false;
++
++#endif
++}
++
++bool
+ PluginInstanceChild::AnswerNPP_SetValue_NPNVprivateModeBool(const bool& value,
+                                                             NPError* result)
+ {
+diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.h
+--- a/dom/plugins/PluginInstanceChild.h	Wed Jun 30 23:24:05 2010 +0200
++++ b/dom/plugins/PluginInstanceChild.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -86,7 +86,9 @@
+     virtual bool
+     AnswerNPP_GetValue_NPPVpluginScriptableNPObject(PPluginScriptableObjectChild** value,
+                                                     NPError* result);
+-
++    virtual bool
++    AnswerNPP_GetValue_NPPVpluginNativeAccessibleAtkPlugId(nsCString* aPlugId,
++                                                     NPError* aResult);
+     virtual bool
+     AnswerNPP_SetValue_NPNVprivateModeBool(const bool& value, NPError* result);
+ 
+diff -r 563c5c2f8def dom/plugins/PluginInstanceParent.cpp
+--- a/dom/plugins/PluginInstanceParent.cpp	Wed Jun 30 23:24:05 2010 +0200
++++ b/dom/plugins/PluginInstanceParent.cpp	Tue Jul 06 16:47:33 2010 -0400
+@@ -590,6 +590,23 @@
+         return NPERR_NO_ERROR;
+     }
+ 
++#ifdef MOZ_ACCESSIBILITY_ATK
++    case NPPVpluginNativeAccessibleAtkPlugId: {
++        nsCString plugId;
++        NPError rv;
++        if (!CallNPP_GetValue_NPPVpluginNativeAccessibleAtkPlugId(&plugId, &rv)) {
++            return NPERR_GENERIC_ERROR;
++        }
++
++        if (NPERR_NO_ERROR != rv) {
++            return rv;
++        }
++
++        (*(nsCString*)_retval) = plugId;
++        return NPERR_NO_ERROR;
++    }
++#endif
++
+     default:
+         PR_LOG(gPluginLog, PR_LOG_WARNING,
+                ("In PluginInstanceParent::NPP_GetValue: Unhandled NPPVariable %i (%s)",
+diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atk.h
+--- a/other-licenses/atk-1.0/atk/atk.h	Wed Jun 30 23:24:05 2010 +0200
++++ b/other-licenses/atk-1.0/atk/atk.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -20,6 +20,8 @@
+ #ifndef __ATK_H__
+ #define __ATK_H__
+ 
++#define __ATK_H_INSIDE__
++
+ #include <atk/atkobject.h>
+ #include <atk/atkaction.h>
+ #include <atk/atkcomponent.h>
+@@ -33,17 +35,22 @@
+ #include <atk/atknoopobject.h>
+ #include <atk/atknoopobjectfactory.h>
+ #include <atk/atkobjectfactory.h>
++#include <atk/atkplug.h>
+ #include <atk/atkregistry.h>
+ #include <atk/atkrelation.h>
+ #include <atk/atkrelationset.h>
+ #include <atk/atkrelationtype.h>
+ #include <atk/atkselection.h>
++#include <atk/atksocket.h>
+ #include <atk/atkstate.h>
+ #include <atk/atkstateset.h>
+ #include <atk/atkstreamablecontent.h>
+ #include <atk/atktable.h>
+ #include <atk/atktext.h>
+ #include <atk/atkutil.h>
++#include <atk/atkmisc.h>
+ #include <atk/atkvalue.h>
+ 
++#undef __ATK_H_INSIDE__
++
+ #endif /* __ATK_H__ */
+diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atkplug.h
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/other-licenses/atk-1.0/atk/atkplug.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -0,0 +1,61 @@
++/* ATK -  Accessibility Toolkit
++ * Copyright 2009 Novell, Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++#if defined(ATK_DISABLE_SINGLE_INCLUDES) && !defined (__ATK_H_INSIDE__) && !defined (ATK_COMPILATION)
++#error "Only <atk/atk.h> can be included directly."
++#endif
++
++#ifndef __ATK_PLUG_H__
++#define __ATK_PLUG_H__
++
++G_BEGIN_DECLS
++
++#define ATK_TYPE_PLUG               (atk_plug_get_type ())
++#define ATK_PLUG(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), ATK_TYPE_PLUG, AtkPlug))
++#define ATK_IS_PLUG(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ATK_TYPE_PLUG))
++#define ATK_PLUG_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), ATK_TYPE_PLUG, AtkPlugClass))
++#define ATK_IS_PLUG_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), ATK_TYPE_PLUG))
++#define ATK_PLUG_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), ATK_TYPE_PLUG, AtkPlugClass))
++
++typedef struct _AtkPlug         AtkPlug;
++typedef struct _AtkPlugClass    AtkPlugClass;
++
++struct _AtkPlug
++{
++  AtkObject parent;
++};
++
++GType atk_plug_get_type (void);
++
++struct _AtkPlugClass
++{
++  AtkObjectClass parent_class;
++  
++  /* to be subscribed to by atk-bridge */
++
++  /*< protected >*/
++  gchar* (* get_object_id) (AtkPlug* obj);
++};
++
++AtkObject*    atk_plug_new     (void);
++gchar*        atk_plug_get_id  (AtkPlug* plug);
++
++G_END_DECLS
++
++#endif /* __ATK_PLUG_H__ */
+diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atksocket.h
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/other-licenses/atk-1.0/atk/atksocket.h	Tue Jul 06 16:47:33 2010 -0400
+@@ -0,0 +1,65 @@
++/* ATK -  Accessibility Toolkit
++ * Copyright 2009 Novell, Inc.
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++#if defined(ATK_DISABLE_SINGLE_INCLUDES) && !defined (__ATK_H_INSIDE__) && !defined (ATK_COMPILATION)
++#error "Only <atk/atk.h> can be included directly."
++#endif
++
++#ifndef __ATK_SOCKET_H__
++#define __ATK_SOCKET_H__
++
++G_BEGIN_DECLS
++
++#define ATK_TYPE_SOCKET               (atk_socket_get_type ())
++#define ATK_SOCKET(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), ATK_TYPE_SOCKET, AtkSocket))
++#define ATK_IS_SOCKET(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), ATK_TYPE_SOCKET))
++#define ATK_SOCKET_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), ATK_TYPE_SOCKET, AtkSocketClass))
++#define ATK_IS_SOCKET_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), ATK_TYPE_SOCKET))
++#define ATK_SOCKET_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), ATK_TYPE_SOCKET, AtkSocketClass))
++
++typedef struct _AtkSocket         AtkSocket;
++typedef struct _AtkSocketClass    AtkSocketClass;
++
++struct _AtkSocket
++{
++  AtkObject parent;
++
++  /*< private >*/
++  gchar* embedded_plug_id;
++};
++
++GType atk_socket_get_type (void);
++
++struct _AtkSocketClass
++{
++  AtkObjectClass parent_class;
++  
++  /* to be subscribed to by atk-bridge */
++
++  /*< protected >*/
++  void (* embed) (AtkSocket *obj, gchar* plug_id);
++};
++
++AtkObject*    atk_socket_new           (void);
++void          atk_socket_embed         (AtkSocket* obj, gchar* plug_id);
++gboolean      atk_socket_is_occupied   (AtkSocket* obj);
++
++G_END_DECLS
++
++#endif /* __ATK_SOCKET_H__ */

@@ -30,7 +30,7 @@ Index: plugin/install/install.rdf.in
 -        <em:minVersion>@MIN_FIREFOX_VERSION@</em:minVersion>
 -        <em:maxVersion>@MAX_FIREFOX_VERSION@</em:maxVersion>
 +        <em:minVersion>3.5</em:minVersion>
-+        <em:maxVersion>3.5.*</em:maxVersion>
++        <em:maxVersion>4.*</em:maxVersion>
        </Description>
      </em:targetApplication>
 -    <em:targetApplication><!-- SeaMonkey -->
