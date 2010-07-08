@@ -1,5 +1,9 @@
 2010-07-08  Mario Carrion  <mcarrion@novell.com>
 
+	* patches/moon_trunk/moonatkbridge-oop.patch: Correct FF maxVersion.
+
+2010-07-08  Mario Carrion  <mcarrion@novell.com>
+
 	* patches/moon_trunk/moonatkbridge-oop.patch: OOPP patch.
 
 2010-07-07  Mario Carrion  <mcarrion@novell.com>
