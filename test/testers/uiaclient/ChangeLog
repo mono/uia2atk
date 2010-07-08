@@ -1,3 +1,7 @@
+2010-07-08  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Update testcase 202, 203, 204, 205. 
+
 2010-07-05  Calen Chen  <cachen@novell.com>
 
 	* gtk_fspot_runtestcase201-regression.py,
@@ -16,7 +20,7 @@
 	* moonlight_diggsearchTest_runtestcase306-regression.py,
 	* moonlight_diggsearchTest_runtestcase307-regression.py: lower file name
 
-2010-06-22  Felicia Mu  <fxmu@novell.com>
+2010-06-29  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: 
 	* Tests/GTK/Banshee.cs: Add testcase for bugs about pattern check. 

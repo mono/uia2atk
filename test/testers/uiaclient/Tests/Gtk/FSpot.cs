@@ -242,11 +242,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			//202.1 Check the button on toolbar's can be focusd
 			var browseButton = window.Find<Button> ("Browse");
 			
+			var editButton = window.Find<Button> ("Edit Image");
+			
 			/*
 			 * BUG619448 - [uiaclient-GTKs]: The button can't be focused by SetFocus() method.
 			 */
-			var editButton = window.Find<Button> ("Edit Image");
-			
 			/*
 			procedureLogger.Action ("Set focus on browseButton.");
 			browseButton.AutomationElement.SetFocus();
@@ -319,11 +319,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//202.7 Maximum the picture
 			var slider = window.Find<Slider> ();
-			//TODO
+
 			/*
 			 * BUG607040 - [uiaclient-GTKs]:The slider control should not support Invoke Pattern
 			 */
-			
 			slider.SetValue (slider.Maximum);
 			procedureLogger.ExpectedResult ("The picture is maximumed.");
 			Assert.AreEqual (1.0, slider.Maximum);
@@ -335,6 +334,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Assert.AreEqual (0, slider.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			/*
+			 * BUG600360 - [uiaclient-GTKs]: The SmallChangeProperty & LargeChangeProperty 
+			 * of RangeValuePattern is not implemented .
+			 */
+			/*
 			//202.9 Give the picture a small enlarge
 			slider.SetValue (slider.Minimum + slider.SmallChange);
 			procedureLogger.ExpectedResult ("Make the picture a small change large.");
@@ -346,18 +350,31 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("Make the picture a big change large.");
 			Assert.AreEqual (slider.LargeChange, 1 - slider.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
 			//202.11 Give a comment "the last one" to the picture
-			var edit = window.Find<Edit> ("Comment:");
+			var firstGroup = window.Find<Group> ();
+			var subGroups = firstGroup.FindAll<Group> ();
+			var pane = subGroups[1].Find<Pane> ();
+			var groups = pane.FindAll<Group> ();
+			var tab = groups[1].Find<Tab> ();
+			var edit = tab.Find<Edit> ();
+
 			edit.SetValue ("the last one");
+			Thread.Sleep (Config.Instance.ShortDelay);
 			procedureLogger.ExpectedResult ("The \"the last one\" is inputed into the edit.");
 			Assert.AreEqual ("the last one", edit.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			/*
+			 * BUG595149 WindowPattern is not finished
+			 */
+			/*
 			//202.12 Close the F-Spot window
 			window.Close ();
 			procedureLogger.ExpectedResult ("The F-Spot window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 		}
 
 		//TestCase203 Adjust the time of picture
@@ -369,7 +386,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 		private void TestCase203 ()
 		{
+			//If the BUG619425 has been fixed, uncomment the below codes.
 			//Do the action to load the list items.
+			/*
 			ImportPictures ();
 
 			//203.1 Select the third icon
@@ -378,6 +397,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The third icon is selected.");
 			Assert.IsTrue (thirdItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
 			//203.2 Select the "Edit" Menu
 			var editMenuItem = window.Find<MenuItem> ("Edit");
@@ -392,11 +412,16 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.4 Click the "Calendar" button
-			var adjustTimeDialog = window.Find<Window> ("Adjust Time");
-			adjustTimeDialog.Find<Button> ("Select date").Click ();
+			var adjustTimeDialog = app.FindGtkSubWindow (window, "Adjust Time");
+			var selectButton = adjustTimeDialog.Find<Button> ("Select Date");
+			selectButton.Click ();
 			procedureLogger.ExpectedResult ("The \"Calendar\" is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
+			/*
+			 * BUG609377 - [uiaclient-GTKs]:The Calendar' children can't be found by UIA Client
+			 */
+			/*
 			//203.5 Select "10" Day of the Calendar
 			adjustTimeDialog.Find<Button> ("10").Click ();
 			procedureLogger.ExpectedResult ("The \"10\" day is selected.");
@@ -415,11 +440,17 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult ("The \"08:30\" listitem is selected.");
 			Assert.IsTrue (timeListItem.IsSelected);
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 
+			/*
+			 * BUG595149 WindowPattern is not finished
+			 */
+			/*
 			//203.8 Close the "Adjust Time" window
 			adjustTimeDialog.Close ();
 			procedureLogger.ExpectedResult ("The \"Adjust Time\" window is closed.");
 			Thread.Sleep (Config.Instance.ShortDelay);
+			*/
 		}
 
 		//TestCase204 Screensaver Configuration
@@ -451,7 +482,12 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			 * BUG597696 - [uiaclient-GTKs]: RadioButton doesn't support the SelectionItemPattern
 			 * BUG604197 - [uiaclient-GTKs]:The RadioButton control should not support the InvokePattern
 			 */
-			//TODO
+			/*
+			SWF.RadioButton radioButtonControl = new SWF.RadioButton ();
+			AutomationElement radioButtonAe = AutomationElement.FromHandle (radioButtonControl.Handle);
+			helper.PatternChcek (allImageRadioButton, radioButtonAe, null, null);
+			*/
+			
 			/*
 			allImageRadioButton.Select ();
 			procedureLogger.ExpectedResult ("The \"All Images\" radio button is selected.");
@@ -518,17 +554,21 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			var printMenuItem = menuBar.Find<MenuItem> ("Print");
 			printMenuItem.Click ();
 			procedureLogger.ExpectedResult ("The \"Print\" dialog appears.");
-			Thread.Sleep (Config.Instance.LongDelay);
+			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.4 Select "Image Settings" tab item
 			var printDialog = app.FindGtkSubWindow (window, "Print");
-			var settingTabItem = printDialog.Find<TabItem> ("Image Settings");
-			settingTabItem.Select ();
+			Console.WriteLine("\nthe printDialog is {0}", printDialog);
+			var tab = printDialog.Find<Tab> ();
+			var tabItems = tab.FindAll<TabItem> ();
+			Console.WriteLine("\nthe number of tabItems is {0}", tabItems.Length);
+			var imageSettingTab = tabItems[2];
+			imageSettingTab.Select ();
 			procedureLogger.ExpectedResult ("The \"Image Settings\"'s tab item is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.5 Select the "Print file name" check box
-			var printFileCheckBox = printDialog.Find<CheckBox> ("Print file name");
+			var printFileCheckBox = imageSettingTab.Find<CheckBox> ("Print file name");
 			
 			//Check the checkbox's Toggle state
 			procedureLogger.Action ("The unselected check box's ToggleState should be off");
@@ -538,45 +578,50 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			
 			printFileCheckBox.Toggle ();
 			Thread.Sleep (Config.Instance.ShortDelay);
-			procedureLogger.ExpectedResult ("The \"Print file name\" check box is checked.");
-			Console.WriteLine ("the printFileCheckBox.ToggleState is {0} aaaaaaaaaaabbbbbbbb", printFileCheckBox.ToggleState);
+			procedureLogger.ExpectedResult ("The \"Print file name\" check box is toggle.");
 			Assert.AreEqual (ToggleState.On, printFileCheckBox.ToggleState);
 
 			//205.6 Select "General" tab
-			var generalTabItem = printDialog.Find<TabItem> ("General");
+			var generalTabItem = tabItems[0];
 			generalTabItem.Select ();
 			procedureLogger.ExpectedResult ("The \"General\" tab item is shown.");
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.7 Check the Spin Button's supported pattern
-			var spinButton = generalTabItem.Find<Spinner> ();
+			var firstGroup = generalTabItem.Find<Group> ();
+			var groups = firstGroup.FindAll<Group> ();
+			var subGroups = groups[1].FindAll<Group> ();
+			var pane = subGroups[1].Find<Pane> ();
+			var subPane = pane.Find<Pane> ();
+			var spinner = subPane.Find<Spinner> ();
+
 			/*
 			 * BUG598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
 			 */
 			//TODO
 			procedureLogger.Action ("Check IsReadOnly property of Spin Button.");
 			procedureLogger.ExpectedResult ("IsReadOnly is False.");
-			Assert.AreEqual (false, spinButton.IsReadOnly);
+			Assert.AreEqual (false, spinner.IsReadOnly);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.8 Set the Spin Button's value to its Maximum
-			spinButton.SetValue (100);
+			spinner.SetValue (100);
 			procedureLogger.ExpectedResult ("The Spin Button's value is set to 100.");
-			Assert.AreEqual (100, spinButton.Maximum);
+			Assert.AreEqual (100, spinner.Maximum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.9 Set the Spin Button's value to its Minimum
-			spinButton.SetValue (1);
+			spinner.SetValue (1);
 			procedureLogger.ExpectedResult ("The Spin Button's value is set to 0.");
-			Assert.AreEqual (1, spinButton.Minimum);
+			Assert.AreEqual (1, spinner.Minimum);
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.10 Set the Spin Button's value to "50.0"
-			spinButton.SetValue (50);
+			spinner.SetValue (50);
 			procedureLogger.ExpectedResult ("The Spin Button's value is set to 50.");
-			Assert.AreEqual (50, spinButton.Value);
+			Assert.AreEqual (50, spinner.Value);
 			Thread.Sleep (Config.Instance.ShortDelay);
-
+			
 			/*
 			 * BUG595149 WindowPattern is not finished
 			 */ 
