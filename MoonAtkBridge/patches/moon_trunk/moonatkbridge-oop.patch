@@ -1,0 +1,819 @@
+diff --git a/.gitignore b/.gitignore
+index 74868b9..cdf7896 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -850,6 +850,7 @@
+ /MoonAtkBridge/stage/
+ /MoonAtkBridge/bin/
+ /MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.cs
++/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Globals.cs
+ 
+ # /AtspiUiaSource
+ /AtspiUiaSource/Makefile
+diff --git a/MoonAtkBridge/Makefile.am b/MoonAtkBridge/Makefile.am
+index 7cea321..b96f395 100644
+--- a/MoonAtkBridge/Makefile.am
++++ b/MoonAtkBridge/Makefile.am
+@@ -12,11 +12,12 @@ GTK_SHARP_PATCHES = \
+ 	patches/003_gtk-sharp_remove-glue-dep.diff \
+ 	patches/004_gtk-sharp_gtype-name.diff \
+ 	patches/005_gtk-sharp_remove-args.diff \
+-	patches/006_gtk-sharp_gobject-debugging.diff
++	patches/006_gtk-sharp_gobject-debugging.diff \
++	patches/007_gtk-sharp_add-default-ctors.patch
+ 
+-ATK_VERSION=1.10.3
++ATK_VERSION=1.30.0
+ ATK_TARBALL=atk-$(ATK_VERSION).tar.bz2
+-ATK_XML_URL=http://ftp.gnome.org/pub/gnome/sources/atk/1.10/$(ATK_TARBALL)
++ATK_XML_URL=http://ftp.gnome.org/pub/gnome/sources/atk/1.30/$(ATK_TARBALL)
+ 
+ GTK_SHARP=gtk-sharp
+ GLIB_SHARP_PATH=$(GTK_SHARP)/glib/
+diff --git a/MoonAtkBridge/MoonAtkBridge/MoonAtkBridge.sources b/MoonAtkBridge/MoonAtkBridge/MoonAtkBridge.sources
+index 28366d3..44c9b65 100644
+--- a/MoonAtkBridge/MoonAtkBridge/MoonAtkBridge.sources
++++ b/MoonAtkBridge/MoonAtkBridge/MoonAtkBridge.sources
+@@ -2,9 +2,11 @@ AssemblyInfo.cs
+ Moonlight.AtkBridge/Adapter.cs
+ Moonlight.AtkBridge/AutomationBridge.cs
+ Moonlight.AtkBridge/DynamicAdapterFactory.cs
++Moonlight.AtkBridge/Globals.cs
+ Moonlight.AtkBridge/ImplementsPatternAttribute.cs
+-Moonlight.AtkBridge/Navigation.cs
+ Moonlight.AtkBridge/Log.cs
++Moonlight.AtkBridge/Navigation.cs
++Moonlight.AtkBridge/Plug.cs
+ Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs
+ Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
+ Moonlight.AtkBridge.PatternImplementors/Calendar.cs
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt
+index 3d19004..1096382 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.Adapters/GeneratedAdapters.tt
+@@ -174,6 +174,11 @@ foreach (HashSet<string> impls in combinations) {
+ 			};
+ 		}
+ 
++		public <#= typeName #> ()
++			: base ()
++		{
++		}
++
+ 		protected <#= typeName #> (IntPtr ptr)
+ 			: base (ptr)
+ 		{
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs
+index 4083cfe..3934a5f 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BaseActionImplementor.cs
+@@ -54,6 +54,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			RefreshActions ();
+ 		}
+ 
++		public BaseActionImplementor ()
++			: base ()
++		{
++		}
++
+ 		public bool DoAction (int i)
+ 		{
+ 			if (i < 0 || i >= actions.Count)
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
+index fdf06ad..0749f87 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/BasePatternImplementor.cs
+@@ -44,6 +44,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			this.peer = peer;
+ 		}
+ 
++		public BasePatternImplementor ()
++			: base ()
++		{
++		}
++
+ 		public virtual void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 		}
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Calendar.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Calendar.cs
+index ded46c5..60ce3b6 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Calendar.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Calendar.cs
+@@ -68,6 +68,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			ei.AddEventHandler (calendar,
+ 			                    new EventHandler<SelectionChangedEventArgs> (OnSelectedDatesChanged));
+ 		}
++
++		public Calendar ()
++			: base ()
++		{
++		}
+ #endregion
+ 
+ #region Private Methods
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
+index 4c31653..9994adf 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/ExpandCollapseInvokeToggle.cs
+@@ -58,6 +58,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 					OnAutomationPropertyChanged);
+ 		}
+ 
++		public ExpandCollapseInvokeToggle ()
++			: base ()
++		{
++		}
++
+ 		public override void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 			IExpandCollapseProvider expandCollapse
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs
+index 05e8186..1bbb59a 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridSplitter.cs
+@@ -80,6 +80,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			row = (int) gridsplitter.GetValue (GridRowProperty);
+ 		}
+ 
++		public GridSplitter ()
++			: base ()
++		{
++		}
++
+ 		public override Role OverriddenRole {
+ 			get { return Atk.Role.SplitPane; }
+ 		}
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridTable.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridTable.cs
+index 0c668da..f56784e 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridTable.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/GridTable.cs
+@@ -52,6 +52,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 				PatternInterface.Table);
+ 		}
+ 
++		public GridTable ()
++			: base ()
++		{
++		}
++
+ 		public Atk.Object RefAt (int row, int column)
+ 		{
+ 			if (!AreRowColInBounds (row, column))
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RadioButton.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
+index 986b065..1faa9d3 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RadioButton.cs
+@@ -55,6 +55,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 					OnAutomationPropertyChanged);
+ 		}
+ 
++		public RadioButton ()
++			: base ()
++		{
++		}
++
+ 		public override void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 			var selectionItem = peer.GetPattern (
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RangeValue.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
+index 540efb6..1227cac 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/RangeValue.cs
+@@ -51,6 +51,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 					OnAutomationPropertyChanged);
+ 		}
+ 
++		public RangeValue ()
++			: base ()
++		{
++		}
++
+ 		public void GetMinimumValue (ref GLib.Value value)
+ 		{
+ 			value = new GLib.Value (rangeValueProvider.Minimum);
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Selection.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Selection.cs
+index 69161fb..b9ec9d9 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Selection.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Selection.cs
+@@ -62,6 +62,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			};
+ 		}
+ 
++		public Selection ()
++			: base ()
++		{
++		}
++
+ 		public bool AddSelection (int i)
+ 		{
+ 			AutomationPeer childPeer = GetChildAt (i);
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs
+index 80d4a62..1dfd70b 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/SelectionItem.cs
+@@ -55,6 +55,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 				OnAutomationEventRaised);
+ 		}
+ 
++		public SelectionItem ()
++			: base ()
++		{
++		}
++
+ 		public override void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 			bool? isSelected = IsSelected;
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/TabItem.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/TabItem.cs
+index 94e8f33..2fec977 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/TabItem.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/TabItem.cs
+@@ -106,6 +106,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 			}
+ 		}
+ 
++		public TabItem ()
++			: base ()
++		{
++		}
++
+ 		public override void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 			states.AddState (Atk.StateType.Selectable);
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Value.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Value.cs
+index 74fa559..ac6ddac 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Value.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge.PatternImplementors/Value.cs
+@@ -86,6 +86,11 @@ namespace Moonlight.AtkBridge.PatternImplementors
+ 					OnAutomationPropertyChanged);
+ 		}
+ 
++		public Value ()
++			: base ()
++		{
++		}
++
+ 		public override void OnRefStateSet (ref Atk.StateSet states)
+ 		{
+ 			if (valueProvider.IsReadOnly)
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs
+index d8f4e4a..95e38d0 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Adapter.cs
+@@ -64,6 +64,11 @@ namespace Moonlight.AtkBridge
+ 			this.Peer = peer;
+ 		}
+ 
++		public Adapter ()
++			: base ()
++		{
++		}
++
+ 		protected Adapter (IntPtr ptr)
+ 			: base (ptr)
+ 		{
+@@ -326,10 +331,7 @@ namespace Moonlight.AtkBridge
+ 
+ 		protected override Atk.StateSet OnRefStateSet ()
+ 		{
+-			Atk.StateSet states = base.OnRefStateSet ();
+-			// Clearing inherited states to remove assumptions in specific
+-			// interface implementations.
+-			states.ClearStates ();
++			Atk.StateSet states = new Atk.StateSet ();
+ 
+ 			DynamicAdapterFactory.Instance.MarkExternalReference (states);
+ 
+@@ -700,7 +702,13 @@ namespace Moonlight.AtkBridge
+ 			}
+ 
+ 			// Since our parent is unmanaged, we can't just cast.
+-			Atk.Component parent = ComponentAdapter.GetObject (rootVisual.Parent);
++			Atk.Component parent = null;
++			try {
++				parent = ComponentAdapter.GetObject (rootVisual.Parent);
++			} catch (ArgumentException) {
++				Log.Warn ("Parent can't be cast to a component.  Unable to convert coordinates.");
++			}
++
+ 			if (parent == null) {
+ 				// TODO: Logging
+ 				return;
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/AutomationBridge.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/AutomationBridge.cs
+index ef92370..ae095d9 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/AutomationBridge.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/AutomationBridge.cs
+@@ -31,7 +31,9 @@ using System.IO;
+ using System.Reflection;
+ using System.Windows;
+ using System.Windows.Automation;
++using System.Runtime.InteropServices;
+ using System.Windows.Automation.Peers;
++using System.Runtime.CompilerServices;
+ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+ 
+ namespace Moonlight.AtkBridge
+@@ -39,13 +41,8 @@ namespace Moonlight.AtkBridge
+ 	public class AutomationBridge
+ 	{
+ #region Public Methods
+-		public static AutomationBridge CreateAutomationBridge ()
++		public AutomationBridge ()
+ 		{
+-			return new AutomationBridge ();
+-		}
+-
+- 		private AutomationBridge ()
+- 		{
+ 			Log.Debug ("Moonlight Automation Bridge starting up...");
+ 
+ 			AutomationSingleton.Instance.AutomationPropertyChanged
+@@ -59,16 +56,46 @@ namespace Moonlight.AtkBridge
+ 
+ 		public static bool IsAccessibilityEnabled ()
+ 		{
+-			// TODO: Detect whether accessibility is turned on at a
+-			// platform level
+-			return IsExtensionEnabled ();
++			if (!IsExtensionEnabled ())
++				return false;
++
++			try {
++				IntPtr client = gconf_client_get_default ();
++				IntPtr error = IntPtr.Zero;
++
++				bool access_enabled = gconf_client_get_bool (
++					client, ACCESSIBILITY_GCONF_KEY, error);
++				if (error != IntPtr.Zero)
++					throw new GLib.GException (error);
++
++				if (!access_enabled)
++					return false;
++
++				// XXX: This is actually not a complete test,
++				// as if at-spi has *not* been relocated, this
++				// value will also be false.
++				bool corba_enabled = gconf_client_get_bool (
++					client, AT_SPI_CORBA_GCONF_KEY, error);
++				if (error != IntPtr.Zero)
++					throw new GLib.GException (error);
++
++				if (corba_enabled) {
++					// MoonAtkBridge only works with AT-SPI DBus enabled
++					Log.Error ("Moonlight.AtkBridge requires at-spi-dbus, and it is not enabled.  Exiting.");
++					return false;
++				}
++
++				return true;
++			} catch (Exception e) {
++				Log.Warn ("Unable to determine whether accessibility is enabled:\n{0}", e);
++				return false;
++			}
+ 		}
+ 
+-		public IntPtr GetAccessibleHandle ()
++		public IntPtr GetAccessible ()
+ 		{
+-			Adapter root
+-				= DynamicAdapterFactory.Instance.RootVisualAdapter;
+-			return (root != null) ? root.Handle : IntPtr.Zero;
++			Atk.Object parent = DynamicAdapterFactory.Instance.PlugParent;
++			return parent != null ? parent.Handle : IntPtr.Zero;
+ 		}
+ 
+ 		public void Shutdown ()
+@@ -284,6 +311,18 @@ namespace Moonlight.AtkBridge
+ 				return prop.ToString ();
+ 			}
+ 		}
++
++		[DllImport ("libgconf-2.so.4")]
++		private static extern IntPtr gconf_client_get_default ();
++
++		[DllImport ("libgconf-2.so.4")]
++		private static extern bool gconf_client_get_bool (IntPtr client, string key, IntPtr err);
++
++#region Private Fields
++		private const string ACCESSIBILITY_GCONF_KEY = "/desktop/gnome/interface/accessibility";
++		private const string AT_SPI_CORBA_GCONF_KEY = "/desktop/gnome/interface/at-spi-corba";
++		private const string AT_SPI_DBUS_GCONF_KEY = "/desktop/gnome/interface/at-spi-dbus";
++#endregion
+ 	}
+ #endregion
+ }
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/DynamicAdapterFactory.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/DynamicAdapterFactory.cs
+index 366f20c..8c7663c 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/DynamicAdapterFactory.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/DynamicAdapterFactory.cs
+@@ -41,6 +41,14 @@ namespace Moonlight.AtkBridge
+ 			get { return instance; }
+ 		}
+ 
++		public Plug PlugParent {
++			get {
++				if (plugParent == null)
++					plugParent = new Plug ();
++				return plugParent;
++			}
++		}
++
+ 		public Adapter RootVisualAdapter {
+ 			get {
+ 				if (rootVisualAdapter == null) {
+@@ -300,6 +308,9 @@ namespace Moonlight.AtkBridge
+ 				}, false);
+ 			}
+ 
++			plugParent.NotifyStateChange (Atk.StateType.Defunct,
++			                              true);
++
+ 			Log.Info (" * Disposing of all active adapters...");
+ 
+ 			Action<Adapter> disposeChild = (a) => {
+@@ -319,6 +330,8 @@ namespace Moonlight.AtkBridge
+ 			if (rootVisualAdapter != null)
+ 				rootVisualAdapter.Foreach (disposeChild, false);
+ 
++			plugParent.Dispose ();
++
+ 			Log.Info (" * Disposing remaining adapters...");
+ 
+ 			// If there are any adapters left dangling, dispose
+@@ -483,6 +496,7 @@ namespace Moonlight.AtkBridge
+ 		private Dictionary<AutomationPeer, Adapter> activeAdapters
+ 			= new Dictionary<AutomationPeer, Adapter> ();
+ 
++		private Plug plugParent;
+ 		private RootVisualAdapter rootVisualAdapter;
+ 
+ 		private List<WeakReference> externalReferences
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Globals.cs.in b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Globals.cs.in
+new file mode 100644
+index 0000000..f6e7cc9
+--- /dev/null
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Globals.cs.in
+@@ -0,0 +1,34 @@
++// Permission is hereby granted, free of charge, to any person obtaining
++// a copy of this software and associated documentation files (the
++// "Software"), to deal in the Software without restriction, including
++// without limitation the rights to use, copy, modify, merge, publish,
++// distribute, sublicense, and/or sell copies of the Software, and to
++// permit persons to whom the Software is furnished to do so, subject to
++// the following conditions:
++//
++// The above copyright notice and this permission notice shall be
++// included in all copies or substantial portions of the Software.
++//
++// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++//
++// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
++//
++// Authors:
++//      Brad Taylor <brad@getcoded.net>
++//
++
++using System;
++
++namespace Moonlight.AtkBridge
++{
++	public static class Globals
++	{
++		public const string Version = "@VERSION@";
++	}
++}
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Plug.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Plug.cs
+new file mode 100644
+index 0000000..44f6282
+--- /dev/null
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/Plug.cs
+@@ -0,0 +1,82 @@
++// Permission is hereby granted, free of charge, to any person obtaining
++// a copy of this software and associated documentation files (the
++// "Software"), to deal in the Software without restriction, including
++// without limitation the rights to use, copy, modify, merge, publish,
++// distribute, sublicense, and/or sell copies of the Software, and to
++// permit persons to whom the Software is furnished to do so, subject to
++// the following conditions:
++//
++// The above copyright notice and this permission notice shall be
++// included in all copies or substantial portions of the Software.
++//
++// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++//
++// Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
++//
++// Authors:
++//      Brad Taylor <brad@getcoded.net>
++//
++
++using Atk;
++
++using System;
++using System.Windows;
++using System.Windows.Automation.Peers;
++
++namespace Moonlight.AtkBridge
++{
++	public class Plug : Atk.Plug
++	{
++#region Public Methods
++		public Plug () : base ()
++		{
++		}
++#endregion
++
++#region Protected Methods
++		protected override int OnGetNChildren ()
++		{
++			return 1;
++		}
++
++		protected override int OnGetIndexInParent ()
++		{
++			// Our object will always be the only child of the
++			// plugin host's parent.
++			return 0;
++		}
++
++		protected override Atk.Object OnRefChild (int i)
++		{
++			if (i != 0)
++				return null;
++
++			return DynamicAdapterFactory.Instance.RootVisualAdapter;
++		}
++
++		protected override Atk.Object OnGetParent ()
++		{
++			return parent;
++		}
++
++		protected override void OnSetParent (Atk.Object parent)
++		{
++			// Allow the web browser's plugin host to set our
++			// parent
++			this.parent = parent;
++
++			DynamicAdapterFactory.Instance.MarkExternalReference (this.parent);
++		}
++#endregion
++
++#region Private Fields
++		private Atk.Object parent = null;
++#endregion
++	}
++}
+diff --git a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/RootVisualAdapter.cs b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/RootVisualAdapter.cs
+index b0c1519..f2332e8 100644
+--- a/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/RootVisualAdapter.cs
++++ b/MoonAtkBridge/MoonAtkBridge/Moonlight.AtkBridge/RootVisualAdapter.cs
+@@ -34,6 +34,11 @@ namespace Moonlight.AtkBridge
+ 	public class RootVisualAdapter : Adapter
+ 	{
+ #region Public Methods
++		public RootVisualAdapter ()
++			: base ()
++		{
++		}
++
+ 		public RootVisualAdapter (AutomationPeer peer)
+ 			: base (peer)
+ 		{
+@@ -63,21 +68,8 @@ namespace Moonlight.AtkBridge
+ 
+ 		protected override Atk.Object OnGetParent ()
+ 		{
+-			return parent;
++			return DynamicAdapterFactory.Instance.PlugParent;
+ 		}
+-
+-		protected override void OnSetParent (Atk.Object parent)
+-		{
+-			// Allow the web browser's plugin host to set our
+-			// parent
+-			this.parent = parent;
+-
+-			DynamicAdapterFactory.Instance.MarkExternalReference (this.parent);
+-		}
+-#endregion
+-
+-#region Private Fields
+-		private Atk.Object parent = null;
+ #endregion
+ 	}
+ }
+diff --git a/MoonAtkBridge/configure.ac b/MoonAtkBridge/configure.ac
+index 5ec1003..8bd8953 100644
+--- a/MoonAtkBridge/configure.ac
++++ b/MoonAtkBridge/configure.ac
+@@ -96,7 +96,7 @@ MOON_PATH=`(cd $MOON_PATH && pwd)`
+ 
+ CURRENT_MOON_VERSION=`(cd $MOON_PATH && cat moon.pc | grep Version | awk -F ' ' '{ print $2 }')`
+ if test "x$CURRENT_MOON_VERSION" = "x"; then
+-	AC_MSG_ERROR([Moonlight's moon.pc file not found.])
++	AC_MSG_ERROR([Moonlight's moon.pc file not found.  Check that a built checkout of moon exists at the same level of the uia2atk folder, or that the path to it is specified by MOON_PATH.])
+ fi
+ 
+ MOONLIGHT_VERSION="${CURRENT_MOON_VERSION}accessibility"
+@@ -192,6 +192,7 @@ tests/assets/ToggleButtonTest/Makefile
+ tests/assets/ToggleEventsTest/Makefile
+ tests/assets/ValueEventsTest/Makefile
+ tests/assets/ValueTest/Makefile
++MoonAtkBridge/Moonlight.AtkBridge/Globals.cs
+ ])
+ 
+ AC_OUTPUT
+diff --git a/MoonAtkBridge/patches/007_gtk-sharp_add-default-ctors.patch b/MoonAtkBridge/patches/007_gtk-sharp_add-default-ctors.patch
+new file mode 100644
+index 0000000..15dc465
+--- /dev/null
++++ b/MoonAtkBridge/patches/007_gtk-sharp_add-default-ctors.patch
+@@ -0,0 +1,129 @@
++Index: glib/Idle.cs
++===================================================================
++--- glib/Idle.cs	(revision 142364)
+++++ glib/Idle.cs	(working copy)
++@@ -45,6 +45,11 @@
++ 				proxy_handler = new IdleHandlerInternal (Handler);
++ 			}
++ 
+++			public IdleProxy ()
+++				: base ()
+++			{
+++			}
+++
++ 			~IdleProxy ()
++ 			{
++ 				Dispose (false);
++@@ -84,7 +89,7 @@
++ 			}
++ 		}
++ 		
++-		private Idle ()
+++		public Idle () : base ()
++ 		{
++ 		}
++ 		
++Index: glib/Timeout.cs
++===================================================================
++--- glib/Timeout.cs	(revision 142364)
+++++ glib/Timeout.cs	(working copy)
++@@ -42,6 +44,10 @@
++ 				proxy_handler = new TimeoutHandlerInternal (Handler);
++ 			}
++ 
+++			public TimeoutProxy () : base ()
+++			{
+++			}
+++
++ 			~TimeoutProxy ()
++ 			{
++ 				Dispose (false);
++@@ -82,7 +91,10 @@
++ 			}
++ 		}
++ 		
++-		private Timeout () {} 
+++		public Timeout () : base ()
+++		{
+++		}
+++
++ 		[DllImport ("libglib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
++ 		static extern uint g_timeout_add (uint interval, TimeoutHandlerInternal d, IntPtr data);
++ 
++Index: atk/NoOpObject.custom
++===================================================================
++--- atk/NoOpObject.custom	(revision 0)
+++++ atk/NoOpObject.custom	(revision 0)
++@@ -0,0 +1,26 @@
+++// NoOpObject.custom - Atk NoOpObject class customizations
+++//
+++// Author: Brad Taylor <brad@getcoded.net>
+++//
+++// Copyright (c) 2010 Novell, Inc.
+++//
+++// This code is inserted after the automatically generated code.
+++//
+++//
+++// This program is free software; you can redistribute it and/or
+++// modify it under the terms of version 2 of the Lesser GNU General
+++// Public License as published by the Free Software Foundation.
+++//
+++// This program is distributed in the hope that it will be useful,
+++// but WITHOUT ANY WARRANTY; without even the implied warranty of
+++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+++// Lesser General Public License for more details.
+++//
+++// You should have received a copy of the GNU Lesser General Public
+++// License along with this program; if not, write to the
+++// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+++// Boston, MA 02111-1307, USA.
+++
+++	public NoOpObject () : base ()
+++	{
+++	}
++Index: atk/Relation.custom
++===================================================================
++--- atk/Relation.custom	(revision 0)
+++++ atk/Relation.custom	(revision 0)
++@@ -0,0 +1,26 @@
+++// Relation.custom - Atk Relation class customizations
+++//
+++// Author: Brad Taylor <brad@getcoded.net>
+++//
+++// Copyright (c) 2010 Novell, Inc.
+++//
+++// This code is inserted after the automatically generated code.
+++//
+++//
+++// This program is free software; you can redistribute it and/or
+++// modify it under the terms of version 2 of the Lesser GNU General
+++// Public License as published by the Free Software Foundation.
+++//
+++// This program is distributed in the hope that it will be useful,
+++// but WITHOUT ANY WARRANTY; without even the implied warranty of
+++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+++// Lesser General Public License for more details.
+++//
+++// You should have received a copy of the GNU Lesser General Public
+++// License along with this program; if not, write to the
+++// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+++// Boston, MA 02111-1307, USA.
+++
+++	public Relation () : base ()
+++	{
+++	}
++Index: atk/Makefile.am
++===================================================================
++--- atk/Makefile.am	(revision 142364)
+++++ atk/Makefile.am	(working copy)
++@@ -14,8 +14,10 @@
++ 	Global.custom		\
++ 	Hyperlink.custom \
++ 	Misc.custom		\
+++	NoOpObject.custom	\
++ 	Object.custom		\
++ 	SelectionAdapter.custom	\
+++	Relation.custom		\
++ 	TextAdapter.custom	\
++ 	Util.custom
++ 
+diff --git a/MoonAtkBridge/resources/DummyEntryPoint.cs b/MoonAtkBridge/resources/DummyEntryPoint.cs
+index 379b341..32ed798 100644
+--- a/MoonAtkBridge/resources/DummyEntryPoint.cs
++++ b/MoonAtkBridge/resources/DummyEntryPoint.cs
+@@ -24,6 +24,7 @@
+ //
+ 
+ using System;
++using Moonlight.AtkBridge;
+ 
+ namespace Application
+ {
+@@ -35,7 +36,8 @@ namespace Application
+ 			new System.Security.SecurityCriticalAttribute ();
+ 
+ 			//be sure we're referencing MoonAtkBridge
+-			Moonlight.AtkBridge.AutomationBridge.CreateAutomationBridge ().GetAccessibleHandle ();
++			AutomationBridge b = new AutomationBridge ();
++			b.GetAccessible ();
+ 
+ 			//be sure we're referencing private MoonAtkBridge's API used by moonlight
+ 			return Moonlight.AtkBridge.AutomationBridge.IsAccessibilityEnabled () ? 0 : 1;
+diff --git a/MoonAtkBridge/resources/gtk-sharp-2.8-sources.xml b/MoonAtkBridge/resources/gtk-sharp-2.8-sources.xml
+index 4c7f65b..770e0b7 100644
+--- a/MoonAtkBridge/resources/gtk-sharp-2.8-sources.xml
++++ b/MoonAtkBridge/resources/gtk-sharp-2.8-sources.xml
+@@ -4,7 +4,7 @@
+   <api filename="../atk/atk-api-2.8.raw">
+     <library name="libatk-1.0-0.dll">
+       <namespace name="Atk">
+-        <dir>atk-1.10.3/atk</dir>
++        <dir>atk-1.30.0/atk</dir>
+       </namespace>
+     </library>
+   </api>
+diff --git a/MoonAtkBridge/resources/install.rdf.in b/MoonAtkBridge/resources/install.rdf.in
+index 9d74b44..acb1b62 100644
+--- a/MoonAtkBridge/resources/install.rdf.in
++++ b/MoonAtkBridge/resources/install.rdf.in
+@@ -25,7 +25,7 @@
+       <Description>
+         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+         <em:minVersion>3.5</em:minVersion>
+-        <em:maxVersion>3.5.*</em:maxVersion>
++        <em:maxVersion>3.8</em:maxVersion>
+       </Description>
+     </em:targetApplication>
+ 
