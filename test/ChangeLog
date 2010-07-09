@@ -1,3 +1,7 @@
+2010-07-09  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/local_run.py: Fixed control test issue.
+
 2010-07-05  Calen Chen <cachen@novell.com>
 
 	* harness/tests.py: lower letters

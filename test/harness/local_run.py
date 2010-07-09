@@ -134,9 +134,6 @@ class Settings(object):
       if o in ("-o","--control"):
         Settings.control = a
 
-      #if o in ("-b", "--branchcomponent"):
-      #  Settings.branchcomponent = a
-
       if Settings.tree == BRANCHES:
         assert Settings.version is not None, \
                             "You must specify a branch version using --version"
@@ -168,8 +165,6 @@ class Settings(object):
     output("                     winforms or moonlight).")
     output("  -o | --control=    Select a control to test.")
     output("  -v | --version=    The tags or branches version desired")
-    #output("  -b | --branchcomponent = Select at least and only one branch component to test uiaclient (i.e.,")
-    #output("                     winforms or moonlight or gtk).")
 
   def set_uiaqa_home(self):
     harness_dir = sys.path[0]
@@ -188,7 +183,6 @@ class Test(object):
       import tests as tests
 
     self.component = str(Settings.component)
-    #self.branchcomponent = str(Settings.branchcomponent)
     # dynamically evaluate tests_list with component name
     try:
       ttests = eval('tests.%s_tests_list' % self.component)
@@ -196,8 +190,8 @@ class Test(object):
       output("ERROR:  No component found!")
       abort(1)
 
-    if Settings.control != 'None':
-      self.control = str('%s-regression.py' % Settings.control)
+    if Settings.control is not None:
+      self.control = str(Settings.control) + '-regression.py'
       if self.control in ttests:
         self.tests = []
         self.tests.append(self.control)
