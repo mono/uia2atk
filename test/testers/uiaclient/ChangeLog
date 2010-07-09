@@ -1,3 +1,7 @@
+2010-07-09  Felicia Mu  <fxmu@novell.com>
+
+	* Tests/GTK/Fspot.cs: Update testcase 206 - testcase 212. 
+
 2010-07-08  Felicia Mu  <fxmu@novell.com>
 
 	* Tests/GTK/Fspot.cs: Update testcase 202, 203, 204, 205. 
