@@ -609,6 +609,7 @@
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenizer.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\ToolStripSplitButton\InvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\ToolStripSplitButton\InvokeProviderBehavior.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\FragmentControlProviderWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

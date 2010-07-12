@@ -67,6 +67,7 @@ FILES =  \
 	DomainUpDownProviderTest.cs \
 	ErrorProviderTest.cs \
 	FormProviderTest.cs \
+	FragmentControlProviderWrapperTest.cs \
 	GroupBoxProviderTest.cs \
 	HelpProviderTest.cs \
 	LabelProviderTest.cs \

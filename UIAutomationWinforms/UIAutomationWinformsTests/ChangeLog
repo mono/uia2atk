@@ -1,3 +1,10 @@
+2010-07-12  Mario Carrion  <mcarrion@novell.com>
+
+	* FragmentControlProviderWrapperTest.cs: Test for BNC #574242 and BNC
+	#574269.
+	* Makefile.am:
+	* UIAutomationWinformsTests.csproj: New files added.
+
 2010-05-06  Mike Gorse <mgorse@novell.com>
 
 	* ToolStripProviderTest.cs: Test that AccessibleName is used in

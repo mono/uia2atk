@@ -1,3 +1,13 @@
+2010-07-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentControlProviderWrapper.cs: Wraps
+	IRawSimpleProvider when implementing custom providers. (BNC #574242,
+	BNC #574269).
+	* Makefile.am:
+	* UIAutomationWinforms.csproj: New files added.
+
 2010-05-06  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Give

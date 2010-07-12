@@ -207,7 +207,7 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		protected bool IsBehaviorEnabled (AutomationPattern pattern) 
+		protected virtual bool IsBehaviorEnabled (AutomationPattern pattern) 
 		{
 			return providerBehaviors.ContainsKey (pattern);
 		}
@@ -401,7 +401,7 @@ namespace Mono.UIAutomation.Winforms
 		// TODO: Get this used in all base classes. Consider refactoring
 		//       so that *all* pattern provider behaviors are dynamically
 		//       attached to make this more uniform.
-		public object GetPatternProvider (int patternId)
+		public virtual object GetPatternProvider (int patternId)
 		{
 			foreach (IProviderBehavior behavior in ProviderBehaviors)
 				if (behavior.ProviderPattern.Id == patternId)
@@ -409,7 +409,7 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public object GetPropertyValue (int propertyId)
+		public virtual object GetPropertyValue (int propertyId)
 		{
 			foreach (IProviderBehavior behavior in ProviderBehaviors) {
 				object val = behavior.GetPropertyValue (propertyId);

@@ -157,15 +157,15 @@ namespace Mono.UIAutomation.Winforms
 				IntPtr result;
 
 				result = SWF.NativeWindow.WndProc (control.Handle, SWF.Msg.WM_GETOBJECT,
-				                                   IntPtr.Zero, IntPtr.Zero);
+				                                   IntPtr.Zero,
+				                                   new IntPtr (AutomationInteropProvider.RootObjectId));
 				if (result != IntPtr.Zero) {
 					simpleProvider = AutomationInteropProvider
 						.RetrieveAndDeleteProvider (result);
 
-					// TODO: If simpleProvider isn't a
-					// Fragment, wrap it with a fragment
-					// wrapper to preserve navigation
 					provider = simpleProvider as IRawElementProviderFragment;
+					if (provider == null)
+						provider = new FragmentControlProviderWrapper (component, simpleProvider);
 				}
 			}
 

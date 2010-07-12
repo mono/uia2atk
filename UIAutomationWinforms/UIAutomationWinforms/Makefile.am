@@ -530,6 +530,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
+	Mono.UIAutomation.Winforms/FragmentControlProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
 	Mono.UIAutomation.Winforms/Global.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \

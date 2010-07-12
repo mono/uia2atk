@@ -102,6 +102,7 @@
     <Compile Include="TreeViewProviderTest.cs" />
     <Compile Include="WebBrowserProviderTest.cs" />
     <Compile Include="WordTokenizerTest.cs" />
+    <Compile Include="FragmentControlProviderWrapperTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
