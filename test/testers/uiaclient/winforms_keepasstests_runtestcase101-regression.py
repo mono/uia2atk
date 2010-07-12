@@ -22,7 +22,7 @@ if not os.path.exists(app_path):
     print "Are you sure %s exist?" % app_path
     
 if not os.path.exists(uiatest_dll):
-    os.system("%s/uiaclient/autogen.sh && make" % test_path)
+    os.system("(cd %s/uiaclient/ && ./autogen.sh && make) " % test_path)
 
 os.system("nunit-console2 %s -run=MonoTests.Mono.UIAutomation.UIAClientAPI.Winforms.KeePassTests.RunTestCase101" % uiatest_dll)
 
