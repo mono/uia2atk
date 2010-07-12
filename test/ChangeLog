@@ -1,3 +1,9 @@
+2010-07-12  Neville Gao  <nevillegao@gmail.com>
+
+	* harness/local_run.py: Fixed condition clause to make control argument
+	optional.
+	* harness/remote_run.py: Added control test argument.
+
 2010-07-09  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py: Fixed control test issue.

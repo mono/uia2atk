@@ -190,7 +190,7 @@ class Test(object):
       output("ERROR:  No component found!")
       abort(1)
 
-    if Settings.control is not None:
+    if Settings.control is not None and Settings.control != 'None':
       self.control = str(Settings.control) + '-regression.py'
       if self.control in ttests:
         self.tests = []
@@ -529,15 +529,13 @@ class Test(object):
     # XXX: change the log files to reference the resources from
     # a static location so we don't have to copy these every time and
     # waste time/space
+    os.system("echo %s > %s/time" % (time.time(), self.log_dir))
+    os.system("echo %s > %s/status" % (self.status, self.log_dir))
     if self.component.startswith("uiaclient"):
-        uiaclient_test_path = os.path.join(Settings.uiaqa_home, Settings.uiadll_path)
-        os.system("cp %s/*.png %s" % (uiaclient_test_path, self.log_dir))
+        uiaclient_test_path = os.path.join(Settings.uiaqa_home, 'testers', Settings.uiadll_path)
         os.system("cp %s/procedures.xml %s" % (uiaclient_test_path, self.log_dir))
         os.system("cp -r %s/Resources/* %s" % (uiaclient_test_path, self.log_dir))
-
     else:
-        os.system("echo %s > %s/time" % (time.time(), self.log_dir))
-        os.system("echo %s > %s/status" % (self.status, self.log_dir))
         os.system("cp -r /tmp/strongwind/* %s" % self.log_dir)
         os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, self.log_dir))
 

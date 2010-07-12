@@ -47,6 +47,7 @@ class Settings(object):
   is_force = False
   is_nodeps = False
   component = None
+  control = None
 
   def __init__(self):
     self.argument_parser()
@@ -55,7 +56,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"funshql:e:s:c:",["smoke","help","quiet","force","nodeps","log=","email=","update","sender=","component="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:e:s:c:o:",["smoke","help","quiet","force","nodeps","log=","email=","update","sender=","component=","control="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -86,6 +87,8 @@ class Settings(object):
           abort(1)
       if o in ("-c","--component"):
           Settings.component = a
+      if o in ("-o","--control"):
+          Settings.control = a
 
   def help(self):
     output("Common Options:")
@@ -99,6 +102,7 @@ class Settings(object):
     output("  -e | --email=      Send e-mail results to comma delineated recipients")
     output("  -c | --component=  Select at least and only one component to test (i.e.,")
     output("                     winforms or moonlight).")
+    output("  -o | --control=    Select a cotrol to test.")
 
 class Ping(threading.Thread):
 
@@ -128,6 +132,7 @@ class Test(threading.Thread):
     force_option = lambda: Settings.is_force == True and "--force" or ""
     nodeps_option = lambda: Settings.is_nodeps == True and "--nodeps" or ""
     component_option = lambda: Settings.component != None and "--component=%s" % Settings.component or ""
+    control_option = lambda: Settings.component != None and "--control=%s" % Settings.control or ""
     if self.pkg_status == 0:
       self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 python -u %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                           (machines.USERNAME, self.ip,
@@ -136,7 +141,8 @@ class Test(threading.Thread):
                                      update_option(),
                                      force_option(),
                                      nodeps_option(),
-                                     component_option()]).strip(),
+                                     component_option(),
+                                     control_option()]).strip(),
                            os.path.join(Settings.remote_log_path, Settings.component),
                            Settings.local_log_path,
                            self.name))
