@@ -1,5 +1,10 @@
 2010-07-12  Neville Gao  <nevillegao@gmail.com>
 
+	* tools/dashboard/qamon.py: Modified to monitor all components.
+	* tools/dashboard/dashboard.py: Added uiaclient test controls.
+
+2010-07-12  Neville Gao  <nevillegao@gmail.com>
+
 	* harness/local_run.py: Fixed condition clause to make control argument
 	optional.
 	* harness/remote_run.py: Added control test argument.

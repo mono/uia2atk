@@ -25,7 +25,6 @@ class Settings(object):
         Settings.mask = EventsCodes.OP_FLAGS["IN_CREATE"]  # watched events
         Settings.is_quiet = False
         Settings.dashboard_path = None
-        Settings.component = None
 
     def argument_parser(self):
         opts = []
@@ -46,8 +45,6 @@ class Settings(object):
                 sys.exit(0)
             if o in ("-d","--dashboard"):
                 Settings.dashboard_path = a
-            if o in ("-c","--component"):
-                Settings.component = a
 
         try:
             Settings.monitor_path = args[0]
@@ -90,6 +87,7 @@ class Monitor(object):
 class PTmp(ProcessEvent):
     def process_IN_CREATE(self, event):
         pkg_status_re = re.compile(".+_package_status")
+        self.component = event.pathname.split('/')[4]
         if os.path.isdir(event.pathname):
             Settings.wdd = Settings.wm.add_watch(event.pathname, Settings.mask)
         elif os.path.basename(event.pathname) == "procedures.xml":
@@ -115,11 +113,11 @@ class PTmp(ProcessEvent):
         pb = None
         if Settings.dashboard_path is not None:
             pb = dashboard.PageBuilder(Settings.monitor_path,
-                                       Settings.component,
+                                       self.component,
                                        Settings.dashboard_path)
         else:
             pb = dashboard.PageBuilder(Settings.monitor_path,
-                                       Settings.component)
+                                       self.component)
         pb.build_regression()
         pb.build_smoke()
         pb.build_main()

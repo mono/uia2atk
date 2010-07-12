@@ -189,10 +189,39 @@ class PageBuilder(object):
                                    "TextBox",
                                    "Thumb",
                                    "ToggleButton")
+        self.uiaclientwinforms_controls = ("Winforms_KeePassTests_RunTestCase101",
+                                           "Winforms_KeePassTests_RunTestCase102",
+                                           "Winforms_KeePassTests_RunTestCase103",
+                                           "Winforms_KeePassTests_RunTestCase104",
+                                           "Winforms_DockPatternTests_RunTestCase105",
+                                           "Winforms_WindowPatternTests_RunTestCase106")
+        self.uiaclientmoonlight_controls = ("Moonlight_PuzzleGameTest_RunTestCase301",
+                                            "Moonlight_PuzzleGameTest_RunTestCase302",
+                                            "Moonlight_PuzzleGameTest_RunTestCase303",
+                                            "Moonlight_SL2WithPrismTest_RunTestCase304",
+                                            "Moonlight_SL2WithPrismTest_RunTestCase305",
+                                            "Moonlight_DiggSearchTest_RunTestCase306",
+                                            "Moonlight_DiggSearchTest_RunTestCase307",
+                                            "Moonlight_DiggSearchTest_RunTestCase308",
+                                            "Moonlight_DiggSearchTest_RunTestCase309")
+        self.uiaclientgtk_controls = ("Gtk_FSpot_RunTestCase201",
+                                      "Gtk_FSpot_RunTestCase202",
+                                      "Gtk_FSpot_RunTestCase203",
+                                      "Gtk_FSpot_RunTestCase204",
+                                      "Gtk_FSpot_RunTestCase205",
+                                      "Gtk_FSpot_RunTestCase206",
+                                      "Gtk_FSpot_RunTestCase207",
+                                      "Gtk_FSpot_RunTestCase208")
         if Settings.component == 'winforms':
             self.controls = self.winforms_controls
         elif Settings.component == 'moonlight':
             self.controls = self.moonlight_controls
+        elif Settings.component == 'uiaclientwinforms':
+            self.controls = self.uiaclientwinforms_controls
+        elif Settings.component == 'uiaclientmoonlight':
+            self.controls = self.uiaclientmoonlight_controls
+        elif Settings.component == 'uiaclientgtk':
+            self.controls = self.uiaclientgtk_controls
 
         tmp_test_dirs = os.listdir(Settings.log_dir)
         # take out directories that aren't really for tests, like .svn
