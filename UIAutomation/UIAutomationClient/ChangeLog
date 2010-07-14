@@ -1,3 +1,8 @@
+2010-07-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation/AutomationElement.cs: Fix NRE.
+	Remove TreeFilter check from GetUpdatedCache to match Windows behavior.
+
 2010-02-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClient.csproj: Add LINQ.

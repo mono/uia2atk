@@ -449,8 +449,7 @@ namespace System.Windows.Automation
 			if (request == CacheRequest.DefaultRequest)
 				return updated;
 
-			if (request.TreeFilter.AppliesTo (updated) &&
-			    (request.TreeScope & TreeScope.Element) == TreeScope.Element) {
+			if ((request.TreeScope & TreeScope.Element) == TreeScope.Element) {
 				foreach (var property in request.CachedProperties) {
 					updated.propertyCache [property.Id ] =
 						new CachedValue (updated.GetCurrentPropertyValue (property),
@@ -589,7 +588,7 @@ namespace System.Windows.Automation
 		{
 			if (pattern == null)
 				throw new ArgumentNullException ("pattern");
-			if (cached && !CacheRequest.CachedPatterns.Contains (pattern))
+			if (cached && (CacheRequest == null || !CacheRequest.CachedPatterns.Contains (pattern)))
 				throw new InvalidOperationException ("Cannot request a property or pattern that is not cached");
 			object source = sourceElement.GetCurrentPattern (pattern);
 			if (source == null)

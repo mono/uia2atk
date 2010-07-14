@@ -39,6 +39,8 @@ namespace SampleForm {
 		private Form childForm;
 		private MenuStrip menuStrip1 = new MenuStrip ();
 
+		private int button1ClickCount = 0;
+
 		public Form1 ()
 		{
 			InitializeComponent ();
@@ -110,8 +112,14 @@ namespace SampleForm {
 
 		private void button1_Click (object sender, EventArgs e)
 		{
-			textBox1.Text = "button1_click";
-			label1.Text = "button1_click";
+			button1ClickCount++;
+			if (button1ClickCount == 1) {
+				textBox1.Text = "button1_click";
+				label1.Text = "button1_click";
+			} else {
+				textBox1.Text = "button1_click" + button1ClickCount;
+				label1.Text = "button1_click" + button1ClickCount;
+			}
 			Console.WriteLine ("textbox1 & label1's texts are modified.");
 		}
 
@@ -156,7 +164,9 @@ namespace SampleForm {
 				button1.PerformClick ();
 			else if (cmd == "set textbox3 text")
 				textBox3.Text = sampleText;
-			else if (cmd == "select textbox3") {
+			else if (cmd.StartsWith ("set textbox3 to ")) {
+				textBox3.Text = cmd.Substring (16).Replace (":", "\n");
+			}else if (cmd == "select textbox3") {
 				if (textBox3.Text.Length < 4)
 					textBox3.Text = sampleText;
 				if (textBox3.SelectionLength == 3)

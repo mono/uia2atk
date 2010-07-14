@@ -1,3 +1,11 @@
+2010-07-14  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/CacheRequestTest.cs: Add TextPattern test.
+	Add PropertyChanged event test.
+	Add test to call a method on a cached pattern.
+
+	* SampleForm/Form1.cs: Allow arbitrary setting of TextBox text.
+
 2010-06-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationClientTests/BaseTest.cs:

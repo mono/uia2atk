@@ -29,7 +29,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Automation;
 using SWA = System.Windows.Automation;
+using System.Windows.Automation.Text;
 
+using At = System.Windows.Automation.Automation;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using NUnit.Framework;
@@ -40,17 +42,15 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class CacheRequestTest : BaseTest
 	{
-		// TODO: Test behavior of AutomationElements passed to event handlers which were signed up while there was an active CacheRequest:
-		//       "Caching also occurs when you subscribe to an event while a CacheRequest is active.
-		//        The AutomationElement passed to your event handler as the source of an event contains
-		//        the cached properties and patterns specified by the original CacheRequest. Any changes
-		//        made to the CacheRequest after you subscribe to the event have no effect."
+		// TODO: Test behavior of AutomationElements passed to StructureChanged event handlers which were signed up while there was an active CacheRequest:
 		// TODO: Out-of-order calls to Dispose
 		// TODO: Test GetUpdatedCache with AutomationElementMode.None
 		// TODO: Test GetCurrentPropertyValue with AutomationElementMode.None
 		// TODO: CachedChildren/CachedParent with GetUpdatedCache (activated and not)
 
 		private readonly CacheRequest originalCurrent = CacheRequest.Current;
+		private int eventCount;
+		private AutomationElement eventElement;
 
 		[SetUp]
 		public void SetUp ()
@@ -209,6 +209,25 @@ namespace MonoTests.System.Windows.Automation
 
 			request.Pop ();
 
+			request = new CacheRequest ();
+			request.Add (AutomationElement.NameProperty);
+			request.TreeFilter = new PropertyCondition (AutomationElement.ControlTypeProperty, ControlType.Button);
+			using (request.Activate ()) {
+				button7ElementRef2 = button7Element.GetUpdatedCache (request);
+				Assert.AreEqual (button7Element.Current.Name, button7ElementRef2.Cached.Name, "Cached.Name");
+				// GetUpdatedCache works just fine, even for elements not in scope
+				AutomationElement treeView1ElementRef2 = treeView1Element.GetUpdatedCache (request);
+				Assert.AreEqual (treeView1Element.Current.Name, treeView1ElementRef2.Cached.Name, "Cached.Name");
+
+				AutomationElement element = TreeWalker.RawViewWalker.GetFirstChild (testFormElement);
+				AutomationElement elementRef2 = TreeWalker.RawViewWalker.GetFirstChild (testFormElement, request);
+				Assert.AreEqual (element.Current.Name, elementRef2.Cached.Name, "Cached.Name");
+				element = TreeWalker.RawViewWalker.GetFirstChild (treeView1Element);
+				elementRef2 = TreeWalker.RawViewWalker.GetFirstChild (treeView1Element, request);
+				// This works, too
+				Assert.AreEqual (element.Current.Name, elementRef2.Cached.Name, "Cached.Name");
+			}
+
 			// TODO: More tests with restrictive TreeFilter/TreeScope
 		}
 
@@ -336,8 +355,6 @@ namespace MonoTests.System.Windows.Automation
 			}
 
 			Assert.AreEqual ("click button1", txtCommandCachedValuePattern.Cached.Value);
-
-			// TODO: Test caching as it relates to TextPattern
 
 			// TODO: Fix this test case on Linux (fails because textbox name is coming from label)
 			//var request = new CacheRequest ();
@@ -596,8 +613,8 @@ namespace MonoTests.System.Windows.Automation
 				current2b = CacheRequest.Current;
 				request2.Pop ();
 				current2c = CacheRequest.Current;
-				ewh1.Set ();
 				ewh2.Reset ();
+				ewh1.Set ();
 				ewh2.WaitOne ();
 
 				threadComplete = true;
@@ -697,11 +714,30 @@ namespace MonoTests.System.Windows.Automation
 					"accessing property from Current with AutomationElementMode.None");
 			}
 
-			// TODO: "On cached patterns, you can call methods that retrieve array properties,
-			//        such as SelectionPattern.SelectionPatternInformation.GetSelection, but
-			//        not any that perform actions on the control, such as InvokePattern.Invoke."
+			request.Add (InvokePatternIdentifiers.Pattern);
+			request.Add (SelectionPatternIdentifiers.Pattern);
+			request.Add (SelectionPatternIdentifiers.SelectionProperty);
+			using (request.Activate ()) {
+				AutomationElement selectionElement = testFormElement.FindFirst (TreeScope.Children,
+					new PropertyCondition (AEIds.ControlTypeProperty,
+						ControlType.Tree));
+			SelectionPattern selectionPattern = (SelectionPattern)
+				selectionElement.GetCachedPattern (
+					SelectionPatternIdentifiers.Pattern);
+				selectionPattern.Cached.GetSelection ();
+				AssertRaises<InvalidOperationException> (
+					() => selectionPattern.Cached.CanSelectMultiple.ToString (),
+					"Fetching a property that is not cached should throw InvalidOperationException");
 
-			Assert.Fail ("not implemented");
+				AutomationElement invokeElement = testFormElement.FindFirst (TreeScope.Children,
+					new PropertyCondition (AEIds.ControlTypeProperty,
+						ControlType.Button));
+			InvokePattern invokePattern = (InvokePattern)
+				invokeElement.GetCachedPattern (
+					InvokePatternIdentifiers.Pattern);
+				// LAMESPEC: Calling Invoke should throw exception
+				invokePattern.Invoke ();
+			}
 		}
 
 		[Test]
@@ -962,6 +998,152 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (originalCurrent, CacheRequest.Current, "After deactivating all of our requests, original Current should be back");
 		}
 
+		// This behavior seems strange:
+		//       "Caching also occurs when you subscribe to an event while a CacheRequest is active.
+		//        The AutomationElement passed to your event handler as the source of an event contains
+		//        the cached properties and patterns specified by the original CacheRequest. Any changes
+		//        made to the CacheRequest after you subscribe to the event have no effect."
+		[Test]
+		public void PropertyEventTest ()
+		{
+			string oldName = label1Element.Current.Name;
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.NameProperty);
+			eventCount = 0;
+
+			// Test adding handler before activating cache
+			At.AddAutomationPropertyChangedEventHandler (
+				testFormElement,
+				TreeScope.Children,
+				PropertyChangedHandler,
+				AEIds.NameProperty);
+			using (request.Activate ()) {
+				RunCommand ("click button1");
+				Assert.AreEqual (1, eventCount, "Event not fired");
+				Assert.AreNotEqual (eventElement.Current.Name,
+					oldName,
+					"Name has changed");
+				AssertRaises<InvalidOperationException> (
+					() => eventElement.Cached.Name.ToString (),
+					"Cached name when handler added before the cache was activated");
+			}
+			At.RemoveAutomationPropertyChangedEventHandler (label1Element,
+				PropertyChangedHandler);
+
+			oldName = label1Element.Current.Name;
+			eventCount = 0;
+
+			// Test adding handler after activating cache
+			using (request.Activate ()) {
+				At.AddAutomationPropertyChangedEventHandler (
+					label1Element,
+					TreeScope.Element,
+					PropertyChangedHandler,
+					AEIds.NameProperty);
+				RunCommand ("click button1");
+				Assert.AreEqual (1, eventCount, "Event not fired");
+				Assert.AreNotEqual (eventElement.Current.Name,
+					oldName,
+				"Name has changed");
+				AssertRaises<InvalidOperationException> (
+					() => eventElement.Cached.Name.ToString (),
+					"Cached name when handler added after the cache was activated");
+				At.RemoveAutomationPropertyChangedEventHandler (label1Element,
+					PropertyChangedHandler);
+			}
+
+			// Test using Push() rather than Activate()
+			request.Push ();
+			eventCount = 0;
+			At.AddAutomationPropertyChangedEventHandler (
+				label1Element,
+				TreeScope.Element,
+				PropertyChangedHandler,
+				AEIds.NameProperty);
+			RunCommand ("click button1");
+			Assert.AreEqual (1, eventCount, "Event not fired");
+			Assert.AreNotEqual (eventElement.Current.Name,
+				oldName,
+			"Name has changed");
+			AssertRaises<InvalidOperationException> (
+				() => eventElement.Cached.Name.ToString (),
+				"Cached name when handler added after the cache was activated");
+			At.RemoveAutomationPropertyChangedEventHandler (label1Element,
+				PropertyChangedHandler);
+			request.Pop ();
+		}
+
+		[Test]
+		public void MethodTest ()
+		{
+			AutomationElement child1Element, child2Element;
+			child1Element = treeView1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.TreeItem));
+			Assert.IsNotNull (child1Element, "Child element should not be null");
+			child2Element = TreeWalker.RawViewWalker.GetNextSibling (child1Element);
+			Assert.IsNotNull (child2Element, "Child element should not be null");
+			CacheRequest request = new CacheRequest ();
+			request.Add (SelectionItemPatternIdentifiers.Pattern);
+			request.Add (SelectionItemPatternIdentifiers.IsSelectedProperty);
+
+			using (request.Activate ()) {
+			SelectionItemPattern cachedPattern;
+				AssertRaises<InvalidOperationException> (
+					() => cachedPattern = (SelectionItemPattern)
+						child2Element.GetCachedPattern (
+							SelectionItemPatternIdentifiers.Pattern),
+						"GetCachedPattern when fetched from an element retrieved while there was no active cache");
+
+				child2Element = child2Element.GetUpdatedCache (request);
+				cachedPattern = (SelectionItemPattern)
+					child2Element.GetCachedPattern (
+						SelectionItemPatternIdentifiers.Pattern);
+				SelectionItemPattern currentPattern = (SelectionItemPattern)
+					child2Element.GetCurrentPattern (
+						SelectionItemPatternIdentifiers.Pattern);
+
+				Assert.IsFalse (cachedPattern.Current.IsSelected);
+				Assert.IsFalse (cachedPattern.Cached.IsSelected);
+				Assert.IsFalse (currentPattern.Current.IsSelected);
+				AssertRaises<InvalidOperationException> (
+					() => currentPattern.Cached.IsSelected.ToString (),
+					"Cached property on an uncached pattern");
+				cachedPattern.Select ();
+				Thread.Sleep (500);
+				Assert.IsTrue (currentPattern.Current.IsSelected);
+				Assert.IsTrue (cachedPattern.Current.IsSelected);
+				Assert.IsFalse (cachedPattern.Cached.IsSelected);
+			}
+		}
+
+		[Test]
+		public void TextPatternTest ()
+		{
+			RunCommand ("set textbox3 to first line:second line:third line");
+			var request = new CacheRequest ();
+			request.Add (TextPattern.Pattern);
+			using (request.Activate ()) {
+				TextPattern textPattern;
+				AutomationElement textbox3ElementRef2 = textbox3Element.GetUpdatedCache (request);
+				AssertRaises<InvalidOperationException> (
+					() => textPattern = (TextPattern) textbox3Element.GetCachedPattern (TextPattern.Pattern),
+					"Getting TextPattern from an uncached ref");
+				textPattern = (TextPattern) textbox3ElementRef2.GetCachedPattern (TextPattern.Pattern);
+				TextPatternRange range = textPattern.DocumentRange.Clone ();
+				TextPatternRange range1;
+
+				range1 = range.FindText ("second", false, false);
+				Assert.AreEqual ("second", range1.GetText (-1));
+
+				RunCommand ("set textbox3 to gomez thing:morticia\twednesday ing");
+				Thread.Sleep (500);
+
+				range1 = range.FindText ("mort", false, false);
+				Assert.AreEqual ("mort", range1.GetText (-1));
+			}
+		}
+
 		private void VerifyCachedPropertyValue (AutomationElement element, AutomationProperty property, object expectedTrue, object expectedFalse, object expectedDefault)
 		{
 			Assert.AreEqual (expectedTrue,
@@ -973,6 +1155,15 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (expectedDefault,
 				element.GetCachedPropertyValue (property),
 				property.ProgrammaticName + " w/ default");
+		}
+
+		private void PropertyChangedHandler (object sender, AutomationPropertyChangedEventArgs e)
+		{
+			AutomationElement element = sender as AutomationElement;
+			if (element.Current.ControlType != ControlType.Text)
+				return;
+			eventElement = element;
+			eventCount++;
 		}
 	}
 }
