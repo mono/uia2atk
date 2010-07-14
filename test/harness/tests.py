@@ -34,7 +34,7 @@ winforms_tests_list = [
 	"groupbox-regression.py",
 	"helpprovider-regression.py",
 	"hscrollbar-regression.py",
-	#"label-regression.py",
+	"label-regression.py",
 	"linklabel-regression.py",
 	"listbox-regression.py",
 	"listview_largeimage-regression.py",
