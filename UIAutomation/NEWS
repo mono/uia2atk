@@ -3,6 +3,15 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.94: The "nit" release
+* #574269 - Cannot find pane control on Linux
+* #574242 - Can't define custom provider by using the WM_GETOBJECT message
+* #582884 - [Caching] Test and implement behavior of AutomationElements passed to event handlers which were
+            signed up while there was an active CacheRequest
+* #582887 - [Caching] Test TreeWalker caching with more restrictive TreeFilter/TreeScope
+* #582888 - [Caching] Test caching as it relates to TextPattern
+* #617867 - press key make openfiledialog and savefiledialog died
+
 Version 2.0.93: The "machinima" release
 * #585147 - Initial work started
 
