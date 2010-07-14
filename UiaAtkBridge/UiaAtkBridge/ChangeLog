@@ -1,3 +1,8 @@
+2010-07-14  Mike Gorse  <mgorse@novell.com>
+
+	* Monitor.cs: Set AT_SPI_CLIENT/AT_SPI_G_REENTER_MAIN_LOOP to
+	fix at-spi2 crash when pressing a key.
+
 2010-05-26  Mike Gorse  <mgorse@novell.com>
 
 	* Monitor.cs: Set AT_BRIDGE_SHUTDOWN so that atk-bridge will shut

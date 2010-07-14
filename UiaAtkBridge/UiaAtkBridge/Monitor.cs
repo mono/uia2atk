@@ -68,6 +68,11 @@ namespace UiaAtkBridge
 
 			PreventGailInitialization ();
 
+			// TODO: Remove AT_SPI_CLIENT; kept for compatibility
+			// with at-spi2-atk 0.3.4 and older
+			Environment.SetEnvironmentVariable ("AT_SPI_CLIENT", "1");
+			Environment.SetEnvironmentVariable ("AT_SPI_REENTER_G_MAIN_LOOP", "1");
+
 			RegisterWindowSignals ();
 
 			Atk.Util.GetRootHandler = ReturnTopLevel;
