@@ -1,5 +1,9 @@
 2010-07-14  Mario Carrion  <mcarrion@novell.com>
 
+	* patches/moon_trunk/ -> patches/mozilla-central: Folder renamed.
+
+2010-07-14  Mario Carrion  <mcarrion@novell.com>
+
 	* patches/mozilla-3-6/README:
 	* patches/mozilla-3-6/ff-plugin-a11y.patch:
 	* patches/mozilla-3-6/moonlight-a11y-core-extension.diff:
