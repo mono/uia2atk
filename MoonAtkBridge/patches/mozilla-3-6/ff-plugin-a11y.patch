@@ -1,0 +1,399 @@
+diff -r 1151e590b153 accessible/src/atk/Makefile.in
+--- a/accessible/src/atk/Makefile.in	Tue Jun 29 01:03:00 2010 +0200
++++ b/accessible/src/atk/Makefile.in	Wed Jul 14 12:20:23 2010 -0400
+@@ -76,32 +76,34 @@ CPPSRCS = \
+   nsMaiInterfaceSelection.cpp \
+   nsMaiInterfaceValue.cpp \
+   nsMaiHyperlink.cpp \
+   nsMaiInterfaceHypertext.cpp \
+   nsMaiInterfaceHyperlinkImpl.cpp \
+   nsMaiInterfaceTable.cpp \
+   nsMaiInterfaceDocument.cpp \
+   nsMaiInterfaceImage.cpp \
++  nsHTMLAtkObjectAccessible.cpp \
+   $(NULL)
+ 
+ EXPORTS = \
+   nsAccessNodeWrap.h \
+   nsARIAGridAccessibleWrap.h \
+   nsAccessibleWrap.h \
+   nsDocAccessibleWrap.h \
+   nsRootAccessibleWrap.h \
+   nsTextAccessibleWrap.h \
+   nsXULMenuAccessibleWrap.h \
+   nsXULListboxAccessibleWrap.h \
+   nsXULTreeGridAccessibleWrap.h \
+   nsHyperTextAccessibleWrap.h \
+   nsHTMLImageAccessibleWrap.h \
+   nsHTMLTableAccessibleWrap.h \
+   nsAccessibleRelationWrap.h \
++  nsHTMLAtkObjectAccessible.h \
+   $(NULL)
+ 
+ # we want to force the creation of a static lib.
+ FORCE_STATIC_LIB = 1
+ 
+ EXTRA_DSO_LDOPTS += $(MOZ_GTK2_LIBS)
+ 
+ include $(topsrcdir)/config/rules.mk
+diff -r 1151e590b153 accessible/src/atk/nsHTMLAtkObjectAccessible.cpp
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.cpp	Wed Jul 14 12:20:23 2010 -0400
+@@ -0,0 +1,106 @@
++/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is mozilla.org code.
++ *
++ * The Initial Developer of the Original Code is
++ * Novell, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2009
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *   Brad Taylor (brad@getcoded.net) (original author)
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either of the GNU General Public License Version 2 or later (the "GPL"),
++ * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++#include "nsCOMPtr.h"
++#include "nsHTMLAtkObjectAccessible.h"
++#include "nsAccessibleWrap.h"
++
++#include <atk/atk.h>
++
++
++nsHTMLAtkObjectAccessible::nsHTMLAtkObjectAccessible(AtkObject* aAtkObject):
++  nsLeafAccessible(nsnull, nsnull)
++{
++  // Unref'ed by nsAccessibleWrap
++  mAtkObject = aAtkObject;
++  g_object_ref(mAtkObject);
++}
++
++
++NS_IMPL_CYCLE_COLLECTION_CLASS(nsHTMLAtkObjectOwnerAccessible)
++NS_IMPL_CYCLE_COLLECTION_TRAVERSE_BEGIN_INHERITED(
++  nsHTMLAtkObjectOwnerAccessible, nsAccessible)
++  NS_IMPL_CYCLE_COLLECTION_TRAVERSE_NSCOMPTR(mNativeAccessible)
++NS_IMPL_CYCLE_COLLECTION_TRAVERSE_END
++
++NS_IMPL_CYCLE_COLLECTION_UNLINK_BEGIN_INHERITED(nsHTMLAtkObjectOwnerAccessible,
++                                                nsAccessible)
++  NS_IMPL_CYCLE_COLLECTION_UNLINK_NSCOMPTR(mNativeAccessible)
++NS_IMPL_CYCLE_COLLECTION_UNLINK_END
++
++nsHTMLAtkObjectOwnerAccessible::nsHTMLAtkObjectOwnerAccessible(
++  nsIDOMNode* aNode, nsIWeakReference* aShell, AtkObject* aChildAccessible):
++  nsAccessibleWrap(aNode, aShell)
++{
++  mNativeAccessible =
++    new nsHTMLAtkObjectAccessible(aChildAccessible);
++  if (!mNativeAccessible)
++    return;
++
++  nsAccessible* nativeAccessible = nsnull;
++  CallQueryInterface(mNativeAccessible, &nativeAccessible);
++
++  nativeAccessible->SetParent(this);
++  atk_object_set_parent(aChildAccessible, GetAtkObject());
++}
++
++void
++nsHTMLAtkObjectOwnerAccessible::CacheChildren()
++{
++  if (!mWeakShell) {
++    // This node has been shut down
++    mAccChildCount = eChildCountUninitialized;
++    return;
++  }
++
++  if (mAccChildCount != eChildCountUninitialized)
++    return;
++
++  if (!mNativeAccessible) {
++    mAccChildCount = 0;
++    return;
++  }
++
++  nsAccessible* nativeAccessible = nsnull;
++  CallQueryInterface(mNativeAccessible, &nativeAccessible);
++
++  nativeAccessible->SetParent(this);
++
++  SetFirstChild(mNativeAccessible);
++  mAccChildCount = 1;
++}
+diff -r 1151e590b153 accessible/src/atk/nsHTMLAtkObjectAccessible.h
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/accessible/src/atk/nsHTMLAtkObjectAccessible.h	Wed Jul 14 12:20:23 2010 -0400
+@@ -0,0 +1,79 @@
++/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
++/* ***** BEGIN LICENSE BLOCK *****
++ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
++ *
++ * The contents of this file are subject to the Mozilla Public License Version
++ * 1.1 (the "License"); you may not use this file except in compliance with
++ * the License. You may obtain a copy of the License at
++ * http://www.mozilla.org/MPL/
++ *
++ * Software distributed under the License is distributed on an "AS IS" basis,
++ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
++ * for the specific language governing rights and limitations under the
++ * License.
++ *
++ * The Original Code is mozilla.org code.
++ *
++ * The Initial Developer of the Original Code is
++ * Novell, Inc.
++ * Portions created by the Initial Developer are Copyright (C) 2009
++ * the Initial Developer. All Rights Reserved.
++ *
++ * Contributor(s):
++ *   Brad Taylor (brad@getcoded.net) (original author)
++ *
++ * Alternatively, the contents of this file may be used under the terms of
++ * either of the GNU General Public License Version 2 or later (the "GPL"),
++ * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
++ * in which case the provisions of the GPL or the LGPL are applicable instead
++ * of those above. If you wish to allow use of your version of this file only
++ * under the terms of either the GPL or the LGPL, and not to allow others to
++ * use your version of this file under the terms of the MPL, indicate your
++ * decision by deleting the provisions above and replace them with the notice
++ * and other provisions required by the GPL or the LGPL. If you do not delete
++ * the provisions above, a recipient may use your version of this file under
++ * the terms of any one of the MPL, the GPL or the LGPL.
++ *
++ * ***** END LICENSE BLOCK ***** */
++
++#ifndef _nsHTMLAtkObjectAccessible_H_
++#define _nsHTMLAtkObjectAccessible_H_
++
++#include "nsBaseWidgetAccessible.h"
++
++/**
++ * This class wraps the AtkObject provided by the plugin.
++ */
++class nsHTMLAtkObjectAccessible : public nsLeafAccessible
++{
++public:
++
++  nsHTMLAtkObjectAccessible(AtkObject* aAtkAccessible);
++  virtual ~nsHTMLAtkObjectAccessible() {}
++};
++
++/**
++ * This is a smart placeholder for the nsHTMLAtkObjectAccessible which
++ * "knows" where it lives in the accessible tree hierarchy. This is necessary
++ * because the native plugin accessible doesn't know where it exists in the
++ * Mozilla tree and would otherwise fail for calls like getParent(), which
++ * could break tree walking.
++ */
++class nsHTMLAtkObjectOwnerAccessible : public nsAccessibleWrap
++{
++public:
++  nsHTMLAtkObjectOwnerAccessible(nsIDOMNode* aNode, nsIWeakReference* aShell,
++                                 AtkObject *aAtkObject);
++  virtual ~nsHTMLAtkObjectOwnerAccessible() {}
++
++  NS_DECL_CYCLE_COLLECTION_CLASS_INHERITED(nsHTMLAtkObjectOwnerAccessible,
++                                           nsAccessible)
++
++  // nsAccessible
++  void CacheChildren();
++
++protected:
++  nsCOMPtr<nsIAccessible> mNativeAccessible;
++};
++
++#endif  
+diff -r 1151e590b153 accessible/src/base/nsAccessibilityService.cpp
+--- a/accessible/src/base/nsAccessibilityService.cpp	Tue Jun 29 01:03:00 2010 +0200
++++ b/accessible/src/base/nsAccessibilityService.cpp	Wed Jul 14 12:20:23 2010 -0400
+@@ -79,16 +79,20 @@
+ #include "nsTextFragment.h"
+ #include "nsPresContext.h"
+ #include "nsServiceManagerUtils.h"
+ #include "nsUnicharUtils.h"
+ #include "nsIWebProgress.h"
+ #include "nsNetError.h"
+ #include "nsDocShellLoadTypes.h"
+ 
++#ifdef MOZ_PLUGINS
++#include "npapi.h"
++#endif
++
+ #ifdef MOZ_XUL
+ #include "nsXULAlertAccessible.h"
+ #include "nsXULColorPickerAccessible.h"
+ #include "nsXULComboboxAccessible.h"
+ #include "nsXULFormControlAccessible.h"
+ #include "nsXULListboxAccessibleWrap.h"
+ #include "nsXULMenuAccessibleWrap.h"
+ #include "nsXULSliderAccessible.h"
+@@ -96,16 +100,19 @@
+ #include "nsXULTextAccessible.h"
+ #include "nsXULTreeGridAccessibleWrap.h"
+ #endif
+ 
+ // For native window support for object/embed/applet tags
+ #ifdef XP_WIN
+ #include "nsHTMLWin32ObjectAccessible.h"
+ #endif
++#ifdef MOZ_ACCESSIBILITY_ATK
++#include "nsHTMLAtkObjectAccessible.h"
++#endif
+ 
+ #ifndef DISABLE_XFORMS_HOOKS
+ #include "nsXFormsFormControlsAccessible.h"
+ #include "nsXFormsWidgetsAccessible.h"
+ #endif
+ 
+ #ifdef MOZ_ACCESSIBILITY_ATK
+ #include "nsAppRootAccessible.h"
+@@ -772,30 +779,47 @@ nsAccessibilityService::CreateHTMLObject
+   nsCOMPtr<nsIDOMHTMLObjectElement> obj(do_QueryInterface(node));
+   if (obj)
+     obj->GetContentDocument(getter_AddRefs(domDoc));
+   else
+     domDoc = do_QueryInterface(node);
+   if (domDoc)
+     return CreateOuterDocAccessible(node, aAccessible);
+ 
++#if defined(XP_WIN) || defined(MOZ_ACCESSIBILITY_ATK)
++  // 2) for plugins
++  nsCOMPtr<nsIPluginInstance> pluginInstance;
++  if (NS_SUCCEEDED(aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance)))
++      && pluginInstance) {
+ #ifdef XP_WIN
+-  // 2) for plugins
+-  nsCOMPtr<nsIPluginInstance> pluginInstance ;
+-  aFrame->GetPluginInstance(*getter_AddRefs(pluginInstance));
+-  if (pluginInstance) {
+     HWND pluginPort = nsnull;
+     aFrame->GetPluginPort(&pluginPort);
+     if (pluginPort) {
+       *aAccessible = new nsHTMLWin32ObjectOwnerAccessible(node, weakShell, pluginPort);
+       if (*aAccessible) {
+         NS_ADDREF(*aAccessible);
+         return NS_OK;
+       }
+     }
++#elif MOZ_ACCESSIBILITY_ATK
++    printf("FIREFOX: About to request native accessible\n");
++    AtkObject *nativeAccessible = NULL;
++
++    pluginInstance->GetValue(nsPluginInstanceVariable_NativeAccessibleAtk, &nativeAccessible);
++    if (nativeAccessible) {
++      *aAccessible = new nsHTMLAtkObjectOwnerAccessible(node, weakShell, nativeAccessible);
++
++      NS_ENSURE_TRUE(*aAccessible, NS_ERROR_OUT_OF_MEMORY);
++      NS_ADDREF(*aAccessible);
++
++      return NS_OK;
++    } else {
++      printf("FIREFOX: GetValue returned null!\n");
++    }
++#endif
+   }
+ #endif
+ 
+   // 3) for images and imagemaps, or anything else with a child frame
+   // we have the object frame, get the image frame
+   nsIFrame *frame = aFrame->GetFirstChild(nsnull);
+   if (frame)
+     return frame->GetAccessible(aAccessible);
+diff -r 1151e590b153 modules/plugin/base/public/npapi.h
+--- a/modules/plugin/base/public/npapi.h	Tue Jun 29 01:03:00 2010 +0200
++++ b/modules/plugin/base/public/npapi.h	Wed Jul 14 12:20:23 2010 -0400
+@@ -315,17 +315,23 @@ typedef enum {
+    */
+   NPPVformValue = 16,
+   
+   NPPVpluginUrlRequestsDisplayedBool = 17,
+   
+   /* Checks if the plugin is interested in receiving the http body of
+    * all http requests (including failed ones, http status != 200).
+    */
+-  NPPVpluginWantsAllNetworkStreams = 18
++  NPPVpluginWantsAllNetworkStreams = 18,
++
++  /* Get a native accessible for the plugin on Linux.
++   * This is expected to be an AtkObject.
++   * Introduced in Gecko 1.9.2.
++   */
++  NPNVNativeAccessibleAtk = 22
+ 
+ #ifdef XP_MACOSX
+   /* Used for negotiating drawing models */
+   , NPPVpluginDrawingModel = 1000
+ #endif
+ 
+ #if (MOZ_PLATFORM_MAEMO == 5)
+   , NPPVpluginWindowlessLocalBool = 2002
+diff -r 1151e590b153 modules/plugin/base/public/nsplugindefs.h
+--- a/modules/plugin/base/public/nsplugindefs.h	Tue Jun 29 01:03:00 2010 +0200
++++ b/modules/plugin/base/public/nsplugindefs.h	Wed Jul 14 12:20:23 2010 -0400
+@@ -200,16 +200,22 @@ enum nsPluginInstanceVariable {
+     nsPluginInstanceVariable_ScriptableInstance      = 10,
+     nsPluginInstanceVariable_ScriptableIID           = 11,
+     nsPluginInstanceVariable_NeedsXEmbed             = 14,
+     nsPluginInstanceVariable_WantsAllNetworkStreams  = 18
+ #ifdef XP_MACOSX
+     , nsPluginInstanceVariable_DrawingModel          = 20
+ #endif
+     , nsPluginInstanceVariable_WindowlessLocalBool   = 21
++
++    /* Get a native accessible for the plugin on Linux.
++     * This is expected to be an AtkObject.
++     * Introduced in Gecko 1.9.2.
++     */
++    , nsPluginInstanceVariable_NativeAccessibleAtk   = 22
+ };
+ 
+ #ifdef OJI
+ typedef nsPluginInstanceVariable nsPluginInstancePeerVariable;
+ #endif
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+@@ -344,16 +350,17 @@ struct nsPluginEvent {
+     uint32      lParam;
+ #endif /* _WIN64 */
+ 
+ #elif defined(XP_UNIX) && defined(MOZ_X11)
+     XEvent      event;
+ #else
+     void        *event;
+ #endif
++
+ };
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+ enum nsPluginReason {
+     nsPluginReason_Base = 0,
+     nsPluginReason_Done = 0,
+     nsPluginReason_NetworkErr,
