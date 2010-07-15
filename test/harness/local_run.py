@@ -567,11 +567,11 @@ class Test(object):
     search = "%s/%s" % (Settings.uiaqa_home, "samples")
     # execute the following command to get a pid and a path of the tests
     # that might be running still
-    # ps -ax | grep /home/a11y/code/uia2atk/test/samples | awk '{print $1,$6}'
+    # ps -ax | grep tests/samples | grep -v grep | awk '{print $1, $5}'
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
     p3 = s.Popen(["grep", "-v", "grep"], stdin=p2.stdout, stdout=s.PIPE)
-    p4 = s.Popen(["awk", "{print $1, $7}"], stdin=p3.stdout, stdout=s.PIPE)
+    p4 = s.Popen(["awk", "{print $1, $5}"], stdin=p3.stdout, stdout=s.PIPE)
     processes = dict(line.strip().split() for line in p4.stdout)
     if final and len(processes) > 0:
       output("WARNING:  The following processes never exited:")
