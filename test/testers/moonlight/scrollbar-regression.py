@@ -3,14 +3,14 @@
 ##############################################################################
 # Written by:  Neville Gao  <nevillegao@gmail.com>
 # Date:        2009/09/22
-# Description: Test accessibility of scrollBar widget
+# Description: Test accessibility of scrollbar widget
 #              Use the scrollbarframe.py wrapper script
 #              Test the Moonlight ScrollBar sample
 ##############################################################################
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of scrollBar widget
+Test accessibility of scrollbar widget
 """
 
 # imports

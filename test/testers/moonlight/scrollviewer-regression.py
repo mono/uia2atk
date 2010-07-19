@@ -10,7 +10,7 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of ScrollViewer widget
+Test accessibility of scrollviewer widget
 """
 
 # imports

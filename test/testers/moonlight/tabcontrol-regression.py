@@ -3,14 +3,14 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        09/21/2009
-# Description: Test accessibility of TabControl widget 
+# Description: Test accessibility of tabcontrol widget 
 #              Use the tabcontrolframe.py wrapper script
 #              Test the Moonlight TabControl sample
 ##############################################################################
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of TabControl widget
+Test accessibility of tabcontrol widget
 """
 
 # imports

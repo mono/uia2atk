@@ -1,3 +1,10 @@
+2010-07-19  Neville Gao  <nevillegao@gmail.com>
+
+	* testers/moonlight/button-regression.py:
+	* testers/moonlight/scrollviewer-regression.py:
+	* testers/moonlight/scrollbar-regression.py:
+	* testers/moonlight/tabcontrol-regression.py: Modified doc strings.
+
 2010-07-15  Neville Gao  <nevillegao@gmail.com>
 
 	* harness/local_run.py: Fixed killing failed test issue.

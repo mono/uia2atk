@@ -10,7 +10,7 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of checkbox widget
+Test accessibility of button widget
 """
 
 # imports
