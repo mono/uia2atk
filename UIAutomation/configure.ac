@@ -122,8 +122,10 @@ UIAutomationProvider/Makefile
 UIAutomationProvider/AssemblyInfo.cs
 data/Makefile
 data/mono-uia.pc.in
-data/mono-uia.spec
-data/fedora/mono-uia.spec
+data/mono-uia-openSUSE_11.2.spec
+data/mono-uia-Fedora_12.spec
+data/mono-uia-openSUSE_11.3.spec
+data/mono-uia-Fedora_13.spec
 Makefile
 build/common/Consts.cs
 ])
