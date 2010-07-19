@@ -4,7 +4,7 @@
 #
 
 Name:           mono-uia
-Version:        2.0.94
+Version:        @VERSION@
 Release:        1
 License:        MIT
 Group:          System/Libraries
@@ -14,7 +14,7 @@ Patch0:         mono-uia-libdir.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       mono-core >= 2.4
 Requires:       mono-winfxcore
-BuildRequires:  gtk-sharp2-devel >= 2.12.8
+BuildRequires:  gtk-sharp2-devel >= 2.12.10
 BuildRequires:  mono-core >= 2.4
 BuildRequires:  mono-devel >= 2.4
 BuildRequires:  mono-nunit >= 2.4

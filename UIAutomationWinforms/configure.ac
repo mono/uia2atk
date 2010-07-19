@@ -100,6 +100,7 @@ UIAutomationWinformsTests/Makefile
 UIAutomationWinforms/Globals.cs
 UIAutomationWinforms/Makefile
 data/uiautomationwinforms.spec
+data/fedora/uiautomationwinforms.spec
 po/Makefile.in
 Makefile
 ])
