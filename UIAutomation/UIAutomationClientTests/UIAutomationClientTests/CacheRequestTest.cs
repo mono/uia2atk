@@ -51,6 +51,7 @@ namespace MonoTests.System.Windows.Automation
 		private readonly CacheRequest originalCurrent = CacheRequest.Current;
 		private int eventCount;
 		private AutomationElement eventElement;
+		private AutomationElement hScrollBarElement;
 
 		[SetUp]
 		public void SetUp ()
@@ -59,6 +60,19 @@ namespace MonoTests.System.Windows.Automation
 				CacheRequest.Current.Pop ();
 			Assert.AreEqual (originalCurrent, CacheRequest.Current,
 				"At SetUp time, CacheRequest.Current should be set back to the original request");
+
+			// to enable textBox3's horizontal scroll bar.
+			RunCommand ("set textBox3 long text");
+
+			AndCondition horizontalScrollCondition =
+				new AndCondition (
+					new PropertyCondition (AutomationElementIdentifiers.ControlTypeProperty,
+						ControlType.ScrollBar),
+					new PropertyCondition (AutomationElementIdentifiers.OrientationProperty,
+						OrientationType.Horizontal));
+			hScrollBarElement = textbox3Element.FindFirst (TreeScope.Children, horizontalScrollCondition);
+			Assert.IsNotNull (hScrollBarElement);
+
 		}
 
 		[TearDown]
@@ -714,16 +728,16 @@ namespace MonoTests.System.Windows.Automation
 					"accessing property from Current with AutomationElementMode.None");
 			}
 
-			request.Add (InvokePatternIdentifiers.Pattern);
-			request.Add (SelectionPatternIdentifiers.Pattern);
-			request.Add (SelectionPatternIdentifiers.SelectionProperty);
+			request.Add (InvokePattern.Pattern);
+			request.Add (SelectionPattern.Pattern);
+			request.Add (SelectionPattern.SelectionProperty);
 			using (request.Activate ()) {
 				AutomationElement selectionElement = testFormElement.FindFirst (TreeScope.Children,
 					new PropertyCondition (AEIds.ControlTypeProperty,
 						ControlType.Tree));
 			SelectionPattern selectionPattern = (SelectionPattern)
 				selectionElement.GetCachedPattern (
-					SelectionPatternIdentifiers.Pattern);
+					SelectionPattern.Pattern);
 				selectionPattern.Cached.GetSelection ();
 				AssertRaises<InvalidOperationException> (
 					() => selectionPattern.Cached.CanSelectMultiple.ToString (),
@@ -734,7 +748,7 @@ namespace MonoTests.System.Windows.Automation
 						ControlType.Button));
 			InvokePattern invokePattern = (InvokePattern)
 				invokeElement.GetCachedPattern (
-					InvokePatternIdentifiers.Pattern);
+					InvokePattern.Pattern);
 				// LAMESPEC: Calling Invoke should throw exception
 				invokePattern.Invoke ();
 			}
@@ -1019,7 +1033,7 @@ namespace MonoTests.System.Windows.Automation
 				AEIds.NameProperty);
 			using (request.Activate ()) {
 				RunCommand ("click button1");
-				Assert.AreEqual (1, eventCount, "Event not fired");
+				Assert.AreNotEqual (0, eventCount, "Event not fired");
 				Assert.AreNotEqual (eventElement.Current.Name,
 					oldName,
 					"Name has changed");
@@ -1041,7 +1055,7 @@ namespace MonoTests.System.Windows.Automation
 					PropertyChangedHandler,
 					AEIds.NameProperty);
 				RunCommand ("click button1");
-				Assert.AreEqual (1, eventCount, "Event not fired");
+				Assert.AreNotEqual (0, eventCount, "Event not fired");
 				Assert.AreNotEqual (eventElement.Current.Name,
 					oldName,
 				"Name has changed");
@@ -1061,7 +1075,7 @@ namespace MonoTests.System.Windows.Automation
 				PropertyChangedHandler,
 				AEIds.NameProperty);
 			RunCommand ("click button1");
-			Assert.AreEqual (1, eventCount, "Event not fired");
+			Assert.AreNotEqual (0, eventCount, "Event not fired");
 			Assert.AreNotEqual (eventElement.Current.Name,
 				oldName,
 			"Name has changed");
@@ -1074,7 +1088,7 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		[Test]
-		public void MethodTest ()
+		public void SelectionTest ()
 		{
 			AutomationElement child1Element, child2Element;
 			child1Element = treeView1Element.FindFirst (TreeScope.Children,
@@ -1084,36 +1098,84 @@ namespace MonoTests.System.Windows.Automation
 			child2Element = TreeWalker.RawViewWalker.GetNextSibling (child1Element);
 			Assert.IsNotNull (child2Element, "Child element should not be null");
 			CacheRequest request = new CacheRequest ();
-			request.Add (SelectionItemPatternIdentifiers.Pattern);
-			request.Add (SelectionItemPatternIdentifiers.IsSelectedProperty);
+			request.Add (SelectionItemPattern.Pattern);
+			request.Add (SelectionItemPattern.IsSelectedProperty);
+			request.Add (SelectionItemPattern.SelectionContainerProperty);
+			request.Add (SelectionPattern.Pattern);
+			request.Add (SelectionPattern.CanSelectMultipleProperty);
+			request.Add (SelectionPattern.IsSelectionRequiredProperty);
+			request.Add (SelectionPattern.SelectionProperty);
 
 			using (request.Activate ()) {
-			SelectionItemPattern cachedPattern;
+			SelectionItemPattern CachedItemPattern;
 				AssertRaises<InvalidOperationException> (
-					() => cachedPattern = (SelectionItemPattern)
+					() => CachedItemPattern = (SelectionItemPattern)
 						child2Element.GetCachedPattern (
-							SelectionItemPatternIdentifiers.Pattern),
+							SelectionItemPattern.Pattern),
 						"GetCachedPattern when fetched from an element retrieved while there was no active cache");
 
 				child2Element = child2Element.GetUpdatedCache (request);
-				cachedPattern = (SelectionItemPattern)
+				CachedItemPattern = (SelectionItemPattern)
 					child2Element.GetCachedPattern (
-						SelectionItemPatternIdentifiers.Pattern);
-				SelectionItemPattern currentPattern = (SelectionItemPattern)
+						SelectionItemPattern.Pattern);
+				SelectionItemPattern currentItemPattern = (SelectionItemPattern)
 					child2Element.GetCurrentPattern (
-						SelectionItemPatternIdentifiers.Pattern);
+						SelectionItemPattern.Pattern);
+				AutomationElement treeView1ElementRef2 = treeView1Element.GetUpdatedCache (request);
+				SelectionPattern currentSelectionPattern = (SelectionPattern)
+					treeView1ElementRef2.GetCurrentPattern (
+						SelectionPattern.Pattern);
 
-				Assert.IsFalse (cachedPattern.Current.IsSelected);
-				Assert.IsFalse (cachedPattern.Cached.IsSelected);
-				Assert.IsFalse (currentPattern.Current.IsSelected);
+				Assert.IsFalse (CachedItemPattern.Current.IsSelected);
+				Assert.IsFalse (CachedItemPattern.Cached.IsSelected);
+				Assert.IsFalse (currentItemPattern.Current.IsSelected);
 				AssertRaises<InvalidOperationException> (
-					() => currentPattern.Cached.IsSelected.ToString (),
+					() => currentItemPattern.Cached.IsSelected.ToString (),
 					"Cached property on an uncached pattern");
-				cachedPattern.Select ();
+
+				Assert.AreEqual (treeView1Element,
+					CachedItemPattern.Cached.SelectionContainer,
+					"Cached.SelectionContainer");
+				VerifyCachedPropertyValue (child2Element,
+					SelectionItemPattern.SelectionContainerProperty,
+					currentItemPattern.Current.SelectionContainer,
+					currentItemPattern.Current.SelectionContainer,
+					currentItemPattern.Current.SelectionContainer);
+				Assert.IsFalse (currentSelectionPattern.Current.IsSelectionRequired,
+					"IsSelectionRequired before select");
+
+				CachedItemPattern.Select ();
 				Thread.Sleep (500);
-				Assert.IsTrue (currentPattern.Current.IsSelected);
-				Assert.IsTrue (cachedPattern.Current.IsSelected);
-				Assert.IsFalse (cachedPattern.Cached.IsSelected);
+
+				Assert.IsTrue (currentSelectionPattern.Current.IsSelectionRequired,
+					"IsSelectionRequired before select");
+				Assert.IsTrue (currentItemPattern.Current.IsSelected);
+				Assert.IsTrue (CachedItemPattern.Current.IsSelected);
+				Assert.IsFalse (CachedItemPattern.Cached.IsSelected);
+
+			SelectionPattern cachedSelectionPattern
+				= (SelectionPattern) treeView1ElementRef2.GetCachedPattern (SelectionPattern.Pattern);
+
+				Assert.AreEqual (cachedSelectionPattern.Cached.CanSelectMultiple,
+					currentSelectionPattern.Current.CanSelectMultiple,
+					"Cached.CanSelectMultiple == Current.CanSelectMultiple");
+				VerifyCachedPropertyValue (treeView1ElementRef2,
+					SelectionPatternIdentifiers.CanSelectMultipleProperty,
+					currentSelectionPattern.Current.CanSelectMultiple,
+					currentSelectionPattern.Current.CanSelectMultiple,
+					currentSelectionPattern.Current.CanSelectMultiple);
+
+				Assert.IsFalse (cachedSelectionPattern.Cached.IsSelectionRequired,
+					"Cached.IsSelectionRequired == Current.IsSelectionRequired");
+				VerifyCachedPropertyValue (treeView1ElementRef2,
+					SelectionPatternIdentifiers.IsSelectionRequiredProperty,
+					false, false, false);
+
+				AutomationElement [] selection = cachedSelectionPattern.Current.GetSelection ();
+				Assert.AreEqual (1, selection.Length, "Selection length");
+
+				selection = cachedSelectionPattern.Cached.GetSelection ();
+				Assert.AreEqual (0, selection.Length, "Selection length");
 			}
 		}
 
@@ -1144,6 +1206,921 @@ namespace MonoTests.System.Windows.Automation
 			}
 		}
 
+		[Test]
+		public void AcceleratorKeyTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.AcceleratorKeyProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.AcceleratorKey,
+					groupBox1Element.Current.AcceleratorKey,
+					"Cached.AcceleratorKey == Current.AcceleratorKey");
+			}
+		}
+
+		[Test]
+		public void AccessKeyTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.AccessKeyProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.AccessKey,
+					groupBox1Element.Current.AccessKey,
+					"Cached.AccessKey == Current.AccessKey");
+			}
+		}
+
+		[Test]
+		public void AutomationIdTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.AutomationIdProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.AutomationId,
+					groupBox1Element.Current.AutomationId,
+					"Cached.AutomationId == Current.AutomationId");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.AutomationIdProperty,
+					groupBox1Element.Current.AutomationId,
+					groupBox1Element.Current.AutomationId,
+					groupBox1Element.Current.AutomationId);
+			}
+		}
+
+		[Test]
+		public void BoundingRectangleTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.BoundingRectangleProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.BoundingRectangle,
+					groupBox1Element.Current.BoundingRectangle,
+					"Cached.BoundingRectangle == Current.BoundingRectangle");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.BoundingRectangleProperty,
+					groupBox1Element.Current.BoundingRectangle,
+					groupBox1Element.Current.BoundingRectangle,
+					groupBox1Element.Current.BoundingRectangle);
+			}
+		}
+
+		[Test]
+		public void ClassNameTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.ClassNameProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ClassName,
+					groupBox1Element.Current.ClassName,
+					"Cached.ClassName == Current.ClassName");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ClassName,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.ClassNameProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void ClickablePointTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.ClickablePointProperty);
+		}
+
+		[Test]
+		public void ControlTypeTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.ControlTypeProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ControlType,
+					groupBox1Element.Current.ControlType,
+					"Cached.ControlType == Current.ControlType");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.ControlTypeProperty,
+					groupBox1Element.Current.ControlType,
+					groupBox1Element.Current.ControlType,
+					groupBox1Element.Current.ControlType);
+			}
+		}
+
+		[Test]
+		public void CultureTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.CultureProperty);
+		}
+
+		[Test]
+		public void FrameworkIdTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.FrameworkIdProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.FrameworkId,
+					groupBox1Element.Current.FrameworkId,
+					"Cached.FrameworkId == Current.FrameworkId");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.FrameworkIdProperty,
+					groupBox1Element.Current.FrameworkId,
+					groupBox1Element.Current.FrameworkId,
+					groupBox1Element.Current.FrameworkId);
+			}
+		}
+
+		[Test]
+		public void HasKeyboardFocusTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.HasKeyboardFocusProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.HasKeyboardFocus,
+					groupBox1Element.Current.HasKeyboardFocus,
+					"Cached.HasKeyboardFocus == Current.HasKeyboardFocus");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.HasKeyboardFocusProperty,
+					groupBox1Element.Current.HasKeyboardFocus,
+					groupBox1Element.Current.HasKeyboardFocus,
+					groupBox1Element.Current.HasKeyboardFocus);
+			}
+		}
+
+		[Test]
+		public void HelpTextTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.HelpTextProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.HelpText,
+					groupBox1Element.Current.HelpText,
+					"Cached.HelpText == Current.HelpText");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.HelpText,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.HelpTextProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void IsContentElementTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsContentElementProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsContentElement,
+					groupBox1Element.Current.IsContentElement,
+					"Cached.IsContentElement == Current.IsContentElement");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.IsContentElementProperty,
+					groupBox1Element.Current.IsContentElement,
+					groupBox1Element.Current.IsContentElement,
+					groupBox1Element.Current.IsContentElement);
+			}
+		}
+
+		[Test]
+		public void IsControlElementTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsControlElementProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsControlElement,
+					groupBox1Element.Current.IsControlElement,
+					"Cached.IsControlElement == Current.IsControlElement");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsControlElement,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.IsControlElementProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void IsDockPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsDockPatternAvailableProperty);
+		}
+
+		public void IsEnableTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsEnabledProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsEnabled,
+					groupBox1Element.Current.IsEnabled,
+					"Cached.IsEnabled == Current.IsEnabled");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.IsEnabledProperty,
+					groupBox1Element.Current.IsEnabled,
+					groupBox1Element.Current.IsEnabled,
+					groupBox1Element.Current.IsEnabled);
+			}
+		}
+
+		[Test]
+		public void IsExpandCollapsePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsExpandCollapsePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsGridItemPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsGridItemPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsGridPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsGridPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsInvokePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsInvokePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsKeyboardFocusableTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsKeyboardFocusableProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsKeyboardFocusable,
+					groupBox1Element.Current.IsKeyboardFocusable,
+					"Cached.IsKeyboardFocusable == Current.IsKeyboardFocusable");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.IsKeyboardFocusableProperty,
+					groupBox1Element.Current.IsKeyboardFocusable,
+					groupBox1Element.Current.IsKeyboardFocusable,
+					groupBox1Element.Current.IsKeyboardFocusable);
+			}
+		}
+
+		[Test]
+		public void IsMultipleViewPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsMultipleViewPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsOffscreenTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsOffscreenProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsOffscreen,
+					groupBox1Element.Current.IsOffscreen,
+					"Cached.IsOffscreen == Current.IsOffscreen");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.IsOffscreenProperty,
+					groupBox1Element.Current.IsOffscreen,
+					groupBox1Element.Current.IsOffscreen,
+					groupBox1Element.Current.IsOffscreen);
+			}
+		}
+
+		[Test]
+		public void IsPasswordTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsPasswordProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsPassword,
+					groupBox1Element.Current.IsPassword,
+					"Cached.IsPassword == Current.IsPassword");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsPassword,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.IsPasswordProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void IsRangeValuePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsRangeValuePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsRequiredForFormTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.IsRequiredForFormProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsRequiredForForm,
+					groupBox1Element.Current.IsRequiredForForm,
+					"Cached.IsRequiredForForm == Current.IsRequiredForForm");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.IsRequiredForForm,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.IsRequiredForFormProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void IsScrollItemPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsScrollItemPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsScrollPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsScrollPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsSelectionItemPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsSelectionItemPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsSelectionPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsSelectionPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsTableItemPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsTableItemPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsTablePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsTablePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsTextPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsTextPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsTogglePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsTogglePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsTransformPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsTransformPatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsValuePatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsValuePatternAvailableProperty);
+		}
+
+		[Test]
+		public void IsWindowPatternAvailableTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.IsWindowPatternAvailableProperty);
+		}
+
+		[Test]
+		public void ItemStatusTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.ItemStatusProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ItemStatus,
+					groupBox1Element.Current.ItemStatus,
+					"Cached.ItemStatus == Current.ItemStatus");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ItemStatus,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.ItemStatusProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void ItemTypeTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.ItemTypeProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ItemType,
+					groupBox1Element.Current.ItemType,
+					"Cached.ItemType == Current.ItemType");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ItemType,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.ItemTypeProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void LabeledByTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.LabeledByProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.LabeledBy,
+					groupBox1Element.Current.LabeledBy,
+					"Cached.LabeledBy == Current.LabeledBy");
+				Assert.AreEqual (groupBox1ElementRef2.Cached.LabeledBy,
+					groupBox1ElementRef2.GetCachedPropertyValue (AutomationElement.LabeledByProperty),
+					"GetCachedPropertyValue");
+			}
+		}
+
+		[Test]
+		public void LocalizedControlTypeTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.LocalizedControlTypeProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.LocalizedControlType,
+					groupBox1Element.Current.LocalizedControlType,
+					"Cached.LocalizedControlType == Current.LocalizedControlType");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.LocalizedControlTypeProperty,
+					groupBox1Element.Current.LocalizedControlType,
+					groupBox1Element.Current.LocalizedControlType,
+					groupBox1Element.Current.LocalizedControlType);
+			}
+		}
+
+		// name is implicitly tested elsewhere
+
+		[Test]
+		public void NativeWindowHandleTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.NativeWindowHandleProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.NativeWindowHandle,
+					groupBox1Element.Current.NativeWindowHandle,
+					"Cached.NativeWindowHandle == Current.NativeWindowHandle");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.NativeWindowHandleProperty,
+					groupBox1Element.Current.NativeWindowHandle,
+					groupBox1Element.Current.NativeWindowHandle,
+					groupBox1Element.Current.NativeWindowHandle);
+			}
+		}
+
+		[Test]
+		public void OrientationTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.OrientationProperty);
+			using (request.Activate ()) {
+				AutomationElement hScrollBarElementRef2 = hScrollBarElement.GetUpdatedCache (request);
+				Assert.AreEqual (hScrollBarElementRef2.Cached.Orientation,
+					hScrollBarElement.Current.Orientation,
+					"Cached.Orientation == Current.Orientation");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					AEIds.OrientationProperty,
+					hScrollBarElement.Current.Orientation,
+					hScrollBarElement.Current.Orientation,
+					hScrollBarElement.Current.Orientation);
+			}
+		}
+
+		[Test]
+		public void ProcessIdTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (AutomationElement.ProcessIdProperty);
+			using (request.Activate ()) {
+				AutomationElement groupBox1ElementRef2 = groupBox1Element.GetUpdatedCache (request);
+				Assert.AreEqual (groupBox1ElementRef2.Cached.ProcessId,
+					groupBox1Element.Current.ProcessId,
+					"Cached.ProcessId == Current.ProcessId");
+				VerifyCachedPropertyValue (groupBox1ElementRef2,
+					AEIds.ProcessIdProperty,
+					groupBox1Element.Current.ProcessId,
+					groupBox1Element.Current.ProcessId,
+					groupBox1Element.Current.ProcessId);
+			}
+		}
+
+		[Test]
+		public void RuntimeIdTest ()
+		{
+			TestSimpleProperty (groupBox1Element,
+				AutomationElement.RuntimeIdProperty);
+		}
+
+		[Test]
+		public void ExpandCollapsePatternTest ()
+		{
+			AutomationElement parentElement
+				= treeView1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.TreeItem));
+			var request = new CacheRequest ();
+			request.Add (ExpandCollapsePattern.Pattern);
+			request.Add (ExpandCollapsePattern.ExpandCollapseStateProperty);
+
+			using (request.Activate ()) {
+				AutomationElement parentElementRef2 = parentElement.GetUpdatedCache (request);
+				ExpandCollapsePattern cachedPattern = (ExpandCollapsePattern) parentElementRef2.GetCachedPattern (ExpandCollapsePattern.Pattern);
+				ExpandCollapsePattern currentPattern = (ExpandCollapsePattern) parentElement.GetCurrentPattern (ExpandCollapsePattern.Pattern);
+				Assert.AreEqual (cachedPattern.Cached.ExpandCollapseState,
+					currentPattern.Current.ExpandCollapseState,
+					"Cached.ExpandCollapseState == Current.ExpandCollapseState");
+				VerifyCachedPropertyValue (parentElementRef2,
+					ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+					currentPattern.Current.ExpandCollapseState,
+					currentPattern.Current.ExpandCollapseState,
+					currentPattern.Current.ExpandCollapseState);
+			}
+		}
+				
+		[Test]
+		public void MultipleViewPatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (MultipleViewPattern.Pattern);
+			request.Add (MultipleViewPattern.CurrentViewProperty);
+
+			using (request.Activate ()) {
+				AutomationElement listView1ElementRef2 = listView1Element.GetUpdatedCache (request);
+				MultipleViewPattern cachedPattern = (MultipleViewPattern) listView1ElementRef2.GetCachedPattern (MultipleViewPattern.Pattern);
+				MultipleViewPattern currentPattern = (MultipleViewPattern) listView1Element.GetCurrentPattern (MultipleViewPattern.Pattern);
+				Assert.AreEqual (cachedPattern.Cached.CurrentView,
+					currentPattern.Current.CurrentView,
+					"Cached.CurrentView == Current.CurrentView");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					MultipleViewPatternIdentifiers.CurrentViewProperty,
+					currentPattern.Current.CurrentView,
+					currentPattern.Current.CurrentView,
+					currentPattern.Current.CurrentView);
+			}
+		}
+				
+		[Test]
+		public void TogglePatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (TogglePattern.Pattern);
+			request.Add (TogglePattern.ToggleStateProperty);
+
+			using (request.Activate ()) {
+				AutomationElement checkBox1ElementRef2 = checkBox1Element.GetUpdatedCache (request);
+				TogglePattern cachedPattern = (TogglePattern) checkBox1ElementRef2.GetCachedPattern (TogglePattern.Pattern);
+				Assert.AreEqual (ToggleState.Off,
+					checkBox1Element.GetCurrentPropertyValue (TogglePatternIdentifiers.ToggleStateProperty),
+					"CheckBox is initially not checked");
+				Assert.AreEqual (ToggleState.Off,
+					checkBox1ElementRef2.GetCachedPropertyValue (TogglePatternIdentifiers.ToggleStateProperty),
+					"CheckBox initial cached state");
+				Assert.AreEqual (ToggleState.Off,
+					cachedPattern.Cached.ToggleState,
+					"cached.ToggleState");
+
+				cachedPattern.Toggle ();
+				Assert.AreEqual (ToggleState.On,
+					checkBox1Element.GetCurrentPropertyValue (TogglePatternIdentifiers.ToggleStateProperty),
+					"CheckBox is now checked");
+				Assert.AreEqual (ToggleState.Off,
+					checkBox1ElementRef2.GetCachedPropertyValue (TogglePatternIdentifiers.ToggleStateProperty),
+					"CheckBox cached state after toggle");
+				Assert.AreEqual (ToggleState.Off,
+					cachedPattern.Cached.ToggleState,
+					"cached.ToggleState after toggle");
+			}
+		}
+				
+		[Test]
+		public void RangeValuePatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (RangeValuePattern.Pattern);
+			request.Add (RangeValuePattern.IsReadOnlyProperty);
+			request.Add (RangeValuePattern.LargeChangeProperty);
+			request.Add (RangeValuePattern.MaximumProperty);
+			request.Add (RangeValuePattern.MinimumProperty);
+			request.Add (RangeValuePattern.SmallChangeProperty);
+			request.Add (RangeValuePattern.ValueProperty);
+
+			using (request.Activate ()) {
+				AutomationElement hScrollBarElementRef2 = hScrollBarElement.GetUpdatedCache (request);
+				RangeValuePattern currentPattern = (RangeValuePattern) hScrollBarElement.GetCurrentPattern (RangeValuePattern.Pattern);
+				RangeValuePattern cachedPattern = (RangeValuePattern) hScrollBarElementRef2.GetCachedPattern (RangeValuePattern.Pattern);
+
+				Assert.AreEqual (cachedPattern.Cached.IsReadOnly,
+					currentPattern.Current.IsReadOnly,
+					"Cached.IsReadOnly == Current.IsReadOnly");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.IsReadOnlyProperty,
+					currentPattern.Current.IsReadOnly,
+					currentPattern.Current.IsReadOnly,
+					currentPattern.Current.IsReadOnly);
+
+				Assert.AreEqual (cachedPattern.Cached.LargeChange,
+					currentPattern.Current.LargeChange,
+					"Cached.LargeChange == Current.LargeChange");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.LargeChangeProperty,
+					currentPattern.Current.LargeChange,
+					currentPattern.Current.LargeChange,
+					currentPattern.Current.LargeChange);
+
+				Assert.AreEqual (cachedPattern.Cached.Maximum,
+					currentPattern.Current.Maximum,
+					"Cached.Maximum == Current.Maximum");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.MaximumProperty,
+					currentPattern.Current.Maximum,
+					currentPattern.Current.Maximum,
+					currentPattern.Current.Maximum);
+
+				Assert.AreEqual (cachedPattern.Cached.Minimum,
+					currentPattern.Current.Minimum,
+					"Cached.Minimum == Current.Minimum");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.MinimumProperty,
+					currentPattern.Current.Minimum,
+					currentPattern.Current.Minimum,
+					currentPattern.Current.Minimum);
+
+				Assert.AreEqual (cachedPattern.Cached.SmallChange,
+					currentPattern.Current.SmallChange,
+					"Cached.SmallChange == Current.SmallChange");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.SmallChangeProperty,
+					currentPattern.Current.SmallChange,
+					currentPattern.Current.SmallChange,
+					currentPattern.Current.SmallChange);
+
+				Assert.AreEqual (cachedPattern.Cached.Value,
+					currentPattern.Current.Value,
+					"Cached.Value == Current.Value");
+				VerifyCachedPropertyValue (hScrollBarElementRef2,
+					RangeValuePatternIdentifiers.ValueProperty,
+					currentPattern.Current.Value,
+					currentPattern.Current.Value,
+					currentPattern.Current.Value);
+			}
+		}
+				
+		[Test]
+		public void ScrollPatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (ScrollPattern.Pattern);
+			request.Add (ScrollPattern.HorizontallyScrollableProperty);
+			request.Add (ScrollPattern.HorizontalScrollPercentProperty);
+			request.Add (ScrollPattern.HorizontalViewSizeProperty);
+			request.Add (ScrollPattern.VerticallyScrollableProperty);
+			request.Add (ScrollPattern.VerticalViewSizeProperty);
+
+			using (request.Activate ()) {
+				AutomationElement listView1ElementRef2 = listView1Element.GetUpdatedCache (request);
+				ScrollPattern currentPattern = (ScrollPattern) listView1Element.GetCurrentPattern (ScrollPattern.Pattern);
+				ScrollPattern cachedPattern = (ScrollPattern) listView1ElementRef2.GetCachedPattern (ScrollPattern.Pattern);
+
+				Assert.AreEqual (cachedPattern.Cached.HorizontallyScrollable,
+					currentPattern.Current.HorizontallyScrollable,
+					"Cached.HorizontallyScrollable == Current.HorizontallyScrollable");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					ScrollPatternIdentifiers.HorizontallyScrollableProperty,
+					currentPattern.Current.HorizontallyScrollable,
+					currentPattern.Current.HorizontallyScrollable,
+					currentPattern.Current.HorizontallyScrollable);
+
+				Assert.AreEqual (cachedPattern.Cached.HorizontalScrollPercent,
+					currentPattern.Current.HorizontalScrollPercent,
+					"Cached.HorizontalScrollPercent == Current.HorizontalScrollPercent");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					ScrollPatternIdentifiers.HorizontalScrollPercentProperty,
+					currentPattern.Current.HorizontalScrollPercent,
+					currentPattern.Current.HorizontalScrollPercent,
+					currentPattern.Current.HorizontalScrollPercent);
+
+				Assert.AreEqual (cachedPattern.Cached.HorizontalViewSize,
+					currentPattern.Current.HorizontalViewSize,
+					"Cached.HorizontalViewSize == Current.HorizontalViewSize");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					ScrollPatternIdentifiers.HorizontalViewSizeProperty,
+					currentPattern.Current.HorizontalViewSize,
+					currentPattern.Current.HorizontalViewSize,
+					currentPattern.Current.HorizontalViewSize);
+
+				Assert.AreEqual (cachedPattern.Cached.VerticallyScrollable,
+					currentPattern.Current.VerticallyScrollable,
+					"Cached.VerticallyScrollable == Current.VerticallyScrollable");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					ScrollPatternIdentifiers.VerticallyScrollableProperty,
+					currentPattern.Current.VerticallyScrollable,
+					currentPattern.Current.VerticallyScrollable,
+					currentPattern.Current.VerticallyScrollable);
+
+				Assert.AreEqual (cachedPattern.Cached.VerticalViewSize,
+					currentPattern.Current.VerticalViewSize,
+					"Cached.VerticalViewSize == Current.VerticalViewSize");
+				VerifyCachedPropertyValue (listView1ElementRef2,
+					ScrollPatternIdentifiers.VerticalViewSizeProperty,
+					currentPattern.Current.VerticalViewSize,
+					currentPattern.Current.VerticalViewSize,
+					currentPattern.Current.VerticalViewSize);
+			}
+		}
+				
+		[Test]
+		public void TransformPatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (TransformPattern.Pattern);
+			request.Add (TransformPattern.CanMoveProperty);
+			request.Add (TransformPattern.CanResizeProperty);
+			request.Add (TransformPattern.CanRotateProperty);
+
+			using (request.Activate ()) {
+				AutomationElement testFormElementRef2 = testFormElement.GetUpdatedCache (request);
+				TransformPattern currentPattern = (TransformPattern) testFormElement.GetCurrentPattern (TransformPattern.Pattern);
+				TransformPattern cachedPattern = (TransformPattern) testFormElementRef2.GetCachedPattern (TransformPattern.Pattern);
+
+				Assert.AreEqual (cachedPattern.Cached.CanMove,
+					currentPattern.Current.CanMove,
+					"Cached.CanMove == Current.CanMove");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					TransformPatternIdentifiers.CanMoveProperty,
+					currentPattern.Current.CanMove,
+					currentPattern.Current.CanMove,
+					currentPattern.Current.CanMove);
+
+				Assert.AreEqual (cachedPattern.Cached.CanResize,
+					currentPattern.Current.CanResize,
+					"Cached.CanResize == Current.CanResize");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					TransformPatternIdentifiers.CanResizeProperty,
+					currentPattern.Current.CanResize,
+					currentPattern.Current.CanResize,
+					currentPattern.Current.CanResize);
+
+				Assert.AreEqual (cachedPattern.Cached.CanRotate,
+					currentPattern.Current.CanRotate,
+					"Cached.CanRotate == Current.CanRotate");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					TransformPatternIdentifiers.CanRotateProperty,
+					currentPattern.Current.CanRotate,
+					currentPattern.Current.CanRotate,
+					currentPattern.Current.CanRotate);
+			}
+		}
+				
+		[Test]
+		public void ValuePatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (ValuePattern.Pattern);
+			request.Add (ValuePattern.IsReadOnlyProperty);
+			request.Add (ValuePattern.ValueProperty);
+
+			using (request.Activate ()) {
+				AutomationElement textbox1ElementRef2 = textbox1Element.GetUpdatedCache (request);
+				ValuePattern currentPattern = (ValuePattern) textbox1Element.GetCurrentPattern (ValuePattern.Pattern);
+				ValuePattern cachedPattern = (ValuePattern) textbox1ElementRef2.GetCachedPattern (ValuePattern.Pattern);
+
+				Assert.AreEqual (cachedPattern.Cached.IsReadOnly,
+					currentPattern.Current.IsReadOnly,
+					"Cached.IsReadOnly == Current.IsReadOnly");
+				VerifyCachedPropertyValue (textbox1ElementRef2,
+					ValuePatternIdentifiers.IsReadOnlyProperty,
+					currentPattern.Current.IsReadOnly,
+					currentPattern.Current.IsReadOnly,
+					currentPattern.Current.IsReadOnly);
+
+				Assert.AreEqual (cachedPattern.Cached.Value,
+					currentPattern.Current.Value,
+					"Cached.Value == Current.Value");
+				VerifyCachedPropertyValue (textbox1ElementRef2,
+					ValuePatternIdentifiers.ValueProperty,
+					currentPattern.Current.Value,
+					currentPattern.Current.Value,
+					currentPattern.Current.Value);
+			}
+		}
+				
+		[Test]
+		public void WindowPatternTest ()
+		{
+			var request = new CacheRequest ();
+			request.Add (WindowPattern.Pattern);
+			request.Add (WindowPattern.CanMaximizeProperty);
+			request.Add (WindowPattern.CanMinimizeProperty);
+			request.Add (WindowPattern.IsModalProperty);
+			request.Add (WindowPattern.IsTopmostProperty);
+			request.Add (WindowPattern.WindowInteractionStateProperty);
+			request.Add (WindowPattern.WindowVisualStateProperty);
+
+			using (request.Activate ()) {
+				AutomationElement testFormElementRef2 = testFormElement.GetUpdatedCache (request);
+				WindowPattern currentPattern = (WindowPattern) testFormElement.GetCurrentPattern (WindowPattern.Pattern);
+				WindowPattern cachedPattern = (WindowPattern) testFormElementRef2.GetCachedPattern (WindowPattern.Pattern);
+
+				Assert.AreEqual (cachedPattern.Cached.CanMaximize,
+					currentPattern.Current.CanMaximize,
+					"Cached.CanMaximize == Current.CanMaximize");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.CanMaximizeProperty,
+					currentPattern.Current.CanMaximize,
+					currentPattern.Current.CanMaximize,
+					currentPattern.Current.CanMaximize);
+
+				Assert.AreEqual (cachedPattern.Cached.CanMinimize,
+					currentPattern.Current.CanMinimize,
+					"Cached.CanMinimize == Current.CanMinimize");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.CanMinimizeProperty,
+					currentPattern.Current.CanMinimize,
+					currentPattern.Current.CanMinimize,
+					currentPattern.Current.CanMinimize);
+
+				Assert.AreEqual (cachedPattern.Cached.IsModal,
+					currentPattern.Current.IsModal,
+					"Cached.IsModal == Current.IsModal");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.IsModalProperty,
+					currentPattern.Current.IsModal,
+					currentPattern.Current.IsModal,
+					currentPattern.Current.IsModal);
+
+				Assert.AreEqual (cachedPattern.Cached.IsTopmost,
+					currentPattern.Current.IsTopmost,
+					"Cached.IsTopmost == Current.IsTopmost");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.IsTopmostProperty,
+					currentPattern.Current.IsTopmost,
+					currentPattern.Current.IsTopmost,
+					currentPattern.Current.IsTopmost);
+
+				Assert.AreEqual (cachedPattern.Cached.WindowInteractionState,
+					currentPattern.Current.WindowInteractionState,
+					"Cached.WindowInteractionState == Current.WindowInteractionState");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.WindowInteractionStateProperty,
+					currentPattern.Current.WindowInteractionState,
+					currentPattern.Current.WindowInteractionState,
+					currentPattern.Current.WindowInteractionState);
+
+				Assert.AreEqual (cachedPattern.Cached.WindowVisualState,
+					currentPattern.Current.WindowVisualState,
+					"Cached.WindowVisualState == Current.WindowVisualState");
+				VerifyCachedPropertyValue (testFormElementRef2,
+					WindowPatternIdentifiers.WindowVisualStateProperty,
+					currentPattern.Current.WindowVisualState,
+					currentPattern.Current.WindowVisualState,
+					currentPattern.Current.WindowVisualState);
+			}
+		}
+				
+		private void TestSimpleProperty (AutomationElement element, AutomationProperty property)
+		{
+			var request = new CacheRequest ();
+			request.Add (property);
+			using (request.Activate ()) {
+				AutomationElement cachedElement = element.GetUpdatedCache (request);
+				object currentValue = element.GetCurrentPropertyValue (property);
+				Assert.AreEqual (currentValue,
+					cachedElement.GetCachedPropertyValue (property),
+					"GetcachedPropertyValue " + property.ProgrammaticName);
+			}
+		}
+
 		private void VerifyCachedPropertyValue (AutomationElement element, AutomationProperty property, object expectedTrue, object expectedFalse, object expectedDefault)
 		{
 			Assert.AreEqual (expectedTrue,
@@ -1154,6 +2131,22 @@ namespace MonoTests.System.Windows.Automation
 				property.ProgrammaticName + " w/ false");
 			Assert.AreEqual (expectedDefault,
 				element.GetCachedPropertyValue (property),
+				property.ProgrammaticName + " w/ default");
+		}
+
+		private void VerifyCachedPropertyValue<T> (AutomationElement element, AutomationProperty property, object expected)
+		{
+			//T retval = (T)
+				//element.GetCachedPropertyValue (property, true);
+			//Assert.AreEqual (expected, retval,
+				//property.ProgrammaticName + " w/ true");
+			//retval = (T)
+				//element.GetCachedPropertyValue (property, false);
+			//Assert.AreEqual (expected, retval,
+				//property.ProgrammaticName + " w/ false");
+			object retval =
+				element.GetCachedPropertyValue (property);
+			Assert.AreEqual (expected, retval,
 				property.ProgrammaticName + " w/ default");
 		}
 

@@ -1,3 +1,8 @@
+2010-07-21  Mike Gorse  <mgorse@novell.com>
+
+	* UIAutomationClientTests/CacheRequestTest.cs:
+	Add tests for properties and patterns.
+
 2010-07-14  Mike Gorse  <mgorse@novell.com>
 
 	* UIAutomationClientTests/CacheRequestTest.cs: Add TextPattern test.
