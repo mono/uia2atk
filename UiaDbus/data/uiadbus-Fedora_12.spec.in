@@ -10,7 +10,7 @@ License:        MIT
 Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/mono-uia/%{name}-%{version}.tar.bz2
-Patch0:         uiadbus-libdir.patch
+Patch0:         uiadbus-libdir-fedora.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  gtk-sharp2-devel >= 2.12.10
 BuildRequires:  mono-devel >= 2.4
@@ -62,5 +62,3 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/mono-uia-dbus.pc
 
 %changelog
-* Mon Nov 30 2009 <sshaw@decriptor.com> - 1.8.90-1
-- packaged UiaDbus version 1.9.0 using the buildservice spec file wizard

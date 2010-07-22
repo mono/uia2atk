@@ -100,7 +100,8 @@ Makefile
 data/Makefile
 data/mono-uia-dbus.pc.in
 data/uiadbus.spec
-data/fedora/uiadbus.spec
+data/uiadbus-Fedora_12.spec
+data/uiadbus-Fedora_13.spec
 UiaDbus/Makefile
 UiaDbusBridge/Makefile
 UiaDbusBridgeTests/Makefile

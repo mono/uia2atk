@@ -23,7 +23,6 @@ BuildRequires:	glib-sharp2 >= 2.12.10
 BuildRequires:	mono-devel >= 2.4
 BuildRequires:	mono-uia-devel >= 2.0.94
 BuildRequires:	ndesk-dbus
-BuildRequires:  pkg-config
 
 %description
 UiaDbus is another communication channel for UIA on Linux between the client and provider
