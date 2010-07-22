@@ -16,15 +16,14 @@ Version:        @VERSION@
 Release:        1
 License:        MIT
 Group:          System/Libraries
-URL:		http://www.mono-project.com/Accessibility
+URL:			http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Summary:        At-spi uia source
-BuildRequires:	at-spi-sharp-devel >= 1.0.93
+BuildRequires:	at-spi-sharp-devel >= 1.0.91
 BuildRequires:	glib-sharp2 >= 2.12.10
 BuildRequires:	mono-devel >= 2.4
 BuildRequires:	mono-uia-devel >= 2.0.94
-BuildRequires:	pkg-config
 
 %description
 At-spi uia source client side

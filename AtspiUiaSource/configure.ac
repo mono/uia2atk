@@ -88,7 +88,8 @@ AtspiUiaSource/Makefile
 AtspiUiaSourceTests/Makefile
 AtspiUiaSourceTests/atspiuiasourcetest.sh
 data/atspiuiasource.spec
-data/fedora/atspiuiasource.spec
+data/atspiuiasource-Fedora_12.spec
+data/atspiuiasource-Fedora_13.spec
 ])
 
 AC_OUTPUT
