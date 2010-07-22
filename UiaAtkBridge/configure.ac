@@ -126,7 +126,8 @@ Makefile
 UiaAtkBridge/Makefile
 bridge-glue/Makefile
 data/uiaatkbridge.spec
-data/fedora/uiaatkbridge.spec
+data/uiaatkbridge-Fedora_12.spec
+data/uiaatkbridge-Fedora_13.spec
 Test/Makefile
 Test/AtkTest/Makefile
 Test/GailTestApp/Makefile
