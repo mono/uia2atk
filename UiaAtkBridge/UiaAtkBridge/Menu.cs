@@ -39,6 +39,11 @@ namespace UiaAtkBridge
 		{
 		}
 		
+		protected Menu (IntPtr ptr)
+			: base (ptr)
+		{
+		}
+
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			//TODO

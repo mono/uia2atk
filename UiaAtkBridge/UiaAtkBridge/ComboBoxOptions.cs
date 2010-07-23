@@ -26,6 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
@@ -155,8 +156,13 @@ namespace UiaAtkBridge
 			if (IsChildSelected (childIndex))
 				cancelSelection = true;
 			base.RemoveChild (childToRemove);
-			if (children.Count <= 0 || cancelSelection)
-				((ComboBox)Parent).RaiseSelectionChanged (null);
+			if (children.Count <= 0 || cancelSelection) {
+				ComboBox parent = Parent as ComboBox;
+				if (parent != null)
+					parent.RaiseSelectionChanged (null);
+				else
+					Log.Error ("Parent of a ComboBoxOptions is null or not a ComboBox");
+			}
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

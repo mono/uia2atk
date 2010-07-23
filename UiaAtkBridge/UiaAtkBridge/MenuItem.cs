@@ -70,6 +70,10 @@ namespace UiaAtkBridge
 			Role = Atk.Role.MenuItem;
 		}
 
+		protected MenuItem (IntPtr ptr)
+			: base (ptr)
+		{
+		}
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();

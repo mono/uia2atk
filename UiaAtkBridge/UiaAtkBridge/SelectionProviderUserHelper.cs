@@ -198,7 +198,12 @@ namespace UiaAtkBridge
 		
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
-			Adapter adapter = AutomationBridge.GetAdapterForProviderSemiLazy (ChildrenHolder).RefAccessibleChild (i) as Adapter;
+			Adapter parentAdapter = AutomationBridge.GetAdapterForProviderSemiLazy (ChildrenHolder);
+			if (parentAdapter == null) {
+				Log.Error ("Can't get adapter for Selection ChildrenHolder");
+				return null;
+			}
+			Adapter adapter = parentAdapter.RefAccessibleChild (i) as Adapter;
 			if (adapter == null || adapter.Provider == null)
 				return null;
 			ISelectionItemProvider ret = (ISelectionItemProvider)adapter.Provider.GetPatternProvider

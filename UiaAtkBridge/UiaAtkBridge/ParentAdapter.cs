@@ -39,6 +39,11 @@ namespace UiaAtkBridge
 		{
 		}
 		
+		protected ParentAdapter (IntPtr ptr)
+			: base (ptr)
+		{
+		}
+
 #region Private 
 		
 		private bool requestedChildren = false;

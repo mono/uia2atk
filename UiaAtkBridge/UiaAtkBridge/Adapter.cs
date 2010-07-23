@@ -45,6 +45,10 @@ namespace UiaAtkBridge
 			// Avoid setting the name.  Not sure why this is needed.
 		}
 		
+		protected Adapter (IntPtr ptr)
+			: base (ptr)
+		{
+		}
 #endregion
 
 #region Adapter Methods

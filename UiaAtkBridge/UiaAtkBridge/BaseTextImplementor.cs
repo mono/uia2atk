@@ -335,10 +335,10 @@ namespace UiaAtkBridge
 		{
 			int length = Length;
 			System.Windows.Rect bounds = resource.BoundingRectangle;
-			rect.X = (int)(bounds.X + (bounds.Width * startOffset) / length);
+			rect.X = (int)(bounds.X + (length > 0 ? (bounds.Width * startOffset) / length : 0));
 			rect.Y = (int)bounds.Y;
 			rect.Height = (int)bounds.Height;
-			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / length;
+			rect.Width = (int)(length > 0 ? bounds.Width * (endOffset - startOffset) / length : 0);
 			if (coordType == Atk.CoordType.Window)
 				resource.ConvertCoords (ref rect.X, ref rect.Y, false);
 		}
