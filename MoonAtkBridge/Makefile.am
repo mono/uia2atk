@@ -35,15 +35,16 @@ DESC_FILE_LOCAL=descriptors.xml
 DESC_FILE_UPSTREAM_PATH=resources/$(DESC_FILE_UPSTREAM)
 DESC_FILE_LOCAL_PATH=resources/$(DESC_FILE_LOCAL)
 
-ANONSVN_TRUNK=http://anonsvn.mono-project.com/source/trunk/
-ANONSVN_DESCRIPTORS=$(ANONSVN_TRUNK)moon/class/tuning/Descriptors/$(DESC_FILE_UPSTREAM)
-ANONSVN_GTKSHARP=$(ANONSVN_TRUNK)gtk-sharp
+GITHUB_MONO=http://github.com/mono/
+GITHUB_DESCRIPTORS=$(GITHUB_MONO)moon/raw/masterclass/tuning/Descriptors/$(DESC_FILE_UPSTREAM)
 
 all-am: descriptors tests-build
 
-#FIXME: not svn export all gtk-sharp tree (we don't need glade,gtk,gdk,gio,etc.)
+# FIXME: Stop cloning the repository.
 $(GTK_SHARP):
-	svn export $(ANONSVN_GTKSHARP) $(GTK_SHARP) -r142364
+	git clone git://github.com/mono/gtk-sharp.git gtk-sharp
+	## Equivalent to r142364
+	cd gtk-sharp && git reset --hard 0eece4438f38b0732cfc15704ad72c6dcedf7bcb && cd ..
 
 	## Apply patches to gtk-sharp to add moonlight targets
 	$(foreach p,$(GTK_SHARP_PATCHES), patch -p0 -N -d gtk-sharp < $p;)
@@ -155,7 +156,7 @@ descriptors: $(ASSEMBLY_STAGE_PATH)
 		-s ResolveFromAssemblyStep:Mono.Tuner.MoonlightA11yUsageInspectionStep,Mono.Tuner
 	cp bin/fullraw/output/$(DESC_FILE_LOCAL) $(DESC_FILE_LOCAL_PATH)
 	rm -f $(DESC_FILE_UPSTREAM_PATH)
-	$(WGET) $(ANONSVN_DESCRIPTORS) --output-document=$(DESC_FILE_UPSTREAM_PATH)
+	$(WGET) $(GITHUB_DESCRIPTORS) --output-document=$(DESC_FILE_UPSTREAM_PATH)
 	$(COMPARE_DESCS)
 
 # stage contains bin/ assemblies plus the files needed for XPI generation
