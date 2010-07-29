@@ -141,49 +141,54 @@ guint _add_global_event_listener (
 }
 
 typedef void (*void_func)();
-typedef GObject *(*gconf_client_get_default_t) ();
-typedef gboolean (*gconf_client_get_bool_t)(GObject *, const char *, void *);
+
+static gchar *
+find_atk_bridge (const gchar *path)
+{
+  gchar *full_path = g_strconcat (path, "/modules/libatk-bridge.so", NULL);
+  struct stat st;
+
+  if (stat (full_path, &st) == 0)
+    return full_path;
+  return NULL;
+}
+
+static char *
+get_path_from_var (const char *var)
+{
+  const gchar *value = g_getenv (var);
+  gchar **values;
+  gchar **ptr;
+  gchar *path = NULL;
+
+  if (!value)
+    return NULL;
+
+  values = g_strsplit (value, ":", 0);
+  for (ptr = values; *ptr; ptr++)
+    {
+      if (!path)
+        path = find_atk_bridge (*ptr);
+      g_free (*ptr);
+    }
+  g_free (values);
+  return path;
+}
 
 static const char *
 get_bridge_path ()
 {
   static const char *path = NULL;
-  static void *gconf = NULL;
-  gconf_client_get_default_t gconf_client_get_default = NULL;
-  gconf_client_get_bool_t gconf_client_get_bool = NULL;
-  GObject *gconf_client;	/* really a GConfClient */
-  const char *append_str = "";
 
   if (path)
     return path;
 
-  g_type_init ();
-
-  if (!gconf)
-    gconf = dlopen ("libgconf-2.so", RTLD_LAZY);
-  if (gconf)
-    {
-      gconf_client_get_default = dlsym (gconf, "gconf_client_get_default");
-      if (gconf_client_get_default)
-	gconf_client = gconf_client_get_default ();
-      gconf_client_get_bool = dlsym (gconf, "gconf_client_get_bool");
-  }
-
-  if (gconf_client && gconf_client_get_bool)
-    {
-#ifdef RELOCATE_DBUS
-      if (gconf_client_get_bool (gconf_client, DBUS_GCONF_KEY, NULL))
-	append_str = "at-spi-dbus/modules/";
-#else
-      if (gconf_client_get_bool (gconf_client, CORBA_GCONF_KEY, NULL))
-	append_str = "at-spi-corba/modules/";
-#endif
-    }
-  if (gconf_client)
-    g_object_unref (gconf_client);
-  /* Not going to close gconf, since it brings in ORBit and would leave
-   * a dangling main loop context (see BNC#590708) */
-  path = g_strconcat (GTK_MODULES_DIR, "/", append_str, "libatk-bridge.so", NULL);
+  /* Hack for OpenSUSE: Check GTK_PATH64 first */
+  path = get_path_from_var ("GTK_PATH64");
+  if (!path)
+    path = get_path_from_var ("GTK_PATH");
+  if (!path)
+  path = g_strconcat (GTK_MODULES_DIR, "/libatk-bridge.so", NULL);
   return path;
 }
 

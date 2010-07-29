@@ -32,6 +32,7 @@
 #include <atk/atkutil.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <sys/stat.h>
 
 #ifdef RELOCATE_DBUS
 #define DBUS_GCONF_KEY  "/desktop/gnome/interface/at-spi-dbus"
