@@ -612,6 +612,17 @@
 /MoonAtkBridge/tests/assets/ControlTypeTest/Makefile.in
 /MoonAtkBridge/tests/assets/ControlTypeTest/*.mdb
 /MoonAtkBridge/tests/assets/ControlTypeTest/*.xap
+/MoonAtkBridge/tests/assets/DataGridTest/App.xaml.g.cs
+/MoonAtkBridge/tests/assets/DataGridTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.dll
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.dll.mdb
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.g.resources
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.html
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.xap
+/MoonAtkBridge/tests/assets/DataGridTest/Makefile
+/MoonAtkBridge/tests/assets/DataGridTest/Makefile.in
+/MoonAtkBridge/tests/assets/DataGridTest/Page.xaml.g.cs
+/MoonAtkBridge/tests/assets/DataGridTest/System.Windows.Controls.Data.dll
 /MoonAtkBridge/tests/assets/DatePickerTest/AppManifest.xaml
 /MoonAtkBridge/tests/assets/DatePickerTest/*.dll
 /MoonAtkBridge/tests/assets/DatePickerTest/*.g.cs
