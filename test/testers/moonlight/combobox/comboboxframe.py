@@ -33,15 +33,16 @@ class ComboBoxFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(ComboBoxFrame, self).__init__(accessible)
         self.frame = self.findDocumentFrame("ComboBoxSample")
-        self.text1 = self.frame.findLabel(self.TEXT1)
-        self.text2 = self.frame.findLabel(self.TEXT2)
-        self.text3 = self.frame.findLabel(self.TEXT3)
+        self.filler = self.frame.findFiller("Silverlight Control")
+        self.text1 = self.filler.findLabel(self.TEXT1)
+        self.text2 = self.filler.findLabel(self.TEXT2)
+        self.text3 = self.filler.findLabel(self.TEXT3)
 
-        self.add_button = self.frame.findPushButton(self.BUTTON1)
-        self.del_button = self.frame.findPushButton(self.BUTTON2)
-        self.reset_button = self.frame.findPushButton(self.BUTTON3)
+        self.add_button = self.filler.findPushButton(self.BUTTON1)
+        self.del_button = self.filler.findPushButton(self.BUTTON2)
+        self.reset_button = self.filler.findPushButton(self.BUTTON3)
 
-        self.text = self.frame.findText(None)
+        self.text = self.filler.findText(None)
 
         # find and variable combobox
         self.comboboxs = self.frame.findAllComboBoxs(None)

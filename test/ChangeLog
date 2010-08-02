@@ -1,3 +1,6 @@
+2010-08-02  Calen Chen <cachen@novell.com>
+
+	* testers/moonlight/combobox/comboboxframe.py: find widges from filler
 
 2010-07-19  Neville Gao  <nevillegao@gmail.com>
 
