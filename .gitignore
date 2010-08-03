@@ -15,6 +15,20 @@
 /*.diff
 /*.patch
 
+# spec's
+AtspiUiaSource/data/atspiuiasource-Fedora_12.spec
+AtspiUiaSource/data/atspiuiasource-Fedora_13.spec
+UIAutomation/data/mono-uia-Fedora_12.spec
+UIAutomation/data/mono-uia-Fedora_13.spec
+UIAutomation/data/mono-uia-openSUSE_11.2.spec
+UIAutomation/data/mono-uia-openSUSE_11.3.spec
+UIAutomationWinforms/data/uiautomationwinforms-Fedora_12.spec
+UIAutomationWinforms/data/uiautomationwinforms-Fedora_13.spec
+UiaAtkBridge/data/uiaatkbridge-Fedora_12.spec
+UiaAtkBridge/data/uiaatkbridge-Fedora_13.spec
+UiaDbus/data/uiadbus-Fedora_12.spec
+UiaDbus/data/uiadbus-Fedora_13.spec
+
 # /test/samples/moonlight/
 /test/samples/moonlight/Button/AppManifest.xaml
 /test/samples/moonlight/Button/App.xaml.g.cs
@@ -857,6 +871,17 @@
 /MoonAtkBridge/tests/assets/ValueTest/Makefile.in
 /MoonAtkBridge/tests/assets/ValueTest/*.mdb
 /MoonAtkBridge/tests/assets/ValueTest/*.xap
+/MoonAtkBridge/tests/assets/DataGridTest/App.xaml.g.cs
+/MoonAtkBridge/tests/assets/DataGridTest/AppManifest.xaml
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.dll
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.dll.mdb
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.g.resources
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.html
+/MoonAtkBridge/tests/assets/DataGridTest/DataGridTest.xap
+/MoonAtkBridge/tests/assets/DataGridTest/Makefile
+/MoonAtkBridge/tests/assets/DataGridTest/Makefile.in
+/MoonAtkBridge/tests/assets/DataGridTest/Page.xaml.g.cs
+/MoonAtkBridge/tests/assets/DataGridTest/System.Windows.Controls.Data.dll
 /MoonAtkBridge/gtk-sharp/
 /MoonAtkBridge/stage/
 /MoonAtkBridge/bin/
