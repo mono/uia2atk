@@ -1,6 +1,5 @@
 Home of effort to implement UI Automation (UIA) on Linux.
 
-
 Summary (from http://www.mono-project.com/Accessibility )
 =========================================================
 
@@ -19,14 +18,14 @@ adapter to make it work well with Linux accessibility projects.
 Directory Layout
 ================
 
+AtspiUiaSource: AT-SPI2 realization of UIA D-Bus interfaces.
+MoonAtkBridge: UIA providers for silverlight controls and components.
+UiaAtkBridge: Bridge between UIA providers and ATK.
+UiaDbus: D-Bus interface to UIA.
 UIAutomation: Implementation of Microsoft UIA assemblies.
 UIAutomationWinforms: UIA providers for winforms controls and components.
-UiaAtkBridge: Bridge between UIA providers and ATK.
 
-Uia2Atk.mds: MonoDevelop solution for code in above projects.
-
-patches: Pending patches to other projects (usually Mono winforms).
+uia2atk.mdw: MonoDevelop solution for code in above projects.
 
 test: Samples, tests, and other QA resources.
-
 build: Package build scripts and resources.
