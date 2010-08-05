@@ -3,6 +3,10 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.0.95: The "occulture" release
+* #582891 - [Caching] Add unit tests for caching each property and pattern
+* #626521 - Winforms fails be accessible with at-spi-dbus enabled in 28-Jul-2010 version
+
 Version 2.0.94: The "nit" release
 * #574269 - Cannot find pane control on Linux
 * #574242 - Can't define custom provider by using the WM_GETOBJECT message
