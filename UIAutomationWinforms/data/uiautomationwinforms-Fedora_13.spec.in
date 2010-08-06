@@ -16,7 +16,6 @@ Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
 Requires:       mono-data >= 2.4
 Requires:       mono-uia >= 2.0.95
-Requires:       mono-winfxcore
 Requires:       uiaatkbridge >= 2.0.95
 BuildRequires:  gtk-sharp2-devel >= 2.12.10
 BuildRequires:  intltool
