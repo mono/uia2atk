@@ -6,7 +6,7 @@ all:
 	mxap --application-name=DataGridSample
 
 clean:
+	mxap --application-name=DataGridSample --clean
 	rm -f *.dll
-	mxap --application-name=DateGridSample --clean
 
 
