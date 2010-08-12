@@ -243,7 +243,13 @@ namespace UiaAtkBridge
 			if (KeyListenerList.Count == 0)
 				return false;
 			foreach (KeyValuePair<uint, KeyListenerInfo> kvp in KeyListenerList) {
-				int result = kvp.Value.listener (evnt);
+				int result = 0;
+				AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+					result = kvp.Value.listener (evnt);
+				});
+				sync.WaitOne ();
+				sync.Close ();
+				sync = null;
 				if (result != 0)
 					return true;
 			}
