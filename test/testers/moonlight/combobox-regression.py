@@ -40,193 +40,150 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.comboBoxFrame
 
-## BUG554449: application crashed
-'''
 #################
 # Default States
 #################
-# menu states
-statesCheck(cbFrame.box1_menu, "Menu", invalid_states=["showing"])
+# combobox states
+statesCheck(cbFrame.combobox1, "ComboBox", add_states=["focusable", "showing", "expandable"])
+statesCheck(cbFrame.combobox2, "ComboBox", add_states=["focusable", "showing", "expandable"])
+statesCheck(cbFrame.combobox3, "ComboBox", add_states=["focusable", "showing", "expandable"])
 
-statesCheck(cbFrame.box2_menu, "Menu", invalid_states=["showing"])
-
-statesCheck(cbFrame.box3_menu, "Menu", invalid_states=["showing"])
-
-# menuitems states
-cbFrame.checkAllStates(cbFrame.box1_menuitems, focused_item="Item 0")
-
-cbFrame.checkAllStates(cbFrame.box2_menuitems, focused_item="Item 1")
-
-cbFrame.checkAllStates(cbFrame.box3_menuitems, focused_item="Honda")
+# listitems states
+cbFrame.checkAllStates(cbFrame.box1_listitems, focused_item="Item 0")
+cbFrame.checkAllStates(cbFrame.box2_listitems, focused_item="Item 1")
+#BUG629820
+#cbFrame.checkAllStates(cbFrame.box3_listitems, focused_item="Honda")
 
 #################
 # Actions check
 #################
 # combobox action
 for i in cbFrame.comboboxs:
-    actionsCheck(i, "Combobox")
+    actionsCheck(i, "ComboBox", add_actions=["expand or collapse"], invalid_actions=["press"])
 
-# menuitem action
-for i in cbFrame.box1_menuitems:
-    actionsCheck(i, "MenuItem")
-
-for i in cbFrame.box2_menuitems:
-    actionCheck(i, "MenuItem")
-
-actionCheck(cbFrame.box2_checkbox, "CheckBox")
-
-for i in cbFrame.box3_menuitems:
-    actionCheck(i, "MenuItem")
+#BUG631348
+#actionCheck(cbFrame.box2_checkbox, "CheckBox")
 
 # do click action two times for each combobox, menu is expand and collapse
-cbFrame.combobox1.click(log=True)
+cbFrame.combobox1.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box1_menu, "Menu")
-
-cbFrame.combobox1.click(log=True)
+cbFrame.combobox1.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box1_menu, "Menu", invalid_states=["showing"])
-
-cbFrame.combobox2.click(log=True)
+cbFrame.combobox2.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box2_menu, "Menu")
-
-cbFrame.combobox2.click(log=True)
+cbFrame.combobox2.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box2_menu, "Menu", invalid_states=["showing"])
-
-cbFrame.combobox3.click(log=True)
+cbFrame.combobox3.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box3_menu, "Menu")
-
-cbFrame.combobox3.click(log=True)
+cbFrame.combobox3.expandOrCollapse(log=True)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box3_menu, "Menu", invalid_states=["showing"])
-
-# do click action for menuitems in combobox1
-for item in cbFrame.box1_menuitems:
-    item.click(log=True)
-    sleep(config.SHORT_DELAY)
-    statesCheck(item, "MenuItem", add_states=["selected", "focused"])
-
-# do click action for menuitems in combobox2
-for item in cbFrame.box2_menuitems:
-    item.click(log=True)
-    sleep(config.SHORT_DELAY)
-    assertText(cbFrame.text2, "Selected:%s" % item.name)
-    statesCheck(item, "MenuItem", add_states=["selected", "focused"])
-
-# do click action for menuitems in combobox3
-for item in cbFrame.box3_menuitems:
-    item.click(log=True)
-    sleep(config.SHORT_DELAY)
-    statesCheck(item, "MenuItem", add_states=["selected", "focused"])
 
 # do click action for checkbox in combobox2 to update label
-cbFrame.box2_checkbox.click(log=True)
-sleep(config.SHORT_DELAY)
-assertText(cbFrame.text2, "item3_checkbox is Checked")
-statesCheck(cbFrame.box2_checkbox, "CheckBox", add_states=["checked"])
+#BUG631348
+#cbFrame.box2_checkbox.click()
+#sleep(config.SHORT_DELAY)
+#assertText(cbFrame.label2, "item3_checkbox is Checked")
+#statesCheck(cbFrame.box2_checkbox, "CheckBox", add_states=["checked"])
+#cbFrame.box2_checkbox.click()
+#sleep(config.SHORT_DELAY)
+#assertText(cbFrame.label2, "item3_checkbox is Unchecked")
+#statesCheck(cbFrame.box2_checkbox, "CheckBox")
 
-cbFrame.box2_checkbox.click(log=True)
-sleep(config.SHORT_DELAY)
-assertText(cbFrame.text2, "item3_checkbox is Unchecked")
-statesCheck(cbFrame.box2_checkbox, "CheckBox")
 
 #####################
 # Text implementation
 #####################
-# menuitems in combobox1
+# listitems in combobox1
 for i in range(10):
-    assertText(cbFrame.box1_menuitems[i], "Item " + str(i))
+    assert cbFrame.box1_listitems[i].name == "Item " + str(i)
+# listitems in combobox2
+#BUG631348
+#for i in range(7):
+#    assert cbFrame.box2_listitems[i].name == "Item " + str(i)
+# listitems in combobox3
+#BUG629820
+#items = ["Ferrari", "Honda", "Toyota"]
+#for i in range(3):
+#    assert cbFrame.box3_listitems[i].name == items[i]
 
-# menuitems in combobox2
-for i in range(6):
-    assertText(cbFrame.box2_menuitems[i], "Item " + str(i))
 
-# menuitems in combobox3
-items = ["Ferrari", "Honda", "Toyota"]
-for i in range(3):
-    assertText(cbFrame.box3_menuitems[i], items[i])
-
+'''no focused
 ##########################
 # Selection implementation
 ##########################
 # combobox1
 cbFrame.assertSelectChild(cbFrame.combobox1, 5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box1_menuitems[5], "MenuItem", add_states=["selected",
-                                                                  "focused"])
+statesCheck(cbFrame.box1_listitems[5], "ListItem", add_states=["selected", "focused"])
 cbFrame.assertSelectChild(cbFrame.combobox1, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box1_menuitems[0], "MenuItem", add_states=["selected",
-                                                                  "focused"])
+statesCheck(cbFrame.box1_listitems[0], "ListItem", add_states=["selected", "focused"])
 
 cbFrame.assertClearSelection(cbFrame.combobox1)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box1_menuitems[0], "MenuItem")
+statesCheck(cbFrame.box1_listitems[0], "ListItem")
 
 # combobox2
 cbFrame.assertSelectChild(cbFrame.combobox2, 3)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box2_menuitems[3], "MenuItem", add_states=["selected",
-                                                                  "focused"])
+statesCheck(cbFrame.box2_listitems[3], "ListItem", add_states=["selected", "focused"])
 cbFrame.assertSelectChild(cbFrame.combobox2, 5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box2_menuitems[5], "MenuItem", add_states=["selected",
-                                                                  "focused"])
+statesCheck(cbFrame.box2_listitems[5], "ListItem", add_states=["selected", "focused"])
 
 cbFrame.assertClearSelection(cbFrame.combobox2)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box2_menuitems[5], "MenuItem")
+statesCheck(cbFrame.box2_listitems[5], "ListItem")
 
 # combobox3
 cbFrame.assertSelectChild(cbFrame.combobox3, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box3_menuitems[0], "MenuItem", add_states=["selected",
-                                                                  "focused"])
+statesCheck(cbFrame.box3_listitems[0], "ListItem", add_states=["selected", "focused"])
 
 cbFrame.assertClearSelection(cbFrame.combobox3)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.box3_menuitems[0], "MenuItem")
+statesCheck(cbFrame.box3_listitems[0], "ListItem")
+'''
 
 ###############################
 # Add & Delete & Reset menuitem
 ###############################
 # insert new item name to the text
-cbFrame.text.insertText("item aaa")
+cbFrame.text1.insertText("item aaa")
 sleep(config.SHORT_DELAY)
 # click Add Item button
-cbFrame.add_button.click(log=True)
+cbFrame.add_button.click()
 sleep(config.SHORT_DELAY)
-# refind menuitems
-box1_menuitems = cbFrame.combobox1.findAllMenuItems(None)
-# 11 menuitems in box1
-cbFrame.assertNumber(box1_menuitems, 11)
-# the last menuitem's text should be the insert text
-assertText(box1_menuitems[-1], "item aaa")
+# refind listitems
+box1_listitems = cbFrame.combobox1.findAllListItems(None)
+# 11 listitems in box1
+cbFrame.assertNumber(box1_listitems, 11)
+# the last listitem's text should be the insert text
+assert box1_listitems[-1].name == "item aaa"
 
-# click one menuitem
-box1_menuitems[2].click(log=True)
+'''no click on listitem
+# click one listitem
+cbFrame.combobox1.select("Item 3")
 sleep(config.SHORT_DELAY)
 # click Delete Item button to delete it
-cbFrame.del_button.click(log=True)
+cbFrame.del_button.click()
 sleep(config.SHORT_DELAY)
-# refind menuitems
-box1_menuitems = cbFrame.combobox1.findAllMenuItems(None)
-# 10 menuitems in box1
-cbFrame.assertNumber(box1_menuitems, 10)
+# refind listitems
+box1_listitems = cbFrame.combobox1.findAllListItems(None)
+# 10 listitems in box1
+cbFrame.assertNumber(box1_listitems, 10)
+'''
 
 # click Reset Item button
-cbFrame.reset_button.click(log=True)
+cbFrame.reset_button.click()
 sleep(config.SHORT_DELAY)
-# refind menuitems
-box1_menuitems = cbFrame.combobox1.findAllMenuItems(None)
-# 10 menuitems in box1
-cbFrame.assertNumber(box1_menuitems, 10)
-# the last menuitem's text should be Item 9
-assertText(box1_menuitems[-1], "Item 9")
-'''
+# refind listitems
+box1_listitems = cbFrame.combobox1.findAllListItems(None)
+# 10 listitems in box1
+cbFrame.assertNumber(box1_listitems, 10)
+# the last listitem's text should be Item 9
+assert box1_listitems[-1].name == "Item 9"
+
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
 #close application frame window

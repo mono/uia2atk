@@ -50,10 +50,9 @@ namespace ComboBoxSample
         void ResetButton_click(object sender, RoutedEventArgs e)
         {
             combobox1.Items.Clear();
-            Box1_ItemsList = new ComboBoxItem[] { Box1_Item0, Box1_Item1, Box1_Item2, Box1_Item3, Box1_Item4, Box1_Item5, Box1_Item6, Box1_Item7, Box1_Item8, Box1_Item9 };
 
-            foreach (ComboBoxItem box_items in Box1_ItemsList)
-                combobox1.Items.Add(box_items);
+            for (int i = 0; i < 10; i++)
+                combobox1.Items.Add("Item " + i);
             combobox1.SelectedIndex = 0;
         }
 
