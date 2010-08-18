@@ -398,7 +398,7 @@ namespace Moonlight.AtkBridge
 			CacheChildren ();
 
 			lock (ChildrenLock) {
-				if (children == null || i < 0 || i > children.Count)
+				if (children == null || i < 0 || i >= children.Count)
 					return null;
 
 				AutomationPeer child = children[i];

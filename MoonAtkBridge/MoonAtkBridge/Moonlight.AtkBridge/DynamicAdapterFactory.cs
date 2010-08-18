@@ -309,15 +309,18 @@ namespace Moonlight.AtkBridge
 				Log.Info ("   - Disposing \"{0}\" ({1})",
 					  a.Name, a.GetType ());
 
-				activeAdapters.Remove (a.Peer);
-
 				a.Dispose ();
+			};
+
+			Action<Adapter> disposeRemoveChild = (a) => {
+				activeAdapters.Remove (a.Peer);
+				disposeChild (a);
 			};
 
 			// Iterate the hierarchy in a depth-first manner,
 			// disposing from bottom up.
 			if (rootVisualAdapter != null)
-				rootVisualAdapter.Foreach (disposeChild, false);
+				rootVisualAdapter.Foreach (disposeRemoveChild, false);
 
 			Log.Info (" * Disposing remaining adapters...");
 
@@ -325,6 +328,7 @@ namespace Moonlight.AtkBridge
 			// them too.
 			foreach (Adapter a in activeAdapters.Values)
 				disposeChild (a);
+			activeAdapters.Clear ();
 
 			rootVisualAdapter = null;
 
