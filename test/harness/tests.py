@@ -138,4 +138,8 @@ uiaclientgtk_tests_list = [
 	"gtk_fspot_runtestcase206-regression.py",
 	"gtk_fspot_runtestcase207-regression.py",
 	"gtk_fspot_runtestcase208-regression.py"
+	"gtk_fspot_runtestcase209-regression.py"
+	"gtk_fspot_runtestcase210-regression.py"
+	"gtk_fspot_runtestcase211-regression.py"
+	"gtk_fspot_runtestcase212-regression.py"
 ]
