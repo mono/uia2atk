@@ -43,6 +43,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			get { return "http://www.silverlightshow.net/showcase/PuzzleGame/PuzzleGame.html"; }
 		}
 
+		public override string Title {
+			get { return "PuzzleGame - Mozilla Firefox"; }
+		}
+
 		[Test]
 		public void RunTestCase301 ()
 		{

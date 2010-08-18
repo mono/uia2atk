@@ -43,6 +43,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			get { return "http://147.2.207.213/moonlight_apps/DiggSample/TestPage.html"; }
 		}
 
+		public override string Title {
+			get { return "DiggSearch - Mozilla Firefox"; }
+		}
+
 		[Test]
 		public void RunTestCase306 ()
 		{

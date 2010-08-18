@@ -52,7 +52,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 			}
 
 			//string uri = string.Format ("samples/{0}/{0}.html", Sample);
-			//string uri = "http://147.2.207.213/moonlight_apps/DiggSample/TestPage.html";
 
 			application = new Application (Sample);
 			application.Launch (browser, "-no-remote", "-P", profile, Uri);
@@ -68,7 +67,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 				Console.WriteLine ("** MOON_A11Y_BROWSER_NAME environment variable not found. Defaulting to {0}.", name);
 			}
 
-			window = application.GetWindow ("DiggSample - Mozilla Firefox");
+			//string title = string.Format ("{0} - Mozilla Firefox", Sample);
+			window = application.GetWindow (Title);
 		}
 
 		protected override void OnQuit ()
@@ -88,6 +88,10 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Moonlight
 		}
 
 		public abstract string Uri {
+			get;
+		}
+
+		public abstract string Title {
 			get;
 		}
 	}
