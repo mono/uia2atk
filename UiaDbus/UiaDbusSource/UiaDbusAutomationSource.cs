@@ -563,33 +563,33 @@ namespace Mono.UIAutomation.UiaDbusSource
 
 		private void FetchUiaDbusNames ()
 		{
-			List<Thread> threads = new List<Thread> ();
 			var busNames = new List<string> ();
-			Object listLock  = new Object ();
 
 			IBus ibus = Bus.Session.GetObject<IBus> (DBusName,
 			                                         new ObjectPath (DBusPath));
 			// Look for buses that contain DCI.IApplication
 			foreach (string busName in ibus.ListNames ()) {
 				// Reading introspection data hangs on some buses
-				// for unknown reasons, so we spin each introspection
-				// action off into its own thread, sleep for 1 second
-				// to give the threads time to execute, and then
-				// abort all of them.
-				ParameterizedThreadStart start = (busNameObj) => {
-					var currentBus = (string) busNameObj;
-					if (IsUiaDbusName (currentBus))
-						lock (listLock)
-							busNames.Add (currentBus);
+				// for unknown reasons, so we call Introspect
+				// asynchronously.  Note that we are using
+				// internal dbus-sharp classes.  The old
+				// behavior was to spin off threads, but this
+				// triggers a Mono bug on Fedora
+				// (BNC#628639/632133)
+				ObjectPath op = new ObjectPath (DC.Constants.ApplicationPath);
+				MethodCall methodCall = new MethodCall (op,
+					"org.freedesktop.DBus.Introspectable",
+					"Introspect", busName, Signature.Empty);
+				PendingCall pendingCall = Bus.Session.SendWithReply (methodCall.message);
+				pendingCall.Completed +=  (message) => {
+					MessageReader reader = new MessageReader (message);
+					string data = reader.ReadString ();
+					if (data.Contains (DC.Constants.ApplicationInterfaceName))
+						busNames.Add ((string)message.Header [FieldCode.Sender]);
 				};
-				Thread thread = new Thread (start);
-				thread.Start (busName);
-				threads.Add (thread);
 			}
-
 			Thread.Sleep (1000);
-			foreach (Thread thread in threads)
-				thread.Abort ();
+
 			lock (uiaDbusNamesLock)
 				uiaDbusNames = busNames;
 		}
@@ -706,9 +706,14 @@ namespace Mono.UIAutomation.UiaDbusSource
 			// TODO: Why does it not work if I uncomment this and
 			//       do bus.Iterate (); ?
 			//Bus bus = Bus.Session;
-			while (runMainLoop)
+			while (runMainLoop) {
 				// TODO: Likely crash source (ndesk-dbus bugs?)
-				Bus.Session.Iterate ();
+				try {
+					Bus.Session.Iterate ();
+				} catch (Exception e) {
+					Log.Error ("UiaDbusSource: Exception in iterate: " + e);
+				}
+			}
 		}
 
 		#endregion
