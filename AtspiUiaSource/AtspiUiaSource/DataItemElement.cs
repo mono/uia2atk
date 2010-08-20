@@ -43,7 +43,12 @@ namespace AtspiUiaSource
 		{
 			this.containingGrid = containingGrid;
 			this.row = row;
-			parent = containingGrid;
+		}
+
+		public override IElement Parent {
+			get {
+				return containingGrid;
+			}
 		}
 
 		public override IElement FirstChild {

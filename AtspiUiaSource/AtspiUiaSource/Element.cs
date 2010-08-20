@@ -40,7 +40,7 @@ namespace AtspiUiaSource
 		internal Accessible accessible;
 		private List<ISourceEventHandler> patterns;
 		private int runtimeId;
-		internal Element parent;
+		private Element parent;
 		internal List<Element> extraChildren;
 
 		private static int id;
