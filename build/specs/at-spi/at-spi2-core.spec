@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi2-core (Version 0.1.8)
+# spec file for package at-spi2-core (Version 0.3.90)
 #
 # Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -18,9 +18,8 @@
 
 
 Name:           at-spi2-core
-Version:        0.1.8
+Version:        0.3.90
 Release:        1
-# FIXME: check that tarballs > 0.1.6 ship bus/ directory, and if they do, reapply patch0 and call to suse_update_desktop_file
 Summary:        Assistive Technology Service Provider Interface - D-Bus based implementation
 License:        GPLv2+
 Group:          System/Libraries
@@ -29,11 +28,8 @@ Source0:        %{name}-%{version}.tar.bz2
 Source99:       %{name}-rpmlintrc
 BuildRequires:  dbus-1-glib-devel
 BuildRequires:  gtk2-devel
-# BuildRequires:  update-desktop-files
-# dbus-daemon is needed to have this work fine
+BuildRequires:  update-desktop-files
 Requires:       dbus-1
-# The libraries that were shipped with at-spi2-core were removed, and so
-# there's no devel package anymore
 Obsoletes:      %{name}-devel <= 0.1.1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -56,7 +52,7 @@ with applications running on the desktop.
 
 %install
 %makeinstall
-#%suse_update_desktop_file at-spi-dbus-bus
+%suse_update_desktop_file at-spi-dbus-bus
 
 %clean
 rm -rf %{buildroot}
@@ -68,11 +64,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING README
-#%{_sysconfdir}/at-spi2
-#%{_datadir}/at-spi2
-#%{_sysconfdir}/xdg/autostart/at-spi-dbus-bus.desktop
+%config(noreplace) %{_sysconfdir}/at-spi2/accessibility.conf
+%{_sysconfdir}/xdg/autostart/at-spi-dbus-bus.desktop
 %{_libexecdir}/at-spi2/
 %{_datadir}/dbus-1/services/org.a11y.atspi.Registry.service
-#%{_bindir}/at-spi-dbus-bus
+%{_bindir}/at-spi-dbus-bus
 
 %changelog
