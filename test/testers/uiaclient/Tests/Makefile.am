@@ -78,6 +78,8 @@ FILES = \
 	Winforms/DockPatternTests.cs \
 	Winforms/KeePassTests.cs \
 	Winforms/WindowPatternTests.cs \
+	Gtk/Banshee.cs \
+	Gtk/FSpot.cs \
 	AssemblyInfo.cs 
 
 DATA_FILES = 
