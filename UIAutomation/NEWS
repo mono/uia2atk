@@ -3,6 +3,15 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.1: The "Zoidberg" release
+* #628639 - Fedora: The control can't be found by using FindFirst(app, TreeScope.Descendants, condition) method
+* #624236 - Fail to launch KeePass.exe
+* #625814 - Segmentation fault in Fedora12 when the application have toolbarbutton control
+* #623809 - The at-spi2 will hang up the new launched dialog
+* #628639 - Fedora: The control can't be found by using FindFirst(app, TreeScope.Descendants, condition) method
+* #628996 - Fedora: The pattern of slider is not implemented yet.
+* #625814 - Segmentation fault in Fedora12 when the application have toolbarbutton control
+
 Version 2.0.95: The "occulture" release
 * #582891 - [Caching] Add unit tests for caching each property and pattern
 * #626521 - Winforms fails be accessible with at-spi-dbus enabled in 28-Jul-2010 version

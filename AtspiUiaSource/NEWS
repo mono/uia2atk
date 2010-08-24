@@ -3,6 +3,15 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.1: The "Zoidberg" release
+* #628639 - Fedora: The control can't be found by using FindFirst(app, TreeScope.Descendants, condition) method
+* #624236 - Fail to launch KeePass.exe
+* #625814 - Segmentation fault in Fedora12 when the application have toolbarbutton control
+* #623809 - The at-spi2 will hang up the new launched dialog
+* #628639 - Fedora: The control can't be found by using FindFirst(app, TreeScope.Descendants, condition) method
+* #628996 - Fedora: The pattern of slider is not implemented yet.
+* #625814 - Segmentation fault in Fedora12 when the application have toolbarbutton control
+
 Version 2.0.95: The "occulture" release
 * #582891 - [Caching] Add unit tests for caching each property and pattern
 * #626521 - Winforms fails be accessible with at-spi-dbus enabled in 28-Jul-2010 version
@@ -15,7 +24,6 @@ Version 2.0.94: The "nit" release
 * #582887 - [Caching] Test TreeWalker caching with more restrictive TreeFilter/TreeScope
 * #582888 - [Caching] Test caching as it relates to TextPattern
 * #617867 - press key make openfiledialog and savefiledialog died
-
 
 Version 2.0.93: The "machinima" release
 * #585147 - Initial work started
@@ -76,7 +84,7 @@ Version 2.0.2: The "heliport" release
 * #494708 - Test DataGrid control
 * #588941 - Task of review ClientAPI-Gtk tests on dashboard-Ray
 * #588942 - Task of review ClientAPI-Gtk tests on dashboard-Neville
-* #571772 - In scrollable list, listitem[0] missing ScrollItemPattern
+* #571772 - In scrollable list, listitem[0] missing ScrollItemPattern 
 * #571786 - In non-scrollable list, listitems support extraneous ScrollItemPattern
 * #576450 - [uiaclient-winforms] The dialog's Window Pattern' WindowInteractionState will be different between Windows and Linux
 * #578244 - [uiaclient-winforms]: the datagrid's GetItem method can't be run on Linux

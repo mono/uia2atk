@@ -466,7 +466,10 @@ namespace AtspiUiaSource
 		private void OnChildAdded (Accessible sender, Accessible child)
 		{
 			IElement childElement = Element.GetElement (child, true);
-			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
+			if (childElement == null)
+				return;
+			if (childElement.Parent != null)
+				RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
 			// Assuming that we'll get ChildrenChanged for the
 			// Application's children. If we find that sometimes
 			// we don't, then we'll need to rethink this.
@@ -483,10 +486,14 @@ namespace AtspiUiaSource
 			Element childElement = Element.GetElement (child, false);
 			if (childElement == null)
 				return;
-			if (childElement.parent.extraChildren.IndexOf (childElement) != -1)
-				childElement.parent.extraChildren.Remove (childElement);
-			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
-			RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildRemoved);
+			Element parentElement;
+			parentElement = childElement.Parent as Element;
+			if (parentElement != null) {
+				if (parentElement.extraChildren.IndexOf (childElement) != -1)
+					parentElement.extraChildren.Remove (childElement);
+				RaiseStructureChangedEvent (parentElement, StructureChangeType.ChildrenInvalidated);
+				RaiseStructureChangedEvent (parentElement, StructureChangeType.ChildRemoved);
+			}
 			if (sender == Desktop.Instance || sender.Role == Role.Application)
 				OnRootElementsChanged ();
 		}

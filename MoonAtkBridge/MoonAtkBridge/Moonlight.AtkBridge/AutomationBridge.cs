@@ -120,7 +120,7 @@ namespace Moonlight.AtkBridge
 			}
 
 			Adapter adapter
-				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);
+				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer, false);
 			if (adapter == null)
 				return;
 
@@ -137,7 +137,7 @@ namespace Moonlight.AtkBridge
 			          args.Peer, args.Event);
 
 			Adapter adapter
-				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer);
+				= DynamicAdapterFactory.Instance.GetAdapter (args.Peer, false);
 			if (adapter == null)
 				return;
 
