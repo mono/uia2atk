@@ -86,6 +86,7 @@ FILES =  \
 	ConditionTest.cs \
 	CustomControlTest.cs \
 	DataItemTest.cs \
+	DockPatternTest.cs \
 	DynamicElementTest.cs \
 	ExpandCollapsePatternTest.cs \
 	FocusTest.cs \
