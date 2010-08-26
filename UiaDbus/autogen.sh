@@ -85,7 +85,7 @@ if test -d $srcdir/ndesk-dbus-git; then
   rm -rf $srcdir/ndesk-dbus-git
   rm $srcdir/ndesk-dbus/*.cs
 fi
-git clone git://gitorious.org/dbus-sharp/dbus-sharp.git $srcdir/ndesk-dbus-git
+git clone git://github.com/mono/dbus-sharp.git $srcdir/ndesk-dbus-git
 (cd $srcdir/ndesk-dbus-git && git checkout -b mono-a11y origin/mono-a11y)
 cp $srcdir/ndesk-dbus-git/src/*.cs $srcdir/ndesk-dbus/
 #TODO: Only copy a specific list, use a .sources file
