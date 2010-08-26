@@ -237,6 +237,10 @@ namespace GtkForm
 				button1.Activate ();
 			else if (cmd == "set textbox3 text")
 				textBox3.Buffer.Text = sampleText;
+			else if (cmd.StartsWith ("set textbox3 to "))
+				textBox3.Buffer.Text = cmd.Substring (16).
+					Replace ("\\n", "\n").
+					Replace ("\\r", "\r");
 			else if (cmd == "select textbox3") {
 				if (textBox3.Buffer.Text.Length < 4)
 					textBox3.Buffer.Text = sampleText;

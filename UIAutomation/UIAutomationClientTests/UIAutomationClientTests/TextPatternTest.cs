@@ -39,8 +39,6 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class TextPatternTest : BaseTest
 	{
-		private ValuePattern valuePattern = null;
-
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
 			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+
 			"and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches "+
@@ -53,18 +51,12 @@ namespace MonoTests.System.Windows.Automation
 			"fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole "+
 			"of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. Drops ";
 
-		protected override void CustomFixtureSetUp ()
-		{
-			base.CustomFixtureSetUp ();
-			valuePattern = (ValuePattern) textbox3Element.GetCurrentPattern (ValuePattern.Pattern);
-		}
-
 #region Tests copied from TextRangeProviderTest@UIAumationWinformsTests
 
 		[Test]
 		public void FindText ()
 		{
-			valuePattern.SetValue ("gomez thing\r\nmorticia\twednesday ing");
+			SetText ("gomez thing\r\nmorticia\twednesday ing");
 			Thread.Sleep (500);
 
 			TextPatternRange range1, range2;
@@ -108,7 +100,7 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void MoveEndpointByCharacter ()
 		{
-			valuePattern.SetValue ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.");
+			SetText ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.");
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -147,7 +139,7 @@ namespace MonoTests.System.Windows.Automation
 		public void CharacterNormalize ()
 		{
 			string text = "gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -182,7 +174,7 @@ namespace MonoTests.System.Windows.Automation
 		public void MoveEndpointByWord ()
 		{
 			string text = "The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -240,7 +232,7 @@ namespace MonoTests.System.Windows.Automation
 		public void WordNormalize ()
 		{
 			string text = "gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -317,7 +309,7 @@ namespace MonoTests.System.Windows.Automation
 		{
 			//In case you were wondering, the topic is: things that are awesome
 			string text = String.Format("bear{0}{0}shark{0}laser{0}{0}volcano", newline);
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -388,7 +380,7 @@ namespace MonoTests.System.Windows.Automation
 		private void MoveEndpointByParagraphIntensive (string newline)
 		{
 			string text = String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline);
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -450,7 +442,7 @@ namespace MonoTests.System.Windows.Automation
 		public void ParagraphNormalize ()
 		{
 			string text = "gomez thing\r\nmorticia\twednesday";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -569,7 +561,7 @@ namespace MonoTests.System.Windows.Automation
 		public void MoveEndpointByPage ()
 		{
 			string text = String.Format ("apples\r\n\npears\r\r\npeaches\nbananas");
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -619,7 +611,7 @@ namespace MonoTests.System.Windows.Automation
 		public void DocumentNormalize ()
 		{
 			string text = "gomez thing\r\nmorticia\twednesday";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -648,7 +640,7 @@ namespace MonoTests.System.Windows.Automation
 		//So currently to run other tests, I set "Ignore" to this test case - Matt Guo
 		public void ScrollIntoView ()
 		{
-			valuePattern.SetValue (TEST_MESSAGE);
+			SetText (TEST_MESSAGE);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -671,7 +663,7 @@ namespace MonoTests.System.Windows.Automation
 		public void MoveEndpointByRange()
 		{
 			string text = "apples\r\n\npears\r\r\npeaches\nbananas";
-			valuePattern.SetValue (text);
+			SetText (text);
 			Thread.Sleep (500);
 
 			TextPattern textPattern = (TextPattern) textbox3Element.GetCurrentPattern (TextPattern.Pattern);
@@ -741,6 +733,11 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual (1, eventCount, "TextSelectionChangedEvent fired");
 
 			At.RemoveAutomationEventHandler (TextPattern.TextSelectionChangedEvent, textbox3Element, handler);
+		}
+
+		private void SetText (string text)
+		{
+			RunCommand ("set textbox3 to " + text.Replace ("\n", "\\n").Replace ("\r", "\\r"));
 		}
 	}
 }

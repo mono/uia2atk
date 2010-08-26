@@ -38,6 +38,7 @@ namespace SampleForm {
 		private DataTable table = new DataTable ();
 		private Form childForm;
 		private MenuStrip menuStrip1 = new MenuStrip ();
+		private Splitter splitter1 = new Splitter ();
 
 		private int button1ClickCount = 0;
 
@@ -108,6 +109,10 @@ namespace SampleForm {
 			menuStrip1.Items.Add (file);
 			menuStrip1.Items.Add (edit);
 			Controls.Add (menuStrip1);
+
+			splitter1.AccessibleName = "splitter1";
+			splitter1.Dock = DockStyle.Left;
+			Controls.Add (splitter1);
 		}
 
 		private void button1_Click (object sender, EventArgs e)
@@ -165,7 +170,9 @@ namespace SampleForm {
 			else if (cmd == "set textbox3 text")
 				textBox3.Text = sampleText;
 			else if (cmd.StartsWith ("set textbox3 to ")) {
-				textBox3.Text = cmd.Substring (16).Replace (":", "\n");
+				textBox3.Text = cmd.Substring (16).
+					Replace ("\\n", "\n").
+					Replace ("\\r", "\r");
 			}else if (cmd == "select textbox3") {
 				if (textBox3.Text.Length < 4)
 					textBox3.Text = sampleText;
@@ -271,6 +278,14 @@ namespace SampleForm {
 			} else if (cmd == "toggle form border")
 				FormBorderStyle = (FormBorderStyle == FormBorderStyle.None) ?
 					FormBorderStyle.Sizable : FormBorderStyle.None;
+			else if (cmd == "set splitter dock top")
+				splitter1.Dock = DockStyle.Top;
+			else if (cmd == "set splitter dock right")
+				splitter1.Dock = DockStyle.Right;
+			else if (cmd == "set splitter dock bottom")
+				splitter1.Dock = DockStyle.Bottom;
+			else if (cmd == "set splitter dock left")
+				splitter1.Dock = DockStyle.Left;
 		}
 	}
 }
