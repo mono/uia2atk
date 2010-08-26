@@ -1182,7 +1182,7 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void TextPatternTest ()
 		{
-			RunCommand ("set textbox3 to first line:second line:third line");
+			RunCommand ("set textbox3 to first line\\nsecond line\\nthird line");
 			var request = new CacheRequest ();
 			request.Add (TextPattern.Pattern);
 			using (request.Activate ()) {

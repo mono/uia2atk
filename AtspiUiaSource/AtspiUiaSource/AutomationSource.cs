@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Automation;
 using Mono.UIAutomation.Source;
+using Mono.UIAutomation.Services;
 using Atspi;
 
 namespace AtspiUiaSource
@@ -71,6 +72,7 @@ namespace AtspiUiaSource
 			int i = 0;
 			foreach (Accessible accessible in elements)
 				ret [i++] = Element.GetElement (accessible);
+			Log.Debug ("AtspiUiaSource: GetRootElements count will be: " + ret.Length);
 			return ret;
 		}
 
@@ -465,14 +467,17 @@ namespace AtspiUiaSource
 
 		private void OnChildAdded (Accessible sender, Accessible child)
 		{
+			if (sender.Role == Role.DesktopFrame) {
+				foreach (Accessible frame in child.Children)
+					OnChildAdded (child, frame);
+				return;
+			}
+
 			IElement childElement = Element.GetElement (child, true);
 			if (childElement == null)
 				return;
 			if (childElement.Parent != null)
 				RaiseStructureChangedEvent (childElement.Parent, StructureChangeType.ChildrenInvalidated);
-			// Assuming that we'll get ChildrenChanged for the
-			// Application's children. If we find that sometimes
-			// we don't, then we'll need to rethink this.
 			if (child.Role != Role.Application)
 				RaiseStructureChangedEvent (childElement, StructureChangeType.ChildAdded);
 			if (child.Role == Role.Frame)

@@ -145,6 +145,8 @@ namespace UiaAtkBridge
 			if (selectedElements.Length == 0 || (i < 0 || i >= selectedElements.Length))
 				return null;
 			IRawElementProviderSimple provider = selectedElements [i];
+			if (provider == null)
+				return null;
 			if (provider is IRawElementProviderFragment && (int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.DataItem.Id)
 				provider = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 			return AutomationBridge.GetAdapterForProviderSemiLazy (provider);
@@ -219,8 +221,7 @@ namespace UiaAtkBridge
 			return ret;
 		}
 		
-		IRawElementProviderSimple [] GetSelection ()
-		{
+		IRawElementProviderSimple [] GetSelection () {
 			var elements = selectionProvider.GetSelection ();
 			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (elements.Length == 0 || controlTypeId != ControlType.Group.Id)

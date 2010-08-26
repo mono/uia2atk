@@ -37,6 +37,10 @@ namespace System.Windows.Automation
 		#region Private Fields
 		private Object directChildrenLock = new Object ();
 		private List<AutomationElement> directChildren;
+
+		private static bool inSourceRootElementChanged = false;
+		private static Queue<IAutomationSource> pendingRootChangeSources
+			= new Queue<IAutomationSource> ();
 		#endregion
 
 		#region Static Constructor
@@ -71,14 +75,20 @@ namespace System.Windows.Automation
 					                       source,
 					                       pidElementMapping);
 					source.RootElementsChanged += (s, e) =>
-						OnSourceRootElementChanged (source);
+						OnSourceRootElementChanged ((IAutomationSource)s);
 				}
 			}
 		}
 
 		private static void OnSourceRootElementChanged (IAutomationSource source)
 		{
+			if (inSourceRootElementChanged) {
+				pendingRootChangeSources.Enqueue (source);
+				return;
+			}
+
 			lock (RawViewWalker.directChildrenLock) {
+				inSourceRootElementChanged = true;
 				List<AutomationElement> rootElements = new List<AutomationElement> ();
 				var pidElementMapping = new Dictionary<int, IElement> ();
 				foreach (AutomationElement element in RawViewWalker.directChildren) {
@@ -94,8 +104,11 @@ namespace System.Windows.Automation
 				// "Clean up" includes removing event handlers etc.
 				AddUniqueRootElements (rootElements, source, pidElementMapping);
 				RawViewWalker.directChildren = rootElements;
+				inSourceRootElementChanged = false;
 			}
 			Log.Debug ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
+			while (pendingRootChangeSources.Count > 0)
+				OnSourceRootElementChanged (pendingRootChangeSources.Dequeue ());
 		}
 
 		// TODO: This approach will completely break when the

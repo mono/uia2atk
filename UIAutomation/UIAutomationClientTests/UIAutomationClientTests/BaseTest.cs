@@ -76,6 +76,7 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement table1Element;
 		protected AutomationElement listView1Element;
 		protected AutomationElement button8Element;
+		protected AutomationElement splitter1Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -298,6 +299,9 @@ namespace MonoTests.System.Windows.Automation
 			//verticalMenuStripElement = testFormElement.FindFirst (TreeScope.Descendants,
 			//        new PropertyCondition (AEIds.NameProperty,
 			//                "menuStrip2"));
+			splitter1Element = testFormElement.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"splitter1"));
 		}
 
 		private void AtspiSetup ()
