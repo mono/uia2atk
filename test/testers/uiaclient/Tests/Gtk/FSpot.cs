@@ -127,11 +127,11 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.MediumDelay);
 
 			//201.3 Select the "Select Folder" menu item in its combo box.
-			Console.WriteLine(window);
 			var importDialog = window.Find<Window> ("Import");
 			var selectCombobox = importDialog.Find<ComboBox> ("Select Folder");
 			var seleceMenuItem = selectCombobox.Find<MenuItem> ("Select Folder");
 			seleceMenuItem.Click ();
+			procedureLogger.ExpectedResult("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.LongDelay);
 			
 			/*
@@ -199,7 +199,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			/*
 			Thread.Sleep (Config.Instance.LongDelay);
 			var importButton = newImportDialog.Find<Button> ("Import");
-			Console.WriteLine("The button's name is {0}",importButton.Name);
 			importButton.Click ();
 			Thread.Sleep (Config.Instance.LongDelay);
 			*/
@@ -558,10 +557,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 
 			//205.4 Select "Image Settings" tab item
 			var printDialog = app.FindGtkSubWindow (window, "Print");
-			Console.WriteLine("\nthe printDialog is {0}", printDialog);
 			var tab = printDialog.Find<Tab> ();
 			var tabItems = tab.FindAll<TabItem> ();
-			Console.WriteLine("\nthe number of tabItems is {0}", tabItems.Length);
 			var imageSettingTab = tabItems[2];
 			imageSettingTab.Select ();
 			procedureLogger.ExpectedResult ("The \"Image Settings\"'s tab item is shown.");

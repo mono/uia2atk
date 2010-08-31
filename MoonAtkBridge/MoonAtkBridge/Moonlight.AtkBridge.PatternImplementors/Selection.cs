@@ -179,7 +179,7 @@ namespace Moonlight.AtkBridge.PatternImplementors
 
 		public bool SelectAllSelection ()
 		{
-			List<AutomationPeer> children = peer.GetChildren ();
+			List<AutomationPeer> children = adapter.GetChildren ();
 			if (children == null)
 				return true;
 
@@ -212,8 +212,8 @@ namespace Moonlight.AtkBridge.PatternImplementors
 #region Private Methods
 		private AutomationPeer GetChildAt (int i)
 		{
-			List<AutomationPeer> children = peer.GetChildren ();
-			if (children == null || i < 0 || i > children.Count - 1) 
+			List<AutomationPeer> children = adapter.GetChildren ();
+			if (children == null || i < 0 || i >= children.Count)
 				return null;
 
 			return children[i];

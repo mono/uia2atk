@@ -26,6 +26,7 @@
 using Atk;
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
@@ -48,8 +49,18 @@ namespace Moonlight.AtkBridge.PatternImplementors
 		{
 		}
 
+		// This method will be called by Adapter only if OverridesGetChildren is true
+		public virtual List<AutomationPeer> GetChildren ()
+		{
+			return null;
+		}
+
 		public virtual Role OverriddenRole {
 			get { return Atk.Role.Unknown; }
+		}
+
+		public virtual bool OverridesGetChildren {
+			get { return false; }
 		}
 
 		IntPtr GLib.IWrapper.Handle {
