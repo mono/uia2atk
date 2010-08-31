@@ -42,6 +42,7 @@ namespace MonoTests.System.Windows.Automation
 	{
 		#region Test Methods
 
+#if __MonoCS__
 		[Test]
 		public void DockPositionTest ()
 		{
@@ -67,17 +68,6 @@ namespace MonoTests.System.Windows.Automation
 			VerifyDockPosition (dockPattern, DockPosition.Bottom);
 			RunCommand ("set splitter dock left");
 			VerifyDockPosition (dockPattern, DockPosition.Left);
-		}
-#endregion
-
-		private void VerifyDockPosition (DockPattern pattern, DockPosition dockPosition)
-		{
-			Assert.AreEqual (dockPosition,
-				pattern.Current.DockPosition,
-				"DockPosition " + dockPosition);
-			Assert.AreEqual (dockPosition,
-				splitter1Element.GetCurrentPropertyValue (DockPattern.DockPositionProperty),
-				"DockPositionProperty " + dockPosition);
 		}
 
 		[Test]
@@ -107,6 +97,18 @@ namespace MonoTests.System.Windows.Automation
 				automationEvents [0].Sender, "event sender");
 			Assert.AreEqual (3,
 				automationEvents [0].Args.NewValue, "event new val");
+		}
+#endif
+#endregion
+
+		private void VerifyDockPosition (DockPattern pattern, DockPosition dockPosition)
+		{
+			Assert.AreEqual (dockPosition,
+				pattern.Current.DockPosition,
+				"DockPosition " + dockPosition);
+			Assert.AreEqual (dockPosition,
+				splitter1Element.GetCurrentPropertyValue (DockPattern.DockPositionProperty),
+				"DockPositionProperty " + dockPosition);
 		}
 	}
 }

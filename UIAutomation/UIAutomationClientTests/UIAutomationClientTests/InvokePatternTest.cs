@@ -106,7 +106,6 @@ namespace MonoTests.System.Windows.Automation
 			InvokePattern pattern = (InvokePattern) button3Element.GetCurrentPattern (InvokePatternIdentifiers.Pattern);
 			pattern.Invoke ();
 		}
-
 		#endregion
 	}
 }

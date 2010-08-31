@@ -40,6 +40,7 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class TableTest : BaseTest
 	{
+#if __MonoCS__
 		private GridPattern gridPattern = null;
 		private TablePattern tablePattern = null;
 
@@ -188,5 +189,6 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("Age", colHeaders [2].Current.Name, "colHeaders[2].Name");
 			Assert.AreEqual (ControlType.HeaderItem, colHeaders [0].Current.ControlType, "colHeaders[0].ControlType");
 		}
+#endif
 	}
 }

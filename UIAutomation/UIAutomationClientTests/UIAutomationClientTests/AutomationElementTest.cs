@@ -268,7 +268,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button2Element, propertyEvents [0].Sender, "event sender");
 			Assert.AreEqual (AutomationElement.HasKeyboardFocusProperty, propertyEvents [0].Args.Property, "property");
 			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
-			Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			if (Atspi)
+				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			else
+				Assert.IsNull (propertyEvents [0].Args.OldValue, "old value");
 
 			propertyEvents.Clear ();
 			button1Element.SetFocus ();
@@ -401,7 +404,10 @@ Thread.Sleep(1000);
 			Assert.AreEqual (button3Element, propertyEvents [0].Sender, "event sender");
 			Assert.AreEqual (AutomationElement.IsEnabledProperty, propertyEvents [0].Args.Property, "property");
 			Assert.AreEqual (true, propertyEvents [0].Args.NewValue, "new value");
-			Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			if (Atspi)
+				Assert.AreEqual (false, propertyEvents [0].Args.OldValue, "old value");
+			else
+				Assert.IsNull (propertyEvents [0].Args.OldValue, "old value");
 
 			RunCommand ("disable button3");
 			At.RemoveAutomationPropertyChangedEventHandler (button3Element,
@@ -429,7 +435,7 @@ Thread.Sleep(1000);
 				"button1");
 			Assert.IsTrue (button2Element.Current.IsKeyboardFocusable,
 				"button2");
-			Assert.IsFalse (button3Element.Current.IsKeyboardFocusable,
+			Assert.IsTrue (button3Element.Current.IsKeyboardFocusable,
 				"button3");
 		}
 
@@ -1207,6 +1213,7 @@ Thread.Sleep(1000);
 			SupportedPropertiesTestInternal (listView1Element);
 		}
 
+#if __MonoCS__
 		[Test]
 		public void Bug570621_Test ()
 		{
@@ -1226,6 +1233,7 @@ Thread.Sleep(1000);
 			//assert the following line won't fire any exception
 			firstDataItem.GetCurrentPropertyValue (ValuePattern.ValueProperty);
 		}
+#endif	// __MonoCS__
 
 		[Test]
 		public void Z_FromPointTest ()

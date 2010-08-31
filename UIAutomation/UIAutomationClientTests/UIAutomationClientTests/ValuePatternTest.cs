@@ -108,5 +108,14 @@ namespace MonoTests.System.Windows.Automation
 			ValuePattern pattern = (ValuePattern) textbox2Element.GetCurrentPattern (ValuePatternIdentifiers.Pattern);
 			pattern.SetValue ("123");
 		}
+
+		[Test]
+		public void DocumentTest ()
+		{
+			object pattern;
+			Assert.IsFalse (textbox3Element.TryGetCurrentPattern (
+				ValuePattern.Pattern, out pattern),
+				"Document should not support ValuePattern");
+		}
 	}
 }

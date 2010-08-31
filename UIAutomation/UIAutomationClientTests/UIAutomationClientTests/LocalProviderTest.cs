@@ -38,6 +38,8 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class LocalProviderTest
 	{
+#if __MonoCS__
+#else
 		private AutomationElement child = null;
 		private AutomationElement root = null;
 		private CustomProviderFragment childProvider =null;
@@ -286,5 +288,6 @@ namespace MonoTests.System.Windows.Automation
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+#endif
 	}
 }

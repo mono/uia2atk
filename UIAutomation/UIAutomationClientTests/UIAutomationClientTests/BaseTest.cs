@@ -77,6 +77,9 @@ namespace MonoTests.System.Windows.Automation
 		protected AutomationElement listView1Element;
 		protected AutomationElement button8Element;
 		protected AutomationElement splitter1Element;
+		protected AutomationElement radioButton1Element;
+		protected AutomationElement radioButton2Element;
+		protected AutomationElement radioButton3Element;
 
 		public static Process StartApplication (string name, string arguments)
 		{
@@ -302,6 +305,18 @@ namespace MonoTests.System.Windows.Automation
 			splitter1Element = testFormElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.NameProperty,
 					"splitter1"));
+			radioButton1Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"apple"));
+			radioButton2Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"banana"));
+			radioButton3Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"cherry"));
+			radioButton3Element = groupBox2Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.NameProperty,
+					"radioButton3"));
 		}
 
 		private void AtspiSetup ()

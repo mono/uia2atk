@@ -53,8 +53,7 @@ namespace MonoTests.System.Windows.Automation
 			ExpandCollapsePattern.ExpandCollapsePatternInformation current = pattern.Current;
 			Assert.AreEqual (ExpandCollapseState.Collapsed, current.ExpandCollapseState, "ExpandCollapseState before Expand");
 			pattern.Expand ();
-			if (Atspi)
-				Thread.Sleep (500);
+			Thread.Sleep (500);
 			Assert.AreEqual (ExpandCollapseState.Expanded, current.ExpandCollapseState, "ExpandCollapseState after Expand");
 			childElement = parentElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
@@ -62,8 +61,7 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (childElement, "Should have a TreeItem after expand");
 
 			pattern.Collapse ();
-			if (Atspi)
-				Thread.Sleep (500);
+			Thread.Sleep (500);
 			Assert.AreEqual (ExpandCollapseState.Collapsed, current.ExpandCollapseState, "ExpandCollapseState after Collapse");
 		}
 

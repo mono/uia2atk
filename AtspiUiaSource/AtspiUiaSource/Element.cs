@@ -867,7 +867,9 @@ namespace AtspiUiaSource
 		internal bool SupportsInvoke ()
 		{
 			if (accessible.Role == Role.Separator ||
-				accessible.Role == Role.CheckBox)
+				accessible.Role == Role.CheckBox ||
+				accessible.Role == Role.SpinButton ||
+				accessible.Role == Role.Text)
 				return false;
 			Atspi.Action action = accessible.QueryAction ();
 			if (action == null)
@@ -926,10 +928,8 @@ namespace AtspiUiaSource
 
 		internal bool SupportsValue ()
 		{
-			// Perhaps we should only support this if MultiLine
-			// is not set, but then the TextPattern test will
-			// fail; might as well always enable it.
-			return (accessible.QueryEditableText () != null);
+			return (accessible.QueryEditableText () != null &&
+				!accessible.StateSet.Contains (StateType.MultiLine));
 		}
 
 		private void OnBoundsChanged (Accessible sender, BoundingBox bounds)

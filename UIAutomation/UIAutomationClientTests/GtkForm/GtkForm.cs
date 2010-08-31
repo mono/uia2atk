@@ -176,6 +176,8 @@ namespace GtkForm
 			menuBar.Append (editItem);
 			hbox.Add (menuBar);
 
+		hbox.Add (new Gtk.SpinButton (0, 100, 1));
+
 			window.Add (hbox);
 			window.ShowAll ();
 		}
@@ -237,6 +239,8 @@ namespace GtkForm
 				button1.Activate ();
 			else if (cmd == "set textbox3 text")
 				textBox3.Buffer.Text = sampleText;
+			else if (cmd == "set textBox3 long text")
+				textBox3.Buffer.Text = "very very very very very very very very long text to enable the horizontal scroll bar";
 			else if (cmd.StartsWith ("set textbox3 to "))
 				textBox3.Buffer.Text = cmd.Substring (16).
 					Replace ("\\n", "\n").

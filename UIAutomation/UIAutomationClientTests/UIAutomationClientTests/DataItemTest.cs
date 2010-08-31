@@ -38,6 +38,7 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class DataItemTest : BaseTest
 	{
+#if __MonoCS__
 		[Test]
 		public void Bug584340 ()
 		{
@@ -67,5 +68,6 @@ namespace MonoTests.System.Windows.Automation
 			Assert.AreEqual ("New Item Val", item0Element.Current.Name);
 			Assert.AreEqual ("New Sub", subItem1Element.Current.Name);
 		}
+#endif
 	}
 }

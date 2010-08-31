@@ -39,6 +39,7 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class TableHierarchyTest : BaseTest
 	{
+#if __MonoCS__
 		#region Test Methods
 		[Test]
 		public void TableHierarchy ()
@@ -189,5 +190,6 @@ Thread.Sleep(500);
 				SelectionPatternIdentifiers.Pattern);
 		}
 		#endregion
+#endif	// _MonoCS__
 	}
 }

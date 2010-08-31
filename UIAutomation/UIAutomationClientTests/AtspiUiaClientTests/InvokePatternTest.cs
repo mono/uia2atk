@@ -45,5 +45,27 @@ namespace AtspiUiaClientTests
 				return true;
 			}
 		}
-}
+
+		[Test]
+		public void SpinnerTest ()
+		{
+			AutomationElement spinnerElement;
+			object pattern;
+			spinnerElement = groupBoxElement.FindFirst (TreeScope.Children,
+			        new PropertyCondition (AEIds.ControlTypeProperty,
+			                ControlType.Spinner));
+			Assert.IsFalse (spinnerElement.TryGetCurrentPattern (
+				InvokePattern.Pattern, out pattern),
+				"Spinner should not support InvokePattern");
+		}
+
+		[Test]
+		public void EditTest ()
+		{
+			object pattern;
+			Assert.IsFalse (textbox1Element.TryGetCurrentPattern (
+				InvokePattern.Pattern, out pattern),
+				"TextBox should not support InvokePattern");
+		}
+	}
 }
