@@ -72,17 +72,13 @@ class TabControl(TestCase):
                     'enabled',   'focusable', 'selected', 'selectable',
                     'sensitive', 'showing',   'visible',
                 ])
-                self.assertEqual(2, item.childCount)
+                self.assertEqual(1, item.childCount)
             else:
                 self.assertStates(item, [
                     'enabled', 'selectable', 'sensitive',
                     'showing', 'visible',
                 ])
-                self.assertEqual(1, item.childCount)
-
-            label = item.getChildAtIndex(0)
-            self.assertEqual(pyatspi.ROLE_LABEL, label.role)
-            self.assertEqual('TabItem%s' % i, label.name)
+                self.assertEqual(0, item.childCount)
 
     def test_tabcontrol_events(self):
         listener = EventListener()

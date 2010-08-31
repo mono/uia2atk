@@ -27,6 +27,7 @@ using Atk;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
@@ -116,6 +117,51 @@ namespace Moonlight.AtkBridge.PatternImplementors
 				states.AddState (Atk.StateType.Selected);
 			else
 				states.RemoveState (Atk.StateType.Selected);
+		}
+
+		public override bool OverridesGetChildren {
+			get { return true; }
+		}
+
+		public override List<AutomationPeer> GetChildren ()
+		{
+			List<AutomationPeer> children = peer.GetChildren ();
+			if (children == null)
+				return null;
+
+			// XXX: Warning! Hack alert!
+			//
+			// All our SL2 tests pass on ML2 and SL2, however it seems there's
+			// something else happening when returning children using UIAClient API.
+			// Using SL2's tabItemPeer.GetChildren() returns 2 children (header and content),
+			// however when using the client API (or UISPy) it returns one child (content).
+			// The following hack does two things:
+			// - Removes the TextBlock when its name is the same name as the TabItem.Header.
+			// - Removes the spurious TextBlock added when switching between pages.
+			// This keeps SL2 compatibility and UIAutomationClient compatibility.
+			// Notice the first 2 children must match this behavior
+			// - If the first child is Text and its GetName() is empty, then second child
+			//   would be removed
+			// - If the first child is Text and its GetName() is the same as the TabItem,
+			//   is removed
+			if (children.Count > 0
+			    && children [0].GetAutomationControlType () == AutomationControlType.Text) {
+				if (children [0].GetName () == peer.GetName ()) {
+					children.RemoveAt (0);
+					if (children.Count > 0
+					   && children [0].GetAutomationControlType () == AutomationControlType.Text
+					   && string.IsNullOrEmpty (children [0].GetName ()))
+						children.RemoveAt (0);
+				} else if (string.IsNullOrEmpty (children [0].GetName ())) {
+					children.RemoveAt (0);
+					if (children.Count > 0
+					   && children [0].GetAutomationControlType () == AutomationControlType.Text
+					   && children [0].GetName () == peer.GetName ())
+						children.RemoveAt (0);
+				}
+			}
+
+			return children;
 		}
 #endregion
 	

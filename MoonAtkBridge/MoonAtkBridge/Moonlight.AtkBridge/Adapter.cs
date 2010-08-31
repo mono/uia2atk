@@ -456,8 +456,25 @@ namespace Moonlight.AtkBridge
 				if (Peer == null || children != null)
 					return;
 
-				children = Peer.GetChildren ();
+				children = GetPatternImplementorChildren ();
 			}
+		}
+
+		private List<AutomationPeer> GetPatternImplementorChildren ()
+		{
+			List<AutomationPeer> patternChildren = new List<AutomationPeer> ();
+			bool childrenOverriden = false;
+
+			foreach (BasePatternImplementor impl in PatternImplementors) {
+				if (impl.OverridesGetChildren) {
+					childrenOverriden = true;
+					List<AutomationPeer> implChildren = impl.GetChildren ();
+					if (implChildren != null)
+						patternChildren.AddRange (implChildren);
+				}
+			}
+
+			return childrenOverriden ? patternChildren : Peer.GetChildren ();
 		}
 
 		protected void NotifyFocused (bool focused)
@@ -589,7 +606,7 @@ namespace Moonlight.AtkBridge
 		internal void HandleStructureChanged ()
 		{
 			lock (ChildrenLock) {
-				var new_children = Peer.GetChildren ();
+				var new_children = GetPatternImplementorChildren ();
 
 				if (children != null) {
 					var removed = (new_children != null) ? children.Except (new_children)
@@ -686,6 +703,16 @@ namespace Moonlight.AtkBridge
 		internal void NotifyPropertyChanged (string property)
 		{
 			Notify (property);
+		}
+
+		// Meant to be used by BasePatternImplementor subclasses
+		internal List<AutomationPeer> GetChildren ()
+		{
+			CacheChildren ();
+
+			lock (ChildrenLock) {
+				return children;
+			}
 		}
 #endregion
 
