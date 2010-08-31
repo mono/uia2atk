@@ -869,7 +869,8 @@ namespace AtspiUiaSource
 			if (accessible.Role == Role.Separator ||
 				accessible.Role == Role.CheckBox ||
 				accessible.Role == Role.SpinButton ||
-				accessible.Role == Role.Text)
+				accessible.Role == Role.Text ||
+				accessible.Role == Role.ToggleButton)
 				return false;
 			Atspi.Action action = accessible.QueryAction ();
 			if (action == null)

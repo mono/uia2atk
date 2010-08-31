@@ -177,6 +177,7 @@ namespace GtkForm
 			hbox.Add (menuBar);
 
 		hbox.Add (new Gtk.SpinButton (0, 100, 1));
+		hbox.Add (new Gtk.ToggleButton ("ToggleButton"));
 
 			window.Add (hbox);
 			window.ShowAll ();

@@ -67,5 +67,18 @@ namespace AtspiUiaClientTests
 				InvokePattern.Pattern, out pattern),
 				"TextBox should not support InvokePattern");
 		}
+
+		[Test]
+		public void ToggleButtonTest ()
+		{
+			AutomationElement toggleButtonElement;
+			object pattern;
+			toggleButtonElement = groupBoxElement.FindFirst (TreeScope.Children,
+			        new PropertyCondition (AEIds.NameProperty,
+			                "ToggleButton"));
+			Assert.IsFalse (toggleButtonElement.TryGetCurrentPattern (
+				InvokePattern.Pattern, out pattern),
+				"ToggleButton should not support InvokePattern");
+		}
 	}
 }
