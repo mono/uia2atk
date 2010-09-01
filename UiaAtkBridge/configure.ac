@@ -90,7 +90,7 @@ fi
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.10])
 
-PKG_CHECK_MODULES(GTK_SHARP_2.12_10, gtk-sharp-2.0 >= 2.12.10, [last_gtk_sharp=yes], [last_gtk_sharp=no])
+PKG_CHECK_MODULES(GTK_SHARP_2_12_10, gtk-sharp-2.0 >= 2.12.10, [last_gtk_sharp=yes], [last_gtk_sharp=no])
 AM_CONDITIONAL(HAVE_OLD_ATK_SHARP, test x$last_gtk_sharp = xno)
 
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.1])
