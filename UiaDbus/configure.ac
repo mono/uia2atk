@@ -89,8 +89,8 @@ AM_CONDITIONAL(ENABLE_EXTERNAL_NDESK_DBUS, test "x$enable_external_ndesk_dbus" =
 
 
 # package checks, common for all configs
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.1.902.8])
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.3])
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
+PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.1])
 
 TOPDIR=$PWD
 AC_SUBST(TOPDIR)
