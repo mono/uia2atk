@@ -45,5 +45,19 @@ namespace AtspiUiaClientTests
 				return true;
 			}
 		}
+
+		[Test]
+		public void ScrollBarIsReadOnlyTest ()
+		{
+			RangeValuePattern pattern;
+			AutomationElement scrollBarElement = groupBoxElement.FindFirst (TreeScope.Children,
+			        new PropertyCondition (AEIds.ControlTypeProperty,
+			                ControlType.ScrollBar));
+			pattern = (RangeValuePattern)
+				scrollBarElement.GetCurrentPattern
+				(RangeValuePattern.Pattern);
+			Assert.IsFalse (pattern.Current.IsReadOnly,
+				"RangeValuePattern.Current.IsReadOnly");
+		}
 }
 }

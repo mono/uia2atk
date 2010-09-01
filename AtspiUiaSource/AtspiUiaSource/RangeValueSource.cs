@@ -70,7 +70,11 @@ namespace AtspiUiaSource
 		}
 
 		public bool IsReadOnly {
-			get { return !accessible.StateSet.Contains (StateType.Editable); }
+			get {
+				return (!accessible.StateSet.Contains (
+					StateType.Editable)) &&
+					accessible.Role != Role.ScrollBar;
+			}
 		}
 
 		public double Maximum {

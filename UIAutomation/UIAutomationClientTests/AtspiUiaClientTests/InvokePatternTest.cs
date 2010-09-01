@@ -80,5 +80,17 @@ namespace AtspiUiaClientTests
 				InvokePattern.Pattern, out pattern),
 				"ToggleButton should not support InvokePattern");
 		}
+
+		[Test]
+		public void ScrollBarTest ()
+		{
+			object pattern;
+			AutomationElement scrollBarElement = groupBoxElement.FindFirst (TreeScope.Children,
+			        new PropertyCondition (AEIds.ControlTypeProperty,
+			                ControlType.ScrollBar));
+			Assert.IsFalse (scrollBarElement.TryGetCurrentPattern (
+				InvokePattern.Pattern, out pattern),
+				"ScrollBar should not support InvokePattern");
+		}
 	}
 }

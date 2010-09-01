@@ -868,6 +868,7 @@ namespace AtspiUiaSource
 		{
 			if (accessible.Role == Role.Separator ||
 				accessible.Role == Role.CheckBox ||
+				accessible.Role == Role.ScrollBar ||
 				accessible.Role == Role.SpinButton ||
 				accessible.Role == Role.Text ||
 				accessible.Role == Role.ToggleButton)

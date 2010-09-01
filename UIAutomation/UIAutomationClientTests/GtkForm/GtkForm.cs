@@ -178,6 +178,9 @@ namespace GtkForm
 
 		hbox.Add (new Gtk.SpinButton (0, 100, 1));
 		hbox.Add (new Gtk.ToggleButton ("ToggleButton"));
+			Gtk.Adjustment adj = new Gtk.Adjustment (50, 0, 100,
+				1, 10, 10);
+		hbox.Add (new Gtk.VScrollbar (adj));
 
 			window.Add (hbox);
 			window.ShowAll ();
