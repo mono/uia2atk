@@ -1,5 +1,5 @@
 #
-# spec file for package python-atspi (Version 0.1.8)
+# spec file for package python-atspi (Version 0.3.90)
 #
 # Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -15,11 +15,11 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-%define IS_DEFAULT_ATSPI_STACK 1
+%define IS_DEFAULT_ATSPI_STACK 0
 
 Name:           python-atspi
 %define _name   pyatspi
-Version:        0.1.8
+Version:        0.3.90
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - Python bindings
 License:        LGPLv2.0

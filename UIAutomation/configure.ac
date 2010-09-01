@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([mono-uia],[2.1])
+AC_INIT([mono-uia],[2.1.90])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
 
 dnl pkg-config
@@ -97,8 +97,8 @@ fi
 AM_CONDITIONAL(HAS_MONO_2_5, test "x$has_mono_2_5" = "xyes")
 
 dnl for test
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.1.902.8])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.1.902.8])
 
 AC_CONFIG_FILES([
 WindowsBase/Makefile

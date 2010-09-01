@@ -3,6 +3,18 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.1.90: The "paratroop" release
+* #585147 - Tests cannot all be run at the same time.
+* #489366 - DbusCoreUiaSource: Implement DockPattern
+* #587783 - TabControl: 'page tab' has 2 extraneous labels
+* #600430 - [uiaclient-GTKs]:A Document should not support value pattern
+* #603639 - [uiaclient-GTKs]:The Edit control should not support the InvokePattern
+* #598413 - [uiaclient-GTKs]: the Spinner has extra Invoke pattern
+* #608190 - [uiaclient-GTKs]:The Toggle button should not support Invoke pattern
+* #554017 - Do click action doesn't move focus to the clicked element
+* #600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false, if the scrollbar's value can be set
+* #596835 - Gtk ScrollBar has extraneous InvokePattern to be supported
+
 Version 2.1: The "Zoidberg" release
 * #628639 - Fedora: The control can't be found by using FindFirst(app, TreeScope.Descendants, condition) method
 * #624236 - Fail to launch KeePass.exe

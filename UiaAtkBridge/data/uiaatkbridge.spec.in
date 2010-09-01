@@ -1,7 +1,7 @@
 #
 # spec file for package UiaAtkBridge
 #
-# Copyright (c) 2010 SUSE Linux Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2.1.900 SUSE Linux Products GmbH, Nuernberg, Germany.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 #       
@@ -18,13 +18,13 @@ Group:          System/Libraries
 URL:            http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Requires:       at-spi >= 1.24.0
+Requires:       at-spi >= 1.30.0
 Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
-Requires:       mono-uia >= 2.0.95
+Requires:       mono-uia >= 2.1
 BuildRequires:  gtk2-devel >= 2.14
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia-devel >= 2.0.95
+BuildRequires:	mono-uia-devel >= 2.1
 
 Summary:        Bridge between UIA providers and ATK
 

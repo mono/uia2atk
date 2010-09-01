@@ -12,14 +12,14 @@ URL:            http://www.mono-project.com/Accessibility
 Source0:        http://ftp.novell.com/pub/mono/sources/uiaatkbridge/%{name}-%{version}.tar.bz2
 Patch0:         uiaatkbridge-libdir-fedora.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       at-spi >= 1.24.0
+Requires:       at-spi >= 1.30.0
 Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
-Requires:       mono-uia >= 2.0.95
+Requires:       mono-uia >= 2.1
 BuildRequires:  gtk2-devel >= 2.14
 BuildRequires:  gtk-sharp2-devel >= 2.12.10
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:	mono-uia-devel >= 2.0.95
+BuildRequires:	mono-uia-devel >= 2.1
 
 Summary:        Bridge between UIA providers and ATK
 

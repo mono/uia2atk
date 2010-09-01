@@ -1,5 +1,5 @@
 #
-# spec file for package at-spi2-atk (Version 0.3.3)
+# spec file for package at-spi2-atk (Version 0.3.90)
 #
 # Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
@@ -15,10 +15,10 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-%define IS_DEFAULT_ATSPI_STACK 1
+%define IS_DEFAULT_ATSPI_STACK 0
 
 Name:           at-spi2-atk
-Version:        0.3.3
+Version:        0.3.90
 Release:        1
 Summary:        Assistive Technology Service Provider Interface - GTK+ module
 License:        GPLv2+
@@ -28,6 +28,7 @@ Source0:        %{name}-%{version}.tar.bz2
 Source99:       %{name}-rpmlintrc
 # PATCH-FIX-OPENSUSE at-spi2-atk-gtk-64-fix.patch bnc611766 sshaw@decriptor.com -- at-spi2 should set GTK_PATH64 rather than GTK_PATH
 Patch0:         at-spi2-atk-gtk-64-fix.patch
+Requires:	atk >= 1.30
 BuildRequires:  atk-devel
 BuildRequires:  dbus-1-glib-devel
 BuildRequires:  fdupes
@@ -75,11 +76,10 @@ This package contains a GTK+ module for at-spi, based on ATK.
 
 %install
 %makeinstall
-# en@shaw isn't supported in openSUSE <= 11.2
+
 %if 0%{?suse_version} <= 1120
 %{__rm} %{buildroot}%{_datadir}/locale/en@shaw/LC_MESSAGES/*
 %endif
-
 find %{buildroot} -type f -name "*.la" -delete -print
 %find_gconf_schemas
 %find_lang %{name}

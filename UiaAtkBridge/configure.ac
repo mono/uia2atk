@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([UiaAtkBridge], [2.1])
+AC_INIT([UiaAtkBridge], [2.1.90])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
@@ -57,7 +57,7 @@ AC_SUBST(NUNIT_PATH)
 
 # Require Gtk+ devel package so that we can get access at the pc file to
 # construct a path to the modules directory
-PKG_CHECK_MODULES([GTK20], [gtk+-2.0 >= 2.12])
+PKG_CHECK_MODULES([GTK20], [gtk+-2.0 >= 2.1.902])
 
 GTK_MODULES_DIR=`pkg-config --variable=libdir gtk+-2.0`/gtk-2.0/modules
 AC_SUBST(GTK_MODULES_DIR)
@@ -87,10 +87,10 @@ fi
 
 
 # package checks, common for all configs
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.10])
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.1.902.8])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.1.902.10])
 
-PKG_CHECK_MODULES(GTK_SHARP_2_12_10, gtk-sharp-2.0 >= 2.12.10, [last_gtk_sharp=yes], [last_gtk_sharp=no])
+PKG_CHECK_MODULES(GTK_SHARP_2.1.902_10, gtk-sharp-2.0 >= 2.12.10, [last_gtk_sharp=yes], [last_gtk_sharp=no])
 AM_CONDITIONAL(HAVE_OLD_ATK_SHARP, test x$last_gtk_sharp = xno)
 
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.0.3])
