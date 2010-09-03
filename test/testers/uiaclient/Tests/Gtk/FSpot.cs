@@ -134,6 +134,9 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			procedureLogger.ExpectedResult("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.LongDelay);
 			
+			
+			
+			
 			/*
 			 * BUG619425 - [uiaclient-GTKs]:The hierarchy of the window who has two subwindows is different from accerciser.
 			 */
@@ -556,7 +559,8 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.4 Select "Image Settings" tab item
-			var printDialog = app.FindGtkSubWindow (window, "Print");
+			//var printDialog = app.FindGtkSubWindow (window, "Print");
+			var printDialog = window.Find<Window> ("Print");
 			var tab = printDialog.Find<Tab> ();
 			var tabItems = tab.FindAll<TabItem> ();
 			var imageSettingTab = tabItems[2];
