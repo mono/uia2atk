@@ -414,7 +414,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//203.4 Click the "Calendar" button
-			var adjustTimeDialog = app.FindGtkSubWindow (window, "Adjust Time");
+			var adjustTimeDialog = window.Find<Window> ("Adjust Time");
 			var selectButton = adjustTimeDialog.Find<Button> ("Select Date");
 			selectButton.Click ();
 			procedureLogger.ExpectedResult ("The \"Calendar\" is shown.");
@@ -477,8 +477,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//204.3 Select "All Image" radio button on the "Screensaver Configure" dialog
-			//var configureDialog = window.Find<Window> ("Screensaver Configuration");
-			var configureDialog = app.FindGtkSubWindow (window, "Screensaver Configuration");
+			var configureDialog = window.Find<Window> ("Screensaver Configuration");
 			var allImageRadioButton = configureDialog.Find<RadioButton> ("All Images");
 			/*
 			 * BUG597696 - [uiaclient-GTKs]: RadioButton doesn't support the SelectionItemPattern
@@ -559,7 +558,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 
 			//205.4 Select "Image Settings" tab item
-			//var printDialog = app.FindGtkSubWindow (window, "Print");
 			var printDialog = window.Find<Window> ("Print");
 			var tab = printDialog.Find<Tab> ();
 			var tabItems = tab.FindAll<TabItem> ();
