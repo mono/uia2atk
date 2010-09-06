@@ -133,10 +133,6 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			seleceMenuItem.Click ();
 			procedureLogger.ExpectedResult("The \"Import\" dialog appears.");
 			Thread.Sleep (Config.Instance.LongDelay);
-			
-			
-			
-			
 			/*
 			 * BUG619425 - [uiaclient-GTKs]:The hierarchy of the window who has two subwindows is different from accerciser.
 			 */
@@ -950,7 +946,7 @@ namespace MonoTests.Mono.UIAutomation.UIAClientAPI.Gtk
 			Thread.Sleep (Config.Instance.ShortDelay);
 			
 			//210.3 Test the Table control's supported patterns & property
-			var extensionWindow = app.FindGtkSubWindow (window, "Extension Manager");
+			var extensionWindow = window.Find<Window> ("Add-in Manager");
 			var table = extensionWindow.Find<Table> ();
 			/*
 			 * BUG604660 - [uiaclient-GTKs]:The Table control should not support Selection pattern
