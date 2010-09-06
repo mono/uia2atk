@@ -156,10 +156,9 @@ sleep(config.SHORT_DELAY)
 #statesCheck(cbddlFrame.menu_items[2], "MenuItem", invalid_states=["showing"])
 
 # check press action of combobox to rise a window.
-# BUG493094 - Drop-down list window has no states
-#cbddlFrame.combobox.press()
-#sleep(config.SHORT_DELAY)
-#cbddlFrame.app.findWindow(None)
+cbddlFrame.combobox.press()
+sleep(config.SHORT_DELAY)
+cbddlFrame.app.findWindow(None)
 
 # close application frame window
 cbddlFrame.quit()

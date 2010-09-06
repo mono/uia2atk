@@ -48,8 +48,7 @@ dgFrame = app.dataGridFrame
 #################
 
 statesCheck(dgFrame.edit_cells[0], "TableCell", add_states=["editable"])
-## BUG479796: ReadOnly cell still has editable state
-#statesCheck(dgFrame.read_cells[0], "TableCell")
+statesCheck(dgFrame.read_cells[0], "TableCell")
 
 ####################################################################
 # mouse click, key navigate to change label and text
@@ -96,12 +95,7 @@ dgFrame.assertTypeText(dgFrame.read_cells[2], expected_text="Read2")
 # Cells under TextBox_Edit is editable, change text to 'type something'
 dgFrame.assertTypeText(dgFrame.edit_cells[0], expected_text="type something")
 dgFrame.assertTypeText(dgFrame.edit_cells[1], expected_text="Edit1type something")
-# BUG485466: navigate to last line cause crash, now we know that is our 
-# sample's bug
-#dgFrame.assertTypeText(dgFrame.edit_cells[2], "editable", expectedtext="editable")
-
-
-
+dgFrame.assertTypeText(dgFrame.edit_cells[2], expected_text="Edit2type something")
 
 # close application frame window
 dgFrame.quit()

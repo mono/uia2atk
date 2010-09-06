@@ -151,18 +151,15 @@ lvFrame.assertDefaultText()
 # check table implementation for TreeTable
 lvFrame.assertTable(lvFrame.treetable, row=6, col=2)
 
-# column_a.click causes the test to hang: BUG494034
-# columnheader do click action doesn't work BUG476304
-#lvFrame.column_a.click(log=True)
-#sleep(config.SHORT_DELAY)
+lvFrame.column_a.click(log=True)
+sleep(config.SHORT_DELAY)
 # check TableCells' order after click ColumnHeader
-#lvFrame.assertOrder(False)
+lvFrame.assertOrder(False)
 
-# column_b.click causes the test to hang: BUG494034
 # do the same thing for the "Num" column (i.e., column_b)
-#lvFrame.column_b.click(log=True)
-#sleep(config.SHORT_DELAY)
-#lvFrame.assertOrder()
+lvFrame.column_b.click(log=True)
+sleep(config.SHORT_DELAY)
+lvFrame.assertOrder()
 
 # check TableCells' order after mouse click TableCells, also check 
 # TableCells' position
