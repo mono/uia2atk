@@ -108,9 +108,7 @@ for table_cells in pgFrame.child_table_cells:
 # BUG519507: implemented wrong role and missing armed checked states
 #actionsCheck(pgFrame.categorized_button, "Button")
 #actionsCheck(pgFrame.alphabetic_button, "Button")
-# BUG516425 - PropertyGrid :The push button without 'sensitive' and 'enable' 
-# states should have not "click" action
-#actionsCheck(pgFrame.property_button, "Button", invalid_actions=['click'])
+#actionsCheck(pgFrame.property_button, "Button")
 
 ########################################
 # check the Component of accessibles
@@ -336,7 +334,6 @@ pgFrame.testSpitterValue(60, treetable_is_enlarged=False)
 '''
 
 # TODO: add tests for these two bugs
-# BUG479142 - No Relations to Parent in the table cells shown by PropertyGrid
 # BUG513097 - PropertyGrid: characters in EditableText of TableCells 
 # can't be deleted by "Backspace" key
 

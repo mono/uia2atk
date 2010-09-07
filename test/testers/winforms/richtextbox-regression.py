@@ -47,8 +47,8 @@ if app is None:
 rtbFrame = app.richTextBoxFrame
 
 # BUG478886 - RichTextBox text accessible does not receive "focused" state
-# statesCheck(rtbFrame.richtextbox_top, "RichTextBox")
-# statesCheck(rtbFrame.richtextbox_bottom, "RichTextBox")
+statesCheck(rtbFrame.richtextbox_top, "RichTextBox", add_states=['focused'])
+statesCheck(rtbFrame.richtextbox_bottom, "RichTextBox")
 
 # Mono WinForms BUG479646 - RichTextBox.LoadFile should not insert a newline
 # at the end of the loaded text
