@@ -105,6 +105,8 @@ namespace GtkForm
 			iters [0] = tableStore.AppendNode ();
 			tableStore.SetValues (iters [0], "True", "Bob", "28", "");
 			dataGridView1 = new Gtk.TreeView (tableStore);
+			dataGridView1 = new Gtk.TreeView (tableStore);
+			dataGridView1 = new Gtk.TreeView (tableStore);
 			AddTreeViewColumn (dataGridView1, 0, "Gender");
 			AddTreeViewColumn (dataGridView1, 1, "Name");
 			AddTreeViewColumn (dataGridView1, 2, "Age");

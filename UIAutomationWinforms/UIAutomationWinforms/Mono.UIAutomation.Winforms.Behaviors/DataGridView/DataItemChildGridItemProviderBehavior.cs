@@ -120,7 +120,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		}
 		
 		public IRawElementProviderSimple ContainingGrid {
-			get { return provider.FragmentRoot; }
+			get {
+				return provider.FragmentRoot.Navigate (
+					NavigateDirection.Parent);
+			}
 		}
 		
 		#endregion

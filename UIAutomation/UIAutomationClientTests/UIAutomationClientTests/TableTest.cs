@@ -105,15 +105,26 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void GridItemPatternTest ()
 		{
-			var pattern = (GridItemPattern) gridPattern.GetItem (1, 2).
+			AutomationElement item = gridPattern.GetItem (1, 2);
+			var pattern = (GridItemPattern) item.
 				GetCurrentPattern (GridItemPattern.Pattern);
 			Assert.AreEqual (2, pattern.Current.Column, "Column");
 			Assert.AreEqual (1, pattern.Current.Row, "Row");
 			Assert.AreEqual (1, pattern.Current.ColumnSpan, "ColumnSpan");
 			Assert.AreEqual (1, pattern.Current.RowSpan, "RowSpan");
-			/*var tmp = pattern.Current.ContainingGrid.Current;
-			Console.WriteLine ("[{0}], [{1}], [{2}]", tmp.Name, tmp.ControlType.ProgrammaticName, tmp.BoundingRectangle);*/
-			//todo Currently This test case fails, see #bug 549109
+			Assert.AreEqual (table1Element, pattern.Current.ContainingGrid,
+			                 "ContainingGrid");
+
+			var parent = TreeWalker.RawViewWalker.GetParent (item);
+			pattern = (GridItemPattern) parent.
+				GetCurrentPattern (GridItemPattern.Pattern);
+			Assert.IsNotNull (pattern,
+				"DataItem should implement GridItem");
+			Assert.AreEqual (0, pattern.Current.Column, "Column");
+			Assert.AreEqual (1, pattern.Current.Row, "Row");
+			// Should this really be 3?
+			Assert.AreEqual (1, pattern.Current.ColumnSpan, "ColumnSpan");
+			Assert.AreEqual (1, pattern.Current.RowSpan, "RowSpan");
 			Assert.AreEqual (table1Element, pattern.Current.ContainingGrid,
 			                 "ContainingGrid");
 		}

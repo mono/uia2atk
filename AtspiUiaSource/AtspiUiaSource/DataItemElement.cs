@@ -84,5 +84,42 @@ namespace AtspiUiaSource
 				return ControlType.DataItem;
 			}
 		}
+
+		public override Rect BoundingRectangle {
+			get {
+				return Rect.Union (
+					FirstChild.BoundingRectangle,
+					LastChild.BoundingRectangle);
+			}
+		}
+
+		internal override object GetCurrentPatternInternal (AutomationPattern pattern)
+		{
+			if (pattern == GridItemPatternIdentifiers.Pattern)
+				return new DataItemGridItemSource (this);
+			if (pattern == SelectionItemPatternIdentifiers.Pattern)
+				return new SelectionItemSource ((Element) FirstChild);
+			return base.GetCurrentPatternInternal (pattern);
+		}
+
+		internal override bool SupportsGrid ()
+		{
+			return false;
+		}
+
+		internal override bool SupportsGridItem ()
+		{
+			return true;
+		}
+
+		internal override bool SupportsSelection ()
+		{
+			return false;
+		}
+
+		internal override bool SupportsSelectionItem ()
+		{
+			return true;
+		}
 	}
 }

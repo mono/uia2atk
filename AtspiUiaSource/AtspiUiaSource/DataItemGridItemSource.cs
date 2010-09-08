@@ -35,48 +35,48 @@ using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class TableItemSource : GridItemSource, ITableItemPattern
+	public class DataItemGridItemSource : IGridItemPattern
 	{
-		public TableItemSource (Element element) : base (element)
+		protected DataItemElement element;
+		protected Accessible accessible;
+		protected Atspi.Table table;
+
+		public DataItemGridItemSource (DataItemElement element)
 		{
+			this.element = element;
+			accessible = element.Accessible;
+			table = accessible.QueryTable ();
 		}
 
-		public IElement [] GetRowHeaderItems ()
-		{
-			// TODO: would be nice if at-spi made this easier
-			Accessible accessible = table.GetRowHeader (0);
-			// If that returned null, then maybe we have no
-			// headers, so not going to query every single row
-			if (accessible == null)
-				return new Element [0];
-			int count = table.NRows;
-			Element [] elements = new Element [count];
-			elements [0] = Element.GetElement (accessible);
-			for (int i = 1; i < count; i++) {
-				accessible = table.GetRowHeader (i);
-				if (accessible != null)
-					elements [i] = Element.GetElement (accessible);
+		public int Row {
+			get {
+				return element.row;
 			}
-			return elements;
 		}
 
-		public IElement [] GetColumnHeaderItems ()
-		{
-			// TODO: would be nice if at-spi made this easier
-			Accessible accessible = table.GetColumnHeader (0);
-			// If that returned null, then maybe we have no
-			// headers, so not going to query every single row
-			if (accessible == null)
-				return new Element [0];
-			int count = table.NColumns;
-			Element [] elements = new Element [count];
-			elements [0] = Element.GetElement (accessible);
-			for (int i = 1; i < count; i++) {
-				accessible = table.GetColumnHeader (i);
-				if (accessible != null)
-					elements [i] = Element.GetElement (accessible);
+		public int Column {
+			get {
+				return 0;
 			}
-			return elements;
+		}
+
+		public int RowSpan {
+			get {
+				return 1;
+			}
+		}
+
+		public int ColumnSpan {
+			get {
+				// Replicating UIAWinforms behavior here
+				return 1;
+			}
+		}
+
+		public IElement ContainingGrid {
+			get {
+				return Element.GetElement (accessible);
+			}
 		}
 	}
 }

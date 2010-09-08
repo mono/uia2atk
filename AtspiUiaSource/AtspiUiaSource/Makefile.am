@@ -46,6 +46,7 @@ FILES =  \
 	AssemblyInfo.cs \
 	AutomationSource.cs \
 	DataItemElement.cs \
+	DataItemGridItemSource.cs \
 	Element.cs \
 	ExpandCollapseSource.cs \
 	GridEventHandler.cs \
@@ -61,6 +62,7 @@ FILES =  \
 	TableCellElement.cs \
 	TableElement.cs \
 	TableHeaderElement.cs \
+	TableHeaderItemElement.cs \
 	TableItemSource.cs \
 	TableSource.cs \
 	TextEventHandler.cs \

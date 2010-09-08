@@ -30,7 +30,9 @@ import signal
 from time import sleep
 from strongwind import *
 
-def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka', findSLControl=True):
+testingWithFF4 = False
+
+def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka', findSLControl=True, ff4=False):
     """
     Launch a browser with the selected uri and return a Browser object.
     """
@@ -48,6 +50,12 @@ def launchAddress(uri, browser='firefox', profile='dev', name='Namoroka', findSL
         name = os.environ['MOON_A11Y_BROWSER_NAME']
     else:
         print "** MOON_A11Y_BROWSER_NAME environment variable not found.  Defaulting to '%s'." % name
+
+    if os.environ.has_key('MOON_A11Y_BROWSER_FF4'):
+        global testingWithFF4
+        testingWithFF4 = os.environ['MOON_A11Y_BROWSER_FF4'].lower() in ['true', '1', 't', 'y', 'yes']
+    else:
+        print "** MOON_A11Y_BROWSER_FF4 environment variable not found.  Defaulting to '%s'." % ff4
 
     cwd = os.path.dirname(browser)
     if cwd == '':
@@ -79,7 +87,7 @@ class FirefoxBrowser(accessibles.Application):
 
     def __init__(self, name, accessible, subproc, findSLControl):
         """
-        Get a refrence to the main browser window.
+        Get a reference to the main browser window.
         """
         try:
             super(FirefoxBrowser, self).__init__(accessible, subproc)
@@ -88,8 +96,14 @@ class FirefoxBrowser(accessibles.Application):
 
             self.findFrame(re.compile(self.appNameRegex % name), logName='Main')
             self.tabs = self.mainFrame.findAllPageTabLists('')[0]
-            self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
-	    if findSLControl:
+
+            global testingWithFF4
+            if testingWithFF4:
+                self.locationBar = self.mainFrame.findEntry('Go to a Web Site')
+            else:
+                self.locationBar = self.mainFrame.findEntry('Search Bookmarks and History')
+
+            if findSLControl:
                 self.slControl = self.mainFrame.findFiller('Silverlight Control')
         except:
             self.kill()

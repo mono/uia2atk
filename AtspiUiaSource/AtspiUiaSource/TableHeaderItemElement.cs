@@ -31,52 +31,53 @@ using Mono.Unix;
 using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
 using Atspi;
-using System.Windows.Automation.Provider;
 
 namespace AtspiUiaSource
 {
-	public class TableItemSource : GridItemSource, ITableItemPattern
+	public class TableHeaderItemElement : Element
 	{
-		public TableItemSource (Element element) : base (element)
+		public TableHeaderItemElement (Accessible accessible) : base (accessible)
 		{
 		}
 
-		public IElement [] GetRowHeaderItems ()
-		{
-			// TODO: would be nice if at-spi made this easier
-			Accessible accessible = table.GetRowHeader (0);
-			// If that returned null, then maybe we have no
-			// headers, so not going to query every single row
-			if (accessible == null)
-				return new Element [0];
-			int count = table.NRows;
-			Element [] elements = new Element [count];
-			elements [0] = Element.GetElement (accessible);
-			for (int i = 1; i < count; i++) {
-				accessible = table.GetRowHeader (i);
-				if (accessible != null)
-					elements [i] = Element.GetElement (accessible);
+		public override IElement Parent {
+			get {
+				TableElement table = Element.GetElement (accessible.Parent) as TableElement;
+				if (table == null) {
+					Console.WriteLine ("AtspiUiaSource: TableHeaderElement in a bad state!");
+					return null;
+				}
+				return table.Header;
 			}
-			return elements;
 		}
 
-		public IElement [] GetColumnHeaderItems ()
-		{
-			// TODO: would be nice if at-spi made this easier
-			Accessible accessible = table.GetColumnHeader (0);
-			// If that returned null, then maybe we have no
-			// headers, so not going to query every single row
-			if (accessible == null)
-				return new Element [0];
-			int count = table.NColumns;
-			Element [] elements = new Element [count];
-			elements [0] = Element.GetElement (accessible);
-			for (int i = 1; i < count; i++) {
-				accessible = table.GetColumnHeader (i);
-				if (accessible != null)
-					elements [i] = Element.GetElement (accessible);
+		public override IElement PreviousSibling {
+			get {
+				Accessible parent = accessible.Parent;
+				// Can someone suggest a better way to do this?
+				// Seems like a horrible way to iterate through a List.
+			// Can't remember whether I or a reviewer decided that
+			// Children should return an IList and not an array.
+				for (int i = accessible.IndexInParent - 1; i >= 0; i--) {
+					Accessible sibling = parent.Children [i];
+					if (sibling.Role == Role.TableColumnHeader || sibling.Role == Role.TableRowHeader)
+						return Element.GetElement (parent.Children [i]);
+				}
+				return null;
 			}
-			return elements;
+		}
+
+		public override IElement NextSibling {
+			get {
+				Accessible parent = accessible.Parent;
+			int count = parent.Children.Count;
+				for (int i = accessible.IndexInParent + 1; i < count; i++) {
+					Accessible sibling = parent.Children [i];
+					if (sibling.Role == Role.TableColumnHeader || sibling.Role == Role.TableRowHeader)
+						return Element.GetElement (parent.Children [i]);
+				}
+				return null;
+			}
 		}
 	}
 }

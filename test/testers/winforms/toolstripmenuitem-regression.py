@@ -220,12 +220,26 @@ sleep(config.SHORT_DELAY)
 # BUG503735 Selected state of a menu item persists when the menu item is
 # clicked.  This bug causes the following statesCheck to have an extraneous
 # "selected" state
-#statesCheck(tsmiFrame.paste_this_menu_item, "MenuItem")
+#statesCheck(tsmiFrame.paste_that_menu_item, "MenuItem")
 tsmiFrame.assertText("Paste Clicked\n")
 
-# TODO: when some of these bugs are cleared up (especially BUG503973 or 
-# BUG503663), we should write some more tests for the "View" and "Help" 
-# menus on the ToolStrip
+tsmiFrame.keyCombo("<Alt>V", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tsmiFrame.create_menu_item, "MenuItem", add_states=['selected', 'focused'])
+
+tsmiFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tsmiFrame.write_menu_item, "MenuItem", add_states=['selected', 'focused'])
+statesCheck(tsmiFrame.create_menu_item, "MenuItem")
+
+tsmiFrame.keyCombo("<Alt>H", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tsmiFrame.financial_menu_item, "MenuItem", add_states=['selected', 'focused'])
+
+tsmiFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(tsmiFrame.medical_menu_item, "MenuItem", add_states=['selected', 'focused'])
+statesCheck(tsmiFrame.financial_menu_item, "MenuItem")
 
 #close main window
 tsmiFrame.quit()

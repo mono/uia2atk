@@ -645,7 +645,7 @@ namespace AtspiUiaSource
 			return GetElement (descendant);
 		}
 
-		private object GetCurrentPatternInternal (AutomationPattern pattern)
+		internal virtual object GetCurrentPatternInternal (AutomationPattern pattern)
 		{
 			if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
 				return (SupportsExpandCollapse () ? new ExpandCollapseSource (this) : null);
@@ -831,7 +831,7 @@ namespace AtspiUiaSource
 			}
 		}
 
-		internal bool SupportsExpandCollapse ()
+		internal virtual bool SupportsExpandCollapse ()
 		{
 			Accessible testAccessible;
 			Atspi.Action action;
@@ -852,19 +852,19 @@ namespace AtspiUiaSource
 			return false;
 		}
 
-		internal bool SupportsGridItem ()
+		internal virtual bool SupportsGridItem ()
 		{
 			return (accessible.Parent.QueryTable () != null &&
 				ControlType != ControlType.TreeItem);
 		}
 
-		internal bool SupportsGrid ()
+		internal virtual bool SupportsGrid ()
 		{
 			return (accessible.QueryTable () != null &&
 				ControlType != ControlType.Tree);
 		}
 
-		internal bool SupportsInvoke ()
+		internal virtual bool SupportsInvoke ()
 		{
 			if (accessible.Role == Role.Separator ||
 				accessible.Role == Role.CheckBox ||
@@ -884,43 +884,44 @@ namespace AtspiUiaSource
 			return false;
 		}
 
-		internal bool SupportsRangeValue ()
+		internal virtual bool SupportsRangeValue ()
 		{
 			return (accessible.QueryValue () != null);
 		}
 
-		internal bool SupportsSelectionItem ()
+		internal virtual bool SupportsSelectionItem ()
 		{
 			if (accessible.Role == Role.Separator)
 				return false;
 			return (accessible.Parent.QuerySelection () != null);
 		}
 
-		internal bool SupportsSelection ()
+		internal virtual bool SupportsSelection ()
 		{
-			if (accessible.Role == Role.MenuBar)
-				return false;
-			return (accessible.QuerySelection () != null);
+			// disabling for tables because of BNC#604660
+			return (accessible.QuerySelection () != null &&
+				ControlType != ControlType.Table &&
+				accessible.Role != Role.MenuBar);
 		}
 
-		internal bool SupportsTableItem ()
+		internal virtual bool SupportsTableItem ()
 		{
 			// TODO: Only enable if no headers?
 			return SupportsGridItem ();
 		}
 
-		internal bool SupportsTable ()
+		internal virtual bool SupportsTable ()
 		{
 			// TODO: Only enable if no headers?
 			return SupportsGrid ();
 		}
 
-		internal bool SupportsToggle ()
+		internal virtual bool SupportsToggle ()
 		{
 			return (accessible.Role == Role.CheckBox || accessible.Role == Role.CheckMenuItem || accessible.Role == Role.ToggleButton);
 		}
 
-		internal bool SupportsText ()
+		internal virtual bool SupportsText ()
 		{
 			if (accessible.Role != Role.Text &&
 				accessible.Role != Role.PasswordText)
@@ -928,7 +929,7 @@ namespace AtspiUiaSource
 			return (accessible.QueryText () != null);
 		}
 
-		internal bool SupportsValue ()
+		internal virtual bool SupportsValue ()
 		{
 			return (accessible.QueryEditableText () != null &&
 				!accessible.StateSet.Contains (StateType.MultiLine));
