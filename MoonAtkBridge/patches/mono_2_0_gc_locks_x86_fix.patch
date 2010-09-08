@@ -1,0 +1,13 @@
+diff --git a/libgc/include/private/gc_locks.h b/libgc/include/private/gc_locks.h
+index 6b1256d..a12d258 100644
+--- a/libgc/include/private/gc_locks.h
++++ b/libgc/include/private/gc_locks.h
+@@ -403,7 +403,7 @@
+          {
+ 	   char result;
+ 	   __asm__ __volatile__("lock; cmpxchgl %2, %0; setz %1"
+-	    	: "+m"(*(addr)), "=r"(result)
++	    	: "+m"(*(addr)), "=q"(result)
+ 		: "r" (new_val), "a"(old) : "memory");
+ 	   return (GC_bool) result;
+          }
