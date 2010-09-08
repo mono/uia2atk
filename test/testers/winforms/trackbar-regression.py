@@ -85,7 +85,6 @@ tbFrame.assertText(tbFrame.label_ver, \
                                       "The value of TrackBar(Vertical) is: 1")
 
 # input 101 (greater than max)
-# TODO: BUG484195
 tbFrame.assignValue(tbFrame.trackbar_hor, 101)
 sleep(config.SHORT_DELAY)
 tbFrame.assertValue(tbFrame.trackbar_hor, 1)
