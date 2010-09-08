@@ -44,11 +44,7 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void TableHierarchy ()
 		{
-			AutomationElement headerElement;
-			headerElement = table1Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.Header));
-			Assert.IsNotNull (headerElement, "Header");
+			AutomationElement headerElement = GetHeader ();;
 			AutomationElement headerItemElement;
 			headerItemElement = headerElement.FindFirst (TreeScope.Children,
 				new PropertyCondition (AEIds.ControlTypeProperty,
@@ -100,7 +96,7 @@ namespace MonoTests.System.Windows.Automation
 				textElement.Current.Name,
 				"TextElement Name");
 			//VerifyPatterns (textElement,
-				//ValuePatternIdentifiers.Pattern);
+				//ValuePattern.Pattern);
 			textElement = TreeWalker.RawViewWalker.GetNextSibling (textElement);
 			Assert.IsNotNull (textElement, "item2");
 			Assert.AreEqual ("Alice",
@@ -125,9 +121,9 @@ namespace MonoTests.System.Windows.Automation
 			Assert.IsNotNull (treeItemElement, "Should have a TreeItem");
 			AutomationElement treeItem2Element;
 			treeItem2Element = TreeWalker.RawViewWalker.GetNextSibling (treeItemElement);
-			ExpandCollapsePattern pattern = (ExpandCollapsePattern) treeItem2Element.GetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern);
+			ExpandCollapsePattern pattern = (ExpandCollapsePattern) treeItem2Element.GetCurrentPattern (ExpandCollapsePattern.Pattern);
 			pattern.Expand ();
-			pattern = (ExpandCollapsePattern) treeItemElement.GetCurrentPattern (ExpandCollapsePatternIdentifiers.Pattern);
+			pattern = (ExpandCollapsePattern) treeItemElement.GetCurrentPattern (ExpandCollapsePattern.Pattern);
 			TreeViewHierarchyTest (false);
 			pattern.Expand ();
 Thread.Sleep(500);
@@ -187,9 +183,90 @@ Thread.Sleep(500);
 		public void TreeViewPatternsTest ()
 		{
 			VerifyPatterns (treeView1Element,
-				SelectionPatternIdentifiers.Pattern);
+				SelectionPattern.Pattern);
+		}
+
+		[Test]
+		public void HeaderPatternsTest ()
+		{
+			AutomationElement headerElement = GetHeader ();
+			VerifyPatterns (headerElement);
+		}
+
+		[Test]
+		public void DataItemPatternsTest ()
+		{
+			AutomationElement headerElement = GetHeader ();
+			AutomationElement dataItemElement = TreeWalker.RawViewWalker.GetNextSibling (headerElement);
+			VerifyPatterns (dataItemElement,
+				GridItemPattern.Pattern,
+				(Atspi ? null : ScrollItemPattern.Pattern),
+				SelectionItemPattern.Pattern,
+				TableItemPattern.Pattern);
+
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (dataItemElement);
+			// TODO: Test toggle when we have a gtk equivalent
+			child = TreeWalker.RawViewWalker.GetNextSibling (child);
+			Assert.AreEqual ("ControlType.Edit",
+				child.Current.ControlType.ProgrammaticName,
+				"child ControlType");
+			VerifyPatterns (child,
+				GridItemPattern.Pattern,
+				(Atspi ? InvokePattern.Pattern : null),
+				SelectionItemPattern.Pattern,
+				TableItemPattern.Pattern,
+				(Atspi ? null : ValuePattern.Pattern));
+		}
+
+		[Test]
+		public void tablePatterns ()
+		{
+			VerifyPatterns (table1Element,
+				GridPattern.Pattern,
+				(Atspi? null: ScrollPattern.Pattern),
+				(Atspi ? null : SelectionPattern.Pattern),
+				TablePattern.Pattern);
+		}
+
+		[Test]
+		public void HeaderIsContentElementTest ()
+		{
+			AutomationElement headerElement = GetHeader ();
+			Assert.IsFalse (headerElement.Current.IsContentElement,
+				"IsContentElement");
+		}
+
+		[Test]
+		public void HeaderBoundingRectangleTest ()
+		{
+			AutomationElement headerElement = GetHeader ();
+			Rect headerRect = headerElement.Current.BoundingRectangle;
+			Rect tableRect = table1Element.Current.BoundingRectangle;
+			Assert.IsTrue (headerRect.Height < tableRect.Height,
+				"Header rect is shorter than table rect");
+		}
+
+		[Test]
+		public void DataItemBoundingRectangleTest ()
+		{
+			AutomationElement headerElement = GetHeader ();
+			AutomationElement dataItemElement = TreeWalker.RawViewWalker.GetNextSibling (headerElement);
+			Rect itemRect = dataItemElement.Current.BoundingRectangle;
+			Rect tableRect = table1Element.Current.BoundingRectangle;
+			Assert.IsTrue (itemRect.Height < tableRect.Height,
+				"DataItem rect is shorter than table rect");
 		}
 		#endregion
+
+		private AutomationElement GetHeader ()
+		{
+			AutomationElement headerElement;
+			headerElement = table1Element.FindFirst (TreeScope.Children,
+				new PropertyCondition (AEIds.ControlTypeProperty,
+					ControlType.Header));
+			Assert.IsNotNull (headerElement, "Header");
+			return headerElement;
+		}
 #endif	// _MonoCS__
 	}
 }

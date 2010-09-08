@@ -40,26 +40,6 @@ namespace AtspiUiaClientTests
 	[TestFixture]
 	public class AtspiTableHierarchyTest : TableHierarchyTest
 	{
-		[Test]
-		public void DataItemPatternTest ()
-		{
-			AutomationElement treeView2Element
-				= groupBoxElement.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.NameProperty,
-					"treeView2"));
-			AutomationElement dataItemElement
-				= treeView2Element.FindFirst (TreeScope.Children,
-				new PropertyCondition (AEIds.ControlTypeProperty,
-					ControlType.DataItem));
-			Assert.IsNotNull (dataItemElement,
-				"DataItem not found");
-			VerifyPatterns (dataItemElement,
-				ExpandCollapsePatternIdentifiers.Pattern,
-				GridPatternIdentifiers.Pattern,
-				SelectionPatternIdentifiers.Pattern,
-				TablePatternIdentifiers.Pattern);
-		}
-
 		public override bool Atspi {
 			get {
 				return true;
