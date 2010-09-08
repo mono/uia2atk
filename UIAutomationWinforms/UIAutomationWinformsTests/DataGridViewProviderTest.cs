@@ -238,6 +238,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 buttonChild.Navigate (NavigateDirection.Parent),
 			                 "DataItem != ButtonChild.Parent");
 
+			IGridItemProvider gridItemProvider 
+				= (IGridItemProvider) buttonChild.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+				"Child should support IGridItemProvider");
+
+			Assert.IsNotNull (gridItemProvider.ContainingGrid, 
+			                  "ContainingGrid should not be null");
+
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.igriditemprovider.containinggrid.aspx
+			Assert.IsNotNull (gridItemProvider.ContainingGrid.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "ContainingGrid must implement GridPatternProvider");
+
 			childCount = 0;
 			child = buttonChild.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
