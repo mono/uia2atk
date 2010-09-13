@@ -223,6 +223,8 @@ namespace UiaAtkBridge
 		
 		IRawElementProviderSimple [] GetSelection () {
 			var elements = selectionProvider.GetSelection ();
+			if (elements == null)
+				return new IRawElementProviderSimple [0];
 			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (elements.Length == 0 || controlTypeId != ControlType.Group.Id)
 				return elements;

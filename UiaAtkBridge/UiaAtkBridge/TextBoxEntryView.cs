@@ -43,6 +43,11 @@ namespace UiaAtkBridge
 		private ITextImplementor textExpert = null;
 		private bool multiLine = false;
 		private EditableTextImplementorHelper editableTextExpert;
+
+		protected TextBoxEntryView (IntPtr ptr)
+			: base (ptr)
+		{
+		}
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{

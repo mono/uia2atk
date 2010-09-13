@@ -924,7 +924,7 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.Edit.Id;
+					return ControlType.Text.Id;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					// ItemProvider.DataGridProvider.DataGrid.Focused should be used here, but seems SWF.DataGrid loses this state randomly
 					return ItemProvider.DataGridProvider.DataGrid.CurrentCell.RowNumber == ItemProvider.Index
