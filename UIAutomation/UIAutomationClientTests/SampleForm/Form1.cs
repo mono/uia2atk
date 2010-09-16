@@ -182,6 +182,10 @@ namespace SampleForm {
 					textBox3.Select (0, 3);
 			} else if (cmd == "MoveTo.Origin") {
 				Location = new Point (0, 0);
+			} else if (cmd == "Minimize") {
+				this.WindowState = FormWindowState.Minimized;
+			} else if (cmd == "Restore") {
+				this.WindowState = FormWindowState.Normal;
 			} else if (cmd == "Toggle.Transform.CanMove") {
 				if (WindowState == FormWindowState.Normal)
 					WindowState = FormWindowState.Maximized;

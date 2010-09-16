@@ -29,6 +29,7 @@ using System.Collections.Generic;
 
 using SWF = System.Windows.Forms;
 
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -97,7 +98,6 @@ namespace Mono.UIAutomation.Winforms
 			treeView.UIANodeTextChanged -= HandleUIANodeTextChanged;
 			treeView.UIACollectionChanged -= HandleUIACollectionChanged;
 		}
-
 
 		void HandleUIACollectionChanged (object sender, CollectionChangeEventArgs e)
 		{
@@ -259,6 +259,12 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Provider Overrides
 
+		public override SWF.Control AssociatedControl {
+			get { return treeView; }
+		}
+
+
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -275,9 +281,11 @@ namespace Mono.UIAutomation.Winforms
 				return node.IsSelected && treeView.Focused;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return treeView.CanFocus && AreAllParentsExpanded ();
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (node.Bounds);
 			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { return Helper.RectangleToRect (node.Bounds); }
 		}
 
 		public override void Initialize ()

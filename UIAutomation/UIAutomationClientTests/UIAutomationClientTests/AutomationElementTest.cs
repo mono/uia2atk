@@ -450,6 +450,12 @@ Thread.Sleep(1000);
 					button1Element.Current.IsOffscreen,
 					"button1 AutomationElementInformation vs GetCurrentPropertyValue w/ignoreDefault");
 			// TODO: Complete actual test (requires pattern support to move window)
+			//
+			RunCommand ("Minimize");
+			CheckUnmappedElement (testFormElement);
+			CheckUnmappedElement (button1Element);
+			CheckUnmappedElement (groupBox1Element);
+			RunCommand ("Restore");
 		}
 
 		[Test]
@@ -1205,6 +1211,7 @@ Thread.Sleep(1000);
 		public void SupportedPropertiesTest ()
 		{
 			SupportedPropertiesTestInternal (testFormElement);
+			SupportedPropertiesTestInternal (button1Element);
 			SupportedPropertiesTestInternal (checkBox1Element);
 			SupportedPropertiesTestInternal (groupBox1Element);
 			SupportedPropertiesTestInternal (numericUpDown1Element);
@@ -1382,6 +1389,17 @@ Thread.Sleep(1000);
 						prop.ProgrammaticName));
 			}
 		}
+
+		private void CheckUnmappedElement (AutomationElement element)
+		{
+			Assert.IsTrue (element.Current.IsOffscreen, "check IsOffScreen property");
+			if (!Atspi) {
+				var bound = element.Current.BoundingRectangle;
+				Assert.Less (bound.Right, 0.0, "BoundingRectangle.Right shall be negative");
+				Assert.Less (bound.Bottom, 0.0, "BoundingRectangle.Bottom shall be negative");
+			}
+		}
+
 		#endregion
 	}
 }

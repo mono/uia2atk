@@ -27,6 +27,7 @@ using System;
 using Mono.Unix;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors.TabPage;
@@ -50,7 +51,11 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TabItem.Id;
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get {
 				// Don't return empty if we're not visible.  We
 				// want this control's visiblity managed by the
 				// TabControl, as tab pages are on-screen even
@@ -58,8 +63,6 @@ namespace Mono.UIAutomation.Winforms
 				return Helper.RectangleToRect (
 					Control.Parent.RectangleToScreen (tabPage.TabBounds));
 			}
-
-			return base.GetProviderPropertyValue (propertyId);
 		}
 
 		protected override bool IsComponentVisible (Component component)

@@ -286,15 +286,7 @@ namespace Mono.UIAutomation.Winforms
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					//We try to get internal UIAComboListBox in SWF.ComboBox if returns null we 
-					//use the SWF.ComboBox bounds
-					SWF.Control listboxControl = ListBoxControl;
-					if (listboxControl == null)
-						return comboboxProvider.GetProviderPropertyValue (propertyId);
-					else
-						return Helper.GetControlScreenBounds (listboxControl.Bounds, listboxControl);
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.Simple)
 						return false;
 					
@@ -307,6 +299,18 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					//We try to get internal UIAComboListBox in SWF.ComboBox if returns null we 
+					//use the SWF.ComboBox bounds
+					SWF.Control listboxControl = ListBoxControl;
+					if (listboxControl == null)
+						return (Rect) comboboxProvider.GetProviderPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					else
+						return Helper.GetControlScreenBounds (listboxControl.Bounds, listboxControl);
+				}
 			}
 
 			public override int SelectedItemsCount {

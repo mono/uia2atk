@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -58,6 +59,10 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+		public override Control AssociatedControl {
+			get { return item.Owner; }
+		}
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -74,10 +79,13 @@ namespace Mono.UIAutomation.Winforms
 				return item.Selected;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return false;
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return Helper.GetToolStripItemScreenBounds (item);
+
 			else
 				return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { return Helper.GetToolStripItemScreenBounds (item); }
 		}
 
 		public override void Initialize()

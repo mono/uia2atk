@@ -31,6 +31,7 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -450,6 +451,24 @@ namespace Mono.UIAutomation.Winforms
 					s = s.Remove (i, 1);
 			return s;
 		}
+
+		internal static bool IsFormMinimized (SimpleControlProvider provider)
+		{
+			if (provider == null)
+				return false;
+
+			if (provider.AssociatedControl == null) {
+				Log.Warn (string.Format ("IsFormMinized: {0} returns null", provider.GetType ()));
+				return false;
+			}
+
+			SWF.Form form = provider.AssociatedControl.FindForm ();
+			if (form == null)
+				return false;
+
+			return form.WindowState == SWF.FormWindowState.Minimized;
+		}
+
 		#endregion
 		
 		#region Private Static Methods

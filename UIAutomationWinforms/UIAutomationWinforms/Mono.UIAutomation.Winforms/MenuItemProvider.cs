@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -43,6 +44,7 @@ namespace Mono.UIAutomation.Winforms
 	{
 		private SWF.MenuItem menuItem;
 		private SWF.Menu parentMenu;
+		private SWF.MainMenu mainMenu;
 		private MenuItemMenuProvider menuProvider;
 		private System.Windows.Rect bounds;
 		
@@ -50,7 +52,7 @@ namespace Mono.UIAutomation.Winforms
 			base (menuItem)
 		{
 			this.menuItem = menuItem;
-			parentMenu = menuItem.GetMainMenu ();
+			parentMenu = mainMenu =	menuItem.GetMainMenu ();
 			if (parentMenu == null)
 				parentMenu = menuItem.GetContextMenu ();
 		}
@@ -65,9 +67,21 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AEIds.IsEnabledProperty.Id)
 				return menuItem.Enabled;
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return bounds;
 			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { return bounds; }
+		}
+
+		public override SWF.Control AssociatedControl {
+			get { 
+				if (mainMenu != null)
+					return mainMenu.GetForm (); 
+				// What about ContextMenu?
+				else
+					return null;
+			}
 		}
 		
 		#region FragmentRootControlProvider: Specializations

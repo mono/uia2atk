@@ -287,6 +287,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return viewProvider.DataGridView; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return DataGridView; }
+			}
+
 			public SD.Rectangle Size {
 				get {
 					if (!DataGridView.ColumnHeadersVisible)
@@ -321,10 +325,12 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return Helper.GetControlScreenBounds (Size, DataGridView, true);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get { return Helper.GetControlScreenBounds (Size, DataGridView, true); }
 			}
 
 			public IRawElementProviderSimple[] GetHeaderItems ()
@@ -411,6 +417,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return headerProvider; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return headerProvider.DataGridView; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -439,7 +449,18 @@ namespace Mono.UIAutomation.Winforms
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 					return column.ToolTipText;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, headerProvider.DataGridView, true);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
 					if (column == null || column.Index < 0)
 						return Rect.Empty;
 
@@ -452,14 +473,7 @@ namespace Mono.UIAutomation.Winforms
 					headerBounds.Width = headerProvider.DataGridView.Columns [column.Index].Width;
 					
 					return headerBounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, headerProvider.DataGridView, true);
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				}
 			}
 
 			private SWF.DataGridViewColumn column;
@@ -630,6 +644,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return gridProvider; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return gridProvider.DataGridView; }
+			}
+
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { return itemProvider; }
 			}
@@ -697,7 +715,16 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 					return cell.ToolTipText;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return cell.Displayed;
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get { 
 					Rect itemBounds = itemProvider.BoundingRectangle;
 
 					for (int index = 0; index < cell.ColumnIndex; index++)
@@ -706,12 +733,7 @@ namespace Mono.UIAutomation.Winforms
 					itemBounds.Width = itemProvider.DataGridView.Columns [cell.ColumnIndex].Width;
 
 					return itemBounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return cell.Displayed;
-				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				}
 			}
 
 			private SWF.DataGridViewCell cell;
@@ -1035,14 +1057,7 @@ namespace Mono.UIAutomation.Winforms
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					// If we are expanded we return the value of the show rectangle
-					// else we return the comboboxProvider
-//					if (expanded)
-//						return value;
-//					else
-						return comboboxProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 //					if (expanded)
 //						return true;
 					return false;
@@ -1051,6 +1066,17 @@ namespace Mono.UIAutomation.Winforms
 //					return pattern != null && pattern.ExpandCollapseState == ExpandCollapseState.Collapsed;
 				} else
 					return comboboxProvider.GetPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					// If we are expanded we return the value of the show rectangle
+					// else we return the comboboxProvider
+//					if (expanded)
+//						return value;
+//					else
+						return (Rect) comboboxProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				}
 			}
 
 			public override int SelectedItemsCount {

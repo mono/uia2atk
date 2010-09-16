@@ -492,6 +492,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return styles; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return provider.DataGrid; }
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -512,16 +516,20 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
 					SD.Rectangle rectangle = provider.DataGrid.UIAColumnHeadersArea;
 					rectangle.X += provider.DataGrid.Bounds.X;
 					rectangle.Y += provider.DataGrid.Bounds.Y;
 
 					return Helper.GetControlScreenBounds (rectangle, provider.DataGrid);
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				} 
 			}
 
 			public IRawElementProviderSimple[] GetHeaderItems ()
@@ -618,6 +626,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return style; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return header.AssociatedControl; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -644,7 +656,18 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, style.DataGridTableStyle.DataGrid, true);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
 					Rect bounds
 						= (Rect) header.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 
@@ -655,14 +678,7 @@ namespace Mono.UIAutomation.Winforms
 					bounds.Width = header.GridColumnStyles [indexOf].Width;
 
 					return bounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, style.DataGridTableStyle.DataGrid, true);
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				}
 			}
 
 			private SWF.DataGridColumnStyle style;
@@ -774,9 +790,6 @@ namespace Mono.UIAutomation.Winforms
 				// however the implementation uses ListItem.
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.DataItem.Id;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 
-					return Helper.GetControlScreenBounds (DataGridProvider.DataGrid.GetCellBounds (Index, 0),
-					                                      DataGridProvider.DataGrid);
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					return IsOffScreen (DataGridProvider.DataGrid,
 					                    (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
@@ -786,6 +799,13 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					return Helper.GetControlScreenBounds (DataGridProvider.DataGrid.GetCellBounds (Index, 0),
+					                                      DataGridProvider.DataGrid);
+				}
 			}
 
 			public bool IsOffScreen (SWF.DataGrid datagrid, Rect bounds)
@@ -865,6 +885,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return ContainerControl; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -933,14 +957,7 @@ namespace Mono.UIAutomation.Winforms
 					return ItemProvider.DataGridProvider.DataGrid.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					SD.Rectangle rectangle = provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
-					                                                                           provider.GetColumnIndexOf (this));
-					Rect rect = Helper.GetControlScreenBounds (rectangle,
-					                                           provider.DataGridProvider.DataGrid,
-					                                           true);
-					return rect;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return provider.IsOffScreen (provider.DataGridProvider.DataGrid, bounds);
@@ -948,6 +965,17 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get { 
+					SD.Rectangle rectangle = provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
+					                                                                           provider.GetColumnIndexOf (this));
+					Rect rect = Helper.GetControlScreenBounds (rectangle,
+					                                           provider.DataGridProvider.DataGrid,
+					                                           true);
+					return rect;
+				}
 			}
 
 			private DataGridDataItemProvider provider;

@@ -672,10 +672,12 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return ItemsBoundingRectangle;
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get { return ItemsBoundingRectangle; }
 			}
 
 			private Rect HeaderRectangle {
@@ -748,6 +750,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return listView; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return ListView; }
+			}
+
 			public ListViewHeaderItemProvider GetHeaderItemFrom (SWF.ColumnHeader column)
 			{
 				ListViewHeaderItemProvider headerItem;
@@ -785,10 +791,14 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView, true);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView, true);
+				}
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -875,6 +885,10 @@ namespace Mono.UIAutomation.Winforms
 			public SWF.ColumnHeader ColumnHeader {
 				get { return columnHeader; }
 			}
+
+			public override SWF.Control AssociatedControl {
+				get { return HeaderProvider.ListView; }
+			}
 			
 			public override void Initialize ()
 			{
@@ -910,7 +924,18 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, headerProvider.ListView, true);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
 					int indexOf = headerProvider.ListView.Columns.IndexOf (columnHeader);
 					Rect headerBounds
 						= (Rect) headerProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
@@ -923,14 +948,7 @@ namespace Mono.UIAutomation.Winforms
 					headerBounds.Width = headerProvider.ListView.Columns [indexOf].Width;
 					
 					return headerBounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, headerProvider.ListView, true);
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				} 
 			}
 
 			private ListViewHeaderProvider headerProvider;
@@ -1167,6 +1185,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return itemProvider; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return ItemProvider.ListView; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -1211,7 +1233,20 @@ namespace Mono.UIAutomation.Winforms
 						return string.Empty;
 					else
 						return itemProvider.ListViewItem.ToolTipText;
-				} else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+					                                   ItemProvider.ListView, 
+					                                   true,
+					                                   ItemProvider.ListView.UIAHeaderControl,
+					                                   ItemProvider.ListViewProvider.ScrollBehaviorObserver);
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
 					int indexOf = itemProvider.ListView.Columns.IndexOf (header);
 					Rect itemBounds
 						= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
@@ -1224,16 +1259,7 @@ namespace Mono.UIAutomation.Winforms
 					itemBounds.Width = itemProvider.ListView.Columns [indexOf].Width;
 					
 					return itemBounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
-					                                   ItemProvider.ListView, 
-					                                   true,
-					                                   ItemProvider.ListView.UIAHeaderControl,
-					                                   ItemProvider.ListViewProvider.ScrollBehaviorObserver);
-				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return Helper.GetClickablePoint (this);
-				else
-					return base.GetProviderPropertyValue (propertyId);
+				}
 			}
 
 			bool IsFirstColumn {
@@ -1263,6 +1289,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return itemProvider; }
 			}
 
+			public override SWF.Control AssociatedControl {
+				get { return ItemProvider.ListView; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -1289,19 +1319,7 @@ namespace Mono.UIAutomation.Winforms
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					SD.Size checkBoxSize = ItemProvider.ListView.CheckBoxSize;
-					Rect itemSize 
-						= (Rect) ItemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					if (itemSize.IsEmpty)
-						return itemSize;
-					
-					Rect checkBoxRect = itemSize;
-					checkBoxRect.Y = itemSize.Y + (itemSize.Height / 2) - (checkBoxSize.Height / 2);
-					checkBoxRect.Width = checkBoxSize.Width;
-					checkBoxRect.Height = checkBoxSize.Height;
-					return checkBoxRect;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
 					                                   ItemProvider.ListView, 
 					                                   true,
@@ -1314,6 +1332,22 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					SD.Size checkBoxSize = ItemProvider.ListView.CheckBoxSize;
+					Rect itemSize 
+						= (Rect) ItemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					if (itemSize.IsEmpty)
+						return itemSize;
+					
+					Rect checkBoxRect = itemSize;
+					checkBoxRect.Y = itemSize.Y + (itemSize.Height / 2) - (checkBoxSize.Height / 2);
+					checkBoxRect.Width = checkBoxSize.Width;
+					checkBoxRect.Height = checkBoxSize.Height;
+					return checkBoxRect;
+				}
 			}
 
 			private ListViewListItemProvider itemProvider;

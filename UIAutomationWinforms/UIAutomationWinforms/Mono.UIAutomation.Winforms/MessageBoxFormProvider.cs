@@ -134,12 +134,16 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.IsOffScreen (bounds, provider.Control, true);
 				} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAMessageRectangle));
 				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAMessageRectangle));
+				}
 			}
 
 			private MessageBoxFormProvider provider;
@@ -187,12 +191,16 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.IsOffScreen (bounds, provider.Control, true);
 				} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAIconRectangle));
 				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override Rect BoundingRectangleProperty {
+				get {
+					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAIconRectangle));
+				}
 			}
 
 			private MessageBoxFormProvider provider;

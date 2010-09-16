@@ -102,7 +102,13 @@ namespace Mono.UIAutomation.Winforms
 			get { return errorProvider; }
 			set { errorProvider = value; }
 		}
-		
+
+		// Control-based providers return Control but Component-based 
+		// providers will return their SWF.Control associated
+		public virtual SWF.Control AssociatedControl {
+			get { return Control; }
+		}
+
 		#endregion
 
 		#region Public Events
@@ -300,7 +306,7 @@ namespace Mono.UIAutomation.Winforms
 				return Helper.IsOffScreen (bounds, Control);
 			}
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (ScreenBounds);
+				return BoundingRectangleProperty;
 			
 			//Control-like properties
 			if (Control == null)
@@ -393,7 +399,11 @@ namespace Mono.UIAutomation.Winforms
 		protected IEnumerable<IProviderBehavior> ProviderBehaviors {
 			get { return providerBehaviors.Values; }
 		}
-		
+
+		protected virtual Rect BoundingRectangleProperty {
+			get { return Helper.RectangleToRect (ScreenBounds); }
+		}
+
 		#endregion
 		
 		#region IRawElementProviderSimple: Specializations
@@ -411,13 +421,34 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{
+			object val = null;
+
 			foreach (IProviderBehavior behavior in ProviderBehaviors) {
-				object val = behavior.GetPropertyValue (propertyId);
+				val = behavior.GetPropertyValue (propertyId);
 				if (val != null)
-					return val;
+					break;
 			}
 
-			return GetProviderPropertyValue (propertyId) ?? Helper.GetDefaultAutomationPropertyValue (propertyId);
+			if (val == null)
+				val = GetProviderPropertyValue (propertyId) ?? Helper.GetDefaultAutomationPropertyValue (propertyId);
+
+			if (propertyId == AEIds.IsOffscreenProperty.Id
+			   || propertyId == AEIds.BoundingRectangleProperty.Id) {
+				// The upper "if" is purely to enhance performance.
+				if (Helper.IsFormMinimized (this)) {
+					if (propertyId == AEIds.IsOffscreenProperty.Id)
+						val = true;
+					else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+						Rect bound = (Rect) val;
+						if (bound != Rect.Empty)
+							// -32000 is to copy the Windows/.Net behavior
+							bound.Offset (-32000, -32000);
+						val = bound;
+					}
+				}
+			}
+
+			return val;
 		}
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {

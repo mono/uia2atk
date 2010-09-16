@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -89,7 +90,6 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return ListProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
-			         || propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id
 			         || propertyId == AutomationElementIdentifiers.NameProperty.Id
 			         || propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return ListProvider.GetItemPropertyValue (this, propertyId);
@@ -97,6 +97,13 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { 
+				return (Rect) ListProvider.GetItemPropertyValue (this,
+				                                                 AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			}
 		}
 
 		#endregion

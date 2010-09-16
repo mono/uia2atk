@@ -28,6 +28,7 @@ using System;
 using Mono.Unix;
 using System.Reflection;
 using SD = System.Drawing;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using Mono.UIAutomation.Services;
@@ -421,10 +422,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Edit.Id;
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
-				SD.Rectangle bounds = GetBounds ();
-				return Helper.GetControlScreenBounds (bounds, view, true);
-			} else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
 				SD.Rectangle controlRect = view.Bounds;
 				controlRect.X = controlRect.Y = 0;
 				return !controlRect.IntersectsWith (GetBounds ());
@@ -433,6 +431,13 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { 
+				SD.Rectangle bounds = GetBounds ();
+				return Helper.GetControlScreenBounds (bounds, view, true);
+			}
 		}
 
 		// TODO: Replace this with an internal property

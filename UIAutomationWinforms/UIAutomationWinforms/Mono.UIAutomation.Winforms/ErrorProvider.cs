@@ -119,10 +119,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.GetControlScreenBounds (GetBoundingRectangle (), 
-				                                      InstancesTracker.GetControlsFromProvider (this) [0]);
-			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return Helper.IsOffScreen (Helper.RectangleToRect (GetBoundingRectangle ()), Parent);
@@ -130,6 +127,13 @@ namespace Mono.UIAutomation.Winforms
 				return string.Empty;
 			else
 				return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get { 
+				return Helper.GetControlScreenBounds (GetBoundingRectangle (), 
+				                                      InstancesTracker.GetControlsFromProvider (this) [0]);
+			}
 		}
 
 		#endregion
@@ -183,9 +187,8 @@ namespace Mono.UIAutomation.Winforms
 				errorProvider = provider;
 			}
 
-			protected override Rect GetBoundingRectangle ()
-			{
-				return Helper.RectangleToRect (errorProvider.UIAToolTipRectangle);
+			protected override Rect BoundingRectangleProperty {
+				get { return Helper.RectangleToRect (errorProvider.UIAToolTipRectangle); }
 			}
 
 			protected override string GetTextFromControl (SWF.Control control)

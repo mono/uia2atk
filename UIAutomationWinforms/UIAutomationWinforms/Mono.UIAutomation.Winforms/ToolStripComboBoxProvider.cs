@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -49,12 +50,19 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			if (propertyId == AEIds.IsOffscreenProperty.Id) {
+			if (propertyId == AEIds.IsOffscreenProperty.Id)
 				return Helper.ToolStripItemIsOffScreen (item);
-			} else if (propertyId == AEIds.BoundingRectangleProperty.Id && item != null)
-				return Helper.GetToolStripItemScreenBounds (item);
 			else
 				return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get {
+				if (item != null)
+					return Helper.GetToolStripItemScreenBounds (item);
+				else
+					return base.BoundingRectangleProperty;
+			}
 		}
 	}
 }

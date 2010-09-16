@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -58,12 +59,15 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("Application");
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
-			else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		protected override Rect BoundingRectangleProperty {
+			get {
 				System.Drawing.Rectangle rect = mainMenu.Rect;
 				rect.Y -= rect.Height;
 				return Helper.RectangleToRect (mainMenu.Wnd.RectangleToScreen (rect));
 			}
-			return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#region MenuProvider Overrides

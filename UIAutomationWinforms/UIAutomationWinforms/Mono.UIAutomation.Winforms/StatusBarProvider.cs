@@ -210,8 +210,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Text.Id;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return BoundingRectangle;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return statusBarPanel.Parent != null && statusBarPanel.Parent.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
@@ -228,7 +226,7 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetProviderPropertyValue (propertyId);
 			}
 		
-			public override Rect BoundingRectangle {
+			protected override Rect BoundingRectangleProperty {
 				get {
 					return Helper.RectangleToRect (GetScreenBounds ());
 				}

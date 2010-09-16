@@ -50,9 +50,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Protected Methods
 
-		protected override Rect GetBoundingRectangle ()
-		{
-			return Helper.RectangleToRect (helpProvider.UIAToolTipRectangle);
+		protected override Rect BoundingRectangleProperty {
+			get { return Helper.RectangleToRect (helpProvider.UIAToolTipRectangle); }
 		}		
 		
 		protected override string GetTextFromControl (SWF.Control control)
