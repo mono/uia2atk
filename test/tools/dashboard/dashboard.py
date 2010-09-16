@@ -196,10 +196,6 @@ class PageBuilder(object):
                                            "Winforms_DockPatternTests_RunTestCase105",
                                            "Winforms_WindowPatternTests_RunTestCase106")
         self.uiaclientmoonlight_controls = ("Moonlight_PuzzleGameTest_RunTestCase301",
-                                            "Moonlight_PuzzleGameTest_RunTestCase302",
-                                            "Moonlight_PuzzleGameTest_RunTestCase303",
-                                            "Moonlight_SL2WithPrismTest_RunTestCase304",
-                                            "Moonlight_SL2WithPrismTest_RunTestCase305",
                                             "Moonlight_DiggSearchTest_RunTestCase306",
                                             "Moonlight_DiggSearchTest_RunTestCase307",
                                             "Moonlight_DiggSearchTest_RunTestCase308",
@@ -211,7 +207,11 @@ class PageBuilder(object):
                                       "Gtk_FSpot_RunTestCase205",
                                       "Gtk_FSpot_RunTestCase206",
                                       "Gtk_FSpot_RunTestCase207",
-                                      "Gtk_FSpot_RunTestCase208")
+                                      "Gtk_FSpot_RunTestCase208",
+                                      "Gtk_FSpot_RunTestCase209",
+                                      "Gtk_FSpot_RunTestCase210",
+                                      "Gtk_FSpot_RunTestCase211",
+                                      "Gtk_FSpot_RunTestCase212")
         if Settings.component == 'winforms':
             self.controls = self.winforms_controls
         elif Settings.component == 'moonlight':

@@ -119,10 +119,6 @@ uiaclientwinforms_tests_list = [
 
 uiaclientmoonlight_tests_list = [
 	"moonlight_puzzlegametest_runtestcase301-regression.py",
-	"moonlight_puzzlegametest_runtestcase302-regression.py",
-	"moonlight_puzzlegametest_runtestcase303-regression.py",
-	"moonlight_sl2withprismtest_runtestcase304-regression.py",
-	"moonlight_sl2withprismtest_runtestcase305-regression.py",
 	"moonlight_diggsearchtest_runtestcase306-regression.py",
 	"moonlight_diggsearchtest_runtestcase307-regression.py",
 	"moonlight_diggsearchtest_runtestcase308-regression.py",
