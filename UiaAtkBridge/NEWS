@@ -3,6 +3,24 @@ Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
 
+Version 2.1.91: The "quasar" release
+* #600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false, if the scrollbar's value can be set
+* #596835 - Gtk ScrollBar has extraneous InvokePattern to be supported
+* #600360 - [uiaclient-GTKs]: The SmallChangeProperty & LargeChangeProperty of RangeValuePattern is not implemented .
+* #606297 - [uiaclient-GTKs]:All Data Item should support SelectionItem Pattern
+* #606301 - [uiaclient-GTKs]:The Data Item which is Table control's child should support TableItem pattern
+* #604660 - [uiaclient-GTKs]:The Table control should not support Selection pattern
+* #604649 - [uiaclient-GTKs]:The Header control supports the wrong patterns
+* #606293 - [uiaclient-GTKs]:The Data Item control should not support Selection ,Grid & Table Pattern
+* #605093 - [uiaclient-GTKs]:The Header control's IsContentElementProperty should be false
+* #606300 - [uiaclient-GTKs]:The Data Item can can typically be traversed by using the keyboard should support GridItem pattern
+* #597272 - All the BoundingRectangleProperty of DataItem is same
+* #549109 - [DataGrid] The "ContainingGrid" property of a data item is not retrieved correctly
+* #551976 - Test DataGridAutomationPeer and related Peers.
+* #576455 - All the "Text" controls are recognized as "Edit" on Linux
+* #572216 - IfOffscreen shall be true when the Window is minimized
+* #572301 - BoundingRectangle is incorrect when the top-level form is minimized
+
 Version 2.1.90: The "paratroop" release
 * #585147 - Tests cannot all be run at the same time.
 * #489366 - DbusCoreUiaSource: Implement DockPattern

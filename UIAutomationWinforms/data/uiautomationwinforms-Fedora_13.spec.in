@@ -15,12 +15,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       gtk-sharp2 >= 2.12.10
 Requires:       mono-core >= 2.4
 Requires:       mono-data >= 2.4
-Requires:       mono-uia >= 2.1
-Requires:       uiaatkbridge >= 2.1
+Requires:       mono-uia >= 2.1.91
+Requires:       uiaatkbridge >= 2.1.91
 BuildRequires:  gtk-sharp2-devel >= 2.12.10
 BuildRequires:  intltool
 BuildRequires:	mono-devel >= 2.4
-BuildRequires:  mono-uia-devel >= 2.1
+BuildRequires:  mono-uia-devel >= 2.1.91
 
 Summary:        Implementation of UIA providers
 
