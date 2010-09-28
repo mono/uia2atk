@@ -847,7 +847,8 @@ namespace AtspiUiaSource
 				return false;
 			ActionDescription [] actions = action.Actions;
 			for (int i = 0; i < actions.Length; i++)
-				if (actions [i].Name == "expand or contract")
+				if (actions [i].Name == "expand or contract" ||
+					actions [i].Name == "expand or collapse")
 					return testAccessible.StateSet.Contains (StateType.Expandable);
 			return false;
 		}
