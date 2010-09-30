@@ -82,7 +82,9 @@ namespace AtspiUiaSource
 		// it doesn't really work.
 		public IElement GetElementFromHandle (IntPtr handle)
 		{
-			var win = Gdk.Window.ForeignNew ((uint)handle);
+			var win = Gdk.Window.ForeignNew ((uint) handle);
+			if (win == null)
+				return null;
 			int x, y, width, height, depth;
 			win.GetGeometry (out x, out y, out width, out height, out depth);
 			win.GetOrigin (out x, out y);

@@ -51,7 +51,6 @@
     <Compile Include="GridSource.cs" />
     <Compile Include="InvokeSource.cs" />
     <Compile Include="ISourceEventHandler.cs" />
-    <Compile Include="RangeValueElement.cs" />
     <Compile Include="RangeValueSource.cs" />
     <Compile Include="SelectionEventHandler.cs" />
     <Compile Include="SelectionItemSource.cs" />
@@ -64,8 +63,14 @@
     <Compile Include="TextSource.cs" />
     <Compile Include="ToggleSource.cs" />
     <Compile Include="TreeItemElement.cs" />
-    <Compile Include="ValueElement.cs" />
     <Compile Include="ValueSource.cs" />
+    <Compile Include="DataItemGridItemSource.cs" />
+    <Compile Include="ExpandCollapseSource.cs" />
+    <Compile Include="GridEventHandler.cs" />
+    <Compile Include="RangeValueEventHandler.cs" />
+    <Compile Include="TableHeaderItemElement.cs" />
+    <Compile Include="TextEventHandler.cs" />
+    <Compile Include="ValueEventHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
