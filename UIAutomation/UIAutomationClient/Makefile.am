@@ -31,6 +31,11 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 PROJECT_SOURCE_FILES =  \
+	Mono.UIAutomation.ClientSource/ClientAutomationBridge.cs \
+	Mono.UIAutomation.ClientSource/ClientAutomationSource.cs \
+	Mono.UIAutomation.ClientSource/ClientElement.cs \
+	Mono.UIAutomation.ClientSource/ClientEventManager.cs \
+	Mono.UIAutomation.ClientSource/ClientInvokePattern.cs \
 	System.Windows.Automation.Text/TextPatternRange.cs \
 	System.Windows.Automation/AndCondition.cs \
 	System.Windows.Automation/Automation.cs \
@@ -84,6 +89,8 @@ RESOURCES =
 REFERENCES =  \
 	WindowsBase \
 	System \
+	System.Core \
+	Mono.Posix \
 	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 

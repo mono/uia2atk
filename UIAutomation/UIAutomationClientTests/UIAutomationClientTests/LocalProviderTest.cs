@@ -38,19 +38,27 @@ namespace MonoTests.System.Windows.Automation
 	[TestFixture]
 	public class LocalProviderTest
 	{
-#if __MonoCS__
-#else
+		const int FakeHandle = 12345;
+
+		private AutomationElement simple = null;
+		private AutomationElement simple2 = null;
 		private AutomationElement child = null;
 		private AutomationElement root = null;
+		private CustomProviderSimple simpleProvider =null;
+		private CustomProviderSimple simpleProvider2 =null;
 		private CustomProviderFragment childProvider =null;
 		private CustomProviderRoot rootProvider =null;
 
 		[TestFixtureSetUp]
 		public virtual void FixtureSetUp ()
 		{
+			simpleProvider = new CustomProviderSimple ();
+			simpleProvider2 = new CustomProviderSimple (FakeHandle);
 			childProvider = new CustomProviderFragment (null);
-			rootProvider = new CustomProviderRoot(childProvider);
+			rootProvider = new CustomProviderRoot (childProvider);
 			childProvider.Root = rootProvider;
+			simple = AutomationElement.FromLocalProvider (simpleProvider);
+			simple2 = AutomationElement.FromLocalProvider (simpleProvider2);
 			child = AutomationElement.FromLocalProvider(childProvider);
 			root = AutomationElement.FromLocalProvider(rootProvider);
 		}
@@ -59,10 +67,91 @@ namespace MonoTests.System.Windows.Automation
 		[Test]
 		public void PropertyTest ()
 		{
-			Assert.AreEqual ("Custom Simple", child.Current.Name);
+			Assert.AreEqual ("Custom Child", child.Current.Name);
 			Assert.AreEqual (ControlType.TabItem, child.Current.ControlType);
 			Assert.AreEqual ("Custom Root", root.Current.Name);
 			Assert.AreEqual (ControlType.Tab, root.Current.ControlType);
+		}
+
+		// IRawElementFragment's GetRuntimeId method will override
+		// the value returned by GetPropertyValue
+		[Test]
+		public void RuntimeIdOverrideTest ()
+		{
+			var rid1 = root.GetRuntimeId ();
+			var rid2 = (int []) root.GetCurrentPropertyValue (AEIds.RuntimeIdProperty);
+			Assert.AreEqual (rid1, rid2, "rid1 == rid2");
+			Assert.AreEqual (CustomProviderBase.CustomRuntimeIdPrefix, rid1 [0], "Check rid1");
+			Assert.AreEqual (CustomProviderBase.CustomRuntimeIdPrefix, rid2 [0], "Check rid2");
+
+			// RuntimeId is null even if it is explicitly returned by
+			// IRawElementSimple.GetPropertyValue
+			Assert.IsNull (simple.GetRuntimeId (), "simple.GetRuntimeId ()" );
+			Assert.IsNull (simple.GetCurrentPropertyValue (AEIds.RuntimeIdProperty),
+			               "simple.GetGetCurrentPropertyValue (RuntimeId)" );
+
+			// However if the IRawElementSimple has NativeHandleProperty,
+			// then UIA will generate a runtime id for the provider,
+			// on Windows 7 the runtime id is [42, NativeHandleValue]
+			Assert.IsNotNull (simple2.GetRuntimeId (), "simple2.GetRuntimeId ()" );
+		}
+
+		// IRawElementFragment's BoundingRectangle property will override
+		// the value returned by GetPropertyValue
+		[Test]
+		public void BoundingRectangleOverrideTest ()
+		{
+			var bound = root.Current.BoundingRectangle;
+			Assert.AreEqual (200.0, bound.Width, "bound.Width");
+
+			// BoundingRectangle is empty even if it is explicitly returned by
+			// IRawElementSimple.GetPropertyValue
+			Assert.IsTrue (simple.Current.BoundingRectangle.IsEmpty);
+		}
+
+		[Test]
+		public void DefaultPropertyValueTest ()
+		{
+			// LocalizedControlType is compatible with the ControlType though
+			// LocalizedControlType is not explicitly returned by ControlType
+			Assert.AreEqual (ControlType.Tab.LocalizedControlType, root.Current.LocalizedControlType,
+				"root.LocalizedControlType");
+			// IsInvokePatternAvailableProperty is automatically set to true as long as
+			// the pattern can be returned by GetPatternProvider
+			Assert.IsTrue ((bool) child.GetCurrentPropertyValue (AEIds.IsInvokePatternAvailableProperty),
+				"child.IsInvokePatternAvailable");
+			Assert.IsFalse ((bool) root.GetCurrentPropertyValue (AEIds.IsInvokePatternAvailableProperty),
+				"root.IsInvokePatternAvailable");
+		}
+
+		[Test]
+		public void FromPointTest ()
+		{
+			var element = AutomationElement.FromPoint (new SW.Point (100, 100));
+			// though child and root defined their bounds, they won't be returned by
+			// AutomationElement.FromPoint, actually on Windows what returned is the
+			// "Desktop" element.
+			Assert.AreNotEqual (element, child, "child is never returned by FromPoint");
+			Assert.AreNotEqual (element, root, "root is never returned by FromPoint");
+		}
+
+		[Test]
+		public void FromHandleTest ()
+		{
+			BaseTest.AssertRaises <ElementNotAvailableException> (
+				() =>  AutomationElement.FromHandle (new IntPtr (FakeHandle)),
+				"simple2 is never returned by FromHandle");
+		}
+
+		[Test]
+		public void FocusedElementTest ()
+		{
+			BaseTest.AssertRaises <InvalidOperationException> (
+				() => child.SetFocus (), "child.IsKeyboardFocusable is not set");
+			// root.IsKeyboardFocusable is set to ture, so no exception
+			root.SetFocus ();
+			Assert.AreNotEqual (AutomationElement.FocusedElement, root,
+				"root is never returned by FocusedElement");
 		}
 
 		[Test]
@@ -114,10 +203,58 @@ namespace MonoTests.System.Windows.Automation
 		#endregion
 	}
 
+	internal class CustomProviderSimple : IRawElementProviderSimple
+	{
+		private int handle = -1;
+
+		public CustomProviderSimple ()
+		{
+		}
+
+		public CustomProviderSimple (int handle)
+		{
+			this.handle = handle;
+		}
+
+		#region IRawElementProviderSimple Members
+
+		public virtual object GetPatternProvider (int patternId)
+		{
+			return null;
+		}
+
+		public virtual object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.NameProperty.Id)
+				return "Custom Simple";
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
+			else if (propertyId == AEIds.RuntimeIdProperty.Id)
+				return new int[] {1, 2, 3, 4, 5};
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				return new SW.Rect (0, 0, 1000, 1000);
+			else if (propertyId == AEIds.NativeWindowHandleProperty.Id && handle != -1)
+				return handle;
+			else
+				return null;
+		}
+
+		public IRawElementProviderSimple HostRawElementProvider {
+			get { return null; }
+		}
+
+		public ProviderOptions ProviderOptions {
+			get { return ProviderOptions.ClientSideProvider; }
+		}
+
+		#endregion
+	}
+
 	internal class CustomProviderBase : IRawElementProviderFragment
 	{
+		public const int CustomRuntimeIdPrefix = 8888;
 		private int[] runtimeId = null;
-		private SW.Rect rect = new SW.Rect (100.0, 100.0, 200.0, 200.0);
+		private SW.Rect bound = new SW.Rect (50.0, 50.0, 200.0, 200.0);
 
 		public CustomProviderBase (IRawElementProviderFragmentRoot root)
 		{
@@ -129,7 +266,7 @@ namespace MonoTests.System.Windows.Automation
 		#region IRawElementProviderFragment Members
 
 		public SW.Rect BoundingRectangle {
-			get { return rect; }
+			get { return bound; }
 		}
 
 		public IRawElementProviderFragmentRoot FragmentRoot {
@@ -141,13 +278,12 @@ namespace MonoTests.System.Windows.Automation
 			return new IRawElementProviderSimple[0];
 		}
 
-		public int [] GetRuntimeId ()
+		public int[] GetRuntimeId ()
 		{
-			const int CustomPrefix = 8888;
 			if (runtimeId == null) {
-				byte [] bytes = new Guid ().ToByteArray ();
+				byte [] bytes = Guid.NewGuid ().ToByteArray ();
 				runtimeId = new int [bytes.Length + 1];
-				runtimeId [0] = CustomPrefix;
+				runtimeId [0] = CustomRuntimeIdPrefix;
 				for (int i = 0; i < bytes.Length; i++)
 					runtimeId [i + 1] = bytes [i];
 			}
@@ -200,11 +336,10 @@ namespace MonoTests.System.Windows.Automation
 		}
 
 		public int ClickCount { get; set; }
-
-		public void PerformInvoke ()
+		public void PerformInvoke()
 		{
 			ClickCount++;
-			AutomationInteropProvider.RaiseAutomationEvent(InvokePattern.InvokedEvent, this,
+			AutomationInteropProvider.RaiseAutomationEvent (InvokePattern.InvokedEvent, this,
 				new AutomationEventArgs(InvokePattern.InvokedEvent));
 		}
 
@@ -218,7 +353,7 @@ namespace MonoTests.System.Windows.Automation
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.NameProperty.Id)
-				return "Custom Simple";
+				return "Custom Child";
 			else if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TabItem.Id;
 			else
@@ -285,9 +420,16 @@ namespace MonoTests.System.Windows.Automation
 				return "Custom Root";
 			else if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Tab.Id;
+			else if (propertyId == AEIds.RuntimeIdProperty.Id)
+				// this return value won't be effective since the base class defined GetRuntimeId method
+				return new int[] {1, 2, 3, 4, 5};
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				// this return value won't be effective since the base class defined BoundingRectangle property
+				return new SW.Rect (0, 0, 1000, 1000);
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return true;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-#endif
 	}
 }

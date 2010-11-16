@@ -3,17 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonAtkBridge", "MoonAtkBridge\MoonAtkBridge.csproj", "{6197FA98-1D0D-4CBD-8244-4614208F1A9A}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "tests", "tests\tests.mdproj", "{C96C733D-D65A-4783-B8BF-DA11A65221DE}"
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "tests", "tests\tests.mdproj", "{47422ED5-EDAD-4F7C-9410-08BCF388CAF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47422ED5-EDAD-4F7C-9410-08BCF388CAF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6197FA98-1D0D-4CBD-8244-4614208F1A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6197FA98-1D0D-4CBD-8244-4614208F1A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C96C733D-D65A-4783-B8BF-DA11A65221DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C96C733D-D65A-4783-B8BF-DA11A65221DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MoonAtkBridge\MoonAtkBridge.csproj

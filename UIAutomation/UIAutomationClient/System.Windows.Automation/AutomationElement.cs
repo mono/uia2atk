@@ -523,8 +523,7 @@ namespace System.Windows.Automation
 #region Public Static Methods
 		public static AutomationElement FromHandle (IntPtr hwnd)
 		{
-			if (hwnd == (IntPtr) null || hwnd == IntPtr.Zero)
-				throw new ArgumentException ("hwnd");
+			ArgumentCheck.Assert (hwnd, (h => h != IntPtr.Zero), "hwnd");
 			if (hwnd == NativeMethods.RootWindowHandle)
 				return RootElement;
 			AutomationElement element = null;
@@ -542,7 +541,9 @@ namespace System.Windows.Automation
 
 		public static AutomationElement FromLocalProvider (IRawElementProviderSimple localImpl)
 		{
-			throw new NotImplementedException ();
+			IElement sourceElement = Mono.UIAutomation.ClientSource.ClientAutomationSource.Instance
+				.GetOrCreateElement (localImpl);
+			return new AutomationElement (sourceElement);
 		}
 
 		public static AutomationElement FromPoint (Point pt)
@@ -550,7 +551,12 @@ namespace System.Windows.Automation
 			IntPtr handle = NativeMethods.WindowAtPosition ((int) pt.X, (int) pt.Y);
 			if (handle == IntPtr.Zero)
 				return RootElement;
-			AutomationElement startElement = FromHandle (handle);
+			AutomationElement startElement = null;
+			try {
+				startElement = FromHandle (handle);
+			} catch (ElementNotAvailableException) {
+				return RootElement;
+			}
 			if (startElement == RootElement)
 				return RootElement;
 			//Keep searching the descendant element which are not native window

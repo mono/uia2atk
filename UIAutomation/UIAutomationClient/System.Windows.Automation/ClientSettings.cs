@@ -26,6 +26,7 @@
 using System;
 using System.Reflection;
 using System.IO;
+using Mono.UIAutomation.Services;
 
 namespace System.Windows.Automation
 {
@@ -33,8 +34,7 @@ namespace System.Windows.Automation
 	{
 		public static void RegisterClientSideProviderAssembly (AssemblyName assemblyName)
 		{
-			if (assemblyName == null)
-				throw new ArgumentNullException ("assemblyName");
+			ArgumentCheck.NotNull (assemblyName, "assemblyName");
 
 			Assembly assembly = null;
 			// TODO, wrap exception messages into Catalog.GetString

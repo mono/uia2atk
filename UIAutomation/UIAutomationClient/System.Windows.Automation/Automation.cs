@@ -28,6 +28,7 @@ using System.Collections.Generic;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using MUS = Mono.UIAutomation.Source;
+using Mono.UIAutomation.Services;
 
 namespace System.Windows.Automation
 {
@@ -309,14 +310,13 @@ namespace System.Windows.Automation
 		                                       TreeScope scope,
 		                                       AutomationEventHandler eventHandler)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			CheckAutomationEventId (eventId);
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
+
 			//TODO In theory we shall also check scope not equals to Parent or Ancestors,
 			//but .Net didn't test/throw exceptions for "scope"
 
-			CheckAutomationEventId (eventId.Id);
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
 					source.AddAutomationEventHandler (
@@ -330,8 +330,7 @@ namespace System.Windows.Automation
 
 		public static void AddAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
 		{
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			MUS.FocusChangedEventHandler sourceHandler;
 			//according to the spec, all static methods in the UIA lib shall be thread safe.
@@ -352,10 +351,8 @@ namespace System.Windows.Automation
 		                                                      AutomationPropertyChangedEventHandler eventHandler,
 		                                                      params AutomationProperty [] properties)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
@@ -372,10 +369,8 @@ namespace System.Windows.Automation
 		                                             TreeScope scope,
 		                                             StructureChangedEventHandler eventHandler)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
@@ -402,12 +397,9 @@ namespace System.Windows.Automation
 			AutomationElement element,
 			AutomationEventHandler eventHandler)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
-
-			CheckAutomationEventId (eventId.Id);
+			CheckAutomationEventId (eventId);
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
@@ -421,8 +413,7 @@ namespace System.Windows.Automation
 
 		public static void RemoveAutomationFocusChangedEventHandler (AutomationFocusChangedEventHandler eventHandler)
 		{
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			MUS.FocusChangedEventHandler sourceHandler;
 			lock (focusHandlerMapping) {
@@ -437,10 +428,8 @@ namespace System.Windows.Automation
 		public static void RemoveAutomationPropertyChangedEventHandler (
 			AutomationElement element, AutomationPropertyChangedEventHandler eventHandler)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
@@ -456,10 +445,8 @@ namespace System.Windows.Automation
 		public static void RemoveStructureChangedEventHandler (
 			AutomationElement element, StructureChangedEventHandler eventHandler)
 		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			if (eventHandler == null)
-				throw new ArgumentNullException ("eventHandler");
+			ArgumentCheck.NotNull (element, "element");
+			ArgumentCheck.NotNull (eventHandler, "eventHandler");
 
 			if (element == AutomationElement.RootElement)
 				foreach (var source in SourceManager.GetAutomationSources ())
@@ -472,12 +459,13 @@ namespace System.Windows.Automation
 			}
 		}
 
-		private static void CheckAutomationEventId (int eventId)
+		private static void CheckAutomationEventId (AutomationEvent eventId)
 		{
-			if (AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId
-				|| AutomationElementIdentifiers.AutomationFocusChangedEvent.Id == eventId
-				|| AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id == eventId
-				|| AutomationElementIdentifiers.StructureChangedEvent.Id == eventId)
+			ArgumentCheck.NotNull (eventId, "eventId");
+			if (AutomationElementIdentifiers.AutomationFocusChangedEvent == eventId
+				|| AutomationElementIdentifiers.AutomationFocusChangedEvent == eventId
+				|| AutomationElementIdentifiers.AutomationPropertyChangedEvent == eventId
+				|| AutomationElementIdentifiers.StructureChangedEvent == eventId)
 				throw new ArgumentException ("eventId");
 		}
 

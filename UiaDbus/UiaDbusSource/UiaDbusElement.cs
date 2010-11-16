@@ -410,7 +410,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 		public object GetCurrentPattern (AutomationPattern pattern)
 		{
 			if (pattern == null)
-				throw new InvalidOperationException ();
+				throw new ArgumentNullException ("pattern");
 			string patternPath = null;
 			try {
 				patternPath = dbusElement.GetCurrentPatternPath (pattern.Id);

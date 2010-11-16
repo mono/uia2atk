@@ -490,6 +490,8 @@ namespace MonoTests.System.Windows.Automation
 
 		public static string PrintRuntimeId (int [] runtimeId)
 		{
+			if (runtimeId == null)
+				return "(null)";
 			StringBuilder sb = new StringBuilder();
 			sb.Append ("[");
 			foreach (int id in runtimeId)

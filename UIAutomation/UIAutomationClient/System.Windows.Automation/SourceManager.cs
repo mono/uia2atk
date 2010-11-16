@@ -29,6 +29,7 @@ using System.Reflection;
 
 using Mono.UIAutomation.Source;
 using Mono.UIAutomation.Services;
+using Mono.UIAutomation.ClientSource;
 
 namespace System.Windows.Automation
 {
@@ -63,6 +64,7 @@ namespace System.Windows.Automation
 							if (source != null)
 								sourcesList.Add (source);
 						}
+						sourcesList.Add (ClientAutomationSource.Instance);
 						sources = sourcesList.ToArray ();
 					}
 				}

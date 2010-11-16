@@ -75,6 +75,11 @@
     <Compile Include="System.Windows.Automation\NativeMethods.cs" />
     <Compile Include="System.Windows.Automation\ClientSideProviderDescription.cs" />
     <Compile Include="System.Windows.Automation\ClientSettings.cs" />
+    <Compile Include="Mono.UIAutomation.ClientSource\ClientAutomationSource.cs" />
+    <Compile Include="Mono.UIAutomation.ClientSource\ClientElement.cs" />
+    <Compile Include="Mono.UIAutomation.ClientSource\ClientInvokePattern.cs" />
+    <Compile Include="Mono.UIAutomation.ClientSource\ClientAutomationBridge.cs" />
+    <Compile Include="Mono.UIAutomation.ClientSource\ClientEventManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -109,5 +114,8 @@
       <Project>{4E7CEBB8-47CA-406F-BF63-FBB17D5DE08A}</Project>
       <Name>UIAutomationProvider</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mono.UIAutomation.ClientSource\" />
   </ItemGroup>
 </Project>

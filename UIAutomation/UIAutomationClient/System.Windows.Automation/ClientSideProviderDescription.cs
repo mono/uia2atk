@@ -44,16 +44,23 @@ namespace System.Windows.Automation
 			string imageName,
 			ClientSideProviderMatchIndicator flags)
 		{
-			this.ClientSideProviderFactoryCallback = clientSideProviderFactoryCallback;
-			this.ClassName = className;
-			this.ImageName = imageName;
-			this.Flags = flags;
+			this.clientSideProviderFactoryCallback = clientSideProviderFactoryCallback;
+			this.className = className;
+			this.imageName = imageName;
+			this.flags = flags;
 		}
 
-		public string ClassName { get; private set; }
-		public ClientSideProviderMatchIndicator Flags { get; private set; }
-		public string ImageName { get; private set; }
-		public ClientSideProviderFactoryCallback ClientSideProviderFactoryCallback { get; private set; }
+		public string ClassName { get { return className; } }
+		public ClientSideProviderMatchIndicator Flags { get { return flags; } }
+		public string ImageName { get { return imageName; } }
+		public ClientSideProviderFactoryCallback ClientSideProviderFactoryCallback { 
+			get { return clientSideProviderFactoryCallback; }
+		}
+
+		private string className;
+		private ClientSideProviderFactoryCallback clientSideProviderFactoryCallback;
+		private ClientSideProviderMatchIndicator flags;
+		private string imageName;
 	}
 
 	[Flags]
@@ -64,5 +71,6 @@ namespace System.Windows.Automation
 		DisallowBaseClassNameMatch
 	}
 
-	public delegate IRawElementProviderSimple ClientSideProviderFactoryCallback (IntPtr hwnd, int idChild, int idObject);
+	public delegate IRawElementProviderSimple ClientSideProviderFactoryCallback (
+		IntPtr hwnd, int idChild, int idObject);
 }

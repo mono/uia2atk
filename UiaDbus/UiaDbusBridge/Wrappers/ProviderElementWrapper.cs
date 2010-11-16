@@ -284,6 +284,12 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public DC.Rect BoundingRectangle {
 			get {
+				// TODO it seems that BoundingRectangle is decided by
+				// IRawElementProviderFragment.BoundingRectangle, but not by
+				// GetPropertyValue.
+				// We need more test to verify this.
+				//
+				// See ClientElement for more details.
 				SW.Rect? val = (SW.Rect?)
 					provider.GetPropertyValue (AEIds.BoundingRectangleProperty.Id);
 				if (!val.HasValue)
@@ -501,13 +507,19 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				int? val = (int?)
 					provider.GetPropertyValue (AEIds.ProcessIdProperty.Id);
 				if (!val.HasValue)
-					return -1;
+					return 0;
 				return val.Value;
 			}
 		}
 
 		public int [] RuntimeId {
 			get {
+				// TODO it seems that BoundingRectangle is decided by
+				// IRawElementProviderFragment.GetRuntimeId, but not by
+				// GetPropertyValue.
+				// We need more test to verify this.
+				//
+				// See ClientElement for more details.
 				int [] val = (int [])
 					provider.GetPropertyValue (AEIds.RuntimeIdProperty.Id);
 				if (val == null)
@@ -755,6 +767,8 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public void SetFocus ()
 		{
+			if (!IsKeyboardFocusable)
+				throw new InvalidOperationException ();
 			fragment.SetFocus ();
 		}
 #endregion

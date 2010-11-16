@@ -43,6 +43,7 @@
     <Compile Include="EventCollection.cs" />
     <Compile Include="EventMonitor.cs" />
     <Compile Include="AtSpiEvent.cs" />
+    <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\atspimon.py" />

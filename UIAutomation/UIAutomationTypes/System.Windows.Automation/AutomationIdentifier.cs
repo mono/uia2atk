@@ -57,10 +57,14 @@ namespace System.Windows.Automation
 
 		public int CompareTo (object obj)
 		{
+			if (obj == null)
+				throw new ArgumentNullException ("obj");
 			AutomationIdentifier other =
 				obj as AutomationIdentifier;
 			if (other == null)
-				return 1; // TODO: What?
+				// As tested on Windows, when the object is not an AutomationIdentifier,
+				// a strange large integer will be returned, so we just return the MaxValue.
+				return int.MaxValue;
 			return id.CompareTo (other.Id);
 		}
 		

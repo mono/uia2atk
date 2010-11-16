@@ -33,6 +33,7 @@
     <Compile Include="Mono.UIAutomation.Bridge\IAutomationBridge.cs" />
     <Compile Include="Mono.UIAutomation.Bridge\IHypertext.cs" />
     <Compile Include="Mono.UIAutomation.Services\Log.cs" />
+    <Compile Include="Mono.UIAutomation.Services\ArgumentCheck.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UIAutomationTypes\UIAutomationTypes.csproj">

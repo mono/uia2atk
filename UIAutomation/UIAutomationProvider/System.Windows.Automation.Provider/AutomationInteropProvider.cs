@@ -123,11 +123,13 @@ namespace System.Windows.Automation.Provider
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		private static string UiaDbusBridgeAssembly =
 			"UiaDbusBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+		private static string clientBridgeAssembly =
+			"UIAutomationClient, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35";
 
 		public static IList<IAutomationBridge> GetAutomationBridges ()
 		{
 			List<IAutomationBridge> bridges = new List<IAutomationBridge> ();
-			
+
 			// Let MONO_UIA_BRIDGE env var override default bridge
 			string bridgeAssemblyNames =
 				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
@@ -135,7 +137,8 @@ namespace System.Windows.Automation.Provider
 			if (string.IsNullOrEmpty (bridgeAssemblyNames))
 				bridgeAssemblyNames =
 					UiaAtkBridgeAssembly + ";" + UiaDbusBridgeAssembly;
-			
+			bridgeAssemblyNames += ";" + clientBridgeAssembly;
+
 			foreach (string bridgeAssembly in bridgeAssemblyNames.Split (';')) {
 				if (string.IsNullOrEmpty (bridgeAssembly))
 					continue;
