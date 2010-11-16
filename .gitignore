@@ -54,6 +54,16 @@ UiaDbus/data/uiadbus-Fedora_13.spec
 /test/samples/moonlight/ComboBox/ComboBoxSample.html
 /test/samples/moonlight/ComboBox/ComboBoxSample.xap
 /test/samples/moonlight/ComboBox/Page.xaml.g.cs
+/test/samples/moonlight/DataGrid/App.xaml.g.cs
+/test/samples/moonlight/DataGrid/AppManifest.xaml
+/test/samples/moonlight/DataGrid/DataGridSample.dll
+/test/samples/moonlight/DataGrid/DataGridSample.dll.mdb
+/test/samples/moonlight/DataGrid/DataGridSample.g.resources
+/test/samples/moonlight/DataGrid/DataGridSample.html
+/test/samples/moonlight/DataGrid/DataGridSample.xap
+/test/samples/moonlight/DataGrid/Page.xaml.g.cs
+/test/samples/moonlight/DataGrid/System.Windows.Controls.Data.dll
+/test/samples/moonlight/DataGrid/System.Windows.Controls.dll
 /test/samples/moonlight/GridSplitter/AppManifest.xaml
 /test/samples/moonlight/GridSplitter/App.xaml.g.cs
 /test/samples/moonlight/GridSplitter/GridSplitterSample.dll
@@ -62,6 +72,7 @@ UiaDbus/data/uiadbus-Fedora_13.spec
 /test/samples/moonlight/GridSplitter/GridSplitterSample.html
 /test/samples/moonlight/GridSplitter/GridSplitterSample.xap
 /test/samples/moonlight/GridSplitter/Page.xaml.g.cs
+/test/samples/moonlight/GridSplitter/System.Windows.Controls.dll
 /test/samples/moonlight/HyperlinkButton/AppManifest.xaml
 /test/samples/moonlight/HyperlinkButton/App.xaml.g.cs
 /test/samples/moonlight/HyperlinkButton/HyperlinkButtonSample.dll
@@ -247,6 +258,9 @@ UiaDbus/data/uiadbus-Fedora_13.spec
 /UIAutomation/UIAutomationClientTests/GtkForm/bin
 /UIAutomation/UIAutomationClientTests/GtkForm/Makefile
 /UIAutomation/UIAutomationClientTests/GtkForm/Makefile.in
+/UIAutomation/UIAutomationClientTests/SampleForm/obj/
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/obj/
+/UIAutomation/UIAutomationClientTests/UIAutomationClientTests/test-results/
 
 # /UIAutomation/UIAutomationSource/
 /UIAutomation/UIAutomationSource/Makefile
@@ -936,4 +950,6 @@ UiaDbus/data/uiadbus-Fedora_13.spec
 /test/samples/moonlight/TabControl/*.xap
 /test/samples/moonlight/TabControl/*.html
 /test/samples/moonlight/TabControl/*.dll
-
+/test/samples/winforms/sample.cs
+/test/samples/winforms/sample.exe
+/test/samples/winforms/sample.exe.mdb
