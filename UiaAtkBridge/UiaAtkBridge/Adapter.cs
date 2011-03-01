@@ -155,11 +155,15 @@ namespace UiaAtkBridge
 				return role;
 			}
 			set {
-				role = value;
-				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
-					base.Role = value;
-					return false;
-				}));
+				if (role == Atk.Role.Unknown) {
+					role = base.Role = value;
+				} else {
+					role = value;
+					GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
+						base.Role = value;
+						return false;
+					}));
+				}
 			}
 		}
 

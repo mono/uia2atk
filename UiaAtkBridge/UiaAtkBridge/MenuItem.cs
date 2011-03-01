@@ -52,6 +52,8 @@ namespace UiaAtkBridge
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 
+			Role = Atk.Role.MenuItem;
+
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
@@ -66,8 +68,6 @@ namespace UiaAtkBridge
 				provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 
 			actionExpert.Add ("click", "click", null, DoClick);
-			
-			Role = Atk.Role.MenuItem;
 		}
 
 		protected MenuItem (IntPtr ptr)

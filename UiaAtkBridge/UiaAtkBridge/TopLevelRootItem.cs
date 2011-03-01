@@ -37,8 +37,8 @@ namespace UiaAtkBridge
 			//exception: TopLevelRootItem doesn't have an UIA counterpart
 			: base (null)
 		{
-			this.Name = Monitor.GetProgramName ();
 			this.Role = Atk.Role.Application;
+			this.Name = Monitor.GetProgramName ();
 		}
 		
 		private static volatile TopLevelRootItem instance = null;
