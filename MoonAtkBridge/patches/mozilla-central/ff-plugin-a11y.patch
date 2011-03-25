@@ -1,7 +1,11 @@
-diff -r 563c5c2f8def accessible/src/atk/Makefile.in
 --- a/accessible/src/atk/Makefile.in	Wed Jun 30 23:24:05 2010 +0200
-+++ b/accessible/src/atk/Makefile.in	Tue Jul 06 16:47:33 2010 -0400
-@@ -47,6 +47,7 @@
++++ a/accessible/src/atk/Makefile.in	Tue Jul 13 16:44:35 2010 -0400
+@@ -42,16 +42,17 @@ VPATH = @srcdir@
+ include $(DEPTH)/config/autoconf.mk
+ 
+ MODULE = accessibility
+ LIBRARY_NAME = accessibility_toolkit_s
+ LIBXUL_LIBRARY = 1
  
  
  CPPSRCS = \
@@ -9,7 +13,17 @@ diff -r 563c5c2f8def accessible/src/atk/Makefile.in
    nsAccessNodeWrap.cpp \
    nsAccessibleWrap.cpp \
    nsDocAccessibleWrap.cpp \
-@@ -67,6 +68,7 @@
+   nsRootAccessibleWrap.cpp \
+   nsApplicationAccessibleWrap.cpp \
+   nsMaiInterfaceComponent.cpp \
+   nsMaiInterfaceAction.cpp \
+   nsMaiInterfaceText.cpp \
+@@ -62,16 +63,17 @@ CPPSRCS = \
+   nsMaiInterfaceHypertext.cpp \
+   nsMaiInterfaceHyperlinkImpl.cpp \
+   nsMaiInterfaceTable.cpp \
+   nsMaiInterfaceDocument.cpp \
+   nsMaiInterfaceImage.cpp \
    $(NULL)
  
  EXPORTS = \
@@ -17,10 +31,19 @@ diff -r 563c5c2f8def accessible/src/atk/Makefile.in
    nsAccessNodeWrap.h \
    nsARIAGridAccessibleWrap.h \
    nsAccessibleWrap.h \
-diff -r 563c5c2f8def accessible/src/atk/nsApplicationAccessibleWrap.cpp
+   nsDocAccessibleWrap.h \
+   nsRootAccessibleWrap.h \
+   nsTextAccessibleWrap.h \
+   nsXULMenuAccessibleWrap.h \
+   nsXULListboxAccessibleWrap.h \
 --- a/accessible/src/atk/nsApplicationAccessibleWrap.cpp	Wed Jun 30 23:24:05 2010 +0200
-+++ b/accessible/src/atk/nsApplicationAccessibleWrap.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -66,6 +66,13 @@
++++ a/accessible/src/atk/nsApplicationAccessibleWrap.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -61,16 +61,23 @@ static const char sATKLibName[] = "libat
+ static const char sATKHyperlinkImplGetTypeSymbol[] =
+     "atk_hyperlink_impl_get_type";
+ static const char sAccEnv [] = "GNOME_ACCESSIBILITY";
+ static const char sSysPrefService [] =
+     "@mozilla.org/system-preference-service;1";
  static const char sAccessibilityKey [] =
      "config.use_system_prefs.accessibility";
  
@@ -34,7 +57,17 @@ diff -r 563c5c2f8def accessible/src/atk/nsApplicationAccessibleWrap.cpp
  /* gail function pointer */
  static guint (* gail_add_global_event_listener) (GSignalEmissionHook listener,
                                                   const gchar *event_type);
-@@ -703,6 +710,11 @@
+ static void (* gail_remove_global_event_listener) (guint remove_listener);
+ static void (* gail_remove_key_event_listener) (guint remove_listener);
+ static AtkObject * (*gail_get_root) (void);
+ 
+ /* maiutil */
+@@ -698,16 +705,21 @@ nsApplicationAccessibleWrap::PreCreate()
+ {
+     if (!sATKChecked) {
+         sATKLib = PR_LoadLibrary(sATKLibName);
+         if (sATKLib) {
+             AtkGetTypeType pfn_atk_hyperlink_impl_get_type = (AtkGetTypeType) PR_FindFunctionSymbol(sATKLib, sATKHyperlinkImplGetTypeSymbol);
              if (pfn_atk_hyperlink_impl_get_type) {
                  g_atk_hyperlink_impl_type = pfn_atk_hyperlink_impl_get_type();
              }
@@ -46,10 +79,14 @@ diff -r 563c5c2f8def accessible/src/atk/nsApplicationAccessibleWrap.cpp
          }
          sATKChecked = PR_TRUE;
      }
-diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.cpp
+ }
+ 
+ static nsresult
+ LoadGtkModule(GnomeAccessibilityModule& aModule)
+ {
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/accessible/src/atk/nsAtkSocketAccessible.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -0,0 +1,221 @@
++++ b/accessible/src/atk/nsAtkSocketAccessible.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -0,0 +1,219 @@ 
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4:
 + */
@@ -226,11 +263,6 @@ diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.cpp
 +  *aOutAccessible = nsnull;
 +
 +  if (!mAtkObject) {
-+    if (!mWeakShell || !nsAccUtils::IsEmbeddedObject(this)) {
-+      // We don't create ATK objects for node which has been shutdown, or
-+      // nsIAccessible plain text leaf nodes
-+      return NS_ERROR_FAILURE;
-+    }
 +    mAtkObject = mai_atk_socket_new(this);
 +  }
 +
@@ -261,20 +293,22 @@ diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.cpp
 +
 +  // Using G_TYPE macros instead of ATK_SOCKET macros
 +  // to avoid undefined symbols.
-+  if (g_atk_socket_type != G_TYPE_INVALID &&
-+      G_TYPE_CHECK_INSTANCE_TYPE(acc, g_atk_socket_type) &&
++  if (IsEmbeddable() && G_TYPE_CHECK_INSTANCE_TYPE(acc, g_atk_socket_type) &&
 +      !plugId.IsVoid()) {
-+    if (g_atk_socket_embed) {
-+      AtkSocket *accSocket;
-+      accSocket = G_TYPE_CHECK_INSTANCE_CAST ((acc), g_atk_socket_type, AtkSocket);
-+      g_atk_socket_embed(accSocket, (gchar*)plugId.get());
-+    }
++    AtkSocket *accSocket;
++    accSocket = G_TYPE_CHECK_INSTANCE_CAST(acc, g_atk_socket_type, AtkSocket);
++    g_atk_socket_embed(accSocket, (gchar*)plugId.get());
 +  }
 +}
-diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.h
++
++int
++nsAtkSocketAccessible::IsEmbeddable()
++{
++  return g_atk_socket_type != G_TYPE_INVALID && g_atk_socket_embed;
++}
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/accessible/src/atk/nsAtkSocketAccessible.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -0,0 +1,70 @@
++++ b/accessible/src/atk/nsAtkSocketAccessible.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -0,0 +1,76 @@ 
 +/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 +/* vim:expandtab:shiftwidth=4:tabstop=4:
 + */
@@ -342,13 +376,23 @@ diff -r 563c5c2f8def accessible/src/atk/nsAtkSocketAccessible.h
 +   * this socket.
 +   */
 +  void Embed(nsCString plugId);
++
++  /*
++   * Returns a positive value if the current Atk version supports AtkSocket
++   * and it was correctly loaded.
++   */
++  int IsEmbeddable();
 +};
 +
 +#endif
-diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.cpp
 --- a/accessible/src/atk/nsMaiInterfaceComponent.cpp	Wed Jun 30 23:24:05 2010 +0200
-+++ b/accessible/src/atk/nsMaiInterfaceComponent.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -72,9 +72,42 @@
++++ a/accessible/src/atk/nsMaiInterfaceComponent.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -67,19 +67,52 @@ componentInterfaceInitCB(AtkComponentIfa
+     aIface->grab_focus = grabFocusCB;
+ }
+ 
+ AtkObject *
+ refAccessibleAtPointCB(AtkComponent *aComponent,
                         gint aAccX, gint aAccY,
                         AtkCoordType aCoordType)
  {
@@ -392,7 +436,17 @@ diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.cpp
  
      // nsIAccessible getChildAtPoint (x,y) is in screen pixels.
      if (aCoordType == ATK_XY_WINDOW) {
-@@ -98,16 +131,15 @@
+         nsIntPoint winCoords =
+           nsCoreUtils::GetScreenCoordsForWindow(accWrap->GetNode());
+         aAccX += winCoords.x;
+         aAccY += winCoords.y;
+     }
+@@ -93,26 +126,25 @@ refAccessibleAtPointCB(AtkComponent *aCo
+     AtkObject *atkObj = nsAccessibleWrap::GetAtkObject(pointAcc);
+     if (atkObj) {
+         g_object_ref(atkObj);
+     }
+     return atkObj;
  }
  
  void
@@ -415,7 +469,17 @@ diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.cpp
      if (!accWrap)
          return;
  
-@@ -129,14 +161,3 @@
+     PRInt32 nsAccX, nsAccY, nsAccWidth, nsAccHeight;
+     // Returned in screen coordinates
+     nsresult rv = accWrap->GetBounds(&nsAccX, &nsAccY,
+                                      &nsAccWidth, &nsAccHeight);
+     if (NS_FAILED(rv))
+@@ -124,19 +156,8 @@ getExtentsCB(AtkComponent *aComponent,
+         nsAccY -= winCoords.y;
+     }
+ 
+     *aAccX = nsAccX;
+     *aAccY = nsAccY;
      *aAccWidth = nsAccWidth;
      *aAccHeight = nsAccHeight;
  }
@@ -430,10 +494,14 @@ diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.cpp
 -    nsresult rv = accWrap->TakeFocus();
 -    return (NS_FAILED(rv)) ? FALSE : TRUE;
 -}
-diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.h
 --- a/accessible/src/atk/nsMaiInterfaceComponent.h	Wed Jun 30 23:24:05 2010 +0200
-+++ b/accessible/src/atk/nsMaiInterfaceComponent.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -59,6 +59,13 @@
++++ a/accessible/src/atk/nsMaiInterfaceComponent.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -54,16 +54,23 @@ void getExtentsCB(AtkComponent *aCompone
+                   gint *aAccX, gint *aAccY,
+                   gint *aAccWidth, gint *aAccHeight,
+                   AtkCoordType aCoordType);
+ /* the "contains", "get_position", "get_size" can take advantage of
+  * "get_extents", there is no need to implement them now.
   */
  gboolean grabFocusCB(AtkComponent *aComponent);
  
@@ -447,10 +515,19 @@ diff -r 563c5c2f8def accessible/src/atk/nsMaiInterfaceComponent.h
  /* what are missing now for atk component */
  
  /* ==================================================
-diff -r 563c5c2f8def accessible/src/base/nsAccessibilityService.cpp
+  * add_focus_handler
+  * remove_focus_handler
+  * set_extents
+  * set_position
+  * set_size
 --- a/accessible/src/base/nsAccessibilityService.cpp	Wed Jun 30 23:24:05 2010 +0200
-+++ b/accessible/src/base/nsAccessibilityService.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -93,6 +93,12 @@
++++ a/accessible/src/base/nsAccessibilityService.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -88,16 +88,22 @@ 
+ #include "nsXULTreeGridAccessibleWrap.h"
+ #endif
+ 
+ // For native window support for object/embed/applet tags
+ #ifdef XP_WIN
  #include "nsHTMLWin32ObjectAccessible.h"
  #endif
  
@@ -463,7 +540,17 @@ diff -r 563c5c2f8def accessible/src/base/nsAccessibilityService.cpp
  #ifndef DISABLE_XFORMS_HOOKS
  #include "nsXFormsFormControlsAccessible.h"
  #include "nsXFormsWidgetsAccessible.h"
-@@ -347,11 +353,12 @@
+ #endif
+ 
+ #include "mozilla/FunctionTimer.h"
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+@@ -342,30 +348,53 @@ nsAccessibilityService::CreateHTMLObject
+   nsCOMPtr<nsIDOMHTMLObjectElement> obj(do_QueryInterface(aContent));
+   if (obj) {
+     nsCOMPtr<nsIDOMDocument> domDoc;
+     obj->GetContentDocument(getter_AddRefs(domDoc));
+     if (domDoc)
        return CreateOuterDocAccessible(aContent, aPresShell);
    }
  
@@ -480,27 +567,24 @@ diff -r 563c5c2f8def accessible/src/base/nsAccessibilityService.cpp
      // Note: pluginPort will be null if windowless.
      HWND pluginPort = nsnull;
      aFrame->GetPluginPort(&pluginPort);
-@@ -361,6 +368,33 @@
+ 
+     nsAccessible* accessible = new nsHTMLWin32ObjectOwnerAccessible(aContent,
+                                                                     weakShell,
                                                                      pluginPort);
      NS_IF_ADDREF(accessible);
      return accessible;
 +#elif MOZ_ACCESSIBILITY_ATK
-+    void* atk = dlopen("libatk-1.0.so", RTLD_LAZY);
++    nsAtkSocketAccessible* socketAccessible = nsnull;
++    nsCString plugId;
++    nsresult rv;
 +
-+    // The AtkSocket API is a soft dependency, as it was introduced in ATK 1.30
-+    // and Firefox requires ATK 1.19.
-+    void* atk_socket_new = dlsym(atk, "atk_socket_new");
-+    if (!atk_socket_new) {
-+      dlclose(atk);
++    socketAccessible = new nsAtkSocketAccessible(aContent, weakShell);
++    if (!socketAccessible->IsEmbeddable()) {
++      delete socketAccessible;
 +      return nsnull;
 +    }
 +
-+    dlclose(atk);
-+
-+    nsAtkSocketAccessible* socketAccessible = nsnull;
-+
-+    nsCString plugId;
-+    nsresult rv = pluginInstance->GetValueFromPlugin(
++    rv = pluginInstance->GetValueFromPlugin(
 +      NPPVpluginNativeAccessibleAtkPlugId, &plugId);
 +    if (NS_SUCCEEDED(rv) && !plugId.IsVoid()) {
 +      socketAccessible = new nsAtkSocketAccessible(aContent, weakShell);
@@ -514,10 +598,19 @@ diff -r 563c5c2f8def accessible/src/base/nsAccessibilityService.cpp
    }
  #endif
  
-diff -r 563c5c2f8def dom/plugins/PPluginInstance.ipdl
+   // 3) for images and imagemaps, or anything else with a child frame
+   // we have the object frame, get the image frame
+   nsIFrame* frame = aFrame->GetFirstChild(nsnull);
+   return frame ? frame->CreateAccessible() : nsnull;
+ }
 --- a/dom/plugins/PPluginInstance.ipdl	Wed Jun 30 23:24:05 2010 +0200
-+++ b/dom/plugins/PPluginInstance.ipdl	Tue Jul 06 16:47:33 2010 -0400
-@@ -77,6 +77,8 @@
++++ a/dom/plugins/PPluginInstance.ipdl	Tue Jul 13 16:44:35 2010 -0400
+@@ -72,16 +72,18 @@ child:
+ 
+   // this message is not used on non-X platforms
+   rpc NPP_GetValue_NPPVpluginNeedsXEmbed()
+     returns (bool value, NPError result);
+   rpc NPP_GetValue_NPPVpluginScriptableNPObject()
      returns (nullable PPluginScriptableObject value, NPError result);
  
    rpc NPP_SetValue_NPNVprivateModeBool(bool value) returns (NPError result);
@@ -526,10 +619,19 @@ diff -r 563c5c2f8def dom/plugins/PPluginInstance.ipdl
  
    rpc NPP_HandleEvent(NPRemoteEvent event)
      returns (int16_t handled);
-diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.cpp
+   // special cases where we need to a shared memory buffer
+   rpc NPP_HandleEvent_Shmem(NPRemoteEvent event, Shmem buffer)
+     returns (int16_t handled, Shmem rtnbuffer);
+   // special cases where we need an iosurface
+   rpc NPP_HandleEvent_IOSurface(NPRemoteEvent event, uint32_t surfaceid)
 --- a/dom/plugins/PluginInstanceChild.cpp	Wed Jun 30 23:24:05 2010 +0200
-+++ b/dom/plugins/PluginInstanceChild.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -513,6 +513,35 @@
++++ a/dom/plugins/PluginInstanceChild.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -508,16 +508,45 @@ PluginInstanceChild::AnswerNPP_GetValue_
+     }
+ 
+     *aValue = nsnull;
+     *aResult = result;
+     return true;
  }
  
  bool
@@ -549,7 +651,7 @@ diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.cpp
 +                                        &plugId);
 +    }
 +
-+    *aPlugId = nsCString(plugId, -1);
++    *aPlugId = nsCString(plugId);
 +    *aResult = result;
 +    return true;
 +
@@ -565,10 +667,19 @@ diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.cpp
  PluginInstanceChild::AnswerNPP_SetValue_NPNVprivateModeBool(const bool& value,
                                                              NPError* result)
  {
-diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.h
+     if (!mPluginIface->setvalue) {
+         *result = NPERR_GENERIC_ERROR;
+         return true;
+     }
+ 
 --- a/dom/plugins/PluginInstanceChild.h	Wed Jun 30 23:24:05 2010 +0200
-+++ b/dom/plugins/PluginInstanceChild.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -86,7 +86,9 @@
++++ a/dom/plugins/PluginInstanceChild.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -81,17 +81,19 @@ class PluginInstanceChild : public PPlug
+ protected:
+     virtual bool AnswerNPP_SetWindow(const NPRemoteWindow& window);
+ 
+     virtual bool
+     AnswerNPP_GetValue_NPPVpluginNeedsXEmbed(bool* needs, NPError* rv);
      virtual bool
      AnswerNPP_GetValue_NPPVpluginScriptableNPObject(PPluginScriptableObjectChild** value,
                                                      NPError* result);
@@ -579,10 +690,19 @@ diff -r 563c5c2f8def dom/plugins/PluginInstanceChild.h
      virtual bool
      AnswerNPP_SetValue_NPNVprivateModeBool(const bool& value, NPError* result);
  
-diff -r 563c5c2f8def dom/plugins/PluginInstanceParent.cpp
+     virtual bool
+     AnswerNPP_HandleEvent(const NPRemoteEvent& event, int16_t* handled);
+     virtual bool
+     AnswerNPP_HandleEvent_Shmem(const NPRemoteEvent& event, Shmem& mem, int16_t* handled, Shmem* rtnmem);
+     virtual bool
 --- a/dom/plugins/PluginInstanceParent.cpp	Wed Jun 30 23:24:05 2010 +0200
-+++ b/dom/plugins/PluginInstanceParent.cpp	Tue Jul 06 16:47:33 2010 -0400
-@@ -590,6 +590,23 @@
++++ a/dom/plugins/PluginInstanceParent.cpp	Tue Jul 13 16:44:35 2010 -0400
+@@ -585,16 +585,33 @@ PluginInstanceParent::NPP_GetValue(NPPVa
+         NPObject* object =
+             static_cast<PluginScriptableObjectParent*>(actor)->GetObject(true);
+         NS_ASSERTION(object, "This shouldn't ever be null!");
+ 
+         (*(NPObject**)_retval) = npn->retainobject(object);
          return NPERR_NO_ERROR;
      }
  
@@ -606,10 +726,19 @@ diff -r 563c5c2f8def dom/plugins/PluginInstanceParent.cpp
      default:
          PR_LOG(gPluginLog, PR_LOG_WARNING,
                 ("In PluginInstanceParent::NPP_GetValue: Unhandled NPPVariable %i (%s)",
-diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atk.h
+                 (int) aVariable, NPPVariableToString(aVariable)));
+         return NPERR_GENERIC_ERROR;
+     }
+ }
+ 
 --- a/other-licenses/atk-1.0/atk/atk.h	Wed Jun 30 23:24:05 2010 +0200
-+++ b/other-licenses/atk-1.0/atk/atk.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -20,6 +20,8 @@
++++ a/other-licenses/atk-1.0/atk/atk.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -15,35 +15,42 @@ 
+  * License along with this library; if not, write to the
+  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  * Boston, MA 02111-1307, USA.
+  */
+ 
  #ifndef __ATK_H__
  #define __ATK_H__
  
@@ -618,7 +747,13 @@ diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atk.h
  #include <atk/atkobject.h>
  #include <atk/atkaction.h>
  #include <atk/atkcomponent.h>
-@@ -33,17 +35,22 @@
+ #include <atk/atkdocument.h>
+ #include <atk/atkeditabletext.h>
+ #include <atk/atkgobjectaccessible.h>
+ #include <atk/atkhyperlink.h>
+ #include <atk/atkhyperlinkimpl.h>
+ #include <atk/atkhypertext.h>
+ #include <atk/atkimage.h>
  #include <atk/atknoopobject.h>
  #include <atk/atknoopobjectfactory.h>
  #include <atk/atkobjectfactory.h>
@@ -641,10 +776,9 @@ diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atk.h
 +#undef __ATK_H_INSIDE__
 +
  #endif /* __ATK_H__ */
-diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atkplug.h
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/other-licenses/atk-1.0/atk/atkplug.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -0,0 +1,61 @@
++++ b/other-licenses/atk-1.0/atk/atkplug.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -0,0 +1,61 @@ 
 +/* ATK -  Accessibility Toolkit
 + * Copyright 2009 Novell, Inc.
 + *
@@ -706,10 +840,9 @@ diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atkplug.h
 +G_END_DECLS
 +
 +#endif /* __ATK_PLUG_H__ */
-diff -r 563c5c2f8def other-licenses/atk-1.0/atk/atksocket.h
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/other-licenses/atk-1.0/atk/atksocket.h	Tue Jul 06 16:47:33 2010 -0400
-@@ -0,0 +1,65 @@
++++ b/other-licenses/atk-1.0/atk/atksocket.h	Tue Jul 13 16:44:35 2010 -0400
+@@ -0,0 +1,65 @@ 
 +/* ATK -  Accessibility Toolkit
 + * Copyright 2009 Novell, Inc.
 + *
