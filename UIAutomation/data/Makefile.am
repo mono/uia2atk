@@ -1,8 +1,13 @@
 
 EXTRA_DIST =  
 
-net20dir   = $(prefix)/lib/mono/2.0
 a11ydir    = $(prefix)/lib/mono/accessibility
+
+if HAS_MONO_2_5
+windowsbase = WindowsBase
+else
+windowsbase   = $(prefix)/lib/mono/2.0/WindowsBase.dll
+endif
 
 SHELL = /bin/sh
 MKINSTALLDIRS = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -13,7 +18,7 @@ all: mono-uia.pc
 
 REWRITE=
 mono-uia.pc: mono-uia.pc.in Makefile
-	sed -e "s,@net20dir@,$(net20dir),g" < mono-uia.pc.in > $@.tmp
+	sed -e "s,@windowsbase@,$(windowsbase),g" < mono-uia.pc.in > $@.tmp
 	sed -e "s,@a11ydir@,$(a11ydir),g" < $@.tmp > $@.tmp2
 	mv $@.tmp2 $@
 	rm $@.tmp
