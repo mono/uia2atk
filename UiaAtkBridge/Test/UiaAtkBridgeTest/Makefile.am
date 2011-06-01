@@ -43,7 +43,7 @@ REFERENCES =  \
 	System.Xml \
 	System.Core \
 	System.Drawing \
-	nunit.framework \
+	$(NUNIT_LIBS) \
 	System.Windows.Forms \
 	$(MONO_UIA_LIBS) \
 	$(GTK_SHARP_20_LIBS)

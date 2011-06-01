@@ -40,7 +40,7 @@ REFERENCES =  \
 	System  \
 	System.Xml \
 	System.Core \
-	nunit.framework \
+	$(NUNIT_LIBS) \
 	$(MONO_UIA_LIBS) \
 	$(GTK_SHARP_20_LIBS)
 
