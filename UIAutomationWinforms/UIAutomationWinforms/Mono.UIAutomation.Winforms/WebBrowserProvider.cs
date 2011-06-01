@@ -28,8 +28,6 @@ using System;
 using System.Reflection;
 
 using Mono.Unix;
-using Mono.WebBrowser;
-using Mono.WebBrowser.DOM;
 
 using System.Windows.Automation;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
@@ -54,10 +52,13 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.HasNativeAccessibilityObjectProperty.Id)
 				return true;
 			else if (propertyId == AEIds.NativeAccessibilityObjectProperty.Id) {
-				PropertyInfo webProp = typeof (SWF.WebBrowserBase).GetProperty ("WebHost", BindingFlags.NonPublic | BindingFlags.Instance);
-				IWebBrowser iweb = (IWebBrowser) webProp.GetValue (webBrowser, new object [] {});
+				PropertyInfo pi = typeof (SWF.WebBrowserBase).GetProperty ("WebHost", BindingFlags.NonPublic | BindingFlags.Instance);
+				object prop = pi.GetValue (webBrowser, new object [] {});
+				pi = prop.GetType ().GetProperty ("FirstChild", BindingFlags.Public | BindingFlags.Instance);
+				prop = pi.GetValue (prop, new object [] {});
+				pi = prop.GetType ().GetProperty ("AccessibleObject", BindingFlags.Public | BindingFlags.Instance);
+				IntPtr raw = (IntPtr) pi.GetValue (prop, new object [] {});
 	
-				IntPtr raw = iweb.Document.FirstChild.AccessibleObject;
 				if (raw == IntPtr.Zero)
 					return null;
 				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
