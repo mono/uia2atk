@@ -169,8 +169,6 @@ namespace UiaAtkBridge
 
 		protected void NotifyFocused (bool focused)
 		{
-			NotifyStateChange (Atk.StateType.Focused, focused);
-
 			Window focusWindow = null;
 			// FIXME: Gail sends the events in a slighly different order:
 			// window:activate , object:state-changed:focused, object:state-changed:active
@@ -188,6 +186,8 @@ namespace UiaAtkBridge
 					}
 					container = container.Parent;
 				}
+
+			NotifyStateChange (Atk.StateType.Focused, focused);
 			}
 
 			if (focused) {
