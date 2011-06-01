@@ -287,8 +287,10 @@ namespace UiaAtkBridge
 				// We are keeping a private caretOffset copy to validate if
 				// text changed
 				int newCaretOffset = caretProvider.CaretOffset;
-				if (newCaretOffset != caretOffset)
+				if (newCaretOffset != caretOffset) {
 					caretOffset = newCaretOffset;
+					adapter.EmitSignal ("text_caret_moved", caretOffset);
+				}
 
 				return true;
 			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
