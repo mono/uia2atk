@@ -48,6 +48,8 @@ namespace UiaAtkBridge
 		
 		private static int windowProviders;
 		
+		private static object eventLock = new object ();
+
 #endregion
 
 #region Public Constructor
@@ -453,30 +455,32 @@ namespace UiaAtkBridge
 				return;
 			}
 			
-			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
-			//Console.WriteLine (String.Format("RaiseStructureChangedEvent:{0}-{1}",
-			//                                 e.StructureChangeType.ToString (),
-			//                                 provider.GetType ().Name));
-			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
-				HandleBulkAdded (simpleProvider);
-			} else if (e.StructureChangeType == StructureChangeType.ChildAdded) {
-				if (!providerAdapterMapping.ContainsKey (simpleProvider))
-					HandleElementAddition (simpleProvider);
-			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
-				// TODO: Handle proper documented args
-				//       (see FragmentRootControlProvider)
-				if (HandleTotalElementRemoval (simpleProvider))
-					Monitor.Instance.Dispose ();
-			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
-				HandleBulkRemoved (simpleProvider);
-			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
-				// These often seem to be coupled with
-				// add/removed/reordered events.
-			}
-			else
-				Log.Warn ("StructureChangedEvent not handled: {0}", e.StructureChangeType);
+			lock (eventLock) {
+				IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
+				//Console.WriteLine (String.Format("RaiseStructureChangedEvent:{0}-{1}",
+				//                                 e.StructureChangeType.ToString (),
+				//                                 provider.GetType ().Name));
+				if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
+					HandleBulkAdded (simpleProvider);
+				} else if (e.StructureChangeType == StructureChangeType.ChildAdded) {
+					if (!providerAdapterMapping.ContainsKey (simpleProvider))
+						HandleElementAddition (simpleProvider);
+				} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
+					// TODO: Handle proper documented args
+					//       (see FragmentRootControlProvider)
+					if (HandleTotalElementRemoval (simpleProvider))
+						Monitor.Instance.Dispose ();
+				} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
+					HandleBulkRemoved (simpleProvider);
+				} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
+					// These often seem to be coupled with
+					// add/removed/reordered events.
+				}
+				else
+					Log.Warn ("StructureChangedEvent not handled: {0}", e.StructureChangeType);
 			
-			// TODO: Other structure changes
+				// TODO: Other structure changes
+			}
 		}
 
 		public void Initialize ()
