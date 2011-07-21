@@ -38,6 +38,8 @@ guint _add_global_event_listener(
 	GSignalEmissionHook listener,
 	const gchar *event_type);
 
+void _remove_global_event_listener (guint remove_listener);
+
 void
 override_global_event_listener ()
 {
@@ -45,6 +47,7 @@ override_global_event_listener ()
 	if (!klass)
 		klass = g_type_class_ref (ATK_TYPE_UTIL);
 	((AtkUtilClass *) klass)->add_global_event_listener = _add_global_event_listener;
+	((AtkUtilClass *) klass)->remove_global_event_listener = _remove_global_event_listener;
 }
 
 static void
@@ -138,6 +141,47 @@ guint _add_global_event_listener (
 	}
 
 	return rc;
+}
+
+void
+_remove_global_event_listener (guint remove_listener)
+{
+  if (remove_listener > 0)
+  {
+    AtkUtilListenerInfo *listener_info;
+    gint tmp_idx = remove_listener;
+
+    listener_info = (AtkUtilListenerInfo *)
+      g_hash_table_lookup(listener_list, &tmp_idx);
+
+    if (listener_info != NULL)
+      {
+        /* Hook id of 0 and signal id of 0 are invalid */
+        if (listener_info->hook_id != 0 && listener_info->signal_id != 0)
+          {
+            /* Remove the emission hook */
+            g_signal_remove_emission_hook(listener_info->signal_id,
+              listener_info->hook_id);
+
+            /* Remove the element from the hash */
+            g_hash_table_remove(listener_list, &tmp_idx);
+          }
+        else
+          {
+            g_warning("Invalid listener hook_id %ld or signal_id %d\n",
+              listener_info->hook_id, listener_info->signal_id);
+          }
+      }
+    else
+      {
+        g_warning("No listener with the specified listener id %d",
+          remove_listener);
+      }
+  }
+  else
+  {
+    g_warning("Invalid listener_id %d", remove_listener);
+  }
 }
 
 typedef void (*void_func)();
