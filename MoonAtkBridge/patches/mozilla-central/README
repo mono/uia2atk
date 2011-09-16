@@ -2,7 +2,6 @@ IMPORTANT NOTE:
 Our stuff uses moon-2-0-branch *and* moonatkbridge-trunk to work. If you
 want to use Mozilla Central and moon-trunk you have to apply the following patches:
 
-- ff-plugin-a11y.patch: OOPP patch, applies to mozilla-central.
 - moonlight-a11y-core-extension.diff: applies to moon-trunk, used to generate the xpi (make user-plugin)
 - moonatkbridge-oop.patch: OOOP patch, applies to uia2atk-trunk.
 
