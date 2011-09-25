@@ -2,6 +2,23 @@
 Mono Accessibility News
 
 Copyright (C) 2008 - 2010 Novell, Inc. (http://www.novell.com)
+Copyright (C) 2011 Suse Linux Products GmbH, Nuernberg, Germany
+
+Version 2.1.92:
+
+* Fix build errors with Mono >= 2.8
+
+* #489388 [UIAutomationClient] AutomationElementFromLocalProvider implementation
+
+* #671580 [UiaAtkBridge] Set role before name, working around a caching issue.
+
+* [UiaAtkBridge] Fix emission of CaretMoved for text boxes.
+
+* [UiaAtkBridge] Send window notification before state-changed:focus.
+
+* [UiaAtkBridge] Fix potential crash caused by a race when handling StructureChanged events.
+
+* [UiaAtkBridge] Implement atk_remove_global_event_listener.
 
 Version 2.1.91: The "quasar" release
 * #600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false, if the scrollbar's value can be set
