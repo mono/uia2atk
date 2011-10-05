@@ -20,6 +20,9 @@ Version 2.1.92:
 
 * [UiaAtkBridge] Implement atk_remove_global_event_listener.
 
+* Use the new D-Bus API, when possible, to test whether accessibility is
+  enabled.
+
 Version 2.1.91: The "quasar" release
 * #600365 - [uiaclient-GTKs]:A scrollbar's IsreadOnly property should be false, if the scrollbar's value can be set
 * #596835 - Gtk ScrollBar has extraneous InvokePattern to be supported

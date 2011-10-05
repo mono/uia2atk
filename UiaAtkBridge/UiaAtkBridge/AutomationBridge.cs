@@ -210,42 +210,81 @@ namespace UiaAtkBridge
 			}
 		}
 
- 		public bool IsAccessibilityEnabled {
- 			get {
-				// FIXME: This is a temporary hack, we will replace it, proposed solutions:
-				// - Use GConf API (we will need to fix threading issues).
-				// - <Insert your fantastic idea here>
-				string output = bool.FalseString;
-				bool enabled = false;
+		private bool IsAccessibilityEnabledGConf ()
+		{
+			// FIXME: This is a temporary hack, we will replace it, proposed solutions:
+			// - Use GConf API (we will need to fix threading issues).
+			// - <Insert your fantastic idea here>
+			string output = bool.FalseString;
+			bool enabled = false;
 				
-				ProcessStartInfo
-					processInfo = new ProcessStartInfo ("gconftool-2",
-					                                    "-g /desktop/gnome/interface/accessibility");
-				processInfo.UseShellExecute = false;
-				processInfo.ErrorDialog = false;
-				processInfo.CreateNoWindow = true;
-				processInfo.RedirectStandardOutput = true;
-				
-				try {
-					Process gconftool2 = Process.Start (processInfo);
-					output = gconftool2.StandardOutput.ReadToEnd () ?? bool.FalseString;
-					gconftool2.WaitForExit ();
-					gconftool2.Close ();
-				} catch (System.IO.FileNotFoundException) {}
+			ProcessStartInfo
+				processInfo = new ProcessStartInfo ("gconftool-2",
+					                            "-g /desktop/gnome/interface/accessibility");
+			processInfo.UseShellExecute = false;
+			processInfo.ErrorDialog = false;
+			processInfo.CreateNoWindow = true;
+			processInfo.RedirectStandardOutput = true;
 
-				try {
-					enabled = bool.Parse (output);
-				} catch (FormatException) {}
+			try {
+				Process gconftool2 = Process.Start (processInfo);
+				output = gconftool2.StandardOutput.ReadToEnd () ?? bool.FalseString;
+				gconftool2.WaitForExit ();
+				gconftool2.Close ();
+			} catch (System.IO.FileNotFoundException) {}
+
+			try {
+				enabled = bool.Parse (output);
+			} catch (FormatException) {}
 				
-				return enabled;
- 			}
- 		}
+			return enabled;
+		}
+		
+		private bool IsAccessibilityEnabledDBus ()
+		{
+			// FIXME: This is a temporary hack, we will replace it, proposed solutions:
+			// - Use dbus-sharp, once we are using it as a
+			// stand-alone package rather than copying it into
+			// each module we use.
+			// Alternatively, we could use C glue with gdbus,
+			// but this would up the glib dependency to 2.26
+			// unless we dlopen.
+			string output = bool.FalseString;
+				
+			ProcessStartInfo
+				processInfo = new ProcessStartInfo ("dbus-send",
+					                            "--print-reply --type=method_call --dest=org.a11y.Bus /org/a11y/bus org.freedesktop.DBus.Properties.Get string:org.a11y.Status string:IsEnabled");
+			processInfo.UseShellExecute = false;
+			processInfo.ErrorDialog = false;
+			processInfo.CreateNoWindow = true;
+			processInfo.RedirectStandardOutput = true;
+
+			// If this throws an exception, then just let the
+			// caller catch it and try the old API
+			Process dbus_send = Process.Start (processInfo);
+			output = dbus_send.StandardOutput.ReadToEnd () ?? bool.FalseString;
+			dbus_send.WaitForExit ();
+			dbus_send.Close ();
+
+			return output.Contains ("true");
+		}
 		
 		public object HostProviderFromHandle (IntPtr hwnd)
 		{
 			if (!pointerProviderMapping.ContainsKey (hwnd))
 				return null;
 			return pointerProviderMapping [hwnd];
+		}
+
+
+		public bool IsAccessibilityEnabled{
+			get {
+				try {
+					return IsAccessibilityEnabledDBus ();
+				} catch {
+					return IsAccessibilityEnabledGConf ();
+				}
+			}
 		}
 
 		struct KeyDefinition
@@ -576,7 +615,7 @@ namespace UiaAtkBridge
 				HandleNewWindowControlType (simpleProvider);
 				return;
 			} else if (controlTypeId == ControlType.ToolTip.Id) {
- 				HandleNewToolTipControlType (simpleProvider);
+				HandleNewToolTipControlType (simpleProvider);
 				return;
 			} else if (controlTypeId == ControlType.Menu.Id) { //for ContextMenuStrip widget
 				HandleNewMenuControlType (simpleProvider);
@@ -619,8 +658,8 @@ namespace UiaAtkBridge
 				HandleNewRadioButtonControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Spinner.Id)
 				HandleNewSpinnerControlType (simpleProvider, parentAdapter);
- 			else if (controlTypeId == ControlType.Hyperlink.Id)
- 				HandleNewHyperlinkControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Hyperlink.Id)
+				HandleNewHyperlinkControlType (simpleProvider, parentAdapter);
 			else if ((controlTypeId == ControlType.Document.Id) || (controlTypeId == ControlType.Edit.Id))
 				HandleNewDocumentOrEditControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Image.Id)
@@ -1010,7 +1049,7 @@ namespace UiaAtkBridge
 			//FIXME: not sure if this interface check is correct
 			if (provider is IGridProvider)
 				atkStatus = CreateAdapter<TextContainerWithGrid> (provider);
- 			else 
+			else 
 				atkStatus = CreateAdapter<TextContainer> (provider);
 
 			if (atkStatus != null)
@@ -1069,7 +1108,7 @@ namespace UiaAtkBridge
 					atkSpinner = CreateAdapter<List> (fragmentRoot);
 			} else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
 				atkSpinner = CreateAdapter<SpinnerWithValue> (provider);
- 			else
+			else
 				return;
 
 			if (atkSpinner != null)

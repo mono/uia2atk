@@ -138,35 +138,74 @@ namespace AtspiUiaSource
 		}
 
 		// The below code stolen from UiaAtkBridge
- 		public bool IsAccessibilityEnabled {
- 			get {
-				// FIXME: This is a temporary hack, we will replace it, proposed solutions:
-				// - Use GConf API (we will need to fix threading issues).
-				// - <Insert your fantastic idea here>
-				string output = bool.FalseString;
-				bool enabled = false;
+		private bool IsAccessibilityEnabledGConf ()
+		{
+			// FIXME: This is a temporary hack, we will replace it, proposed solutions:
+			// - Use GConf API (we will need to fix threading issues).
+			// - <Insert your fantastic idea here>
+			string output = bool.FalseString;
+			bool enabled = false;
 				
-				ProcessStartInfo
-					processInfo = new ProcessStartInfo ("gconftool-2", "-g /desktop/gnome/interface/accessibility");
-				processInfo.UseShellExecute = false;
-				processInfo.ErrorDialog = false;
-				processInfo.CreateNoWindow = true;
-				processInfo.RedirectStandardOutput = true;
-				
-				try {
-					Process gconftool2 = Process.Start (processInfo);
-					output = gconftool2.StandardOutput.ReadToEnd () ?? bool.FalseString;
-					gconftool2.WaitForExit ();
-					gconftool2.Close ();
-				} catch (System.IO.FileNotFoundException) {}
+			ProcessStartInfo
+				processInfo = new ProcessStartInfo ("gconftool-2",
+					                            "-g /desktop/gnome/interface/accessibility");
+			processInfo.UseShellExecute = false;
+			processInfo.ErrorDialog = false;
+			processInfo.CreateNoWindow = true;
+			processInfo.RedirectStandardOutput = true;
 
-				try {
-					enabled = bool.Parse (output);
-				} catch (FormatException) {}
+			try {
+				Process gconftool2 = Process.Start (processInfo);
+				output = gconftool2.StandardOutput.ReadToEnd () ?? bool.FalseString;
+				gconftool2.WaitForExit ();
+				gconftool2.Close ();
+			} catch (System.IO.FileNotFoundException) {}
+
+			try {
+				enabled = bool.Parse (output);
+			} catch (FormatException) {}
 				
-				return enabled;
- 			}
- 		}
+			return enabled;
+		}
+		
+		private bool IsAccessibilityEnabledDBus ()
+		{
+			// FIXME: This is a temporary hack, we will replace it, proposed solutions:
+			// - Use dbus-sharp, once we are using it as a
+			// stand-alone package rather than copying it into
+			// each module we use.
+			// Alternatively, we could use C glue with gdbus,
+			// but this would up the glib dependency to 2.26
+			// unless we dlopen.
+			string output = bool.FalseString;
+				
+			ProcessStartInfo
+				processInfo = new ProcessStartInfo ("dbus-send",
+					                            "--print-reply --type=method_call --dest=org.a11y.Bus /org/a11y/bus org.freedesktop.DBus.Properties.Get string:org.a11y.Status string:IsEnabled");
+			processInfo.UseShellExecute = false;
+			processInfo.ErrorDialog = false;
+			processInfo.CreateNoWindow = true;
+			processInfo.RedirectStandardOutput = true;
+
+			// If this throws an exception, then just let the
+			// caller catch it and try the old API
+			Process dbus_send = Process.Start (processInfo);
+			output = dbus_send.StandardOutput.ReadToEnd () ?? bool.FalseString;
+			dbus_send.WaitForExit ();
+			dbus_send.Close ();
+
+			return output.Contains ("true");
+		}
+		
+		public bool IsAccessibilityEnabled{
+			get {
+				try {
+					return IsAccessibilityEnabledDBus ();
+				} catch {
+					return IsAccessibilityEnabledGConf ();
+				}
+			}
+		}
 
 		public void AddAutomationEventHandler (AutomationEvent eventId,
 		                                       IElement element,
