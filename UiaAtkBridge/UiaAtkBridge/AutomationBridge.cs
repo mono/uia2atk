@@ -258,6 +258,7 @@ namespace UiaAtkBridge
 			processInfo.ErrorDialog = false;
 			processInfo.CreateNoWindow = true;
 			processInfo.RedirectStandardOutput = true;
+			processInfo.RedirectStandardError = true;
 
 			// If this throws an exception, then just let the
 			// caller catch it and try the old API
@@ -266,7 +267,11 @@ namespace UiaAtkBridge
 			dbus_send.WaitForExit ();
 			dbus_send.Close ();
 
-			return output.Contains ("true");
+			if (output.Contains ("true"))
+				return true;
+			if (output.Contains ("false"))
+				return false;
+			throw new NotSupportedException ();
 		}
 		
 		public object HostProviderFromHandle (IntPtr hwnd)
