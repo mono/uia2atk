@@ -123,9 +123,11 @@ RESOURCES =
 EXTRAS = 
 
 REFERENCES =  \
+	Accessibility \
 	System \
 	System.Data \
 	System.Drawing \
+	System.Xml \
 	Mono.Posix \
 	-pkg:mono-nunit \
 	System.Windows.Forms \
