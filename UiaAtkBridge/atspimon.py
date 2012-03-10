@@ -3,6 +3,7 @@
 ##############################################################################
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
 # Date:        June 17 2008
+# Modified:    March 10 2011 by Jason J.G. White <jason@jasonjgw.net>
 # Description: Monitor at-spi events
 #              Inspired by Accerciser's Event Monitor plugin
 ##############################################################################
@@ -53,22 +54,31 @@ class Settings(object):
         abort(1)
 
   def help(self):
-    output("Usage:  atspimon.py [-hqlx] NAME1 NAME2 ...")
+    output("Usage:  atspimon.py [-ahqlx] NAME1 NAME2 ...")
     output("Where NAME is the application to monitor.")
     output('Find NAME in the "Name" column of Accerciser')
+    output("or list the applications on the desktop (see below).")
     output("")
     output("Common Options:")
+    output("-a | --applications  List applications on the desktop.")
     output("  -h | --help        Print help information (this message).")
     output("  -q | --quiet       Don't print anything.")
     output("  -l | --log=        Where the log should be stored.")
     output("  -x | --xml         Use XML format for events output.")
+
+  def list_apps(self):
+      desktop = pyatspi.Registry.getDesktop(0)
+      output("Applications on the desktop:")
+      for app in desktop:
+        if app is not None:
+          output("\t%s" % app.name)
 
   def argument_parser(self):
     opts = []
     args = []
     try:
       opts, args = getopt.getopt(sys.argv[1:],\
-                     "hxql:s:",["help","xml","quiet","log=","source="])
+                     "ahxql:s:",["applications","help","xml","quiet","log=","source="])
     except getopt.GetoptError:
       self.help()
 
@@ -78,6 +88,9 @@ class Settings(object):
     for o,a in opts:
       if o in ("-h","--help"):
         self.help()
+        abort(0)
+      if o in ("-a","--applications"):
+        self.list_apps()
         abort(0)
       if o in ("-l","--log"):
         Settings.log_path = a
