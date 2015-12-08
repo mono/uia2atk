@@ -125,6 +125,7 @@ EXTRAS =
 REFERENCES =  \
 	Accessibility \
 	System \
+	System.Core \
 	System.Data \
 	System.Drawing \
 	System.Xml \
