@@ -50,5 +50,3 @@ using System.Security.Permissions;
 [assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
 [assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
 [assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
-[assembly: PermissionSet (SecurityAction.RequestMinimum, Name = "FullTrust")]
-[assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification = true)]
