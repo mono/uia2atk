@@ -84,9 +84,9 @@ dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia >= 2.1])
 PKG_CHECK_MODULES([MONO], [mono >= 2.4])
 
-gacutil -l  System.Data | grep "Version=2"
+gacutil -l  System.Data | grep "Version=4"
 if test "$?" -ne "0"; then
-	AC_MSG_ERROR([mono-data >= 2.2 is missing])
+	AC_MSG_ERROR([mono-data >= 4.0 is missing])
 fi
 
 
