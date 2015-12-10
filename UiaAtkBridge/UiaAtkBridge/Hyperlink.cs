@@ -35,7 +35,7 @@ using Mono.UIAutomation.Bridge;
 namespace UiaAtkBridge
 {
 
-	public class Hyperlink : ComponentParentAdapter , Atk.TextImplementor, Atk.HypertextImplementor
+	public class Hyperlink : ComponentParentAdapter , Atk.ITextImplementor, Atk.IHypertextImplementor
 	{
 		private IInvokeProvider invokeProvider;
 		internal IHypertext hypertext;
@@ -282,7 +282,7 @@ namespace UiaAtkBridge
 
 	}
 
-	class HyperlinkActor: Adapter, Atk.ActionImplementor
+	class HyperlinkActor: Adapter, Atk.IActionImplementor
 	{
 		private Hyperlink hyperlink;
 		private int index;

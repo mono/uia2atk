@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public abstract class ComponentAdapter : Adapter, Atk.ComponentImplementor
+	public abstract class ComponentAdapter : Adapter, Atk.IComponentImplementor
 	{
 		public ComponentAdapter (IRawElementProviderSimple provider) : base (provider)
 		{

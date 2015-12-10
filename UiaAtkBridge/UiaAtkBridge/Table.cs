@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Table : ComponentParentAdapter , Atk.TableImplementor
+	public class Table : ComponentParentAdapter , Atk.ITableImplementor
 	{
 		private TableImplementorHelper tableExpert = null;
 		

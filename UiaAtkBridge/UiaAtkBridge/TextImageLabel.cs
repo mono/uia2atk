@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class TextImageLabel : TextLabel, Atk.ImageImplementor
+	public class TextImageLabel : TextLabel, Atk.IImageImplementor
 	{
 		public TextImageLabel (IRawElementProviderSimple provider) : base (provider)
 		{

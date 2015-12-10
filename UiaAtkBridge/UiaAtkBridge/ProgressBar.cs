@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ProgressBar : ComponentAdapter, Atk.ValueImplementor
+	public class ProgressBar : ComponentAdapter, Atk.IValueImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
 		

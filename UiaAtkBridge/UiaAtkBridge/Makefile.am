@@ -108,7 +108,7 @@ REFERENCES =  \
 	System.Drawing  \
 	Mono.Posix  \
 	$(MONO_UIA_LIBS) \
-	$(GTK_SHARP_20_LIBS)
+	$(GTK_SHARP_30_LIBS)
 
 DLL_REFERENCES = 
 

@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Image : ComponentAdapter, Atk.ImageImplementor
+	public class Image : ComponentAdapter, Atk.IImageImplementor
 	{
 		ImageImplementorHelper imageImplementor;
 

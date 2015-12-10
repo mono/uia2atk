@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class TextContainer : ComponentParentAdapter , Atk.TextImplementor
+	public class TextContainer : ComponentParentAdapter , Atk.ITextImplementor
 	{
 		private ITextImplementor textExpert = null;
 		
@@ -182,7 +182,7 @@ namespace UiaAtkBridge
 		}
 	}
 
-	public class TextContainerWithGrid : TextContainer, Atk.TableImplementor
+	public class TextContainerWithGrid : TextContainer, Atk.ITableImplementor
 	{
 		private TableImplementorHelper tableExpert = null;
 		

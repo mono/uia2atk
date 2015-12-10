@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class ComboBoxItem : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor
+	public class ComboBoxItem : ComponentAdapter, Atk.IActionImplementor, Atk.ITextImplementor
 	{
 		ITextImplementor textExpert = null;
 		ISelectionItemProvider selectionItemProvider = null;

@@ -30,7 +30,7 @@ using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
-	public class Tree : ComponentParentAdapter, Atk.SelectionImplementor, Atk.TableImplementor
+	public class Tree : ComponentParentAdapter, Atk.ISelectionImplementor, Atk.ITableImplementor
 	{
 		private IRawElementProviderFragment	provider;
 		private ISelectionProvider		selectionProvider;
@@ -219,7 +219,7 @@ namespace UiaAtkBridge
 			hasFocus = listFocused;
 		}
 
-#region Atk.SelectionImplementor
+#region Atk.ISelectionImplementor
 
 		public int SelectionCount
 		{

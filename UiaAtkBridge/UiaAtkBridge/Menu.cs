@@ -33,7 +33,7 @@ namespace UiaAtkBridge
 {
 	public abstract class Menu : ComponentParentAdapter, ICanHaveSelection
 		//although we're implementing selection methods, don't do this (ParentMenu will use them):
-		//,Atk.SelectionImplementor
+		//,Atk.ISelectionImplementor
 	{
 		public Menu (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 		}
 
 		//cannot use SelectionProviderHelper because it doesn't implement ISelectionProvider:
-		#region SelectionImplementor implementation
+		#region ISelectionImplementor implementation
 
 		//cannot use prov.GetPropertyValue(IsSelectedProperty.Id) because returns null
 		protected bool selected = false;
@@ -150,7 +150,7 @@ namespace UiaAtkBridge
 					}
 				}
 				if (changed_selected_child) {
-					Atk.SelectionImplementor selImplementor = this as Atk.SelectionImplementor;
+					Atk.ISelectionImplementor selImplementor = this as Atk.ISelectionImplementor;
 					if (selImplementor != null) {
 						if (any_child_was_selected)
 							//2 times: because we deselect a child and select another one

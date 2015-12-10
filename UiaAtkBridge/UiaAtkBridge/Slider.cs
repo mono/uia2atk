@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Slider : ComponentAdapter , Atk.ValueImplementor, Atk.TextImplementor
+	public class Slider : ComponentAdapter , Atk.IValueImplementor, Atk.ITextImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
 		internal ITextImplementor textExpert = null;

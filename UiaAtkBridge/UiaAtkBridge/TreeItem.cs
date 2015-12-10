@@ -32,8 +32,8 @@ using SCG = System.Collections.Generic;
 namespace UiaAtkBridge
 {
 
-	public class TreeItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor,
-		Atk.ImageImplementor, Atk.EditableTextImplementor
+	public class TreeItem : ComponentAdapter, Atk.ITextImplementor, Atk.IActionImplementor,
+		Atk.IImageImplementor, Atk.IEditableTextImplementor
 	{
 		protected const string EXPAND_OR_CONTRACT_ACTION_NAME = "expand or contract";
 		protected const string EXPAND_OR_CONTRACT_ACTION_DESC =
@@ -453,7 +453,7 @@ namespace UiaAtkBridge
 		}
 
 
-		#region Atk.ImageImplementor implementation 
+		#region Atk.IImageImplementor implementation
 		
 		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
 		{

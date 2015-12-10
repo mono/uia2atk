@@ -71,7 +71,7 @@ namespace UiaAtkBridge
 			}
 		}
 
-#region Atk.SelectionImplementor
+#region Atk.ISelectionImplementor
 
 		public int SelectionCount
 		{

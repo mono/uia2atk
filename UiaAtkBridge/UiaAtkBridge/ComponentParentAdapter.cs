@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public abstract class ComponentParentAdapter : ParentAdapter, Atk.ComponentImplementor
+	public abstract class ComponentParentAdapter : ParentAdapter, Atk.IComponentImplementor
 	{
 		//FIXME: should we receive a IRawElementProviderFragment instead? this way we can drop ArgumentExceptions in derived classes' ctors
 		public ComponentParentAdapter (IRawElementProviderSimple provider) : base (provider)

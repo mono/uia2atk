@@ -35,7 +35,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
-	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
+	public class Button : ComponentAdapter, Atk.IActionImplementor, Atk.ITextImplementor, Atk.IImageImplementor
 	{
 		//TODO: use ActionImplementorHelper
 		private static readonly string	default_invoke_name = "click";

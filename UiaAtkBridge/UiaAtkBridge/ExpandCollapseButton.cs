@@ -31,8 +31,8 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	public class ExpandCollapseButton
-		: ComponentParentAdapter, Atk.ActionImplementor,
-		  Atk.SelectionImplementor, ICanHaveSelection
+		: ComponentParentAdapter, Atk.IActionImplementor,
+		  Atk.ISelectionImplementor, ICanHaveSelection
 	{
 #region Public Methods
 		public ExpandCollapseButton (IRawElementProviderSimple provider) : base (provider)
@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 			return states;
 		}
 		
-#region Atk.Action Implementation
+#region Atk.IAction Implementation
 		public int NActions {
 			get { return 1; }
 		}
@@ -142,8 +142,8 @@ namespace UiaAtkBridge
 				return false;
 			
 			Atk.Object child = RefAccessibleChild (i);
-			if (child is Atk.ActionImplementor) {
-				return ((Atk.ActionImplementor) child).DoAction (0);
+			if (child is Atk.IActionImplementor) {
+				return ((Atk.IActionImplementor) child).DoAction (0);
 			}
 
 			return false;

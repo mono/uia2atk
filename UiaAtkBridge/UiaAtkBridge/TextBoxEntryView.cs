@@ -37,8 +37,8 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class TextBoxEntryView : ComponentParentAdapter, Atk.TextImplementor, 
-	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
+	public class TextBoxEntryView : ComponentParentAdapter, Atk.ITextImplementor,
+	  Atk.IEditableTextImplementor, Atk.IStreamableContentImplementor
 	{
 		private ITextImplementor textExpert = null;
 		private bool multiLine = false;

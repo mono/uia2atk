@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class SplitContainer : ComponentParentAdapter , Atk.ValueImplementor
+	public class SplitContainer : ComponentParentAdapter , Atk.IValueImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
 		private OrientationType orientation;

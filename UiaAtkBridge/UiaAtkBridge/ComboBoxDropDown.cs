@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class ComboBoxDropDown : ComboBox, Atk.ActionImplementor
+	public class ComboBoxDropDown : ComboBox, Atk.IActionImplementor
 	{
 		private const int MENU_ELEMENT_POS_INSIDE_COMBOBOX = 0;
 		private string actionDescription = null;

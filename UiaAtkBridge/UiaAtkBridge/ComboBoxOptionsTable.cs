@@ -29,7 +29,7 @@ using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
-	public class ComboBoxOptionsTable : ComboBoxOptions, Atk.TableImplementor
+	public class ComboBoxOptionsTable : ComboBoxOptions, Atk.ITableImplementor
 	{
 		//FIXME: only used for untested behaviours:
 		TableImplementorHelper tableExpert = null;

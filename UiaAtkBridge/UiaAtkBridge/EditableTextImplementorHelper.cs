@@ -35,7 +35,7 @@ namespace UiaAtkBridge
 	internal class EditableTextImplementorHelper
 	{
 		
-		public EditableTextImplementorHelper (Adapter adapter, Atk.TextImplementor textImplementor, ITextImplementor textExpert)
+		public EditableTextImplementorHelper (Adapter adapter, Atk.ITextImplementor textImplementor, ITextImplementor textExpert)
 		{
 			this.adapter = adapter;
 

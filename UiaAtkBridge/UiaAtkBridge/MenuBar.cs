@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class MenuBar : Menu, Atk.SelectionImplementor
+	public class MenuBar : Menu, Atk.ISelectionImplementor
 	{
 		public MenuBar (IRawElementProviderSimple provider) : base (provider)
 		{

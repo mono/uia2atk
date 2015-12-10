@@ -32,7 +32,7 @@ using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
 {
-	public class List : ComponentParentAdapter, Atk.SelectionImplementor
+	public class List : ComponentParentAdapter, Atk.ISelectionImplementor
 	{
 		private IRawElementProviderFragmentRoot		provider;
 		private ISelectionProvider					selectionProvider;
@@ -193,7 +193,7 @@ AtkObject,
 			hasFocus = listFocused;
 		}
 
-#region Atk.SelectionImplementor
+#region Atk.ISelectionImplementor
 
 		public int SelectionCount
 		{
@@ -280,7 +280,7 @@ AtkObject,
 	}
 
 	public class ListWithEditableText
-		: List, Atk.TextImplementor, Atk.EditableTextImplementor
+		: List, Atk.ITextImplementor, Atk.IEditableTextImplementor
 	{
 		private ITextImplementor text_helper;
 		private EditableTextImplementorHelper editableTextExpert;
@@ -459,7 +459,7 @@ AtkObject,
 #endregion 
 	}
 
-	public class ListWithGrid : List, Atk.TableImplementor
+	public class ListWithGrid : List, Atk.ITableImplementor
 	{
 		private TableImplementorHelper tableExpert = null;
 		

@@ -33,7 +33,7 @@ using Mono.UIAutomation.Services;
 
 namespace UiaAtkBridge
 {
-	internal class ComponentImplementorHelper : Atk.ComponentImplementor
+	internal class ComponentImplementorHelper : Atk.IComponentImplementor
 	{
 		public ComponentImplementorHelper (Adapter resource)
 		{

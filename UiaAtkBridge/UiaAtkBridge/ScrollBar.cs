@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ScrollBar : ComponentParentAdapter , Atk.ValueImplementor
+	public class ScrollBar : ComponentParentAdapter , Atk.IValueImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
 		private IScrollProvider parentScrollProvider = null;

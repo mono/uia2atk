@@ -36,7 +36,7 @@ namespace UiaAtkBridge
 	/// there because MenuItem should not expose it)
 	/// </summary>
 	
-	public class ParentMenu : MenuItem, Atk.SelectionImplementor
+	public class ParentMenu : MenuItem, Atk.ISelectionImplementor
 	{
 		public ParentMenu (IRawElementProviderSimple provider) : base (provider)
 		{

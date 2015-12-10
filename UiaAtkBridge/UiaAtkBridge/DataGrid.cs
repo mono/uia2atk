@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class DataGrid : Table, Atk.SelectionImplementor
+	public class DataGrid : Table, Atk.ISelectionImplementor
 	{
 		private ISelectionProvider		selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;

@@ -32,7 +32,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace UiaAtkBridge
 {
-	public class ComboBox : ComponentParentAdapter, Atk.SelectionImplementor
+	public class ComboBox : ComponentParentAdapter, Atk.ISelectionImplementor
 	{
 		private ISelectionProvider 					selProvider;
 		
@@ -85,7 +85,7 @@ namespace UiaAtkBridge
 			// We'll manage the name manually
 		}
 
-#region Atk.SelectionImplementor
+#region Atk.ISelectionImplementor
 
 		public int SelectionCount
 		{

@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class HeaderItem : TextLabel, Atk.ActionImplementor, Atk.ImageImplementor
+	public class HeaderItem : TextLabel, Atk.IActionImplementor, Atk.IImageImplementor
 	{
 
 		#region Constructor

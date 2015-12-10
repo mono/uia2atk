@@ -42,7 +42,7 @@ REFERENCES =  \
 	Mono.Posix \
 	System.Core \
 	../AtkTest/bin/AtkTest.dll \
-	$(GTK_SHARP_20_LIBS)
+	$(GTK_SHARP_30_LIBS)
 
 DLL_REFERENCES = 
 

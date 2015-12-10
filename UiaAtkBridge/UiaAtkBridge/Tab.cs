@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Tab: ComponentParentAdapter, Atk.SelectionImplementor
+	public class Tab: ComponentParentAdapter, Atk.ISelectionImplementor
 	{
 
 		private ISelectionProvider					selectionProvider;

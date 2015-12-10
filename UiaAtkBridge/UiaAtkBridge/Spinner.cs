@@ -36,7 +36,7 @@ namespace UiaAtkBridge
 	/// Adapter for a ControlType.Spinner that does not implement SelectionPattern.
 	/// </summary>
 	// FIXME: This class *needs* to use TextImplementorHelper and EditableTextImplementorHelper
-	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
+	public abstract class Spinner : ComponentAdapter, Atk.ITextImplementor, Atk.IEditableTextImplementor
 	{
 		#region Fields
 		protected IRangeValueProvider rangeValueProvider;
@@ -306,7 +306,7 @@ namespace UiaAtkBridge
 
 	}
 
-	public class SpinnerWithValue : Spinner, Atk.ValueImplementor, Atk.ActionImplementor
+	public class SpinnerWithValue : Spinner, Atk.IValueImplementor, Atk.IActionImplementor
 	{
 		#region Private Members
 		private ActionImplementorHelper actionExpert = null;

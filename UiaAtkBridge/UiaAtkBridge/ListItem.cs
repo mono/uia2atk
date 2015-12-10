@@ -31,8 +31,8 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentAdapter, Atk.TextImplementor,
-	Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.ImageImplementor
+	public class ListItem : ComponentAdapter, Atk.ITextImplementor,
+	Atk.IActionImplementor, Atk.IEditableTextImplementor, Atk.IImageImplementor
 	{
 		private IInvokeProvider invokeProvider;
 		private ISelectionItemProvider selectionItemProvider;

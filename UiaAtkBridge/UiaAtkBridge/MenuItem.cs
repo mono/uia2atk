@@ -33,7 +33,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 namespace UiaAtkBridge
 {
 
-	public class MenuItem : Menu, Atk.ActionImplementor, Atk.TextImplementor
+	public class MenuItem : Menu, Atk.IActionImplementor, Atk.ITextImplementor
 	{
 		ITextImplementor textExpert = null;
 		IInvokeProvider invokeProvider = null;
@@ -325,7 +325,7 @@ namespace UiaAtkBridge
 			return textExpert.AddSelection (startOffset, endOffset);
 		}
 
-		bool Atk.TextImplementor.RemoveSelection (int i)
+		bool Atk.ITextImplementor.RemoveSelection (int i)
 		{
 			return textExpert.RemoveSelection (i);
 		}

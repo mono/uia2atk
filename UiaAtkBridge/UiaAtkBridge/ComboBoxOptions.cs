@@ -31,7 +31,7 @@ using Mono.UIAutomation.Services;
 namespace UiaAtkBridge
 {
 	
-	public class ComboBoxOptions : ComponentParentAdapter, Atk.SelectionImplementor
+	public class ComboBoxOptions : ComponentParentAdapter, Atk.ISelectionImplementor
 	{
 		ISelectionProvider selectionProvider = null;
 		SelectionProviderUserHelper selectionHelper = null;
