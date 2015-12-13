@@ -407,36 +407,36 @@ namespace UiaAtkBridgeTest
 		}
 		public override object CastToAtkInterface (Type t, Atk.Object accessible)
 		{
-			if (t == typeof (Atk.Action)) {
-				if (!(accessible is Atk.ActionImplementor))
+			if (t == typeof (Atk.IAction)) {
+				if (!(accessible is Atk.IActionImplementor))
 					return null;
 				return Atk.ActionAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Component)) {
-				if (!(accessible is Atk.ComponentImplementor))
+			} else if (t == typeof (Atk.IComponent)) {
+				if (!(accessible is Atk.IComponentImplementor))
 					return null;
 				return Atk.ComponentAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.EditableText)) {
-				if (!(accessible is Atk.EditableTextImplementor))
+			} else if (t == typeof (Atk.IEditableText)) {
+				if (!(accessible is Atk.IEditableTextImplementor))
 					return null;
 				return Atk.EditableTextAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Image)) {
-				if (!(accessible is Atk.ImageImplementor))
+			} else if (t == typeof (Atk.IImage)) {
+				if (!(accessible is Atk.IImageImplementor))
 					return null;
 				return Atk.ImageAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Table)) {
-				if (!(accessible is Atk.TableImplementor))
+			} else if (t == typeof (Atk.ITable)) {
+				if (!(accessible is Atk.ITableImplementor))
 					return null;
 				return Atk.TableAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Text)) {
-				if (!(accessible is Atk.TextImplementor))
+			} else if (t == typeof (Atk.IText)) {
+				if (!(accessible is Atk.ITextImplementor))
 					return null;
 				return Atk.TextAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Selection)) {
-				if (!(accessible is Atk.SelectionImplementor))
+			} else if (t == typeof (Atk.ISelection)) {
+				if (!(accessible is Atk.ISelectionImplementor))
 					return null;
 				return Atk.SelectionAdapter.GetObject (accessible.Handle, false);
-			} else if (t == typeof (Atk.Value)) {
-				if (!(accessible is Atk.ValueImplementor))
+			} else if (t == typeof (Atk.IValue)) {
+				if (!(accessible is Atk.IValueImplementor))
 					return null;
 				return Atk.ValueAdapter.GetObject (accessible.Handle, false);
 			}
@@ -446,24 +446,24 @@ namespace UiaAtkBridgeTest
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
 			try {
-				if (typeof (I) == typeof (Atk.Component)) {
-					return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Text)) {
-					return new Atk.TextAdapter ((Atk.TextImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Action)) {
-					return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Table)) {
-					return new Atk.TableAdapter ((Atk.TableImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Value)) {
-					return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Image)) {
-					return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.Selection)) {
-					return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.EditableText)) {
-					return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
-				} else if (typeof (I) == typeof (Atk.StreamableContent)) {
-					return new Atk.StreamableContentAdapter ((Atk.StreamableContentImplementor)accessible) as I;
+				if (typeof (I) == typeof (Atk.IComponent)) {
+					return new Atk.ComponentAdapter ((Atk.IComponentImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IText)) {
+					return new Atk.TextAdapter ((Atk.ITextImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IAction)) {
+					return new Atk.ActionAdapter ((Atk.IActionImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.ITable)) {
+					return new Atk.TableAdapter ((Atk.ITableImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IValue)) {
+					return new Atk.ValueAdapter ((Atk.IValueImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IImage)) {
+					return new Atk.ImageAdapter ((Atk.IImageImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.ISelection)) {
+					return new Atk.SelectionAdapter ((Atk.ISelectionImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IEditableText)) {
+					return new Atk.EditableTextAdapter ((Atk.IEditableTextImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.IStreamableContent)) {
+					return new Atk.StreamableContentAdapter ((Atk.IStreamableContentImplementor)accessible) as I;
 				}
 				throw new NotImplementedException ("Couldn't cast to interface " +
 				typeof (I).Name);

@@ -67,7 +67,7 @@ namespace UiaAtkBridgeTest
 			
 			string[] names = new string [] { simpleTestText, "Second Item", "Last Item" };
 			accessible = GetAccessible (accessibleType, names);
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			Atk.IComponent atkComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 
 			InterfaceComponent (type, atkComponent);
 
@@ -92,13 +92,13 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
-			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;
-			Assert.IsNotNull (selection, "ListBox Atk.Selection should not be null");
+			Atk.ISelectionImplementor selection = accessible as Atk.ISelectionImplementor;
+			Assert.IsNotNull (selection, "ListBox Atk.ISelection should not be null");
 			InterfaceSelection (new Atk.SelectionAdapter(selection), names, accessible, type);
 
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
-			InterfaceAction (BasicWidgetType.ListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
+			InterfaceAction (BasicWidgetType.ListItem, CastToAtkInterface <Atk.IAction> (listItemChild), listItemChild);
 
 			InterfaceText (BasicWidgetType.ListItem, true, listItemChild);
 
@@ -122,7 +122,7 @@ namespace UiaAtkBridgeTest
 			
 			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
 			accessible = GetAccessible (accessibleType, names);
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			Atk.IComponent atkComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 
 			InterfaceComponent (type, atkComponent);
 			
@@ -147,13 +147,13 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
-			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;
-			Assert.IsNotNull (selection, "ListBox Atk.Selection should not be null");
+			Atk.ISelectionImplementor selection = accessible as Atk.ISelectionImplementor;
+			Assert.IsNotNull (selection, "ListBox Atk.ISelection should not be null");
 			InterfaceSelection (new Atk.SelectionAdapter(selection), names, accessible, type);
 
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
-			InterfaceAction (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
+			InterfaceAction (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.IAction> (listItemChild), listItemChild);
 
 			InterfaceText (BasicWidgetType.CheckedListItem, true, listItemChild);
 
@@ -165,7 +165,7 @@ namespace UiaAtkBridgeTest
 		{
 			UiaAtkBridge.Hyperlink hyperlink;
 			hyperlink = (UiaAtkBridge.Hyperlink) GetAdapterForWidget (linklab1);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (hyperlink);
+			Atk.IText atkText = CastToAtkInterface<Atk.IText> (hyperlink);
 
 			States (hyperlink,
 				Atk.StateType.Enabled,
@@ -206,7 +206,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (obj2.RefStateSet ().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
 			Assert.AreEqual ("gmail.novell.com", obj2.Name, "Link 2 obj name");
 			
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (obj2);
+			Atk.IAction atkAction = CastToAtkInterface <Atk.IAction> (obj2);
 			Assert.AreEqual (1, atkAction.NActions, "LinkLabel link NActions");
 			Assert.IsTrue (atkAction.DoAction (0), "LinkLabel DoAction #1");
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
@@ -302,7 +302,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object item1 = FindObjectByName (group1, "item1");
 			Assert.IsNotNull (item1, "FindObjectByName (item1)");
 			Assert.AreEqual (Atk.Role.TableCell, item1.Role, "Item1 role");
-			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (item1.Parent);
+			Atk.ISelection atkSelection = CastToAtkInterface<Atk.ISelection> (item1.Parent);
 			string [] names = { groupName, "item1", "item2" };
 			InterfaceSelection (atkSelection, names, item1.Parent, BasicWidgetType.GroupBox);
 			accessible = group1 = item1 = null;
@@ -338,7 +338,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 
 
-			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (group1);
+			Atk.ITable atkTable = CastToAtkInterface<Atk.ITable> (group1);
 			Assert.AreEqual (2, atkTable.NRows * atkTable.NColumns, "Table NRows*NCols");
 			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
@@ -352,7 +352,7 @@ namespace UiaAtkBridgeTest
 			else
 				Assert.AreEqual (2, atkTable.GetIndexAt (0, 1), "GetIndexAt (1, 0)");
 			Atk.Object group2 = FindObjectByName (accessible, "group2");
-			atkTable = CastToAtkInterface<Atk.Table> (group2);
+			atkTable = CastToAtkInterface<Atk.ITable> (group2);
 			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item3", atkTable.RefAt (0, 0).Name, "Cell (1, 0)");
 			Assert.AreEqual ("item4", atkTable.RefAt (row2, col2).Name, "Cell ("+row2+", " +col2 + ")");
@@ -363,7 +363,7 @@ namespace UiaAtkBridgeTest
 			// Changing groups again
 			lv1.Items[2].Group = lv1.Groups[0];
 			lv1.Items[3].Group = lv1.Groups[0];
-			atkTable = CastToAtkInterface<Atk.Table> (group1);
+			atkTable = CastToAtkInterface<Atk.ITable> (group1);
 
 			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren #2");
 
@@ -391,13 +391,13 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (4, atkTable.GetIndexAt (row2, col2), "GetIndexAt (" + row2 + ", " + col2);
 
 			// Image tests
-			Atk.Image atkWithOutImage, atkWithImage;
+			Atk.IImage atkWithOutImage, atkWithImage;
 			item1 = FindObjectByName (group1, "item1");
 			Atk.Object item3 = FindObjectByName (group1, "item3");
 			
-			atkWithOutImage = CastToAtkInterface <Atk.Image> (item3);
-			atkWithImage = CastToAtkInterface <Atk.Image> (item1);
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (item1);
+			atkWithOutImage = CastToAtkInterface <Atk.IImage> (item3);
+			atkWithImage = CastToAtkInterface <Atk.IImage> (item1);
+			Atk.IComponent atkComponent = CastToAtkInterface<Atk.IComponent> (item1);
 			InterfaceImage (BasicWidgetType.ListView, 
 			                atkWithImage, 
 			                atkComponent, 
@@ -437,20 +437,20 @@ namespace UiaAtkBridgeTest
 
 			// 5 rows (6 columns per row) and 1 header (6 header items)
 			Assert.AreEqual (36, accessible.NAccessibleChildren, "NAccessibleChildren #1");
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			Atk.IComponent atkComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 			InterfaceComponent (accesibleType, atkComponent);
 			PropertyRole (accesibleType, accessible);
 
 			// CheckBox Tests
 			Atk.Object checkBox = FindObjectByName (accessible, "false");
 			PropertyRole (BasicWidgetType.CheckBox, checkBox);
-			Atk.Component checkBoxComponent = CastToAtkInterface <Atk.Component> (checkBox);
+			Atk.IComponent checkBoxComponent = CastToAtkInterface <Atk.IComponent> (checkBox);
 			InterfaceComponent (BasicWidgetType.CheckBox, checkBoxComponent);
 			
 			// Image tests
 			Atk.Object pictureBox = FindObjectByName (accessible, "null");
 			PropertyRole (BasicWidgetType.PictureBox, pictureBox);
-			Atk.Component pictureBoxComponent = CastToAtkInterface <Atk.Component> (accessible);
+			Atk.IComponent pictureBoxComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 			InterfaceComponent (BasicWidgetType.PictureBox, pictureBoxComponent);
 
 			// Button tests
@@ -458,10 +458,10 @@ namespace UiaAtkBridgeTest
 			PropertyRole (BasicWidgetType.NormalButton, button);
 			Assert.AreEqual (0, button.NAccessibleChildren, "Button numChildren");
 			Interfaces (button,
-			            typeof (Atk.Image),
-			            typeof (Atk.Component),
-			            typeof (Atk.Action),
-			            typeof (Atk.Text));
+			            typeof (Atk.IImage),
+			            typeof (Atk.IComponent),
+			            typeof (Atk.IAction),
+			            typeof (Atk.IText));
 			InterfaceText (button, "Request");
 
 			// Link tests
@@ -485,7 +485,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 			
-			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (accessible);
+			Atk.ITable atkTable = CastToAtkInterface<Atk.ITable> (accessible);
 
 //			InterfaceTable (atkTable, 5, 6, 0, 0, false);
 			
@@ -500,7 +500,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("Request Header", atkTable.RefAt (0, 5).Name, "Cell (0, 5)");
 
 			Atk.Object tableCell = FindObjectByName (accessible, "Programming Windows");
-			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (tableCell);
+			Atk.IAction atkAction = CastToAtkInterface<Atk.IAction> (tableCell);
 			InterfaceAction (BasicWidgetType.TableCell, atkAction, tableCell);
 		}
 		
@@ -544,7 +544,7 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren");
 
-			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (accessible);
+			Atk.ISelection atkSelection = CastToAtkInterface<Atk.ISelection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 
 			dud1.SelectedIndex = 1;
@@ -769,8 +769,8 @@ namespace UiaAtkBridgeTest
 
 			Atk.Object secondItem = accessible.RefAccessibleChild (1);
 
-			Atk.Action atkAction
-				= CastToAtkInterface <Atk.Action> (secondItem);
+			Atk.IAction atkAction
+				= CastToAtkInterface <Atk.IAction> (secondItem);
 			atkAction.DoAction (0);
 			
 			States (secondItem,
@@ -786,7 +786,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Sensitive,
 				Atk.StateType.Visible);
 
-			atkAction = CastToAtkInterface <Atk.Action> (firstItem);
+			atkAction = CastToAtkInterface <Atk.IAction> (firstItem);
 			atkAction.DoAction (0);
 
 			// #471411 would cause Focused to show up in this list.
@@ -810,8 +810,8 @@ namespace UiaAtkBridgeTest
 				f.Show ();
 
 				Atk.Object accessible = GetAdapterForWidget (b);
-				Atk.Action atkAction
-					= CastToAtkInterface <Atk.Action> (accessible);
+				Atk.IAction atkAction
+					= CastToAtkInterface <Atk.IAction> (accessible);
 				RunInGuiThread (delegate () {
 					atkAction.DoAction (0);
 				});
@@ -860,16 +860,16 @@ namespace UiaAtkBridgeTest
 			// Don't use the full InterfaceSelection as the control
 			// can't implement everything fully without
 			// ISelectionProvider support
-			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (toggle);
+			Atk.ISelection atkSelection = CastToAtkInterface <Atk.ISelection> (toggle);
 			Assert.IsNotNull (atkSelection,
-			                  "ExpandCollapseButton doesn't implement Atk.Selection");
+			                  "ExpandCollapseButton doesn't implement Atk.ISelection");
 
 			for (int i = 1; i < les_schtroumpfs.Length; i++) {
 				Atk.Object child = toggle.RefAccessibleChild (i - 1);
 				Assert.AreEqual (Atk.Role.MenuItem, child.Role,
 				                 String.Format ("Child role #{0}", i));
 				InterfaceText (child, les_schtroumpfs [i]);
-				Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (child);
+				Atk.IComponent atkComponent = CastToAtkInterface<Atk.IComponent> (child);
 				Assert.AreEqual (Atk.Layer.Widget, atkComponent.Layer, "MenuItem layer");
 			}
 		}
@@ -894,7 +894,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (1, sb.NAccessibleChildren, "StatusBar should have 1 child after panel is added");
 			Atk.Object panel = sb.RefAccessibleChild (0);
 			PropertyRole (type, panel);
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (panel);
+			Atk.IComponent atkComponent = CastToAtkInterface<Atk.IComponent> (panel);
 			InterfaceComponent (type, atkComponent);
 
 			Assert.AreEqual (panel.NAccessibleChildren, 0, "StatusBar panel should not have children");
@@ -927,8 +927,8 @@ namespace UiaAtkBridgeTest
 
 			Atk.Object accessible = GetAdapterForWidget (maskedTextBox);
 			
-			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
-			Atk.EditableText editableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.IText text = CastToAtkInterface<Atk.IText> (accessible);
+			Atk.IEditableText editableText = CastToAtkInterface<Atk.IEditableText> (accessible);
 
 			string baseMask = "(___)___-____";
 			Assert.AreEqual (baseMask, text.GetText (0, -1));
@@ -1061,9 +1061,9 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren);
 
 			Interfaces (accessible.Parent,
-			            typeof (Atk.Component));
+			            typeof (Atk.IComponent));
 			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible.Parent);
+			Atk.IComponent atkComponent = CastToAtkInterface <Atk.IComponent> (accessible.Parent);
 			InterfaceComponent (type, atkComponent);
 			
 			States (accessible.Parent,
@@ -1080,21 +1080,21 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 
 			//from here, like Button test
-			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			atkComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 			InterfaceComponent (type, atkComponent);
 
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			Atk.IAction atkAction = CastToAtkInterface <Atk.IAction> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
 			InterfaceText (type);
 
 			//test with an image
-			Atk.Image atkWithOutImage, atkWithImage;
+			Atk.IImage atkWithOutImage, atkWithImage;
 			accessible = GetAccessible (type, name, true);
-			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkWithOutImage = CastToAtkInterface <Atk.IImage> (accessible);
 			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
-			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
-			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			atkWithImage = CastToAtkInterface <Atk.IImage> (accessible);
+			atkComponent = CastToAtkInterface<Atk.IComponent> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 
@@ -1144,9 +1144,9 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren);
 
 			Interfaces (accessible.Parent,
-			            typeof (Atk.Component));
+			            typeof (Atk.IComponent));
 			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible.Parent);
+			Atk.IComponent atkComponent = CastToAtkInterface <Atk.IComponent> (accessible.Parent);
 			InterfaceComponent (type, atkComponent);
 			
 			States (accessible.Parent,
@@ -1162,21 +1162,21 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Visible);
 
 			//from here, like Button test
-			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			atkComponent = CastToAtkInterface <Atk.IComponent> (accessible);
 			InterfaceComponent (type, atkComponent);
 
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			Atk.IAction atkAction = CastToAtkInterface <Atk.IAction> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
 			InterfaceText (type);
 
 			//TODO: test with an image
-//			Atk.Image atkWithOutImage, atkWithImage;
+//			Atk.IImage atkWithOutImage, atkWithImage;
 //			accessible = GetAccessible (type, name, true);
-//			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+//			atkWithOutImage = CastToAtkInterface <Atk.IImage> (accessible);
 //			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
-//			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
-//			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+//			atkWithImage = CastToAtkInterface <Atk.IImage> (accessible);
+//			atkComponent = CastToAtkInterface<Atk.IComponent> (accessible);
 //			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
@@ -1211,7 +1211,7 @@ namespace UiaAtkBridgeTest
 			};
 
 			PropertyRole (type, accessible);
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			Atk.IComponent atkComponent = CastToAtkInterface<Atk.IComponent> (accessible);
 			InterfaceComponent (type, atkComponent);
 			
 			Assert.AreEqual (expectedRoles.Length, accessible.NAccessibleChildren,
@@ -1262,7 +1262,7 @@ namespace UiaAtkBridgeTest
 \pard {\qj\f0\fs24 mn }\par
 }";
 			Atk.Object accessible = GetAdapterForWidget (richTextBox);
-			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.IText text = CastToAtkInterface<Atk.IText> (accessible);
 			Dictionary<string, string> attrs;
 			
 			Dictionary<string, string> defaultAttrs
@@ -1429,8 +1429,8 @@ namespace UiaAtkBridgeTest
 			richTextBox.Text = test;
 
 			Atk.Object accessible = GetAdapterForWidget (richTextBox);
-			Atk.StreamableContent streamableContent
-				= CastToAtkInterface<Atk.StreamableContent> (accessible);
+			Atk.IStreamableContent streamableContent
+				= CastToAtkInterface<Atk.IStreamableContent> (accessible);
 
 			Assert.AreEqual (1, streamableContent.NMimeTypes,
 			                 "Exporting more than the expected number of mimetypes");
@@ -1484,7 +1484,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (accessible);
 
 			//BNC#480829
-			Atk.Value val = CastToAtkInterface <Atk.Value> (accessible);
+			Atk.IValue val = CastToAtkInterface <Atk.IValue> (accessible);
 			GLib.Value value = new GLib.Value ();
 			val.GetCurrentValue (ref value);
 			Assert.AreEqual (value.Val, 0);
@@ -1501,7 +1501,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (accessible);
 			
 			for (int j = 0; j < accessible.NAccessibleChildren; j++) {
-				var action = CastToAtkInterface<Atk.Action> (accessible.RefAccessibleChild (j));
+				var action = CastToAtkInterface<Atk.IAction> (accessible.RefAccessibleChild (j));
 				if (action != null && action.NActions == 1 && action.GetName (0) == "expand or contract")
 					action.DoAction (0);
 			}
@@ -1518,7 +1518,7 @@ namespace UiaAtkBridgeTest
 			                 "Too many or too few children under Calendar");
 			
 			Atk.Object tableChild = accessible.RefAccessibleChild (0);
-			Atk.Table table = CastToAtkInterface<Atk.Table> (tableChild);
+			Atk.ITable table = CastToAtkInterface<Atk.ITable> (tableChild);
 			Assert.IsNotNull (table);
 
 			InterfaceTable (table, 6, 7, 0, 0, true);

@@ -91,12 +91,12 @@ namespace UiaAtkBridgeTest
 
 		public abstract bool HasComboBoxSimpleLayout { get; }
 
-		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
+		protected void InterfaceComponent (BasicWidgetType type, Atk.IComponent implementor)
 		{
 			InterfaceComponent (type, implementor, true);
 		}
 		
-		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor, bool showing)
+		protected void InterfaceComponent (BasicWidgetType type, Atk.IComponent implementor, bool showing)
 		{
 			Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 
@@ -169,9 +169,9 @@ namespace UiaAtkBridgeTest
 		protected abstract bool TextBoxHasScrollBar { get; }
 		protected abstract bool SupportsLabeledBy (out string labelName);
 
-		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
-		                                                Atk.Action actionable2, Atk.Object accessible2,
-		                                                Atk.Action actionable3, Atk.Object accessible3)
+		protected void InterfaceActionFor3RadioButtons (Atk.IAction actionable1, Atk.Object accessible1,
+		                                                Atk.IAction actionable2, Atk.Object accessible2,
+		                                                Atk.IAction actionable3, Atk.Object accessible3)
 		{
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
@@ -241,12 +241,12 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
-		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
+		protected void InterfaceAction (BasicWidgetType type, Atk.IAction implementor, Atk.Object accessible)
 		{
 			InterfaceAction (type, implementor, accessible, null);
 		}
 		
-		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible, string [] names)
+		protected void InterfaceAction (BasicWidgetType type, Atk.IAction implementor, Atk.Object accessible, string [] names)
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if (type == BasicWidgetType.TextBoxEntry ||
@@ -441,7 +441,7 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected, bool childrenCorrection,
+		private void CheckNonMultipleChildrenSelection (Atk.ISelection sel, Atk.Object accessible, int theSelected, bool childrenCorrection,
 		                                                BasicWidgetType type)
 		{
 			int initial = childrenCorrection ? 1 : 0;
@@ -457,7 +457,7 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		protected void InterfaceSelection (Atk.Selection implementor, string [] items, Atk.Object accessible, BasicWidgetType type)
+		protected void InterfaceSelection (Atk.ISelection implementor, string [] items, Atk.Object accessible, BasicWidgetType type)
 		{
 			if (items == null)
 				throw new ArgumentNullException ("names");
@@ -756,7 +756,7 @@ namespace UiaAtkBridgeTest
 				});
 				currentSel = implementor.RefSelection (0);
 				Assert.IsNotNull (currentSel, "Current selection should not be null");
-				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
+				Atk.IComponent atkComponentCurrentSel = CastToAtkInterface <Atk.IComponent> (currentSel);
 				atkComponentCurrentSel.GrabFocus ();
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				if (type != BasicWidgetType.TabControl && 
@@ -778,7 +778,7 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		private void TextMatchesValue (BasicWidgetType type, Atk.Value atkValue, Atk.Text atkText)
+		private void TextMatchesValue (BasicWidgetType type, Atk.IValue atkValue, Atk.IText atkText)
 		{
 			if (atkText == null)
 				return;
@@ -796,7 +796,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (text [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
 		}
 
-		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue, Atk.Text atkText)
+		protected void InterfaceValue (BasicWidgetType type, Atk.IValue atkValue, Atk.IText atkText)
 		{
 			Assert.IsNotNull (atkValue, "InterfaceValue value not null");
 			Assert.AreEqual (  0, GetMinimumValue(atkValue), "InterfaceValue MinimumValue");
@@ -811,13 +811,13 @@ namespace UiaAtkBridgeTest
 			TextMatchesValue (type, atkValue, atkText);
 		}
 
-		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue)
+		protected void InterfaceValue (BasicWidgetType type, Atk.IValue atkValue)
 		{
 			InterfaceValue (type, atkValue, null);
 		}
 
-		protected void InterfaceImage (BasicWidgetType type, Atk.Image implementor, Atk.Component component, 
-		                               Atk.Image withoutImageImplementor)
+		protected void InterfaceImage (BasicWidgetType type, Atk.IImage implementor, Atk.IComponent component, 
+		                               Atk.IImage withoutImageImplementor)
 		{
 			Assert.IsNull (implementor.ImageDescription, "ImageDescription == null initially");
 			Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null initially");
@@ -901,8 +901,8 @@ namespace UiaAtkBridgeTest
 			else
 				Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
 
-			Atk.Action action = CastToAtkInterface <Atk.Action> (menuChild);
-			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.Action");
+			Atk.IAction action = CastToAtkInterface <Atk.IAction> (menuChild);
+			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.IAction");
 
 			//HACK: no way to hide the column header!
 			int childrenCorrection = (comboType == BasicWidgetType.ComboBoxSimple && !HasComboBoxSimpleLayout)? 1 : 0;
@@ -923,7 +923,7 @@ namespace UiaAtkBridgeTest
 
 				Assert.AreEqual (menuItemChild.Name, items [i], "ComboBox menuitem names should be the same as the items");
 				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
-				Assert.IsNull (CastToAtkInterface <Atk.Selection> (menuItemChild), "a comboboxitem should not implement Atk.Selection");
+				Assert.IsNull (CastToAtkInterface <Atk.ISelection> (menuItemChild), "a comboboxitem should not implement Atk.ISelection");
 
 				if (defaultState)
 					States (menuItemChild,
@@ -933,8 +933,8 @@ namespace UiaAtkBridgeTest
 				            Atk.StateType.Visible);
 			}
 
-			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (menuChild);
-			Assert.IsNotNull (atkSelection, "the Menu child of a combobox should implement Atk.Selection");
+			Atk.ISelection atkSelection = CastToAtkInterface <Atk.ISelection> (menuChild);
+			Assert.IsNotNull (atkSelection, "the Menu child of a combobox should implement Atk.ISelection");
 			InterfaceSelection (atkSelection, items, menuChild, 
 			                    comboType == BasicWidgetType.ComboBoxSimple ? 
 			                      BasicWidgetType.ComboBoxSimpleMenu : BasicWidgetType.ComboBoxMenu);
@@ -1071,7 +1071,7 @@ namespace UiaAtkBridgeTest
 				InterfaceEditableTextWithValue (type, accessible);
 				return;
 			}
-			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.IEditableText atkEditableText = CastToAtkInterface<Atk.IEditableText> (accessible);
 			atkEditableText.TextContents = "abcdef";
 			InterfaceText (accessible, "abcdef");
 			atkEditableText.DeleteText (2, 4);
@@ -1109,10 +1109,10 @@ namespace UiaAtkBridgeTest
 
 		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
 		{
-			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
-			Atk.Value atkValue = CastToAtkInterface<Atk.Value> (accessible);
-			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			Atk.IEditableText atkEditableText = CastToAtkInterface<Atk.IEditableText> (accessible);
+			Atk.IText atkText = CastToAtkInterface<Atk.IText> (accessible);
+			Atk.IValue atkValue = CastToAtkInterface<Atk.IValue> (accessible);
+			Atk.IAction atkAction = CastToAtkInterface<Atk.IAction> (accessible);
 			atkEditableText.TextContents = "42";
 			Assert.IsTrue (atkAction.DoAction (0), "DoAction #1");
 			System.Threading.Thread.Sleep (250);
@@ -1153,8 +1153,8 @@ namespace UiaAtkBridgeTest
 
 		protected void EditReadOnly (BasicWidgetType type, Atk.Object accessible)
 		{
-			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.IEditableText atkEditableText = CastToAtkInterface<Atk.IEditableText> (accessible);
+			Atk.IText atkText = CastToAtkInterface<Atk.IText> (accessible);
 
 			SetReadOnly (type, accessible, false);
 			atkEditableText.TextContents = "0";
@@ -1171,8 +1171,8 @@ namespace UiaAtkBridgeTest
 
 		protected void EditDisable (Atk.Object accessible)
 		{
-			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.IEditableText atkEditableText = CastToAtkInterface<Atk.IEditableText> (accessible);
+			Atk.IText atkText = CastToAtkInterface<Atk.IText> (accessible);
 
 			EnableWidget (accessible);
 			atkEditableText.TextContents = "0";
@@ -1210,13 +1210,13 @@ namespace UiaAtkBridgeTest
 			string expected;
 			string name = simpleTestText;
 
-			Atk.Text atkText = null;
+			Atk.IText atkText = null;
 
 			RunInGuiThread (delegate () {
 				if (accessible == null) {
 					accessible = GetAccessible (type, name, widget);
 				}
-				atkText = CastToAtkInterface <Atk.Text> (accessible);
+				atkText = CastToAtkInterface <Atk.IText> (accessible);
 			});
 
 			if (Misc.HasReadOnlyText (type))
@@ -1256,7 +1256,7 @@ namespace UiaAtkBridgeTest
 			                 atkText.SetCaretOffset (highCaretOffset), "SetCaretOffset#4 SL");
 			
 			// don't do this until bug#393565 is fixed:
-			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
+			//Assert.AreEqual (typeof(Atk.ITextAttribute), atkText.DefaultAttributes[0].GetType());
 
 			int nSelections = -1;
 			if ((type == BasicWidgetType.Label) || 
@@ -1492,7 +1492,7 @@ namespace UiaAtkBridgeTest
 
 			RunInGuiThread (delegate () {
 				accessible = GetAccessible (type, name, widget);
-				atkText = CastToAtkInterface <Atk.Text> (accessible);
+				atkText = CastToAtkInterface <Atk.IText> (accessible);
 			});
 
 			System.Threading.Thread.Sleep (1000);
@@ -1765,7 +1765,7 @@ namespace UiaAtkBridgeTest
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
 			accessible = GetAccessible (type, name, widget);
-			atkText = CastToAtkInterface <Atk.Text> (accessible);
+			atkText = CastToAtkInterface <Atk.IText> (accessible);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			
 			expected = "\r\nwith EOL but without dot, and other phrase...";
@@ -1795,11 +1795,11 @@ namespace UiaAtkBridgeTest
 
 		protected void TextSelection (BasicWidgetType type, Atk.Object accessible, string name)
 		{
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.IText atkText = CastToAtkInterface<Atk.IText> (accessible);
 			TextSelection (type, atkText, name);
 		}
 
-		protected void TextSelection (BasicWidgetType type, Atk.Text atkText, string name)
+		protected void TextSelection (BasicWidgetType type, Atk.IText atkText, string name)
 		{
 			if (name.Length < 5)
 				throw new Misc.UntestableException ("String not long enough to test.");
@@ -1840,9 +1840,9 @@ namespace UiaAtkBridgeTest
 		// Simpler text test with a variable string
 		protected void InterfaceText (Atk.Object accessible, string text)
 		{
-			Atk.Text atkText = null;
+			Atk.IText atkText = null;
 			RunInGuiThread (delegate () {
-				atkText = CastToAtkInterface <Atk.Text> (accessible);
+				atkText = CastToAtkInterface <Atk.IText> (accessible);
 			});
 
 			int length = text.Length;
@@ -1881,14 +1881,14 @@ namespace UiaAtkBridgeTest
 
 		private static Type [] atkTypes = 
 		  new Type [] { 
-			typeof (Atk.Action) ,
-			typeof (Atk.Component) ,
-			typeof (Atk.EditableText) ,
-			typeof (Atk.Image) ,
-			typeof (Atk.Table) ,
-			typeof (Atk.Text) ,
-			typeof (Atk.Selection) ,
-			typeof (Atk.Value) };
+			typeof (Atk.IAction) ,
+			typeof (Atk.IComponent) ,
+			typeof (Atk.IEditableText) ,
+			typeof (Atk.IImage) ,
+			typeof (Atk.ITable) ,
+			typeof (Atk.IText) ,
+			typeof (Atk.ISelection) ,
+			typeof (Atk.IValue) };
 		
 		protected void Interfaces (Atk.Object accessible, params Type [] expected)
 		{
@@ -1957,7 +1957,7 @@ namespace UiaAtkBridgeTest
 			return (row * numCols) + column + 1;
 		}
 
-		protected void InterfaceTable (Atk.Table implementor, int expectedRows, int expectedCols,
+		protected void InterfaceTable (Atk.ITable implementor, int expectedRows, int expectedCols,
 		                               int expectedSelectedRows, int expectedSelectedColumns,
 		                               bool supportsRowColExtents)
 		{
@@ -1979,30 +1979,14 @@ namespace UiaAtkBridgeTest
 			implementor.Summary = test;
 			Assert.AreEqual (implementor.Summary, test, "summary after set");
 
-#if HAVE_OLD_ATK_SHARP
-			int numSelected;
-			Assert.AreEqual (expectedSelectedRows, 
-			                 implementor.GetSelectedRows (out numSelected),
-			                 "Incorrect number of selected rows");
-			Assert.AreEqual (expectedSelectedRows, numSelected,
-			                 "Incorrect number of selected rows in out parameter");
-#else
+			/*
+			// bnc#512477
 			Assert.AreEqual (expectedSelectedRows, implementor.SelectedRows,
 			                 "Incorrect number of selected rows");
-#endif
 
-
-#if HAVE_OLD_ATK_SHARP
-			Assert.AreEqual (expectedSelectedColumns,
-			                 implementor.GetSelectedColumns (out numSelected),
-			                 "Incorrect number of selected columns");
-			Assert.AreEqual (expectedSelectedColumns, numSelected,
-			                 "Incorrect number of selected columns in out parameter");
-#else
 			Assert.AreEqual (expectedSelectedColumns, implementor.SelectedColumns,
 			                 "Incorrect number of selected columns");
-#endif
-
+			*/
 
 
 			for (int r = -1; r <= numRows; r++) {
@@ -2147,7 +2131,7 @@ namespace UiaAtkBridgeTest
 		{
 			bool transient = (accessible.RefStateSet ().ContainsState (Atk.StateType.Transient));
 
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			Atk.IComponent atkComponent = CastToAtkInterface<Atk.IComponent> (accessible);
 			EventMonitor.Start ();
 			RunInGuiThread (delegate () {
 				atkComponent.GrabFocus ();
@@ -2163,28 +2147,28 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (focusedAccessible.RefStateSet ().ContainsState (Atk.StateType.Focused), "List focused");
 		}
 
-		protected double GetMinimumValue (Atk.Value value)
+		protected double GetMinimumValue (Atk.IValue value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMinimumValue (ref gv);
 			return double.Parse (gv.Val.ToString());
 		}
 
-		protected double GetMaximumValue (Atk.Value value)
+		protected double GetMaximumValue (Atk.IValue value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMaximumValue (ref gv);
 			return double.Parse (gv.Val.ToString());
 		}
 
-		protected double GetCurrentValue (Atk.Value value)
+		protected double GetCurrentValue (Atk.IValue value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetCurrentValue (ref gv);
 			return double.Parse (gv.Val.ToString());
 		}
 
-		protected bool SetCurrentValue (Atk.Value value, double n)
+		protected bool SetCurrentValue (Atk.IValue value, double n)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetCurrentValue (ref gv);
@@ -2197,7 +2181,7 @@ namespace UiaAtkBridgeTest
 
 		protected bool DoActionByName (Atk.Object accessible, string name)
 		{
-			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			Atk.IAction atkAction = CastToAtkInterface<Atk.IAction> (accessible);
 			Assert.IsNotNull (atkAction,
 			                  String.Format ("Accessible with Name = {0} and Role = {1} does not implement AtkAction.",
 			                                 accessible.Name, accessible.Role));

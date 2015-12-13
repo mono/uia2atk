@@ -71,7 +71,7 @@ namespace UiaAtkBridgeTest
 				Atk.Object list = comboBox.RefAccessibleChild (0);
 				Assert.IsTrue (list.NAccessibleChildren > 0, "ComboBox child should have children");
 				EventMonitor.Start ();
-				Atk.Selection atkSelection = Atk.SelectionAdapter.GetObject (list.Handle, false);
+				Atk.ISelection atkSelection = Atk.SelectionAdapter.GetObject (list.Handle, false);
 				atkSelection.AddSelection (5);
 				string evType = "object:state-changed:selected";
 				EventCollection events = EventMonitor.Pause ();
