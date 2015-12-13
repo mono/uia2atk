@@ -3,11 +3,7 @@ EXTRA_DIST =
 
 a11ydir    = $(prefix)/lib/mono/accessibility
 
-if HAS_MONO_2_5
 windowsbase = WindowsBase
-else
-windowsbase   = $(prefix)/lib/mono/2.0/WindowsBase.dll
-endif
 
 SHELL = /bin/sh
 MKINSTALLDIRS = $(SHELL) $(top_srcdir)/mkinstalldirs

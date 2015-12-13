@@ -14,14 +14,6 @@ GTKFORM_EXE_SOURCE=../GtkForm/bin/Debug/GtkForm.exe
 GTKFORM_EXE_MDB_SOURCE=$(GTKFORM_EXE_SOURCE).mdb
 GTKFORM_EXE_MDB=$(GTKFORM_EXE).mdb
 
-if HAS_MONO_2_5
-else
-WINDOWSBASE_DLL = $(BUILD_DIR)/WindowsBase.dll
-WINDOWSBASE_DLL_SOURCE=$(top_builddir)/bin/WindowsBase.dll
-WINDOWSBASE_DLL_MDB_SOURCE=$(WINDOWSBASE_DLL_SOURCE).mdb
-WINDOWSBASE_DLL_MDB=$(WINDOWSBASE_DLL).mdb
-endif
-
 UIAUTOMATIONTYPES_DLL = $(BUILD_DIR)/UIAutomationTypes.dll
 UIAUTOMATIONTYPES_DLL_SOURCE=$(top_builddir)/bin/UIAutomationTypes.dll
 UIAUTOMATIONTYPES_DLL_MDB_SOURCE=$(UIAUTOMATIONTYPES_DLL_SOURCE).mdb
@@ -123,12 +115,6 @@ include $(top_srcdir)/Makefile.include
 
 $(eval $(call emit-deploy-target,GTKFORM_EXE))
 $(eval $(call emit-deploy-target,GTKFORM_EXE_MDB))
-
-if HAS_MONO_2_5
-else
-$(eval $(call emit-deploy-target,WINDOWSBASE_DLL))
-$(eval $(call emit-deploy-target,WINDOWSBASE_DLL_MDB))
-endif
 
 $(eval $(call emit-deploy-target,UIAUTOMATIONTYPES_DLL))
 $(eval $(call emit-deploy-target,UIAUTOMATIONTYPES_DLL_MDB))
