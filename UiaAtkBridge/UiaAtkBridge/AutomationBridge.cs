@@ -267,7 +267,6 @@ namespace UiaAtkBridge
 			dbus_send.WaitForExit ();
 			dbus_send.Close ();
 
-			Console.WriteLine ("IsAccessibilityEnabledDBus: output=" + output);
 			if (output.Contains ("true"))
 				return true;
 			if (output.Contains ("false"))
@@ -288,7 +287,6 @@ namespace UiaAtkBridge
 				try {
 					return IsAccessibilityEnabledDBus ();
 				} catch {
-					Console.WriteLine ("IsAccessibilityEnabled: Exception querying dbus, trying gconf");
 					return IsAccessibilityEnabledGConf ();
 				}
 			}
