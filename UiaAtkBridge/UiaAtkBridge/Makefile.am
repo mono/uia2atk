@@ -1,7 +1,7 @@
 
 EXTRA_DIST =  UiaAtkBridge.dll.config.in
 
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:$(top_srcdir)/mono-uia.snk -warnaserror
 
 ASSEMBLY = bin/UiaAtkBridge.dll

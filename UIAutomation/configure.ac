@@ -22,9 +22,9 @@ if test "x$MONO" = "xno"; then
 fi
 AC_SUBST(MONO)
 
-AC_PATH_PROG(GMCS, gmcs, no)
-if test "x$GMCS" = "xno"; then
-        AC_MSG_ERROR([gmcs Not found])
+AC_PATH_PROG(MCS, mcs, no)
+if test "x$MCS" = "xno"; then
+        AC_MSG_ERROR([mcs Not found])
 fi
 
 AC_PATH_PROG(GACUTIL, gacutil, no)

@@ -1,7 +1,7 @@
 EXTRA_DIST =
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/GtkForm.exe
@@ -16,7 +16,7 @@ GTKFORM_EXE_MDB=$(BUILD_DIR)/GtkForm.exe.mdb
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:$(top_srcdir)/mono-uia.snk
 ASSEMBLY = bin/Release/GtkForm.exe
 ASSEMBLY_MDB = 

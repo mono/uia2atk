@@ -2,7 +2,7 @@
 EXTRA_DIST =  
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -keyfile:$(top_srcdir)/mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/AtspiUiaSourceTests.dll
@@ -21,7 +21,7 @@ ATSPIUIASOURCE_DLL_MDB=$(BUILD_DIR)/AtspiUiaSource.dll.mdb
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -keyfile:$(top_srcdir)/mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
 ASSEMBLY = bin/Release/AtspiUiaSourceTests.dll
 ASSEMBLY_MDB = 

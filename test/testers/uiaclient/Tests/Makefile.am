@@ -4,7 +4,7 @@ EXTRA_DIST =
 # Warning: This is an automatically generated file, do not edit!
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG;TRACE"
 ASSEMBLY = bin/Debug/MonoTests.Mono.UIAutomation.UIAClientAPI.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -27,7 +27,7 @@ MONOTESTS_MONO_UIAUTOMATION_UIACLIENTAPI_DLL_MDB=$(BUILD_DIR)/MonoTests.Mono.UIA
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ "-define:TRACE"
 ASSEMBLY = bin/Release/MonoTests.Mono.UIAutomation.UIAClientAPI.dll
 ASSEMBLY_MDB = 
