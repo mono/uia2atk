@@ -70,12 +70,13 @@ namespace System.Windows.Automation
 								int px, int py, bool checkRoot)
 		{
 			if (checkRoot) {
-				var rootWin = Gdk.Window.ForeignNew ((uint) root.ToInt32());
-				if (!rootWin.IsViewable)
+				IntPtr dpy = gdk_x11_display_get_xdisplay (Gdk.Display.Default.Handle);
+				var rootWin = gdk_x11_window_foreign_new_for_display (dpy, root);
+				if (gdk_window_is_viewable (rootWin) == 0)
 					return IntPtr.Zero;
 				int x, y, w, h;
-				rootWin.GetOrigin (out x, out y);
-				rootWin.GetSize (out w, out h);
+				gdk_window_get_origin (rootWin, out x, out y);
+				gdk_window_get_size (rootWin, out w, out h);
 				if (x > px || x + w < px || y > py || y + h < py)
 					return IntPtr.Zero;
 			}
@@ -123,9 +124,9 @@ namespace System.Windows.Automation
 				return IntPtr.Zero;
 			try {
 				if (IsWindowsSys)
-					return gdk_win32_drawable_get_handle (win.Handle);
+					return gdk_win32_window_get_handle (win.Handle);
 				else
-					return gdk_x11_drawable_get_xid (win.Handle);
+					return gdk_x11_window_get_xid (win.Handle);
 			} catch (Exception ex) {
 				Log.Error ("Error calling libgdk: {0}", ex.Message);
 				return IntPtr.Zero;
@@ -139,14 +140,26 @@ namespace System.Windows.Automation
 			}
 		}
 
-		[DllImport ("libgdk-x11-2.0.so.0")]
-		internal static extern IntPtr gdk_x11_drawable_get_xid (IntPtr handle);
+		[DllImport ("libgdk-3.so.0")]
+		internal static extern IntPtr gdk_x11_window_get_xid (IntPtr handle);
 
-		[DllImport ("libgdk-win32-2.0-0.dll")]
-		internal static extern IntPtr gdk_win32_drawable_get_handle (IntPtr handle);
+		[DllImport ("libgdk-3.0-dll")]
+		internal static extern IntPtr gdk_win32_window_get_handle (IntPtr handle);
 
-		[DllImport ("libgdk-x11-2.0.so.0")]
+		[DllImport ("libgdk-3.so.0")]
 		internal static extern IntPtr gdk_x11_display_get_xdisplay (IntPtr handle);
+
+		[DllImport ("libgdk-3.so.0")]
+		internal static extern IntPtr gdk_x11_window_foreign_new_for_display (IntPtr display, IntPtr window);
+
+		[DllImport ("libgdk-3.so.0")]
+		internal static extern int gdk_window_is_viewable (IntPtr window);
+
+		[DllImport ("libgdk-3.so.0")]
+		internal static extern int gdk_window_get_origin (IntPtr window, out int x, out int y);
+
+		[DllImport ("libgdk-3.so.0")]
+		internal static extern int gdk_window_get_size (IntPtr window, out int x, out int y);
 
 		[DllImport("libX11.so")]
 		private static extern int XQueryTree(IntPtr display, IntPtr w, out IntPtr rootReturn, out IntPtr parentReturn, out IntPtr childrenReturn, out int childrenReturnCount);

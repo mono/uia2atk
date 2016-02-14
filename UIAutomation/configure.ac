@@ -90,8 +90,8 @@ AC_SUBST(WINDOWSBASE_LIBS)
 has_mono_2_5=yes
 
 dnl for test
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0 >= 2.12.8])
+PKG_CHECK_MODULES([GLIB_SHARP_30], [glib-sharp-3.0 >= 2.99.1])
+PKG_CHECK_MODULES([GTK_SHARP_30], [gtk-sharp-3.0 >= 2.99.1])
 
 AC_CONFIG_FILES([
 UIAutomationTypes/Makefile
