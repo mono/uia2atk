@@ -79,7 +79,8 @@ REFERENCES =  \
 	System.Core \
 	$(DBUS_SHARP_LIBS) \
 	$(MONO_UIA_LIBS) \
-	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll
+	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll \
+	$(top_builddir)/UiaDbusBridge/bin/Debug/UiaDbusBridge.dll
 
 DLL_REFERENCES = 
 

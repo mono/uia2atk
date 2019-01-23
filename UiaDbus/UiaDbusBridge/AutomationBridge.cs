@@ -42,6 +42,11 @@ using org.freedesktop.DBus;
 
 namespace Mono.UIAutomation.UiaDbusBridge
 {
+	public static class DBusAutomationBridgeConstants
+	{
+		public const string BusNamePrefix = "org.mono.uia.guid_";
+	}
+
 	internal class AutomationBridge : IAutomationBridge
 	{
 		#region Private Members
@@ -84,9 +89,17 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			get {
 				if (sessionBus == null)
 					lock (syncRoot) {
-						if (sessionBus == null)
-							sessionBus = Bus.Session;
-					}
+							if (sessionBus == null)
+							{
+								sessionBus = Bus.Session;
+
+								var guid = Guid.NewGuid ().ToString ().Replace ("-", "");
+								var name = DBusAutomationBridgeConstants.BusNamePrefix + guid;
+								var res = sessionBus.RequestName (name, NameFlag.None);
+								if (res != RequestNameReply.PrimaryOwner)
+									Log.Error ("[AutomationBridge.SessionBus] Cann't request bus connection name '{0}': {1}", name, res);
+							}
+						}
 				return sessionBus;
 			}
 		}
@@ -169,7 +182,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 		{
 			IRawElementProviderSimple simpleProvider =
 				provider as IRawElementProviderSimple;
-			
+
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (simpleProvider == null)
 					return;
@@ -182,7 +195,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 				bool isRootWindow = false;
 				if (ControlType.Window.Id == (int)
-				    simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
+					simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
 					var fragmentProvider = simpleProvider as IRawElementProviderFragment;
 					isRootWindow = fragmentProvider != null &&
 						fragmentProvider == fragmentProvider.Navigate (NavigateDirection.Parent);
@@ -231,13 +244,13 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					instance = null;
 			}
 		}
-		
+
 		public bool IsAccessibilityEnabled {
 			get {
 				return true; // TODO?
 			}
 		}
-		
+
 		public bool ClientsAreListening {
 			get {
 				return true; // TODO
@@ -346,7 +359,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				current = current.Navigate (NavigateDirection.NextSibling);
 			}
 		}
-		
+
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
 			ProviderElementWrapper element;
@@ -385,11 +398,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			if (mainLoopStarted)
 				return;
 			runMainLoop = true;
-			
+
 			Bus bus = SessionBus;
 			app = new Application ();
-			bus.Register (new ObjectPath (DC.Constants.ApplicationPath),
-			              app);
+			bus.Register (new ObjectPath (DC.Constants.ApplicationPath), app);
 			mainLoop = new Thread (new ThreadStart (MainLoop));
 			mainLoop.IsBackground = true;
 			mainLoop.Start ();

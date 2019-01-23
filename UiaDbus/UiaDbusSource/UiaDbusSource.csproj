@@ -89,5 +89,9 @@
       <Project>{1E67B433-629F-4740-BD8A-E200D6A73EC5}</Project>
       <Name>UiaDbus</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UiaDbusBridge\UiaDbusBridge.csproj">
+      <Project>{C998BCE9-DE5E-40EB-ABCA-FD1E96B6AD95}</Project>
+      <Name>UiaDbusBridge</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
