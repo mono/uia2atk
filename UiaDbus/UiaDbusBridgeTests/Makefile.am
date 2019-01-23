@@ -85,7 +85,7 @@ REFERENCES =  \
 	System.Windows.Forms \
 	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll \
 	$(top_builddir)/UiaDbusBridge/bin/Debug/UiaDbusBridge.dll \
-	$(NDESK_DBUS_LIBS) \
+	$(DBUS_SHARP_LIBS) \
 	$(MONO_UIA_LIBS)
 
 DLL_REFERENCES = 

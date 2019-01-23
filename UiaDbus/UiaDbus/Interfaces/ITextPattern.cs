@@ -24,7 +24,7 @@
 // 
 
 using System;
-using NDesk.DBus;
+using DBus;
 //using System.Windows;
 using System.Windows.Automation;
 

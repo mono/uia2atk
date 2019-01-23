@@ -33,7 +33,7 @@ using Mono.UIAutomation.Source;
 using DC = Mono.UIAutomation.UiaDbus;
 using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbusSource
 {

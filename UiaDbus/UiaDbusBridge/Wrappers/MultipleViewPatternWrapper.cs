@@ -32,7 +32,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using DC = Mono.UIAutomation.UiaDbus;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {

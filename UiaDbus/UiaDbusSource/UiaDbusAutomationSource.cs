@@ -29,7 +29,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 
-using NDesk.DBus;
+using DBus;
 using org.freedesktop.DBus;
 
 using Mono.UIAutomation.Services;

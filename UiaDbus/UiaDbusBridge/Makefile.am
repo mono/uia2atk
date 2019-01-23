@@ -75,7 +75,7 @@ REFERENCES =  \
 	System \
 	Mono.Posix \
 	System.Core \
-	$(NDESK_DBUS_LIBS) \
+	$(DBUS_SHARP_LIBS) \
 	$(MONO_UIA_LIBS) \
 	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll
 

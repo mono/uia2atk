@@ -25,12 +25,6 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES) $(ASSEMBLY).config
 
-if ENABLE_EXTERNAL_NDESK_DBUS
-NDESK_DBUS_FILES =
-else
-NDESK_DBUS_FILES = $(top_srcdir)/ndesk-dbus/*.cs
-endif
-
 SOURCE_FILES =  \
 	AssemblyInfo.cs \
 	Constants.cs \
@@ -61,8 +55,7 @@ SOURCE_FILES =  \
 	Rect.cs 
 
 FILES =  \
-	$(SOURCE_FILES) \
-	$(NDESK_DBUS_FILES)
+	$(SOURCE_FILES)
 
 DATA_FILES = 
 
@@ -72,7 +65,7 @@ REFERENCES =  \
 	System \
 	Mono.Posix \
 	System.Core \
-	$(NDESK_DBUS_LIBS) \
+	$(DBUS_SHARP_LIBS) \
 	$(MONO_UIA_LIBS)
 
 DLL_REFERENCES = 

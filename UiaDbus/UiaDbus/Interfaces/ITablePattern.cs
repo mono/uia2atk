@@ -25,7 +25,7 @@
 
 using System;
 using SWA = System.Windows.Automation;
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbus.Interfaces
 {

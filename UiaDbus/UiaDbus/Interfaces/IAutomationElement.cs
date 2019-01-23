@@ -25,7 +25,7 @@
 
 using System;
 using System.Windows.Automation;
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
