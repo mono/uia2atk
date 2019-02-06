@@ -78,24 +78,21 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		private void OnNavigationUpdated (object sender, NavigationEventArgs e)
 		{
-			ScrollBarProvider provider;
-			if ((provider = e.ChildProvider as ScrollBarProvider) != null) {
-				if (provider != null) {
-					SWF.ScrollBar scrollbarProvider = (SWF.ScrollBar) provider.Control;
-					if (e.ChangeType == StructureChangeType.ChildAdded) {
-						if (scrollbar == scrollbarProvider)
-							return;
+			if (e.ChildProvider is ScrollBarProvider provider) {
+				SWF.ScrollBar scrollbarProvider = (SWF.ScrollBar) provider.Control;
+				if (e.ChangeType == StructureChangeType.ChildAdded) {
+					if (scrollbar == scrollbarProvider)
+						return;
 
-						if (scrollbar != null)
-							scrollbar.ValueChanged -= OnScrollValueChanged;
-						scrollbar = scrollbarProvider;
-						scrollbar.ValueChanged += OnScrollValueChanged;
-					} else if (e.ChangeType == StructureChangeType.ChildRemoved
-					           || e.ChangeType == StructureChangeType.ChildrenBulkRemoved) {
-						if (scrollbar != null)
-							scrollbar.ValueChanged -= OnScrollValueChanged;
-						scrollbar = null;
-					}
+					if (scrollbar != null)
+						scrollbar.ValueChanged -= OnScrollValueChanged;
+					scrollbar = scrollbarProvider;
+					scrollbar.ValueChanged += OnScrollValueChanged;
+				} else if (e.ChangeType == StructureChangeType.ChildRemoved ||
+				           e.ChangeType == StructureChangeType.ChildrenBulkRemoved) {
+					if (scrollbar != null)
+						scrollbar.ValueChanged -= OnScrollValueChanged;
+					scrollbar = null;
 				}
 			}
 			RaiseAutomationPropertyChangedEvent ();

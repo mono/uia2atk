@@ -77,16 +77,14 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Static Event Handlers
 		
-
-		
 		static void OnFormAdded (object sender, EventArgs args)
 		{
-			Form f = (Form) sender;
+			var f = (Form) sender;
+
 			if (formProviders.ContainsKey (f))
 				return;
 
-			FormProvider provider = (FormProvider)
-				ProviderFactory.GetProvider (f, true);
+			var provider = (FormProvider) ProviderFactory.GetProvider (f);
 
 			// NOTE: Form Provider Releasing is done by FormProvider
 			
@@ -98,17 +96,11 @@ namespace Mono.UIAutomation.Winforms
 			formProviders [f] = provider;
 			
 			if (f.Owner == null) { //For example is not MessageBox, f.ShowDialog or XXXXXDialog
-				//Initialize navigation to let children use it
-				provider.Navigation = NavigationFactory.CreateNavigation (provider);
-				provider.Navigation.Initialize ();
-				
 				// TODO: Fill in rest of eventargs
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   provider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, provider);
 				provider.InitializeChildControlStructure ();
 			} else {
-				FormProvider ownerProvider 
-					= (FormProvider) ProviderFactory.FindProvider (f.Owner);
+				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (f.Owner);
 				ownerProvider.AddChildProvider (provider);
 			}
 		}

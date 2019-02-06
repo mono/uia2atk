@@ -38,6 +38,8 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 	[Interface (Constants.ApplicationInterfaceName)]
 	public interface IApplication
 	{
+		void ForceUpdate();
+
 		string [] GetRootElementPaths ();
 		string GetFocusedElementPath ();
 

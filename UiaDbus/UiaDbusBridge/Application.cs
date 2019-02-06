@@ -37,11 +37,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 {
 	internal class Application : IApplication
 	{
-		private List<ProviderElementWrapper> rootElements;
+		private readonly List<ProviderElementWrapper> rootElements;
 
-		private List<AutomationEventHandlerData> automationEventHandlers;
-		private List<AutomationPropertyChangedHandlerData> propertyEventHandlers;
-		private List<AutomationEventHandlerData> structureEventHandlers;
+		private readonly List<AutomationEventHandlerData> automationEventHandlers;
+		private readonly List<AutomationPropertyChangedHandlerData> propertyEventHandlers;
+		private readonly List<AutomationEventHandlerData> structureEventHandlers;
 
 		private string focusedElementPath = string.Empty;
 
@@ -51,6 +51,11 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			automationEventHandlers = new List<AutomationEventHandlerData> ();
 			propertyEventHandlers = new List<AutomationPropertyChangedHandlerData> ();
 			structureEventHandlers = new List<AutomationEventHandlerData> ();
+		}
+
+		public void ForceUpdate()
+		{
+			OnRootElementsChanged ();
 		}
 
 		public void AddRootElement (ProviderElementWrapper element)

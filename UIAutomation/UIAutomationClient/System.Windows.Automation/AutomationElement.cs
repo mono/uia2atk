@@ -518,6 +518,7 @@ namespace System.Windows.Automation
 				return false;
 			}
 		}
+
 #endregion
 
 #region Public Static Methods
@@ -644,30 +645,29 @@ namespace System.Windows.Automation
 		{
 			// Parent and Ancestors scopes are not supported on
 			// Windows (this is specified in MSDN, too).
-			if ((scope & TreeScope.Parent) == TreeScope.Parent ||
-			    (scope & TreeScope.Ancestors) == TreeScope.Ancestors)
+			if (scope.HasFlag (TreeScope.Parent) || scope.HasFlag (TreeScope.Ancestors))
 				throw new ArgumentException ("scope");
 
 			List<AutomationElement> found = new List<AutomationElement> ();
 
-			if ((!findFirst || found.Count == 0) &&
-			    (scope & TreeScope.Element) == TreeScope.Element &&
-			    condition.AppliesTo (this) &&
-			    (CacheRequest.Current == CacheRequest.DefaultRequest || CacheRequest.Current.TreeFilter.AppliesTo (this))) {
+			var isElementScope = scope.HasFlag (TreeScope.Element);
+			var isThis = condition.AppliesTo (this);
+			var isDefaulRequest = CacheRequest.Current == CacheRequest.DefaultRequest;
+			var isTreeFilter = CacheRequest.Current.TreeFilter.AppliesTo (this);
+			if (isElementScope && isThis && (isDefaulRequest || isTreeFilter))
+			{
 				// TODO: Need to check request's TreeScope, too?
 				found.Add (GetUpdatedCache (CacheRequest.Current));
 			}
 
-			if ((!findFirst || found.Count == 0) &&
-			    ((scope & TreeScope.Children) == TreeScope.Children ||
-			    (scope & TreeScope.Descendants) == TreeScope.Descendants)) {
+			if (scope.HasFlag (TreeScope.Children) || scope.HasFlag (TreeScope.Descendants))
+			{
 				TreeScope childScope = TreeScope.Element;
-				if ((scope & TreeScope.Descendants) == TreeScope.Descendants)
+				if (scope.HasFlag (TreeScope.Descendants))
 					childScope = TreeScope.Subtree;
-				AutomationElement current =
-					TreeWalker.RawViewWalker.GetFirstChild (this);
-				while (current != null) {
-					//Log.Debug ("Inspecting child: " + current.Current.Name);
+				AutomationElement current = TreeWalker.RawViewWalker.GetFirstChild (this);
+				while (current != null)
+				{
 					found.AddRange (current.Find (childScope, condition, findFirst));
 					if (findFirst && found.Count > 0)
 						break;

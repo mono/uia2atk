@@ -9,6 +9,10 @@
 *.suo
 *.csproj.user
 
+Backup*/
+obj/
+bin/
+
 # /
 /*.userprefs
 /*.usertasks

@@ -274,11 +274,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public string AutomationId {
 			get {
-				int? val = (int?)
+				string val = (string)
 					provider.GetPropertyValue (AEIds.AutomationIdProperty.Id);
-				if (!val.HasValue)
+				if (val == null)
 					return string.Empty;
-				return val.Value.ToString ();
+				return val;
 			}
 		}
 

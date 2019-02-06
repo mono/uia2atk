@@ -386,10 +386,8 @@ namespace Mono.UIAutomation.Winforms
 				else
 					runtimeId = provider.GetRuntimeId ();
 				
-				StructureChangedEventArgs invalidatedArgs 
-					= new StructureChangedEventArgs (type, runtimeId);
-				AutomationInteropProvider.RaiseStructureChangedEvent (provider, 
-				                                                      invalidatedArgs);
+				var invalidatedArgs = new StructureChangedEventArgs (type, runtimeId);
+				AutomationInteropProvider.RaiseStructureChangedEvent (provider, invalidatedArgs);
 			}
 		}
 		

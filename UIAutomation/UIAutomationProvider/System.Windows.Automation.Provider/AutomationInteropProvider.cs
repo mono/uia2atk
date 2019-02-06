@@ -24,11 +24,9 @@
 // 
 
 using System;
-using System.Windows.Automation;
-
-using System.Reflection;
+using System.Linq;
 using System.Collections.Generic;
-
+using System.Reflection;
 using Mono.UIAutomation.Bridge;
 
 namespace System.Windows.Automation.Provider
@@ -119,35 +117,42 @@ namespace System.Windows.Automation.Provider
 	
 	internal static class BridgeManager
 	{
+		private const string BRIDGE_ASSEMBLY_NAMES_ENV_VAR = "MONO_UIA_BRIDGE";
+		private const char BRIDGE_ASSEMBLY_NAMES_DELIM = ';';
+
 		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+
 		private static string UiaDbusBridgeAssembly =
 			"UiaDbusBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+
 		private static string clientBridgeAssembly =
 			"UIAutomationClient, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35";
 
 		public static IList<IAutomationBridge> GetAutomationBridges ()
 		{
-			List<IAutomationBridge> bridges = new List<IAutomationBridge> ();
-
 			// Let MONO_UIA_BRIDGE env var override default bridge
-			string bridgeAssemblyNames =
-				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
+			List<string> bridgeAssemblyNames =
+				(Environment.GetEnvironmentVariable (BRIDGE_ASSEMBLY_NAMES_ENV_VAR) ?? string.Empty)
+				.Split (BRIDGE_ASSEMBLY_NAMES_DELIM)
+				.Where (name => !string.IsNullOrEmpty(name))
+				.ToList ();
 
-			if (string.IsNullOrEmpty (bridgeAssemblyNames))
-				bridgeAssemblyNames =
-					UiaAtkBridgeAssembly + ";" + UiaDbusBridgeAssembly;
-			bridgeAssemblyNames += ";" + clientBridgeAssembly;
+			if (bridgeAssemblyNames.Count == 0)
+				bridgeAssemblyNames.AddRange(new [] { UiaAtkBridgeAssembly, UiaDbusBridgeAssembly });
 
-			foreach (string bridgeAssembly in bridgeAssemblyNames.Split (';')) {
-				if (string.IsNullOrEmpty (bridgeAssembly))
-					continue;
-				IAutomationBridge bridge = GetAutomationBridge (bridgeAssembly);
-				if (bridge != null)
-					bridges.Add (bridge);
-			}
+			bridgeAssemblyNames.Add(clientBridgeAssembly);
 
-			return bridges;
+			var namedBridges =
+				bridgeAssemblyNames.Select (name => (name: name, bridge: GetAutomationBridge (name)))
+				.Where (x => x.bridge != null)
+				.ToList ();
+
+			var loadedBridgesMsg = new List<string> { "Loaded UIA bridges:" };
+			loadedBridgesMsg.AddRange (namedBridges.Select (x => x.name));
+			Console.WriteLine (string.Join (Environment.NewLine + "  ", loadedBridgesMsg));
+
+			return namedBridges.Select (x => x.bridge).ToList ();
 		}
 		
 		private static IAutomationBridge GetAutomationBridge (string bridgeAssemblyName)
@@ -193,5 +198,3 @@ namespace System.Windows.Automation.Provider
 		}
 	}
 }
-
-

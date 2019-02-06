@@ -71,6 +71,7 @@ RESOURCES =
 REFERENCES =  \
 	WindowsBase \
 	System \
+	System.Core \
 	UIAutomationBridge \
 	UIAutomationTypes
 

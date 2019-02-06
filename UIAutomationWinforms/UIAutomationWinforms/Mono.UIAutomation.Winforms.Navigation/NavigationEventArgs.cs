@@ -29,8 +29,7 @@ using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
-	internal delegate void NavigationEventHandler (object sender,
-	                                               NavigationEventArgs args);
+	internal delegate void NavigationEventHandler (object sender,  NavigationEventArgs args);
 	
 	internal class NavigationEventArgs : EventArgs
 	{
