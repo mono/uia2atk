@@ -735,6 +735,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 				// TODO: Likely crash source (ndesk-dbus bugs?)
 				try {
 					Bus.Session.Iterate ();
+				}
+				catch (ThreadAbortException ex) {
+				    Log.Info(
+				        "The ThreadAbortException has been catched in the Iterate(). Assume normal program exit.{0}{1}",
+				        Environment.NewLine, ex.StackTrace);
 				} catch (Exception e) {
 					Log.Error ("UiaDbusSource: Exception in iterate: " + e);
 				}

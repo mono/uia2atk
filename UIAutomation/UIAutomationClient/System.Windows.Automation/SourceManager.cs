@@ -41,10 +41,10 @@ namespace System.Windows.Automation
 
 		private const string AtspiUiaSourceAssembly =
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		
+
 		private const string UiaDbusSourceAssembly =
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-		
+
 		private static IAutomationSource [] sources = null;
 		private static object sourcesLock = new object ();
 
@@ -88,9 +88,7 @@ namespace System.Windows.Automation
 			try {
 				sourceAssembly = Assembly.Load (sourceAssemblyName);
 			} catch (Exception e){
-				Log.Warn (string.Format ("Error loading UIA source ({0}): {1}",
-				                                  sourceAssemblyName,
-				                                  e));
+				Log.Warn (string.Format ("Error loading UIA source ({0}): {1}", sourceAssemblyName, e));
 				return null;
 			}
 			Type sourceType = null;
@@ -105,20 +103,18 @@ namespace System.Windows.Automation
 			}
 
 			if (sourceType == null) {
-				Log.Error ("No UIA source found in assembly: " +
-				                   sourceAssemblyName);
+				Log.Error ("No UIA source found in assembly: " + sourceAssemblyName);
 				return null;
 			}
 
 		    try {
-				IAutomationSource source
-					= (IAutomationSource) Activator.CreateInstance (sourceType);
+				var source = (IAutomationSource) Activator.CreateInstance (sourceType);
 				if (!source.IsAccessibilityEnabled)
 					return null;
 				source.Initialize ();
 				return source;
 			} catch (Exception e) {
-				Log.Error ("Failed to load UIA source: " + e);
+				Log.Error (string.Format("Failed to load UIA source from {0}: {1}", sourceAssemblyName, e));
 				return null;
 			}
 		}
