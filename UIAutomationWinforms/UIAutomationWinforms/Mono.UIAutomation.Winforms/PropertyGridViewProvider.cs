@@ -173,6 +173,8 @@ namespace Mono.UIAutomation.Winforms
 				return new ListItemGridItemProviderBehavior (listItem);
 			else if (behavior == TableItemPatternIdentifiers.Pattern)
 				return new ListItemTableItemProviderBehavior (listItem);
+			else if (behavior == LegacyIAccessiblePatternIdentifiers.Pattern)
+				return new ListItemLegacyIAccessibleProviderBehavior (listItem);
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
@@ -301,6 +303,16 @@ namespace Mono.UIAutomation.Winforms
 
 	internal class PropertyGridListItemProvider : ListItemProvider
 	{
+
+		public override void Initialize()
+		{
+			base.Initialize();
+
+			SetBehavior (LegacyIAccessiblePatternIdentifiers.Pattern,
+				ListProvider.GetListItemBehaviorRealization (LegacyIAccessiblePatternIdentifiers.Pattern,
+															 this));
+		}
+
 #region Public Properties
 		public string Name {
 			get { return entry.Label; }
@@ -595,11 +607,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AEIds.NameProperty.Id)
 				return entry.Label;
-			else if (propertyId == AEIds.NativeWindowHandleProperty.Id)
-				return null;
-			else if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.Custom.Id;
-
 			return base.GetProviderPropertyValue (propertyId);
 		}
 	}

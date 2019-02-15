@@ -145,6 +145,8 @@ namespace Mono.UIAutomation.UiaDbusBridge
 					patternId = GridPatternIdentifiers.Pattern.Id;
 				else if (e.Property == AutomationElementIdentifiers.IsInvokePatternAvailableProperty)
 					patternId = InvokePatternIdentifiers.Pattern.Id;
+				else if (e.Property == AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty)
+					patternId = LegacyIAccessiblePatternIdentifiers.Pattern.Id;
 				else if (e.Property == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty)
 					patternId = MultipleViewPatternIdentifiers.Pattern.Id;
 				else if (e.Property == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty)

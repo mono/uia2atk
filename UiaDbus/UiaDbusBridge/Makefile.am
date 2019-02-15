@@ -50,6 +50,7 @@ FILES =  \
 	Wrappers/ExpandCollapsePatternWrapper.cs \
 	Wrappers/GridItemPatternWrapper.cs \
 	Wrappers/GridPatternWrapper.cs \
+	Wrappers/LegacyIAccessiblePatternWrapper.cs \
 	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/MultipleViewPatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \

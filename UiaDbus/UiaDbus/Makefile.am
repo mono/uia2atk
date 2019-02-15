@@ -36,6 +36,7 @@ SOURCE_FILES =  \
 	Interfaces/IGridItemPattern.cs \
 	Interfaces/IGridPattern.cs \
 	Interfaces/IInvokePattern.cs \
+	Interfaces/ILegacyIAccessiblePattern.cs \
 	Interfaces/IMultipleViewPattern.cs \
 	Interfaces/InterfaceConverter.cs \
 	Interfaces/IRangeValuePattern.cs \

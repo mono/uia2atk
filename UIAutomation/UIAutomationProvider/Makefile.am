@@ -42,6 +42,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation.Provider/IGridProvider.cs \
 	System.Windows.Automation.Provider/IInsertDeleteTextProvider.cs \
 	System.Windows.Automation.Provider/IInvokeProvider.cs \
+	System.Windows.Automation.Provider/ILegacyIAccessibleProvider.cs \
 	System.Windows.Automation.Provider/IMultipleViewProvider.cs \
 	System.Windows.Automation.Provider/IRangeValueProvider.cs \
 	System.Windows.Automation.Provider/IRawElementProviderAdviseEvents.cs \

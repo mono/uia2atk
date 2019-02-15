@@ -239,6 +239,8 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (LegacyIAccessiblePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
 				return IsBehaviorEnabled (InvokePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id)

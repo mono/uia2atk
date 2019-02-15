@@ -55,6 +55,7 @@
     <Compile Include="UiaDbusTextPattern.cs" />
     <Compile Include="UiaDbusTextPatternRange.cs" />
     <Compile Include="UiaDbusTransformPattern.cs" />
+    <Compile Include="UiaDbusLegacyIAccessiblePattern.cs" />
     <Compile Include="UiaDbusValuePattern.cs" />
     <Compile Include="UiaDbusDockPattern.cs" />
     <Compile Include="UiaDbusExpandCollapsePattern.cs" />

@@ -280,6 +280,8 @@ namespace System.Windows.Automation
 				return TryGetCurrentPattern (InvokePatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsKeyboardFocusableProperty)
 				return sourceElement.IsKeyboardFocusable;
+			else if (property == AEIds.IsLegacyIAccessiblePatternAvailableProperty)
+				return TryGetCurrentPattern (LegacyIAccessiblePattern.Pattern, out pattern);
 			else if (property == AEIds.IsMultipleViewPatternAvailableProperty)
 				return TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsOffscreenProperty)
@@ -349,6 +351,24 @@ namespace System.Windows.Automation
 				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.ColumnCount: 0);
 			else if (property == GridPatternIdentifiers.RowCountProperty)
 				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.RowCount: 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.ChildIdProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.ChildId : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.DefaultActionProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.DefaultAction : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.DescriptionProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Description : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.HelpProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Help : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.KeyboardShortcut : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.NameProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Name : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.RoleProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Role : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.StateProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.State : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.ValueProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Value : String.Empty);
 			else if (property == MultipleViewPatternIdentifiers.CurrentViewProperty)
 				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Source.CurrentView: 0);
 			else if (property == MultipleViewPatternIdentifiers.SupportedViewsProperty)
@@ -611,6 +631,8 @@ namespace System.Windows.Automation
 				return new GridPattern ((IGridPattern) source, this, cached);
 			else if (pattern == InvokePatternIdentifiers.Pattern)
 				return new InvokePattern ((IInvokePattern) source);
+			else if (pattern == LegacyIAccessiblePatternIdentifiers.Pattern)
+				return new LegacyIAccessiblePattern ((ILegacyIAccessiblePattern)source, this, cached);
 			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
 				return new MultipleViewPattern ((IMultipleViewPattern) source, this, cached);
 			else if (pattern == RangeValuePatternIdentifiers.Pattern)
@@ -746,6 +768,8 @@ namespace System.Windows.Automation
 		public static readonly AutomationProperty IsInvokePatternAvailableProperty = AEIds.IsInvokePatternAvailableProperty;
 
 		public static readonly AutomationProperty IsKeyboardFocusableProperty = AEIds.IsKeyboardFocusableProperty;
+
+		public static readonly AutomationProperty IsLegacyIAccessiblePatternAvailableProperty = AEIds.IsLegacyIAccessiblePatternAvailableProperty;
 
 		public static readonly AutomationProperty IsMultipleViewPatternAvailableProperty = AEIds.IsMultipleViewPatternAvailableProperty;
 

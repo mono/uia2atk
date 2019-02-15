@@ -48,6 +48,7 @@
     <Compile Include="Mono.UIAutomation.Source\ITextPattern.cs" />
     <Compile Include="Mono.UIAutomation.Source\ITextPatternRange.cs" />
     <Compile Include="Mono.UIAutomation.Source\ITransformPattern.cs" />
+    <Compile Include="Mono.UIAutomation.Source\ILegacyIAccessiblePattern.cs" />
     <Compile Include="Mono.UIAutomation.Source\IValuePattern.cs" />
     <Compile Include="Mono.UIAutomation.Source\IWindowPattern.cs" />
   </ItemGroup>

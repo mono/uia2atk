@@ -61,6 +61,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/InsertDeleteTextPatternIdentifiers.cs \
 	System.Windows.Automation/InvokePatternIdentifiers.cs \
 	System.Windows.Automation/KeyEventArgs.cs \
+	System.Windows.Automation/LegacyIAccessiblePatternIdentifiers.cs \
 	System.Windows.Automation/MultipleViewPatternIdentifiers.cs \
 	System.Windows.Automation/NoClickablePointException.cs \
 	System.Windows.Automation/OrientationType.cs \

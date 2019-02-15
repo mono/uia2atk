@@ -156,6 +156,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemLegacyIAccessibleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs \

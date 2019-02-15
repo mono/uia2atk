@@ -79,6 +79,8 @@ namespace Mono.UIAutomation.Winforms.Events
 					property = AutomationElementIdentifiers.IsGridPatternAvailableProperty;
 				else if (eventArgs.Pattern == InvokePatternIdentifiers.Pattern)
 					property = AutomationElementIdentifiers.IsInvokePatternAvailableProperty;
+				else if (eventArgs.Pattern == LegacyIAccessiblePatternIdentifiers.Pattern)
+					property = AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty;
 				else if (eventArgs.Pattern == MultipleViewPatternIdentifiers.Pattern)
 					property = AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty;
 				else if (eventArgs.Pattern == RangeValuePatternIdentifiers.Pattern)

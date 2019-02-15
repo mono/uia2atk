@@ -53,6 +53,7 @@
     <Compile Include="Wrappers\TextPatternRangeWrapper.cs" />
     <Compile Include="Wrappers\TextPatternWrapper.cs" />
     <Compile Include="Wrappers\TransformPatternWrapper.cs" />
+    <Compile Include="Wrappers\LegacyIAccessiblePatternWrapper.cs" />
     <Compile Include="Wrappers\ValuePatternWrapper.cs" />
     <Compile Include="Wrappers\DockPatternWrapper.cs" />
     <Compile Include="Wrappers\ExpandCollapsePatternWrapper.cs" />

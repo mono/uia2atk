@@ -70,6 +70,7 @@ namespace System.Windows.Automation
 		private const int IsGridPatternAvailablePropertyId = 30030;
 		private const int IsInvokePatternAvailablePropertyId = 30031;
 		private const int IsKeyboardFocusablePropertyId = 30009;
+		private const int IsLegacyIAccessiblePatternAvailablePropertyId = 30090;
 		private const int IsMultipleViewPatternAvailablePropertyId = 30032;
 		private const int IsOffscreenPropertyId = 30022;
 		private const int IsPasswordPropertyId = 30019;
@@ -174,6 +175,9 @@ namespace System.Windows.Automation
 			IsKeyboardFocusableProperty =
 				new AutomationProperty (IsKeyboardFocusablePropertyId,
 					"AutomationElementIdentifiers.IsKeyboardFocusableProperty");
+			IsLegacyIAccessiblePatternAvailableProperty =
+				new AutomationProperty(IsLegacyIAccessiblePatternAvailablePropertyId,
+					"AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty");
 			IsMultipleViewPatternAvailableProperty =
 				new AutomationProperty (IsMultipleViewPatternAvailablePropertyId,
 					"AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty");
@@ -349,6 +353,8 @@ namespace System.Windows.Automation
 		public static readonly AutomationProperty IsInvokePatternAvailableProperty;
 		
 		public static readonly AutomationProperty IsKeyboardFocusableProperty;
+
+		public static readonly AutomationProperty IsLegacyIAccessiblePatternAvailableProperty;
 		
 		public static readonly AutomationProperty IsMultipleViewPatternAvailableProperty;
 		

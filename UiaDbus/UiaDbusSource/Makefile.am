@@ -54,6 +54,7 @@ FILES =  \
 	UiaDbusGridItemPattern.cs \
 	UiaDbusGridPattern.cs \
 	UiaDbusInvokePattern.cs \
+	UiaDbusLegacyIAccessiblePattern.cs \
 	UiaDbusMultipleViewPattern.cs \
 	UiaDbusRangeValuePattern.cs \
 	UiaDbusScrollItemPattern.cs \

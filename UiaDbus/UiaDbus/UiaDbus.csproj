@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\IGridPattern.cs" />
     <Compile Include="Interfaces\IInvokePattern.cs" />
     <Compile Include="Interfaces\InterfaceConverter.cs" />
+    <Compile Include="Interfaces\ILegacyIAccessiblePattern.cs" />
     <Compile Include="Interfaces\ITableItemPattern.cs" />
     <Compile Include="Interfaces\ITablePattern.cs" />
     <Compile Include="Interfaces\ITextPattern.cs" />
