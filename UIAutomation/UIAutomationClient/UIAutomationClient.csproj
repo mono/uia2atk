@@ -70,6 +70,7 @@
     <Compile Include="System.Windows.Automation\TransformPattern.cs" />
     <Compile Include="System.Windows.Automation\TreeWalker.cs" />
     <Compile Include="System.Windows.Automation\TreeWalker.TreeIterator.cs" />
+    <Compile Include="System.Windows.Automation\LegacyIAccessiblePattern.cs" />
     <Compile Include="System.Windows.Automation\ValuePattern.cs" />
     <Compile Include="System.Windows.Automation\WindowPattern.cs" />
     <Compile Include="System.Windows.Automation\NativeMethods.cs" />

@@ -24,20 +24,19 @@
 // 
 
 using System;
-using Mono.Unix;
-using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
+using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Services;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Navigation;
+using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
 {
 	internal delegate IRawElementProviderFragment ComponentProviderMapperHandler (Component component);
 
-	public static class ProviderFactory
+	internal static class ProviderFactory
 	{	
 		#region Static Fields
 		
@@ -112,7 +111,21 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 		}
-		
+
+		internal static FragmentControlProvider GetWrapper (Component component, IRawElementProviderSimple componentProvider)
+		{
+			var asFragment = componentProvider as IRawElementProviderFragment;
+			var asFragmentRoot = asFragment != null ? componentProvider as IRawElementProviderFragmentRoot : null;
+
+			if (asFragmentRoot != null)
+				return new FragmentRootProviderWrapper (component, asFragmentRoot);
+
+			if (asFragment != null)
+				return new FragmentProviderWrapper (component, asFragment);
+
+			return new SimpleProviderWrapper (component, componentProvider);
+		}
+
 		#endregion
 		
 		#region Static Public Methods
@@ -149,24 +162,25 @@ namespace Mono.UIAutomation.Winforms
 			// Send a WndProc message to see if the control
 			// implements it's own provider.
 			if (component is SWF.Control
-			    // Sending WndProc to a form is broken for some reason
-			    && !(component is SWF.Form)) {
+				// Sending WndProc to a form is broken for some reason
+				&& !(component is SWF.Form)) {
 
-				SWF.Control control = component as SWF.Control;
-				IRawElementProviderSimple simpleProvider;
-				IntPtr result;
+				var control = (SWF.Control) component;
 
-				result = SWF.NativeWindow.WndProc (control.Handle, SWF.Msg.WM_GETOBJECT,
-				                                   IntPtr.Zero,
-				                                   new IntPtr (AutomationInteropProvider.RootObjectId));
+				IntPtr result = SWF.NativeWindow.WndProc (
+					control.Handle,
+					SWF.Msg.WM_GETOBJECT,
+					IntPtr.Zero,
+					new IntPtr (AutomationInteropProvider.RootObjectId));
+
 				if (result != IntPtr.Zero) {
-					simpleProvider = AutomationInteropProvider
-						.RetrieveAndDeleteProvider (result);
-
-					provider = simpleProvider as IRawElementProviderFragment;
-					if (provider == null)
-						provider = new FragmentControlProviderWrapper (component, simpleProvider);
+					IRawElementProviderSimple iSimpleProvider =
+						AutomationInteropProvider.RetrieveAndDeleteProvider (result);
+					provider = (iSimpleProvider as FragmentControlProvider) ?? GetWrapper (component, iSimpleProvider);
 				}
+			}
+			else if (component is UserCustomComponent control) {
+				provider = control.Provider;
 			}
 
 			ComponentProviderMapperHandler handler = null;
@@ -206,8 +220,7 @@ namespace Mono.UIAutomation.Winforms
 				if (providerType == null) {
 					var dialog = component as SWF.CommonDialog;
 					if (dialog != null)
-						return GetProvider (dialog.form,
-							initialize, forceInitializeChildren);
+						return GetProvider (dialog.form, initialize, forceInitializeChildren);
 					providerType = typeof (PaneProvider);
 				}
 				try {
@@ -231,8 +244,7 @@ namespace Mono.UIAutomation.Winforms
 
 				// TODO: Make tracking in dictionary optional
 				componentProviders [component] = provider;
-				if (provider is FragmentControlProvider) {
-					FragmentControlProvider frag = (FragmentControlProvider) provider;
+				if (provider is FragmentControlProvider frag) {
 					if (initialize)
 						frag.Initialize ();
 					if (forceInitializeChildren)
@@ -251,8 +263,8 @@ namespace Mono.UIAutomation.Winforms
 		public static void ReleaseProvider (Component component)
 		{
 			IRawElementProviderFragment provider;
-			if (componentProviders.TryGetValue (component, 
-			                                    out provider) == true) {
+			bool got = componentProviders.TryGetValue (component, out provider);
+			if (got) {
 				componentProviders.Remove (component);
 				((FragmentControlProvider) provider).Terminate ();
 				if (provider is FormProvider)

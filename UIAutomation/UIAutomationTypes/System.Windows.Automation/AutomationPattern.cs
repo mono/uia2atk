@@ -51,6 +51,8 @@ namespace System.Windows.Automation
 				return GridPatternIdentifiers.Pattern;
 			else if (id == InvokePatternIdentifiers.Pattern.Id)
 				return InvokePatternIdentifiers.Pattern;
+			else if (id == LegacyIAccessiblePatternIdentifiers.Pattern.Id)
+				return LegacyIAccessiblePatternIdentifiers.Pattern;
 			else if (id == MultipleViewPatternIdentifiers.Pattern.Id)
 				return MultipleViewPatternIdentifiers.Pattern;
 			else if (id == RangeValuePatternIdentifiers.Pattern.Id)

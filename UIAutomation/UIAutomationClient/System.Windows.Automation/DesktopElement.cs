@@ -168,7 +168,7 @@ namespace System.Windows.Automation
 
 		public string Name {
 			get {
-				return string.Empty;
+				return "Desktop";
 			}
 		}
 

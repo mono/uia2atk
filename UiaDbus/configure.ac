@@ -21,9 +21,9 @@ if test "x$MONO" = "xno"; then
 fi
 AC_SUBST(MONO)
 
-AC_PATH_PROG(GMCS, gmcs, no)
+AC_PATH_PROG(GMCS, mcs, no)
 if test "x$GMCS" = "xno"; then
-        AC_MSG_ERROR([gmcs Not found])
+        AC_MSG_ERROR([mcs Not found])
 fi
 
 AC_PATH_PROG(GACUTIL, gacutil, no)
@@ -71,22 +71,7 @@ if test -z "$CONFIG_REQUESTED" ; then
 	enable_debug=yes
 fi
 
-
-AC_ARG_ENABLE(external-ndesk-dbus,
-	AC_HELP_STRING([--enable-external-ndesk-dbus],
-		[Build referencing the system-installed ndesk-dbus instead of the internal version [default=NO]]),
-		enable_external_ndesk_dbus=yes, enable_external_ndesk_dbus=no)
-PKG_CHECK_MODULES(NDESK_DBUS, ndesk-dbus-1.0 >= 0.6.0, has_ndesk_dbus=yes, has_ndesk_dbus=no)
-if test "x$has_ndesk_dbus" = "xno"; then
-	AC_MSG_WARN([Could not find ndesk-dbus-1.0 >= 0.6.0; will build with internal version.])
-	enable_external_ndesk_dbus=no
-fi
-if test "x$enable_external_ndesk_dbus" = "xno"; then
-	NDESK_DBUS_LIBS=System.Xml
-	AC_SUBST(NDESK_DBUS_LIBS)
-fi
-AM_CONDITIONAL(ENABLE_EXTERNAL_NDESK_DBUS, test "x$enable_external_ndesk_dbus" = "xyes")
-
+PKG_CHECK_MODULES([DBUS_SHARP], [dbus-sharp-2.0 >= 0.8.0])
 
 # package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0 >= 2.12.8])

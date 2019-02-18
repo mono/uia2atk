@@ -26,8 +26,6 @@
 // 
 
 using System;
-using Mono.Unix;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -112,7 +110,7 @@ namespace Mono.UIAutomation.Winforms
 				base.Terminate ();
 		}
 		
-#region Private Event Handlers
+		#region Private Event Handlers
 
 		private void OnUIAMenuChanged (object sender, EventArgs args)
 		{
@@ -123,7 +121,7 @@ namespace Mono.UIAutomation.Winforms
 			SetupMainMenuProvider ();
 		}
 		
-#endregion
+		#endregion
 
 		#region IRawElementProviderFragmentRoot Members
 
@@ -156,15 +154,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (child != null) {
 				Log.Debug (child.ToString ());
-				
-				if (componentProviders.ContainsKey (child)) {
-					IRawElementProviderSimple provider =
-						componentProviders [child];
-					IRawElementProviderFragment providerFragment =
-						provider as IRawElementProviderFragment;
-					if (providerFragment != null)
-						return providerFragment;
-				}
+				FragmentControlProvider childFragmentProvider = Navigation.TryGetChild (child);
+				if (childFragmentProvider != null)
+					return childFragmentProvider;
 			} else
 				Log.Debug ("ElementProviderFromPoint: Child is null");
 			
@@ -177,21 +169,14 @@ namespace Mono.UIAutomation.Winforms
 				if (control.Focused) {
 					// TODO: Necessary to delve into child control
 					// for focused element?
-					
-					if (componentProviders.ContainsKey (control)) {
-						IRawElementProviderSimple provider =
-							componentProviders [control];
-						IRawElementProviderFragment providerFragment =
-							provider as IRawElementProviderFragment;
-						if (providerFragment != null)
-							return providerFragment;
-					}
+					FragmentControlProvider childFragmentProvider = Navigation.TryGetChild (control);
+					if (childFragmentProvider != null)
+						return childFragmentProvider;					
 				}
 			}
-			
 			return null;
 		}
-		
+
 		#endregion
 
 		#region Public Methods
@@ -202,11 +187,9 @@ namespace Mono.UIAutomation.Winforms
 				alreadyClosed = true;
 
 				if (owner == null)
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-					                                   this);
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, this);
 				else {
-					FormProvider ownerProvider 
-						= ProviderFactory.FindProvider (owner) as FormProvider;
+					var ownerProvider = ProviderFactory.FindProvider (owner) as FormProvider;
 					if (ownerProvider != null)
 						ownerProvider.RemoveChildProvider (this);
 				}
@@ -216,8 +199,7 @@ namespace Mono.UIAutomation.Winforms
 		private void SetupMainMenuProvider ()
 		{
 			if (form.Menu != null) {
-				mainMenuProvider = (MainMenuProvider)
-					ProviderFactory.GetProvider (form.Menu);
+				mainMenuProvider = (MainMenuProvider) ProviderFactory.GetProvider (form.Menu);
 				if (mainMenuProvider != null)
 					AddChildProvider (mainMenuProvider);
 			}

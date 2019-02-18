@@ -25,7 +25,7 @@
 
 using System;
 using System.Windows.Automation;
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbus.Interfaces
 {
@@ -38,6 +38,8 @@ namespace Mono.UIAutomation.UiaDbus.Interfaces
 	[Interface (Constants.ApplicationInterfaceName)]
 	public interface IApplication
 	{
+		void ForceUpdate();
+
 		string [] GetRootElementPaths ();
 		string GetFocusedElementPath ();
 

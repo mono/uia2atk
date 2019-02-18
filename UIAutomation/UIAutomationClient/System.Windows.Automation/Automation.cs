@@ -86,6 +86,8 @@ namespace System.Windows.Automation
 				return "Grid";
 			else if (pattern == InvokePatternIdentifiers.Pattern)
 				return "Invoke";
+			else if (pattern == LegacyIAccessiblePatternIdentifiers.Pattern)
+				return "LegacyIAccessible";
 			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
 				return "MultipleView";
 			else if (pattern == RangeValuePatternIdentifiers.Pattern)
@@ -161,6 +163,8 @@ namespace System.Windows.Automation
 				return "IsInvokePatternAvailable";
 			else if (property == AEIds.IsKeyboardFocusableProperty)
 				return "IsKeyboardFocusable";
+			else if (property == AEIds.IsLegacyIAccessiblePatternAvailableProperty)
+				return "IsLegacyIAccessiblePatternAvailable";
 			else if (property == AEIds.IsMultipleViewPatternAvailableProperty)
 				return "IsMultipleViewPatternAvailable";
 			else if (property == AEIds.IsOffscreenProperty)
@@ -229,6 +233,24 @@ namespace System.Windows.Automation
 				return "ColumnCount";
 			else if (property == GridPatternIdentifiers.RowCountProperty)
 				return "RowCount";
+			else if (property == LegacyIAccessiblePatternIdentifiers.ChildIdProperty)
+				return "ChildId";
+			else if (property == LegacyIAccessiblePatternIdentifiers.DefaultActionProperty)
+				return "DefaultAction";
+			else if (property == LegacyIAccessiblePatternIdentifiers.DescriptionProperty)
+				return "Description";
+			else if (property == LegacyIAccessiblePatternIdentifiers.HelpProperty)
+				return "Help";
+			else if (property == LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty)
+				return "KeyboardShortcut";
+			else if (property == LegacyIAccessiblePatternIdentifiers.NameProperty)
+				return "Name";
+			else if (property == LegacyIAccessiblePatternIdentifiers.RoleProperty)
+				return "Role";
+			else if (property == LegacyIAccessiblePatternIdentifiers.StateProperty)
+				return "State";
+			else if (property == LegacyIAccessiblePatternIdentifiers.ValueProperty)
+				return "Value";
 			else if (property == MultipleViewPatternIdentifiers.CurrentViewProperty)
 				return "CurrentView";
 			else if (property == MultipleViewPatternIdentifiers.SupportedViewsProperty)

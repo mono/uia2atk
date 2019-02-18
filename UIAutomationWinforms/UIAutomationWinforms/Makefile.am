@@ -1,5 +1,5 @@
 
-EXTRA_DIST =  
+EXTRA_DIST =
 
 # Warning: This is an automatically generated file, do not edit!
 
@@ -10,7 +10,7 @@ ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-d
 ASSEMBLY = bin/Debug/UIAutomationWinforms.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =
 BUILD_DIR = bin/Debug
 
 UIAUTOMATIONWINFORMS_DLL_MDB_SOURCE=bin/Debug/UIAutomationWinforms.dll.mdb
@@ -22,9 +22,9 @@ if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -keyfile:$(top_srcdir)/mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
 ASSEMBLY = bin/Release/UIAutomationWinforms.dll
-ASSEMBLY_MDB = 
+ASSEMBLY_MDB =
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =
 BUILD_DIR = bin/Release
 
 UIAUTOMATIONWINFORMS_DLL_MDB=
@@ -35,11 +35,11 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=Mono.UIAutomation.Winforms.resources.dll
 
 PROGRAMFILES = \
-	$(UIAUTOMATIONWINFORMS_DLL_MDB)  
+	$(UIAUTOMATIONWINFORMS_DLL_MDB)
 
 
 RESGEN=resgen2
-	
+
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
@@ -156,6 +156,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemLegacyIAccessibleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs \
@@ -505,12 +506,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs \
-	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/Navigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/WrapperNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/BalloonWindowProvider.cs \
 	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
@@ -530,8 +528,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
-	Mono.UIAutomation.Winforms/FragmentControlProviderWrapper.cs \
+	Mono.UIAutomation.Winforms/FragmentProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
+	Mono.UIAutomation.Winforms/FragmentRootProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/Global.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
 	Mono.UIAutomation.Winforms/Helper.cs \
@@ -539,6 +538,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/HelpProviderListener.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/IListProvider.cs \
+	Mono.UIAutomation.Winforms/IRawElementProviderFragmentExtension.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
 	Mono.UIAutomation.Winforms/ISelectableItem.cs \
@@ -576,6 +576,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
+	Mono.UIAutomation.Winforms/SimpleProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/SplitContainerProvider.cs \
 	Mono.UIAutomation.Winforms/SplitterProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
@@ -603,12 +604,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TrackBarProvider.cs \
 	Mono.UIAutomation.Winforms/TreeViewProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
+	Mono.UIAutomation.Winforms/UserCustomComponent.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
-	Mono.UIAutomation.Winforms/WordTokenizer.cs 
+	Mono.UIAutomation.Winforms/WordTokenizer.cs
 
-DATA_FILES = 
+DATA_FILES =
 
 RESOURCES =
 
@@ -623,7 +625,7 @@ REFERENCES =  \
 	$(MONO_UIA_LIBS) \
 	$(GTK_SHARP_20_LIBS)
 
-DLL_REFERENCES = 
+DLL_REFERENCES =
 
 CLEANFILES = $(PROGRAMFILES)
 

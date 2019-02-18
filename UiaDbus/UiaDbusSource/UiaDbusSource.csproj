@@ -38,7 +38,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="NDesk.DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
+    <Reference Include="DBus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f6716e4f9b2ed099" />
     <Reference Include="Mono.Posix" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +55,7 @@
     <Compile Include="UiaDbusTextPattern.cs" />
     <Compile Include="UiaDbusTextPatternRange.cs" />
     <Compile Include="UiaDbusTransformPattern.cs" />
+    <Compile Include="UiaDbusLegacyIAccessiblePattern.cs" />
     <Compile Include="UiaDbusValuePattern.cs" />
     <Compile Include="UiaDbusDockPattern.cs" />
     <Compile Include="UiaDbusExpandCollapsePattern.cs" />
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\UiaDbus\UiaDbus.csproj">
       <Project>{1E67B433-629F-4740-BD8A-E200D6A73EC5}</Project>
       <Name>UiaDbus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UiaDbusBridge\UiaDbusBridge.csproj">
+      <Project>{C998BCE9-DE5E-40EB-ABCA-FD1E96B6AD95}</Project>
+      <Name>UiaDbusBridge</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

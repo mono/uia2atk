@@ -83,6 +83,8 @@ namespace System.Windows.Automation
 				return AutomationElementIdentifiers.IsInvokePatternAvailableProperty;
 			else if (id == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return AutomationElementIdentifiers.IsKeyboardFocusableProperty;
+			else if (id == AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty.Id)
+				return AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty;
 			else if (id == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty;
 			else if (id == AutomationElementIdentifiers.IsOffscreenProperty.Id)
@@ -207,6 +209,24 @@ namespace System.Windows.Automation
 				return TransformPatternIdentifiers.CanResizeProperty;
 			else if (id == TransformPatternIdentifiers.CanRotateProperty.Id)
 				return TransformPatternIdentifiers.CanRotateProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.ChildIdProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.ChildIdProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.DefaultActionProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.DefaultActionProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.DescriptionProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.DescriptionProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.HelpProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.HelpProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.NameProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.NameProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.RoleProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.RoleProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.StateProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.StateProperty;
+			else if (id == LegacyIAccessiblePatternIdentifiers.ValueProperty.Id)
+				return LegacyIAccessiblePatternIdentifiers.ValueProperty;
 			else if (id == MultipleViewPatternIdentifiers.CurrentViewProperty.Id)
 				return MultipleViewPatternIdentifiers.CurrentViewProperty;
 			else if (id == MultipleViewPatternIdentifiers.SupportedViewsProperty.Id)

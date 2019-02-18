@@ -148,24 +148,21 @@ namespace System.Windows.Automation
 					throw new ArgumentNullException ("element");
 				AddMarkedElement (element);
 
-				AutomationElement child;
-				if (afterThisChild == null)
-					child = GetFirstDirectChild (element);
-				else
-					child = GetNextDirectSibling (afterThisChild);
+				var child = (afterThisChild == null)
+					? GetFirstDirectChild(element)
+					: GetNextDirectSibling(afterThisChild);
+				
 				while (child != null && markedElements.Contains (child))
 					child = GetNextDirectSibling (child);
+
 				if (child == null || markedElements.Contains (child))
 					return null;
 
-				AutomationElement firstChild = null;
-				if (!markedElements.Contains (child) && condition.AppliesTo (child))
-					firstChild = child;
-				else {
-					firstChild = GetFirstChild (child);
-				}
+				var firstChild = (!markedElements.Contains(child) && condition.AppliesTo(child))
+					? child
+					: GetFirstChild (child);
 
-				while (firstChild == null && child != null) {
+				while (firstChild == null) {
 					child = GetNextDirectSibling (child);
 					if (child == null)
 						return null;

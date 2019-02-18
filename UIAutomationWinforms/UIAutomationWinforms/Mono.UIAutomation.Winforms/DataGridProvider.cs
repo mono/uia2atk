@@ -717,9 +717,10 @@ namespace Mono.UIAutomation.Winforms
 				return provider.CurrentTableStyle.GridColumnStyles.IndexOf (custom.Column);
 			}
 
-			public string GetName (DataGridDataItemEditProvider custom) 
+			public string GetName (DataGridDataItemEditProvider custom)
 			{
-				int indexOf = GetChildProviderIndexOf (custom);
+				int indexOf = Navigation.TryGetChildIndex (custom);
+
 				if (indexOf == -1)
 					return string.Empty;
 

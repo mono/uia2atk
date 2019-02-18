@@ -34,7 +34,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using DC = Mono.UIAutomation.UiaDbus;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 {
@@ -49,6 +49,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			GridItemPatternIdentifiers.Pattern.Id,
 			GridPatternIdentifiers.Pattern.Id,
 			InvokePatternIdentifiers.Pattern.Id,
+			LegacyIAccessiblePatternIdentifiers.Pattern.Id,
 			MultipleViewPatternIdentifiers.Pattern.Id,
 			RangeValuePatternIdentifiers.Pattern.Id,
 			ScrollPatternIdentifiers.Pattern.Id,
@@ -120,6 +121,15 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			GridItemPatternIdentifiers.ContainingGridProperty.Id,
 			GridPatternIdentifiers.RowCountProperty.Id,
 			GridPatternIdentifiers.ColumnCountProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.ChildIdProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.DefaultActionProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.DescriptionProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.HelpProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.NameProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.RoleProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.StateProperty.Id,
+			LegacyIAccessiblePatternIdentifiers.ValueProperty.Id,
 			MultipleViewPatternIdentifiers.CurrentViewProperty.Id,
 			MultipleViewPatternIdentifiers.SupportedViewsProperty.Id,
 			RangeValuePatternIdentifiers.ValueProperty.Id,
@@ -274,11 +284,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		public string AutomationId {
 			get {
-				int? val = (int?)
+				string val = (string)
 					provider.GetPropertyValue (AEIds.AutomationIdProperty.Id);
-				if (!val.HasValue)
+				if (val == null)
 					return string.Empty;
-				return val.Value.ToString ();
+				return val;
 			}
 		}
 
@@ -594,6 +604,10 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				patternPath += DC.Constants.InvokePatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
 				                        p => new InvokePatternWrapper ((IInvokeProvider) p));
+			} else if (patternId == LegacyIAccessiblePatternIdentifiers.Pattern.Id) {
+			    patternPath += DC.Constants.LegacyIAccessiblePatternSubPath;
+			    GetOrCreatePatternInfo (patternId, patternProvider, patternPath,
+			        p => new LegacyIAccessiblePatternWrapper ((ILegacyIAccessibleProvider) p));
 			} else if (patternId == MultipleViewPatternIdentifiers.Pattern.Id) {
 				patternPath += DC.Constants.MultipleViewPatternSubPath;
 				GetOrCreatePatternInfo (patternId, patternProvider, patternPath,

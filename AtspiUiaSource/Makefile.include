@@ -62,8 +62,12 @@ EXTRA_DIST += $(build_sources) $(build_resx_files) $(build_others_files) $(ASSEM
 CLEANFILES += $(ASSEMBLY) $(ASSEMBLY).mdb $(BINARIES) $(build_resx_resources) $(build_satellite_assembly_list)
 DISTCLEANFILES = $(GENERATED_FILES) $(pc_files) $(BUILD_DIR)/*
 
-pkglib_SCRIPTS = $(ASSEMBLY)
 bin_SCRIPTS = $(BINARIES)
+
+# https://unix.stackexchange.com/questions/219152/pkglibexecdir-is-not-a-legitimate-directory
+#pkglib_SCRIPTS = $(ASSEMBLY)
+my_execbindir = $(pkglibdir)
+my_execbin_SCRIPTS = $(ASSEMBLY)
 
 programfilesdir = @libdir@/@PACKAGE@
 programfiles_DATA = $(PROGRAMFILES)
@@ -84,7 +88,7 @@ endef
 # assumes that for a wrapper foo.pc its source template is foo.pc.in
 # if $3 is non-empty then wrapper is marked exec
 define emit-deploy-wrapper
-$($1): $2 
+$($1): $2
 	mkdir -p '$$(shell dirname '$$@')'
 	cp '$$<' '$$@'
 	$(if $3,chmod +x '$$@')

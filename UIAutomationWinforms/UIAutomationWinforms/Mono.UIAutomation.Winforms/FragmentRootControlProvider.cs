@@ -73,16 +73,17 @@ namespace Mono.UIAutomation.Winforms
 		#region FragmentControlProvider Overrides
 
 		//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.fragmentroot.aspx
-		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { 
+		public override IRawElementProviderFragmentRoot FragmentRoot
+		{
+			get
+			{ 
 				if (Container == null)
-					return this; 
-				else
-					return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
+					return this;
+				return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
 			}
 		}
 
-		public override void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index)
+		protected override void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index)
 		{
 			base.InsertChildProvider (raiseEvent, childProvider, index);
 			
@@ -96,7 +97,7 @@ namespace Mono.UIAutomation.Winforms
 
 			if (hasRadioButtonChild) {
 				bool radioButtonFound = false;
-				foreach (FragmentControlProvider childProvider in componentProviders.Values) {
+				foreach (FragmentControlProvider childProvider in Navigation.GetChildren ()) {
 					if (childProvider != removedProvider &&
 					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 						radioButtonFound = true;

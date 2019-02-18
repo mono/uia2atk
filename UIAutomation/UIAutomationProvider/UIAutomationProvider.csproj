@@ -61,6 +61,7 @@
     <Compile Include="System.Windows.Automation.Provider\ITextRangeProvider.cs" />
     <Compile Include="System.Windows.Automation.Provider\IToggleProvider.cs" />
     <Compile Include="System.Windows.Automation.Provider\ITransformProvider.cs" />
+    <Compile Include="System.Windows.Automation.Provider\ILegacyIAccessibleProvider.cs" />
     <Compile Include="System.Windows.Automation.Provider\IValueProvider.cs" />
     <Compile Include="System.Windows.Automation.Provider\IWindowProvider.cs" />
     <Compile Include="System.Windows.Automation.Provider\NavigateDirection.cs" />

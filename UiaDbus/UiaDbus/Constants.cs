@@ -40,6 +40,7 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string GridItemPatternInterfaceName = Namespace + ".GridItemPattern";
 		public const string GridPatternInterfaceName = Namespace + ".GridPattern";
 		public const string InvokePatternInterfaceName = Namespace + ".InvokePattern";
+		public const string LegacyIAccessiblePatternInterfaceName = Namespace + ".LegacyIAccessiblePattern";
 		public const string MultipleViewPatternInterfaceName = Namespace + ".MultipleViewPattern";
 		public const string RangeValuePatternInterfaceName = Namespace + ".RangeValuePattern";
 		public const string ScrollItemPatternInterfaceName = Namespace + ".ScrollItemPattern";
@@ -60,6 +61,7 @@ namespace Mono.UIAutomation.UiaDbus
 		public const string GridItemPatternSubPath = "GridItem";
 		public const string GridPatternSubPath = "Grid";
 		public const string InvokePatternSubPath = "Invoke";
+		public const string LegacyIAccessiblePatternSubPath = "LegacyIAccessible";
 		public const string MultipleViewPatternSubPath = "MultipleView";
 		public const string RangeValuePatternSubPath = "RangeValue";
 		public const string ScrollItemPatternSubPath = "ScrollItem";

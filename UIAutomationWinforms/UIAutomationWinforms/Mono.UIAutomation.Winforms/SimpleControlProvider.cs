@@ -38,6 +38,10 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	class DummyComponent : Component
+	{
+	}
+
 	internal abstract class SimpleControlProvider : IRawElementProviderSimple
 	{
 		#region Private Static Fields
@@ -52,9 +56,10 @@ namespace Mono.UIAutomation.Winforms
 		private Component component;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
-		private int runtimeId;
 		private SWF.ToolTip tooltip;
 		private SWF.ErrorProvider errorProvider;
+
+		protected readonly int runtimeId = Helper.GetUniqueRuntimeId ();
 
 		#endregion
 		
@@ -62,14 +67,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected SimpleControlProvider (Component component)
 		{
-			this.component = component;
+			this.component = component ?? new DummyComponent ();
 			control = component as SWF.Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
 			providerBehaviors = 
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
-			
-			runtimeId = -1;
 			
 			if (Control != null) {
 				ErrorProvider = ErrorProviderListener.GetErrorProviderFromControl (Control);
@@ -236,6 +239,8 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsLegacyIAccessiblePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (LegacyIAccessiblePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
 				return IsBehaviorEnabled (InvokePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id)
@@ -268,11 +273,13 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (GridItemPatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (TableItemPatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
-				if (runtimeId == -1)
-					runtimeId = Helper.GetUniqueRuntimeId ();
-
-				return runtimeId;
+			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+			{
+				string name = (Component as SWF.Control)?.Name;
+				if (String.IsNullOrEmpty (name))
+					return runtimeId.ToString ();
+				else
+					return name;
 			} else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -331,19 +338,20 @@ namespace Mono.UIAutomation.Winforms
 				} else
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
-				IRawElementProviderFragment sibling = this as IRawElementProviderFragment;
-				if (sibling == null)
+				IRawElementProviderFragment thisAsFragment = this as IRawElementProviderFragment;
+				if (thisAsFragment == null)
 					return null;
-				IRawElementProviderFragment parent = sibling.Navigate (NavigateDirection.Parent);
-				if (parent == null || parent == sibling)
+
+				IRawElementProviderFragment parent = thisAsFragment.Navigate (NavigateDirection.Parent);
+				if (parent == null || parent == thisAsFragment)
 					return null;
+
 				IRawElementProviderFragment closestLabel = null;
 				double closestLabelDistance = double.MaxValue;
-				for (sibling = parent.Navigate (NavigateDirection.FirstChild);
-				     sibling != null;
-				     sibling = sibling.Navigate (NavigateDirection.NextSibling)) {
+
+				parent.NavigateEachChildProvider ((IRawElementProviderFragment sibling) => {
 					if (sibling == this)
-						continue;
+						return;
 					if ((int)sibling.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.Text.Id) {
 						double siblingDistance;
 						if ((siblingDistance = DistanceFrom (sibling)) < closestLabelDistance) {
@@ -351,7 +359,7 @@ namespace Mono.UIAutomation.Winforms
 							closestLabelDistance = siblingDistance;
 						}
 					}
-				}
+				});
 				
 				return closestLabel;
 				

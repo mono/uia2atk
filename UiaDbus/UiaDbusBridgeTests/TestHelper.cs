@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Automation.Provider;
 
-using NDesk.DBus;
+using DBus;
 using org.freedesktop.DBus;
 
 using DC = Mono.UIAutomation.UiaDbus;

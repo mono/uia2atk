@@ -56,6 +56,7 @@ PROJECT_SOURCE_FILES =  \
 	System.Windows.Automation/GridItemPattern.cs \
 	System.Windows.Automation/GridPattern.cs \
 	System.Windows.Automation/InvokePattern.cs \
+	System.Windows.Automation/LegacyIAccessiblePattern.cs \
 	System.Windows.Automation/MultipleViewPattern.cs \
 	System.Windows.Automation/NativeMethods.cs \
 	System.Windows.Automation/NotCondition.cs \

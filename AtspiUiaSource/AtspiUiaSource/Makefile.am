@@ -1,5 +1,5 @@
 
-EXTRA_DIST =  
+EXTRA_DIST =
 
 # Warning: This is an automatically generated file, do not edit!
 
@@ -10,7 +10,7 @@ ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -warnaserror -optimiz
 ASSEMBLY = bin/Debug/AtspiUiaSource.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =
 BUILD_DIR = bin/Debug
 
 ATSPIUIASOURCE_DLL_MDB_SOURCE=bin/Debug/AtspiUiaSource.dll.mdb
@@ -22,9 +22,9 @@ if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS = -keyfile:$(top_srcdir)/mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
 ASSEMBLY = bin/Release/AtspiUiaSource.dll
-ASSEMBLY_MDB = 
+ASSEMBLY_MDB =
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES =
 BUILD_DIR = bin/Release
 
 ATSPIUIASOURCE_DLL_MDB=
@@ -35,11 +35,11 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=AtspiUiaSource.resources.dll
 
 PROGRAMFILES = \
-	$(ATSPIUIASOURCE_DLL_MDB)  
+	$(ATSPIUIASOURCE_DLL_MDB)
 
 
 RESGEN=resgen2
-	
+
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
@@ -72,7 +72,7 @@ FILES =  \
 	ValueEventHandler.cs \
 	ValueSource.cs
 
-DATA_FILES = 
+DATA_FILES =
 
 RESOURCES =
 
@@ -82,9 +82,9 @@ REFERENCES =  \
 	System.Core \
 	$(ATSPI_SHARP_LIBS) \
 	$(MONO_UIA_LIBS) \
-	$(GTK_SHARP_20_LIBS)
+	$(GTK_SHARP_30_LIBS)
 
-DLL_REFERENCES = 
+DLL_REFERENCES =
 
 CLEANFILES = $(PROGRAMFILES)
 

@@ -29,11 +29,12 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 
-using NDesk.DBus;
+using DBus;
 using org.freedesktop.DBus;
 
 using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Source;
+using Mono.UIAutomation.UiaDbusBridge;
 using DC = Mono.UIAutomation.UiaDbus;
 using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
@@ -481,8 +482,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 				if (uiaDbusNames == null) {
 					FetchUiaDbusNames ();
 					Log.Debug ("Count of found Uia applications over dbus: {0}", uiaDbusNames.Count);
-					IBus bus = Bus.Session.GetObject<IBus> (DBusName,
-					                                        new ObjectPath (DBusPath));
+					IBus bus = Bus.Session.GetObject<IBus> (DBusName, new ObjectPath (DBusPath));
 					bus.NameOwnerChanged += BusNameOwnerChanged;
 				}
 				return uiaDbusNames.ToArray ();
@@ -565,30 +565,55 @@ namespace Mono.UIAutomation.UiaDbusSource
 		{
 			var busNames = new List<string> ();
 
-			IBus ibus = Bus.Session.GetObject<IBus> (DBusName,
-			                                         new ObjectPath (DBusPath));
-			// Look for buses that contain DCI.IApplication
-			foreach (string busName in ibus.ListNames ()) {
-				// Reading introspection data hangs on some buses
-				// for unknown reasons, so we call Introspect
-				// asynchronously.  Note that we are using
-				// internal dbus-sharp classes.  The old
-				// behavior was to spin off threads, but this
-				// triggers a Mono bug on Fedora
-				// (BNC#628639/632133)
-				ObjectPath op = new ObjectPath (DC.Constants.ApplicationPath);
-				MethodCall methodCall = new MethodCall (op,
-					"org.freedesktop.DBus.Introspectable",
-					"Introspect", busName, Signature.Empty);
-				PendingCall pendingCall = Bus.Session.SendWithReply (methodCall.message);
-				pendingCall.Completed +=  (message) => {
-					MessageReader reader = new MessageReader (message);
-					string data = reader.ReadString ();
-					if (data.Contains (DC.Constants.ApplicationInterfaceName))
-						busNames.Add ((string)message.Header [FieldCode.Sender]);
-				};
-			}
-			Thread.Sleep (1000);
+			// Look for suitable buses:
+            IBus bus = Bus.Session.GetObject<IBus> (DBusName, new ObjectPath(DBusPath));
+            foreach (string busName in bus.ListNames ())
+            {
+                if (!busName.StartsWith (DBusAutomationBridgeConstants.BusNamePrefix))
+                    continue;
+
+			    ObjectPath op = new ObjectPath (DC.Constants.ApplicationPath);
+                var app = Bus.Session.GetObject<DCI.IApplication> (busName, op);
+
+				try {
+					app.GetRootElementPaths();
+				}
+				catch {
+					continue;
+				}
+
+				busNames.Add (busName);
+
+                /*
+                2018-12-19:
+                At least one case of hanging is related to self-session data reading.
+                To avoid this and optimize search procedure lets introduce well-known
+                bus names started with "DBusAutomationBridgeConstants.BusNamePrefix".
+                
+                Older comment:
+                *
+                * // Reading introspection data hangs on some buses
+                * // for unknown reasons, so we call Introspect
+                * // asynchronously.  Note that we are using
+                * // internal dbus-sharp classes.  The old
+                * // behavior was to spin off threads, but this
+                * // triggers a Mono bug on Fedora
+                * // (BNC#628639/632133)
+                * ObjectPath op = new ObjectPath (DC.Constants.ApplicationPath);
+                * MethodCall methodCall = new MethodCall (op,
+                *     "org.freedesktop.DBus.Introspectable",
+                *     "Introspect", busName, Signature.Empty);
+                * PendingCall pendingCall = Bus.Session.SendWithReply (methodCall.message);
+                * 
+                * pendingCall.Completed +=  (message) => {
+                *     MessageReader reader = new MessageReader (message);
+                *     string data = reader.ReadString ();
+                *     if (data.Contains (DC.Constants.ApplicationInterfaceName)) {
+                *         busNames.Add ((string)message.Header [FieldCode.Sender]);
+                *     }
+                * };
+                */
+            }
 
 			lock (uiaDbusNamesLock)
 				uiaDbusNames = busNames;
@@ -710,6 +735,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 				// TODO: Likely crash source (ndesk-dbus bugs?)
 				try {
 					Bus.Session.Iterate ();
+				}
+				catch (ThreadAbortException ex) {
+				    Log.Info(
+				        "The ThreadAbortException has been catched in the Iterate(). Assume normal program exit.{0}{1}",
+				        Environment.NewLine, ex.StackTrace);
 				} catch (Exception e) {
 					Log.Error ("UiaDbusSource: Exception in iterate: " + e);
 				}

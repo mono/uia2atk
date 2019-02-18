@@ -33,7 +33,7 @@ using Mono.UIAutomation.Source;
 using DC = Mono.UIAutomation.UiaDbus;
 using DCI = Mono.UIAutomation.UiaDbus.Interfaces;
 
-using NDesk.DBus;
+using DBus;
 
 namespace Mono.UIAutomation.UiaDbusSource
 {
@@ -441,6 +441,10 @@ namespace Mono.UIAutomation.UiaDbusSource
 				DCI.IInvokePattern invokePattern = Bus.Session.GetObject<DCI.IInvokePattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.InvokePatternSubPath));
 				ret = new UiaDbusInvokePattern (invokePattern);
+			} else if (pattern.Id == LegacyIAccessiblePatternIdentifiers.Pattern.Id) {
+				DCI.ILegacyIAccessiblePattern legacyIAccessiblePattern = Bus.Session.GetObject<DCI.ILegacyIAccessiblePattern>
+					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.LegacyIAccessiblePatternSubPath));
+				ret = new UiaDbusLegacyIAccessiblePattern (legacyIAccessiblePattern);
 			} else if (pattern.Id == MultipleViewPatternIdentifiers.Pattern.Id) {
 				DCI.IMultipleViewPattern multipleViewPattern = Bus.Session.GetObject<DCI.IMultipleViewPattern>
 					(busName, new ObjectPath (dbusPath + "/" + DC.Constants.MultipleViewPatternSubPath));

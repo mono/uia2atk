@@ -151,7 +151,7 @@ namespace AtspiUiaSource
 			runtimeId = -1;
 
 			if (accessible.Role == Role.Dialog &&
-				accessible.Parent.Role == Role.Application &&
+				accessible.Parent != null && accessible.Parent.Role == Role.Application &&
 				accessible.QueryComponent () != null) {
 				// Try to figure out if the dialog is painted
 				// on top of another window
@@ -176,8 +176,10 @@ namespace AtspiUiaSource
 					}
 				}
 			}
+
 			if (parent == null)
 				parent = GetElement (accessible.Parent);
+
 			AddEvents (true);
 		}
 

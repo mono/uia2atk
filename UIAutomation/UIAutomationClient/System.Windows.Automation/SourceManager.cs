@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -35,10 +36,15 @@ namespace System.Windows.Automation
 {
 	internal static class SourceManager
 	{
+		private const string SOURCE_ASSEMBLY_NAMES_ENV_VAR = "MONO_UIA_SOURCE";
+		private const char SOURCE_ASSEMBLY_NAMES_DELIM = ';';
+
 		private const string AtspiUiaSourceAssembly =
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+
 		private const string UiaDbusSourceAssembly =
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+
 		private static IAutomationSource [] sources = null;
 		private static object sourcesLock = new object ();
 
@@ -47,29 +53,70 @@ namespace System.Windows.Automation
 			if (sources == null) {
 				lock (sourcesLock) {
 					if (sources == null) {
-						var sourcesList = new List<IAutomationSource> ();
-
 						// Let MONO_UIA_SOURCE env var override default source
-						string sourceAssemblyNames =
-							Environment.GetEnvironmentVariable ("MONO_UIA_SOURCE");
+						List<string> sourceAssemblyNames =
+							(Environment.GetEnvironmentVariable (SOURCE_ASSEMBLY_NAMES_ENV_VAR) ?? string.Empty)
+							.Split (SOURCE_ASSEMBLY_NAMES_DELIM)
+							.Where (name => !string.IsNullOrEmpty(name))
+							.ToList ();
 
-						if (string.IsNullOrEmpty (sourceAssemblyNames))
-							sourceAssemblyNames =
-								UiaDbusSourceAssembly + ";" + AtspiUiaSourceAssembly;
+						if (sourceAssemblyNames.Count == 0)
+							sourceAssemblyNames.AddRange(
+								new [] { UiaDbusSourceAssembly, AtspiUiaSourceAssembly });
 
-						foreach (string sourceAssembly in sourceAssemblyNames.Split (';')) {
-							if (string.IsNullOrEmpty (sourceAssembly))
-								continue;
-							IAutomationSource source = GetAutomationSource (sourceAssembly);
-							if (source != null)
-								sourcesList.Add (source);
-						}
-						sourcesList.Add (ClientAutomationSource.Instance);
-						sources = sourcesList.ToArray ();
+						var sourcesList =
+							sourceAssemblyNames.Select (name => (name: name, src: GetAutomationSource (name)))
+							.Where (x => x.src != null)
+							.ToList ();
+
+						sourcesList.Add ((name: "ClientAutomationSource", src: ClientAutomationSource.Instance));
+
+						var loadedsourcesMsg = new List<string> { "Loaded UIA sources:" };
+						loadedsourcesMsg.AddRange (sourcesList.Select (x => x.name));
+						Console.WriteLine (string.Join (Environment.NewLine + "  ", loadedsourcesMsg));
+
+						sources = sourcesList.Select (x => x.src).ToArray ();
 					}
 				}
 			}
 			return sources;
+		}
+
+		private static IAutomationSource GetAutomationSource (string sourceAssemblyName)
+		{
+			Assembly sourceAssembly = null;
+			try {
+				sourceAssembly = Assembly.Load (sourceAssemblyName);
+			} catch (Exception e){
+				Log.Warn (string.Format ("Error loading UIA source ({0}): {1}", sourceAssemblyName, e));
+				return null;
+			}
+			Type sourceType = null;
+
+			// Quickie inefficent implementation
+			Type sourceInterfaceType = typeof (IAutomationSource);
+			foreach (Type type in sourceAssembly.GetTypes ()) {
+				if (sourceInterfaceType.IsAssignableFrom (type)) {
+					sourceType = type;
+					break;
+				}
+			}
+
+			if (sourceType == null) {
+				Log.Error ("No UIA source found in assembly: " + sourceAssemblyName);
+				return null;
+			}
+
+		    try {
+				var source = (IAutomationSource) Activator.CreateInstance (sourceType);
+				if (!source.IsAccessibilityEnabled)
+					return null;
+				source.Initialize ();
+				return source;
+			} catch (Exception e) {
+				Log.Error (string.Format("Failed to load UIA source from {0}: {1}", sourceAssemblyName, e));
+				return null;
+			}
 		}
 
 		// TODO: Rename to GetAutomationElement
@@ -88,48 +135,6 @@ namespace System.Windows.Automation
 			for (int i = 0; i < sourceElements.Length; i++)
 				ret [i] = GetOrCreateAutomationElement (sourceElements [i]);
 			return ret;
-		}
-
-		private static IAutomationSource GetAutomationSource (string sourceAssemblyName)
-		{
-			Assembly sourceAssembly = null;
-			try {
-				sourceAssembly = Assembly.Load (sourceAssemblyName);
-			} catch (Exception e){
-				Log.Warn (string.Format ("Error loading UIA source ({0}): {1}",
-				                                  sourceAssemblyName,
-				                                  e));
-				return null;
-			}
-
-			Type sourceType = null;
-
-			// Quickie inefficent implementation
-			Type sourceInterfaceType = typeof (IAutomationSource);
-			foreach (Type type in sourceAssembly.GetTypes ()) {
-				if (sourceInterfaceType.IsAssignableFrom (type)) {
-					sourceType = type;
-					break;
-				}
-			}
-			if (sourceType == null) {
-				Log.Error ("No UIA source found in assembly: " +
-				                   sourceAssemblyName);
-				return null;
-			}
-
-			try {
-				IAutomationSource source
-					= (IAutomationSource) Activator.CreateInstance (sourceType);
-				if (!source.IsAccessibilityEnabled)
-					return null;
-
-				source.Initialize ();
-				return source;
-			} catch (Exception e) {
-				Log.Error ("Failed to load UIA source: " + e);
-				return null;
-			}
 		}
 	}
 }

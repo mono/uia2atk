@@ -40,7 +40,7 @@ using Mono.UIAutomation.UiaDbusBridge;
 using DC = Mono.UIAutomation.UiaDbus;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
-using NDesk.DBus;
+using DBus;
 using org.freedesktop.DBus;
 
 using NUnit;

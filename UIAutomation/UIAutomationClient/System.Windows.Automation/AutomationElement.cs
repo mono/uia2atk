@@ -280,6 +280,8 @@ namespace System.Windows.Automation
 				return TryGetCurrentPattern (InvokePatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsKeyboardFocusableProperty)
 				return sourceElement.IsKeyboardFocusable;
+			else if (property == AEIds.IsLegacyIAccessiblePatternAvailableProperty)
+				return TryGetCurrentPattern (LegacyIAccessiblePattern.Pattern, out pattern);
 			else if (property == AEIds.IsMultipleViewPatternAvailableProperty)
 				return TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern);
 			else if (property == AEIds.IsOffscreenProperty)
@@ -349,6 +351,24 @@ namespace System.Windows.Automation
 				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.ColumnCount: 0);
 			else if (property == GridPatternIdentifiers.RowCountProperty)
 				return (TryGetCurrentPattern (GridPatternIdentifiers.Pattern, out pattern)? ((GridPattern)pattern).Source.RowCount: 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.ChildIdProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.ChildId : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.DefaultActionProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.DefaultAction : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.DescriptionProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Description : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.HelpProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Help : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.KeyboardShortcutProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.KeyboardShortcut : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.NameProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Name : String.Empty);
+			else if (property == LegacyIAccessiblePatternIdentifiers.RoleProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Role : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.StateProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.State : 0);
+			else if (property == LegacyIAccessiblePatternIdentifiers.ValueProperty)
+				return (TryGetCurrentPattern (LegacyIAccessiblePatternIdentifiers.Pattern, out pattern) ? ((LegacyIAccessiblePattern)pattern).Source.Value : String.Empty);
 			else if (property == MultipleViewPatternIdentifiers.CurrentViewProperty)
 				return (TryGetCurrentPattern (MultipleViewPatternIdentifiers.Pattern, out pattern)? ((MultipleViewPattern)pattern).Source.CurrentView: 0);
 			else if (property == MultipleViewPatternIdentifiers.SupportedViewsProperty)
@@ -518,6 +538,7 @@ namespace System.Windows.Automation
 				return false;
 			}
 		}
+
 #endregion
 
 #region Public Static Methods
@@ -610,6 +631,8 @@ namespace System.Windows.Automation
 				return new GridPattern ((IGridPattern) source, this, cached);
 			else if (pattern == InvokePatternIdentifiers.Pattern)
 				return new InvokePattern ((IInvokePattern) source);
+			else if (pattern == LegacyIAccessiblePatternIdentifiers.Pattern)
+				return new LegacyIAccessiblePattern ((ILegacyIAccessiblePattern)source, this, cached);
 			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
 				return new MultipleViewPattern ((IMultipleViewPattern) source, this, cached);
 			else if (pattern == RangeValuePatternIdentifiers.Pattern)
@@ -644,30 +667,29 @@ namespace System.Windows.Automation
 		{
 			// Parent and Ancestors scopes are not supported on
 			// Windows (this is specified in MSDN, too).
-			if ((scope & TreeScope.Parent) == TreeScope.Parent ||
-			    (scope & TreeScope.Ancestors) == TreeScope.Ancestors)
+			if (scope.HasFlag (TreeScope.Parent) || scope.HasFlag (TreeScope.Ancestors))
 				throw new ArgumentException ("scope");
 
 			List<AutomationElement> found = new List<AutomationElement> ();
 
-			if ((!findFirst || found.Count == 0) &&
-			    (scope & TreeScope.Element) == TreeScope.Element &&
-			    condition.AppliesTo (this) &&
-			    (CacheRequest.Current == CacheRequest.DefaultRequest || CacheRequest.Current.TreeFilter.AppliesTo (this))) {
+			var isElementScope = scope.HasFlag (TreeScope.Element);
+			var isThis = condition.AppliesTo (this);
+			var isDefaulRequest = CacheRequest.Current == CacheRequest.DefaultRequest;
+			var isTreeFilter = CacheRequest.Current.TreeFilter.AppliesTo (this);
+			if (isElementScope && isThis && (isDefaulRequest || isTreeFilter))
+			{
 				// TODO: Need to check request's TreeScope, too?
 				found.Add (GetUpdatedCache (CacheRequest.Current));
 			}
 
-			if ((!findFirst || found.Count == 0) &&
-			    ((scope & TreeScope.Children) == TreeScope.Children ||
-			    (scope & TreeScope.Descendants) == TreeScope.Descendants)) {
+			if (scope.HasFlag (TreeScope.Children) || scope.HasFlag (TreeScope.Descendants))
+			{
 				TreeScope childScope = TreeScope.Element;
-				if ((scope & TreeScope.Descendants) == TreeScope.Descendants)
+				if (scope.HasFlag (TreeScope.Descendants))
 					childScope = TreeScope.Subtree;
-				AutomationElement current =
-					TreeWalker.RawViewWalker.GetFirstChild (this);
-				while (current != null) {
-					//Log.Debug ("Inspecting child: " + current.Current.Name);
+				AutomationElement current = TreeWalker.RawViewWalker.GetFirstChild (this);
+				while (current != null)
+				{
 					found.AddRange (current.Find (childScope, condition, findFirst));
 					if (findFirst && found.Count > 0)
 						break;
@@ -746,6 +768,8 @@ namespace System.Windows.Automation
 		public static readonly AutomationProperty IsInvokePatternAvailableProperty = AEIds.IsInvokePatternAvailableProperty;
 
 		public static readonly AutomationProperty IsKeyboardFocusableProperty = AEIds.IsKeyboardFocusableProperty;
+
+		public static readonly AutomationProperty IsLegacyIAccessiblePatternAvailableProperty = AEIds.IsLegacyIAccessiblePatternAvailableProperty;
 
 		public static readonly AutomationProperty IsMultipleViewPatternAvailableProperty = AEIds.IsMultipleViewPatternAvailableProperty;
 

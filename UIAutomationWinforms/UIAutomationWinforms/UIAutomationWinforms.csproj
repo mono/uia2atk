@@ -31,19 +31,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="UIAutomationBridge, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="Mono.WebBrowser" />
     <Reference Include="Mono.Posix" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="UIAutomationBridge">
+      <HintPath>..\..\UIAutomation\bin\UIAutomationBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationProvider">
+      <HintPath>..\..\UIAutomation\bin\UIAutomationProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationTypes">
+      <HintPath>..\..\UIAutomation\bin\UIAutomationTypes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Globals.cs" />
@@ -158,6 +162,7 @@
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\CategoryInvokeProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\GridProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemChildValueProviderBeahvior.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemLegacyIAccessibleProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemGridItemProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemNameValueProviderBeahvior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemSelectionItemProviderBehavior.cs" />
@@ -506,12 +511,9 @@
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ButtonInvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternIsReadOnlyEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternValueEvent.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\INavigation.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationChain.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationEventArgs.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationFactory.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\ParentNavigation.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\SimpleNavigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\Navigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\WrapperNavigation.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\AssemblyInfo.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BalloonWindowProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BaseColorControlProvider.cs" />
@@ -539,6 +541,7 @@
     <Compile Include="Mono.UIAutomation.Winforms\HelpProviderListener.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IConnectable.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IListProvider.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\IRawElementProviderFragmentExtension.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IScrollBehaviorObserver.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IScrollBehaviorSubject.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ISelectableItem.cs" />
@@ -570,6 +573,8 @@
     <Compile Include="Mono.UIAutomation.Winforms\PropertyGridTextBoxProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\PropertyGridViewProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ProviderFactory.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\FragmentProviderWrapper.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\FragmentRootProviderWrapper.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\RadioButtonProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\RichTextBoxProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ScrollableControlProvider.cs" />
@@ -603,13 +608,16 @@
     <Compile Include="Mono.UIAutomation.Winforms\TrackBarProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\TreeViewProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\UpDownBaseProvider.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\UserCustomComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Mono.UIAutomation.Winforms\WebBrowserProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordToken.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenCollection.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenizer.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\ToolStripSplitButton\InvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\ToolStripSplitButton\InvokeProviderBehavior.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\FragmentControlProviderWrapper.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\SimpleProviderWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

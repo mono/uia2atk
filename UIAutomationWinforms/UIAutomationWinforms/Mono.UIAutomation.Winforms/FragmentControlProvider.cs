@@ -30,41 +30,35 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Navigation;
 using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-
 	internal abstract class FragmentControlProvider 
 		: SimpleControlProvider, IRawElementProviderFragment, IEnumerable<FragmentControlProvider>
 	{
 		#region Private Fields
-		
-		private List<FragmentControlProvider> children;
-		private List<Component> componentChildren;
-		private INavigation navigation;
+
+		private const int FAKE_INDEX_TREATED_AS_END = -1;
+
+		private readonly Navigation.Navigation navigation;
 		private SWF.ContextMenu contextMenu;
 		private SWF.ContextMenuStrip contextMenuStrip;
-		
-		#endregion
-		
-		#region Internal Data
-		
-		protected IDictionary<Component, FragmentControlProvider>
-			componentProviders;
-		
+		private bool visible;
+
 		#endregion
 
-		#region Constructor	
+		#region Protected Fields
+
+		#endregion
+
+		#region Constructor
 		
-		protected FragmentControlProvider (Component component) : base (component)
+		protected FragmentControlProvider (Component component)
+			: base (component)
 		{
-			componentProviders =
-				new Dictionary<Component, FragmentControlProvider> ();
-			children = new List<FragmentControlProvider> ();
-			componentChildren = new List<Component> ();
+			navigation = MakeSuitableNavigation ();
 
 			if (Control != null) {
 				Control.ContextMenuChanged += HandleContextMenuChanged;
@@ -76,6 +70,12 @@ namespace Mono.UIAutomation.Winforms
 				visible = Control.Visible;
 			}
 		}
+		
+		protected virtual Navigation.Navigation MakeSuitableNavigation ()
+		{
+			return new Navigation.Navigation (this);
+		}
+
 
 		void HandleContextMenuStripChanged (object sender, EventArgs e)
 		{
@@ -149,121 +149,102 @@ namespace Mono.UIAutomation.Winforms
 		
 		public IEnumerator<FragmentControlProvider> GetEnumerator ()
 		{
+			var children = Navigation.GetChildren ();
 			foreach (FragmentControlProvider childProvider in children)
 				yield return childProvider;
 		}
 		
-		IEnumerator IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			return GetEnumerator();
+			return GetEnumerator ();
 		}
 		
 		#endregion
-		
+
 		#region Public Events
-		
-		public NavigationEventHandler NavigationUpdated;
-		
+
+		public event NavigationEventHandler NavigationUpdated;
+
 		#endregion
-
-		#region Public Properties
 		
-		public INavigation Navigation {
-			get { return navigation; }
-			set { 
-				if (value != navigation && navigation != null)
-					navigation.Terminate ();
+		#region Public Properties
 
-				navigation = value; 
-			}
+		public Navigation.Navigation Navigation
+		{
+			get { return navigation; }
 		}
 
 		public int ChildrenCount {
-			get { return children.Count; }
+			get { return Navigation.ChildrenCount; }
 		}
 
 		#endregion
 		
 		#region Public Methods
 
-		public int GetChildProviderIndexOf (FragmentControlProvider provider)
-		{
-			return provider == null ? -1 : children.IndexOf (provider);
-		}
-
 		public FragmentControlProvider GetChildProviderAt (int index)
 		{
-			if (index < 0 || index >= children.Count)
-				return null;
-			else
-				return children [index];
+			return Navigation.GetChild (index);
 		}
 		
-		public void AddChildProvider (bool raiseEvent,
-		                              FragmentControlProvider childProvider)
-		{
-			InsertChildProvider (raiseEvent, childProvider, -1);
-		}
-		
-		public virtual void InsertChildProvider (bool raiseEvent,
-		                                         FragmentControlProvider childProvider,
-		                                         int index)
-		{
-			if (children.Contains (childProvider) == true)
-				return;
-			
-			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
-			childProvider.Navigation.Initialize ();
-
-			if (index < 0 || index >= children.Count) {
-				children.Add (childProvider);
-			} else {
-				children.Insert (index, childProvider);
-			}
-
-			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
-			                                              StructureChangeType.ChildAdded, 
-			                                              childProvider, index));
-
-			childProvider.InitializeChildControlStructure ();
-		}
-
-		public virtual void RemoveChildProvider (bool raiseEvent,
-		                                         FragmentControlProvider childProvider)
-		{
-			if (children.Contains (childProvider) == false)
-				return;
-			
-			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
-			                                              StructureChangeType.ChildRemoved, 
-			                                              childProvider));
-
-			childProvider.Navigation.Terminate ();
-			childProvider.Navigation = null;
-			
-			children.Remove (childProvider);
-		}
-		
-		public void AddChildProvider (FragmentControlProvider childProvider) 
+		public void AddChildProvider (FragmentControlProvider childProvider)
 		{
 			AddChildProvider (true, childProvider);
 		}
-		
-		public void InsertChildProvider (FragmentControlProvider childProvider,
-		                                 int index)
+
+		protected void AddChildProvider (bool raiseEvent, FragmentControlProvider childProvider)
+		{
+			InsertChildProvider (raiseEvent, childProvider, FAKE_INDEX_TREATED_AS_END);
+		}
+
+		protected void InsertChildProvider (FragmentControlProvider childProvider, int index)
 		{
 			InsertChildProvider (true, childProvider, index);
 		}
 
-		public void RemoveChildProvider (FragmentControlProvider childProvider) 
+		protected virtual void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index)
+		{
+			InsertChildProvider (raiseEvent, childProvider, index, true);
+		}
+
+		protected void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index, bool recursive)
+		{
+			if (Navigation.ChildrenContains (childProvider))
+				return;
+
+			if (index == FAKE_INDEX_TREATED_AS_END || !Navigation.IsIndexValid (index))
+			{
+				Navigation.AppendChild (childProvider);
+			}
+			else
+			{
+				Navigation.InsertChild (index, childProvider);
+			}
+
+			NotifyOnChildStructureChanged (childProvider, StructureChangeType.ChildAdded, raiseEvent);
+
+			if (recursive)
+				childProvider.InitializeChildControlStructure ();
+		}
+
+		public void RemoveChildProvider (FragmentControlProvider childProvider)
 		{
 			RemoveChildProvider (true, childProvider);
+		}
+
+		public virtual void RemoveChildProvider (bool raiseEvent, FragmentControlProvider childProvider)
+		{
+			if (!Navigation.ChildrenContains (childProvider))
+				return;
+
+			childProvider.Terminate ();  // Finalize Child Control Structure at first ...
+			NotifyOnChildStructureChanged (childProvider, StructureChangeType.ChildRemoved, raiseEvent);  // ... Then raise events, remove UIA-element in bridge ...
+			Navigation.RemoveChild (childProvider);  // ... And destroy object links to free memory.
 		}
 
 		public override void Terminate ()
 		{
 			base.Terminate ();
-			
 			FinalizeChildControlStructure ();
 		}
 
@@ -272,14 +253,13 @@ namespace Mono.UIAutomation.Winforms
 		//See: SimpleControlProvider.InitializeEvents
 		public virtual void InitializeChildControlStructure ()
 		{
-			if (Control != null) {				
+			if (Control != null) {
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
+				Control.VisibleChanged += OnControlVisibleChanged;
 				
 				foreach (SWF.Control childControl in Control.Controls)
 					HandleComponentAdded (childControl);
-
-				Control.VisibleChanged += OnControlVisibleChanged;
 			}
 		}
 		
@@ -291,29 +271,33 @@ namespace Mono.UIAutomation.Winforms
 				Control.VisibleChanged -= OnControlVisibleChanged;
 			}
 
-			for (; componentChildren.Count > 0; ) {
-				HandleComponentRemoved (componentChildren [0]);
+			for (; Navigation.ChildrenCount > 0; ) {
+				HandleComponentRemoved (Navigation.GetChild (0).Component); 
 			}
-
-			children.Clear ();
-			componentProviders.Clear ();
 		}
 		
 		#endregion
 		
 		#region Protected Methods
-		
-		protected virtual void OnNavigationUpdated (NavigationEventArgs args)
-		{
-			if (NavigationUpdated != null)
-				NavigationUpdated (this, args);
-		}
-			
+
 		protected virtual void OnNavigationChildrenCleared ()
 		{
-			OnNavigationUpdated (new NavigationEventArgs (true,
-			                                              StructureChangeType.ChildrenReordered, 
-			                                              null));
+			//TODO: Is this the event to generate?
+			NotifyOnChildStructureChanged (this, StructureChangeType.ChildrenBulkRemoved, true);
+		}
+		
+		protected void NotifyOnChildStructureChanged (
+			FragmentControlProvider subjectProvider, StructureChangeType structureChangeType, bool emitUiaEvents)
+		{
+			if (NavigationUpdated != null) {
+				var args = new NavigationEventArgs (emitUiaEvents, structureChangeType, subjectProvider);
+				NavigationUpdated (this, args);
+			}
+
+			if (emitUiaEvents) {
+				Helper.RaiseStructureChangedEvent (structureChangeType, subjectProvider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated, this);
+			}
 		}
 
 		#endregion
@@ -330,8 +314,6 @@ namespace Mono.UIAutomation.Winforms
 			HandleComponentRemoved (args.Control);
 		}
 
-		private bool visible = false;
-		
 		private void OnControlVisibleChanged (object sender, EventArgs args)
 		{
 			if (visible == Control.Visible)
@@ -349,30 +331,26 @@ namespace Mono.UIAutomation.Winforms
 		{
 			SWF.Control control = (SWF.Control) sender;
 
-			bool controlExists = componentProviders.ContainsKey (control);
-			if (IsComponentVisible (control)) {
-				if (!controlExists)
-					InitializeComponentProvider (control);
-			} else {
-				if (controlExists)
-					TerminateComponentProvider (control);
-			}
+			bool controlExists = Navigation.ChildrenContains (control);
+			bool controlVisible = IsComponentVisible (control);
+
+			if (controlVisible && !controlExists)
+				InitializeComponentProvider (control);
+			else if (!controlVisible && controlExists)
+				TerminateComponentProvider (control);
 		}
 
 		#endregion
 
 		#region Protected Methods
-	
-		protected FragmentControlProvider CreateProvider (SWF.Control control)
-		{
-			if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
-				return null;
-
-			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
-		}
 
 		protected virtual FragmentControlProvider CreateProvider (Component component)
 		{
+			if (component is SWF.Control control)
+			{
+				if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
+					return null;
+			}
 			return (FragmentControlProvider) ProviderFactory.GetProvider (component);
 		}
 
@@ -383,63 +361,32 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected FragmentControlProvider GetProvider (SWF.Control control)
 		{
-			if (componentProviders.ContainsKey (control))
-				return componentProviders [control];
-			else
-				return null;
+			return Navigation.TryGetChild (control);
 		}
 
 		protected void InitializeComponentProvider (Component childComponent)
 		{
-			SWF.Control control = null;
-			FragmentControlProvider childProvider = null;
-
-			if (componentProviders.ContainsKey (childComponent))
+			if (Navigation.ChildrenContains (childComponent))
 				return;
-			
-			if ((control = childComponent as SWF.Control) != null)
-				childProvider = CreateProvider (control);
-			else
-				childProvider = CreateProvider (childComponent);
-			
+
+			FragmentControlProvider childProvider = CreateProvider (childComponent);
 			if (childProvider == null)
 				return;
 
-			componentProviders [childComponent] = childProvider;
-			AddChildProvider (childProvider);
+			InsertChildProvider (childProvider, FAKE_INDEX_TREATED_AS_END);
 		}
 
 		protected void TerminateComponentProvider (Component childComponent)
-		{			
-			FragmentControlProvider removedProvider;
-			
-			if (componentProviders.TryGetValue (childComponent, 
-			                                    out removedProvider)) {
-				componentProviders.Remove (childComponent);
-				// Event source:
-				//       Parent of removed child runtimeId: The child that was
-				//       removed. (pg 6 of fxref_uiautomationtypes_p2.pdf)
-				RemoveChildProvider (removedProvider);
-				DestroyProvider (childComponent);
-			}
-		}
-
-		protected void AddChildComponent (Component childComponent)
 		{
-			if (componentChildren.Contains (childComponent))
+			FragmentControlProvider removedProvider = Navigation.TryGetChild (childComponent);
+			if (removedProvider == null)
 				return;
 
-			componentChildren.Add (childComponent);
-			AddVisibleEvent (childComponent);
-		}
-
-		protected void RemoveChildComponent (Component childComponent)
-		{
-			if (!componentChildren.Contains (childComponent))
-				return;
-			
-			componentChildren.Remove (childComponent);
-			RemoveVisibleEvent (childComponent);
+			// Event source:
+			//       Parent of removed child runtimeId: The child that was
+			//       removed. (pg 6 of fxref_uiautomationtypes_p2.pdf)
+			RemoveChildProvider (removedProvider);
+			DestroyProvider (childComponent);
 		}
 
 		protected virtual void AddVisibleEvent (Component component)
@@ -460,6 +407,9 @@ namespace Mono.UIAutomation.Winforms
 
 		protected virtual bool IsComponentVisible (Component component)
 		{
+			if (component is UserCustomComponent)
+				return true;
+
 			SWF.Control control = null;
 			if ((control = component as SWF.Control) != null)
 				return control.Visible;
@@ -467,23 +417,25 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 		}
 
-		protected void HandleComponentAdded (Component component)
+		protected void HandleComponentAdded (Component childComponent)
 		{
-			AddChildComponent (component);
+			if (Navigation.ChildrenContains (childComponent))
+				return;
 
 			// We don't add an invisible component but we keep track of its 
 			// Visible event to add it when Visible changes
-			if (!IsComponentVisible (component))
-				return;
-
-			InitializeComponentProvider (component);
+			AddVisibleEvent (childComponent);
+			if (IsComponentVisible (childComponent))
+				InitializeComponentProvider (childComponent);
 		}
 
-		protected void HandleComponentRemoved (Component component)
+		protected void HandleComponentRemoved (Component childComponent)
 		{
-			TerminateComponentProvider (component);
+			if (!Navigation.ChildrenContains (childComponent))
+				return;
 
-			RemoveChildComponent (component);
+			TerminateComponentProvider (childComponent);
+			RemoveVisibleEvent (childComponent);
 		}
 
 		#endregion
@@ -519,16 +471,14 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public int[] GetRuntimeId ()
+		public virtual int[] GetRuntimeId ()
 		{
-			return new int [] { AutomationInteropProvider.AppendRuntimeId,
-				System.Diagnostics.Process.GetCurrentProcess ().Id,
-				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
+			return new int[] { AutomationInteropProvider.AppendRuntimeId, runtimeId };
 		}
-		
-		public IRawElementProviderFragment Navigate (NavigateDirection direction) 
+
+		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			return Navigation == null ? null : Navigation.Navigate (direction);
+			return Navigation.Navigate (direction);
 		}
 		
 		public virtual void SetFocus ()
@@ -538,6 +488,23 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
+
+		public override string ToString ()
+		{
+			string name = SafeGetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			string locCtrlType = SafeGetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id);
+			return string.Format ("<{0}:'{1}';'{2}'>", this.GetType (), name, locCtrlType);
+		}
+
+		private string SafeGetPropertyValue (int propertyId)
+		{
+			const string errValueDummy = "[err]";
+			try {
+				return (this.GetPropertyValue (propertyId) ?? errValueDummy).ToString ();
+			}
+			catch {
+				return errValueDummy;
+			}
+		}
 	}
 }

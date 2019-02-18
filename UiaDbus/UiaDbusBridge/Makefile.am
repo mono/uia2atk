@@ -50,6 +50,7 @@ FILES =  \
 	Wrappers/ExpandCollapsePatternWrapper.cs \
 	Wrappers/GridItemPatternWrapper.cs \
 	Wrappers/GridPatternWrapper.cs \
+	Wrappers/LegacyIAccessiblePatternWrapper.cs \
 	Wrappers/InvokePatternWrapper.cs \
 	Wrappers/MultipleViewPatternWrapper.cs \
 	Wrappers/ProviderElementWrapper.cs \
@@ -75,7 +76,7 @@ REFERENCES =  \
 	System \
 	Mono.Posix \
 	System.Core \
-	$(NDESK_DBUS_LIBS) \
+	$(DBUS_SHARP_LIBS) \
 	$(MONO_UIA_LIBS) \
 	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll
 
