@@ -702,28 +702,34 @@ namespace Mono.UIAutomation.UiaDbusSource
 		private volatile static bool runMainLoop = false;
 		private Thread mainLoop = null;
 
+		private object mainLoopMethodsLock = new object ();
+
 		private void CheckMainLoop ()
 		{
-			if (mainLoopStarted)
-				return;
-			runMainLoop = true;
+			lock (mainLoopMethodsLock) {
+				if (mainLoopStarted)
+					return;
+				runMainLoop = true;
 
-			Log.Info ("UiaDbusAutomationSource: Starting dbus main loop");
-			mainLoop = new Thread (new ThreadStart (MainLoop));
-			mainLoop.IsBackground = true;
-			mainLoop.Start ();
-			mainLoopStarted = true;
+				Log.Info ("UiaDbusAutomationSource: Starting dbus main loop");
+				mainLoop = new Thread (new ThreadStart (MainLoop));
+				mainLoop.IsBackground = true;
+				mainLoop.Start ();
+				mainLoopStarted = true;
+			}
 		}
 
 		private void AbortMainLoop ()
 		{
-			runMainLoop = false;
-			if (mainLoop != null) {
-				Log.Info ("UiaDbusAutomationSource: Stopping dbus main loop");
-				mainLoop.Abort ();
+			lock (mainLoopMethodsLock) {
+				runMainLoop = false;
+				if (mainLoop != null) {
+					Log.Info ("UiaDbusAutomationSource: Stopping dbus main loop");
+					mainLoop.Abort ();
+					mainLoop = null;
+				}
+				mainLoopStarted = false;
 			}
-			mainLoopStarted = false;
-			mainLoop = null;
 		}
 
 		private void MainLoop ()
@@ -731,7 +737,11 @@ namespace Mono.UIAutomation.UiaDbusSource
 			// TODO: Why does it not work if I uncomment this and
 			//       do bus.Iterate (); ?
 			//Bus bus = Bus.Session;
-			while (runMainLoop) {
+			while (true) {
+				lock (mainLoopMethodsLock)
+					if (!runMainLoop)
+						break;
+
 				// TODO: Likely crash source (ndesk-dbus bugs?)
 				try {
 					Bus.Session.Iterate ();
@@ -741,7 +751,7 @@ namespace Mono.UIAutomation.UiaDbusSource
 				        "The ThreadAbortException has been catched in the Iterate(). Assume normal program exit.{0}{1}",
 				        Environment.NewLine, ex.StackTrace);
 				} catch (Exception e) {
-					Log.Error ("UiaDbusSource: Exception in iterate: " + e);
+					Log.Error ("UiaDbusSource iterate error: " + e);
 				}
 			}
 		}
