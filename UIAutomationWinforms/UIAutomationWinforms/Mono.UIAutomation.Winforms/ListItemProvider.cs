@@ -100,9 +100,10 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		protected override Rect BoundingRectangleProperty {
-			get { 
-				return (Rect) ListProvider.GetItemPropertyValue (this,
-				                                                 AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			get {
+				var rect = ListProvider.GetItemPropertyValue (
+					this, AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return rect != null ? (Rect) rect : new Rect(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
 			}
 		}
 
