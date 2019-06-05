@@ -80,11 +80,15 @@ namespace Mono.UIAutomation.Winforms
 		static void OnFormAdded (object sender, EventArgs args)
 		{
 			var f = (Form) sender;
+			TryAddFormProvider (f);
+		}
 
-			if (formProviders.ContainsKey (f))
-				return;
-
-			var provider = (FormProvider) ProviderFactory.GetProvider (f);
+		private static bool TryAddFormProvider (Form form)
+		{
+			var provider = (FormProvider) ProviderFactory.GetProvider (form);
+			var added = formProviders.TryAdd (form, provider);
+			if (!added)
+				return false;
 
 			// NOTE: Form Provider Releasing is done by FormProvider
 			
@@ -93,18 +97,43 @@ namespace Mono.UIAutomation.Winforms
 			// that manually after alerting the bridge to the presence
 			// of the new form.
 
-			formProviders [f] = provider;
+			provider.ProviderClosed += (s,e) => {
+				var l_formProvider = (FormProvider) s;
+				var l_form = (Form) l_formProvider.Control;
+				RemoveFormProvider (l_form);
+			};
 			
-			if (f.Owner == null) { //For example is not MessageBox, f.ShowDialog or XXXXXDialog
+			form.VisibleChanged  += (s,e) => {
+				var l_form = (Form) s;
+				if (l_form.Visible) {
+					TryAddFormProvider (l_form);
+				} else {
+					RemoveFormProvider (l_form);
+				}
+			};
+
+			if (form.Owner == null) { //For example is not MessageBox, f.ShowDialog or XXXXXDialog
 				// TODO: Fill in rest of eventargs
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, provider);
 				provider.InitializeChildControlStructure ();
 			} else {
-				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (f.Owner);
+				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (form.Owner);
 				ownerProvider.AddChildProvider (provider);
 			}
+
+			return true;
 		}
-		
+
+		private static void RemoveFormProvider (Form form)
+		{
+			formProviders.Remove (form);
+			if (form.Owner != null) {
+				var provider = (FormProvider) ProviderFactory.GetProvider (form);
+				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (form.Owner);
+				ownerProvider.RemoveChildProvider (provider);
+			}
+		}
+
 #endregion
 	}
 }

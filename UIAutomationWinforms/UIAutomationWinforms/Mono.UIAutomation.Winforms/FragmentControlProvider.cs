@@ -329,8 +329,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnChildControlVisibleChanged (object sender, EventArgs args)
 		{
-			SWF.Control control = (SWF.Control) sender;
-
+			var control = (SWF.Control) sender;
 			bool controlExists = Navigation.ChildrenContains (control);
 			bool controlVisible = IsComponentVisible (control);
 
@@ -402,7 +401,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Control control = null;
 
 			if ((control = component as SWF.Control) != null)
-				control.VisibleChanged -= OnChildControlVisibleChanged;			
+				control.VisibleChanged -= OnChildControlVisibleChanged;
 		}
 
 		protected virtual bool IsComponentVisible (Component component)
