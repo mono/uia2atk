@@ -106,6 +106,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public int TryGetChildIndex (FragmentControlProvider child)
 		{
+			if (child == null)
+				throw new ArgumentNullException("child");
+
 			var index = 0;
 			var p = _firstChild;
 

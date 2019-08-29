@@ -526,21 +526,28 @@ namespace Mono.UIAutomation.Winforms
 
 		internal void OnUIACollectionChanged (CollectionChangeEventArgs e)
 		{
-			SWF.TreeNode changedNode = e.Element as SWF.TreeNode;
+			var changedNode = e.Element as SWF.TreeNode;
 			if (changedNode == null)
 				return;
 
-			TreeNodeProvider nodeProvider;
-			
 			if (e.Action == CollectionChangeAction.Add) {
-				nodeProvider = GetOrCreateNodeProvider (changedNode);
-				if (nodeProvider != null)
-					AddChildProvider (nodeProvider);
+				var changedNodeProvider = GetOrCreateNodeProvider (changedNode);
+				if (changedNodeProvider == null)
+					return;
+				
+				if (changedNode.NextNode != null) {
+					if (!nodeProviders.TryGetValue (changedNode.NextNode, out TreeNodeProvider nextNodeProvider))
+						return;
+					var nextNodeProviderIndex = Navigation.TryGetChildIndex (nextNodeProvider);
+					InsertChildProvider (changedNodeProvider, nextNodeProviderIndex);
+				} else {
+					AddChildProvider (changedNodeProvider);
+				}
 			} else if (e.Action == CollectionChangeAction.Remove) {
-				if (nodeProviders.TryGetValue (changedNode, out nodeProvider)) {
+				if (nodeProviders.TryGetValue (changedNode, out TreeNodeProvider changedNodeProvider)) {
 					nodeProviders.Remove (changedNode);
-					nodeProvider.Terminate ();
-					RemoveChildProvider (nodeProvider);
+					changedNodeProvider.Terminate ();
+					RemoveChildProvider (changedNodeProvider);
 				}
 			}
 		}
