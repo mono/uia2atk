@@ -46,6 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		private Form owner;
 		private bool alreadyClosed;
 		private MainMenuProvider mainMenuProvider;
+		public event EventHandler ProviderClosed;
 		
 		#endregion
 		
@@ -171,7 +172,7 @@ namespace Mono.UIAutomation.Winforms
 					// for focused element?
 					FragmentControlProvider childFragmentProvider = Navigation.TryGetChild (control);
 					if (childFragmentProvider != null)
-						return childFragmentProvider;					
+						return childFragmentProvider;
 				}
 			}
 			return null;
@@ -193,6 +194,8 @@ namespace Mono.UIAutomation.Winforms
 					if (ownerProvider != null)
 						ownerProvider.RemoveChildProvider (this);
 				}
+
+				EmitProviderClosed ();
 			}
 		}
 
@@ -206,5 +209,12 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
+
+		private void EmitProviderClosed ()
+		{
+			if (ProviderClosed != null) {
+				ProviderClosed (this, EventArgs.Empty);
+			}
+		}
 	}
 }
