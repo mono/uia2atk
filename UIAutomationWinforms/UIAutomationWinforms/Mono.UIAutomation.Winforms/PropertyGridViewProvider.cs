@@ -25,22 +25,23 @@
 // 
 
 using System;
-using Mono.Unix;
-using System.Reflection;
-using SD = System.Drawing;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Automation;
-using Mono.UIAutomation.Services;
 using System.Collections.Generic;
-using Mono.UIAutomation.Winforms.Events;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors;
+using System.Windows.Forms;
 using System.Windows.Forms.PropertyGridInternal;
-using Mono.UIAutomation.Winforms.Events.PropertyGrid;
+using Mono.Unix;
+using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.PropertyGrid;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.PropertyGrid;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using PGI = System.Windows.Forms.PropertyGridInternal;
+using SD = System.Drawing;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -53,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public override int ItemsCount {
-			get { return children.Count; }
+			get { return Children.Length; }
 		}
 
 		public PropertyGrid PropertyGrid {
@@ -92,7 +93,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public override IRawElementProviderSimple[] GetSelectedItems ()
 		{
-			foreach (PropertyGridListItemProvider item in children)
+			foreach (PropertyGridListItemProvider item in Children)
 				if (IsItemSelected (item))
 					return new ListItemProvider[] { item };
 
@@ -106,8 +107,8 @@ namespace Mono.UIAutomation.Winforms
 
 		public override int IndexOfObjectItem (object objectItem)
 		{
-			for (int i = 0; i < children.Count; i++)
-				if (children [i].ObjectItem == objectItem)
+			for (int i = 0; i < Children.Length; i++)
+				if (Children[i].ObjectItem == objectItem)
 					return i;
 
 			return -1;
@@ -119,16 +120,16 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			}
 
-			if (row < 0 || row >= children.Count) {
+			if (row < 0 || row >= Children.Length) {
 				return null;
 			}
 
-			return children [row];
+			return Children [row];
 		}
 
 		public override void FocusItem (object objectItem)
 		{
-			foreach (PropertyGridListItemProvider item in children)
+			foreach (PropertyGridListItemProvider item in Children)
 				if (objectItem == item.ObjectItem)
 					SelectItem (item);
 		}
@@ -205,8 +206,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 
-			propertyGrid.SelectedGridItemChanged
-				+= OnSelectedGridItemChanged;
+			propertyGrid.SelectedGridItemChanged += propertyGrid_SelectedGridItemChanged;
+			propertyGrid.PropertyTabChanged += propertyGrid_PropertyTabChanged;
+			propertyGrid.PropertySortChanged += propertyGrid_PropertySortChanged;
+			propertyGrid.ExpandedItemChanged += propertyGrid_ExpandedItemChanged;
 
 			AddChildren ();
 		}
@@ -215,8 +218,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.FinalizeChildControlStructure ();
 
-			propertyGrid.SelectedGridItemChanged
-				-= OnSelectedGridItemChanged;
+			propertyGrid.SelectedGridItemChanged -= propertyGrid_SelectedGridItemChanged;
+			propertyGrid.PropertyTabChanged -= propertyGrid_PropertyTabChanged;
+			propertyGrid.PropertySortChanged -= propertyGrid_PropertySortChanged;
+			propertyGrid.ExpandedItemChanged -= propertyGrid_ExpandedItemChanged;
 
 			RemoveChildren ();
 		}
@@ -242,75 +247,108 @@ namespace Mono.UIAutomation.Winforms
 		                                                        Control control,
 		                                                        object objectItem)
 		{
-			return new PropertyGridListItemProvider (
-				this, view, (GridEntry) objectItem
-			);
+			if (objectItem is GridEntry gridEntry) {
+				return GetNewEntryProvider (gridEntry);
+			}
+			else {
+				Log.Warn ("PropertyGridViewProvider.GetNewItemProvider: objectItem is not GridEntry. "
+					+ $"(objectItem==null)={objectItem==null}, objectItem?.GetType()='{objectItem?.GetType()}'");
+				return null;
+			}
 		}
 #endregion
 
 #region Private Members
+		private PropertyGridListItemProvider[] Children
+		{
+			get {
+				return Navigation.GetChildren ().Cast<PropertyGridListItemProvider> ().ToArray ();
+			}
+		}
+
+		private PropertyGridListItemProvider GetNewEntryProvider (GridEntry gridEntry)
+		{
+			if (gridEntry is CategoryGridEntry categoryGridEntry)
+				return new PropertyGridCategoryProvider (this, view, categoryGridEntry);
+			else
+				return new PropertyGridListItemProvider (this, view, gridEntry);
+		}
+
 		private void AddChildren ()
 		{
 			GridItem root = propertyGrid.RootGridItem;
 			if (root == null)
 				return;
-			
-			foreach (GridItem cat in root.GridItems) {
-				if (cat is CategoryGridEntry && cat.GridItems != null && cat.GridItems.Count > 0) {
-					var catProvider = new PropertyGridCategoryProvider (this, view, (CategoryGridEntry)cat);
-					catProvider.Initialize ();
-					children.Add (catProvider);
-					AddChildProvider (catProvider);
-				}
-				
-				foreach (GridItem item in cat.GridItems) {
-					PropertyGridListItemProvider itemProvider
-						= (PropertyGridListItemProvider) GetNewItemProvider (
-							this, this, view, item);
 
-					itemProvider.Initialize ();
-					children.Add (itemProvider);
-					AddChildProvider (itemProvider);
-				}
+			AddChildrenRecursively (root);
+		}
+
+		private void AddChildrenRecursively (GridItem parentGridItem)
+		{
+			if (!parentGridItem.Expanded)
+				return;
+
+			foreach (GridItem item in parentGridItem.GridItems) {
+				if (!(item is GridEntry entry))
+					continue;
+				var entryProvider = GetNewEntryProvider (entry);
+
+				entryProvider.Initialize ();
+				this.AddChildProvider (entryProvider);
+				
+				AddChildrenRecursively (entry);
 			}
 		}
 
 		private void RemoveChildren ()
 		{
-			foreach (PropertyGridListItemProvider prov
-			         in children) {
+			foreach (PropertyGridListItemProvider prov in Children) {
 				RemoveChildProvider (prov);
-				prov.Terminate ();
 			}
-
-			children.Clear ();
 		}
 
-		private void OnSelectedGridItemChanged (object o, SelectedGridItemChangedEventArgs args)
+		private void RebuildChildrenTree ()
 		{
 			RemoveChildren ();
 			AddChildren ();
 		}
+
+		private void propertyGrid_SelectedGridItemChanged (object sender, SelectedGridItemChangedEventArgs args)
+		{
+			RebuildChildrenTree ();
+		}
+
+		private void propertyGrid_PropertyTabChanged (object sender, PropertyTabChangedEventArgs args)
+		{
+			RebuildChildrenTree ();
+		}
+
+		private void propertyGrid_PropertySortChanged (object sender, EventArgs args)
+		{
+			RebuildChildrenTree ();
+		}
+
+		private void propertyGrid_ExpandedItemChanged (object sender, EventArgs args)
+		{
+			RebuildChildrenTree ();
+		}
+
 #endregion
 
 #region Private Fields
 		private PropertyGridView view;
 		private PropertyGrid propertyGrid;
-		private List<PropertyGridListItemProvider> children
-			= new List<PropertyGridListItemProvider> ();
 #endregion
 	}
 
 	internal class PropertyGridListItemProvider : ListItemProvider
 	{
-
 		public override void Initialize()
 		{
 			base.Initialize();
 
 			SetBehavior (LegacyIAccessiblePatternIdentifiers.Pattern,
-				ListProvider.GetListItemBehaviorRealization (LegacyIAccessiblePatternIdentifiers.Pattern,
-															 this));
+				ListProvider.GetListItemBehaviorRealization (LegacyIAccessiblePatternIdentifiers.Pattern, this));
 		}
 
 #region Public Properties
@@ -321,11 +359,8 @@ namespace Mono.UIAutomation.Winforms
 		public string Value {
 			get { return entry.ValueText; }
 			set {
-				string error;
-				if (!entry.SetValue (value, out error)) {
-					Log.Warn ("PropertyGridListItemProvider: Unable to set value: {0}",
-					          error);
-				}
+				if (!entry.SetValue (value, out string error))
+					Log.Warn ("PropertyGridListItemProvider: Unable to set value: {0}", error);
 			}
 		}
 
@@ -350,7 +385,7 @@ namespace Mono.UIAutomation.Winforms
 		public PropertyGridListItemProvider (PropertyGridViewProvider viewProvider,
 		                                     PropertyGridView view,
 		                                     GridEntry entry) 
-			: base (viewProvider, viewProvider, view, entry)
+			: base (viewProvider, viewProvider, null, entry)
 		{
 			this.viewProvider = viewProvider;
 			this.view = view;
@@ -375,11 +410,7 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
-			
-			nameProvider.Terminate ();
 			RemoveChildProvider (nameProvider);
-			
-			valueProvider.Terminate ();
 			RemoveChildProvider (valueProvider);
 		}
 #endregion
