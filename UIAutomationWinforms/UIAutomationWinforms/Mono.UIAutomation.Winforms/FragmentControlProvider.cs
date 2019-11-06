@@ -265,7 +265,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			if (Control != null) {				
+			if (Control != null) {
 				Control.ControlAdded -= OnControlAdded;
 				Control.ControlRemoved -= OnControlRemoved;
 				Control.VisibleChanged -= OnControlVisibleChanged;
