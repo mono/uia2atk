@@ -90,6 +90,11 @@ namespace System.Windows.Automation
 			}
 		}
 
+		public void DoDefaultAction ()
+		{
+			Source.DoDefaultAction ();
+		}
+
 		private AutomationElement element;
 		private bool cached;
 		private LegacyIAccessiblePatternInformation currentInfo;

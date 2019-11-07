@@ -153,10 +153,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/CategoryInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridItemLegacyIAccessibleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemChildValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemGridItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemLegacyIAccessibleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemNameValueProviderBeahvior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PropertyGrid/ListItemTableItemProviderBehavior.cs \

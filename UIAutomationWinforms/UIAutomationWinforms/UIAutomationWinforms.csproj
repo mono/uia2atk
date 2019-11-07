@@ -160,9 +160,9 @@
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PrintPreviewControl\ScrollProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\ProgressBar\RangeValueProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\CategoryInvokeProviderBehavior.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\GridItemLegacyIAccessibleProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\GridProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemChildValueProviderBeahvior.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemLegacyIAccessibleProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemGridItemProviderBehavior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemNameValueProviderBeahvior.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\PropertyGrid\ListItemSelectionItemProviderBehavior.cs" />

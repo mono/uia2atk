@@ -28,14 +28,13 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.PropertyGrid
 {
-	internal class ListItemLegacyIAccessibleProviderBehavior
+	internal class GridItemLegacyIAccessibleProviderBehavior
 		: ProviderBehavior, ILegacyIAccessibleProvider
 	{
 #region Constructors
-		public ListItemLegacyIAccessibleProviderBehavior (ListItemProvider provider)
+		public GridItemLegacyIAccessibleProviderBehavior (PropertyGridListItemProvider provider)
 			: base (provider)
 		{
-			this.provider = (PropertyGridListItemProvider) provider;
 		}
 #endregion
 
@@ -78,54 +77,46 @@ namespace Mono.UIAutomation.Winforms.Behaviors.PropertyGrid
 #endregion
 
 #region ILegacyIAccessibleProvider Specialization
-		public int ChildId
-		{
+		public int ChildId {
 			get { return 0; }
 		}
 
-		public string DefaultAction
-		{
+		public string DefaultAction {
 			get { return ""; }
 		}
 
-		public string Description
-		{
+		public string Description {
 			get { return ""; }
 		}
 
-		public string Help
-		{
+		public string Help {
 			get { return ""; }
 		}
 
-		public string KeyboardShortcut
-		{
+		public string KeyboardShortcut {
 			get { return ""; }
 		}
 
-		public string Name
-		{
-			get { return provider.Name; }
+		public string Name {
+			get { return GridItemProvider.Name; }
 		}
 
-		public int Role
-		{
+		public int Role {
 			get { return (int)SWF.AccessibleRole.Row; }
 		}
 
-		public int State
-		{
+		public int State {
 			get {
 				var state = SWF.AccessibleStates.Selectable;
 
-				if (provider.IsReadOnly)
+				if (GridItemProvider.IsReadOnly)
 					state |= SWF.AccessibleStates.ReadOnly;
 
-				if (provider.PropertyGridViewProvider.IsItemSelected (provider))
+				if (GridItemProvider.PropertyGridViewProvider.IsItemSelected (GridItemProvider))
 					state |= SWF.AccessibleStates.Selected;
 
-				if (provider.Entry.Expandable) {
-					if (provider.Entry.Expanded)
+				if (GridEntry.Expandable) {
+					if (GridEntry.Expanded)
 						state |= SWF.AccessibleStates.Expanded;
 					else
 						state |= SWF.AccessibleStates.Collapsed;
@@ -135,14 +126,29 @@ namespace Mono.UIAutomation.Winforms.Behaviors.PropertyGrid
 			}
 		}
 
-		public string Value
+		public string Value {
+			get { return GridItemProvider.Value; }
+		}
+
+		public void DoDefaultAction ()
 		{
-			get { return provider.Value; }
+			if (!GridEntry.Expandable)
+				return;
+			GridItemProvider.PropertyGridViewProvider.SelectItem (GridItemProvider);
+			GridEntry.Expanded = !GridEntry.Expanded;
 		}
 #endregion
 
-#region Private Fields
-		private PropertyGridListItemProvider provider;
+#region Private properties
+		private PropertyGridListItemProvider GridItemProvider
+		{
+			get { return (PropertyGridListItemProvider) Provider; }
+		}
+
+		private SWF.PropertyGridInternal.GridEntry GridEntry
+		{
+			get { return GridItemProvider.Entry; }
+		}
 #endregion
 	}
 }

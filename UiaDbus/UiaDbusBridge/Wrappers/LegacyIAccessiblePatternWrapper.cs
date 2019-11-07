@@ -102,6 +102,11 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			}
 		}
 
+		public void DoDefaultAction ()
+		{
+			provider.DoDefaultAction ();
+		}
+
 #endregion
 	}
 }
