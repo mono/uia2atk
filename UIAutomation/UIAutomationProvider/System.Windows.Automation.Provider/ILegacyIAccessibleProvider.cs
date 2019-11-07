@@ -41,5 +41,7 @@ namespace System.Windows.Automation.Provider
 		int Role { get; }  // CLS-compliantment requires signed int instead of UInt32
 		int State { get; }  // CLS-compliantment requires signed int instead of UInt32
 		string Value { get; }
+
+		void DoDefaultAction ();
 	}
 }

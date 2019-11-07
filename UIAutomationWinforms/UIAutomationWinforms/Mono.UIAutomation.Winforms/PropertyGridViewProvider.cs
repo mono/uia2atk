@@ -165,8 +165,7 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-				ListItemProvider listItem)
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior, ListItemProvider listItem)
 		{
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
@@ -174,8 +173,8 @@ namespace Mono.UIAutomation.Winforms
 				return new ListItemGridItemProviderBehavior (listItem);
 			else if (behavior == TableItemPatternIdentifiers.Pattern)
 				return new ListItemTableItemProviderBehavior (listItem);
-			else if (behavior == LegacyIAccessiblePatternIdentifiers.Pattern)
-				return new ListItemLegacyIAccessibleProviderBehavior (listItem);
+			else if (behavior == LegacyIAccessiblePatternIdentifiers.Pattern && (listItem is PropertyGridListItemProvider gridEntryProvider))
+				return new GridItemLegacyIAccessibleProviderBehavior (gridEntryProvider);
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
@@ -348,7 +347,7 @@ namespace Mono.UIAutomation.Winforms
 			base.Initialize();
 
 			SetBehavior (LegacyIAccessiblePatternIdentifiers.Pattern,
-				ListProvider.GetListItemBehaviorRealization (LegacyIAccessiblePatternIdentifiers.Pattern, this));
+				PropertyGridViewProvider.GetListItemBehaviorRealization (LegacyIAccessiblePatternIdentifiers.Pattern, this));
 		}
 
 #region Public Properties
@@ -373,7 +372,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public PropertyGridViewProvider PropertyGridViewProvider {
-			get { return viewProvider; }
+			get { return (PropertyGridViewProvider)ListProvider; }
 		}
 
 		public GridEntry Entry {
@@ -387,11 +386,8 @@ namespace Mono.UIAutomation.Winforms
 		                                     GridEntry entry) 
 			: base (viewProvider, viewProvider, null, entry)
 		{
-			this.viewProvider = viewProvider;
 			this.view = view;
 			this.entry = entry;
-
-			this.viewProvider.ToString ();
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -431,7 +427,6 @@ namespace Mono.UIAutomation.Winforms
 		private PropertyGridListItemChildProvider nameProvider;
 		private PropertyGridListItemValueProvider valueProvider;
 
-		private PropertyGridViewProvider viewProvider;
 		private PropertyGridView view;
 		private GridEntry entry;
 #endregion

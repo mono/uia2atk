@@ -131,5 +131,15 @@ namespace Mono.UIAutomation.UiaDbusSource
 				}
 			}
 		}
+
+		public void DoDefaultAction ()
+		{
+			try {
+				pattern.DoDefaultAction ();
+			} catch (Exception ex) {
+				throw DbusExceptionTranslator.Translate (ex);
+			}
+		}
+
 	}
 }
