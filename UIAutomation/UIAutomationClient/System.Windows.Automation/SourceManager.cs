@@ -36,12 +36,12 @@ namespace System.Windows.Automation
 {
 	internal static class SourceManager
 	{
+		private const string UIA_ENABLED_ENV_VAR = "MONO_UIA_ENABLED";
 		private const string SOURCE_ASSEMBLY_NAMES_ENV_VAR = "MONO_UIA_SOURCE";
 		private const char SOURCE_ASSEMBLY_NAMES_DELIM = ';';
 
 		private const string AtspiUiaSourceAssembly =
 			"AtspiUiaSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-
 		private const string UiaDbusSourceAssembly =
 			"UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 
@@ -50,6 +50,21 @@ namespace System.Windows.Automation
 
 		internal static IAutomationSource [] GetAutomationSources ()
 		{
+			bool isUiaEnabled = true;
+			
+			var isUiaEnabledEnvVar = Environment.GetEnvironmentVariable (UIA_ENABLED_ENV_VAR);
+			if (!string.IsNullOrEmpty(isUiaEnabledEnvVar)) {
+				if (isUiaEnabledEnvVar == "0")
+					isUiaEnabled = false;
+				else if (isUiaEnabledEnvVar != "1")
+					throw new Exception($"The environment varianble '{UIA_ENABLED_ENV_VAR}' may be equal to '0' and '1' only, or may be empty or undefined.");
+			}
+
+			if (!isUiaEnabled) {
+				Console.WriteLine ($"No one UIA source is loaded: {UIA_ENABLED_ENV_VAR}='{isUiaEnabledEnvVar}'");
+				return new IAutomationSource [0];
+			}
+
 			if (sources == null) {
 				lock (sourcesLock) {
 					if (sources == null) {
@@ -73,12 +88,14 @@ namespace System.Windows.Automation
 
 						var loadedsourcesMsg = new List<string> { "Loaded UIA sources:" };
 						loadedsourcesMsg.AddRange (sourcesList.Select (x => x.name));
+						loadedsourcesMsg.Add ($"* To disable UIA sources loading set environment variable {UIA_ENABLED_ENV_VAR} to '0'. *");
 						Console.WriteLine (string.Join (Environment.NewLine + "  ", loadedsourcesMsg));
 
 						sources = sourcesList.Select (x => x.src).ToArray ();
 					}
 				}
 			}
+
 			return sources;
 		}
 
