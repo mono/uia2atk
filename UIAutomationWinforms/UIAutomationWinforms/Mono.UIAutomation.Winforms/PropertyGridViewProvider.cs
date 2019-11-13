@@ -261,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 		private PropertyGridListItemProvider[] Children
 		{
 			get {
-				return Navigation.GetChildren ().Cast<PropertyGridListItemProvider> ().ToArray ();
+				return Navigation.GetChildren ().OfType<PropertyGridListItemProvider> ().ToArray ();
 			}
 		}
 
