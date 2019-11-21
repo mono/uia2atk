@@ -590,14 +590,16 @@ namespace Mono.UIAutomation.Winforms
 						child = new DataGridViewDataItemButtonProvider (this, column);
 					else if ((column as SWF.DataGridViewCheckBoxColumn) != null)
 						child = new DataGridViewDataItemCheckBoxProvider (this, column);
-					else if ((column as SWF.DataGridViewLinkColumn) != null)
-						child = new DataGridViewDataItemLinkProvider (this, column);
-					else if ((column as SWF.DataGridViewImageColumn) != null)
-						child = new DataGridViewDataItemImageProvider (this, column);
 					else if ((column as SWF.DataGridViewComboBoxColumn) != null)
 						child = new DataGridViewDataItemComboBoxProvider (this, column);
-					else
+					else if ((column as SWF.DataGridViewImageColumn) != null)
+						child = new DataGridViewDataItemImageProvider (this, column);
+					else if ((column as SWF.DataGridViewLinkColumn) != null)
+						child = new DataGridViewDataItemLinkProvider (this, column);
+					else if ((column as SWF.DataGridViewTextBoxColumn) != null)
 						child = new DataGridViewDataItemEditProvider (this, column);
+					else
+						child = new DataGridViewDataItemChildProvider (this, column);
 
 					child.Initialize ();
 					AddChildProvider (child);
@@ -615,7 +617,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Data Item Child Provider
 
-		internal abstract class DataGridViewDataItemChildProvider 
+		internal class DataGridViewDataItemChildProvider 
 			: FragmentRootControlProvider, ISelectableItem
 		{
 			public DataGridViewDataItemChildProvider (DataGridDataItemProvider itemProvider,
