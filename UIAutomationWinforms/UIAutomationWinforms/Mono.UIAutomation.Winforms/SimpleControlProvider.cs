@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Constructors
-		
+
 		protected SimpleControlProvider (Component component)
 		{
 			this.component = component ?? new DummyComponent ();

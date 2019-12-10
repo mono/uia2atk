@@ -46,16 +46,19 @@ namespace Mono.UIAutomation.Winforms
 		//       behaviors depending on the control type, and maybe
 		//       it makes sense for the builder to keep track of
 		//       this mapping?
-		private static Dictionary<Component, IRawElementProviderFragment>
-			componentProviders;
+		private static readonly Dictionary<Component, IRawElementProviderFragment> componentProviders
+			 = new Dictionary<Component,IRawElementProviderFragment> ();
 		
-		private static List<IRawElementProviderFragmentRoot> formProviders;
+		private static readonly  List<IRawElementProviderFragmentRoot> formProviders
+			= new List<IRawElementProviderFragmentRoot> ();
 
-		private static Dictionary<Type, Type> providerComponentMap
+		private static readonly  Dictionary<Type, Type> providerComponentMap
 			= new Dictionary<Type, Type> ();
 
-		private static Dictionary<Type, ComponentProviderMapperHandler> componentProviderMappers
+		private static readonly Dictionary<Type, ComponentProviderMapperHandler> componentProviderMappers
 			= new Dictionary<Type, ComponentProviderMapperHandler> ();
+
+		public static readonly DesktopProvider DesktopProvider;
 
 		#endregion
 	
@@ -64,13 +67,9 @@ namespace Mono.UIAutomation.Winforms
 		static ProviderFactory ()
 		{
 			Catalog.Init (Globals.CatalogName, Globals.LocalePath);
-
-			componentProviders =
-				new Dictionary<Component,IRawElementProviderFragment> ();
-			
-			formProviders = new List<IRawElementProviderFragmentRoot> ();
-
 			InitializeProviderHash ();
+			
+			DesktopProvider = (DesktopProvider) GetProvider (DesktopComponent.Instance);
 		}
 
 		private static void InitializeProviderHash ()
@@ -262,13 +261,11 @@ namespace Mono.UIAutomation.Winforms
 
 		public static void ReleaseProvider (Component component)
 		{
-			IRawElementProviderFragment provider;
-			bool got = componentProviders.TryGetValue (component, out provider);
-			if (got) {
+			if (componentProviders.TryGetValue (component, out IRawElementProviderFragment provider)) {
 				componentProviders.Remove (component);
 				((FragmentControlProvider) provider).Terminate ();
-				if (provider is FormProvider)
-					formProviders.Remove ((FormProvider) provider);
+				if (provider is FormProvider formProvider)
+					formProviders.Remove (formProvider);
 			}
 		}
 		

@@ -33,6 +33,8 @@ using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
 using SWF = System.Windows.Forms;
 
+using System.Threading;
+
 namespace Mono.UIAutomation.Winforms
 {
 	internal abstract class FragmentControlProvider 
@@ -45,7 +47,6 @@ namespace Mono.UIAutomation.Winforms
 		private readonly Navigation.Navigation navigation;
 		private SWF.ContextMenu contextMenu;
 		private SWF.ContextMenuStrip contextMenuStrip;
-		private bool visible;
 
 		#endregion
 
@@ -54,11 +55,11 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 
 		#region Constructor
-		
+
 		protected FragmentControlProvider (Component component)
 			: base (component)
 		{
-			navigation = MakeSuitableNavigation ();
+			navigation = new Navigation.Navigation (this);
 
 			if (Control != null) {
 				Control.ContextMenuChanged += HandleContextMenuChanged;
@@ -66,17 +67,9 @@ namespace Mono.UIAutomation.Winforms
 
 				HandleContextMenuChanged (null, EventArgs.Empty);
 				HandleContextMenuStripChanged (null, EventArgs.Empty);
-
-				visible = Control.Visible;
 			}
 		}
 		
-		protected virtual Navigation.Navigation MakeSuitableNavigation ()
-		{
-			return new Navigation.Navigation (this);
-		}
-
-
 		void HandleContextMenuStripChanged (object sender, EventArgs e)
 		{
 			if (contextMenuStrip != null) {
@@ -182,6 +175,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 
+		// This method is aimed to move child provider from one parent provider to anothe one.
+		// This is suitable to deal with branch of `FormProvider` rooted on `DesktopProvier`.
+		public void SetAsOwnerFor (SWF.Form form)
+		{
+			var formProvider = (FormProvider) ProviderFactory.GetProvider (form);
+			var oldOwnerProvider = (FragmentControlProvider) formProvider.Navigate (NavigateDirection.Parent);
+
+			oldOwnerProvider?.HandleChildComponentRemoved (form);
+			HandleChildComponentAdded (form);
+		}
+
 		public FragmentControlProvider GetChildProviderAt (int index)
 		{
 			return Navigation.GetChild (index);
@@ -212,14 +216,10 @@ namespace Mono.UIAutomation.Winforms
 			if (Navigation.ChildrenContains (childProvider))
 				return;
 
-			if (index == FAKE_INDEX_TREATED_AS_END || !Navigation.IsIndexValid (index))
-			{
+			if (index == FAKE_INDEX_TREATED_AS_END)
 				Navigation.AppendChild (childProvider);
-			}
 			else
-			{
 				Navigation.InsertChild (index, childProvider);
-			}
 
 			NotifyOnChildStructureChanged (childProvider, StructureChangeType.ChildAdded, raiseEvent);
 
@@ -254,25 +254,24 @@ namespace Mono.UIAutomation.Winforms
 		public virtual void InitializeChildControlStructure ()
 		{
 			if (Control != null) {
-				Control.ControlAdded += OnControlAdded;
-				Control.ControlRemoved += OnControlRemoved;
-				Control.VisibleChanged += OnControlVisibleChanged;
+				Control.ControlAdded += OnChildControlAdded;
+				Control.ControlRemoved += OnChildControlRemoved;
 				
 				foreach (SWF.Control childControl in Control.Controls)
-					HandleComponentAdded (childControl);
+					HandleChildComponentAdded (childControl);
 			}
 		}
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			if (Control != null) {				
-				Control.ControlAdded -= OnControlAdded;
-				Control.ControlRemoved -= OnControlRemoved;
-				Control.VisibleChanged -= OnControlVisibleChanged;
+			if (Control != null) {
+				Control.ControlAdded -= OnChildControlAdded;
+				Control.ControlRemoved -= OnChildControlRemoved;
 			}
 
 			for (; Navigation.ChildrenCount > 0; ) {
-				HandleComponentRemoved (Navigation.GetChild (0).Component); 
+				var ch = Navigation.GetChild (0);
+				HandleChildComponentRemoved (ch.Component); 
 			}
 		}
 		
@@ -304,137 +303,85 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods: Event Handlers
 	
-		private void OnControlAdded (object sender, SWF.ControlEventArgs args)
+		private void OnChildControlAdded (object sender, SWF.ControlEventArgs args)
 		{
-			HandleComponentAdded (args.Control);
+			HandleChildComponentAdded (args.Control);
 		}
 	
-		private void OnControlRemoved (object sender, SWF.ControlEventArgs args)
+		private void OnChildControlRemoved (object sender, SWF.ControlEventArgs args)
 		{
-			HandleComponentRemoved (args.Control);
-		}
-
-		private void OnControlVisibleChanged (object sender, EventArgs args)
-		{
-			if (visible == Control.Visible)
-				return;
-
-			if (Control.Visible)
-				InitializeChildControlStructure ();
-			else
-				FinalizeChildControlStructure ();
-
-			visible = Control.Visible;
+			HandleChildComponentRemoved (args.Control);
 		}
 
 		private void OnChildControlVisibleChanged (object sender, EventArgs args)
 		{
 			var control = (SWF.Control) sender;
-			bool controlExists = Navigation.ChildrenContains (control);
-			bool controlVisible = IsComponentVisible (control);
-
-			if (controlVisible && !controlExists)
-				InitializeComponentProvider (control);
-			else if (!controlVisible && controlExists)
-				TerminateComponentProvider (control);
+			if (IsComponentVisible (control))
+				HandleChildComponentAdded (control);
+			else
+				HandleChildComponentRemoved (control);
 		}
 
 		#endregion
 
 		#region Protected Methods
 
-		protected virtual FragmentControlProvider CreateProvider (Component component)
-		{
-			if (component is SWF.Control control)
-			{
-				if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
-					return null;
-			}
-			return (FragmentControlProvider) ProviderFactory.GetProvider (component);
-		}
-
-		protected virtual void DestroyProvider (Component component)
-		{
-			ProviderFactory.ReleaseProvider (component);
-		}
-		
-		protected FragmentControlProvider GetProvider (SWF.Control control)
-		{
-			return Navigation.TryGetChild (control);
-		}
-
-		protected void InitializeComponentProvider (Component childComponent)
+		protected void HandleChildComponentAdded (Component childComponent)
 		{
 			if (Navigation.ChildrenContains (childComponent))
 				return;
 
-			FragmentControlProvider childProvider = CreateProvider (childComponent);
-			if (childProvider == null)
-				return;
+			/*
+			  At some not totally explored condition a Provider object has not been removed from a hidden/deleted
+			parent one properly. This not-removed Provider stais with a `Navigation` object storing uncleared
+			refrrences to ancestor, siblings and descendants. As a consequence this not-removed Provider leads to 
+			deeper refrrences breaking while it is an argument of the `HandleChildComponentAdded` method call.
+			  To deal with this case let's check the `Parent` refence and use `HandleChildComponentRemoved`
+			in case of any confusion.
+			*/
+			var provider = (FragmentControlProvider) ProviderFactory.FindProvider (childComponent);
+			if (provider != null && provider.Navigation.Parent != null)
+				provider.Navigation.Parent.HandleChildComponentRemoved (childComponent);
 
-			InsertChildProvider (childProvider, FAKE_INDEX_TREATED_AS_END);
+			if (childComponent is SWF.Control childCcontrol) {
+				if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (childCcontrol))
+					return;
+				childCcontrol.VisibleChanged += OnChildControlVisibleChanged;
+			}
+
+			if (IsComponentVisible (childComponent)) {
+				var childProvider = (FragmentControlProvider) ProviderFactory.GetProvider (childComponent);
+				if (childProvider == null)
+					return;
+				InsertChildProvider (childProvider, FAKE_INDEX_TREATED_AS_END);
+			}
 		}
 
-		protected void TerminateComponentProvider (Component childComponent)
+		protected void HandleChildComponentRemoved (Component childComponent)
 		{
-			FragmentControlProvider removedProvider = Navigation.TryGetChild (childComponent);
-			if (removedProvider == null)
+			var childProvider = Navigation.TryGetChild (childComponent);
+			if (childProvider == null)
 				return;
 
 			// Event source:
 			//       Parent of removed child runtimeId: The child that was
 			//       removed. (pg 6 of fxref_uiautomationtypes_p2.pdf)
-			RemoveChildProvider (removedProvider);
-			DestroyProvider (childComponent);
-		}
+			RemoveChildProvider (childProvider);
 
-		protected virtual void AddVisibleEvent (Component component)
-		{
-			SWF.Control control = null;
+			if (childComponent is SWF.Control childCcontrol)
+				childCcontrol.VisibleChanged -= OnChildControlVisibleChanged;
 
-			if ((control = component as SWF.Control) != null)
-				control.VisibleChanged += OnChildControlVisibleChanged;
-		}		
-
-		protected virtual void RemoveVisibleEvent (Component component)
-		{
-			SWF.Control control = null;
-
-			if ((control = component as SWF.Control) != null)
-				control.VisibleChanged -= OnChildControlVisibleChanged;
+			ProviderFactory.ReleaseProvider (childComponent);
 		}
 
 		protected virtual bool IsComponentVisible (Component component)
 		{
 			if (component is UserCustomComponent)
 				return true;
-
-			SWF.Control control = null;
-			if ((control = component as SWF.Control) != null)
+			else if (component is SWF.Control control)
 				return control.Visible;
 			else // Component based providers will need to override this method
 				return false;
-		}
-
-		protected void HandleComponentAdded (Component childComponent)
-		{
-			if (Navigation.ChildrenContains (childComponent))
-				return;
-
-			// We don't add an invisible component but we keep track of its 
-			// Visible event to add it when Visible changes
-			AddVisibleEvent (childComponent);
-			if (IsComponentVisible (childComponent))
-				InitializeComponentProvider (childComponent);
-		}
-
-		protected void HandleComponentRemoved (Component childComponent)
-		{
-			if (!Navigation.ChildrenContains (childComponent))
-				return;
-
-			TerminateComponentProvider (childComponent);
-			RemoveVisibleEvent (childComponent);
 		}
 
 		#endregion
@@ -477,7 +424,26 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			return Navigation.Navigate (direction);
+			switch (direction)
+			{
+				case NavigateDirection.Parent:
+					// TODO: Review this
+					// "Fragment roots do not enable navigation to
+					// a parent or siblings; navigation among fragment
+					// roots is handled by the default window providers."
+					// Source: http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.navigate.aspx
+					return ((IRawElementProviderFragment) Navigation.Parent); // !!!:      ?? Provider.FragmentRoot;
+				case NavigateDirection.FirstChild:
+					return Navigation.FirstChildProvider;
+				case NavigateDirection.LastChild:
+					return Navigation.LastChildProvider;
+				case NavigateDirection.NextSibling:
+					return Navigation.NextProvider;
+				case NavigateDirection.PreviousSibling:
+					return Navigation.PreviousProvider;
+				default:
+					return null;
+			}
 		}
 		
 		public virtual void SetFocus ()
@@ -490,20 +456,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public override string ToString ()
 		{
-			string name = SafeGetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			string locCtrlType = SafeGetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id);
-			return string.Format ("<{0}:'{1}';'{2}'>", this.GetType (), name, locCtrlType);
-		}
-
-		private string SafeGetPropertyValue (int propertyId)
-		{
-			const string errValueDummy = "[err]";
-			try {
-				return (this.GetPropertyValue (propertyId) ?? errValueDummy).ToString ();
-			}
-			catch {
-				return errValueDummy;
-			}
+			return $"<{this.GetType ()}:{Component},{runtimeId}>";
 		}
 	}
 }

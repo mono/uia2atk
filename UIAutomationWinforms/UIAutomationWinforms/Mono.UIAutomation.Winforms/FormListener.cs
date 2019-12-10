@@ -36,16 +36,8 @@ namespace Mono.UIAutomation.Winforms
 {
 	public class FormListener
 	{
-#region Private Static Members
-		
 		static bool initialized = false;
-		static Dictionary<Form, FormProvider> formProviders =
-			new Dictionary<Form, FormProvider> ();
-		
-#endregion
-		
-#region Public Static Methods
-		
+
 		/// <summary>
 		/// Set up the FormListener class to listen to winforms
 		/// events that will allow the correct UIA providers to be
@@ -58,37 +50,28 @@ namespace Mono.UIAutomation.Winforms
 			
 			// We are using this event to tell the bridge that should release all
 			// the FormProvider provider that aren't yet removed.
-			Application.ApplicationExit += delegate (object sender, EventArgs args) {
-				foreach (FormProvider provider in ProviderFactory.GetFormProviders ()) {
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-					                                   provider);
-				}
-			};
-			
+			Application.ApplicationExit += Application_ApplicationExit;
+
 			// FIXME: FormAdded is fired too frequently (such as
 			//        when the form comes into focus).  A different
 			//        event is probably more appropriate.
-			Application.FormAdded += new EventHandler (OnFormAdded);
+			Application.FormAdded += Application_FormAdded;
 
 			initialized = true;
 		}
 		
-#endregion
-		
-#region Static Event Handlers
-		
-		static void OnFormAdded (object sender, EventArgs args)
+		private static void Application_ApplicationExit (object sender, EventArgs args)
 		{
-			var f = (Form) sender;
-			TryAddFormProvider (f);
+			ProviderFactory.DesktopProvider.Terminate ();
 		}
 
-		private static bool TryAddFormProvider (Form form)
+		private static void Application_FormAdded (object sender, EventArgs args)
 		{
-			var provider = (FormProvider) ProviderFactory.GetProvider (form);
-			var added = formProviders.TryAdd (form, provider);
-			if (!added)
-				return false;
+			var form = (Form) sender;
+
+			// Some sort of optimisation for frequently called `Application.FormAdded`.
+			if (IsFormProviderAlreadyCreated (form))
+				return;
 
 			// NOTE: Form Provider Releasing is done by FormProvider
 			
@@ -97,43 +80,17 @@ namespace Mono.UIAutomation.Winforms
 			// that manually after alerting the bridge to the presence
 			// of the new form.
 
-			provider.ProviderClosed += (s,e) => {
-				var l_formProvider = (FormProvider) s;
-				var l_form = (Form) l_formProvider.Control;
-				RemoveFormProvider (l_form);
-			};
-			
-			form.VisibleChanged  += (s,e) => {
-				var l_form = (Form) s;
-				if (l_form.Visible) {
-					TryAddFormProvider (l_form);
-				} else {
-					RemoveFormProvider (l_form);
-				}
-			};
+			var parentProvider = (form.Owner == null)
+				? ProviderFactory.DesktopProvider // This case is suitable for example is not MessageBox, f.ShowDialog or XXXXXDialog
+				: (FragmentControlProvider) ProviderFactory.GetProvider (form.Owner);
 
-			if (form.Owner == null) { //For example is not MessageBox, f.ShowDialog or XXXXXDialog
-				// TODO: Fill in rest of eventargs
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, provider);
-				provider.InitializeChildControlStructure ();
-			} else {
-				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (form.Owner);
-				ownerProvider.AddChildProvider (provider);
-			}
-
-			return true;
+			parentProvider.SetAsOwnerFor (form);
 		}
 
-		private static void RemoveFormProvider (Form form)
+		private static bool IsFormProviderAlreadyCreated (Form form)
 		{
-			formProviders.Remove (form);
-			if (form.Owner != null) {
-				var provider = (FormProvider) ProviderFactory.GetProvider (form);
-				var ownerProvider = (FormProvider) ProviderFactory.FindProvider (form.Owner);
-				ownerProvider.RemoveChildProvider (provider);
-			}
+			var provider = (FormProvider) ProviderFactory.FindProvider (form);
+			return provider != null && provider.Navigate (NavigateDirection.Parent) != null;
 		}
-
-#endregion
 	}
 }

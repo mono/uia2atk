@@ -182,8 +182,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider =
-				provider as IRawElementProviderSimple;
+			var simpleProvider = provider as IRawElementProviderSimple;
 
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (simpleProvider == null)
@@ -191,22 +190,16 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 				object providerHandleObj =
 					simpleProvider.GetPropertyValue (AEIds.NativeWindowHandleProperty.Id);
-				IntPtr providerHandle = providerHandleObj != null ?
-					(IntPtr) providerHandleObj :
-					IntPtr.Zero;
+				var providerHandle = providerHandleObj != null
+					? (IntPtr) providerHandleObj
+					: IntPtr.Zero;
 
-				bool isRootWindow = false;
-				if (ControlType.Window.Id == (int)
-					simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id)) {
-					var fragmentProvider = simpleProvider as IRawElementProviderFragment;
-					isRootWindow = fragmentProvider != null &&
-						fragmentProvider == fragmentProvider.Navigate (NavigateDirection.Parent);
-				}
-
-				ProviderElementWrapper element = new ProviderElementWrapper (simpleProvider);
+				var element = new ProviderElementWrapper (simpleProvider);
 				element.Register (SessionBus);
+
 				lock (providerWrapperMapping)
 					providerWrapperMapping [simpleProvider] = element;
+
 				if (providerHandle != IntPtr.Zero)
 					lock (pointerProviderMapping) {
 #if DEBUG
@@ -218,7 +211,8 @@ namespace Mono.UIAutomation.UiaDbusBridge
 #endif
 						pointerProviderMapping [providerHandle] = simpleProvider;
 					}
-				if (isRootWindow)
+
+				if (IsRootWindow (simpleProvider))
 					app.AddRootElement (element);
 
 				//The event shall be raised after the provider is added to providerWrapperMapping
@@ -230,6 +224,24 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			} else {
 				app.RaiseStructureChangedEvent (simpleProvider, e);
 			}
+		}
+
+		private bool IsRootWindow (IRawElementProviderSimple simpleProvider)
+		{
+			var controlTypeId = (int) simpleProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id);
+			if (controlTypeId != ControlType.Window.Id)
+				return false;
+
+			var fragmentProvider = simpleProvider as IRawElementProviderFragment;
+			if (fragmentProvider == null)
+				return false;
+
+			var parentProvider = fragmentProvider.Navigate (NavigateDirection.Parent);  // This will be Desktop semi-provider or owner form provider. Not `null`!
+			var parentControlTypeId = (int) parentProvider.GetPropertyValue (AEIds.ControlTypeProperty.Id);
+			if (parentControlTypeId == ControlType.Pane.Id)
+				return true;
+
+			return false;
 		}
 
 		public void Initialize ()
@@ -364,12 +376,10 @@ namespace Mono.UIAutomation.UiaDbusBridge
 
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
-			ProviderElementWrapper element;
-			if (!providerWrapperMapping.TryGetValue (provider, out element))
+			if (!providerWrapperMapping.TryGetValue (provider, out ProviderElementWrapper element))
 				return;
 
-			int controlTypeId = (int) provider.GetPropertyValue (
-				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.Window.Id)
 				app.RemoveRootElement (element);
 

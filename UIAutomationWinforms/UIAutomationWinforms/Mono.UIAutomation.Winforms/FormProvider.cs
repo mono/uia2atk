@@ -46,7 +46,6 @@ namespace Mono.UIAutomation.Winforms
 		private Form owner;
 		private bool alreadyClosed;
 		private MainMenuProvider mainMenuProvider;
-		public event EventHandler ProviderClosed;
 		
 		#endregion
 		
@@ -92,13 +91,16 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 
-			form.UIAMenuChanged += OnUIAMenuChanged;
+			form.UIAMenuChanged += OnFormUIAMenuChanged;
+			form.UIAOwnerChanged += OnFromUIAOwnerChanged;
+			
 			SetupMainMenuProvider ();
 		}
 
 		public override void FinalizeChildControlStructure ()
 		{
-			form.UIAMenuChanged -= OnUIAMenuChanged;
+			form.UIAMenuChanged -= OnFormUIAMenuChanged;
+			form.UIAOwnerChanged -= OnFromUIAOwnerChanged;
 			
 			base.FinalizeChildControlStructure ();
 		}
@@ -113,13 +115,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Event Handlers
 
-		private void OnUIAMenuChanged (object sender, EventArgs args)
+		private void OnFormUIAMenuChanged (object sender, EventArgs args)
 		{
 			if (mainMenuProvider != null) {
 				mainMenuProvider.Terminate ();
 				RemoveChildProvider (mainMenuProvider);
 			}
 			SetupMainMenuProvider ();
+		}
+
+		private void OnFromUIAOwnerChanged (object sender, EventArgs args)
+		{
+			var form = (Form) sender;
+			var ownerProvider = (form.Owner != null)
+				? (FragmentControlProvider) ProviderFactory.GetProvider (form.Owner)
+				: ProviderFactory.DesktopProvider;
+			ownerProvider.SetAsOwnerFor (form);
 		}
 		
 		#endregion
@@ -187,15 +198,14 @@ namespace Mono.UIAutomation.Winforms
 			if (AutomationInteropProvider.ClientsAreListening && !AlreadyClosed) {
 				alreadyClosed = true;
 
-				if (owner == null)
+				if (owner == null) {
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, this);
+				}
 				else {
 					var ownerProvider = ProviderFactory.FindProvider (owner) as FormProvider;
 					if (ownerProvider != null)
 						ownerProvider.RemoveChildProvider (this);
 				}
-
-				EmitProviderClosed ();
 			}
 		}
 
@@ -209,12 +219,5 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-
-		private void EmitProviderClosed ()
-		{
-			if (ProviderClosed != null) {
-				ProviderClosed (this, EventArgs.Empty);
-			}
-		}
 	}
 }

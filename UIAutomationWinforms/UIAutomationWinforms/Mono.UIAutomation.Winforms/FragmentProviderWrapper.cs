@@ -22,6 +22,7 @@
 //   Nikita Voronchev <nikita.voronchev@ru.axxonsoft.com>
 //
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Automation.Provider;
@@ -34,11 +35,6 @@ namespace Mono.UIAutomation.Winforms
 		public FragmentProviderWrapper (Component component, IRawElementProviderFragment fragmentProvider)
 			: base (component, fragmentProvider)
 		{
-		}
-
-		protected override Navigation.Navigation MakeSuitableNavigation ()
-		{
-			return new WrapperNavigation (this);
 		}
 
 		public IRawElementProviderFragment WrappedFragmentProvider
@@ -55,12 +51,12 @@ namespace Mono.UIAutomation.Winforms
 
 		public override IRawElementProviderFragmentRoot FragmentRoot
 		{
-			get { return WrappedFragmentProvider.FragmentRoot; }
+			get { return null; }  // TODO
 		}
 
 		public override IRawElementProviderSimple[] GetEmbeddedFragmentRoots ()
 		{
-			return WrappedFragmentProvider.GetEmbeddedFragmentRoots ();
+			return new IRawElementProviderSimple[0];  // TODO
 		}
 
 		public override int[] GetRuntimeId ()
@@ -77,10 +73,7 @@ namespace Mono.UIAutomation.Winforms
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
 			if (direction == NavigateDirection.FirstChild || direction == NavigateDirection.LastChild)
-			{
 				UpdateCustomProvidersChildrenStructure ();
-			}
-
 			return base.Navigate (direction);
 		}
 
@@ -91,7 +84,6 @@ namespace Mono.UIAutomation.Winforms
 			else
 				base.InsertChildProvider (raiseEvent, childProvider, index);
 		}
-
 
 		public override void InitializeChildControlStructure ()
 		{
@@ -108,25 +100,22 @@ namespace Mono.UIAutomation.Winforms
 
 		protected void UpdateCustomProvidersChildrenStructure ()
 		{
-			var currentWrappers = WrappedFragmentProvider.GetNavigatedChildProviders ();
-
-			var storedWrappers = Navigation.GetChildren ().OfType <FragmentProviderWrapper> ().ToArray ();
+			var currentCustom = WrappedFragmentProvider.GetNavigatedChildProviders ();
+			var storedWrappers = Navigation.GetCustomChildren ();
 			var storedCustom = storedWrappers.Select (x => x.WrappedFragmentProvider).ToArray ();
 
 			foreach (var provider in storedWrappers)
 			{
-				if (!currentWrappers.Contains (provider.WrappedFragmentProvider))
-				{
-					TerminateComponentProvider (provider.Component);
-				}
+				if (!currentCustom.Contains (provider.WrappedFragmentProvider))
+					HandleChildComponentRemoved (provider.Component);
 			}
 
-			foreach (IRawElementProviderFragment child in currentWrappers)
+			foreach (IRawElementProviderFragment child in currentCustom)
 			{
 				if (!storedCustom.Contains (child))
 				{
-					var userCustomComponent = new UserCustomComponent (child, this);
-					InitializeComponentProvider (userCustomComponent);
+					var customComponent = new UserCustomComponent (child, this);
+					HandleChildComponentAdded (customComponent);
 				}
 			}
 		}

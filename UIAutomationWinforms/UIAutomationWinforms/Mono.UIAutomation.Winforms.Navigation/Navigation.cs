@@ -23,75 +23,139 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Automation.Provider;
+using System.Linq;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
-	internal class Navigation
+	internal partial class Navigation
 	{
-		#region Constructor
+		private readonly Chain _chainWinforms = new Chain ();
+		private readonly Chain _chainCustoms = new Chain ();
 
 		public Navigation (FragmentControlProvider provider)
 		{
 			Provider = provider;
+			Chain.LinkOrderedChains (_chainWinforms, _chainCustoms);
 		}
 
-		#endregion
+		public readonly FragmentControlProvider Provider;
+		public FragmentControlProvider Parent { get; protected set; }
+		public  FragmentControlProvider PreviousProvider { get; protected set; }
+		public  FragmentControlProvider NextProvider { get; protected set; }
+		public FragmentControlProvider FirstChildProvider => _chainWinforms.First ?? _chainCustoms.First;
+		public FragmentControlProvider LastChildProvider => _chainCustoms.Last ?? _chainWinforms.Last;
 
-		#region Public Methods
-
-		public FragmentControlProvider Provider { get; private set; }
-
-		public FragmentControlProvider Parent { get; private set; }
-
-		public virtual void AppendChild (FragmentControlProvider newChild)
+		public void InsertChild (int index, FragmentControlProvider newChild)
 		{
-			LinkOrderedProviders (_lastChild, newChild);
+			if (newChild == null)
+				throw new ArgumentNullException ("newChild");
+			if (!newChild.Navigation.IsCleared ())
+				throw new ArgumentException ($"!newChild.IsCleared(): newChild={newChild}");
 
-			SetAsLastChild (newChild);
-			if (_firstChild == null)
-				SetAsFirstChild (newChild);
-
-			IncrementCounterAndSetParent (newChild);
+			if (newChild is FragmentProviderWrapper)
+			{
+				var relativeIndex = index - _chainWinforms.Count;
+				_chainCustoms.SafeInsertAt (relativeIndex, newChild);
+			}
+			else
+			{
+				_chainWinforms.SafeInsertAt (index, newChild);
+			}
+			newChild.Navigation.Parent = this.Provider;
 		}
 
-		public virtual void InsertChild (int index, FragmentControlProvider newChild)
+		public void AppendChild (FragmentControlProvider newChild)
 		{
-			if (!IsIndexValid (index))
-				throw new IndexOutOfRangeException (String.Format (
-					"index={0}; _childrenCount={1}", index, _childrenCount));
+			if (newChild == null)
+				throw new ArgumentNullException ("newChild");
+			if (!newChild.Navigation.IsCleared ())
+				throw new ArgumentException ($"!newChild.IsCleared(): newChild={newChild}");
 
-			var currentAtIndex = GetChild (index);
-			var correntPrevious = currentAtIndex.Navigation._previousProvider;
-
-			LinkOrderedProviders (correntPrevious, newChild);
-			LinkOrderedProviders (newChild, currentAtIndex);
-			if (index == 0)
-				SetAsFirstChild (newChild);
-
-			IncrementCounterAndSetParent (newChild);
+			if (newChild is FragmentProviderWrapper)
+				_chainCustoms.AppendToEnd (newChild);
+			else
+				_chainWinforms.AppendToEnd (newChild);
+			newChild.Navigation.Parent = this.Provider;
 		}
 
-		public virtual void RemoveChild (FragmentControlProvider child)
+		public void RemoveChild (FragmentControlProvider child)
 		{
-			LinkOrderedProviders (child.Navigation._previousProvider, child.Navigation._nextProvider);
+			if (child == null)
+				throw new ArgumentNullException ("child");
 
-			if (child.Navigation._previousProvider == null)
-				SetAsFirstChild (child.Navigation._nextProvider);
-
-			if (child.Navigation._nextProvider == null)
-				SetAsLastChild (child.Navigation._previousProvider);
-
+			if (child is FragmentProviderWrapper)
+				_chainCustoms.Remove (child);
+			else
+				_chainWinforms.Remove (child);
 			child.Navigation.Clear ();
-
-			--_childrenCount;
 		}
 
-		public int ChildrenCount
+		public int ChildrenCount => _chainWinforms.Count + _chainCustoms.Count;
+
+		public int TryGetChildIndex (FragmentControlProvider child)
 		{
-			get { return _childrenCount; }
+			if (child is FragmentProviderWrapper)
+			{
+				var relativeIndex = _chainCustoms.TryIndexOf (child);
+				if (relativeIndex == -1)
+					return -1;
+				return _chainWinforms.Count + relativeIndex;
+			}
+			else
+			{
+				return _chainWinforms.TryIndexOf (child);
+			}
+		}
+
+		public FragmentControlProvider GetChild (int index)
+		{
+			var relativeIndex = index - _chainWinforms.Count;
+			if (relativeIndex >= 0)
+				return _chainCustoms.GetByIndex (relativeIndex);
+			else
+				return _chainWinforms.GetByIndex (index);
+		}
+
+		public FragmentControlProvider TryGetChild (Component childComponent)
+		{
+			return _chainWinforms.TryGetByComponentOfProvider (childComponent) ?? _chainCustoms.TryGetByComponentOfProvider (childComponent);
+		}
+
+		public FragmentControlProvider[] GetChildren ()
+		{
+			return _chainWinforms.ToList ().Concat (_chainCustoms.ToList ()).ToArray ();
+		}
+
+		public FragmentControlProvider[] GetWinformsChildren ()
+		{
+			return _chainWinforms.ToList ().ToArray ();
+		}
+
+		public FragmentProviderWrapper[] GetCustomChildren ()
+		{
+			return _chainCustoms.ToList ().Cast<FragmentProviderWrapper> ().ToArray ();
+		}
+
+		public virtual void Clear ()
+		{
+			this.Provider.NavigateEachChildProvider (child =>
+			{
+				if (child is FragmentControlProvider p)
+					p.Navigation.Clear ();
+			});
+
+			Parent = null;
+			PreviousProvider = null;
+			NextProvider = null;
+
+			_chainWinforms.Clear ();
+			_chainCustoms.Clear ();
+		}
+
+		public bool IsCleared ()
+		{
+			return Parent == null && PreviousProvider == null  && NextProvider == null && _chainWinforms.Count == 0 && _chainCustoms.Count == 0;
 		}
 
 		public bool ChildrenContains (FragmentControlProvider child)
@@ -104,159 +168,19 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			return TryGetChild (childComponent) != null;
 		}
 
-		public int TryGetChildIndex (FragmentControlProvider child)
+		public override string ToString ()
 		{
-			if (child == null)
-				throw new ArgumentNullException("child");
-
-			var index = 0;
-			var p = _firstChild;
-
-			while (p != null)
-			{
-				if (p.Equals (child))
-					return index;
-				p = p.Navigation._nextProvider;
-				++index;
-			}
-
-			return -1;
+			return $"<{this.GetType ()}:{Provider}>";
 		}
 
-		public FragmentControlProvider GetChild (int index)
+		public string ToStringDetailed ()
 		{
-			var p = _firstChild;
-			for (var i = 0; i < index; ++i)
-			{
-				p = p.Navigation._nextProvider;
-			}
-			return p;
+			return $"<{this.GetType ()}:{Provider}>" + Environment.NewLine
+				+ $"  Parent=              {Parent}" + Environment.NewLine
+				+ $"  PreviousProvider=    {PreviousProvider}" + Environment.NewLine
+				+ $"  NextProvider=        {NextProvider}" + Environment.NewLine
+				+ $"  _chainWinforms.Count={_chainWinforms.Count}" + Environment.NewLine
+				+ $"  _chainCustoms.Count= {_chainCustoms.Count}";
 		}
-
-		public FragmentControlProvider TryGetChild (Component childComponent)
-		{
-			if (childComponent == null)
-				return null;
-
-			var p = _firstChild;
-			while (p != null)
-			{
-				if (childComponent.Equals (p.Component))
-					return p;
-				p = p.Navigation._nextProvider;
-			}
-
-			return null;
-		}
-
-		public FragmentControlProvider[] GetChildren ()
-		{
-			var o = new List<FragmentControlProvider>();
-			var p = _firstChild;
-			while (p != null)
-			{
-				o.Add (p);
-				p = p.Navigation._nextProvider;
-			}
-			return o.ToArray ();
-		}
-
-		public IRawElementProviderFragment Navigate (NavigateDirection direction)
-		{
-			switch (direction)
-			{
-				case NavigateDirection.Parent:
-					// TODO: Review this
-					// "Fragment roots do not enable navigation to
-					// a parent or siblings; navigation among fragment
-					// roots is handled by the default window providers."
-					// Source: http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.navigate.aspx
-					return ((IRawElementProviderFragment) Parent) ?? Provider.FragmentRoot;
-				case NavigateDirection.FirstChild:
-					return _firstChild;
-				case NavigateDirection.LastChild:
-					return _lastChild;
-				case NavigateDirection.NextSibling:
-					return _nextProvider;
-				case NavigateDirection.PreviousSibling:
-					return _previousProvider;
-				default:
-					return null;
-			}
-		}
-
-		private void Clear ()
-		{
-			this.Provider.NavigateEachChildProvider (child =>
-			{
-				if (child is FragmentControlProvider p)
-					p.Navigation.Clear ();
-			});
-			Parent = null;
-			_firstChild = null;
-			_lastChild = null;
-			_previousProvider = null;
-			_nextProvider = null;
-			_childrenCount = 0;
-		}
-
-		public bool IsIndexValid (int index)
-		{
-			return index >= 0 && index < _childrenCount;
-		}
-
-		#endregion
-
-		#region Private Methods
-
-		private void SetAsLastChild (FragmentControlProvider child)
-		{
-			_lastChild = child;
-			if (child != null)
-				child.Navigation._nextProvider = null;
-		}
-
-		private void SetAsFirstChild (FragmentControlProvider child)
-		{
-			_firstChild = child;
-			if (child != null)
-				child.Navigation._previousProvider = null;
-		}
-
-
-		private void LinkOrderedProviders (FragmentControlProvider p1, FragmentControlProvider p2)
-		{
-			if (p1 != null)
-			{
-				p1.Navigation._nextProvider = p2;
-			}
-			if (p2 != null)
-			{
-				p2.Navigation._previousProvider = p1;
-			}
-		}
-
-		private void IncrementCounterAndSetParent (FragmentControlProvider newChild)
-		{
-			newChild.Navigation.Parent = this.Provider;
-			++_childrenCount;
-		}
-
-		#endregion
-
-		#region Private Fields
-
-		// It seems, some controls (like ComboBox) have numerous Providers with the same Component.
-		// Some providers may relates to the DummyComponent. Threfore, the Provider is a primary key
-		// in any collection. One can get a Component (real or dummy) by a Provider. But not vice versa
-		// every time.
-		private FragmentControlProvider _firstChild = null;
-		private FragmentControlProvider _lastChild = null;
-		private int _childrenCount = 0;
-
-		private FragmentControlProvider _previousProvider;
-		private FragmentControlProvider _nextProvider;
-
-		#endregion
 	}
 }

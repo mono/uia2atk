@@ -33,12 +33,10 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 
 	internal class WindowPatternWindowClosedEvent : BaseAutomationEvent
 	{
-		
 		#region Constructors
 		
-		public WindowPatternWindowClosedEvent (SimpleControlProvider provider) 
-			: base (provider,
-			        WindowPatternIdentifiers.WindowClosedEvent)
+		public WindowPatternWindowClosedEvent (SimpleControlProvider provider)
+			: base (provider, WindowPatternIdentifiers.WindowClosedEvent)
 		{
 			formProvider = (FormProvider) provider;
 		}
