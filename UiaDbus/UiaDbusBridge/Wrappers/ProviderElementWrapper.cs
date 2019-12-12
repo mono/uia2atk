@@ -26,11 +26,14 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.UIAutomation.Bridge;
 using DC = Mono.UIAutomation.UiaDbus;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
@@ -246,8 +249,17 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
 
-			this.provider = provider;
-			fragment = provider as IRawElementProviderFragment;
+			var uiTaskScheduler = UiTaskSchedulerHolder.UiTaskScheduler;
+			if (uiTaskScheduler != null) {
+				this.provider = new UiThreadProxyProviderSimple (provider, uiTaskScheduler);
+				this.fragment = (provider is IRawElementProviderFragment fragment)
+					? new UiThreadProxyProviderFragment (fragment, uiTaskScheduler)
+					: null;
+			} else {
+				this.provider = provider;
+				this.fragment = provider as IRawElementProviderFragment;
+			}
+
 			lock (syncRoot)
 				pathId = ++idCount;
 		}
@@ -758,8 +770,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		public void Register (Bus bus)
 		{
 			this.bus = bus;
-			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()),
-			              this);
+			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()), this);
 		}
 
 		public void Unregister ()
@@ -786,5 +797,63 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			fragment.SetFocus ();
 		}
 #endregion
+
+		
+		class UiThreadProxyProviderSimple : IRawElementProviderSimple
+		{
+			protected readonly IRawElementProviderSimple proxiedProviderSimple;
+			private readonly TaskScheduler uiTaskScheduler;
+
+			public UiThreadProxyProviderSimple (IRawElementProviderSimple proxiedProviderSimple, TaskScheduler uiTaskScheduler)
+			{
+				this.proxiedProviderSimple = proxiedProviderSimple;
+				this.uiTaskScheduler = uiTaskScheduler;
+			}
+
+			protected TResult Execute<TResult> (Func<TResult> func)
+			{
+				var task = Task.Factory.StartNew<TResult> (func, CancellationToken.None, TaskCreationOptions.None, uiTaskScheduler);
+				task.Wait();
+				return task.Result;
+			}
+
+			protected void Execute (Action func)
+			{
+				var task = Task.Factory.StartNew (func, CancellationToken.None, TaskCreationOptions.None, uiTaskScheduler);
+				task.Wait();
+			}
+
+			#region IRawElementProviderSimple
+
+			public IRawElementProviderSimple HostRawElementProvider => Execute<IRawElementProviderSimple> (() => proxiedProviderSimple.HostRawElementProvider);
+			public ProviderOptions ProviderOptions => Execute<ProviderOptions> (() => proxiedProviderSimple.ProviderOptions);
+
+			public object GetPatternProvider (int patternId) => Execute<object> (() => proxiedProviderSimple.GetPatternProvider (patternId));
+			public object GetPropertyValue (int propertyId) => Execute<object> (() => proxiedProviderSimple.GetPropertyValue (propertyId));
+
+			#endregion  // IRawElementProviderSimple
+		}
+
+		class UiThreadProxyProviderFragment : UiThreadProxyProviderSimple, IRawElementProviderFragment
+		{
+			public UiThreadProxyProviderFragment (IRawElementProviderFragment proxiedProviderFragment, TaskScheduler uiTaskScheduler)
+				: base (proxiedProviderFragment, uiTaskScheduler)
+			{
+			}
+
+			protected IRawElementProviderFragment ProxiedProviderFragment => (IRawElementProviderFragment) proxiedProviderSimple;
+
+			#region IRawElementProviderFragment
+
+			public SW.Rect BoundingRectangle => Execute<SW.Rect> (() => ProxiedProviderFragment.BoundingRectangle);
+			public IRawElementProviderFragmentRoot FragmentRoot => Execute<IRawElementProviderFragmentRoot> (() => ProxiedProviderFragment.FragmentRoot);
+
+			public IRawElementProviderSimple[] GetEmbeddedFragmentRoots() => Execute<IRawElementProviderSimple[]> (() => ProxiedProviderFragment.GetEmbeddedFragmentRoots ());
+			public int[] GetRuntimeId () => Execute<int[]> (() => ProxiedProviderFragment.GetRuntimeId ());
+			public IRawElementProviderFragment Navigate (NavigateDirection direction) => Execute<IRawElementProviderFragment> (() => ProxiedProviderFragment.Navigate (direction));
+			public void SetFocus () => Execute (() => ProxiedProviderFragment.SetFocus ());
+			
+			#endregion  // IRawElementProviderFragment
+		}
 	}
 }

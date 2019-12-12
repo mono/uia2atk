@@ -30,6 +30,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -67,6 +68,8 @@ namespace Mono.UIAutomation.Winforms
 
 		private static void Application_FormAdded (object sender, EventArgs args)
 		{
+			UiTaskSchedulerHolder.InitOnceFromCurrentSyncContext ();
+
 			var form = (Form) sender;
 
 			// Some sort of optimisation for frequently called `Application.FormAdded`.
