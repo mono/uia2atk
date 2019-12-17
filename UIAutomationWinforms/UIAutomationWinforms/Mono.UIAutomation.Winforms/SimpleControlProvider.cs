@@ -170,7 +170,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			IConnectable value;
 			
-			if (events.TryGetValue (type, out value) == true) {			
+			if (events.TryGetValue (type, out value) == true) {
 				value.Disconnect ();
 				events.Remove (type);
 			}

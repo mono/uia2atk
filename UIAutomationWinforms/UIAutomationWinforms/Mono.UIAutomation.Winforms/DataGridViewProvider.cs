@@ -225,6 +225,7 @@ namespace Mono.UIAutomation.Winforms
 			AddChildProvider (header);
 
 			datagridview.Rows.CollectionChanged += OnCollectionChanged;
+
 			foreach (SWF.DataGridViewRow row in datagridview.Rows) {
 				ListItemProvider itemProvider = GetItemProviderFrom (this, row);
 				AddChildProvider (itemProvider);
