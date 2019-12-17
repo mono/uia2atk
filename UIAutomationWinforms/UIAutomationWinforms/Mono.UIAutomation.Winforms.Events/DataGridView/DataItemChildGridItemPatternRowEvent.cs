@@ -37,8 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 		#region Constructors
 
 		public DataItemChildGridItemPatternRowEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
-			: base (provider, 
-			        GridItemPatternIdentifiers.RowProperty)
+			: base (provider, GridItemPatternIdentifiers.RowProperty)
 		{
 			this.provider = provider;
 		}
@@ -49,20 +48,19 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		public override void Connect ()
 		{
-			provider.Cell.DataGridView.Rows.CollectionChanged += OnRowPropertyEvent;
+			provider.DataGridViewProvider.DataGridView.Rows.CollectionChanged += OnRowPropertyEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.Cell.DataGridView.Rows.CollectionChanged -= OnRowPropertyEvent;
+			provider.DataGridViewProvider.DataGridView.Rows.CollectionChanged -= OnRowPropertyEvent;
 		}
 		
 		#endregion 
-		
+
 		#region Private methods
 
-		private void OnRowPropertyEvent (object sender, 
-		                                 CollectionChangeEventArgs args)
+		private void OnRowPropertyEvent (object sender, CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

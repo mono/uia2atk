@@ -38,8 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 		#region Constructors
 
 		public DataItemChildTableItemColumnHeaderItemsEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
-			: base (provider,
-			        TableItemPatternIdentifiers.ColumnHeaderItemsProperty)
+			: base (provider, TableItemPatternIdentifiers.ColumnHeaderItemsProperty)
 		{
 			this.provider = provider;
 		}
@@ -50,20 +49,19 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		public override void Connect ()
 		{
-			provider.Cell.DataGridView.Columns.CollectionChanged += OnColumnHeaderItemsEvent;
+			provider.DataGridViewProvider.DataGridView.Columns.CollectionChanged += OnColumnHeaderItemsEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.Cell.DataGridView.Columns.CollectionChanged -= OnColumnHeaderItemsEvent;
+			provider.DataGridViewProvider.DataGridView.Columns.CollectionChanged -= OnColumnHeaderItemsEvent;
 		}
 		
 		#endregion 
 		
 		#region Private methods
 		
-		private void OnColumnHeaderItemsEvent (object sender, 
-		                                       CollectionChangeEventArgs args)
+		private void OnColumnHeaderItemsEvent (object sender, CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
