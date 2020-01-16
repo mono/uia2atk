@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
@@ -54,8 +55,7 @@ namespace Mono.UIAutomation.Winforms
 			comboboxControl = combobox;
 			comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
 
-			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
-			                                                                this);
+			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl, this);
 		}
 		
 		#endregion
@@ -99,15 +99,14 @@ namespace Mono.UIAutomation.Winforms
 			comboboxControl.DropDownStyleChanged -= OnDropDownStyleChanged;
 		}	
 
-		#endregion		
+		#endregion
 
 		#region FragmentRootControlProvider: Specializations
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return listboxProvider.GetItemProviderFrom (listboxProvider, 
-			                                            comboboxControl.SelectedItem);
-		}		
+			return listboxProvider.GetItemProviderFrom (listboxProvider, comboboxControl.SelectedItem);
+		}
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
@@ -266,8 +265,8 @@ namespace Mono.UIAutomation.Winforms
 
 				// To keep track of the internal Control that represents the ListBox
 				comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
-				comboboxControl.DropDown += OnDropDownAndDropClosed;
-				comboboxControl.DropDownClosed += OnDropDownAndDropClosed;
+				comboboxControl.DropDown += OnDropDown;
+				comboboxControl.DropDownClosed += OnDropDownClosed;
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -331,8 +330,7 @@ namespace Mono.UIAutomation.Winforms
 				if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 					return new IRawElementProviderSimple [0];
 				else
-					return new IRawElementProviderSimple [] { GetItemProviderFrom (this,
-					                                                               comboboxControl.SelectedItem) };
+					return new IRawElementProviderSimple [] { GetItemProviderFrom (this, comboboxControl.SelectedItem) };
 			}
 
 			public override void SelectItem (ListItemProvider item)
@@ -373,20 +371,11 @@ namespace Mono.UIAutomation.Winforms
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
-
-				comboboxControl.Items.UIACollectionChanged += OnCollectionChanged;
-
-				foreach (object objectItem in comboboxControl.Items) {
-					ListItemProvider item = GetItemProviderFrom (this, objectItem);
-					AddChildProvider (item);
-				}
 			}
 
 			public override void FinalizeChildControlStructure ()
 			{
 				base.FinalizeChildControlStructure ();
-
-				comboboxControl.Items.UIACollectionChanged -= OnCollectionChanged;
 			}
 
 			public override void ScrollItemIntoView (ListItemProvider item) 
@@ -526,8 +515,20 @@ namespace Mono.UIAutomation.Winforms
 				InitializeScrollBehaviorObserver ();
 			}
 
-			private void OnDropDownAndDropClosed (object sender, EventArgs args)
+			private void OnDropDown (object sender, EventArgs args)
 			{
+				foreach (object objectItem in comboboxControl.Items) {
+					ListItemProvider item = GetItemProviderFrom (this, objectItem);
+					AddChildProvider (item);
+				}
+				InitializeScrollBehaviorObserver ();
+			}
+
+			private void OnDropDownClosed (object sender, EventArgs args)
+			{
+				foreach (var childListItemProvider in this.OfType<ListItemProvider> ()) {
+					RemoveChildProvider (childListItemProvider); 
+				}
 				InitializeScrollBehaviorObserver ();
 			}
 
