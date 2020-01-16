@@ -51,7 +51,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			if (newChild == null)
 				throw new ArgumentNullException ("newChild");
 			if (!newChild.Navigation.IsCleared ())
-				throw new ArgumentException ($"!newChild.IsCleared(): newChild={newChild}");
+				RaiseNewChildIsClearedError (newChild);
 
 			if (newChild is FragmentProviderWrapper)
 			{
@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			if (newChild == null)
 				throw new ArgumentNullException ("newChild");
 			if (!newChild.Navigation.IsCleared ())
-				throw new ArgumentException ($"!newChild.IsCleared(): newChild={newChild}");
+				RaiseNewChildIsClearedError (newChild);
 
 			if (newChild is FragmentProviderWrapper)
 				_chainCustoms.AppendToEnd (newChild);
@@ -155,7 +155,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public bool IsCleared ()
 		{
-			return Parent == null && PreviousProvider == null  && NextProvider == null && _chainWinforms.Count == 0 && _chainCustoms.Count == 0;
+			return Parent == null && PreviousProvider == null  && NextProvider == null; // && _chainWinforms.Count == 0 && _chainCustoms.Count == 0;
 		}
 
 		public bool ChildrenContains (FragmentControlProvider child)
@@ -173,14 +173,24 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			return $"<{this.GetType ()}:{Provider}>";
 		}
 
-		public string ToStringDetailed ()
+		private string RaiseNewChildIsClearedError (FragmentControlProvider newChild)
 		{
-			return $"<{this.GetType ()}:{Provider}>" + Environment.NewLine
-				+ $"  Parent=              {Parent}" + Environment.NewLine
-				+ $"  PreviousProvider=    {PreviousProvider}" + Environment.NewLine
-				+ $"  NextProvider=        {NextProvider}" + Environment.NewLine
-				+ $"  _chainWinforms.Count={_chainWinforms.Count}" + Environment.NewLine
-				+ $"  _chainCustoms.Count= {_chainCustoms.Count}";
+			var errMsg =
+				$"RaiseNewChildIsClearedError(): this.Provider={this.Provider} newChild={newChild}"
+				+ Environment.NewLine + "  this.Provider.Navigation.ToStringDetailed()" + Environment.NewLine + this.Provider.Navigation.ToStringDetailed(indent: 4)
+				+ Environment.NewLine + "  newChild.Navigation.ToStringDetailed()" + Environment.NewLine + newChild.Navigation.ToStringDetailed(indent: 4);
+			throw new ArgumentException (errMsg);
+		}
+
+		private string ToStringDetailed (int indent = 0)
+		{
+			var sindent =  new String(' ', indent);;
+			return sindent + $"<{this.GetType ()}:{Provider}>" + Environment.NewLine
+				+ sindent +  $"  Parent =               {Parent}" + Environment.NewLine
+				+ sindent +  $"  PreviousProvider =     {PreviousProvider}" + Environment.NewLine
+				+ sindent +  $"  NextProvider =         {NextProvider}" + Environment.NewLine
+				+ sindent +  $"  _chainWinforms.Count = {_chainWinforms.Count}" + Environment.NewLine
+				+ sindent +  $"  _chainCustoms.Count =  {_chainCustoms.Count}";
 		}
 	}
 }
