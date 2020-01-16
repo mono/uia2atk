@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 using Mono.UIAutomation.Source;
@@ -39,8 +40,7 @@ namespace System.Windows.Automation
 		private List<AutomationElement> directChildren;
 
 		private static bool inSourceRootElementChanged = false;
-		private static Queue<IAutomationSource> pendingRootChangeSources
-			= new Queue<IAutomationSource> ();
+		private static ConcurrentQueue<IAutomationSource> pendingRootChangeSources = new ConcurrentQueue<IAutomationSource> ();
 		#endregion
 
 		#region Static Constructor
@@ -74,14 +74,16 @@ namespace System.Windows.Automation
 					AddUniqueRootElements (RawViewWalker.directChildren,
 					                       source,
 					                       pidElementMapping);
-					source.RootElementsChanged += (s, e) =>
-						OnSourceRootElementChanged ((IAutomationSource)s);
+					source.RootElementsChanged += (s, e) => OnSourceRootElementChanged ((IAutomationSource) s);
 				}
 			}
 		}
 
 		private static void OnSourceRootElementChanged (IAutomationSource source)
 		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
 			if (inSourceRootElementChanged) {
 				pendingRootChangeSources.Enqueue (source);
 				return;
@@ -89,7 +91,7 @@ namespace System.Windows.Automation
 
 			lock (RawViewWalker.directChildrenLock) {
 				inSourceRootElementChanged = true;
-				List<AutomationElement> rootElements = new List<AutomationElement> ();
+				var rootElements = new List<AutomationElement> ();
 				var pidElementMapping = new Dictionary<int, IElement> ();
 				foreach (AutomationElement element in RawViewWalker.directChildren) {
 					if (element.SourceElement.AutomationSource != source) {
@@ -106,9 +108,11 @@ namespace System.Windows.Automation
 				RawViewWalker.directChildren = rootElements;
 				inSourceRootElementChanged = false;
 			}
+
 			Log.Debug ("Root elements are refreshed, Count: {0}", RawViewWalker.directChildren.Count);
-			while (pendingRootChangeSources.Count > 0)
-				OnSourceRootElementChanged (pendingRootChangeSources.Dequeue ());
+			while (pendingRootChangeSources.TryDequeue (out var s)) {
+				OnSourceRootElementChanged (s);
+			}
 		}
 
 		// TODO: This approach will completely break when the
@@ -122,19 +126,23 @@ namespace System.Windows.Automation
 			const string at_spi = "at-spi";
 			foreach (IElement sourceElement in source.GetRootElements ()) {
 				int pid;
+				string sourceFid;
 				try {
 					pid = sourceElement.ProcessId;
+					sourceFid = sourceElement.FrameworkId;
 				} catch { continue; } // TODO: ElementNotAvailableException
 
-				IElement found;
 				// NOTE: This is not a complete mapping, since
 				//       one process could generate multiple root
 				//       elements. But it's sufficient to catch
 				//       that at least one element exists for
 				//       a given PID.
-				if (pidElementMapping.TryGetValue (pid, out found)) {
-					var sourceFid = sourceElement.FrameworkId;
-					var foundFid = found.FrameworkId;
+				if (pidElementMapping.TryGetValue (pid, out IElement found)) {
+					string foundFid;
+					try {
+						foundFid = found.FrameworkId;
+					} catch { continue; } // TODO: ElementNotAvailableException
+
 					// Ignore at-spi elements when elements
 					// for this process from a preferred
 					// framework exist
@@ -154,8 +162,7 @@ namespace System.Windows.Automation
 					}
 				}
 
-				rootElements.Add (
-					SourceManager.GetOrCreateAutomationElement (sourceElement));
+				rootElements.Add (SourceManager.GetOrCreateAutomationElement (sourceElement));
 				pidElementMapping [pid] = sourceElement;
 			}
 		}
