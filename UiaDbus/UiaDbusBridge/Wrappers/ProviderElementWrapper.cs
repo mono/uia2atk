@@ -45,8 +45,8 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 	{
 #region Private Static Fields
 
-		private static volatile int idCount = 0;
-		private static object syncRoot = new object ();
+		private static readonly PathIdCounter pathIdCounter = new PathIdCounter ();
+
 		private static int [] allPatternIds = {
 			ExpandCollapsePatternIdentifiers.Pattern.Id,
 			GridItemPatternIdentifiers.Pattern.Id,
@@ -68,6 +68,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			DockPatternIdentifiers.Pattern.Id,
 			TableItemPatternIdentifiers.Pattern.Id
 		};
+
 		private static int [] allPropertyIds = {
 			AutomationElementIdentifiers.IsControlElementProperty.Id,
 			AutomationElementIdentifiers.ControlTypeProperty.Id,
@@ -178,7 +179,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragment fragment;
-		private int pathId;
+		private string pathId;
 		private Bus bus;
 		private Dictionary<int, PatternInfo> patternMapping = new Dictionary<int, PatternInfo> ();
 
@@ -260,8 +261,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 				this.fragment = provider as IRawElementProviderFragment;
 			}
 
-			lock (syncRoot)
-				pathId = ++idCount;
+			pathId = pathIdCounter.GetNewId ();
 		}
 
 #endregion
@@ -764,18 +764,18 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		}
 
 		public string Path {
-			get { return DC.Constants.AutomationElementBasePath + pathId.ToString (); }
+			get { return DC.Constants.AutomationElementBasePath + pathId; }
 		}
 
 		public void Register (Bus bus)
 		{
 			this.bus = bus;
-			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()), this);
+			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId), this);
 		}
 
 		public void Unregister ()
 		{
-			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()));
+			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId));
 			foreach (PatternInfo info in patternMapping.Values)
 				PerformUnregisterPattern (info);
 			patternMapping.Clear ();
@@ -854,6 +854,23 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			public void SetFocus () => Execute (() => ProxiedProviderFragment.SetFocus ());
 			
 			#endregion  // IRawElementProviderFragment
+		}
+
+		class PathIdCounter
+		{
+			private Int64 id = 0;
+			private object locker = new object ();
+
+			public string GetNewId ()
+			{
+				lock (locker)
+				{
+					if (id == Int64.MaxValue)
+						throw new InvalidOperationException ($"PathIdCounter reached MaxValue={Int64.MaxValue}. Cann't create new D-Bus UIA Element ID.");
+					var newId = ++id;
+					return newId.ToString ();
+				}
+			}
 		}
 	}
 }
