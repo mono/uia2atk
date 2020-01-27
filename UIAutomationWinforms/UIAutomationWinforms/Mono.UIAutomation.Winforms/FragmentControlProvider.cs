@@ -44,7 +44,6 @@ namespace Mono.UIAutomation.Winforms
 
 		private readonly Navigation.Navigation navigation;
 		private SWF.ContextMenu contextMenu;
-		private SWF.ContextMenuStrip contextMenuStrip;
 		private bool visible;
 
 		#endregion
@@ -79,35 +78,15 @@ namespace Mono.UIAutomation.Winforms
 
 		void HandleContextMenuStripChanged (object sender, EventArgs e)
 		{
-			if (contextMenuStrip != null) {
-				contextMenuStrip.Opened -= HandleContextMenuStripOpened;
-				contextMenuStrip.Closed -= HandleContextMenuStripClosed;
-			}
-			contextMenuStrip = Control.ContextMenuStrip;
+			var contextMenuStrip = Control.ContextMenuStrip;
 
 			if (contextMenuStrip != null) {
-				contextMenuStrip.Opened += HandleContextMenuStripOpened;
-				contextMenuStrip.Closed += HandleContextMenuStripClosed;
+				contextMenuStrip.Opened -= ContextMenuStripProvider.HandleContextMenuStripOpened;
+				contextMenuStrip.Opened += ContextMenuStripProvider.HandleContextMenuStripOpened;
+				
+				contextMenuStrip.Closed -= ContextMenuStripProvider.HandleContextMenuStripClosed;
+				contextMenuStrip.Closed += ContextMenuStripProvider.HandleContextMenuStripClosed;
 			}
-		}
-
-		void HandleContextMenuStripOpened (object sender, EventArgs e)
-		{
-			FragmentControlProvider contextMenuStripProvider = (FragmentControlProvider)
-				ProviderFactory.GetProvider (contextMenuStrip);
-			AddChildProvider (contextMenuStripProvider);
-		}
-
-		void HandleContextMenuStripClosed (object sender, EventArgs e)
-		{
-			FragmentControlProvider contextMenuStripProvider = (FragmentControlProvider)
-				ProviderFactory.FindProvider (contextMenuStrip);
-			if (contextMenuStripProvider == null)
-				return;
-			contextMenuStripProvider.Terminate ();
-			RemoveChildProvider (contextMenuStripProvider);
-			ProviderFactory.ReleaseProvider (contextMenuStrip);
-			// TODO: Need to handle disposal of some parent without close happening?
 		}
 
 		void HandleContextMenuChanged (object sender, EventArgs e)
