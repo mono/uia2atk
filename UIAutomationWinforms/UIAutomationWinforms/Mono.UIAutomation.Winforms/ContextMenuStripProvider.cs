@@ -34,12 +34,56 @@ using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (ContextMenuStrip))]
 	internal class ContextMenuStripProvider : ToolStripProvider
 	{
+		public static void HandleContextMenuStripOpened (object sender, EventArgs e)
+		{
+			var contextMenuStrip = (ContextMenuStrip) sender;
+			var contextMenuStripProvider = (FragmentControlProvider) ProviderFactory.GetProvider (contextMenuStrip);
+
+			GetParentProvider (contextMenuStrip).AddChildProvider (contextMenuStripProvider);
+		}
+
+		public static void HandleContextMenuStripClosed (object sender, EventArgs e)
+		{
+			var contextMenuStrip = (ContextMenuStrip) sender;
+			var contextMenuStripProvider = (FragmentControlProvider) ProviderFactory.FindProvider (contextMenuStrip);
+			if (contextMenuStripProvider == null)
+				return;
+
+			GetParentProvider (contextMenuStrip).RemoveChildProvider (contextMenuStripProvider);
+			contextMenuStripProvider.Terminate ();
+			ProviderFactory.ReleaseProvider (contextMenuStrip);
+			
+			// TODO: Need to handle disposal of some parent without close happening?
+		}
+
+		private static FragmentControlProvider GetParentProvider (ContextMenuStrip contextMenuStrip)
+		{
+			var control = contextMenuStrip.SourceControl ?? contextMenuStrip.AssociatedControl;
+			
+			if (control == null) {
+				var ownerItem = contextMenuStrip.OwnerItem;
+				if (ownerItem != null)
+					return (FragmentControlProvider) ProviderFactory.GetProvider (ownerItem);
+				else
+					Log.Error($"A base Control and OwnerItem for ContextMenuStrip <{contextMenuStrip}> is <null>. Try to find a base Form.");
+			}
+
+			var containerForm = control?.FindForm () ?? Form.ActiveForm;
+			if (containerForm == null) {
+				Log.Error($"Cann't find parent provider for ContextMenuStrip <{contextMenuStrip}>. Use the first opened Form.");
+				containerForm = Application.OpenForms [0];
+			}
+			
+			return (FormProvider) ProviderFactory.GetProvider (containerForm);
+		}
+
 		public ContextMenuStripProvider (ContextMenuStrip menu) : base (menu)
 		{
 		}
@@ -62,7 +106,6 @@ namespace Mono.UIAutomation.Winforms
 			                                                args);
 			base.Terminate ();
 		}
-
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
