@@ -307,8 +307,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
 					if (runtimeId == -1)
 						runtimeId = Helper.GetUniqueRuntimeId ();
-	
-					return runtimeId;
+					return runtimeId.ToString ();
 				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return "Thumb";
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
