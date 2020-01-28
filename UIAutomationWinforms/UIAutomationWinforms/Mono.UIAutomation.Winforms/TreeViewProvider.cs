@@ -108,7 +108,7 @@ namespace Mono.UIAutomation.Winforms
 				rootProvider = GetTreeNodeProvider (senderNode);
 			else if (sender == treeView)
 				rootProvider = this;
-			                                             
+
 			if (rootProvider != null)
 				rootProvider.OnUIACollectionChanged (e);
 		}
@@ -263,8 +263,6 @@ namespace Mono.UIAutomation.Winforms
 			get { return treeView; }
 		}
 
-
-
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -285,7 +283,11 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		protected override Rect BoundingRectangleProperty {
-			get { return Helper.RectangleToRect (node.Bounds); }
+			get {
+				var nodeBounds = node.Bounds;
+				nodeBounds.Offset (node.TreeView.PointToScreen (System.Drawing.Point.Empty));
+				return Helper.RectangleToRect (nodeBounds);
+			}
 		}
 
 		public override void Initialize ()
