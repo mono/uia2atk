@@ -76,7 +76,8 @@ namespace Mono.UIAutomation.Winforms
 
 		public override string ToString ()
 		{
-			return string.Format ("{0}{{{1}}}", this.GetType ().ToString ().Split ('.').Last (), wrappedProvider);
+			var wrapperClassName = this.GetType ().ToString ().Split ('.').Last ();
+			return $"<{wrapperClassName}{{{wrappedProvider}}},{Component}:{runtimeId}>";
 		}
 	}
 }

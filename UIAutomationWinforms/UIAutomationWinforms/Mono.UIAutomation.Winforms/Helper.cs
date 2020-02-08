@@ -395,8 +395,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (rectangle == Rectangle.Empty)
 				return Rect.Empty;
-			return new Rect (rectangle.X, rectangle.Y, 
-			                 rectangle.Width, rectangle.Height);
+			try {
+				return new Rect (rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+			} catch (ArgumentException ex) {
+				Log.Error ($"RectangleToRect: {ex.Message}");
+				return Rect.Empty;
+			}
 		}
 
 		internal static Rectangle RectToRectangle (Rect rectangle) 

@@ -506,9 +506,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
 	Mono.UIAutomation.Winforms.Navigation/Navigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/WrapperNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/Navigation.Chain.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/BalloonWindowProvider.cs \
 	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
@@ -522,6 +522,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/DataGridProvider.cs \
 	Mono.UIAutomation.Winforms/DataGridViewProvider.cs \
 	Mono.UIAutomation.Winforms/DateTimePickerProvider.cs \
+    Mono.UIAutomation.Winforms/DesktopProvider.cs \
+    Mono.UIAutomation.Winforms/DesktopComponent.cs \
 	Mono.UIAutomation.Winforms/DomainUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \

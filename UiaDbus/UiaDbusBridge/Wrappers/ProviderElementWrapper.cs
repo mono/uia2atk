@@ -26,11 +26,14 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using SW = System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.UIAutomation.Bridge;
 using DC = Mono.UIAutomation.UiaDbus;
 using Mono.UIAutomation.UiaDbus.Interfaces;
 
@@ -42,8 +45,8 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 	{
 #region Private Static Fields
 
-		private static volatile int idCount = 0;
-		private static object syncRoot = new object ();
+		private static readonly PathIdCounter pathIdCounter = new PathIdCounter ();
+
 		private static int [] allPatternIds = {
 			ExpandCollapsePatternIdentifiers.Pattern.Id,
 			GridItemPatternIdentifiers.Pattern.Id,
@@ -65,6 +68,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			DockPatternIdentifiers.Pattern.Id,
 			TableItemPatternIdentifiers.Pattern.Id
 		};
+
 		private static int [] allPropertyIds = {
 			AutomationElementIdentifiers.IsControlElementProperty.Id,
 			AutomationElementIdentifiers.ControlTypeProperty.Id,
@@ -175,7 +179,7 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 
 		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragment fragment;
-		private int pathId;
+		private string pathId;
 		private Bus bus;
 		private Dictionary<int, PatternInfo> patternMapping = new Dictionary<int, PatternInfo> ();
 
@@ -246,10 +250,18 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
 
-			this.provider = provider;
-			fragment = provider as IRawElementProviderFragment;
-			lock (syncRoot)
-				pathId = ++idCount;
+			var uiTaskScheduler = UiTaskSchedulerHolder.UiTaskScheduler;
+			if (uiTaskScheduler != null) {
+				this.provider = new UiThreadProxyProviderSimple (provider, uiTaskScheduler);
+				this.fragment = (provider is IRawElementProviderFragment fragment)
+					? new UiThreadProxyProviderFragment (fragment, uiTaskScheduler)
+					: null;
+			} else {
+				this.provider = provider;
+				this.fragment = provider as IRawElementProviderFragment;
+			}
+
+			pathId = pathIdCounter.GetNewId ();
 		}
 
 #endregion
@@ -752,19 +764,18 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 		}
 
 		public string Path {
-			get { return DC.Constants.AutomationElementBasePath + pathId.ToString (); }
+			get { return DC.Constants.AutomationElementBasePath + pathId; }
 		}
 
 		public void Register (Bus bus)
 		{
 			this.bus = bus;
-			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()),
-			              this);
+			bus.Register (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId), this);
 		}
 
 		public void Unregister ()
 		{
-			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId.ToString ()));
+			bus.Unregister (new ObjectPath (DC.Constants.AutomationElementBasePath + pathId));
 			foreach (PatternInfo info in patternMapping.Values)
 				PerformUnregisterPattern (info);
 			patternMapping.Clear ();
@@ -786,5 +797,80 @@ namespace Mono.UIAutomation.UiaDbusBridge.Wrappers
 			fragment.SetFocus ();
 		}
 #endregion
+
+		
+		class UiThreadProxyProviderSimple : IRawElementProviderSimple
+		{
+			protected readonly IRawElementProviderSimple proxiedProviderSimple;
+			private readonly TaskScheduler uiTaskScheduler;
+
+			public UiThreadProxyProviderSimple (IRawElementProviderSimple proxiedProviderSimple, TaskScheduler uiTaskScheduler)
+			{
+				this.proxiedProviderSimple = proxiedProviderSimple;
+				this.uiTaskScheduler = uiTaskScheduler;
+			}
+
+			protected TResult Execute<TResult> (Func<TResult> func)
+			{
+				var task = Task.Factory.StartNew<TResult> (func, CancellationToken.None, TaskCreationOptions.None, uiTaskScheduler);
+				task.Wait();
+				return task.Result;
+			}
+
+			protected void Execute (Action func)
+			{
+				var task = Task.Factory.StartNew (func, CancellationToken.None, TaskCreationOptions.None, uiTaskScheduler);
+				task.Wait();
+			}
+
+			#region IRawElementProviderSimple
+
+			public IRawElementProviderSimple HostRawElementProvider => Execute<IRawElementProviderSimple> (() => proxiedProviderSimple.HostRawElementProvider);
+			public ProviderOptions ProviderOptions => Execute<ProviderOptions> (() => proxiedProviderSimple.ProviderOptions);
+
+			public object GetPatternProvider (int patternId) => Execute<object> (() => proxiedProviderSimple.GetPatternProvider (patternId));
+			public object GetPropertyValue (int propertyId) => Execute<object> (() => proxiedProviderSimple.GetPropertyValue (propertyId));
+
+			#endregion  // IRawElementProviderSimple
+		}
+
+		class UiThreadProxyProviderFragment : UiThreadProxyProviderSimple, IRawElementProviderFragment
+		{
+			public UiThreadProxyProviderFragment (IRawElementProviderFragment proxiedProviderFragment, TaskScheduler uiTaskScheduler)
+				: base (proxiedProviderFragment, uiTaskScheduler)
+			{
+			}
+
+			protected IRawElementProviderFragment ProxiedProviderFragment => (IRawElementProviderFragment) proxiedProviderSimple;
+
+			#region IRawElementProviderFragment
+
+			public SW.Rect BoundingRectangle => Execute<SW.Rect> (() => ProxiedProviderFragment.BoundingRectangle);
+			public IRawElementProviderFragmentRoot FragmentRoot => Execute<IRawElementProviderFragmentRoot> (() => ProxiedProviderFragment.FragmentRoot);
+
+			public IRawElementProviderSimple[] GetEmbeddedFragmentRoots() => Execute<IRawElementProviderSimple[]> (() => ProxiedProviderFragment.GetEmbeddedFragmentRoots ());
+			public int[] GetRuntimeId () => Execute<int[]> (() => ProxiedProviderFragment.GetRuntimeId ());
+			public IRawElementProviderFragment Navigate (NavigateDirection direction) => Execute<IRawElementProviderFragment> (() => ProxiedProviderFragment.Navigate (direction));
+			public void SetFocus () => Execute (() => ProxiedProviderFragment.SetFocus ());
+			
+			#endregion  // IRawElementProviderFragment
+		}
+
+		class PathIdCounter
+		{
+			private Int64 id = 0;
+			private object locker = new object ();
+
+			public string GetNewId ()
+			{
+				lock (locker)
+				{
+					if (id == Int64.MaxValue)
+						throw new InvalidOperationException ($"PathIdCounter reached MaxValue={Int64.MaxValue}. Cann't create new D-Bus UIA Element ID.");
+					var newId = ++id;
+					return newId.ToString ();
+				}
+			}
+		}
 	}
 }
