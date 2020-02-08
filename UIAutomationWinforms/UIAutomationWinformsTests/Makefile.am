@@ -130,7 +130,7 @@ REFERENCES =  \
 	System.Drawing \
 	System.Xml \
 	Mono.Posix \
-	-pkg:mono-nunit \
+	-pkg:nunit \
 	System.Windows.Forms \
 	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll \
 	$(MONO_UIA_LIBS)

@@ -45,12 +45,12 @@ AC_ARG_ENABLE(tests,
 
 NUNIT_PATH=
 
-PKG_CHECK_MODULES(NUNIT, mono-nunit >= 2.4, nunit_24=yes, nunit_24=no)
+PKG_CHECK_MODULES(NUNIT, nunit >= 2.4, nunit_24=yes, nunit_24=no)
 if test "x$nunit_24" = "xno"; then
-	AC_MSG_WARN([Could not find mono-nunit >= 2.4; unit tests will not be available.])
+	AC_MSG_WARN([Could not find nunit >= 2.4; unit tests will not be available.])
 	enable_tests=no
 else
-	NUNIT_PATH=`pkg-config --variable=libdir mono-nunit`/mono/2.0/
+	NUNIT_PATH=`pkg-config --variable=libdir nunit`/mono/2.0/
 fi
 
 AC_SUBST(NUNIT_PATH)

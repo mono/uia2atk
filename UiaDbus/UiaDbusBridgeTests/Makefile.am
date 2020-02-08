@@ -81,7 +81,7 @@ REFERENCES =  \
 	System.Data \
 	System.Drawing \
 	Mono.Posix \
-	-pkg:mono-nunit \
+	-pkg:nunit \
 	System.Windows.Forms \
 	$(top_builddir)/UiaDbus/bin/Debug/UiaDbus.dll \
 	$(top_builddir)/UiaDbusBridge/bin/Debug/UiaDbusBridge.dll \

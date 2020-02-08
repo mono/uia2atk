@@ -64,7 +64,7 @@ REFERENCES =  \
 	System \
 	System.Data \
 	Mono.Posix \
-	-pkg:mono-nunit \
+	-pkg:nunit \
 	../AtspiUiaSource/bin/Debug/AtspiUiaSource.dll \
 	$(ATSPI_SHARP_LIBS) \
 	$(MONO_UIA_LIBS)
