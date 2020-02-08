@@ -511,9 +511,9 @@
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ButtonInvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternIsReadOnlyEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternValueEvent.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationEventArgs.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Navigation\Navigation.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\WrapperNavigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\Navigation.Chain.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationEventArgs.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\AssemblyInfo.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BalloonWindowProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BaseColorControlProvider.cs" />
@@ -527,6 +527,8 @@
     <Compile Include="Mono.UIAutomation.Winforms\DataGridProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\DataGridViewProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\DateTimePickerProvider.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\DesktopProvider.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms\DesktopComponent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\DomainUpDownProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ErrorProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ErrorProviderListener.cs" />

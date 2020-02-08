@@ -24,7 +24,6 @@
 // 
 
 using System;
-
 using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation

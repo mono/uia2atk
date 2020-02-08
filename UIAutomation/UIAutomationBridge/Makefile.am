@@ -28,6 +28,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 PROJECT_SOURCE_FILES =  \
 	Mono.UIAutomation.Bridge/IAutomationBridge.cs \
 	Mono.UIAutomation.Bridge/IHypertext.cs \
+	Mono.UIAutomation.Bridge/UiTaskSchedulerHolder.cs \
 	Mono.UIAutomation.Services/ArgumentCheck.cs \
 	Mono.UIAutomation.Services/Log.cs
 
