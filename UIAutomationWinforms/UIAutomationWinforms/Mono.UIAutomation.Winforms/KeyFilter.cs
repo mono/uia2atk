@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms
 			bool control = (key.ModifierKeys & Keys.Control) != 0;
 			bool shift = (key.ModifierKeys & Keys.Shift) != 0;
 			System.Windows.Automation.KeyEventArgs eventArgs = new System.Windows.Automation.KeyEventArgs (key.Down, key.keycode, key.keysym, key.str, alt, control, shift);
-			AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.KeyEvent, null, eventArgs);
+			AutomationInteropProvider.RaiseAutomationEvent (null, eventArgs);
 			return eventArgs.SuppressKeyPress;
 		}
 	}

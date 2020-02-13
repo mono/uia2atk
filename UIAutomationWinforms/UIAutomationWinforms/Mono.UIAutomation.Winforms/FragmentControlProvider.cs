@@ -154,7 +154,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 
-		// This method is aimed to move child provider from one parent provider to anothe one.
+		// This method is aimed to move child provider from one parent provider to another one.
 		// This is suitable to deal with branch of `FormProvider` rooted on `DesktopProvier`.
 		public void SetAsOwnerFor (SWF.Form form)
 		{

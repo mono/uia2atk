@@ -38,12 +38,12 @@ namespace Mono.UIAutomation.ClientSource
 			return null;
 		}
 
-		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
+		public void RaiseAutomationEvent (object provider, AutomationEventArgs e)
 		{
 			var providerSimple = provider as IRawElementProviderSimple;
 			if (providerSimple == null)
 				return;
-			ClientEventManager.RaiseAutomationEvent (eventId, providerSimple, e);
+			ClientEventManager.RaiseAutomationEvent (providerSimple, e);
 		}
 
 		public void RaiseAutomationPropertyChangedEvent (object provider, AutomationPropertyChangedEventArgs e)

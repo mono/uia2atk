@@ -83,11 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			// that manually after alerting the bridge to the presence
 			// of the new form.
 
-			var parentProvider = (form.Owner == null)
-				? ProviderFactory.DesktopProvider // This case is suitable for example is not MessageBox, f.ShowDialog or XXXXXDialog
-				: (FragmentControlProvider) ProviderFactory.GetProvider (form.Owner);
-
-			parentProvider.SetAsOwnerFor (form);
+			FormProvider.UpdateOwnerProviderOfForm (form);
 		}
 
 		private static bool IsFormProviderAlreadyCreated (Form form)

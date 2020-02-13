@@ -104,9 +104,7 @@ namespace Mono.UIAutomation.Winforms
 
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipOpenedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipOpenedEvent,
-				                                                this, 
-				                                                eventArgs);
+				AutomationInteropProvider.RaiseAutomationEvent (this, eventArgs);
 			}
 		}
 		
@@ -121,9 +119,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipClosedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipClosedEvent,
-				                                                this, 
-				                                                eventArgs);
+				AutomationInteropProvider.RaiseAutomationEvent (this, eventArgs);
 			}
 		}
 

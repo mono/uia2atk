@@ -39,7 +39,7 @@ namespace System.Windows.Automation {
 		private bool alt;
 		private bool shift;
 		private bool control;
-		private bool	supress_key_press;
+		private bool supress_key_press;
 
 #region Public Constructors
 		public KeyEventArgs (bool down, int keycode, int keysym, String str, bool alt, bool control, bool shift): base (AutomationElementIdentifiers.KeyEvent) {
