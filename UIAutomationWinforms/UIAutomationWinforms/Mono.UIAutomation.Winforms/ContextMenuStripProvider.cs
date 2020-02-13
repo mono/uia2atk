@@ -93,17 +93,13 @@ namespace Mono.UIAutomation.Winforms
 			base.Initialize ();
 
 			AutomationEventArgs args = new AutomationEventArgs (AEIds.MenuOpenedEvent);
-			AutomationInteropProvider.RaiseAutomationEvent (AEIds.MenuOpenedEvent,
-			                                                this,
-			                                                args);
+			AutomationInteropProvider.RaiseAutomationEvent (this, args);
 		}
 
 		public override void Terminate ()
 		{
 			AutomationEventArgs args = new AutomationEventArgs (AEIds.MenuClosedEvent);
-			AutomationInteropProvider.RaiseAutomationEvent (AEIds.MenuClosedEvent,
-			                                                this,
-			                                                args);
+			AutomationInteropProvider.RaiseAutomationEvent (this, args);
 			base.Terminate ();
 		}
 

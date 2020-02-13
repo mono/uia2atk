@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Services;
@@ -68,8 +69,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 			Catalog.Init (Globals.CatalogName, Globals.LocalePath);
 			InitializeProviderHash ();
-			
-			DesktopProvider = (DesktopProvider) GetProvider (DesktopComponent.Instance);
+			DesktopProvider = InitializeDesktopProvider ();
+		}
+
+		private static DesktopProvider InitializeDesktopProvider ()
+		{
+			var desktopProvider = (DesktopProvider) GetProvider (DesktopComponent.Instance);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, desktopProvider);
+			return desktopProvider;
 		}
 
 		private static void InitializeProviderHash ()

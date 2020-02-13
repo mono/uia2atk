@@ -124,9 +124,14 @@ namespace Mono.UIAutomation.Winforms
 			SetupMainMenuProvider ();
 		}
 
-		private void OnFromUIAOwnerChanged (object sender, EventArgs args)
+		private static void OnFromUIAOwnerChanged (object sender, EventArgs args)
 		{
 			var form = (Form) sender;
+			UpdateOwnerProviderOfForm (form);
+		}
+		
+		internal static void UpdateOwnerProviderOfForm (Form form)
+		{
 			var ownerProvider = (form.Owner != null)
 				? (FragmentControlProvider) ProviderFactory.GetProvider (form.Owner)
 				: ProviderFactory.DesktopProvider;

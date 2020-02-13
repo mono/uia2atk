@@ -36,8 +36,7 @@ namespace Mono.UIAutomation.Bridge
 		
 		object HostProviderFromHandle (IntPtr hwnd);
 
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
+		void RaiseAutomationEvent (object provider,
 		                           AutomationEventArgs e);
 		
 		void RaiseAutomationPropertyChangedEvent (object element,

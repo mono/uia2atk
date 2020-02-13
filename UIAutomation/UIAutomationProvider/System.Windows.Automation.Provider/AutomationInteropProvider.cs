@@ -72,10 +72,10 @@ namespace System.Windows.Automation.Provider
 			return null;
 		}
 
-		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
+		public static void RaiseAutomationEvent (IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
 			foreach (var bridge in bridges)
-				bridge.RaiseAutomationEvent (eventId, provider, e);
+				bridge.RaiseAutomationEvent (provider, e);
 		}
 
 		public static void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple element, AutomationPropertyChangedEventArgs e) 

@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms
 		static void OnPreRun (object sender, EventArgs args)
 		{
 			// FIXME: Change this temporary hack to pass on the PreRun event
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+			AutomationInteropProvider.RaiseAutomationEvent (null, null);
 
 			Application.AddKeyFilter (keyFilter);
 		}
