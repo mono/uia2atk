@@ -511,9 +511,14 @@
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ButtonInvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternIsReadOnlyEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\UpDownBase\ValuePatternValueEvent.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\Navigation.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms.Navigation\Navigation.Chain.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\BaseUserCustomNavigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationWinform.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Navigation\NavigationEventArgs.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\UserCustomNavigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.Navigation\UserCustomWinformNavigation.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.UserCustom/UserCustomFragmentProviderWrapper.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.UserCustom/UserCustomFragmentRootProviderWrapper.cs" />
+    <Compile Include="Mono.UIAutomation.Winforms.UserCustom/UserCustomProviderFabric.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\AssemblyInfo.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BalloonWindowProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\BaseColorControlProvider.cs" />
@@ -543,7 +548,6 @@
     <Compile Include="Mono.UIAutomation.Winforms\HelpProviderListener.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IConnectable.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IListProvider.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\IRawElementProviderFragmentExtension.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IScrollBehaviorObserver.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\IScrollBehaviorSubject.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ISelectableItem.cs" />
@@ -575,8 +579,6 @@
     <Compile Include="Mono.UIAutomation.Winforms\PropertyGridTextBoxProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\PropertyGridViewProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ProviderFactory.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\FragmentProviderWrapper.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\FragmentRootProviderWrapper.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\RadioButtonProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\RichTextBoxProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\ScrollableControlProvider.cs" />
@@ -610,16 +612,12 @@
     <Compile Include="Mono.UIAutomation.Winforms\TrackBarProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\TreeViewProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\UpDownBaseProvider.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\UserCustomComponent.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Mono.UIAutomation.Winforms\WebBrowserProvider.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordToken.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenCollection.cs" />
     <Compile Include="Mono.UIAutomation.Winforms\WordTokenizer.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Events\ToolStripSplitButton\InvokePatternInvokedEvent.cs" />
     <Compile Include="Mono.UIAutomation.Winforms.Behaviors\ToolStripSplitButton\InvokeProviderBehavior.cs" />
-    <Compile Include="Mono.UIAutomation.Winforms\SimpleProviderWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

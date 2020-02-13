@@ -88,14 +88,14 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 
 #region FragmentRootControlProvider Implementation
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
 			AddCollectionItems ();
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 			

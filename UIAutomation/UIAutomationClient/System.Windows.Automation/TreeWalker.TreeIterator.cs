@@ -55,9 +55,9 @@ namespace System.Windows.Automation
 
 				if (element == AutomationElement.RootElement)
 					lock (TreeWalker.RawViewWalker.directChildrenLock) {
-						firstChild = TreeWalker.RawViewWalker.directChildren.Count > 0 ?
-							TreeWalker.RawViewWalker.directChildren [0] :
-							null;
+						firstChild = TreeWalker.RawViewWalker.directChildren.Count > 0
+							? TreeWalker.RawViewWalker.directChildren [0]
+							: null;
 					}
 				else
 					firstChild = SourceManager.GetOrCreateAutomationElement (element.SourceElement.FirstChild);

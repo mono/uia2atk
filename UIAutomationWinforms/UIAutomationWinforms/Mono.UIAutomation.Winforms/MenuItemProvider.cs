@@ -118,7 +118,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			if (menuItem.MenuItems.Count > 0) {
 				menuProvider = new MenuItemMenuProvider (menuItem);
@@ -127,7 +127,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			if (menuProvider != null) {
 				menuProvider.Terminate ();

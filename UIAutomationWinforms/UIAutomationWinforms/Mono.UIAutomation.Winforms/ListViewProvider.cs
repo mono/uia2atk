@@ -112,7 +112,7 @@ namespace Mono.UIAutomation.Winforms
 
 		internal ListViewListItemProvider GetItem (SWF.ListViewItem item)
 		{
-			foreach (var provider in this) {
+			foreach (var provider in Navigation.GetAllChildren ()) {
 				var itemProvider = provider as ListViewListItemProvider;
 				if (itemProvider != null &&
 				    itemProvider.ListViewItem == item)
@@ -216,7 +216,7 @@ namespace Mono.UIAutomation.Winforms
 			listView.UIAShowGroupsChanged -= OnUIAShowGroupsChanged;
 		}
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -227,7 +227,7 @@ namespace Mono.UIAutomation.Winforms
 			UpdateChildrenStructure (listView.Items.Count > 0);
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			base.FinalizeChildControlStructure ();
 
@@ -526,7 +526,7 @@ namespace Mono.UIAutomation.Winforms
 				if (header == null) {
 					header = new ListViewHeaderProvider (listView);
 					header.Initialize ();
-					AddChildProvider (updateView || forceUpdate, header);
+					AddChildProvider (header, updateView || forceUpdate);
 				}
 			}
 			
@@ -651,7 +651,7 @@ namespace Mono.UIAutomation.Winforms
 
 			public ListViewListItemProvider GetItem (SWF.ListViewItem item) 
 			{
-				foreach (ListViewListItemProvider provider in this) {
+				foreach (ListViewListItemProvider provider in Navigation.GetAllChildren ()) {
 					if (provider.ListViewItem == item)
 						return provider;
 				}
@@ -702,10 +702,9 @@ namespace Mono.UIAutomation.Winforms
 				get {
 					Rect rect = Rect.Empty;
 	
-					foreach (ListViewListItemProvider itemProvider in this) {
+					foreach (ListViewListItemProvider itemProvider in Navigation.GetAllChildren ()) {
 						Rect rectangle 
 							= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-						
 						rect.Union (rectangle);
 					}
 	
@@ -768,7 +767,7 @@ namespace Mono.UIAutomation.Winforms
 
 				IRawElementProviderSimple []headerItems = new IRawElementProviderSimple [ChildrenCount];
 				for (int index = 0; index < ChildrenCount; index++)
-					headerItems [index] = GetChildProviderAt (index);
+					headerItems [index] = Navigation.GetVisibleChild (index);
 
 				return headerItems;
 			}
@@ -801,7 +800,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 
@@ -817,7 +816,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 
-			public override void FinalizeChildControlStructure ()
+			protected override void FinalizeChildControlStructure()
 			{
 				base.FinalizeChildControlStructure ();
 
@@ -1034,7 +1033,7 @@ namespace Mono.UIAutomation.Winforms
 				listViewProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 

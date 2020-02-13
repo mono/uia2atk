@@ -32,6 +32,7 @@ using SWF = System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.DataGrid;
 using Mono.UIAutomation.Winforms.Behaviors;
@@ -85,7 +86,7 @@ namespace Mono.UIAutomation.Winforms
 				foreach (ListItemProvider item in items) {
 					if (IsItemSelected (item)) {
 						// We are returning the children of the items
-						foreach (IRawElementProviderSimple child in item)
+						foreach (IRawElementProviderSimple child in item.Navigation.GetAllChildren ())
 							selection.Add (child);
 					}
 				}
@@ -102,7 +103,7 @@ namespace Mono.UIAutomation.Winforms
 			if (row < 0 || column < 0 || row >= rowCount || column >= columnCount)
 			    throw new ArgumentOutOfRangeException ();
 
-			return items [row].GetChildProviderAt (column);
+			return items [row].Navigation.GetChild (column);
 		}
 
 		#endregion
@@ -151,7 +152,7 @@ namespace Mono.UIAutomation.Winforms
 			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			datagrid.DataSourceChanged += OnDataSourceChanged;
 			UpdateChildren ();
@@ -159,11 +160,10 @@ namespace Mono.UIAutomation.Winforms
 			datagrid.UIACollectionChanged += OnUIACollectionChanged;
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			OnNavigationChildrenCleared ();
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
-
 			datagrid.UIACollectionChanged -= OnUIACollectionChanged;
 		}
 
@@ -539,7 +539,7 @@ namespace Mono.UIAutomation.Winforms
 				else {
 					IRawElementProviderSimple []children = new IRawElementProviderSimple [ChildrenCount];
 					for (int index = 0; index < ChildrenCount; index++)
-						children [index] = GetChildProviderAt (index);
+						children [index] = Navigation.GetChild (index);
 
 					return children;
 				}
@@ -552,7 +552,7 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				foreach (SWF.DataGridColumnStyle style in styles) {
 					DataGridHeaderItemProvider headerItem
@@ -565,7 +565,7 @@ namespace Mono.UIAutomation.Winforms
 				styles.CollectionChanged += OnColumnsCollectionChanged;
 			}
 
-			public override void FinalizeChildControlStructure ()
+			protected override void FinalizeChildControlStructure()
 			{
 				base.FinalizeChildControlStructure ();
 				
@@ -717,21 +717,20 @@ namespace Mono.UIAutomation.Winforms
 				return provider.CurrentTableStyle.GridColumnStyles.IndexOf (custom.Column);
 			}
 
-			public string GetName (DataGridDataItemEditProvider custom)
+			public string GetName (int columnIndex)
 			{
-				int indexOf = Navigation.TryGetChildIndex (custom);
-
-				if (indexOf == -1)
+				var columnsCount = provider.DataGrid.CurrentTableStyle.GridColumnStyles.Count;
+				if (columnIndex <= -1 || columnIndex >= columnsCount) {
+					Log.Error($"DataGridDataItemProvider.GetName: wrong columnIndex={columnIndex}. columnsCount={columnsCount}");
 					return string.Empty;
+				}
 
-				if (indexOf >= provider.DataGrid.CurrentTableStyle.GridColumnStyles.Count)
-					return string.Empty;
-
-				object data = provider.DataGrid [Index, indexOf];
-				if (data == null || string.IsNullOrEmpty (data.ToString ()))
-					return style.GridColumnStyles [indexOf].NullText;
-				else
-					return data.ToString ();
+				var data = provider.DataGrid [Index, columnIndex];
+				var dataAsStr = data?.ToString ();
+				var name = string.IsNullOrEmpty (dataAsStr)
+					? style.GridColumnStyles [columnIndex].NullText
+					: dataAsStr;
+				return name;
 			}
 
 			public object Value {
@@ -749,18 +748,18 @@ namespace Mono.UIAutomation.Winforms
 				provider.DataGrid [row, column] = value;
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				for (int column = 0; column < provider.CurrentTableStyle.GridColumnStyles.Count; column++) {
-					SWF.DataGridColumnStyle columnStyle = provider.CurrentTableStyle.GridColumnStyles [column];
+					SWF.DataGridColumnStyle columnStyle =
+						provider.CurrentTableStyle.GridColumnStyles [column];
 					
-					DataGridDataItemEditProvider edit 
-						= new DataGridDataItemEditProvider (this, columnStyle);
+					var edit = new DataGridDataItemEditProvider (this, columnStyle);
 					edit.Initialize ();
 					AddChildProvider (edit);
 
 					if (column == 0)
-						name = GetName (edit);
+						name = GetName (column);
 					
 					columns [columnStyle] = edit;
 				}
@@ -769,7 +768,7 @@ namespace Mono.UIAutomation.Winforms
 				DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged += OnColumnsCollectionChanged;
 			}
 
-			public override void FinalizeChildControlStructure ()
+			protected override void FinalizeChildControlStructure()
 			{
 				base.FinalizeChildControlStructure ();
 				
@@ -957,10 +956,9 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return ItemProvider.DataGridProvider.DataGrid.Enabled;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return provider.GetName (this);
+					return provider.GetName (provider.GetColumnIndexOf (this));
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					var bounds = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return provider.IsOffScreen (provider.DataGridProvider.DataGrid, bounds);
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
@@ -979,8 +977,8 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 
-			private DataGridDataItemProvider provider;
-			private SWF.DataGridColumnStyle column;
+			private readonly DataGridDataItemProvider provider;
+			private readonly SWF.DataGridColumnStyle column;
 		} //DataGridListItemCustomProvider
 
 		#endregion

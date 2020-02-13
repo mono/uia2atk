@@ -119,7 +119,7 @@ namespace Mono.UIAutomation.Winforms
 			listboxControl.FocusedItem = listboxControl.Items.IndexOf (objectItem);
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
@@ -131,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 

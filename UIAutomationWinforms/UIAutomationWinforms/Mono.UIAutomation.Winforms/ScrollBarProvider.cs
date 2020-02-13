@@ -141,7 +141,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			ScrollBar scrollbar = (ScrollBar) Control;
 
@@ -171,28 +171,26 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
-			if (smallBackButton != null) {
-				smallBackButton.Terminate ();
-				smallBackButton = null;
-			}
-			if (smallForwardButton != null) {
-				smallForwardButton.Terminate ();
-				smallForwardButton = null;
-			}
-			if (largeBackButton != null) {
-				largeBackButton.Terminate ();
-				largeBackButton = null;
-			}
-			if (largeForwardButton != null) {
-				largeForwardButton.Terminate ();
-				largeForwardButton = null;
-			}
-			if (thumb != null) {
-				thumb.Terminate ();
-				thumb = null;
-			}
+			DestroyLocalChild (smallBackButton);
+			DestroyLocalChild (smallForwardButton);
+			DestroyLocalChild (largeBackButton);
+			DestroyLocalChild (largeForwardButton);
+			DestroyLocalChild (thumb);
+			smallBackButton = null;
+			smallForwardButton = null;
+			largeBackButton = null;
+			largeForwardButton = null;
+			thumb = null;
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 		
 		#endregion

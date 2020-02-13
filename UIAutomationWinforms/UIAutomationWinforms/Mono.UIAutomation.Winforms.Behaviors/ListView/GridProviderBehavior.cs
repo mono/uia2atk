@@ -32,7 +32,6 @@ using Mono.UIAutomation.Winforms.Events.ListView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-
 	internal class GridProviderBehavior 
 		: ProviderBehavior, IGridProvider
 	{
@@ -117,9 +116,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 			//According to http://msdn.microsoft.com/en-us/library/ms743401.aspx
 			if (row < 0 || column < 0 || row >= rowCount || column >= columnCount)
-			    throw new ArgumentOutOfRangeException ();
+				throw new ArgumentOutOfRangeException ();
 
-			ListViewProvider provider = (ListViewProvider) Provider;
+			var provider = (ListViewProvider) Provider;
 
 			if (listView.View == SWF.View.Details) {
 				// FIXME: In Vista when listView.Groups == 0 no Groups are added,
@@ -135,8 +134,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 						= (ListViewProvider.ListViewListItemProvider) groupProvider.GetItem (item);
 				}
 				return itemProvider.GetEditProviderAtColumn (column);
-			} else //Is View.List
-				return provider.GetChildProviderAt ((column * rowCount) + row);
+			} else { //Is View.List
+				return provider.Navigation.GetVisibleChild ((column * rowCount) + row);
+			}
 		}
 		
 		#endregion
@@ -146,7 +146,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		private SWF.ListView listView;
 
 		#endregion
-
 	}
-				                      
 }

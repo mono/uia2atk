@@ -65,14 +65,15 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected override bool IsComponentVisible (Component component)
+		protected override bool GuideChildComponentVisible (FragmentControlProvider childProvider, out bool isVisible)
 		{
 			// Hide the TabPage's children if it's not visible.
 			// This is to sweep under the rug the fact that SWF
 			// seems to keep a TabPages' children visible even if
 			// the TabPage isn't.  This is to model Vista's
 			// behavior.
-			return Control.Visible;
+			isVisible = Control.Visible;
+			return true;
 		}
 
 		internal TabControlProvider TabControlProvider {

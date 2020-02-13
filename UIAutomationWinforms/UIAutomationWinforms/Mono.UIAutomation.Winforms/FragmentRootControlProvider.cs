@@ -83,30 +83,30 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected override void InsertChildProvider (bool raiseEvent, FragmentControlProvider childProvider, int index)
+		protected override void InsertChildProviderBefore (FragmentControlProvider newChild, FragmentControlProvider baseChild, bool raiseEvent, bool recursive)
 		{
-			base.InsertChildProvider (raiseEvent, childProvider, index);
+			base.InsertChildProviderBefore (newChild, baseChild, raiseEvent, recursive);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
-			CheckForRadioButtonChild (childProvider);
+			CheckForRadioButtonChild (newChild);
 		}
 
-		public override void RemoveChildProvider (bool raiseEvent, FragmentControlProvider removedProvider)
+		public override void RemoveChildProvider (FragmentControlProvider removedProvider, bool raiseEvent)
 		{
-			base.RemoveChildProvider (raiseEvent, removedProvider);
+			base.RemoveChildProvider (removedProvider, raiseEvent);
 
 			if (hasRadioButtonChild) {
 				bool radioButtonFound = false;
-				foreach (FragmentControlProvider childProvider in Navigation.GetChildren ()) {
+				foreach (FragmentControlProvider childProvider in Navigation.GetAllChildren ()) {
 					if (childProvider != removedProvider &&
-					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id)
+					{
 						radioButtonFound = true;
 						break;
 					}
 				}
 				if (!radioButtonFound) {
-					SetBehavior (SelectionPatternIdentifiers.Pattern,
-					             null);
+					SetBehavior (SelectionPatternIdentifiers.Pattern, null);
 					hasRadioButtonChild = false;
 				}
 			}
@@ -123,10 +123,8 @@ namespace Mono.UIAutomation.Winforms
 			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
 			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
 			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
-				RB.SelectionProviderBehavior selectionProvider =
-					new RB.SelectionProviderBehavior (this);
-				SetBehavior (SelectionPatternIdentifiers.Pattern,
-				             selectionProvider);
+				var selectionProvider = new RB.SelectionProviderBehavior (this);
+				SetBehavior (SelectionPatternIdentifiers.Pattern, selectionProvider);
 				hasRadioButtonChild = true;
 			}
 		}

@@ -42,14 +42,16 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollableControl
 #region IConnectable Overrides
 		public override void Connect ()
 		{	
-			((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
-				+= OnScrollPercentChanged;
+			var bar = (Provider as ScrollableControlProvider)?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (bar != null)
+				bar.ValueChanged += OnScrollPercentChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
-				-= OnScrollPercentChanged;
+			var bar = (Provider as ScrollableControlProvider)?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (bar != null)
+				bar.ValueChanged -= OnScrollPercentChanged;
 		}
 #endregion 
 		

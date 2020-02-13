@@ -16,5 +16,10 @@ namespace Mono.UIAutomation.Winforms
 		public DesktopProvider (Component component) : base (component)
 		{
 		}
+
+		internal override bool IsReallyVisible ()
+		{
+			return true;
+		}
 	}
 }

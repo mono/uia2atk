@@ -465,7 +465,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region FragmentRootControlProvider Overrides
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			foreach (SWF.TreeNode node in Nodes) {
 				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
@@ -474,7 +474,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
 				RemoveChildProvider (nodeProvider);
@@ -540,8 +540,7 @@ namespace Mono.UIAutomation.Winforms
 				if (changedNode.NextNode != null) {
 					if (!nodeProviders.TryGetValue (changedNode.NextNode, out TreeNodeProvider nextNodeProvider))
 						return;
-					var nextNodeProviderIndex = Navigation.TryGetChildIndex (nextNodeProvider);
-					InsertChildProvider (changedNodeProvider, nextNodeProviderIndex);
+					InsertChildProviderBefore (changedNodeProvider, nextNodeProvider);
 				} else {
 					AddChildProvider (changedNodeProvider);
 				}

@@ -98,14 +98,14 @@ namespace Mono.UIAutomation.Winforms
 			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
 			observer.Initialize ();
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 			

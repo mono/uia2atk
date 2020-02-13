@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			UpDownBase upDownBase = (UpDownBase) Control;
 			
@@ -74,16 +74,20 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
-			if (forwardButton != null) {
-				forwardButton.Terminate ();
-				forwardButton = null;
-			}
-			if (backwardButton != null) {
-				backwardButton.Terminate ();
-				backwardButton = null;
-			}
+			DestroyLocalChild (forwardButton);
+			DestroyLocalChild (backwardButton);
+			forwardButton = null;
+			backwardButton = null;
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 		
 		#endregion

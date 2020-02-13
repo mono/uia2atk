@@ -398,9 +398,9 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			element.Unregister ();
 			lock (providerWrapperMapping)
 				providerWrapperMapping.Remove (provider);
+			
 			app.RemoveProvider (provider);
 		}
-
 		#endregion
 
 		#region Private Methods - DBus Main Loop

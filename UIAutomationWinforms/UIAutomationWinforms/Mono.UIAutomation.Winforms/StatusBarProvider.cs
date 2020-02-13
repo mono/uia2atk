@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			statusBar.Panels.UIACollectionChanged +=
 				new CollectionChangeEventHandler (OnCollectionChanged);
@@ -94,7 +94,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			statusBar.Panels.UIACollectionChanged -=
 				new CollectionChangeEventHandler (OnCollectionChanged);

@@ -70,7 +70,6 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 			if (!formProvider.AlreadyClosed) {
 				RaiseAutomationEvent ();
 				formProvider.Close ();
-				ProviderFactory.ReleaseProvider (formProvider.Control);
 			}
 		}
 		

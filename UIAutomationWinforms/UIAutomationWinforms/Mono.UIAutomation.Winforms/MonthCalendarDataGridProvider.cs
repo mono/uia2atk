@@ -85,7 +85,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return calendarProvider; }
 		}
 	
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -98,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 			AddChildren ();
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			base.FinalizeChildControlStructure ();
 
@@ -339,7 +339,7 @@ namespace Mono.UIAutomation.Winforms
 			this.calendar = (MonthCalendar) control;
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -357,7 +357,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			base.FinalizeChildControlStructure ();
 			

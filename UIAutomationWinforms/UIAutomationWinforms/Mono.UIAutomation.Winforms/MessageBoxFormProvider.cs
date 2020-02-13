@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Methods
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -76,20 +76,19 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
-			base.FinalizeChildControlStructure ();
-
 			if (labelProvider != null) {
-				labelProvider.Terminate ();
 				RemoveChildProvider (labelProvider);
+				labelProvider.Terminate ();
 				labelProvider = null;
 			}
 			if (imageProvider != null) {
-				imageProvider.Terminate ();
 				RemoveChildProvider (imageProvider);
+				imageProvider.Terminate ();
 				imageProvider = null;
 			}
+			base.FinalizeChildControlStructure ();
 		}
 
 		#endregion

@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.Winforms
 			             new InvokeProviderBehavior (this));
 		}
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			dropDrownItem.DropDown.ItemAdded += OnItemAdded;
 			dropDrownItem.DropDown.ItemRemoved += OnItemRemoved;
@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			dropDrownItem.DropDown.ItemAdded -= OnItemAdded;
 			dropDrownItem.DropDown.ItemRemoved -= OnItemRemoved;

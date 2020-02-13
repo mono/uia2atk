@@ -456,7 +456,7 @@ namespace Mono.UIAutomation.Winforms
 
 		internal static bool IsFormMinimized (SimpleControlProvider provider)
 		{
-			if (provider == null)
+			if (provider == null || provider is DesktopProvider)
 				return false;
 
 			if (provider.AssociatedControl == null) {

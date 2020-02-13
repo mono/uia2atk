@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{	
 			base.InitializeChildControlStructure ();
 
@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			toolBar.Buttons.UIACollectionChanged -=
 				new CollectionChangeEventHandler (OnCollectionChanged);
@@ -240,7 +240,7 @@ namespace Mono.UIAutomation.Winforms
 				} catch (NotSupportedException) { }
 			}
 			
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				try {
 					//TODO: remove reflection when we don't depend on Mono 2.4 (and the pragma below):
@@ -261,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 
 			}
 
-			public override void FinalizeChildControlStructure ()
+			protected override void FinalizeChildControlStructure()
 			{
 				if (style == ToolBarButtonStyle.DropDownButton &&
 				    toolBarButton.DropDownMenu != null) {

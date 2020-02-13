@@ -49,17 +49,19 @@ namespace Mono.UIAutomation.Winforms.Events.Generic
 
 		public override void Connect ()
 		{	
-			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null) {
-				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.ValueChanged += OnScrollableChanged;
-				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.EnabledChanged += OnScrollableChanged;
+			var bar = ScrollBehaviorSubject?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (bar != null) {
+				bar.ValueChanged += OnScrollableChanged;
+				bar.EnabledChanged += OnScrollableChanged;
 			}
 		}
 
 		public override void Disconnect ()
 		{
-			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null) {
-				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.ValueChanged -= OnScrollableChanged;
-				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.EnabledChanged -= OnScrollableChanged;
+			var bar = ScrollBehaviorSubject?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (bar != null) {
+				bar.ValueChanged -= OnScrollableChanged;
+				bar.EnabledChanged -= OnScrollableChanged;
 			}
 		}
 		
