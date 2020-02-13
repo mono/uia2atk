@@ -65,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 					this));
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			             new SelectionProviderBehavior (childDataGrid));
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 		}

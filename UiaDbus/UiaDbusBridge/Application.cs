@@ -106,8 +106,7 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				                h => h.Provider == provider);
 		}
 
-		internal void RaiseAutomationEvent (IRawElementProviderSimple provider,
-		                                    AutomationEventArgs e)
+		internal void RaiseAutomationEvent (IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
 			if (provider == null)
 				return;
@@ -170,16 +169,14 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			}
 		}
 
-		internal void RaiseStructureChangedEvent (IRawElementProviderSimple provider,
-		                                          StructureChangedEventArgs e)
+		internal void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
 			if (provider == null)
 				return;
 			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
 				Log.Error ($"[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state: "
-					+ $"provider={provider} e.StructureChangeType={e.StructureChangeType}",
-					provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+					+ $"provider={provider} e.StructureChangeType={e.StructureChangeType}");
 				return;
 			}
 			lock (structureEventHandlers) {

@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms
 
 #region FragmentRootControlProvider Implementation
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -69,6 +69,17 @@ namespace Mono.UIAutomation.Winforms
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			observer.Initialize ();
 			UpdateScrollBehavior ();
+		}
+
+		protected override void FinalizeChildControlStructure()
+		{
+			if (observer != null) {
+				UpdateScrollBehavior (forceDisconnect: true);
+				observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+				observer.Terminate ();
+				observer = null;
+			}
+			base.FinalizeChildControlStructure ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -86,9 +97,9 @@ namespace Mono.UIAutomation.Winforms
 			UpdateScrollBehavior ();
 		}	
 
-		private void UpdateScrollBehavior ()
+		private void UpdateScrollBehavior (bool forceDisconnect = false)
 		{
-			if (observer.SupportsScrollPattern)
+			if (observer != null && observer.SupportsScrollPattern)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             new ScrollProviderBehavior (this));
 			else

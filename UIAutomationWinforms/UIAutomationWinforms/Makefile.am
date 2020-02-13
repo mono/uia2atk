@@ -506,9 +506,14 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Navigation/Navigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/Navigation.Chain.cs \
+	Mono.UIAutomation.Winforms.Navigation/BaseUserCustomNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationWinform.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
+	Mono.UIAutomation.Winforms.Navigation/UserCustomNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/UserCustomWinformNavigation.cs \
+	Mono.UIAutomation.Winforms.UserCustom/UserCustomFragmentProviderWrapper.cs \
+	Mono.UIAutomation.Winforms.UserCustom/UserCustomFragmentRootProviderWrapper.cs \
+	Mono.UIAutomation.Winforms.UserCustom/UserCustomProviderFabric.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/BalloonWindowProvider.cs \
 	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
@@ -530,9 +535,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
-	Mono.UIAutomation.Winforms/FragmentProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
-	Mono.UIAutomation.Winforms/FragmentRootProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/Global.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
 	Mono.UIAutomation.Winforms/Helper.cs \
@@ -540,7 +543,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/HelpProviderListener.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/IListProvider.cs \
-	Mono.UIAutomation.Winforms/IRawElementProviderFragmentExtension.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
 	Mono.UIAutomation.Winforms/ISelectableItem.cs \
@@ -578,7 +580,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
-	Mono.UIAutomation.Winforms/SimpleProviderWrapper.cs \
 	Mono.UIAutomation.Winforms/SplitContainerProvider.cs \
 	Mono.UIAutomation.Winforms/SplitterProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
@@ -606,7 +607,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TrackBarProvider.cs \
 	Mono.UIAutomation.Winforms/TreeViewProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
-	Mono.UIAutomation.Winforms/UserCustomComponent.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \

@@ -27,6 +27,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -41,31 +42,24 @@ namespace Mono.UIAutomation.Winforms
 	internal class FormProvider : ContainerControlProvider
 	{
 		#region Private Data
-		
-		private Form form;
-		private Form owner;
-		private bool alreadyClosed;
 		private MainMenuProvider mainMenuProvider;
-		
+		#endregion
+
+		#region Public Data
+		public readonly Form Form;
 		#endregion
 		
 		#region Constructors
 
 		public FormProvider (Form form) : base (form)
 		{
-			this.form = form;
-			
-			// We keep a copy because we can't reference "form" after 
-			// Disposed (used in Close()) called by WindowPatternWindowClosedEvent.
-			owner = form.Owner;
-			alreadyClosed = false;
+			Form = form;
+			AlreadyClosed = false;
 		}
 		
 		#endregion
 
-		public bool AlreadyClosed {
-			get { return alreadyClosed; }
-		}
+		public bool AlreadyClosed { get; private set; }
 
 		public override void Initialize ()
 		{
@@ -87,20 +81,20 @@ namespace Mono.UIAutomation.Winforms
 			          new WindowDeactivatedEvent (this));
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
-			form.UIAMenuChanged += OnFormUIAMenuChanged;
-			form.UIAOwnerChanged += OnFromUIAOwnerChanged;
+			Form.UIAMenuChanged += OnFormUIAMenuChanged;
+			Form.UIAOwnerChanged += OnFromUIAOwnerChanged;
 			
 			SetupMainMenuProvider ();
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
-			form.UIAMenuChanged -= OnFormUIAMenuChanged;
-			form.UIAOwnerChanged -= OnFromUIAOwnerChanged;
+			Form.UIAMenuChanged -= OnFormUIAMenuChanged;
+			Form.UIAOwnerChanged -= OnFromUIAOwnerChanged;
 			
 			base.FinalizeChildControlStructure ();
 		}
@@ -129,15 +123,20 @@ namespace Mono.UIAutomation.Winforms
 			var form = (Form) sender;
 			UpdateOwnerProviderOfForm (form);
 		}
-		
+
+		// This method is aimed to move child provider from one parent provider to another one.
+		// This is suitable to deal with branch of `FormProvider` rooted on `DesktopProvier`.		
 		internal static void UpdateOwnerProviderOfForm (Form form)
 		{
 			var ownerProvider = (form.Owner != null)
 				? (FragmentControlProvider) ProviderFactory.GetProvider (form.Owner)
 				: ProviderFactory.DesktopProvider;
-			ownerProvider.SetAsOwnerFor (form);
+
+			var formProvider = (FormProvider) ProviderFactory.GetProvider (form);
+
+			BecomeParent (ownerProvider, formProvider);
 		}
-		
+
 		#endregion
 
 		#region IRawElementProviderFragmentRoot Members
@@ -164,14 +163,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			if (x > form.Width || y > form.Height)
+			if (x > Form.Width || y > Form.Height)
 				return null;
 			
-			Control child = form.GetChildAtPoint (new Point ((int)x, (int)y));
+			Control child = Form.GetChildAtPoint (new Point ((int)x, (int)y));
 			
 			if (child != null) {
 				Log.Debug (child.ToString ());
-				FragmentControlProvider childFragmentProvider = Navigation.TryGetChild (child);
+				FragmentControlProvider childFragmentProvider = Navigation.GetVisibleChildByComponent (child);
 				if (childFragmentProvider != null)
 					return childFragmentProvider;
 			} else
@@ -182,11 +181,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			foreach (Control control in form.Controls) {
+			foreach (Control control in Form.Controls) {
 				if (control.Focused) {
 					// TODO: Necessary to delve into child control
 					// for focused element?
-					FragmentControlProvider childFragmentProvider = Navigation.TryGetChild (control);
+					FragmentControlProvider childFragmentProvider = Navigation.GetVisibleChildByComponent (control);
 					if (childFragmentProvider != null)
 						return childFragmentProvider;
 				}
@@ -198,26 +197,17 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Methods
 
+		// Is called from the `WindowPatternWindowClosedEvent` class.
 		public void Close ()
 		{
-			if (AutomationInteropProvider.ClientsAreListening && !AlreadyClosed) {
-				alreadyClosed = true;
-
-				if (owner == null) {
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, this);
-				}
-				else {
-					var ownerProvider = ProviderFactory.FindProvider (owner) as FormProvider;
-					if (ownerProvider != null)
-						ownerProvider.RemoveChildProvider (this);
-				}
-			}
+			if (!AlreadyClosed)
+				AlreadyClosed = true;
 		}
 
 		private void SetupMainMenuProvider ()
 		{
-			if (form.Menu != null) {
-				mainMenuProvider = (MainMenuProvider) ProviderFactory.GetProvider (form.Menu);
+			if (Form.Menu != null) {
+				mainMenuProvider = (MainMenuProvider) ProviderFactory.GetProvider (Form.Menu);
 				if (mainMenuProvider != null)
 					AddChildProvider (mainMenuProvider);
 			}

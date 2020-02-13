@@ -31,15 +31,23 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Winforms.UserCustom;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	class DummyComponent : Component
+	internal class DummyComponent : Component
 	{
+		public readonly FragmentControlProvider Provider;
+
+		public DummyComponent (FragmentControlProvider provider)
+		{
+			Provider = provider;
+		}
 	}
 
 	internal abstract class SimpleControlProvider : IRawElementProviderSimple
@@ -59,7 +67,11 @@ namespace Mono.UIAutomation.Winforms
 		private SWF.ToolTip tooltip;
 		private SWF.ErrorProvider errorProvider;
 
-		protected readonly int runtimeId = Helper.GetUniqueRuntimeId ();
+		#endregion
+
+		#region Protected Fields
+
+		public readonly int runtimeId = Helper.GetUniqueRuntimeId ();
 
 		#endregion
 		
@@ -67,7 +79,12 @@ namespace Mono.UIAutomation.Winforms
 
 		protected SimpleControlProvider (Component component)
 		{
-			this.component = component ?? new DummyComponent ();
+			if (component == null && this is FragmentControlProvider fragmentProvider)
+				component = new DummyComponent (fragmentProvider);
+			if (component == null)
+				throw new ArgumentNullException ("component");
+
+			this.component = component;
 			control = component as SWF.Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
@@ -81,7 +98,8 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
+
+	
 		#region Public Properties
 		
 		public virtual Component Container {
@@ -158,7 +176,7 @@ namespace Mono.UIAutomation.Winforms
 		public virtual void Terminate ()
 		{
 			foreach (IConnectable strategy in events.Values)
-			    strategy.Disconnect ();
+				strategy.Disconnect ();
 			foreach (IProviderBehavior behavior in providerBehaviors.Values)
 				behavior.Disconnect ();
 
@@ -201,9 +219,8 @@ namespace Mono.UIAutomation.Winforms
 				behavior.Connect ();
 			}
 
-			OnProviderBehaviorSet (new ProviderBehaviorEventArgs (behavior,
-			                                                      pattern,
-			                                                      exists));
+			OnProviderBehaviorSet (
+				new ProviderBehaviorEventArgs (behavior, pattern, exists));
 
 		}
 		
@@ -349,20 +366,19 @@ namespace Mono.UIAutomation.Winforms
 				IRawElementProviderFragment closestLabel = null;
 				double closestLabelDistance = double.MaxValue;
 
-				parent.NavigateEachChildProvider ((IRawElementProviderFragment sibling) => {
+				foreach (var sibling in SimpleControlProviderHelpers.EnumerateChildren (parent)) {
 					if (sibling == this)
-						return;
+						continue;
 					if ((int)sibling.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.Text.Id) {
-						double siblingDistance;
-						if ((siblingDistance = DistanceFrom (sibling)) < closestLabelDistance) {
+						double siblingDistance = DistanceFrom (sibling);
+						if (siblingDistance < closestLabelDistance) {
 							closestLabel = sibling;
 							closestLabelDistance = siblingDistance;
 						}
 					}
-				});
-				
+				}
+
 				return closestLabel;
-				
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus && Control.CanSelect;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
@@ -490,11 +506,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		private double Distance (System.Windows.Point p1, System.Windows.Point p2)
 		{
-			return System.Math.Sqrt ((p1.X - p2.X) * (p1.X - p2.X) +
-			                         (p1.Y - p2.Y) * (p1.Y - p2.Y));
+			var dx = p1.X - p2.X;
+			var dy = p1.Y - p2.Y;
+			return System.Math.Sqrt (dx*dx + dy*dy);
 		}
 
 		#endregion
+	}
 
+	static class SimpleControlProviderHelpers
+	{
+		public static IEnumerable<IRawElementProviderFragment> EnumerateChildren (IRawElementProviderFragment prov) {
+			var ch = prov.Navigate (NavigateDirection.FirstChild);
+			while (ch != null) {
+				yield return ch;
+				ch = ch.Navigate (NavigateDirection.NextSibling);
+			}
+		}
 	}
 }

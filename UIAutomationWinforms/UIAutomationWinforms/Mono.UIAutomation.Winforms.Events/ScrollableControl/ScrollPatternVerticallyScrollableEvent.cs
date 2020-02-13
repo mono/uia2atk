@@ -42,20 +42,20 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollableControl
 #region IConnectable Implementation
 		public override void Connect ()
 		{	
-			SWF.ScrollBar vscrollbar 
-				= ((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
-			
-			vscrollbar.VisibleChanged += OnScrollableChanged;
-			vscrollbar.EnabledChanged += OnScrollableChanged;
+			var vscrollbar = (Provider as ScrollableControlProvider)?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (vscrollbar != null) {
+				vscrollbar.VisibleChanged += OnScrollableChanged;
+				vscrollbar.EnabledChanged += OnScrollableChanged;
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			SWF.ScrollBar vscrollbar 
-				= ((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
-			
-			vscrollbar.VisibleChanged -= OnScrollableChanged;
-			vscrollbar.EnabledChanged -= OnScrollableChanged;
+			var vscrollbar = (Provider as ScrollableControlProvider)?.ScrollBehaviorObserver?.VerticalScrollBar;
+			if (vscrollbar != null) {
+				vscrollbar.VisibleChanged -= OnScrollableChanged;
+				vscrollbar.EnabledChanged -= OnScrollableChanged;
+			}
 		}
 #endregion 
 		

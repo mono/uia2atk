@@ -63,7 +63,9 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 
 		private void OnWindowFocusChanged (object sender, EventArgs e)
 		{
-			RaiseAutomationEvent ();
+			var formProvider = (FormProvider) Provider;
+			if (formProvider.IsReallyVisible ())
+				RaiseAutomationEvent ();
 		}
 		
 		#endregion

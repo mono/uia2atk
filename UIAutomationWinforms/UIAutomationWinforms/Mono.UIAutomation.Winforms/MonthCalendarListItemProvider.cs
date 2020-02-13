@@ -94,7 +94,7 @@ namespace Mono.UIAutomation.Winforms
 			             new ListItemSelectionItemProviderBehavior (this));
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -104,7 +104,7 @@ namespace Mono.UIAutomation.Winforms
 			AddChildProvider (editChild);
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 

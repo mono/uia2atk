@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Source;
 
 namespace System.Windows.Automation
@@ -191,7 +192,8 @@ namespace System.Windows.Automation
 
 		public int[] RuntimeId {
 			get {
-				return new int[0];
+				// TODO: Get ID from API
+				return new int[] { AutomationInteropProvider.AppendRuntimeId, 0, 0, 0, 0, 0 };
 			}
 		}
 

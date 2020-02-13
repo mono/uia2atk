@@ -65,7 +65,9 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		private void OnFocusChanged (object sender, EventArgs e)
 		{
-			RaiseAutomationEvent ();
+			var isVisible = (Provider as FragmentControlProvider)?.IsReallyVisible () ?? true;
+			if (isVisible)
+				RaiseAutomationEvent ();
 		}
 		
 		#endregion

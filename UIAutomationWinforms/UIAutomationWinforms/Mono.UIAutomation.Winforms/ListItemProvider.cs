@@ -179,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 			                                                    this));
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			// This way we don't use our Control to define events twice
 		}

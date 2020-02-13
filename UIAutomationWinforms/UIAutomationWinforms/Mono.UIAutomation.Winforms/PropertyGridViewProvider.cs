@@ -201,7 +201,7 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 
 #region FragmentControlProvider Overrides
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 
@@ -213,7 +213,7 @@ namespace Mono.UIAutomation.Winforms
 			AddChildren ();
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			base.FinalizeChildControlStructure ();
 
@@ -261,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 		private PropertyGridListItemProvider[] Children
 		{
 			get {
-				return Navigation.GetChildren ().OfType<PropertyGridListItemProvider> ().ToArray ();
+				return Navigation.GetAllChildren ().OfType<PropertyGridListItemProvider> ().ToArray ();
 			}
 		}
 
@@ -390,7 +390,7 @@ namespace Mono.UIAutomation.Winforms
 			this.entry = entry;
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
@@ -403,7 +403,7 @@ namespace Mono.UIAutomation.Winforms
 			AddChildProvider (valueProvider);
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			base.FinalizeChildControlStructure ();
 			RemoveChildProvider (nameProvider);

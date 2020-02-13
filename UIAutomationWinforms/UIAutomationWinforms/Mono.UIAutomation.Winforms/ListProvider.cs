@@ -211,12 +211,12 @@ namespace Mono.UIAutomation.Winforms
 			             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
 		}
 
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			InitializeScrollBehaviorObserver ();
 		}
 	
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			foreach (ListItemProvider item in Items)
 				RemoveChildProvider (item);

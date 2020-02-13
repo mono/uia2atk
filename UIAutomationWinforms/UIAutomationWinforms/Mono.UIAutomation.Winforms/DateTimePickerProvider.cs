@@ -24,13 +24,14 @@
 //
 
 using System;
-using System.Threading;
-using System.Globalization;
-using System.Windows.Forms;
-using System.ComponentModel;
-using System.Windows.Automation;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms.Events;
@@ -68,22 +69,19 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 
 #region FragmentControlProvider Implementation
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			AddSegmentItems ();
-
 			UpdateChildren ();
 		}
 
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure()
 		{
 			RemoveSegmentItems ();
-
-			if (dropDownButton != null) {
-				dropDownButton.Terminate ();
-				dropDownButton = null;
-			}
+			DestroyLocalChild (dropDownButton);
+			dropDownButton = null;
 		}
+
 #endregion
 		
 #region Protected Methods
@@ -102,22 +100,16 @@ namespace Mono.UIAutomation.Winforms
 			if (control.ShowCheckBox) {
 				if (checkBox == null) {
 					checkBox = new DateTimePickerCheckBoxProvider (this);
-					InsertChildProvider (checkBox, 0);
+					InsertChildProviderBefore (checkBox, Navigation.GetAllChildren ().FirstOrDefault ());
 				}
 			} else {
-				if (checkBox != null) {
-					RemoveChildProvider (checkBox);
-					checkBox.Terminate ();
-					checkBox = null;
-				}
+				DestroyLocalChild (checkBox);
+				checkBox = null;
 			}
 
 			if (control.ShowUpDown) {
-				if (dropDownButton != null) {
-					RemoveChildProvider (dropDownButton);
-					dropDownButton.Terminate ();
-					dropDownButton = null;
-				}
+				DestroyLocalChild (dropDownButton);
+				dropDownButton = null;
 			} else {
 				if (dropDownButton == null) {
 					dropDownButton
@@ -125,6 +117,14 @@ namespace Mono.UIAutomation.Winforms
 					AddChildProvider (dropDownButton);
 				}
 			}
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 
 		private void AddSegmentItems ()
@@ -400,7 +400,7 @@ namespace Mono.UIAutomation.Winforms
 				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 

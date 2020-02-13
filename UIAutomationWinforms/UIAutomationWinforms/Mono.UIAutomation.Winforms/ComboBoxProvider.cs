@@ -119,30 +119,29 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region ListProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			listboxProvider.Initialize ();
 			AddChildProvider (listboxProvider);
 			UpdateBehaviors (true);
 		}
-		
-		public override void FinalizeChildControlStructure ()
+
+		protected override void FinalizeChildControlStructure()
 		{
-			if (buttonProvider != null) {
-				RemoveChildProvider (buttonProvider);
-				buttonProvider.Terminate ();
-				buttonProvider = null;
-			}
-			if (listboxProvider != null) {
-				RemoveChildProvider (listboxProvider);
-				listboxProvider.Terminate ();
-				listboxProvider = null;
-			}
-			if (textboxProvider != null) {
-				RemoveChildProvider (textboxProvider);
-				textboxProvider.Terminate ();
-				textboxProvider = null;
-			}
+			DestroyLocalChild (buttonProvider);
+			DestroyLocalChild (listboxProvider);
+			DestroyLocalChild (textboxProvider);
+			buttonProvider = null;
+			listboxProvider = null;
+			textboxProvider = null;
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 
 		#endregion
@@ -368,12 +367,12 @@ namespace Mono.UIAutomation.Winforms
 					? false : item.Index == comboboxControl.SelectedIndex;
 			}
 
-			public override void InitializeChildControlStructure ()
+			protected override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 			}
 
-			public override void FinalizeChildControlStructure ()
+			protected override void FinalizeChildControlStructure()
 			{
 				base.FinalizeChildControlStructure ();
 			}
@@ -526,7 +525,7 @@ namespace Mono.UIAutomation.Winforms
 
 			private void OnDropDownClosed (object sender, EventArgs args)
 			{
-				foreach (var childListItemProvider in this.OfType<ListItemProvider> ()) {
+				foreach (var childListItemProvider in Navigation.GetAllChildren ().OfType<ListItemProvider> ()) {
 					RemoveChildProvider (childListItemProvider); 
 				}
 				InitializeScrollBehaviorObserver ();

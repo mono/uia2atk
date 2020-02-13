@@ -68,7 +68,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			//base.InitializeChildControlStructure ();
 			
@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			//base.FinalizeChildControlStructure ();
 			

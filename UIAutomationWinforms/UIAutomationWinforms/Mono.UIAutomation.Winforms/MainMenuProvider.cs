@@ -123,7 +123,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			if (Menu != null)
 				Menu.MenuChanged += OnMenuChanged;
@@ -135,7 +135,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
 			if (Menu != null)
 				Menu.MenuChanged -= OnMenuChanged;

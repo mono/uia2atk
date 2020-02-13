@@ -92,7 +92,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			if (row >= rowCount || column >= columnCount || row < 0 || column < 0)
 			    throw new ArgumentOutOfRangeException ();
 
-			return viewGroupProvider.GetChildProviderAt ((row * columnCount) + column);
+			return viewGroupProvider.Navigation.GetVisibleChild ((row * columnCount) + column);
 		}
 		
 		public int ColumnCount {

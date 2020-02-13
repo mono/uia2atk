@@ -93,7 +93,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
-		public override void InitializeChildControlStructure ()
+		protected override void InitializeChildControlStructure ()
 		{
 			TrackBar trackbar = (TrackBar) Control;
 
@@ -113,20 +113,22 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override void FinalizeChildControlStructure ()
+		protected override void FinalizeChildControlStructure ()
 		{
-			if (largeBackButton != null) {
-				largeBackButton.Terminate ();
-				largeBackButton = null;
-			}
-			if (thumb != null) {
-				thumb.Terminate ();
-				thumb = null;
-			}
-			if (largeForwardButton != null) {
-				largeForwardButton.Terminate ();
-				largeForwardButton = null;
-			}
+			DestroyLocalChild (largeBackButton);
+			DestroyLocalChild (thumb);
+			DestroyLocalChild (largeForwardButton);
+			largeBackButton = null;
+			thumb = null;
+			largeForwardButton = null;
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 		
 		#endregion

@@ -31,6 +31,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Services;
+using Mono.UIAutomation.Winforms.UserCustom;
 using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
@@ -49,7 +50,7 @@ namespace Mono.UIAutomation.Winforms
 		//       this mapping?
 		private static readonly Dictionary<Component, IRawElementProviderFragment> componentProviders
 			 = new Dictionary<Component,IRawElementProviderFragment> ();
-		
+
 		private static readonly  List<IRawElementProviderFragmentRoot> formProviders
 			= new List<IRawElementProviderFragmentRoot> ();
 
@@ -118,18 +119,14 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		internal static FragmentControlProvider GetWrapper (Component component, IRawElementProviderSimple componentProvider)
+		private static UserCustomFragmentProviderWrapper GetWfcWrapperForUserCustomProvider (FragmentControlProvider fragment, IRawElementProviderSimple wndProcProvider)
 		{
-			var asFragment = componentProvider as IRawElementProviderFragment;
-			var asFragmentRoot = asFragment != null ? componentProvider as IRawElementProviderFragmentRoot : null;
-
-			if (asFragmentRoot != null)
-				return new FragmentRootProviderWrapper (component, asFragmentRoot);
-
-			if (asFragment != null)
-				return new FragmentProviderWrapper (component, asFragment);
-
-			return new SimpleProviderWrapper (component, componentProvider);
+			UserCustomFragmentProviderWrapper wrapper = null;
+			if (wndProcProvider is IRawElementProviderFragmentRoot iFragmentRoot)
+				wrapper = UserCustomProviderFabric.GetWinformFragmentRoot (fragment, iFragmentRoot);
+			else if (wndProcProvider is IRawElementProviderFragment iFragment)
+				wrapper = UserCustomProviderFabric.GetWinformFragment (fragment, iFragment);
+			return wrapper;
 		}
 
 		#endregion
@@ -143,18 +140,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
-			return GetProvider (component, true, false);
+			return GetProvider (component, true);
 		}
 		
-		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initialize)
-		{
-			return GetProvider (component, initialize, false);
-		}
-
-		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initialize,
-		                                                       bool forceInitializeChildren)
+		public static IRawElementProviderFragment GetProvider (Component component, bool initialize)
 		{
 			if (component == null)
 				//FIXME: we should throw new ArgumentNullException ("component");
@@ -165,13 +154,14 @@ namespace Mono.UIAutomation.Winforms
 			if (provider != null)
 				return provider;
 
-			// Send a WndProc message to see if the control
-			// implements it's own provider.
-			if (component is SWF.Control
+			// Send a WndProc message to see if the control implements it's own provider.
+			//WfcUserCustomFragmentProviderWrapper wfcUserCustomProvider = null;
+			IRawElementProviderSimple wndProcProvider = null;
+			bool wndProcProviderIsUserCustom = false;
+			var control = component as SWF.Control;
+			if (control != null
 				// Sending WndProc to a form is broken for some reason
-				&& !(component is SWF.Form)) {
-
-				var control = (SWF.Control) component;
+				&& !(control is SWF.Form)) {
 
 				IntPtr result = SWF.NativeWindow.WndProc (
 					control.Handle,
@@ -179,42 +169,62 @@ namespace Mono.UIAutomation.Winforms
 					IntPtr.Zero,
 					new IntPtr (AutomationInteropProvider.RootObjectId));
 
-				if (result != IntPtr.Zero) {
-					IRawElementProviderSimple iSimpleProvider =
-						AutomationInteropProvider.RetrieveAndDeleteProvider (result);
-					provider = (iSimpleProvider as FragmentControlProvider) ?? GetWrapper (component, iSimpleProvider);
+				if (result != IntPtr.Zero)
+					wndProcProvider = AutomationInteropProvider.RetrieveAndDeleteProvider (result);
+
+				if (wndProcProvider != null) {
+					provider = wndProcProvider as FragmentControlProvider;
+					if (provider == null)
+						wndProcProviderIsUserCustom = true;
 				}
 			}
-			else if (component is UserCustomComponent control) {
-				provider = control.Provider;
+
+			if (provider == null)
+				provider = TryToCreateProviderByTypeAndComponentMaps(component);
+
+			if (provider != null) {
+				RegisterAndInitializeProvider (component, provider, initialize);
+				if (provider is FragmentControlProvider fragment && wndProcProviderIsUserCustom) {
+					var wfcUserCustomProvider = GetWfcWrapperForUserCustomProvider (fragment, wndProcProvider);
+					fragment.SetWfcUserCustomProviderWrapper (wfcUserCustomProvider);
+				}
+			} else {
+				if (component is SWF.CommonDialog dialog) {
+					provider = GetProvider (dialog.form, initialize);
+				} else {
+					//FIXME: let's not throw while we are developing, a big WARNING will suffice
+					//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
+					Log.Warn ("Provider not implemented for component " + component.GetType ());
+				}
 			}
+
+			return provider;
+		}
+
+		private static IRawElementProviderFragment TryToCreateProviderByTypeAndComponentMaps (Component component)
+		{
+			IRawElementProviderFragment provider = null;
 
 			ComponentProviderMapperHandler handler = null;
 			Type providerType = null;
 
-			if (provider == null) {
-				Type typeIter = component.GetType ();
+			// Chain up the type hierarchy until we find
+			// either a type or handler for mapping, or we
+			// hit Control or Component.
+			var typeIter = component.GetType ();
+			do {
+				// First see if there's a mapping handler
+				if (componentProviderMappers.TryGetValue (typeIter, out handler))
+					break;
+				// Next, see if we have a type mapping
+				if (providerComponentMap.TryGetValue (typeIter, out providerType))
+					break;
+				typeIter = typeIter.BaseType;
+			} while (typeIter != null
+			         && typeIter != typeof (System.ComponentModel.Component)
+			         && typeIter != typeof (SWF.Control));
 
-				// Chain up the type hierarchy until we find
-				// either a type or handler for mapping, or we
-				// hit Control or Component.
-				do {
-					// First see if there's a mapping handler
-					if (componentProviderMappers.TryGetValue (typeIter,
-					                                          out handler))
-						break;
-
-					// Next, see if we have a type mapping
-					if (providerComponentMap.TryGetValue (typeIter,
-					                                      out providerType))
-						break;
-
-					typeIter = typeIter.BaseType;
-				} while (typeIter != null
-				         && typeIter != typeof (System.ComponentModel.Component)
-				         && typeIter != typeof (SWF.Control));
-			}
-
+			// Create the provider if we found a mapping component
 			if (handler != null) {
 				provider = handler (component);
 			}
@@ -223,76 +233,60 @@ namespace Mono.UIAutomation.Winforms
 			if (provider == null) {
 				// We meet a unknown custom control type,
 				// then we count it as a Pane
-				if (providerType == null) {
-					var dialog = component as SWF.CommonDialog;
-					if (dialog != null)
-						return GetProvider (dialog.form, initialize, forceInitializeChildren);
+				if (providerType == null && !(component is SWF.CommonDialog)) {
 					providerType = typeof (PaneProvider);
 				}
 				try {
-					provider = (FragmentControlProvider)
-						Activator.CreateInstance (providerType,
-									  new object [] { component });
+					provider = (FragmentControlProvider) Activator.CreateInstance (providerType, new object [] { component });
 				} catch (MissingMethodException) {
-					Log.Error (
-						"Provider {0} does not have a valid single parameter constructor to handle {1}.",
-						providerType, component.GetType ()
-					);
-					return null;
+					Log.Error ($"Provider {providerType} does not have a valid single parameter constructor to handle {component.GetType ()}.");
 				}
-			}
-
-			if (provider != null) {
-				// TODO: Abstract this out?
-				if (component is SWF.Form) {
-					formProviders.Add ((IRawElementProviderFragmentRoot) provider);
-				}
-
-				// TODO: Make tracking in dictionary optional
-				componentProviders [component] = provider;
-				if (provider is FragmentControlProvider frag) {
-					if (initialize)
-						frag.Initialize ();
-					if (forceInitializeChildren)
-						frag.InitializeChildControlStructure ();
-				}
-			} else {
-				//FIXME: let's not throw while we are developing, a big WARNING will suffice
-				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
-				Log.Warn ("Provider not implemented for component " + component.GetType ());
-				return null;
 			}
 
 			return provider;
 		}
 
+		private static void RegisterAndInitializeProvider (Component component, IRawElementProviderFragment provider, bool initialize)
+		{
+			// TODO: Abstract this out?
+			if (component is SWF.Form)
+				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
+			// TODO: Make tracking in dictionary optional
+			componentProviders [component] = provider;
+			if (initialize && provider is FragmentControlProvider frag)
+				frag.Initialize ();
+		}
+
 		public static void ReleaseProvider (Component component)
 		{
 			if (componentProviders.TryGetValue (component, out IRawElementProviderFragment provider)) {
+				var fragment = (FragmentControlProvider) provider;
 				componentProviders.Remove (component);
-				((FragmentControlProvider) provider).Terminate ();
-				if (provider is FormProvider formProvider)
+				fragment.Terminate ();
+				if (fragment is FormProvider formProvider)
 					formProviders.Remove (formProvider);
 			}
 		}
 		
 		public static IRawElementProviderFragment FindProvider (Component component)
 		{
-			IRawElementProviderFragment provider;
-			
 			if (component == null)
 				//FIXME: we should throw instead of returning null
 				//throw new ArgumentNullException ("component");
 				return null;
-			
-			else if (componentProviders.TryGetValue (component, out provider))
+			else if (componentProviders.TryGetValue (component, out IRawElementProviderFragment provider))
 				return provider;
-
+			else if (component is DummyComponent dummyComponent)
+				return dummyComponent.Provider;
 			return null;
 		}
 
-		internal static void RegisterComponentProviderMapper (System.Type componentType,
-		                                                      ComponentProviderMapperHandler handler)
+		public static IRawElementProviderFragment FindUserCustomWrapper (IRawElementProviderFragment userCustomProvider)
+		{
+			return null; // !!! TODO
+		}
+
+		internal static void RegisterComponentProviderMapper (System.Type componentType, ComponentProviderMapperHandler handler)
 		{
 			componentProviderMappers.Add (componentType, handler);
 		}
