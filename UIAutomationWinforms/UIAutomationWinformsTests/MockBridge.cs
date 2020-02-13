@@ -36,7 +36,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #region Tuple Classes
 		public class AutomationEventTuple
 		{
-			public AutomationEvent eventId;
 			public object provider;
 			public AutomationEventArgs e;
 		}
@@ -86,10 +85,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		
-		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
-		{			
-			AutomationEvents.Add (new AutomationEventTuple {
-				eventId = eventId, provider = provider, e = e});
+		public void RaiseAutomationEvent (object provider, AutomationEventArgs e)
+		{
+			AutomationEvents.Add (new AutomationEventTuple {provider = provider, e = e});
 		}
 
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
@@ -114,7 +112,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			int count = 0;
 			
 			foreach (AutomationEventTuple evnt in AutomationEvents) {
-				if (evnt.eventId.Id == eventId.Id)
+				if (evnt.e.EventId.Id == eventId.Id)
 					count++;
 			}
 			return count;
@@ -189,7 +187,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public AutomationEventTuple GetAutomationEventFrom (object provider, int id)
 		{
 			foreach (AutomationEventTuple tuple in AutomationEvents)
-				if (tuple.provider == provider && tuple.eventId.Id == id)
+				if (tuple.provider == provider && tuple.e.EventId.Id == id)
 					return tuple;
 			return null;
 		}

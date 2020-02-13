@@ -103,12 +103,11 @@ namespace Mono.UIAutomation.ClientSource
 				propertyChangedEventEntries.Clear ();
 		}
 
-		public static void RaiseAutomationEvent (AutomationEvent eventId,
-			IRawElementProviderSimple provider, AutomationEventArgs e)
+		public static void RaiseAutomationEvent (IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
 			lock (automationEventEntries)
 				foreach (var entry in automationEventEntries)
-					if (entry.EventId == eventId &&
+					if (entry.EventId == e.EventId &&
 						IsProviderInScope (provider, entry.Provider, entry.Scope)) {
 						var clientElement =
 							ClientAutomationSource.Instance.GetOrCreateElement (provider);

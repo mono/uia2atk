@@ -106,26 +106,29 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				                h => h.Provider == provider);
 		}
 
-		internal void RaiseAutomationEvent (AutomationEvent eventId,
-		                                    IRawElementProviderSimple provider,
+		internal void RaiseAutomationEvent (IRawElementProviderSimple provider,
 		                                    AutomationEventArgs e)
 		{
 			if (provider == null)
 				return;
+
 			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
-				Log.Error ("[UiaDbusBridge.RaiseAutomationEvent] Inconsistent provider -> wrapper mapping state");
+				Log.Error ($"[UiaDbusBridge.RaiseAutomationEvent] Inconsistent provider -> wrapper mapping state: "
+					+ $"provider={provider} e.EventId=({e.EventId.Id}, '{e.EventId.ProgrammaticName}')");
 				return;
 			}
+
 			lock (automationEventHandlers) {
 				foreach (AutomationEventHandlerData handler in automationEventHandlers) {
-					if (handler.EventId == eventId.Id &&
+					if (handler.EventId == e.EventId.Id &&
 						IsProviderInScope (provider, handler.Provider, handler.Scope)) {
 						OnAutomationEvent (handler.HandlerId, handler.EventId, wrapper.Path);
 					}
 				}
 			}
-			if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
+			
+			if (e.EventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				var valueObj = provider.GetPropertyValue (
 					AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 				bool hasFocus = false;
@@ -174,8 +177,9 @@ namespace Mono.UIAutomation.UiaDbusBridge
 				return;
 			var wrapper = AutomationBridge.Instance.FindWrapperByProvider (provider);
 			if (wrapper == null) {
-				Log.Error ("[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state",
-				           provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+				Log.Error ($"[UiaDbusBridge.RaiseStructureChangedEvent] Inconsistent provider -> wrapper mapping state: "
+					+ $"provider={provider} e.StructureChangeType={e.StructureChangeType}",
+					provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 				return;
 			}
 			lock (structureEventHandlers) {

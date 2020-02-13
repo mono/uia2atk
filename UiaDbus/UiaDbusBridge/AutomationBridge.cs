@@ -116,9 +116,9 @@ namespace Mono.UIAutomation.UiaDbusBridge
 			return provider;
 		}
 
-		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
+		public void RaiseAutomationEvent (object provider, AutomationEventArgs e)
 		{
-			app.RaiseAutomationEvent (eventId, provider as IRawElementProviderSimple, e);
+			app.RaiseAutomationEvent (provider as IRawElementProviderSimple, e);
 		}
 
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)

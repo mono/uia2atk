@@ -29,17 +29,11 @@ namespace System.Windows.Automation
 {
 	public class AutomationEventArgs : EventArgs
 	{
-		private AutomationEvent eventId;
-		
-		public AutomationEvent EventId {
-			get {
-				return eventId;
-			}
-		}
+		public readonly AutomationEvent EventId;
 
 		public AutomationEventArgs (AutomationEvent eventId)
 		{ 
-			this.eventId = eventId;
+			EventId = eventId;
 		}
 	}
 }
