@@ -92,6 +92,7 @@ REFERENCES =  \
 	System \
 	System.Core \
 	Mono.Posix \
+	UIAutomationHelpers \
 	$(GTK_SHARP_30_LIBS)
 
 DLL_REFERENCES = 

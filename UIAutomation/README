@@ -12,6 +12,7 @@ http://www.mono-project.com/Accessibility
 Implementation of Microsoft UI Automation (UIA) assemblies.  This package
 provides the following assemblies:
 
+	UIAutomationHelpers.dll Internal helpers public for other assemblies.
 	UIAutomationTypes.dll: Types, constants, and identifiers.
 	UIAutomationProvider.dll: Provider pattern interface definitions.
 	UIAutomationClient.dll: Types used by UIA clients to get element info.
