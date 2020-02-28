@@ -25,11 +25,15 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using Mono.UIAutomation.Helpers;
+using Mono.UIAutomation.Services;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	internal partial class Navigation
 	{
+		private static bool NavigationTreeErrAsException = (EnvironmentVaribles.MONO_UIA_NAVIGATION_TREE_ERR == MONO_UIA_NAVIGATION_TREE_ERR.Exception);
+
 		private readonly Chain _chainWinforms = new Chain ();
 		private readonly Chain _chainCustoms = new Chain ();
 
@@ -47,11 +51,19 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		public FragmentControlProvider LastChildProvider => _chainCustoms.Last ?? _chainWinforms.Last;
 
 		public void InsertChild (int index, FragmentControlProvider newChild)
-		{
+		{ 
 			if (newChild == null)
 				throw new ArgumentNullException ("newChild");
-			if (!newChild.Navigation.IsCleared ())
-				RaiseNewChildIsClearedError (newChild);
+			if (!newChild.Navigation.IsCleared ()) {
+				var errMsg = GetNewChildIsClearedErrorMessage (newChild);
+				if (newChild.Navigation.Parent == null || NavigationTreeErrAsException) {
+					throw new ArgumentException (errMsg);
+				}
+				else {
+					Log.Error (errMsg);
+					newChild.Navigation.Parent.HandleChildComponentRemoved (newChild.Component);
+				}
+			}
 
 			if (newChild is FragmentProviderWrapper)
 			{
@@ -69,8 +81,16 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			if (newChild == null)
 				throw new ArgumentNullException ("newChild");
-			if (!newChild.Navigation.IsCleared ())
-				RaiseNewChildIsClearedError (newChild);
+			if (!newChild.Navigation.IsCleared ()) {
+				var errMsg = GetNewChildIsClearedErrorMessage (newChild);
+				if (newChild.Navigation.Parent == null || NavigationTreeErrAsException) {
+					throw new ArgumentException (errMsg);
+				}
+				else {
+					Log.Error (errMsg);
+					newChild.Navigation.Parent.HandleChildComponentRemoved (newChild.Component);
+				}
+			}
 
 			if (newChild is FragmentProviderWrapper)
 				_chainCustoms.AppendToEnd (newChild);
@@ -173,18 +193,20 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			return $"<{this.GetType ()}:{Provider}>";
 		}
 
-		private string RaiseNewChildIsClearedError (FragmentControlProvider newChild)
+		private string GetNewChildIsClearedErrorMessage (FragmentControlProvider newChild)
 		{
 			var errMsg =
-				$"RaiseNewChildIsClearedError(): this.Provider={this.Provider} newChild={newChild}"
-				+ Environment.NewLine + "  this.Provider.Navigation.ToStringDetailed()" + Environment.NewLine + this.Provider.Navigation.ToStringDetailed(indent: 4)
-				+ Environment.NewLine + "  newChild.Navigation.ToStringDetailed()" + Environment.NewLine + newChild.Navigation.ToStringDetailed(indent: 4);
-			throw new ArgumentException (errMsg);
+				$"NewChildIsClearedError:"
+				+ Environment.NewLine +  "  this.Provider.Navigation.ToStringDetailed()" + Environment.NewLine + this.Provider.Navigation.ToStringDetailed (indent: 4)
+				+ Environment.NewLine +  "  newChild.Navigation.ToStringDetailed()" + Environment.NewLine + newChild.Navigation.ToStringDetailed (indent: 4)
+				+ Environment.NewLine + $"  *** Set env variable MONO_UIA_NAVIGATION_TREE_ERR=(log|exception) to throw an Exception or correct error amd just log it."
+				                      +  " Option 'log' is default. ***";
+			return errMsg;
 		}
 
 		private string ToStringDetailed (int indent = 0)
 		{
-			var sindent =  new String(' ', indent);;
+			var sindent =  new String (' ', indent);;
 			return sindent + $"<{this.GetType ()}:{Provider}>" + Environment.NewLine
 				+ sindent +  $"  Parent =               {Parent}" + Environment.NewLine
 				+ sindent +  $"  PreviousProvider =     {PreviousProvider}" + Environment.NewLine

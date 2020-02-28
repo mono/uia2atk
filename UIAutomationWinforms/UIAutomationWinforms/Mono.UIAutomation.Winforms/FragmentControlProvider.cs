@@ -336,7 +336,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected void HandleChildComponentRemoved (Component childComponent)
+		internal void HandleChildComponentRemoved (Component childComponent)
 		{
 			var childProvider = Navigation.TryGetChild (childComponent);
 			if (childProvider == null)
