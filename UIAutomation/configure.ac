@@ -94,6 +94,8 @@ PKG_CHECK_MODULES([GLIB_SHARP_30], [glib-sharp-3.0 >= 2.99.1])
 PKG_CHECK_MODULES([GTK_SHARP_30], [gtk-sharp-3.0 >= 2.99.1])
 
 AC_CONFIG_FILES([
+UIAutomationHelpers/Makefile
+UIAutomationHelpers/AssemblyInfo.cs
 UIAutomationTypes/Makefile
 UIAutomationTypes/AssemblyInfo.cs
 UIAutomationBridge/Makefile

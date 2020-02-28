@@ -69,6 +69,8 @@ rm -rf %{buildroot}
 %{_prefix}/lib/mono/accessibility
 %{_prefix}/lib/mono/gac/UIAutomationProvider
 %{_prefix}/lib/mono/accessibility/UIAutomationProvider.dll
+%{_prefix}/lib/mono/gac/UIAutomationHelpers
+%{_prefix}/lib/mono/accessibility/UIAutomationHelpers.dll
 %{_prefix}/lib/mono/gac/UIAutomationTypes
 %{_prefix}/lib/mono/accessibility/UIAutomationTypes.dll
 %{_prefix}/lib/mono/gac/UIAutomationBridge

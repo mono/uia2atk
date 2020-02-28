@@ -73,6 +73,7 @@ REFERENCES =  \
 	WindowsBase \
 	System \
 	System.Core \
+	UIAutomationHelpers \
 	UIAutomationBridge \
 	UIAutomationTypes
 

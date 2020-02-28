@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.UIAutomation.Helpers;
 
 namespace Mono.UIAutomation.Services
 {
@@ -49,7 +50,7 @@ namespace Mono.UIAutomation.Services
 #region Public Methods
 		static Log ()
 		{
-			string level = Environment.GetEnvironmentVariable ("MONO_UIA_LOG_LEVEL");
+			string level = EnvironmentVaribles.MONO_UIA_LOG_LEVEL;
 			if (level != null) {
 				try {
 					currentLogLevel = (LogLevel) Convert.ToInt32 (level);
