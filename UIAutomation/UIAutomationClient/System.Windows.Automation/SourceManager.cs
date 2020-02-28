@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-
+using Mono.UIAutomation.Helpers;
 using Mono.UIAutomation.Source;
 using Mono.UIAutomation.Services;
 using Mono.UIAutomation.ClientSource;
@@ -36,8 +36,6 @@ namespace System.Windows.Automation
 {
 	internal static class SourceManager
 	{
-		private const string UIA_ENABLED_ENV_VAR = "MONO_UIA_ENABLED";
-		private const string SOURCE_ASSEMBLY_NAMES_ENV_VAR = "MONO_UIA_SOURCE";
 		private const char SOURCE_ASSEMBLY_NAMES_DELIM = ';';
 
 		private const string AtspiUiaSourceAssembly =
@@ -50,27 +48,18 @@ namespace System.Windows.Automation
 
 		internal static IAutomationSource [] GetAutomationSources ()
 		{
-			bool isUiaEnabled = true;
-			
-			var isUiaEnabledEnvVar = Environment.GetEnvironmentVariable (UIA_ENABLED_ENV_VAR);
-			if (!string.IsNullOrEmpty(isUiaEnabledEnvVar)) {
-				if (isUiaEnabledEnvVar == "0")
-					isUiaEnabled = false;
-				else if (isUiaEnabledEnvVar != "1")
-					throw new Exception($"The environment varianble '{UIA_ENABLED_ENV_VAR}' may be equal to '0' and '1' only, or may be empty or undefined.");
-			}
-
+			bool isUiaEnabled = EnvironmentVaribles.MONO_UIA_ENABLED;
 			if (!isUiaEnabled) {
-				Console.WriteLine ($"No one UIA source is loaded: {UIA_ENABLED_ENV_VAR}='{isUiaEnabledEnvVar}'");
+				Console.WriteLine ($"No one UIA source is loaded: MONO_UIA_ENABLED='{Convert.ToInt32 (isUiaEnabled)}'");
 				return new IAutomationSource [0];
 			}
-
+			
 			if (sources == null) {
 				lock (sourcesLock) {
 					if (sources == null) {
 						// Let MONO_UIA_SOURCE env var override default source
 						List<string> sourceAssemblyNames =
-							(Environment.GetEnvironmentVariable (SOURCE_ASSEMBLY_NAMES_ENV_VAR) ?? string.Empty)
+							EnvironmentVaribles.MONO_UIA_SOURCE
 							.Split (SOURCE_ASSEMBLY_NAMES_DELIM)
 							.Where (name => !string.IsNullOrEmpty(name))
 							.ToList ();
@@ -88,7 +77,7 @@ namespace System.Windows.Automation
 
 						var loadedsourcesMsg = new List<string> { "Loaded UIA sources:" };
 						loadedsourcesMsg.AddRange (sourcesList.Select (x => x.name));
-						loadedsourcesMsg.Add ($"* To disable UIA sources loading set environment variable {UIA_ENABLED_ENV_VAR} to '0'. *");
+						loadedsourcesMsg.Add ($"*** To disable UIA sources loading set environment variable MONO_UIA_ENABLED to '0'. ***");
 						Console.WriteLine (string.Join (Environment.NewLine + "  ", loadedsourcesMsg));
 
 						sources = sourcesList.Select (x => x.src).ToArray ();

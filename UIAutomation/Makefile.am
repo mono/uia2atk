@@ -3,7 +3,7 @@ EXTRA_DIST = \
 	mono.snk \
 	winfx3.pub
 
- CODE_SUBDIRS = UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationSource UIAutomationClient
+ CODE_SUBDIRS = UIAutomationHelpers UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationSource UIAutomationClient
 
 if ENABLE_TESTS
  SUBDIRS = $(CODE_SUBDIRS) UIAutomationClientTests data

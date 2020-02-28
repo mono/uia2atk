@@ -72,7 +72,19 @@ diff -uraN mono-uia-1.0.orig/UIAutomationProvider/Makefile.in mono-uia-1.0/UIAut
 -GACROOT = $(DESTDIR)$(prefix)/lib
 +GACROOT = $(DESTDIR)$(libdir)
  all: all-am
- 
+
+ .SUFFIXES:
+diff -uraN mono-uia-1.0.orig/UIAutomationHelpers/Makefile.in mono-uia-1.0/UIAutomationHelpers/Makefile.in
+--- mono-uia-1.0.orig/UIAutomationHelpers/Makefile.in	2009-05-21 01:10:48.553261633 +0200
++++ mono-uia-1.0/UIAutomationHelpers/Makefile.in	2009-05-21 01:15:06.158289227 +0200
+@@ -351,7 +351,7 @@
+ culture_resource_commandlines = $(call unesc2,cmd_line_satellite_$1 += '/embed:$(subst .resx,.resources,$2)')
+ build_satellite_assembly_list = $(call q2s,$(cultures:%=$(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME)))
+ build_culture_res_files = $(call q2s,$(foreach res, $(culture_resources),$(call get_resource_name,$(res))))
+-GACROOT = $(DESTDIR)$(prefix)/lib
++GACROOT = $(DESTDIR)$(libdir)
+ all: all-am
+
  .SUFFIXES:
 diff -uraN mono-uia-1.0.orig/UIAutomationTypes/Makefile.in mono-uia-1.0/UIAutomationTypes/Makefile.in
 --- mono-uia-1.0.orig/UIAutomationTypes/Makefile.in	2009-05-21 01:10:48.553261633 +0200

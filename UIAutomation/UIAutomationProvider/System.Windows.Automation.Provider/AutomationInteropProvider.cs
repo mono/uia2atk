@@ -28,6 +28,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Helpers;
 
 namespace System.Windows.Automation.Provider
 {
@@ -117,8 +118,6 @@ namespace System.Windows.Automation.Provider
 	
 	internal static class BridgeManager
 	{
-		private const string UIA_ENABLED_ENV_VAR = "MONO_UIA_ENABLED";
-		private const string BRIDGE_ASSEMBLY_NAMES_ENV_VAR = "MONO_UIA_BRIDGE";
 		private const char BRIDGE_ASSEMBLY_NAMES_DELIM = ';';
 
 		private static string UiaAtkBridgeAssembly =
@@ -130,25 +129,15 @@ namespace System.Windows.Automation.Provider
 
 		public static IList<IAutomationBridge> GetAutomationBridges ()
 		{
-			bool isUiaEnabled = true;
-			
-			var isUiaEnabledEnvVar = Environment.GetEnvironmentVariable (UIA_ENABLED_ENV_VAR);
-			if (!string.IsNullOrEmpty(isUiaEnabledEnvVar))
-			{
-				if (isUiaEnabledEnvVar == "0")
-					isUiaEnabled = false;
-				else if (isUiaEnabledEnvVar != "1")
-					throw new Exception($"The environment varianble '{UIA_ENABLED_ENV_VAR}' may be equal to '0' and '1' only, or may be empty or undefined.");
-			}
-
+			bool isUiaEnabled = EnvironmentVaribles.MONO_UIA_ENABLED;
 			if (!isUiaEnabled) {
-				Console.WriteLine ($"No one UIA bridge is loaded: {UIA_ENABLED_ENV_VAR}='{isUiaEnabledEnvVar}'");
+				Console.WriteLine ($"No one UIA bridge is loaded: MONO_UIA_ENABLED='{Convert.ToInt32 (isUiaEnabled)}'");
 				return new List<IAutomationBridge> ();
 			}
 
 			// Let MONO_UIA_BRIDGE env var override default bridge
 			List<string> bridgeAssemblyNames =
-				(Environment.GetEnvironmentVariable (BRIDGE_ASSEMBLY_NAMES_ENV_VAR) ?? string.Empty)
+				EnvironmentVaribles.MONO_UIA_BRIDGE
 				.Split (BRIDGE_ASSEMBLY_NAMES_DELIM)
 				.Where (name => !string.IsNullOrEmpty(name))
 				.ToList ();
@@ -165,7 +154,7 @@ namespace System.Windows.Automation.Provider
 
 			var loadedBridgesMsg = new List<string> { "Loaded UIA bridges:" };
 			loadedBridgesMsg.AddRange (namedBridges.Select (x => x.name));
-			loadedBridgesMsg.Add ($"* To disable UIA bridges loading set environment variable {UIA_ENABLED_ENV_VAR} to '0'. *");
+			loadedBridgesMsg.Add ($"*** To disable UIA bridges loading set environment variable MONO_UIA_ENABLED to '0'. ***");
 			Console.WriteLine (string.Join (Environment.NewLine + "  ", loadedBridgesMsg));
 
 			return namedBridges.Select (x => x.bridge).ToList ();
