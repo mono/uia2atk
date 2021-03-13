@@ -24,6 +24,9 @@ Directories:
   keystrokes: This directory contains the Orca test scripts for the sample
               applications.
 
+  pure-uia: Demo scripts in pure UIA API case (see ReadMe.md in the root of
+           the repository).
+
 Remember:
   
   Always update the uia2atk/test/ChangeLog file when adding, modifying, or
