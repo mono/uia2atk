@@ -36,17 +36,83 @@ namespace Mono.UIAutomation.Helpers
 
     public static class EnvironmentVaribles
     {
+        /* 
+        Usage: 
+            export MONO_UIA_UISYNCCONTEXT={0,1}
+
+        Defaule value:
+            "1" (enabled)
+        
+        Description:
+            Enables or disables UI SynchronizationContext. If disabled, Provider
+            accesses to Control directly from non-UI thread. This is fast but dangerous.
+            Don't disable it in production tests.
+        */
         public static bool MONO_UIA_UISYNCCONTEXT => GetEnvVarIntValueAsBoolOrDefault ("MONO_UIA_UISYNCCONTEXT", true);
 
+        /* 
+        Usage: 
+            export MONO_UIA_ENABLED={0,1}
+
+        Defaule value:
+            "1" (enabled)
+        
+        Description:
+            Enables or disables UIA API.
+        */
         public static bool MONO_UIA_ENABLED => GetEnvVarIntValueAsBoolOrDefault ("MONO_UIA_ENABLED", true);
 
+        /* 
+        Usage: 
+            export MONO_UIA_SOURCE="<list of assemblies implementing `IAutomationSource`>"
+
+        Defaule value:
+            <all available assemblies>
+        
+        Description:
+            To use D-Bus source only one can set:
+            
+            export MONO_UIA_SOURCE="UiaDbusSource, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812"
+        */
         public static string MONO_UIA_SOURCE => GetEnvVarValueOrDefault<string> ("MONO_UIA_SOURCE", string.Empty);
 
+        /* 
+        Usage: 
+            export MONO_UIA_BRIDGE="<list of assemblies implementing `IAutomationBridge`>"
+
+        Defaule value:
+            <all available assemblies>
+        
+        Description:
+            To use D-Bus source only one can set:
+            
+            export MONO_UIA_BRIDGE="UiaDbusBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812"
+        */
         public static string MONO_UIA_BRIDGE => GetEnvVarValueOrDefault<string> ("MONO_UIA_BRIDGE", string.Empty);
 
+        /* 
+        Usage: 
+            export MONO_UIA_NAVIGATION_TREE_ERR={log|exception}
+
+        Defaule value:
+            "log"
+        
+        Description:
+            Only 'log' or throw 'exception' in case of internal error related with Provider tree navigation.
+        */
         public static MONO_UIA_NAVIGATION_TREE_ERR MONO_UIA_NAVIGATION_TREE_ERR =>
             GetEnvVarValueAsEnumOrDefault<MONO_UIA_NAVIGATION_TREE_ERR> ("MONO_UIA_NAVIGATION_TREE_ERR", MONO_UIA_NAVIGATION_TREE_ERR.Log);
 
+        /* 
+        Usage: 
+            export MONO_UIA_NAVIGATION_TREE_ERR={Information|Debug|Warning|Error}
+
+        Defaule value:
+            "Information"
+        
+        Description:
+            Stdout log level.
+        */
         public static string MONO_UIA_LOG_LEVEL => Environment.GetEnvironmentVariable ("MONO_UIA_LOG_LEVEL");
 
         private static bool GetEnvVarIntValueAsBoolOrDefault (string envVarName, bool defaultValue)
