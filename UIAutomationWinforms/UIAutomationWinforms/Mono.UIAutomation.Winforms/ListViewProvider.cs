@@ -229,10 +229,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected override void FinalizeChildControlStructure()
 		{
+			DestroyAllLocalChildren ();
 			base.FinalizeChildControlStructure ();
-
 			listView.Items.UIACollectionChanged -= OnCollectionChanged;
-
 			listView.UIAViewChanged -= OnUIAViewChanged;
 		}
 		
@@ -415,7 +414,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			ListViewGroupProvider provider = null;
 			groups.TryGetValue (group ?? GetDefaultGroup (), out provider);
-
 			return provider;
 		}
 
@@ -504,22 +502,7 @@ namespace Mono.UIAutomation.Winforms
 			bool updateView = lastView != listView.View;
 			
 			if (updateView == true || forceUpdate == true) {			
-				foreach (ListViewGroupProvider groupProvider in groups.Values) {
-					RemoveChildProvider (groupProvider);
-					groupProvider.Terminate ();
-				}
-				groups.Clear ();
-
-				if (lastView == SWF.View.Details && header != null) {
-					RemoveChildProvider (header);
-					header.Terminate ();
-					header = null;
-				}
-
-				foreach (ListItemProvider itemProvider in Items)
-					RemoveChildProvider (itemProvider);
-				
-				ClearItemsList ();
+				DestroyAllLocalChildren ();
 			}
 
 			if (listView.View == SWF.View.Details) {
@@ -532,6 +515,33 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (object objectItem in listView.Items)
 				InitializeProviderFrom (objectItem);
+		}
+
+		private void DestroyAllLocalChildren ()
+		{
+				foreach (ListViewGroupProvider groupProvider in groups.Values) {
+					DestroyLocalChild (groupProvider);
+				}
+				groups.Clear ();
+
+				if (lastView == SWF.View.Details) {
+					DestroyLocalChild (header);
+					header = null;
+				}
+
+				foreach (ListItemProvider itemProvider in Items) {
+					DestroyLocalChild (itemProvider);
+				}
+				
+				ClearItemsList ();
+		}
+
+		private void DestroyLocalChild (FragmentControlProvider child)
+		{
+			if (child == null)
+				return;
+			RemoveChildProvider (child);
+			child.Terminate ();
 		}
 
 		private void OnUIAViewChanged (object sender, EventArgs args)
@@ -656,6 +666,15 @@ namespace Mono.UIAutomation.Winforms
 						return provider;
 				}
 				return null;
+			}
+			
+			protected override void FinalizeChildControlStructure()
+			{
+				foreach (ListViewListItemProvider provider in Navigation.GetAllChildren ()) {
+					RemoveChildProvider (provider);
+					provider.Terminate ();
+				}
+				base.FinalizeChildControlStructure ();
 			}
 		
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -823,8 +842,10 @@ namespace Mono.UIAutomation.Winforms
 				//Event used to update columns in ListItem when View.Details
 				listView.Columns.UIACollectionChanged -= OnUIAColumnsCollectionChanged;
 
-				foreach (ListViewHeaderItemProvider item in headerItems .Values)
+				foreach (ListViewHeaderItemProvider item in headerItems .Values) {
+					RemoveChildProvider (item);
 					item.Terminate ();
+				}
 			}
 
 			private void OnUIAColumnsCollectionChanged (object sender, 
