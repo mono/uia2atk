@@ -52,7 +52,6 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 
 		private readonly NavigationWinform navigation;
-		private SWF.ContextMenu contextMenu;
 		private bool previousVisible;  // Just to avoid event duplicates.
 		private ReallyVisible isReallyVisible = ReallyVisible.Unknown;
 
@@ -80,55 +79,32 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		void HandleContextMenuStripChanged (object sender, EventArgs e)
+		private static void HandleContextMenuStripChanged (object sender, EventArgs e)
 		{
-			var contextMenuStrip = Control.ContextMenuStrip;
-
-			if (contextMenuStrip != null) {
-				contextMenuStrip.Opened -= ContextMenuStripProvider.HandleContextMenuStripOpened;
-				contextMenuStrip.Opened += ContextMenuStripProvider.HandleContextMenuStripOpened;
-				
-				contextMenuStrip.Closed -= ContextMenuStripProvider.HandleContextMenuStripClosed;
-				contextMenuStrip.Closed += ContextMenuStripProvider.HandleContextMenuStripClosed;
+			var menu = (sender as SWF.Control)?.ContextMenuStrip;
+			if (menu != null) {
+				menu.Opened -= ContextMenuStripProvider.HandleContextMenuStripOpened;
+				menu.Opened += ContextMenuStripProvider.HandleContextMenuStripOpened;
+				menu.Closed -= ContextMenuStripProvider.HandleContextMenuStripClosed;
+				menu.Closed += ContextMenuStripProvider.HandleContextMenuStripClosed;
 			}
 		}
 
-		void HandleContextMenuChanged (object sender, EventArgs e)
+		private static void HandleContextMenuChanged (object sender, EventArgs e)
 		{
-			if (contextMenu != null) {
-				contextMenu.Popup -= HandleContextMenuPopup;
-				contextMenu.Collapse -= HandleContextMenuCollapse;
-			}
-			contextMenu = Control.ContextMenu;
-
-			if (contextMenu != null) {
-				contextMenu.Popup += HandleContextMenuPopup;
-				contextMenu.Collapse += HandleContextMenuCollapse;
+			var menu = (sender as SWF.Control)?.ContextMenu;
+			if (menu != null) {
+				menu.Popup -= ContextMenuProvider.HandleContextMenuPopup;
+				menu.Popup += ContextMenuProvider.HandleContextMenuPopup;
+				menu.Collapse -= ContextMenuProvider.HandleContextMenuCollapse;
+				menu.Collapse += ContextMenuProvider.HandleContextMenuCollapse;
 			}
 		}
 
 		void TrackControlClick (object sender, EventArgs e)
 		{
-			
 		}
 
-		void HandleContextMenuPopup (object sender, EventArgs e)
-		{
-			var contextMenuProvider = (FragmentControlProvider) ProviderFactory.GetProvider (contextMenu);
-			AddChildProvider (contextMenuProvider);
-		}
-
-		void HandleContextMenuCollapse (object sender, EventArgs e)
-		{
-			var contextMenuProvider = (FragmentControlProvider) ProviderFactory.FindProvider (contextMenu);
-			if (contextMenuProvider == null)
-				return;
-			RemoveChildProvider (contextMenuProvider);
-			contextMenuProvider.Terminate ();
-			ProviderFactory.ReleaseProvider (contextMenu);
-			// TODO: Need to handle disposal of some parent without close happening?
-		}
-		
 		#endregion
 		
 		#region Public Events

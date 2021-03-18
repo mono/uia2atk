@@ -40,6 +40,27 @@ namespace Mono.UIAutomation.Winforms
 	internal class ContextMenuProvider : MenuProvider, IRawElementProviderFragmentRoot
 	{
 		private SWF.ContextMenu contextMenu;
+
+		public static void HandleContextMenuPopup (object sender, EventArgs e)
+		{
+			var menu = (SWF.ContextMenu) sender;
+			var menuProvider = (ContextMenuProvider) ProviderFactory.GetProvider (menu);
+			var srcControlProvider = (FragmentControlProvider) ProviderFactory.GetProvider (menu.SourceControl);
+			srcControlProvider.AddChildProvider (menuProvider);
+		}
+
+		public static void HandleContextMenuCollapse (object sender, EventArgs e)
+		{
+			var menu = (SWF.ContextMenu) sender;
+			var menuProvider = (ContextMenuProvider) ProviderFactory.FindProvider (menu);
+			if (menuProvider == null)
+				return;
+			var parentProvider = menuProvider.Navigation.Parent as FragmentControlProvider;
+			parentProvider?.RemoveChildProvider (menuProvider);
+			menuProvider.Terminate ();
+			ProviderFactory.ReleaseProvider (menu);
+			// TODO: Need to handle disposal of some parent without close happening?
+		}
 		
 		public ContextMenuProvider (SWF.ContextMenu contextMenu) :
 			base (contextMenu)
