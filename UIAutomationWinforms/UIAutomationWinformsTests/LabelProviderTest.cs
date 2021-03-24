@@ -110,9 +110,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 bridge.AutomationEvents [0].provider,
 			                 "provider");
 			
-			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
-			                 bridge.AutomationEvents [0].eventId,
-			                 "event type");
 			
 			// TODO: args
 		}

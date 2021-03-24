@@ -416,22 +416,22 @@ namespace UiaAtkBridge
 			e.SuppressKeyPress = appMonitor.HandleKey (evnt);
 		}
 		
-		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
+		public void RaiseAutomationEvent (object provider, AutomationEventArgs e)
 		{
 //			if (e!= null)
 //				Console.WriteLine ("RaiseAutomationEvent{0}", e.EventId.ProgrammaticName);
 			
 			// TODO: Find better way to pass PreRun event on to bridge
-			//        (nullx3 is a magic value)
+			//        (nullx2 is a magic value)
 			//        (once bridge events are working, should be able to happen upon construction, right?)
-			if (eventId == null && provider == null && e == null) {
+			if (provider == null && e == null) {
 				if (!applicationStarted && appMonitor != null)
 					appMonitor.ApplicationStarts ();
 				return;
 			}
 			
-			if (eventId == AutomationElementIdentifiers.KeyEvent) {
-				HandleKeyEvent (eventId, (KeyEventArgs)e);
+			if (e.EventId == AutomationElementIdentifiers.KeyEvent) {
+				HandleKeyEvent (e.EventId, (KeyEventArgs)e);
 				return;
 			}
 			
@@ -447,7 +447,7 @@ namespace UiaAtkBridge
 			
 			Adapter adapter = providerAdapterMapping [simpleProvider] as Adapter;
 			if (adapter != null)
-				adapter.RaiseAutomationEvent (eventId, e);
+				adapter.RaiseAutomationEvent (e.EventId, e);
 		}
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)

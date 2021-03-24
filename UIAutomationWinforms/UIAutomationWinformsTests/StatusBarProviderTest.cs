@@ -306,9 +306,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 eventTuple2.provider,
 			                 "event sender");
 			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
-			                 eventTuple2.eventId,
-			                 "event id");
-			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
 			                 eventTuple2.e.EventId,
 			                 "event id");
 		}

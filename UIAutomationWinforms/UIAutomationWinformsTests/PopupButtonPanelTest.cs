@@ -146,9 +146,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			AutomationEventTuple eventInfo =
 				bridge.AutomationEvents [0];
-			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
-			                 eventInfo.eventId,
-			                 "event type");
 			Assert.AreEqual (provider,
 			                 eventInfo.provider,
 			                 "event element");

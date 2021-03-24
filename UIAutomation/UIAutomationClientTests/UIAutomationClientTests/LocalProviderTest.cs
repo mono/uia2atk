@@ -339,7 +339,7 @@ namespace MonoTests.System.Windows.Automation
 		public void PerformInvoke()
 		{
 			ClickCount++;
-			AutomationInteropProvider.RaiseAutomationEvent (InvokePattern.InvokedEvent, this,
+			AutomationInteropProvider.RaiseAutomationEvent (this,
 				new AutomationEventArgs(InvokePattern.InvokedEvent));
 		}
 

@@ -112,7 +112,7 @@ namespace UiaAtkBridgeTest
 		public static void InitializeA11y ()
 		{
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+			AutomationInteropProvider.RaiseAutomationEvent (null, null);
 		}
 		
 		[TestFixtureSetUp]
