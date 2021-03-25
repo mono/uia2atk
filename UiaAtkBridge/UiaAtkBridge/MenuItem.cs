@@ -296,6 +296,11 @@ namespace UiaAtkBridge
 			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
+		public string GetStringAtOffset (int offset, Atk.TextGranularity granularity, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetStringAtOffset (offset, granularity, out startOffset, out endOffset);
+		}
+
 		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);

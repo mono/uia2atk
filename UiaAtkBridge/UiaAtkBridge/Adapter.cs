@@ -190,12 +190,6 @@ namespace UiaAtkBridge
 			NotifyStateChange (Atk.StateType.Focused, focused);
 			}
 
-			if (focused) {
-				GLib.Timeout.Add (0, new GLib.TimeoutHandler (delegate {
-					Atk.Focus.TrackerNotify (this);
-					return false;
-				}));
-			}
 			if (focusWindow != null)
 				focusWindow.SendActiveStateChange ();
 		}

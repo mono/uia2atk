@@ -205,8 +205,6 @@ namespace UiaAtkBridge
 			bool listFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 			if (hasFocus != listFocused) {
 				NotifyStateChange (Atk.StateType.Focused, listFocused);
-				if (listFocused)
-					Atk.Focus.TrackerNotify (this);
 			}
 			if (itemFocused) {
 				// Orca wants to get Selection events before

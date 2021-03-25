@@ -61,30 +61,17 @@ namespace UiaAtkBridge
 
 		public void GetCurrentValue (ref GLib.Value value)
 		{
-			if (rangeValueProvider != null) {
-				value = new GLib.Value (rangeValueProvider.Value);
-				return;
-			}
-			
-			if (parentScrollProvider == null)
-				GetScrollProviderFromParent ();
-			
-			//TODO: This double validation will be removed in future versions because
-			//if your SWF.ScrollBar.Parent doesn't support IScrollProvider then your
-			//ScrollBar is not ScrollBar is Pane!!
-			if (parentScrollProvider == null) {
-				Log.Warn ("ScrollBar: Provider does not implement IValueProvider.");
-				value = new GLib.Value ((double)0);
-			}
-			else
-			{
-				value = new GLib.Value (orientation == OrientationType.Vertical? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
-			}
+			value = new GLib.Value (Value);
 		}
 
 		public bool SetCurrentValue (GLib.Value value)
 		{
-			double v = (double)value.Val;
+			Value =  (double)value.Val;
+			return SetCurrentValue (value);
+		}
+
+		private bool SetCurrentValue (double v)
+		{
 			if (rangeValueProvider != null) {
 				if (v > rangeValueProvider.Maximum)
 					return false;
@@ -129,6 +116,56 @@ namespace UiaAtkBridge
 				}
 			}
 			return true;
+		}
+		public void GetValueAndText (out double value, out string text)
+		{
+			value = Value;
+			text = "";
+		}
+
+		public Atk.Range Range {
+			get {
+				double minimum = (rangeValueProvider != null? rangeValueProvider.Minimum: 0);
+				double maximum = (rangeValueProvider != null? rangeValueProvider.Maximum: 0);
+				return new Atk.Range (minimum, maximum, "");
+			}
+		}
+
+		public double Increment {
+			get {
+			return (rangeValueProvider != null? rangeValueProvider.SmallChange: 1);
+			}
+		}
+
+		public GLib.SList SubRanges {
+			get {
+				return null;
+			}
+		}
+
+		public double Value {
+			get {
+				if (rangeValueProvider != null)
+					return rangeValueProvider.Value;
+			
+				if (parentScrollProvider == null)
+					GetScrollProviderFromParent ();
+			
+				//TODO: This double validation will be removed in future versions because
+				//if your SWF.ScrollBar.Parent doesn't support IScrollProvider then your
+				//ScrollBar is not ScrollBar is Pane!!
+				if (parentScrollProvider == null) {
+					Log.Warn ("ScrollBar: Provider does not implement IValueProvider.");
+					return 0;
+				}
+				else
+				{
+					return (orientation == OrientationType.Vertical? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
+				}
+			}
+			set {
+				SetCurrentValue (value);
+			}
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

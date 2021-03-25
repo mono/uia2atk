@@ -49,8 +49,6 @@ namespace UiaAtkBridge
 			bool tableFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 			if (hasFocus != tableFocused) {
 				NotifyStateChange (Atk.StateType.Focused, tableFocused);
-				if (tableFocused)
-					Atk.Focus.TrackerNotify (this);
 			}
 			if (itemFocused)
 				EmitSignal ("active-descendant-changed", item.Handle);

@@ -185,8 +185,6 @@ AtkObject,
 			bool listFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
 			if (hasFocus != listFocused) {
 				NotifyStateChange (Atk.StateType.Focused, listFocused);
-				if (listFocused)
-					Atk.Focus.TrackerNotify (this);
 			}
 			if (itemFocused)
 				EmitSignal ("active-descendant-changed", item.Handle);
@@ -350,6 +348,11 @@ AtkObject,
 			return text_helper.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
+		public string GetStringAtOffset (int offset, Atk.TextGranularity granularity, out int startOffset, out int endOffset)
+		{
+			return text_helper.GetStringAtOffset (offset, granularity, out startOffset, out endOffset);
+		}
+
 		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return text_helper.GetRunAttributes (offset, out startOffset, out endOffset);

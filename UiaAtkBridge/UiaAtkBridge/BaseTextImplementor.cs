@@ -301,6 +301,31 @@ namespace UiaAtkBridge
 			}
 		}
 
+		public string GetStringAtOffset (int offset, Atk.TextGranularity granularity, out int startOffset, out int endOffset)
+		{
+			Atk.TextBoundary boundaryType;
+
+			switch (granularity) {
+			case Atk.TextGranularity.Char:
+				boundaryType = Atk.TextBoundary.Char;
+				break;
+			case Atk.TextGranularity.Word:
+				boundaryType = Atk.TextBoundary.WordStart;
+				break;
+			case Atk.TextGranularity.Sentence:
+				boundaryType = Atk.TextBoundary.SentenceStart;
+				break;
+			case Atk.TextGranularity.Line:
+			case Atk.TextGranularity.Paragraph:
+				boundaryType = Atk.TextBoundary.LineStart;
+				break;
+			default:
+				throw new NotSupportedException ("Granularity not supported: " + granularity.ToString ());
+			}
+
+			return GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+
 		public string GetText (int startOffset, int endOffset)
 		{
 			if (cachedText != null && cachedTextStart == startOffset && cachedTextEnd == endOffset)

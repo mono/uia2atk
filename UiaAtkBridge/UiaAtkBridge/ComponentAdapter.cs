@@ -73,13 +73,11 @@ namespace UiaAtkBridge
 			componentExpert.GetPosition (out x, out y, coordType);
 		}
 
-		// we should use "override" instead of "new" when this bug is fixed and it gets
-		// propragated to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
-		public virtual new Atk.Layer Layer {
+		public virtual Atk.Layer Layer {
 			get { return componentExpert.Layer; }
 		}
 		
-		public virtual new int MdiZorder {
+		public virtual int MdiZorder {
 			get { return componentExpert.MdiZorder; }
 		}
 		

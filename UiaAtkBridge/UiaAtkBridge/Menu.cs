@@ -184,9 +184,6 @@ namespace UiaAtkBridge
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-				if (selected)
-					//this causes the following in accerciser: focus:(0, 0, None)
-					Atk.Focus.TrackerNotify (this);
 				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
 			} else {
 				Log.Warn ("MenuItem: RaiseAutomationEvent({0},...) not implemented", eventId.ProgrammaticName);

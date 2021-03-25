@@ -309,21 +309,21 @@ namespace UiaAtkBridgeTest
 		public override object CastToAtkInterface (Type t, Atk.Object accessible)
 		{
 			try {
-				if (t == typeof (Atk.Action)) {
+				if (t == typeof (Atk.IAction)) {
 					return Atk.ActionAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Text)) {
+				} else if (t == typeof (Atk.IText)) {
 					return Atk.TextAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Component)) {
+				} else if (t == typeof (Atk.IComponent)) {
 					return Atk.ComponentAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.EditableText)) {
+				} else if (t == typeof (Atk.IEditableText)) {
 					return Atk.EditableTextAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Image)) {
+				} else if (t == typeof (Atk.IImage)) {
 					return Atk.ImageAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Table)) {
+				} else if (t == typeof (Atk.ITable)) {
 					return Atk.TableAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Selection)) {
+				} else if (t == typeof (Atk.ISelection)) {
 					return Atk.SelectionAdapter.GetObject (accessible.Handle, false);
-				} else if (t == typeof (Atk.Value)) {
+				} else if (t == typeof (Atk.IValue)) {
 					return Atk.ValueAdapter.GetObject (accessible.Handle, false);
 				} else {
 					throw new NotImplementedException ("Couldn't cast to interface " + t.Name);
@@ -336,21 +336,21 @@ namespace UiaAtkBridgeTest
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{	
 			try {
-				if (typeof (I) == typeof (Atk.Action)) {
+				if (typeof (I) == typeof (Atk.IAction)) {
 					return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Text)) {
+				} else if (typeof (I) == typeof (Atk.IText)) {
 					return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Component)) {
+				} else if (typeof (I) == typeof (Atk.IComponent)) {
 					return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.EditableText)) {
+				} else if (typeof (I) == typeof (Atk.IEditableText)) {
 					return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Image)) {
+				} else if (typeof (I) == typeof (Atk.IImage)) {
 					return Atk.ImageAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Table)) {
+				} else if (typeof (I) == typeof (Atk.ITable)) {
 					return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Selection)) {
+				} else if (typeof (I) == typeof (Atk.ISelection)) {
 					return Atk.SelectionAdapter.GetObject (accessible.Handle, false) as I;
-				} else if (typeof (I) == typeof (Atk.Value)) {
+				} else if (typeof (I) == typeof (Atk.IValue)) {
 					return Atk.ValueAdapter.GetObject (accessible.Handle, false) as I;
 				}
 				throw new NotImplementedException ("Couldn't cast to interface " +
@@ -419,7 +419,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
 
 					foreach (string text in name) 
-						((Gtk.ComboBox)widget).AppendText (text);
+						((Gtk.ComboBoxText)widget).AppendText (text);
 
 					if (selected != -1)
 						((Gtk.ComboBox)widget).Active = selected;
@@ -558,7 +558,9 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealVScrollbar ();
 				break;
 			case BasicWidgetType.ProgressBar:
-				widget = new Gtk.ProgressBar (adj);
+				widget = new Gtk.ProgressBar ();
+				((Gtk.ProgressBar)widget).Fraction = (adj.Value - adj.Lower) / (adj.Upper - adj.Lower);
+				((Gtk.ProgressBar)widget).PulseStep = adj.StepIncrement;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealProgressBar ();
 				break;

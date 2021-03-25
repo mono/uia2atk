@@ -56,9 +56,9 @@ public partial class MainWindow {
     
     private Gtk.Button btnWithImg;
     
-    private Gtk.ComboBoxEntry cbeTest;
+    private Gtk.ComboBoxText cbeTest;
     
-    private Gtk.ComboBox cbxTest;
+    private Gtk.ComboBoxText cbxTest;
     
     private Gtk.CheckButton checkbutton1;
     
@@ -148,7 +148,7 @@ public partial class MainWindow {
         this.cdromAction = new Gtk.Action("cdromAction", null, null, "gtk-cdrom");
         w1.Add(this.cdromAction, null);
         this.RadioInToolBarTest1Action = new Gtk.RadioAction("RadioInToolBarTest1Action", Mono.Unix.Catalog.GetString("RadioInToolBarTest1"), null, null, 0);
-        this.RadioInToolBarTest1Action.Group = new GLib.SList(System.IntPtr.Zero);
+        this.RadioInToolBarTest1Action.Group = new Gtk.RadioAction[0];
         this.RadioInToolBarTest1Action.ShortLabel = Mono.Unix.Catalog.GetString("RadioInToolBarTest1");
         w1.Add(this.RadioInToolBarTest1Action, null);
         this.RadioInToolBarTest2Action = new Gtk.RadioAction("RadioInToolBarTest2Action", Mono.Unix.Catalog.GetString("RadioInToolBarTest2"), null, null, 0);
@@ -235,7 +235,7 @@ public partial class MainWindow {
         w7.XOptions = ((Gtk.AttachOptions)(4));
         w7.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
-        this.cbeTest = Gtk.ComboBoxEntry.NewText();
+        this.cbeTest = Gtk.ComboBoxText.NewWithEntry();
         this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("First element"));
         this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("Second element"));
         this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("Third element"));
@@ -249,7 +249,7 @@ public partial class MainWindow {
         w8.XOptions = ((Gtk.AttachOptions)(4));
         w8.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
-        this.cbxTest = Gtk.ComboBox.NewText();
+        this.cbeTest = new Gtk.ComboBoxText();
         this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("FirstItem"));
         this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("SecondItem"));
         this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("LastItem"));
@@ -316,7 +316,7 @@ public partial class MainWindow {
         this.radiobutton1.Name = "radiobutton1";
         this.radiobutton1.DrawIndicator = true;
         this.radiobutton1.UseUnderline = true;
-        this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);
+        this.radiobutton1.Group = new Gtk.RadioButton[0];
         this.table1.Add(this.radiobutton1);
         Gtk.Table.TableChild w14 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton1]));
         w14.TopAttach = ((uint)(3));
@@ -346,7 +346,7 @@ public partial class MainWindow {
         this.radTest1.Name = "radTest1";
         this.radTest1.DrawIndicator = true;
         this.radTest1.UseUnderline = true;
-        this.radTest1.Group = new GLib.SList(System.IntPtr.Zero);
+        this.radTest1.Group = new Gtk.RadioButton[0];
         this.table1.Add(this.radTest1);
         Gtk.Table.TableChild w16 = ((Gtk.Table.TableChild)(this.table1[this.radTest1]));
         w16.TopAttach = ((uint)(2));

@@ -82,6 +82,11 @@ namespace UiaAtkBridge
 		public bool SetCurrentValue (GLib.Value value)
 		{
 			double v = (double)value.Val;
+			return SetCurrentValue (v);
+		}
+
+		private bool SetCurrentValue (double v)
+		{
 			if (rangeValueProvider != null) {
 				if (v > rangeValueProvider.Maximum)
 					return false;
@@ -101,6 +106,38 @@ namespace UiaAtkBridge
 				return true;
 			}
 			return false;
+		}
+
+		public void GetValueAndText (out double value, out string text)
+		{
+			value = (rangeValueProvider != null? rangeValueProvider.Value: 0);
+			text = "";
+		}
+
+		public Atk.Range Range {
+			get {
+				double minimum = (rangeValueProvider != null? rangeValueProvider.Minimum: 0);
+				double maximum = (rangeValueProvider != null? rangeValueProvider.Maximum: 0);
+				return new Atk.Range (minimum, maximum, "");
+			}
+		}
+
+		public double Increment {
+			get {
+				return 0;
+			}
+		}
+
+		public GLib.SList SubRanges {
+			get {
+				return null;
+			}
+		}
+
+		public double Value {
+			set {
+				SetCurrentValue (value);
+			}
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

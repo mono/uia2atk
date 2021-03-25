@@ -51,6 +51,9 @@ namespace UiaAtkBridge
 		                        out int startOffset, out int endOffset);
 		string GetTextBeforeOffset (int offset, TextBoundary boundaryType,
 		                            out int startOffset, out int endOffset);
+		string GetStringAtOffset (int offset,
+		                        TextGranularity Granularity,
+                                        out int startOffset, out int endOffset);
 
 		string Text {
 			get;
